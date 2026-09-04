@@ -1,185 +1,184 @@
 # Character and Series Bible
 
-## The seven Witnesses
+## Shared cast rule
 
-Each lead has a different fantasy, moral problem, play style, resource pressure, and prose rhythm. Their paths cross at fixed events, but the player decides whether each meeting creates trust, debt, fear, attraction, or a future enemy.
+Veilfall has four playable leads. Caelan, Rook, and Orren are men. Ilyra is a woman. Each lead has a different background, a clear default method for solving problems, and a class resource that makes powerful actions costly.
 
-## Maelin Vey, the broken oath
+Shared events occur only when the meeting changes both stories. A player following one lead receives every fact needed to understand that series. Other viewpoints add motive, context, and emotional contrast.
 
-Class: Oathkeeper warrior
+## Caelan Vey, the king’s road
 
-Player fantasy: Stand your ground when the truth, the law, and survival demand different things.
+Age: 31
 
-Core ability: Maelin can bind an oath into steel. A kept promise makes her stronger. A broken promise gives her a powerful short burst and leaves a permanent Oathscar.
+Class: Royal oathkeeper and guard captain
 
-Personal wound: She believes duty is the only reason anyone keeps her. Her missing memories hide the fact that she chose to divide herself rather than obey the king.
+Background: Caelan grew up above his father’s forge in the working district of Greyhaven. His mother treated burns and broken hands for neighbors who could not pay. He joined the Road Guard at nineteen after river raiders killed a caravan he had promised to guide. Twelve years later, he commands the king’s escort. He earned rank through preparation, personal courage, and remembering the names of common soldiers.
 
-Growth: Prisoner, fugitive captain, rebel general, then possible Crown Bearer or Crown Breaker.
+Primary approach: Protection, direct action, battlefield control, visible leadership, and keeping promises.
 
-Unique mechanic: Oath slots. The player chooses a limited number of promises. Each opens special actions and creates future obligations.
+How he handles problems:
 
-Voice: Direct, physical, restrained. She notices exits, hands, injuries, and who stands between danger and another person.
+* Places himself between danger and another person.
+* Reads terrain and positions allies before fighting.
+* Uses rank openly instead of working through secrets.
+* Gives an opponent one clear chance to stand down.
+* Struggles when every available promise conflicts with another.
 
-## Rook Sable, the thief of tomorrow
+Class resources:
 
-Class: Veil thief
+* Stamina powers shield charges, forced movement, endurance, and protection. Heavy actions consume it. Rest, treatment, and safe food restore it.
+* Resolve powers commands, resistance to fear, and oath abilities. Broken promises reduce it.
+* Oath slots arrive later. An active promise grants a strong ability and creates a specific duty.
 
-Player fantasy: Steal impossible things and escape plans that were built to catch your future self.
+Personal conflict: Caelan confuses being needed with being loved. He accepts every burden and quietly fears that people would leave if he stopped being useful.
 
-Core ability: Rook can steal one small fact for a few minutes. He may take the sound from a footstep, the distance from a jump, or the memory of a face from a witness.
+Romantic arc: Mara Renn is an adult royal scout and Caelan’s oldest friend. Attraction already exists, but their bond has stalled because Caelan always puts duty first. Flirting is easy. Asking for a shared future is hard. The player may build romance through humor, honesty, trust in Mara’s skill, and choosing time together. Mara remains a capable scout with goals beyond Caelan.
 
-Cost: The stolen fact vanishes from him later. If he steals silence, he may lose his voice when he most needs it.
+Growth: Reliable captain, framed fugitive, leader without legal authority, oathbound champion, then the person who may guard or destroy the Crown Below.
 
-Personal wound: He performs charm because he expects every real attachment to become leverage.
+Voice: Direct and physical. Caelan notices hands, exits, balance, injuries, equipment, and who is standing between danger and someone weaker.
 
-Growth: Selfish survivor, unwilling courier, architect of the Lantern rebellion, then possible keeper of all discarded histories.
+## Rook Sable, a knife for tomorrow
 
-Unique mechanic: Heat and Borrowed Facts. Clever solutions build Heat while stolen facts create temporary rule changes.
+Age: 29
 
-Voice: Quick, observant, funny under pressure. He notices value, vanity, routes, and the lie a room tells about its owner.
+Class: Thief and street illusionist
+
+Background: Rook was raised in the Tangle by a family of stage magicians who used simple tricks to hide real theft. After the Crown Registry took his older brother for a crime that had not yet happened, Rook began stealing records and identities from the state. He now works for the Lantern Court while pretending he works only for himself.
+
+Primary approach: Stealth, deception, climbing, locks, disguise, illusion, and turning an enemy’s assumptions against them.
+
+How he handles problems:
+
+* Avoids fair fights and prepares exits before entering.
+* Uses small illusions to misdirect attention rather than create obvious magic.
+* Studies greed, pride, desire, and embarrassment.
+* Steals leverage instead of defeating a powerful enemy directly.
+* Jokes when fear or affection becomes too honest.
+
+Class resources:
+
+* Dexterity powers difficult climbing, silent movement, escape, and precision theft. Injury and exhaustion reduce it.
+* Focus powers illusions. A whisper or false footstep costs little. A convincing moving person costs much more.
+* Heat measures how closely the law and criminal rivals are tracking him. Strong shortcuts often raise it.
+
+Illusion limits: An illusion changes sight or sound in a small area. It has no weight, smell, warmth, or power to harm. Alert people may notice errors. Rook must maintain complex illusions with attention, leaving him less aware of real threats.
+
+Personal conflict: Rook expects real affection to become leverage. He leaves first, lies early, and makes himself useful enough that people hesitate to abandon him.
+
+Romantic arc: Rook flirts as camouflage, which makes sincere attraction difficult to recognize. His main relationship begins with Sen Aldis, an adult male or female smuggler selected during character setup. The meaningful choice is whether Rook can speak plainly when charm would be safer.
+
+Growth: Clever survivor, hunted record thief, architect of a city rebellion, then keeper of routes between possible histories.
+
+Voice: Quick and observant. Rook notices value, vanity, routes, locks, clothes, social weakness, and the lie a room tells about its owner.
 
 ## Ilyra Fen, the glass memory
 
-Class: Memory mage
+Age: 28
 
-Player fantasy: Shape beautiful, precise magic while deciding which parts of yourself you can afford to lose.
+Class: Structured mage and memory scholar
 
-Core ability: Ilyra pulls memories into glass blades, lenses, keys, and creatures.
+Background: Ilyra was born in a salt farming village where uncontrolled magic ruined a year’s harvest. Her family feared her gift but paid for a disciplined tutor. She entered the Glassgarden academy at sixteen and became an expert in forensic magic. She now advises the Crown on spells used in crimes, while secretly proving that royal archives have been altered.
 
-Cost: A used memory leaves her mind. She can recover it only by breaking the glass and surrendering the spell forever.
+Primary approach: Research, preparation, precise spells, magical tools, and careful negotiation.
 
-Personal wound: She recorded her whole childhood to escape grief, then sold part of the archive to pay for her education.
+How she handles problems:
 
-Growth: Court scholar, hunted heretic, builder of a living archive, then possible author of a new shared history.
+* Observes before spending power.
+* Builds a spell from known parts rather than hoping emotion will solve it.
+* Uses wards, lenses, bindings, and controlled elemental effects.
+* Records evidence and tests competing explanations.
+* Risks too much when a missing memory may contain the truth about her family.
 
-Unique mechanic: Memory inventory. Memories serve as spells, dialogue knowledge, emotional anchors, and trade goods.
+Class resources:
 
-Voice: Exact and sensory. She notices reflections, patterns, word choice, and gaps where a memory should be.
+* Mana powers ordinary spells and returns through sleep, calm, food, and prepared focus stones.
+* Memory shards power rare spells that alter identity, history, or perception. Creating one removes a real memory until the shard is broken and reclaimed.
+* Strain rises when she casts with too little Mana. High Strain can cause tremors, false memories, or spell failure.
 
-## Vela Arquen, mercy with fangs
+Spell groups:
 
-Class: Vampire surgeon
+* Wards stop movement, heat, sound, or simple magic across a marked line.
+* Lenses reveal residue, distant detail, false surfaces, and traces of altered memory.
+* Threads move small objects, bind limbs, or connect two prepared marks.
+* Glassforms create short lived tools, blades, keys, or shields from stored Mana.
+* Memory craft is powerful, rare, and personally costly.
 
-Player fantasy: Save lives with forbidden skill while managing hunger, consent, and the memories carried in blood.
+Personal conflict: Ilyra values proof because emotion once made her magic dangerous. She has become so careful that she sometimes treats her own needs like unreliable evidence.
 
-Core ability: Vela can taste illness, magic, and recent memory from blood. She can move a wound from one body to another.
+Romantic arc: Her main connection is Tomas Venn, an adult printmaker who publishes banned testimony. Their attraction grows through intellectual challenge, shared risk, domestic quiet, and conflict over how much truth the public can survive. Ilyra may also develop a slower relationship with Rook, but only if choices made in both series support trust.
 
-Cost: Hunger erases her oldest personal memories. Healing a mortal may force her to carry their pain or injury.
+Growth: Crown examiner, accused memory thief, creator of a public living archive, then mage capable of choosing which memories the world keeps.
 
-Personal wound: She remembers every patient she lost but no longer remembers the face of the woman she loved.
-
-Growth: Hidden clinic doctor, leader of the Pale Compact, war surgeon, then possible maker of a cure that would also erase vampire history.
-
-Unique mechanic: Hunger and Consent. Safer feeding builds trust but offers less power. Desperate choices solve immediate crises and alter identity.
-
-Voice: Calm, intimate, clinical when frightened. She notices pulse, breath, temperature, lies about pain, and acts of care.
+Voice: Exact and sensory. Ilyra notices reflections, patterns, word choice, magical residue, and gaps where a memory should be.
 
 ## Orren Thorne, the court wolf
 
+Age: 35
+
 Class: Werewolf investigator
 
-Player fantasy: Hunt hidden violence inside palaces where every polite sentence conceals a threat.
+Background: Orren served as a city watch detective before a hidden family curse changed him during a murder inquiry. The Crown offered control training in exchange for lifelong service. He became its best investigator, then learned that the institution sometimes creates the evidence he is ordered to follow.
 
-Core ability: Orren begins to transform near concealed intent to harm. Each stage grants sharper senses and strength but reduces social control.
+Primary approach: Investigation, tracking, patient questioning, controlled intimidation, and selective transformation.
 
-Cost: The curse detects intent, not guilt. A terrified victim planning revenge can trigger it while a remorseless killer who feels no conflict may not.
+How he handles problems:
 
-Personal wound: Orren trusts evidence because his instincts once led him to kill the wrong person.
+* Builds a timeline before choosing a suspect.
+* Uses scent, heartbeat, and body movement alongside ordinary evidence.
+* Lets silence pressure a liar into filling it.
+* Transforms only when strength or pursuit matters more than social control.
+* Distrusts easy certainty because instinct once led him to kill the wrong man.
 
-Growth: Crown investigator, framed beast, leader of the Briar Hunt, then judge of a kingdom where truth itself can change.
+Class resources:
 
-Unique mechanic: Scent board and Change meter. The player links clues while deciding when to allow transformation.
+* Control keeps human judgment in charge during transformation. Anger, pain, and deliberate shifting consume it.
+* Scent marks let Orren remember and compare a limited number of people, places, and emotional traces.
+* Change measures physical transformation. Higher Change grants speed, senses, healing, and force while making speech, fine movement, and restraint harder.
 
-Voice: Patient, concrete, suspicious of easy motives. He notices scent, rhythm, contradictions, and controlled anger.
+Curse rule: The Gloam curse responds to concealed intent to harm, not the moon. A frightened victim planning revenge may trigger it. A remorseless killer who feels no inner conflict may not.
 
-## Vask Emberlain, the demon undertaker
+Personal conflict: Orren trusts procedure because he does not fully trust himself. When the law becomes false, he must decide whether restraint still has meaning without authority.
 
-Class: Grave contractor
+Romantic arc: Orren’s closest bond is Dr. Elias Rann, an adult physician who helped him survive his first change. Their restrained attraction is complicated by medical boundaries, old guilt, and Orren’s fear of losing control. Romance becomes possible only after their formal dependency ends. A second path with an adult woman from the Briar Hunt may emerge through rivalry and mutual respect.
 
-Player fantasy: Bargain with the dead, enforce impossible contracts, and turn funeral law into a weapon.
+Growth: Crown investigator, suspected beast, independent hunter, leader of transformed citizens, then judge of a crime committed across several histories.
 
-Core ability: Vask hears any promise that remains unpaid after death. He can lend the dead his body for one task.
+Voice: Patient and concrete. Orren notices scent, breathing, rhythm, contradiction, controlled anger, and the distance between what people say and what their bodies prepare to do.
 
-Cost: Every passenger leaves a habit, fear, or desire behind. Too many dead voices could crowd Vask out of his own body.
+## Intersection schedule
 
-Personal wound: His mother sold his true name to save his life. He has spent years burying strangers while searching for the grave where his name is kept.
+### Chapter One: separate foundations
 
-Growth: Feared undertaker, keeper of royal debts, commander of a willing dead army, then possible judge of promises across all histories.
+Each lead receives a calm opening chapter in their own series. No crossover occurs. The player learns one life and one problem at a time.
 
-Unique mechanic: Contract clauses and Passenger slots. Exact wording matters. The player can win through preparation rather than force.
+### The Blue Pike inquiry
 
-Voice: Formal, dry, tender with the dead. He notices etiquette, unpaid costs, smoke, soil, and what mourners cannot say.
+Caelan follows evidence to a tavern where Rook is stealing the same guest ledger. This is the first crossover. Caelan wants lawful testimony. Rook wants the hidden names before the Crown destroys them.
 
-## Nym, the god nobody remembers
+### The Glassgarden theft
 
-Class: Fallen threshold god in a mortal body
+Rook enters Ilyra’s archive to steal proof. Ilyra catches him inside a ward. Their different methods create conflict, attraction, or a working bargain.
 
-Player fantasy: Rediscover divine powers while learning why becoming fully known may destroy your humanity.
+### The King’s second face
 
-Core ability: Nym can open any border that has a name, including doors, wounds, dreams, seasons, and the space between enemies.
+Orren investigates a royal impostor and questions Caelan as a suspect. Ilyra proves that the body is real while Rook proves the records are false.
 
-Cost: Each miracle removes Nym from a living person's memory. Great power produces deep loneliness.
+### The Siege of Greyhaven
 
-Personal wound: Nym wants worship because attention feels like love, but old memories suggest worship was once used as control.
+All four leads act in different districts during the same night. Earlier choices determine which information and routes they can share.
 
-Growth: Nameless street child, reluctant miracle worker, restored Quiet Name, then possible mortal who willingly gives up divinity.
+### The Crown Below
 
-Unique mechanic: Remembrance. NPC bonds power small abilities. Divine acts spend those bonds and rewrite dialogue.
+The four descend together only in the final act. Caelan controls the defense, Rook opens the impossible route, Ilyra reads the lock, and Orren tracks the hidden will inside it. No lead can replace another.
 
-Voice: Simple but strange. Nym notices thresholds, rules adults accept without question, and small signs of being remembered.
+## Romance rules
 
-## Sera Quill, the honest desire
-
-Class: Desire eater and diplomat
-
-Player fantasy: Read the wants behind politics, build dangerous intimacy, and turn honest desire against systems of shame.
-
-Core ability: Sera sees desire as colored threads. A freely confessed want gives her strength and lets her bind a fair bargain.
-
-Cost: Coerced desire poisons her senses. Feeding on it grants brutal power but damages her ability to tell affection from fear.
-
-Personal wound: She can read what others want from her and doubts anyone has ever seen what she wants for herself.
-
-Growth: Hostage diplomat, master negotiator, breaker of the marriage treaties, then possible voice through which rival worlds consent to merge.
-
-Unique mechanic: Desire threads, Trust, and romance boundaries. Romance is optional, character specific, and built through choices beyond attraction.
-
-Voice: Warm, alert, playful only when safe. She notices distance, gaze, withheld requests, status, and the exact point where a bargain becomes pressure.
-
-## Shared intersections
-
-### The Hollow Vault
-
-Maelin and Rook meet while the first crown chain breaks. Maelin sees an irritating criminal arrive at the worst time. Rook's series later reveals that he came to steal Maelin's execution and found it already missing.
-
-### The Feast of Black Glass
-
-Ilyra serves a memory to the royal court as evidence. Sera sees the guests desire conflicting versions of the truth. Rook attempts a theft, while Orren hunts a planned murder that has no intended victim.
-
-### The Mercy Riot
-
-Vela's blood clinic is accused of spreading transformation. Maelin must choose whether to defend it. Vask arrives to collect a contract from a patient who technically died in another history.
-
-### The Wolf Moon Trial
-
-Orren is tried for a killing he remembers and the victim denies. Nym opens a courtroom door into the erased crime. The player's earlier treatment of transformed people decides who believes the evidence.
-
-### The Funeral War
-
-Vask calls the loyal dead to defend Greyhaven. Ilyra discovers that restoring their memories will also restore their old hatreds. Sera must negotiate consent from soldiers whose contracts survived death.
-
-### The Siege of Seven Shadows
-
-All leads defend different parts of Greyhaven during one night. Choices made in every series determine which routes, allies, weapons, and truths exist for the others.
-
-### The Last Version of the World
-
-The seven Witnesses enter the Elsewhere. No single character can resolve the final choice. The ending combines their loyalties, costs, romances, and beliefs about which history deserves to live.
-
-## Relationship rules
-
-* No companion exists only to admire the lead.
-* Attraction never removes a character's private goal.
-* Romance requires repeated trust choices and allows refusal without punishment.
-* Betrayal must follow an established need, fear, or promise.
-* Intersections preserve viewpoint. Two honest characters may understand the same act differently.
+* Flirting grows from established chemistry, not from every attractive stranger.
+* A flirt choice should reveal personality or change trust.
+* Romance never removes a partner’s private goal or expertise.
+* Every intimate character is at least twenty-five years old.
+* Detailed intimacy is optional and occurs only after clear adult consent and earned trust.
+* The player can choose full detail or an earlier fade without losing plot, power, or currency.
+* Rank, captivity, magical influence, hunger, and medical dependency must be resolved before consent is treated as free.
+* A refused advance changes tone, not access to the main story.

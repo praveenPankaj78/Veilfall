@@ -16,7 +16,7 @@ Before the present world settled into one history, many possible worlds existed 
 
 The oldest and hungriest rejected possibility is called the Unwritten King. It is not a god. It is every ruler Veyra might have had and every empire that failed to exist, pressed into one vast mind. It wants a body, a crown, and a history that cannot deny it.
 
-Seven people can touch the Veil without vanishing. Each carries a Witness Scar caused by an event that the world later erased. Maelin is one. The others are introduced through their own series.
+Four people can touch the Veil without vanishing. Caelan, Rook, Ilyra, and Orren each survived an event that official history later denied. The player learns this connection gradually. It is not stated in their opening chapters.
 
 ## Greyhaven
 
@@ -54,7 +54,7 @@ The old people of Veyra honored nine fictional powers called the Quiet Names. Th
 
 Only three matter in the opening saga:
 
-* Namar kept doors, borders, births, and last breaths. Nym may be its final living fragment.
+* Namar kept doors, borders, births, and last breaths. Its final shrine may hide the oldest route to the prison below Greyhaven.
 * Avara kept honest hunger and protected promises made in desire.
 * Korven kept graves and judged contracts that outlived either signer.
 
@@ -116,19 +116,19 @@ The first Crown of Nails binds the Unwritten King. The official record calls thi
 
 ### Thirty years ago
 
-Seven infants survive a night that the archives later erase. Each becomes a future Witness.
+Four children survive separate events that the archives later erase. Each becomes a future Witness without knowing the others exist.
 
 ### Three nights before the game
 
-Maelin sees King Aldren murdered in a room that later has no door. Her memory is cut apart. A second Aldren appears alive. Maelin is convicted in secret.
+Someone with Caelan’s face, voice, seal, and private knowledge hires ordinary men to attack King Aldren’s escort.
 
-### The Night of the Hollow Bell
+### The day of the false order
 
-Chapter One begins. The prison floods upward. The buried crown weakens. Maelin and Rook meet in the Hollow Vault.
+Chapter One begins. Caelan prepares for familiar escort duty, finds an order he did not write, and survives the planned attack. The first chapter does not explain the Veil or the Crown Below.
 
 ### The coming year
 
-The capital fractures, neighboring powers invade, transformed citizens choose sides, and pieces of discarded history walk openly. The seven Witnesses may repair the Veil, replace the present world, merge possible worlds, or give one person the power to choose what becomes real.
+The capital fractures as proof of altered history becomes harder to hide. The four Witnesses may repair the Veil, replace the present world, merge possible worlds, or give one person the power to choose what becomes real.
 
 ## Continuity laws
 

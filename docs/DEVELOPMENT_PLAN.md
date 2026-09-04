@@ -2,176 +2,210 @@
 
 ## Product strategy
 
-Build one excellent character season before expanding the shared universe. The first release should prove that players finish chapters, care about Maelin, replay decisions, and want another viewpoint. World size is useful only when it produces emotional payoff.
+Build one excellent Caelan season before producing another playable series. The first release must prove that players understand the story, care about the cast, enjoy the class resource choices, and want to investigate the next answer.
+
+The full saga has four leads, but only two series should be in active production at once. Caelan launches first. Rook is the best second lead because his stealth and illusion play sharply contrasts Caelan’s protection and command.
 
 ## Current vertical slice
 
-The included Chapter One proves these parts:
+The revised Chapter One proves:
 
-* direct entry into the playable story
-* a responsive reading interface
-* five visible stats and resources
-* choices with stated tradeoffs
-* conditional text based on earlier actions
-* locked choices with clear requirements
+* a calm opening that establishes ordinary life
+* a male first protagonist with a clear background and profession
+* frequent but meaningful romantic interaction with Mara
+* Stamina, Resolve, Insight, Rapport, and Cinders
+* visible costs and locked resource choices
+* one central mystery introduced after the player settles in
+* three attack routes and three chapter endings
 * local automatic save and restart
-* three distinct endings
-* a crossover hook for Rook's series
-* one original illustrated scene
+* original opening artwork and future dungeon artwork
 
-## Phase One: narrative prototype
+## Reveal plan for Caelan Season One
+
+Only one major answer or mystery is promoted at a time.
+
+### Chapter One: The Last Quiet Morning
+
+Question: Who used Caelan’s identity to arrange the attack?
+
+Answer: The attacker met a perfect physical and behavioral copy, not a simple forger.
+
+### Chapter Two: Yesterday’s Alibi
+
+Question: Where was Caelan while the copy hired the attackers?
+
+Answer: Caelan lost three hours after entering a palace records room. Mara or Brann can confirm where the missing time began.
+
+### Chapter Three: The Blue Pike
+
+Question: What did the copy take from the tavern meeting?
+
+Answer: A list of sealed prison transfers. Caelan meets Rook while both seek the list for different reasons.
+
+### Chapter Four: A Promise in Iron
+
+Question: Why was one prisoner removed from every public record?
+
+Answer: The prisoner looks like King Aldren. Caelan chooses his first binding oath.
+
+### Chapter Five: The Glass Examiner
+
+Question: Which king is real?
+
+Answer: Both bodies are real. Ilyra demonstrates that one carries memories from a history that did not happen here.
+
+### Chapter Six: The Court Wolf
+
+Question: Who committed the first murder connected to the copies?
+
+Answer: Orren proves that the victim intended the killing and arranged his own death to expose the Crown Registry.
+
+### Chapter Seven: The Hollow Bell
+
+Question: Where are the copied histories coming from?
+
+Answer: A locked structure exists below Greyhaven. The player receives the name Veil for the first time.
+
+### Chapter Eight: The Crown Below
+
+Question: What is the structure?
+
+Answer: The royal crown is part of a prison that forces one history to remain real.
+
+### Chapter Nine: Four Roads
+
+Question: Why are Caelan, Rook, Ilyra, and Orren connected?
+
+Answer: Each survived an event removed from official history. Their class powers are scars from those events.
+
+### Chapter Ten: The First Lock
+
+Question: Can the prison be repaired without preserving the Crown’s lies?
+
+Answer: Caelan chooses to repair, seize, or break the first lock. The decision forms the season ending and the next world state.
+
+## Phase One: focused prototype
 
 Time: 3 to 5 weeks
 
-Goal: Turn Chapter One into a reliable test build and learn whether the premise creates interest.
-
-Work:
-
 1. Run ten observed playtests on phone and desktop.
-2. Record where players pause, skim, misunderstand a choice, or stop caring.
-3. Add a small internal scene validator for broken links, unreachable nodes, impossible checks, and missing consequence text.
-4. Add the story style checker to continuous testing.
-5. Revise Chapter One once from evidence rather than personal preference.
-6. Write Chapter Two only after the first test round.
+2. Ask players to name Caelan’s job, Mara’s role, the immediate goal, and the one central mystery.
+3. Record where readers skim, confuse a name, or fail to understand a resource cost.
+4. Test whether flirting feels natural, optional, and connected to trust.
+5. Add scene validation for broken links, unreachable nodes, impossible checks, and missing consequence text.
+6. Revise once from evidence before writing Chapter Two prose.
 
 Exit criteria:
 
-* At least 8 of 10 testers finish the chapter.
-* At least 6 can explain Maelin's immediate goal and the central mystery.
-* No choice feels like a disguised correct answer to most testers.
-* A second play route changes enough text and consequence to feel worthwhile.
+* At least 8 of 10 testers finish.
+* At least 8 correctly identify the false identity mystery.
+* At least 7 can describe Caelan and Mara without reading a character page.
+* No tester reports that several unexplained mysteries compete for attention.
+* At least half choose to replay for a different route or relationship tone.
 
-## Phase Two: Maelin season
+## Phase Two: Caelan Season One
 
-Time: 10 to 14 weeks
+Time: 12 to 16 weeks
 
-Goal: Produce a complete ten chapter season with a strong ending and meaningful replay.
-
-Chapter spine:
-
-1. The Bell Beneath the Rain: escape the Low Cells and reach the crown prison.
-2. A King Who Died Twice: cross a locked down Greyhaven with the living king.
-3. Three Promises: choose Maelin's first active oaths.
-4. The Mercy Riot: decide whether law or protection defines duty.
-5. Trial of the Court Wolf: meet Orren as investigator, enemy, or secret ally.
-6. The Knife at Tomorrow's Throat: follow Rook into a stolen possible day.
-7. A General Without a Country: gather a force while districts choose sides.
-8. The Funeral War: command living and willing dead defenders.
-9. Seven Shadows at the Gate: play Maelin's part in the shared siege.
-10. The Crown Breaker: save, seize, or damage the lock beneath the kingdom.
-
-Production tasks:
-
-* Move story nodes into versioned content files.
-* Add save schema migration and three chronicle slots.
-* Build the Oath system, relationship ledger, inventory, and chapter selection.
-* Add content warnings and text size controls.
-* Commission or generate one key illustration every two chapters.
-* Add music and sound only after silent pacing works.
-* Build author tools for node links, conditions, flags, and previews.
+* Write and test ten chapters using the reveal plan.
+* Build Oath slots, named relationships, inventory, treatment, and chapter selection.
+* Move narrative nodes into versioned content files.
+* Add three save slots and content migrations.
+* Add romance detail settings before the first intimate chapter.
+* Use one key illustration every two or three chapters.
+* Add sound only after silent pacing is proven.
 
 ## Phase Three: launch foundation
 
 Time: 6 to 8 weeks alongside final writing
 
-Goal: Ship Maelin Season One on web and prepare a mobile wrapper if retention supports it.
-
-Work:
-
 * account based cloud saves with guest play
 * privacy respectful analytics
 * chapter entitlement and Cinder ledger
-* rewarded ad integration at chapter boundaries only
-* purchase restoration and clear regional pricing
-* accessibility audit for screen readers, keyboard, contrast, text size, and reduced motion
-* performance budget for lower cost mobile devices
-* localization ready content structure
-* crash and save recovery
+* rewarded ads only at chapter boundaries
+* purchase restoration and regional pricing
+* accessibility review for screen readers, keyboard, contrast, text size, and reduced motion
+* performance checks on lower cost mobile devices
+* localization ready content files
+* save recovery and content version migration
 
-Do not add ads until the full season economy can be tested without them. The story must first prove its value.
+Do not add ads until the full season can be tested without them. The story must prove its value first.
 
-## Phase Four: second viewpoint
+## Phase Four: Rook series
 
-Time: begin after Maelin Chapter Six data is stable
+Rook’s opening season overlaps three Caelan events and spends the rest of its time in the Tangle, Lantern Court safe houses, roofs, and sealed record halls. Players gain a new method, not a second narrator explaining Caelan’s story.
 
-Recommended lead: Rook Sable
+Rook reveals who supplied the copy with Caelan’s private details. Caelan’s series still delivers enough evidence to understand its own plot.
 
-Rook offers the strongest contrast to Maelin in voice, movement, ethics, and mechanics. His first season overlaps three Maelin events but spends most of its time in new places. It reveals who arranged Maelin's conviction and why someone stole her execution from history.
+## Phase Five: Ilyra and Orren
 
-Release options:
+Launch Ilyra after the magic rules are stable. Launch Orren after investigation and transformation can support a full season. Their opening chapters remain separate, calm, and focused on one personal problem.
 
-* Alternate Maelin and Rook chapters after Rook launches.
-* Sell complete character seasons while allowing the first two chapters of each free.
-* Give viewpoint echoes as optional Cinder scenes to encourage discovery without forcing a series order.
+The first four lead crossover occurs late. Earlier meetings use two leads at most.
 
-## Phase Five: ensemble expansion
+## Romance production plan
 
-Introduce Vela or Ilyra next. Choose based on player response to horror, romance, magic cost, and investigative play. Do not launch more than two active series at once until the writing, continuity, and testing pipeline handles them reliably.
+Flirting can appear in many chapters. Major romantic turns need breathing room after danger. Detailed intimacy appears only in selected later chapters after the player has built Trust and Attraction.
 
-The full seven lead plan is a long horizon. Each new lead requires a distinct mechanic and a complete private conflict before receiving production approval.
+Before writing any intimate scene:
+
+1. Confirm every character is an adult over twenty-five.
+2. Resolve rank, captivity, magical influence, medical dependency, and immediate danger.
+3. Identify what each person wants emotionally as well as physically.
+4. Provide a clear choice to continue.
+5. Write both full detail and early fade variants with the same plot information.
+6. Review for voice, consent, repetition, and whether the scene changes the relationship.
 
 ## Team shape
 
 A lean season team can begin with:
 
 * one creative director and lead writer
-* one narrative designer who owns state and branching
+* one narrative designer for branching and state
 * one frontend game developer
-* one editor focused on voice and continuity
-* one visual artist or art director using a mixed commissioned and generated pipeline
-* part time quality assurance and sensitivity readers as content requires
-
-One person may cover several roles during the prototype. Editing and playtesting should remain separate passes even in a solo project.
+* one editor for voice, romance, and continuity
+* one visual artist or art director
+* part time quality assurance and specialist readers as needed
 
 ## Writing pipeline
 
-1. Define the chapter promise, answer, and final hook.
-2. Create a one page beat map with decisions and state changes.
-3. Review continuity before drafting prose.
-4. Draft the critical route first.
-5. Add branches that express different values rather than extra decoration.
-6. Run automated link and style checks.
-7. Read aloud and edit for voice.
-8. Play every reachable route.
-9. Test with readers who have not seen the outline.
-10. Lock content, localize, and preserve a content version.
+1. Define the chapter goal, active question, answer, and final hook.
+2. Write a short ordinary-life beat when the chapter enters a new place or relationship.
+3. Create a beat map with decisions and resource costs.
+4. Review names and active mysteries before drafting prose.
+5. Draft the critical route first.
+6. Add branches that express different values or class methods.
+7. Run link and style checks.
+8. Read aloud and edit for voice.
+9. Play every reachable route.
+10. Test with readers who have not seen the outline.
 
-## Art direction and image policy
+## Main risks
 
-Use painterly realism with grounded medieval materials, deep charcoal, iron blue, aged crimson, and tarnished gold. Images mark locations, revelations, first appearances, and season turning points. Most scenes rely on prose, sound, and interface atmosphere so artwork remains special.
+### Too many mysteries
 
-Generated images require a saved prompt, human review, a continuity check, and a record of where the asset is used. Do not generate living artist imitations. Characters need stable reference sheets before a second image is approved.
+Use the reveal plan. Promote one central question at a time and delay lore names until the answer requires them.
 
-## Risk register
+### Branch growth
 
-### Branch explosion
+Use braided branches, typed state, chapter level convergence, and clear continuity reviews.
 
-Control it with braided branches, typed state, chapter level convergence, and explicit continuity reviews.
+### Romance feels separate from plot
 
-### Lore before emotion
+Tie flirting and intimacy to trust, delegation, secrets, values, and later decisions.
 
-Require every reveal to change a relationship, risk, or personal goal.
+### Resource costs feel arbitrary
 
-### Weak choice impact
+Name the cost before the choice and show its physical or emotional result immediately.
 
-Show consequence in prose within one scene and pay it off again later.
+### Four leads still feel crowded
 
-### Too many protagonists
-
-Finish Maelin's first season and prove Rook's contrast before adding another active line.
-
-### Currency harms trust
-
-Keep complete free routes, place offers only at boundaries, show prices early, and never sell the true ending.
-
-### Artificial prose feel
-
-Enforce the voice rules, use an editor, read aloud, test blind, and remove sentences that sound polished but say little.
+Finish Caelan’s season first. Add one new playable series at a time. Limit most intersections to two leads.
 
 ## Immediate next work
 
-1. Test all Chapter One routes.
-2. Revise the chapter after reader evidence.
-3. Outline Chapter Two with three returning consequences from Chapter One.
+1. Test every revised Chapter One route.
+2. Run reader comprehension and romance tone tests.
+3. Outline Chapter Two around Caelan’s missing three hours.
 4. Build the scene graph validator.
-5. Add a compact chapter menu and save slot only when Chapter Two exists.
+5. Add named relationship values before Chapter Two.

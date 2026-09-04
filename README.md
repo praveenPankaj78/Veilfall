@@ -1,8 +1,8 @@
 # Veilfall: The Crown Below
 
-Veilfall is an original, story first dark fantasy decision RPG. The player takes the role of Maelin Vey, a disgraced royal oathkeeper accused of murdering a king who is still alive.
+Veilfall is an original, story first medieval fantasy decision RPG. The first series follows Caelan Vey, a respected royal oathkeeper whose ordinary escort duty is broken by an attack planned by someone using his face, voice, seal, and handwriting.
 
-This project includes a playable first chapter, branching consequences, persistent local saves, character stats, Cinders as a future unlock currency, three chapter endings, and original scene art.
+The project includes a playable first chapter, branching consequences, persistent local saves, character resources, Cinders as a future unlock currency, three chapter endings, and original scene art.
 
 ## Play locally
 
@@ -20,8 +20,10 @@ The game saves progress in the browser on the current device. Use Restart inside
 * `public/art` contains original game artwork.
 * `docs` contains the creative vision, world bible, character bible, narrative rules, systems rules, and development roadmap.
 
-## Creative status
+## Current creative scope
 
-Chapter One is a vertical slice. It proves the reading experience, branching structure, stat gates, currency loop, save behavior, chapter hooks, and the first shared character intersection. The wider series plan is defined in the documents but intentionally not hard coded yet.
+The shared saga has four playable leads, three men and one woman. Each has a clear problem solving style and a resource cost unique to the class. Their stories intersect at a few major events, while most chapters remain focused on one lead and one understandable goal.
+
+Chapter One is a vertical slice. It establishes Caelan’s normal life, his work, his relationship with Mara Renn, the choice system, class resources, one central mystery, and the first three consequences of that mystery.
 
 All story, world, character, and lore material in this repository was created for Veilfall.

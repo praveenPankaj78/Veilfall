@@ -30,7 +30,7 @@ import {
   type StatKey,
 } from './game-data';
 
-const SAVE_KEY = 'veilfall.chapter-one.save';
+const SAVE_KEY = 'veilfall.chapter-one.v2.save';
 
 type ModelTool = {
   name: string;
@@ -46,19 +46,19 @@ type ModelContext = {
 };
 
 const statIcons: Record<StatKey, typeof Heart> = {
-  vitality: Heart,
+  stamina: Heart,
   resolve: Shield,
-  guile: Sparkles,
-  mercy: Flame,
+  insight: Sparkles,
+  rapport: Flame,
   cinders: Flame,
 };
 
 const statHelp: Record<StatKey, string> = {
-  vitality: 'Your strength and ability to endure harm.',
-  resolve: 'Your grip on courage, memory, and purpose.',
-  guile: 'Your talent for lies, secrets, and careful plans.',
-  mercy: 'The human ties your choices preserve or destroy.',
-  cinders: 'Rare fragments of fate. Spend them to open hidden paths.',
+  stamina: 'Caelan spends this on force, endurance, and physical protection.',
+  resolve: 'His confidence under pressure and strength of command.',
+  insight: 'His ability to notice danger and build a tactical plan.',
+  rapport: 'Trust earned through honesty, care, humor, and shared risk.',
+  cinders: 'A story currency earned at chapter endings for future paths.',
 };
 
 function applyChoice(state: GameState, choice: Choice): GameState {
@@ -188,7 +188,7 @@ export default function Home() {
 
   const node = nodes[game.nodeId];
   const paragraphs = useMemo(() => node.body(game), [game, node]);
-  const chapterProgress = Math.min(100, Math.round((game.history.length / 5) * 100));
+  const chapterProgress = Math.min(100, Math.round((game.history.length / 7) * 100));
 
   function choose(choice: Choice) {
     if (!canChoose(choice, game.stats)) return;
@@ -213,8 +213,8 @@ export default function Home() {
     return (
       <main className="cover-screen min-h-screen text-[#eee7d8]">
         <Image
-          src="/art/maelin-dungeon.png"
-          alt="Maelin stands chained in a flooded prison while a sealed door glows in the distance"
+          src="/art/caelan-courtyard.png"
+          alt="Caelan and Mara prepare for escort duty in the Southwatch courtyard"
           fill
           priority
           className="cover-art object-cover"
@@ -227,8 +227,8 @@ export default function Home() {
           <h1>Veilfall</h1>
           <p className="cover-subtitle">The Crown Below</p>
           <p className="cover-intro">
-            You guarded a king who died twice. Before dawn, the city will hang you
-            for his murder. Something under your cell has other plans.
+            You know every road in Greyhaven and every guard under your command.
+            Before this ordinary day ends, someone wearing your name will try to kill a king.
           </p>
           <Button className="begin-button" size="lg" onClick={() => setStarted(true)}>
             Begin chapter one
@@ -249,7 +249,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Maelin I
+          Caelan I
         </div>
         <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
           <RotateCcw data-icon="inline-start" />
@@ -261,8 +261,8 @@ export default function Home() {
         <section className="story-column" aria-live="polite">
           <div className="scene-art-wrap">
             <Image
-              src="/art/maelin-dungeon.png"
-              alt="A flooded prison beneath Greyhaven"
+              src="/art/caelan-courtyard.png"
+              alt="Caelan and Mara in the rain-washed Southwatch courtyard"
               width={1536}
               height={864}
               className="scene-art"
@@ -290,7 +290,7 @@ export default function Home() {
             </div>
 
             {!node.final ? (
-              <div className="choices" aria-label="Choose Maelin's action">
+              <div className="choices" aria-label="Choose Caelan's action">
                 <p className="choice-prompt">What do you do?</p>
                 {node.choices.map((choice, index) => {
                   const available = canChoose(choice, game.stats);
@@ -319,7 +319,7 @@ export default function Home() {
             ) : (
               <div className="ending-panel">
                 <p className="ending-label">Your path is recorded</p>
-                <h2>Maelin will return in Chapter Two</h2>
+                <h2>Caelan will return in Chapter Two</h2>
                 <p>
                   You carry {game.stats.cinders} Cinders. Future chapters will let
                   you spend them on hidden memories, dangerous shortcuts, and
@@ -334,13 +334,13 @@ export default function Home() {
           </article>
         </section>
 
-        <aside className="character-panel" aria-label="Maelin's character sheet">
+        <aside className="character-panel" aria-label="Caelan's character sheet">
           <div className="character-heading">
             <div className="sigil" aria-hidden="true"><Swords /></div>
             <div>
-              <p className="eyebrow">The broken oath</p>
-              <h2>Maelin Vey</h2>
-              <p>Disgraced royal oathkeeper</p>
+              <p className="eyebrow">The king’s road</p>
+              <h2>Caelan Vey</h2>
+              <p>Royal oathkeeper and guard captain</p>
             </div>
           </div>
 

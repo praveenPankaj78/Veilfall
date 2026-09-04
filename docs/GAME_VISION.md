@@ -4,55 +4,71 @@
 
 Veilfall: The Crown Below
 
-Veilfall is short, easy to remember, and tied to the central event of the saga. The Veil is the border between the made world and its discarded possibilities. Its fall is both the threat and the promise.
+Veilfall is short, easy to remember, and tied to the central danger of the saga. The Veil is the border between the real world and histories that never happened. The first season lets the player care about people and places before the deeper meaning of that border is revealed.
 
-Series labels can follow a clear pattern:
+Series labels follow a clear pattern:
 
-* Veilfall: The Crown Below, Maelin's series
-* Veilfall: A Knife for Tomorrow, Rook's series
-* Veilfall: The Glass Memory, Ilyra's series
-* Veilfall: Mercy Has Fangs, Vela's series
-
-Backup titles are The Hollow Crown, Seven at the Veil, and Kingdom of the Eighth Door.
+* Veilfall: The King’s Road, Caelan’s series
+* Veilfall: A Knife for Tomorrow, Rook’s series
+* Veilfall: The Glass Memory, Ilyra’s series
+* Veilfall: The Court Wolf, Orren’s series
 
 ## Player promise
 
-You enter a dangerous medieval fantasy world through the body, limits, and private fears of one remarkable person. Your decisions change relationships, abilities, available truths, and the form of later crises. Each series feels complete on its own. Playing another character reveals that familiar events were never as simple as they looked.
+You enter a dangerous medieval fantasy through one memorable person at a time. You learn their daily life, skills, relationships, and private fears before the world asks them to make larger sacrifices. Decisions change trust, ability costs, available truths, and later crises.
+
+## Scope
+
+There are four playable leads. Caelan, Rook, and Orren are men. Ilyra is a woman. Supporting characters can be any gender and should have lives beyond their connection to a lead.
+
+The four stories cross at selected turning points. They do not constantly interrupt one another. A player can understand a single series without reading all three others. Additional viewpoints deepen the truth rather than supply missing basic explanations.
 
 ## Core pillars
 
-### You are the character
+### Let the player settle in
 
-The story uses second person and present tense. It tells the player what the character senses and remembers, but it leaves motives and major actions to the player.
+The opening chapter establishes work, home, friends, attraction, habits, and an achievable duty. The first strange event arrives only after the player knows what normal life feels like.
 
-### Every choice leaves evidence
+### Curiosity before confusion
 
-A decision must affect at least two things from this list: immediate danger, a stat, a relationship, an item, a secret, a future scene, or the view another character has of the event.
+Introduce one major unexplained fact at a time. Give the player a clear immediate goal even when the wider cause is unknown. Repeat important names and ideas naturally through action. Answer a useful question before introducing another mystery of equal size.
 
-### Power changes the person
+### Every class solves problems differently
 
-Characters gain impressive abilities, but every form of power has a cost that shapes later decisions. Growth is mechanical, emotional, social, and moral.
+Caelan protects and commands. Rook sneaks and misdirects. Ilyra studies and casts structured spells. Orren investigates and controls transformation. Their strongest actions consume a class resource, so power always creates a later weakness or risk.
 
-### One world, many honest perspectives
+### Choices leave evidence
 
-Shared events are not repeated word for word. A new viewpoint must reveal a hidden cause, create a fresh objective, or turn a former ally into a credible obstacle.
+A decision affects at least two things from this list: immediate danger, a resource, a relationship, an item, a secret, a future scene, or another character’s view of the event.
 
-### Questions pull the player forward
+### Romance belongs to the plot
 
-Each chapter answers one active question and sharpens another. Mystery never replaces character. The player should care about the answer because it threatens a person, promise, or desire they already understand.
+Flirting appears often when chemistry, safety, and character allow it. Romantic choices reveal trust, fear, ambition, humor, or conflict. They are never filler placed between important scenes. Later chapters may contain optional detailed intimacy between clearly adult, consenting characters after the relationship has earned it.
+
+## Mystery pacing rule
+
+Each chapter may actively carry:
+
+* one immediate unanswered question
+* one personal relationship question
+* one quiet background question for the season
+
+Only the immediate question needs frequent attention. Background mysteries appear through small evidence rather than long explanations. A chapter ending sharpens the current question or replaces it after an answer. It should not introduce several unrelated threats at once.
 
 ## Audience and rating
 
-The target audience is teen and adult readers who enjoy dark fantasy, character drama, difficult choices, romance, mysteries, and short mobile reading sessions. The intended rating is Mature 16 due to blood, frightening scenes, moral pressure, and optional romance. Sexual content should fade before explicit detail. Violence may be vivid, but it must reveal danger or character rather than decorate the page.
+The target audience is teen and adult readers who enjoy dark fantasy, character drama, tactical decisions, meaningful romance, and short mobile sessions. The expected rating is Mature 16 or Mature 18 depending on the final treatment of violence and optional intimate scenes.
+
+Every intimate character is at least twenty-five years old. Intimate scenes require clear consent, privacy, trust, and a reason connected to the relationship. Players receive a content setting that allows full romance detail or an earlier fade without losing rewards or plot information.
 
 ## Session shape
 
 * A scene takes 2 to 4 minutes.
-* A chapter takes 12 to 20 minutes.
-* A chapter contains 4 to 7 decisions.
-* A series season contains 10 chapters.
-* A character series contains 2 or 3 seasons before the shared endgame.
+* A chapter takes 15 to 22 minutes.
+* A chapter contains 5 to 8 decisions.
+* A season contains 10 chapters.
+* A lead receives 2 seasons before the shared endgame.
 
 ## First playable promise
 
-Chapter One introduces Maelin, her false conviction, the buried bell, the Cinder resource, a moral decision with a later witness, a stat gate, three distinct endings, and the first intersection with Rook Sable. The final beat opens a personal mystery and a world threat at the same time.
+Chapter One gives Caelan an ordinary morning, introduces his guard command, friendship with Brann, long romantic tension with Mara, and a simple royal escort. The only major mystery is a false order written and sealed as if Caelan made it. The attack and three endings develop that same mystery instead of replacing it with a larger one.

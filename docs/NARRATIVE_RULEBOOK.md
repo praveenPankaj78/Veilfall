@@ -30,7 +30,23 @@ Use three kinds of open question at once.
 
 Answer at least one meaningful question per chapter. An answer should alter what the player wants to know next. Do not delay every answer until the finale.
 
-Chapter endings should combine a consequence with a fresh fact. “A monster appears” is weak alone. “The monster bows to the missing half of you” changes both danger and identity.
+Chapter endings should combine a consequence with a fresh fact. “An attacker escapes” is weak alone. “The captured attacker knows a scar hidden under your glove” changes both danger and identity.
+
+## Curiosity without confusion
+
+The player should usually know four things: who they are, what they want now, who is present, and what decision is being made. A mystery may hide cause or identity, but it should not hide the basic action.
+
+Use a reveal ladder:
+
+1. Establish normal life and a clear duty.
+2. Introduce one fact that does not fit.
+3. Let the player test that fact through action.
+4. Confirm part of the answer.
+5. Show one deeper implication.
+
+Do not skip from ordinary life to several ancient names, factions, prophecies, and alternate histories in one chapter. A proper noun earns a place only if the player must remember it now.
+
+At the end of each scene, list the active questions during editing. If more than three require immediate attention, answer, combine, or delay one.
 
 ## Choice quality
 
@@ -60,14 +76,10 @@ Never present the same response to choices that claimed to be morally or tactica
 
 The world remains consistent while observation changes by lead.
 
-* Maelin notices hands, exits, balance, wounds, and duty.
+* Caelan notices hands, exits, balance, wounds, equipment, and duty.
 * Rook notices value, vanity, routes, locks, and social weakness.
 * Ilyra notices reflection, pattern, word choice, and missing memory.
-* Vela notices pulse, breath, pain, care, and hunger.
 * Orren notices scent, rhythm, contradiction, and hidden violence.
-* Vask notices contracts, etiquette, soil, smoke, and grief.
-* Nym notices thresholds, names, forgotten customs, and small kindness.
-* Sera notices distance, gaze, status, withheld wants, and consent.
 
 ## Language standard
 
@@ -95,9 +107,15 @@ Violence should change the problem. Blood can reveal a wound, magical cost, iden
 
 ## Romance and desire
 
-Romance is optional and slow enough to earn belief. Build it through attention, risk, humor, boundaries, disagreement, and repaired mistakes. A player may leave any romance without losing essential plot access.
+Romance is optional and slow enough to earn belief. Build it through attention, risk, humor, useful cooperation, boundaries, disagreement, and repaired mistakes. A player may leave any romance without losing essential plot access.
 
-Consent is clear, especially in stories involving blood, desire magic, rank, captivity, or memory. Supernatural influence cannot produce a valid romantic choice. Characters may behave badly, but the story recognizes coercion as harm.
+Frequent flirting is welcome when it changes tone or relationship state. A flirt choice should reveal how the lead handles vulnerability. Caelan may use dry warmth, Rook may hide behind charm, Ilyra may become exact and unexpectedly bold, and Orren may show care through controlled attention.
+
+Later chapters may contain detailed sensual intimacy between clearly adult characters. Such a scene requires an established relationship path, clear consent in the moment, privacy, emotional purpose, and a meaningful consequence or change in understanding. The game offers full detail and early fade settings. Both settings receive the same plot facts, relationship state, and rewards.
+
+Intimacy cannot be used as a reward for a correct dialogue answer. It grows from a pattern of trust. The writing should focus on the specific characters, their communication, physical reactions, boundaries, and emotional change rather than generic performance.
+
+Consent is especially clear in stories involving rank, captivity, magic, medical care, or transformation. Supernatural influence cannot produce a valid romantic choice. Characters may behave badly, but the story recognizes coercion as harm.
 
 ## Revision pass
 
