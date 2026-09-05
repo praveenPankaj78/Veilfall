@@ -9,6 +9,20 @@ const forbidden = [
   { value: 'little did you know', label: 'stock suspense phrase' },
   { value: 'a testament to', label: 'stock praise phrase' },
 ];
+const archaicWords = [
+  'thou',
+  'thee',
+  'thy',
+  'thine',
+  'hath',
+  'doth',
+  'dost',
+  'wherefore',
+  'whilst',
+  'amongst',
+  'shall',
+  'ere',
+];
 
 async function collect(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -30,6 +44,11 @@ for (const file of files) {
   for (const rule of forbidden) {
     if (text.toLowerCase().includes(rule.value.toLowerCase())) {
       failures.push(`${file}: ${rule.label}`);
+    }
+  }
+  for (const word of archaicWords) {
+    if (new RegExp(`\\b${word}\\b`, 'i').test(text)) {
+      failures.push(`${file}: archaic word "${word}"`);
     }
   }
 }

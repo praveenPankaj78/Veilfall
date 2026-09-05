@@ -34,6 +34,11 @@ export type StoryNode = {
   location: string;
   objective: string;
   threat: 'Low' | 'Uneasy' | 'Rising' | 'Immediate' | 'Critical' | 'Unknown';
+  lesson?: {
+    title: string;
+    body: string;
+  };
+  introduces?: StatKey[];
   art?: 'departure' | 'folded';
   body: (state: GameState) => string[];
   choices: Choice[];
@@ -81,11 +86,16 @@ export const nodes: Record<string, StoryNode> = {
     location: 'Eastwatch Gate, Greyhaven',
     objective: 'Prepare the escort before the eastern gate opens.',
     threat: 'Low',
+    lesson: {
+      title: 'Your strengths',
+      body: 'Stamina powers hard physical actions. Resolve helps you face fear, pain, and doubt. Command shows how ready your guards are to follow difficult orders. Rapport measures trust and attraction. A choice will always show a known cost before you select it.',
+    },
+    introduces: ['stamina', 'resolve', 'command', 'rapport'],
     art: 'departure',
     body: () => [
-      'Rain has polished Greyhaven black by the time you reach Eastwatch. Water runs from the gatehouse teeth and gathers around the boots of twenty guards pretending not to be cold.',
+      'Rain has turned Greyhaven’s stone walls almost black by the time you reach Eastwatch. Water pours from the gatehouse drains and gathers around the boots of twenty guards pretending not to be cold.',
       'Your name is Caelan Vey. You are thirty one, captain of the King’s Road Wardens, and responsible for every person leaving with the green treaty wagon. Your task sounds simple when spoken quickly: escort Ambassador Lysara to Bellweather Inn before night rain floods the low road.',
-      'Beyond the raised portcullis, the King’s Road bends through wet hills and vanishes beneath a bank of bruised cloud. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
+      'Beyond the raised iron gate, the King’s Road bends through wet hills and disappears under dark storm clouds. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
       'Sergeant Brann raises the departure ledger. “Gate opens in half an hour. What do you want checked first?”',
     ],
     choices: [
@@ -101,11 +111,11 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'check-horses',
         label: 'Check the horses and harness yourself.',
-        detail: 'Use your strength before the road can demand it suddenly.',
+        detail: 'Use some strength now so a broken harness cannot stop you later.',
         next: 'mara-returns',
         changes: { stamina: -1, resolve: 1 },
         addFlags: ['checked-horses'],
-        result: 'You find a loose breast strap and the sharp smell of strange oil on the lead mare’s bit.',
+        result: 'You find a loose front harness strap and the sharp smell of strange oil on the lead mare’s bit.',
       },
       {
         id: 'check-route',
@@ -119,7 +129,7 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'check-treaty',
         label: 'Inspect the treaty wagon and its seals.',
-        detail: 'Treat the cargo as a possible target before meeting the envoy.',
+        detail: 'Treat the cargo as a possible target before meeting the ambassador.',
         next: 'mara-returns',
         changes: { command: 1 },
         addFlags: ['checked-treaty'],
@@ -140,9 +150,9 @@ export const nodes: Record<string, StoryNode> = {
       state.flags.includes('checked-horses')
         ? 'The lead mare keeps working her tongue against the strange oil. Before you can trace the smell, a grey horse trots through the gate from the eastern road.'
         : 'A grey horse trots through the gate from the eastern road, mist lifting from its flanks.',
-      'Mara Renn swings down before the animal stops. Rain has darkened her hair and drawn her green riding coat close across her shoulders. She carries her bow, a stolen pear, and the expression she uses when the world has done something rude.',
+      'Mara Renn swings down before the animal stops. Rain has darkened her hair and drawn her green riding coat close across her shoulders. She carries her bow, a stolen pear, and the annoyed look that usually means she has found trouble.',
       'You have known her since both of you were children stealing nails from your father’s forge. She knows your silences well enough to sort anger from fear, which is useful in a scout and dangerous in a friend.',
-      '“The ridge is clear,” she says. “The low road has water over the stones already. Also, someone moved the third mile cairn during the night. It points back at Greyhaven.” She bites the pear. “Still want the easy duty?”',
+      '“The ridge is clear,” she says. “The low road has water over the stones already. Also, someone moved the third mile marker during the night. It points back at Greyhaven.” She bites the pear. “Still want the easy duty?”',
     ],
     choices: [
       {
@@ -155,8 +165,8 @@ export const nodes: Record<string, StoryNode> = {
         result: 'Mara’s gaze travels over your mail and returns to your eyes. “The horse is spoken for.”',
       },
       {
-        id: 'ask-cairn',
-        label: 'Ask exactly how the cairn was moved.',
+        id: 'ask-marker',
+        label: 'Ask exactly how the mile marker was moved.',
         detail: 'Put her field knowledge before your assumptions.',
         next: 'wheelwright',
         changes: { command: 1, rapport: 1 },
@@ -185,7 +195,7 @@ export const nodes: Record<string, StoryNode> = {
     art: 'departure',
     body: (state) => [
       'A hammer rings beneath the treaty wagon. Tivik Brassthumb, the goblin wheelwright hired by the embassy, crawls out between two guards. He is compact, copper skinned, and furious enough to ignore the men towering over him.',
-      '“I balanced this axle last night,” he says. “Someone added two lead chests after I left. Put them on wet ground and the rear pin will shear.”',
+      '“I balanced this axle last night,” he says. “Someone added two lead chests after I left. Put them on wet ground and the rear pin will snap.”',
       state.flags.includes('checked-treaty')
         ? 'You show him the fresh scrape. Tivik touches it once and smells his fingertip. “File mark. Someone tested how much iron remained.”'
         : 'The senior guard calls him nervous. Tivik raises the hammer and asks whether nervous people usually volunteer to stand beneath a loaded wagon.',
@@ -231,7 +241,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Uneasy',
     art: 'departure',
     body: (state) => [
-      'Ambassador Lysara Quill arrives without a herald. She is taller than you expected, with silver brown hair bound at the nape and a coat of dark green silk that folds like leaves when she moves. The cloth tightens faintly with her pulse. Thornweald tailoring, alive enough to dislike the cold.',
+      'Ambassador Lysara Quill arrives without any formal announcement. She is taller than you expected, with silver brown hair tied behind her neck and a coat of dark green silk that folds like leaves when she moves. The cloth tightens slightly with her pulse. It comes from Thornweald and is alive enough to dislike the cold.',
       'Her attention settles first on Tivik, then the wheel, then you. “Captain Vey. I was told you keep promises longer than kings keep treaties.”',
       state.flags.includes('found-file-mark')
         ? 'You show her the scored pin. She does not look surprised, which is more worrying than fear.'
@@ -280,7 +290,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'departure',
     body: () => [
-      'Brann brings your dispatch case as the portcullis begins to rise. The black wax around its lock is unbroken. You pressed your own ring into it after midnight.',
+      'Brann brings the locked case that holds your orders as the iron gate begins to rise. The black wax around its lock is unbroken. You pressed your own ring into it after midnight.',
       'Inside, the route order says to take the low road. The ink has your narrow letters, your habit of crossing the final word twice, and the small brown stain where you spilled tea last night.',
       'You remember writing ridge road.',
       'Mara reads over your shoulder. Lysara watches both of you. Somewhere above, the raven with red cloth on its leg gives one harsh call and flies east.',
@@ -329,7 +339,7 @@ export const nodes: Record<string, StoryNode> = {
         ? 'Your guards know the order changed. They also know the treaty dies if fear keeps it behind the walls.'
         : state.flags.includes('mara-read-order')
           ? 'Mara rubs the pale salt between finger and thumb. “Not road salt. Sea salt. Fresh enough to taste.”'
-          : 'Every piece of the case says the low road order is genuine. Only your memory says otherwise.',
+          : 'Every piece of the case says the low road order is real. Only your memory says otherwise.',
       'The low road is faster, already flooding, and written on the altered page. The ridge is slower, exposed to lightning, and clear when Mara crossed it. A full inspection might uncover sabotage, but the delay could trap the escort outside both safe routes.',
       'Lysara rests one hand on the living wood chest. “My people can survive another winter. The soldiers gathering at our border may not allow them to.”',
       'The gate chains groan behind you. Once the heavy doors close for the storm, Greyhaven will not open them again before morning.',
@@ -374,10 +384,10 @@ export const nodes: Record<string, StoryNode> = {
     objective: 'Cross the floodplain before the river reaches the bridge.',
     threat: 'Immediate',
     body: (state) => [
-      'The low road passes between flooded barley fields. Brown water curls over the wheel ruts and climbs with every minute. The treaty wagon moves steadily until the third mile cairn appears ahead, its carved face pointing back toward Greyhaven.',
+      'The low road passes between flooded barley fields. Brown water curls over the wheel ruts and climbs with every minute. The treaty wagon moves steadily until the third mile marker appears ahead, its carved face pointing back toward Greyhaven.',
       state.flags.includes('steady-axle')
         ? 'Tivik’s new pin holds when the left wheel drops into a hidden rut.'
-        : 'The rear wheel knocks hard. The old pin answers with a thin metallic cry.',
+        : 'The rear wheel strikes the rut. The old pin bends with a sharp metallic screech.',
       'A farmer and two children stand on a stranded hay cart fifty paces from the road. Behind them, the river has broken through the willow bank. Reaching them will cost time you may not have.',
       'Mara looks at the water, then the empty ridge above. “No birds,” she says. “Someone frightened them off before we arrived.”',
     ],
@@ -399,16 +409,16 @@ export const nodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['fast-column'],
-        result: 'The guards hate the pace and obey it. The bridge comes into view before the river covers its first stones.',
+        result: 'The guards struggle with the pace but obey. The bridge comes into view before the river covers its first stones.',
       },
       {
         id: 'read-flood',
-        label: 'Climb the cairn and read the flood before moving.',
+        label: 'Climb the mile marker and study the flood before moving.',
         detail: 'Spend 1 Resolve to avoid the deepest ground and expose yourself above the road.',
         next: 'march-order',
         changes: { resolve: -1, command: 1 },
         addFlags: ['read-water'],
-        result: 'From the cairn you see a safe curve through the field and a brief red flash on the ridge.',
+        result: 'From the mile marker, you see a safe curve through the field and a brief red flash on the ridge.',
       },
     ],
   },
@@ -421,7 +431,7 @@ export const nodes: Record<string, StoryNode> = {
     objective: 'Cross the exposed ridge before lightning reaches it.',
     threat: 'Immediate',
     body: (state) => [
-      'The ridge road climbs above the rain. Greyhaven shrinks behind you while the eastern country opens in long green folds. The treaty wagon crawls beside a drop steep enough to turn oak into kindling.',
+      'The ridge road climbs above the rain. Greyhaven shrinks behind you while the eastern hills spread out below. The treaty wagon crawls beside a drop steep enough to smash it into firewood.',
       state.flags.includes('split-cargo')
         ? 'The divided lead chests keep both wagons lighter, but your guards must watch twice as much road.'
         : 'The heavy rear wheel cuts a deep line close to the ledge.',
@@ -492,7 +502,7 @@ export const nodes: Record<string, StoryNode> = {
         next: 'march-order',
         changes: { command: 1 },
         addFlags: ['steady-axle', 'saboteur-escaped'],
-        result: 'Tivik clears the last wedge. The saboteur vanishes beneath the falling portcullis.',
+        result: 'Tivik clears the last wedge. The saboteur slips under the falling iron gate and disappears into Greyhaven.',
       },
       {
         id: 'form-road-line',
@@ -514,11 +524,16 @@ export const nodes: Record<string, StoryNode> = {
     location: 'The King’s Road',
     objective: 'Choose what the escort protects as danger closes in.',
     threat: 'Rising',
+    lesson: {
+      title: 'Caelan’s Oath magic',
+      body: 'Caelan is an Oathwarden. When he makes a serious promise aloud and accepts its duty, the promise becomes a magical Oath. Creating one costs Resolve and gives him Oathfire. He can spend Oathfire to protect people or perform an impossible act. The Oath stays active until he fulfils it. Breaking it causes lasting harm.',
+    },
+    introduces: ['oathfire'],
     body: (state) => [
       state.flags.includes('low-route')
         ? 'The floodplain falls behind, but muddy water follows the road in thin searching streams.'
         : state.flags.includes('ridge-route')
-          ? 'The escort leaves the exposed ridge. The signal tower disappears behind rain without becoming empty.'
+          ? 'The escort leaves the exposed ridge. Rain hides the signal tower, but someone may still be inside it.'
           : 'The riders keep their distance, never close enough for a clear banner and never far enough to forget.',
       'Bellweather Inn lies somewhere beyond the next wooded rise. If the old mile stones are right, you can reach its walls before full dark. If someone has moved those stones too, the road may be longer than your maps admit.',
       'Brann asks where you want the strongest guards. Mara watches the tree line. Lysara sits beside the pale chest with one hand inside her coat, holding something she has not shown you.',
@@ -545,7 +560,7 @@ export const nodes: Record<string, StoryNode> = {
       },
       {
         id: 'send-mara-ahead',
-        label: 'Send Mara ahead to find the waiting blade.',
+        label: 'Send Mara ahead to find the attackers.',
         detail: 'Trust her alone beyond your protection and gain warning if she returns.',
         next: 'road-conversation',
         changes: { command: 1 },
@@ -560,7 +575,7 @@ export const nodes: Record<string, StoryNode> = {
         changes: { resolve: -1, oathfire: 2 },
         requires: { resolve: 4 },
         addFlags: ['oath-safe-arrival'],
-        result: 'Heat wakes behind your breastbone. The promise hears you, and every life in the column gains weight.',
+        result: 'Heat wakes inside your chest. The magic accepts your promise, and you can suddenly feel every life you must protect.',
       },
     ],
   },
@@ -604,7 +619,7 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'ask-mara-future',
         label: 'Ask Mara what she planned for the evening.',
-        detail: 'Claim one human thought while danger still permits it.',
+        detail: 'Take one personal moment while the road is briefly quiet.',
         next: 'ambush-warning',
         changes: { rapport: 1, resolve: 1 },
         requires: { rapport: 2 },
@@ -742,7 +757,7 @@ export const nodes: Record<string, StoryNode> = {
     objective: 'Choose what survives the rockfall.',
     threat: 'Critical',
     body: (state) => [
-      'The attackers do not need to reach you. A horn sounds above, and the ridge begins to move. Cut ropes whip free from timber braces. Stones crash toward the road.',
+      'The attackers do not need to reach you. A horn sounds above, and the ridge begins to move. Cut ropes whip free from wooden support frames. Stones crash toward the road.',
       state.flags.includes('took-tower')
         ? 'Because you cleared the tower, one signal comes late. The first boulder misses the lead riders.'
         : state.flags.includes('false-signal')
@@ -779,7 +794,7 @@ export const nodes: Record<string, StoryNode> = {
         next: 'aftermath',
         changes: { resolve: -1 },
         addFlags: ['captured-attacker', 'treaty-damaged', 'mara-hurt'],
-        result: 'You catch him among the braces. Below, the wagon hits stone and Mara screams once.',
+        result: 'You catch him among the wooden frames. Below, the wagon hits stone and Mara screams once.',
       },
     ],
   },
@@ -787,12 +802,12 @@ export const nodes: Record<string, StoryNode> = {
   'inspection-crisis': {
     id: 'inspection-crisis',
     kicker: 'Steel on both sides',
-    title: 'The Riders Without Colours',
+    title: 'The Riders Without Banners',
     location: 'Eastwatch Orchard Road',
     objective: 'Break the mounted attack before the escort is surrounded.',
     threat: 'Critical',
     body: (state) => [
-      'Twelve riders emerge from the rain wearing plain mail and no colours. Four race for the lead horses. The rest split around the orchard walls and close on the treaty wagon.',
+      'Twelve riders emerge from the rain wearing plain armour with no badges or banners. Four race for the lead horses. The rest split around the orchard walls and close on the treaty wagon.',
       state.flags.includes('ready-for-riders')
         ? 'Your line meets them square. The first rider falls before his sword clears leather.'
         : state.flags.includes('rough-formation')
@@ -889,7 +904,7 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'steady-mara',
         label: 'Check Mara’s wounds and let her check yours.',
-        detail: 'Use trust to recover 1 Resolve while the guards form a perimeter.',
+        detail: 'Use trust to recover 1 Resolve while the guards form a defensive ring.',
         next: 'evidence',
         changes: { resolve: 1, rapport: 1 },
         requires: { rapport: 2 },
@@ -956,7 +971,7 @@ export const nodes: Record<string, StoryNode> = {
       state.flags.includes('confirmed-advance-orders')
         ? 'The proof is plain. The attackers had plans for every route before you chose one. Someone did not predict your decision. Someone prepared around it.'
         : 'The salt gives you a new impossibility, but not yet a hand to blame.',
-      'Thunder closes over the road. Brann can make a litter for the wounded, but it will slow the wagon. Bellweather should be one mile east. Greyhaven should be several miles west behind locked storm gates.',
+      'Thunder closes over the road. Brann can make a stretcher for the wounded, but it will slow the wagon. Bellweather should be one mile east. Greyhaven should be several miles west behind locked storm gates.',
       'Mara wipes rain from her mouth. “They went east because they wanted us to turn back.” Lysara looks west. “Or because what waits behind us is worse.”',
       'The next attack could come in minutes. Standing still is the only choice certain to help your enemy.',
     ],
@@ -977,7 +992,7 @@ export const nodes: Record<string, StoryNode> = {
         next: 'folded-road',
         changes: { stamina: -1, resolve: 1 },
         addFlags: ['pressed-east'],
-        result: 'You put the strongest walkers around the litters and follow the road into hard rain.',
+        result: 'You put the strongest walkers around the stretchers and follow the road into hard rain.',
       },
       {
         id: 'climb-scout',
@@ -999,19 +1014,24 @@ export const nodes: Record<string, StoryNode> = {
     location: 'The End of the King’s Road',
     objective: 'Choose how to lead the survivors through an impossible landscape.',
     threat: 'Unknown',
+    lesson: {
+      title: 'Chapter rewards',
+      body: 'Wayfire is the currency earned when you finish chapters and make major choices. It will unlock later chapters and some optional scenes. Gaining Wayfire does not make one story choice morally better than another.',
+    },
+    introduces: ['wayfire'],
     art: 'folded',
     body: (state) => [
       state.flags.includes('scouted-rise')
-        ? 'You see the sea before the others do. For several breaths you stand alone in the rain, trying to make distance obey what your eyes know.'
+        ? 'You see the sea before the others do. For several breaths, the sight makes no sense. Greyhaven cannot be in front of you.'
         : 'The trees end. So does the land.',
-      'Dark seawater moves across the King’s Road. Its centre line continues beneath the waves as a faint silver scar. Far beyond it, Greyhaven rises from the opposite shore, every tower clear in the storm light.',
+      'Dark seawater covers the King’s Road. The pale line painted down the middle of the road continues under the waves, giving you one clear path forward. Far across the water, Greyhaven stands on the opposite shore. You can see every tower in the storm light.',
       state.flags.includes('turned-west')
         ? 'You travelled west toward Greyhaven. The city is now ahead of you across miles of water.'
         : state.flags.includes('pressed-east')
           ? 'You travelled east toward Bellweather. Greyhaven waits ahead as if the whole road has been folded back upon itself.'
           : 'The view proves that neither east nor west means what it meant this morning.',
       hasAny(state, ['guard-wounded', 'mara-hurt'])
-        ? 'Behind you, someone groans on a litter. Blood watered thin by rain runs around your boots and enters the impossible sea.'
+        ? 'Behind you, someone groans on a stretcher. Rainwater carries a thin stream of blood around your boots and into the impossible sea.'
         : 'Behind you, exhausted guards turn in a slow circle, searching the tree line for attackers who may no longer need a road to reach them.',
       'Mara comes to your side. Her shoulder rests against yours, warm despite the rain. “Which way is home now?”',
     ],
@@ -1043,7 +1063,7 @@ export const nodes: Record<string, StoryNode> = {
         changes: { resolve: -2, oathfire: 3, wayfire: 6 },
         requires: { resolve: 3 },
         addFlags: ['oath-bring-them-home'],
-        result: 'The Oath enters your bones like fire. For one heartbeat, the road beneath the sea answers.',
+        result: 'Oath magic burns through your body. For one heartbeat, the road beneath the sea answers your promise.',
       },
     ],
   },
@@ -1058,7 +1078,7 @@ export const nodes: Record<string, StoryNode> = {
     art: 'folded',
     final: true,
     body: (state) => [
-      'The water reaches your knees and stops rising. Beneath your boots, fitted road stones remain dry enough to grip. The sea is deep on both sides and shallow only where the King’s Road continues.',
+      'The water reaches your knees and stops rising. Beneath your boots, the stone road remains shallow enough to walk on. The sea is deep on both sides and shallow only where the King’s Road continues.',
       state.flags.includes('planned-evening')
         ? 'Mara takes the rope behind you. “About that bath,” she says. “I am beginning to lower my standards.”'
         : 'Mara takes the rope behind you and tests the knot at your waist. “If the road tries to steal you, it gets both of us.”',
@@ -1098,7 +1118,7 @@ export const nodes: Record<string, StoryNode> = {
     art: 'folded',
     final: true,
     body: (state) => [
-      'Your promise leaves your mouth as breath and returns as flame. It settles behind your breastbone, bright enough that Mara sees red light between the rings of your mail.',
+      'Your promise leaves your mouth as breath and returns as flame. It settles inside your chest, bright enough that Mara sees red light between the rings of your armour.',
       state.flags.includes('oath-safe-arrival')
         ? 'The earlier Oath folds into the new one. Every life you promised to shelter becomes a separate pull against your heart.'
         : 'One by one, the living travellers become points of warmth at the edge of your awareness.',

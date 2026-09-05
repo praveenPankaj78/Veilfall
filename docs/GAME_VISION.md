@@ -59,7 +59,7 @@ Her finale uses the altered world left by Caelan and Rook. She decides what the 
 
 ## Tone and audience experience
 
-The language stays clear and direct. Description uses concrete senses, physical action, and specific choices. Mystery comes from one active question at a time, not a flood of unexplained names.
+The language stays clear, direct, and modern. The narrator sounds like a present day storyteller, never a Shakespearean character. A reader aged twelve or thirteen should understand every non intimate event on the first reading. Description uses concrete senses, physical action, and specific choices. Mystery comes from one active question at a time, not a flood of unexplained names.
 
 Violence can be bloody when the cost matters. Romance can be warm, playful, dangerous, or transactional. All romantic and intimate characters are adults. Physical intimacy is voluntary even when a character hides an objective or uses attraction as leverage. Attraction is shown through voice, movement, expression, clothing, attention, and proximity rather than a catalogue of body parts.
 

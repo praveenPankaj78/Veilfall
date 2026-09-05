@@ -45,6 +45,16 @@ The first chapter of every series spends more time in Settle. It teaches normal 
 
 Prefer familiar words used with precise detail. Describe what the viewpoint character can sense and why it matters.
 
+The default story voice is modern spoken English. It should sound like a skilled storyteller talking clearly to the player today, not like a translation of an old legend. A reader aged twelve or thirteen should be able to follow every non intimate scene on the first reading.
+
+- Do not use archaic grammar or words associated with Shakespearean speech.
+- Prefer short or medium sentences. Use a long sentence only when its order of events remains obvious.
+- Name the person performing an action when two or more people are present. Avoid unclear uses of he, she, they, it, or this.
+- Describe movement in physical order. State where the danger begins, who it reaches, and what changes before asking the player to react.
+- Use comparisons only when they make an image easier to understand.
+- Keep fantasy terms, but explain each term with a familiar action or result before it matters in a choice.
+- Read difficult lines aloud and replace any wording that sounds formal merely to create a medieval mood.
+
 Weak: The forest was strange and magical.
 
 Stronger: Pale leaves turn toward your voice. When you stop speaking, they turn toward Mara instead.
@@ -204,3 +214,5 @@ Before a scene is approved, confirm:
 8. The ending shows a result before opening the next question.
 9. The prose contains no adjacent hyphens or em dash characters.
 10. The passage sounds natural when read aloud.
+11. A reader aged twelve or thirteen can explain what physically happened.
+12. Every ability, item, person, or place named in a choice has already been introduced on that route.

@@ -24,6 +24,7 @@ const {
   nodeOrder,
   nodes,
   resolveNext,
+  statLabels,
 } = context.module.exports;
 
 const failures = [];
@@ -72,7 +73,7 @@ function stateKey(state) {
   return `${state.nodeId}|${stats}|${flags}`;
 }
 
-const stack = [initialState];
+const stack = [{ state: initialState, knownTerms: [] }];
 const visited = new Set();
 const reachableNodes = new Set();
 const endings = new Set();
@@ -80,8 +81,10 @@ const endingDepths = [];
 let exploredChoices = 0;
 
 while (stack.length && visited.size < 100000) {
-  const state = stack.pop();
-  const key = stateKey(state);
+  const current = stack.pop();
+  const state = current.state;
+  const knownTerms = Array.from(new Set([...current.knownTerms, ...(nodes[state.nodeId]?.introduces ?? [])]));
+  const key = `${stateKey(state)}|known:${knownTerms.slice().sort((a, b) => a.localeCompare(b)).join(',')}`;
   if (visited.has(key)) continue;
   visited.add(key);
 
@@ -93,6 +96,15 @@ while (stack.length && visited.size < 100000) {
 
   reachableNodes.add(node.id);
   const available = node.choices.filter((choice) => canChoose(choice, state));
+
+  for (const choice of node.choices) {
+    const choiceText = `${choice.label} ${choice.detail}`;
+    for (const [term, label] of Object.entries(statLabels)) {
+      if (new RegExp(`\\b${label}\\b`, 'i').test(choiceText) && !knownTerms.includes(term)) {
+        failures.push(`Choice ${choice.id} uses ${label} before it is introduced`);
+      }
+    }
+  }
 
   if (node.final) {
     endings.add(node.id);
@@ -113,7 +125,7 @@ while (stack.length && visited.size < 100000) {
       failures.push(`Choice ${choice.id} reaches missing node: ${next.nodeId}`);
       continue;
     }
-    stack.push(next);
+    stack.push({ state: next, knownTerms });
   }
 }
 

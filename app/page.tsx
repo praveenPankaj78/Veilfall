@@ -63,8 +63,8 @@ const statHelp: Record<StatKey, string> = {
   resolve: 'His strength against fear, pain, manipulation, and despair.',
   command: 'Readiness and trust he can spend to coordinate the escort.',
   rapport: 'Trust and attraction earned through attention, honesty, and shared risk.',
-  oathfire: 'Power gained by freely accepting a binding promise.',
-  wayfire: 'Chapter currency earned through irreversible choices and completion.',
+  oathfire: 'Locked until Caelan makes a magical Oath. The story explains it before use.',
+  wayfire: 'Chapter currency earned through choices you cannot undo and chapter completion.',
 };
 
 function applyChoice(state: GameState, choice: Choice): GameState {
@@ -310,6 +310,13 @@ export default function Home() {
                 <p key={`${node.id}-${index}`}>{paragraph}</p>
               ))}
             </div>
+
+            {node.lesson && (
+              <aside className="lesson-card">
+                <span>{node.lesson.title}</span>
+                <p>{node.lesson.body}</p>
+              </aside>
+            )}
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">

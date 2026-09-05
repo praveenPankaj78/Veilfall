@@ -83,7 +83,7 @@ Characters should not deliver long explanations before the player has a reason t
 
 Teach one shared resource and two signature class ideas through low risk use before combat or crisis. Show the result immediately.
 
-For Caelan, the player first uses Stamina, Guard, and Command during escort preparation. Oathfire arrives only near the final decision.
+For Caelan, the player first learns Stamina, Resolve, Command, and Rapport during escort preparation. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
 
 For Rook, the player first uses Dexterity, attention, and Heat during a controlled theft. Glimmer appears only after the ordinary plan fails.
 
@@ -94,6 +94,8 @@ For Ilyra, the player first uses Mana, Threadread, and a simple Ward during fami
 - Add no more than one new meter, currency, status family, or magical rule in a chapter.
 - Use a mechanic safely once before requiring it under pressure.
 - Remind the player of a rare mechanic through character thought or companion dialogue, not a manual page.
+- Explain a mechanic before its name appears in a selectable choice. A sidebar definition may support the explanation, but it cannot replace an introduction in the main reading flow.
+- Before the first use, state what the mechanic represents, how the player gains it, what spending it can do, and any lasting risk.
 - Show costs on the choice before selection.
 - After selection, show the resource change and its fictional effect together.
 - Do not expose every hidden relationship or world value as a number.
@@ -236,6 +238,7 @@ A chapter is ready only when:
 - the objective can be stated in one sentence;
 - the active mystery can be stated as one question;
 - the new mechanic has been used safely before it becomes decisive;
+- every term used in a choice has been introduced in the main reading flow on that route;
 - every new essential term is attached to a concrete event;
 - the chapter answers something before adding a larger question;
 - at least one consequence is visible without opening a menu;
