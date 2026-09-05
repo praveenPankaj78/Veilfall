@@ -4,7 +4,7 @@ Veilfall is an original, story first fantasy decision RPG built around three tra
 
 ## Current status
 
-The redesigned foundation and the canonical first chapter are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival when an enemy prepares for every route he might choose.
+The redesigned foundation and the first two canonical chapters are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival. Chapter Two carries every surviving consequence into Bellweather Inn, where eleven missing years and a damaged road pin reveal a Crown plot.
 
 The new canonical plan contains:
 
@@ -15,7 +15,7 @@ The new canonical plan contains:
 - Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
 - Separate finales whose consequences trigger the next protagonist's story.
 - A world map at `public/art/edrath-world-map.png`.
-- A thirty to forty minute first chapter with route based ambushes, visible threat, class resources, relationship consequences, three endings, and local saves.
+- Two complete chapters with route based danger, visible threat, class resources, imported consequences, relationship choices, six total endings, and local saves.
 
 ## Canonical documents
 
@@ -28,7 +28,8 @@ The new canonical plan contains:
 - `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, Wayfire, saves, and imported decisions.
 - `docs/PLAYER_EXPERIENCE_BIBLE.md` defines information pacing, mechanical onboarding, recaps, journal design, and comprehension testing.
 - `docs/PLAYER_REVELATION_LEDGER.md` records the question, answer, next hook, and mechanic taught in every planned chapter.
-- `docs/CHAPTER_ONE_MAP.md` defines the next Caelan vertical slice without writing full prose.
+- `docs/CHAPTER_ONE_MAP.md` records the implemented structure and branches for The Road Before Rain.
+- `docs/CHAPTER_TWO_MAP.md` records the implemented structure, branches, reveal, and consequence imports for The Inn That Waited.
 - `docs/DEVELOPMENT_PLAN.md` gives the production order and approval gates.
 
 ## Review order
@@ -45,12 +46,12 @@ The remaining rulebooks explain how the approved plan will be written and implem
 
 ## Play locally
 
-To play the current canonical chapter:
+To play the current canonical chapters:
 
 1. Run `npm install` if dependencies are not already present.
 2. Run `npm run dev`.
 3. Open the local address shown in the terminal.
 
-Use Restart inside the game to clear the local save and try another route.
+Use Chapters inside the game to replay any unlocked chapter. Replaying a chapter keeps every earlier chapter result and replaces only that chapter’s decisions and points. Replaying an earlier chapter clears later chapter progress because those events depend on the old path.
 
 All story, world, character, history, and lore material in the redesigned canon was created for Veilfall.

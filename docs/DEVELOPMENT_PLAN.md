@@ -128,4 +128,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and first canonical chapter are in place. The next production gate is to test several full routes through Chapter One, record comprehension and pacing issues, then begin Chapter Two only after those issues are resolved.
+The foundation and the first two canonical chapters are implemented. The next production gate is to test several imported routes from Chapter One through Chapter Two, record comprehension and pacing issues, and confirm that the medicine choice and road pin reveal remain clear before Chapter Three begins.

@@ -57,6 +57,10 @@ function stateKey(state) {
     'ridge-route',
     'inspection-route',
     'captured-attacker',
+    'c2-kept-crown-orders',
+    'c2-trusted-maelin',
+    'c2-has-pin-key',
+    'c2-saved-attacker',
   ]);
   const requirementCaps = {
     stamina: 2,
@@ -64,6 +68,7 @@ function stateKey(state) {
     command: 2,
     rapport: 3,
     oathfire: 2,
+    medicine: 1,
     wayfire: 0,
   };
   const stats = Object.entries(state.stats)
@@ -73,10 +78,54 @@ function stateKey(state) {
   return `${state.nodeId}|${stats}|${flags}`;
 }
 
-const stack = [{ state: initialState, knownTerms: [] }];
+const chapterTwoKnownTerms = Object.keys(statLabels).filter((term) => term !== 'medicine');
+const chapterTwoBase = {
+  ...initialState,
+  nodeId: 'c2-arrival',
+  chapter: 2,
+  chapterChoices: 0,
+  completedChapters: [1],
+  stats: {
+    ...initialState.stats,
+    stamina: 8,
+    resolve: 6,
+    command: 4,
+    rapport: 5,
+    oathfire: 4,
+    medicine: 1,
+  },
+};
+const stack = [
+  { state: initialState, knownTerms: [] },
+  {
+    state: { ...chapterTwoBase, flags: ['chose-silver-road', 'captured-attacker'] },
+    knownTerms: chapterTwoKnownTerms,
+  },
+  {
+    state: { ...chapterTwoBase, flags: ['chose-high-ground'] },
+    knownTerms: chapterTwoKnownTerms,
+  },
+  {
+    state: {
+      ...chapterTwoBase,
+      flags: ['oath-bring-them-home'],
+      stats: {
+        ...chapterTwoBase.stats,
+        stamina: 0,
+        resolve: 0,
+        command: 0,
+        rapport: 1,
+        oathfire: 0,
+      },
+    },
+    knownTerms: chapterTwoKnownTerms,
+  },
+];
 const visited = new Set();
 const reachableNodes = new Set();
 const endings = new Set();
+const chapterOneEndings = new Set();
+const chapterTwoEndings = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
 
@@ -108,6 +157,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
+    if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
+    else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
     if (node.choices.length) failures.push(`Final node has choices: ${node.id}`);
     continue;
@@ -135,6 +186,8 @@ for (const id of nodeIds) {
 
 if (visited.size >= 100000) failures.push('State exploration exceeded its safety limit');
 if (!endings.size) failures.push('No ending is reachable');
+if (chapterOneEndings.size !== 3) failures.push(`Expected 3 Chapter One endings, found ${chapterOneEndings.size}`);
+if (chapterTwoEndings.size !== 3) failures.push(`Expected 3 Chapter Two endings, found ${chapterTwoEndings.size}`);
 
 if (failures.length) {
   console.error('Game graph check failed:');
@@ -145,5 +198,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${endings.size} endings, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

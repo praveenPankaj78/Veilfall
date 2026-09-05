@@ -33,8 +33,26 @@ import {
   type StatKey,
 } from './game-data';
 
-const SAVE_KEY = 'veilfall.chapter-one.v3.save';
-const OLD_SAVE_KEY = 'veilfall.chapter-one.v2.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v4.save';
+const LEGACY_SAVE_KEYS = ['veilfall.chapter-one.v3.save', 'veilfall.chapter-one.v2.save'];
+type ChapterNumber = 1 | 2;
+
+const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
+  2: 'veilfall.chapter-two.v1.start',
+};
+
+const chapterLibrary = [
+  {
+    number: 1 as const,
+    title: 'The Road Before Rain',
+    summary: 'Escort Ambassador Lysara beyond Greyhaven before the storm closes the road.',
+  },
+  {
+    number: 2 as const,
+    title: 'The Inn That Waited',
+    summary: 'Keep the wounded safe in Bellweather Inn and learn why the road changed.',
+  },
+];
 
 type ModelTool = {
   name: string;
@@ -55,6 +73,7 @@ const statIcons: Record<StatKey, typeof Heart> = {
   command: Swords,
   rapport: Heart,
   oathfire: Flame,
+  medicine: Heart,
   wayfire: Sparkles,
 };
 
@@ -63,9 +82,28 @@ const statHelp: Record<StatKey, string> = {
   resolve: 'His strength against fear, pain, manipulation, and despair.',
   command: 'Readiness and trust he can spend to coordinate the escort.',
   rapport: 'Trust and attraction earned through attention, honesty, and shared risk.',
-  oathfire: 'Locked until Caelan makes a magical Oath. The story explains it before use.',
+  oathfire: 'Magic gained from a binding promise and spent on extraordinary protection.',
+  medicine: 'Strong healing supplies. The story explains who can benefit before you spend any.',
   wayfire: 'Chapter currency earned through choices you cannot undo and chapter completion.',
 };
+
+function normaliseState(value: Partial<GameState>): GameState {
+  const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
+  const chapter = nodeId.startsWith('c2-') ? 2 : (value.chapter ?? 1);
+  const completedChapters = Array.from(new Set([
+    ...(value.completedChapters ?? []),
+    ...(nodes[nodeId]?.final ? [chapter] : []),
+  ]));
+  return {
+    nodeId,
+    chapter,
+    chapterChoices: value.chapterChoices ?? (chapter === 1 ? value.history?.length ?? 0 : 0),
+    completedChapters,
+    stats: { ...initialState.stats, ...value.stats },
+    flags: value.flags ?? [],
+    history: value.history ?? [],
+  };
+}
 
 function applyChoice(state: GameState, choice: Choice): GameState {
   const nextStats = { ...state.stats };
@@ -73,8 +111,15 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     const stat = key as StatKey;
     nextStats[stat] = Math.max(0, nextStats[stat] + (value ?? 0));
   }
+  const nodeId = resolveNext(choice, state);
+  const completedChapters = nodes[nodeId]?.final
+    ? Array.from(new Set([...state.completedChapters, state.chapter]))
+    : state.completedChapters;
   return {
-    nodeId: resolveNext(choice, state),
+    nodeId,
+    chapter: state.chapter,
+    chapterChoices: state.chapterChoices + 1,
+    completedChapters,
     stats: nextStats,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
@@ -95,6 +140,7 @@ export default function Home() {
   const [started, setStarted] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [lastResult, setLastResult] = useState<string | null>(null);
+  const [showChapterLibrary, setShowChapterLibrary] = useState(false);
   const gameRef = useRef(game);
 
   useEffect(() => {
@@ -105,17 +151,18 @@ export default function Home() {
     let active = true;
     queueMicrotask(() => {
       if (!active) return;
-      window.localStorage.removeItem(OLD_SAVE_KEY);
-      const saved = window.localStorage.getItem(SAVE_KEY);
+      const saved = [CURRENT_SAVE_KEY, ...LEGACY_SAVE_KEYS]
+        .map((key) => window.localStorage.getItem(key))
+        .find((value) => value !== null);
       if (saved) {
         try {
-          const parsed = JSON.parse(saved) as GameState;
+          const parsed = normaliseState(JSON.parse(saved) as Partial<GameState>);
           if (parsed.nodeId && nodes[parsed.nodeId]) {
             setGame(parsed);
             setStarted(true);
           }
         } catch {
-          window.localStorage.removeItem(SAVE_KEY);
+          window.localStorage.removeItem(CURRENT_SAVE_KEY);
         }
       }
       setLoaded(true);
@@ -127,7 +174,7 @@ export default function Home() {
 
   useEffect(() => {
     if (loaded && started) {
-      window.localStorage.setItem(SAVE_KEY, JSON.stringify(game));
+      window.localStorage.setItem(CURRENT_SAVE_KEY, JSON.stringify(game));
     }
   }, [game, loaded, started]);
 
@@ -203,10 +250,14 @@ export default function Home() {
   }, []);
 
   const node = nodes[game.nodeId];
+  const isChapterTwo = game.chapter === 2;
+  const chapterTwoUnlocked = game.chapter === 2 || game.completedChapters.includes(1);
+  const chapterTwoStartExists = loaded && typeof window !== 'undefined'
+    && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[2]!));
   const paragraphs = useMemo(() => node.body(game), [game, node]);
   const chapterProgress = node.final
     ? 100
-    : Math.min(96, Math.round((game.history.length / 14) * 100));
+    : Math.min(96, Math.round((game.chapterChoices / 15) * 100));
 
   function choose(choice: Choice) {
     if (!canChoose(choice, game)) return;
@@ -215,12 +266,67 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  function restart() {
-    window.localStorage.removeItem(SAVE_KEY);
-    setGame(initialState);
+  function loadChapterState(next: GameState) {
+    gameRef.current = next;
+    setGame(next);
     setLastResult(null);
     setStarted(true);
+    setShowChapterLibrary(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function chapterStart(chapter: ChapterNumber) {
+    if (chapter === 1) return initialState;
+    const key = CHAPTER_START_KEYS[chapter];
+    if (!key) return null;
+    const savedStart = window.localStorage.getItem(key);
+    if (!savedStart) return null;
+    try {
+      return normaliseState(JSON.parse(savedStart) as Partial<GameState>);
+    } catch {
+      window.localStorage.removeItem(key);
+      return null;
+    }
+  }
+
+  function replayChapter(chapter: ChapterNumber) {
+    if (chapter === 1) {
+      window.localStorage.removeItem(CURRENT_SAVE_KEY);
+      for (const key of LEGACY_SAVE_KEYS) window.localStorage.removeItem(key);
+      for (const key of Object.values(CHAPTER_START_KEYS)) {
+        window.localStorage.removeItem(key);
+      }
+      loadChapterState(initialState);
+      return;
+    }
+
+    const savedStart = chapterStart(chapter);
+    if (savedStart) loadChapterState(savedStart);
+  }
+
+  function restart() {
+    replayChapter(game.chapter);
+  }
+
+  function startChapterTwo() {
+    if (game.stats.wayfire < 5) return;
+    const next: GameState = {
+      ...game,
+      nodeId: 'c2-arrival',
+      chapter: 2,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 1])),
+      stats: {
+        ...game.stats,
+        stamina: Math.min(8, game.stats.stamina + 2),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        medicine: 1,
+        wayfire: game.stats.wayfire - 5,
+      },
+      history: [...game.history, 'You spend 5 Wayfire and continue to Bellweather Inn.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[2]!, JSON.stringify(next));
+    loadChapterState(next);
   }
 
   if (!loaded) {
@@ -267,24 +373,85 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan I
+          Caelan {isChapterTwo ? 'II' : 'I'}
         </div>
-        <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
-          <RotateCcw data-icon="inline-start" />
-          Restart
-        </Button>
+        <div className="top-actions">
+          <Button
+            className="chapter-menu-button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowChapterLibrary((open) => !open)}
+            aria-expanded={showChapterLibrary}
+          >
+            <BookOpen data-icon="inline-start" />
+            Chapters
+          </Button>
+          <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+            <RotateCcw data-icon="inline-start" />
+            Replay current
+          </Button>
+        </div>
       </header>
+
+      {showChapterLibrary && (
+        <aside className="chapter-library" aria-label="Unlocked chapters">
+          <div className="chapter-library-heading">
+            <div>
+              <p className="eyebrow">Caelan’s journey</p>
+              <h2>Replay an unlocked chapter</h2>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => setShowChapterLibrary(false)}>
+              Close
+            </Button>
+          </div>
+          <p className="chapter-library-note">
+            Replaying a chapter replaces its choices, points, and outcome. Earlier chapters stay the same. Replaying an earlier chapter removes later chapter progress, because those events came from the old path.
+          </p>
+          <div className="chapter-library-list">
+            {chapterLibrary.map((chapter) => {
+              const unlocked = chapter.number === 1 || chapterTwoUnlocked;
+              const available = chapter.number === 1 || chapterTwoStartExists;
+              return (
+                <div className="chapter-library-entry" key={chapter.number}>
+                  <div>
+                    <span>Chapter {chapter.number}</span>
+                    <h3>{chapter.title}</h3>
+                    <p>{chapter.summary}</p>
+                  </div>
+                  {unlocked ? (
+                    <Button
+                      className="chapter-library-button"
+                      variant="outline"
+                      size="sm"
+                      disabled={!available}
+                      onClick={() => replayChapter(chapter.number)}
+                    >
+                      {chapter.number === game.chapter ? 'Replay' : 'Play again'}
+                    </Button>
+                  ) : (
+                    <span className="chapter-locked">Finish Chapter One to unlock</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </aside>
+      )}
 
       <div className="game-grid">
         <section className="story-column" aria-live="polite">
           <div className="scene-art-wrap">
             <Image
-              src={node.art === 'folded'
-                ? '/art/kings-road-folded.png'
-                : '/art/caelan-east-gate.png'}
-              alt={node.art === 'folded'
-                ? 'Caelan and the wounded escort face an impossible sea across the King’s Road'
-                : 'Caelan and Mara travel with the diplomatic escort beyond Greyhaven'}
+              src={node.art === 'inn'
+                ? '/art/bellweather-inn.png'
+                : node.art === 'folded'
+                  ? '/art/kings-road-folded.png'
+                  : '/art/caelan-east-gate.png'}
+              alt={node.art === 'inn'
+                ? 'Caelan leads the wounded escort into Bellweather Inn during a storm'
+                : node.art === 'folded'
+                  ? 'Caelan and the wounded escort face an impossible sea across the King’s Road'
+                  : 'Caelan and Mara travel with the diplomatic escort beyond Greyhaven'}
               width={1536}
               height={864}
               className="scene-art"
@@ -348,15 +515,40 @@ export default function Home() {
             ) : (
               <div className="ending-panel">
                 <p className="ending-label">Your path is recorded</p>
-                <h2>Caelan will return in Chapter Two</h2>
-                <p>
-                  You carry {game.stats.wayfire} Wayfire. Future chapters will use it
-                  to open the next stage of Caelan&apos;s journey and optional discoveries.
-                </p>
-                <Button className="begin-button" size="lg" onClick={restart}>
-                  Try another path
-                  <RotateCcw data-icon="inline-end" />
-                </Button>
+                {node.nextChapter ? (
+                  <>
+                    <h2>Chapter Two is ready</h2>
+                    <p>
+                      You carry {game.stats.wayfire} Wayfire. Unlock The Inn That Waited
+                      for 5 Wayfire and continue with every consequence from this route.
+                    </p>
+                    <Button
+                      className="begin-button"
+                      size="lg"
+                      disabled={game.stats.wayfire < 5}
+                      onClick={startChapterTwo}
+                    >
+                      Unlock Chapter Two
+                      <ArrowRight data-icon="inline-end" />
+                    </Button>
+                    <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      Replay Chapter One
+                      <RotateCcw data-icon="inline-end" />
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <h2>Caelan will return in Chapter Three</h2>
+                    <p>
+                      You carry {game.stats.wayfire} Wayfire. Harrowfen and the mystery of
+                      the second escort wait in the next chapter.
+                    </p>
+                    <Button className="begin-button" size="lg" onClick={restart}>
+                      Replay Chapter Two
+                      <RotateCcw data-icon="inline-end" />
+                    </Button>
+                  </>
+                )}
               </div>
             )}
           </article>
@@ -392,7 +584,9 @@ export default function Home() {
           </div>
 
           <div className="stats-list">
-            {(Object.keys(game.stats) as StatKey[]).map((key) => {
+            {(Object.keys(game.stats) as StatKey[]).filter(
+              (key) => isChapterTwo || key !== 'medicine',
+            ).map((key) => {
               const Icon = statIcons[key];
               return (
                 <div className={`stat-row ${key === 'wayfire' ? 'currency-row' : ''}`} key={key}>

@@ -23,6 +23,7 @@ Each protagonist tracks:
 - Stamina starts at 8 and fuels physical actions.
 - Resolve starts at 6 and resists fear, pain, and manipulation.
 - Oathfire begins locked. Swearing a meaningful Oath fills it.
+- Medicine records the strongest healing supplies currently available to the escort. The player learns every eligible patient and likely immediate result before spending it.
 - Active Oaths are named duties with success and breach conditions.
 - Oathscars record broken promises and alter powers, dialogue, and ending options.
 
@@ -158,6 +159,12 @@ Save after every choice. Store:
 - completed finale summaries for import.
 
 Use versioned migrations so later content updates do not invalidate long term saves.
+
+### Chapter replay
+
+Every unlocked chapter stores a chapter start snapshot. Replaying Chapter Four loads the snapshot created after Chapter Three: all Chapter One through Three choices, resources, relationships, and world effects remain exactly as they were. The replayed chapter starts fresh, so its choices, rewards, injuries, and points overwrite its previous result when the player finishes it again.
+
+Replaying an earlier chapter invalidates every later chapter snapshot and result. Those later events were created by the old path and cannot remain true after its cause changes. The chapter library tells the player this before replay begins.
 
 ## Choice data shape
 

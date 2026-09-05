@@ -230,13 +230,110 @@
 }
 
 .restart-button {
-  justify-self: end;
   color: #999086;
 }
 
 .restart-button:hover {
   background: rgb(255 255 255 / 6%);
   color: #eee7d8;
+}
+
+.top-actions {
+  display: flex;
+  justify-self: end;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.chapter-menu-button {
+  color: #c9a174;
+}
+
+.chapter-menu-button:hover {
+  background: rgb(190 122 77 / 12%);
+  color: #f1d5aa;
+}
+
+.chapter-library {
+  position: fixed;
+  z-index: 19;
+  top: 5rem;
+  right: max(4vw, 1rem);
+  width: min(31rem, calc(100vw - 2rem));
+  padding: 1.25rem;
+  border: 1px solid rgb(186 147 100 / 35%);
+  border-radius: 0.35rem;
+  background: rgb(14 17 21 / 97%);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 45%);
+}
+
+.chapter-library-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.chapter-library-heading h2 {
+  margin: 0.3rem 0 0;
+  color: #eee7d8;
+  font: 500 1.35rem/1.2 Georgia, serif;
+}
+
+.chapter-library-note {
+  margin: 1rem 0;
+  color: #b9afa3;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.chapter-library-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.chapter-library-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem;
+  border: 1px solid rgb(186 147 100 / 18%);
+  background: rgb(255 255 255 / 2%);
+}
+
+.chapter-library-entry > div > span {
+  color: #c99062;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.chapter-library-entry h3 {
+  margin: 0.2rem 0;
+  color: #eee7d8;
+  font: 500 1rem/1.25 Georgia, serif;
+}
+
+.chapter-library-entry p {
+  margin: 0;
+  color: #9d958c;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.chapter-library-button {
+  flex: none;
+  border-color: rgb(201 144 98 / 45%);
+  color: #e1bb8e;
+}
+
+.chapter-locked {
+  flex: none;
+  color: #82796e;
+  font-size: 0.72rem;
+  text-align: right;
 }
 
 .game-grid {

@@ -4,12 +4,16 @@ export type StatKey =
   | 'command'
   | 'rapport'
   | 'oathfire'
+  | 'medicine'
   | 'wayfire';
 
 export type GameStats = Record<StatKey, number>;
 
 export type GameState = {
   nodeId: string;
+  chapter: 1 | 2;
+  chapterChoices: number;
+  completedChapters: number[];
   stats: GameStats;
   flags: string[];
   history: string[];
@@ -39,20 +43,25 @@ export type StoryNode = {
     body: string;
   };
   introduces?: StatKey[];
-  art?: 'departure' | 'folded';
+  art?: 'departure' | 'folded' | 'inn';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
+  nextChapter?: string;
 };
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
+  chapter: 1,
+  chapterChoices: 0,
+  completedChapters: [],
   stats: {
     stamina: 8,
     resolve: 6,
     command: 3,
     rapport: 1,
     oathfire: 0,
+    medicine: 0,
     wayfire: 0,
   },
   flags: [],
@@ -65,6 +74,7 @@ export const statLabels: Record<StatKey, string> = {
   command: 'Command',
   rapport: 'Rapport',
   oathfire: 'Oathfire',
+  medicine: 'Medicine',
   wayfire: 'Wayfire',
 };
 
@@ -1077,6 +1087,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'folded',
     final: true,
+    nextChapter: 'c2-arrival',
     body: (state) => [
       'The water reaches your knees and stops rising. Beneath your boots, the stone road remains shallow enough to walk on. The sea is deep on both sides and shallow only where the King’s Road continues.',
       state.flags.includes('planned-evening')
@@ -1097,6 +1108,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'folded',
     final: true,
+    nextChapter: 'c2-arrival',
     body: (state) => [
       'Rainwatch Hill gives you stone at your back and a view of the impossible shore. Brann sets a shield wall. Lysara tends the wounded while Mara counts arrows.',
       'From above, you see that the sea has not replaced the land. It fills a perfect bend in the road, like dark water poured into a crease in parchment.',
@@ -1117,6 +1129,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'folded',
     final: true,
+    nextChapter: 'c2-arrival',
     body: (state) => [
       'Your promise leaves your mouth as breath and returns as flame. It settles inside your chest, bright enough that Mara sees red light between the rings of your armour.',
       state.flags.includes('oath-safe-arrival')
@@ -1124,6 +1137,954 @@ export const nodes: Record<string, StoryNode> = {
         : 'One by one, the living travellers become points of warmth at the edge of your awareness.',
       'The silver line beneath the sea brightens. For a moment you feel a great iron shape buried somewhere below the road. Something has dragged it from the place where it belonged.',
       'Across the water, Bellweather Inn lights one window. A figure stands inside it wearing your red cloak.',
+    ],
+    choices: [],
+  },
+
+  'c2-arrival': {
+    id: 'c2-arrival',
+    kicker: 'Chapter Two',
+    title: 'The Inn That Waited',
+    location: 'The Folded King’s Road',
+    objective: 'Reach Bellweather Inn before something follows you from the water.',
+    threat: 'Immediate',
+    art: 'inn',
+    lesson: {
+      title: 'One dose remains',
+      body: 'Medicine tracks the strong healing supplies carried by the group. Only one sealed dose survived the road. A later choice will show exactly who can receive it and what the dose can treat.',
+    },
+    introduces: ['medicine'],
+    body: (state) => [
+      state.flags.includes('chose-silver-road')
+        ? 'The road stays beneath your boots as dark water rises on both sides. Bellweather Inn stands ahead on a small island of mud and grass. Warm light fills its windows.'
+        : state.flags.includes('chose-high-ground')
+          ? 'The lantern behind Rainwatch Hill led you to a narrow path during the night. It ends at Bellweather Inn, where the same road enters the yard from two opposite directions.'
+          : 'Your Oath leads you through the water. Each survivor feels like a warm point inside your chest. Bellweather Inn waits ahead, alone in the rain.',
+      'Mara supports Joren while Brann guides the first wagon. Lysara holds the cracked treaty chest against her body. Tivik has found one sealed dose of strong medicine inside the damaged supply box. Everything else is soaked.',
+      'Something large moves under the water behind the final horse. You see a ridged back, then a pale eye. It is following the wounded, but it has not attacked yet.',
+      'The inn door opens. An older woman raises a lamp and calls your name before anyone has introduced you.',
+    ],
+    choices: [
+      {
+        id: 'c2-shield-arrival',
+        label: 'Place shields around the wounded and move together.',
+        detail: 'Spend 1 Command. Keep the group protected but moving slowly.',
+        next: 'c2-threshold',
+        changes: { command: -1 },
+        requires: { command: 1 },
+        addFlags: ['c2-ordered-entry'],
+        result: 'The guards form a tight wall. The creature follows to the edge of the yard, then sinks out of sight.',
+      },
+      {
+        id: 'c2-lead-water',
+        label: 'Walk behind the others and face the creature yourself.',
+        detail: 'Spend 1 Stamina. Make yourself the nearest target.',
+        next: 'c2-threshold',
+        changes: { stamina: -1, resolve: 1 },
+        requires: { stamina: 1 },
+        addFlags: ['c2-faced-creature'],
+        result: 'You keep your shield toward the water until the last horse reaches mud. The pale eye watches only you.',
+      },
+      {
+        id: 'c2-trust-mara-entry',
+        label: 'Let Mara choose the safest path through the water.',
+        detail: 'Requires 3 Rapport. Trust her judgment while you watch the wounded.',
+        next: 'c2-threshold',
+        changes: { rapport: 1 },
+        requires: { rapport: 3 },
+        addFlags: ['c2-mara-led-entry'],
+        result: 'Mara finds firm road stones beneath the water. Nobody falls, and the creature never gets close enough to strike.',
+      },
+      {
+        id: 'c2-oath-guided-entry',
+        label: 'Use your Oath to feel which survivor is in danger.',
+        detail: 'Spend 1 Oathfire. Find the weakest point in the group before the creature does.',
+        next: 'c2-threshold',
+        changes: { oathfire: -1 },
+        requires: { oathfire: 1 },
+        addFlags: ['c2-oath-found-child'],
+        result: 'One life burns colder than the rest. A boy hidden in the wagon is losing blood beneath a wool blanket.',
+      },
+      {
+        id: 'c2-guard-rear',
+        label: 'Guard the rear while Brann leads everyone to the inn.',
+        detail: 'Save your remaining resources but give the creature time to study you.',
+        next: 'c2-threshold',
+        addFlags: ['c2-creature-studied-caelan'],
+        result: 'The creature keeps its distance. Just before it sinks, its pale eye changes until it looks like your own.',
+      },
+    ],
+  },
+
+  'c2-threshold': {
+    id: 'c2-threshold',
+    kicker: 'Shelter with a locked door',
+    title: 'Maelin Bellweather',
+    location: 'Bellweather Inn Yard',
+    objective: 'Get everyone inside without walking into another trap.',
+    threat: 'Immediate',
+    art: 'inn',
+    body: (state) => [
+      'The woman at the door is Maelin Bellweather, the innkeeper. She has grey hair, a steady lamp, and a wood axe within easy reach. “Captain Vey,” she says. “You are late.”',
+      'The front room behind her is warm and empty. A fire burns. Bowls of stew wait on three tables, but no steam rises from them. The room smells of wet ash and food left out too long.',
+      state.flags.includes('c2-oath-found-child')
+        ? 'You pull back a blanket in the wagon. A twelve year old boy stares up at you. A broken arrow has cut deep into his leg. Maelin whispers his name before seeing his face. “Nilo.”'
+        : 'A weak cough comes from the wagon. Under a blanket lies a twelve year old boy with a deep cut in his leg. Maelin whispers his name before seeing his face. “Nilo.”',
+      'Mara looks through the doorway. “She knows you. She knows him. I would like to know how.”',
+    ],
+    choices: [
+      {
+        id: 'c2-search-threshold',
+        label: 'Search the entrance before bringing everyone inside.',
+        detail: 'Spend 1 Command. Check for hidden attackers and safe exits.',
+        next: 'c2-triage',
+        changes: { command: -1 },
+        requires: { command: 1 },
+        addFlags: ['c2-searched-inn'],
+        result: 'The common room is empty. The back door opens onto the same yard as the front door.',
+      },
+      {
+        id: 'c2-carry-first',
+        label: 'Carry Nilo straight to the fire.',
+        detail: 'Spend 1 Stamina. Treat the child before demanding answers.',
+        next: 'c2-triage',
+        changes: { stamina: -1, rapport: 1 },
+        requires: { stamina: 1 },
+        addFlags: ['c2-carried-nilo'],
+        result: 'Maelin clears a table before you reach it. She knows exactly where you are going to set him down.',
+      },
+      {
+        id: 'c2-question-name',
+        label: 'Ask Maelin how she knows your names.',
+        detail: 'Keep everyone in the defended yard until she gives a clear answer.',
+        next: 'c2-triage',
+        changes: { resolve: 1 },
+        addFlags: ['c2-demanded-answer'],
+        result: 'Maelin grips the lamp. “You told me yesterday. I have been waiting eleven years for yesterday to happen again.”',
+      },
+    ],
+  },
+
+  'c2-triage': {
+    id: 'c2-triage',
+    kicker: 'The cost of shelter',
+    title: 'Three Beds, One Bottle',
+    location: 'Bellweather Inn Common Room',
+    objective: 'Stabilise the wounded before the creature or the attackers return.',
+    threat: 'Rising',
+    art: 'inn',
+    body: (state) => [
+      'You bring everyone inside. Brann bars both doors. The windows show the same muddy yard from different angles, as if the inn is standing in two places at once.',
+      'Lysara begins shaking beside the fire. The glass seed she carried has cracked and sent thin green lines beneath the skin of her hand. Nilo is pale from blood loss. A third patient lies near the pantry, an attacker in plain armour with an arrow through his side.',
+      state.flags.includes('captured-attacker')
+        ? 'You recognise the attacker as the prisoner taken on the road. Maelin insists he arrived here yesterday, alone and already wounded.'
+        : 'You have never seen the attacker before. He carries the same kind of sealed order case used by the people who attacked you.',
+      'The medicine can stop the danger to one patient. Clean cloth and ordinary care must be enough for the other two.',
+    ],
+    choices: [
+      {
+        id: 'c2-organise-care',
+        label: 'Give every helper one patient and one clear task.',
+        detail: 'Spend 1 Command. Reduce panic before choosing who gets the medicine.',
+        next: 'c2-medicine',
+        changes: { command: -1, resolve: 1 },
+        requires: { command: 1 },
+        addFlags: ['c2-organised-care'],
+        result: 'Mara presses cloth to Nilo’s leg. Lysara explains the seed wound. Brann keeps the attacker breathing.',
+      },
+      {
+        id: 'c2-work-beside-mara',
+        label: 'Work beside Mara and stop Nilo’s bleeding.',
+        detail: 'Spend 1 Stamina. Gain trust and a clearer view of the child’s injury.',
+        next: 'c2-medicine',
+        changes: { stamina: -1, rapport: 1 },
+        requires: { stamina: 1 },
+        addFlags: ['c2-compressed-wound'],
+        result: 'You hold pressure while Mara ties the bandage. Nilo stays awake, but the bleeding does not fully stop.',
+      },
+      {
+        id: 'c2-let-lysara-lead-care',
+        label: 'Let Lysara direct the treatment despite her pain.',
+        detail: 'Trust her medical knowledge and save your strength.',
+        next: 'c2-medicine',
+        changes: { rapport: 1 },
+        addFlags: ['c2-lysara-led-care'],
+        result: 'Lysara gives calm instructions while green light spreads across her wrist. She understands every wound except her own.',
+      },
+    ],
+  },
+
+  'c2-medicine': {
+    id: 'c2-medicine',
+    kicker: 'A choice nobody can share',
+    title: 'The Last Clear Dose',
+    location: 'Bellweather Inn Common Room',
+    objective: 'Choose who receives the only strong medicine.',
+    threat: 'Critical',
+    art: 'inn',
+    body: () => [
+      'Tivik sets the small blue bottle in your palm. There is enough for one person. Splitting it would make every dose too weak.',
+      'Lysara may lose the hand touching the glass seed. Nilo may bleed to death before morning. The attacker may be the only person who knows who changed your orders and how the road was broken.',
+      'Mara meets your eyes. “I will help whoever you choose. Just do not pretend this is not a choice.”',
+    ],
+    choices: [
+      {
+        id: 'c2-medicine-lysara',
+        label: 'Give the medicine to Lysara.',
+        detail: 'Spend 1 Medicine. Save her hand and protect the second proof of peace.',
+        next: 'c2-eleven-years',
+        changes: { medicine: -1, rapport: 1 },
+        requires: { medicine: 1 },
+        addFlags: ['c2-saved-lysara'],
+        result: 'The green lines withdraw from Lysara’s arm. She closes her fingers around yours and says, “I know what this cost.”',
+      },
+      {
+        id: 'c2-medicine-nilo',
+        label: 'Give the medicine to Nilo.',
+        detail: 'Spend 1 Medicine. Stop the child’s bleeding before it is too late.',
+        next: 'c2-eleven-years',
+        changes: { medicine: -1, resolve: 1, rapport: 1 },
+        requires: { medicine: 1 },
+        addFlags: ['c2-saved-nilo'],
+        result: 'Warmth returns to Nilo’s face. Maelin sits beside him and presses both hands over her mouth.',
+      },
+      {
+        id: 'c2-medicine-attacker',
+        label: 'Give the medicine to the attacker.',
+        detail: 'Spend 1 Medicine. Keep a dangerous witness alive long enough to answer questions.',
+        next: 'c2-eleven-years',
+        changes: { medicine: -1, command: 1 },
+        requires: { medicine: 1 },
+        addFlags: ['c2-saved-attacker'],
+        result: 'The attacker’s breathing steadies. Brann looks angry, but he tightens the prisoner’s bandage exactly as you ordered.',
+      },
+    ],
+  },
+
+  'c2-eleven-years': {
+    id: 'c2-eleven-years',
+    kicker: 'The first answer',
+    title: 'Yesterday Lasted Eleven Years',
+    location: 'Bellweather Inn Common Room',
+    objective: 'Learn what Maelin remembers without losing control of the inn.',
+    threat: 'Uneasy',
+    art: 'inn',
+    body: (state) => [
+      state.flags.includes('c2-saved-nilo')
+        ? 'Maelin waits until Nilo’s breathing becomes steady. Then she places an old guest book beside the lamp.'
+        : 'Maelin keeps looking toward the patients as she places an old guest book beside the lamp.',
+      '“You all came yesterday,” she says. “You ate this stew. The boy asked for honey. At midnight, the bell rang and the road carried you away. I woke alone.”',
+      'She opens the book. Eleven years of dates fill the pages after your names. Each page is written in the same careful hand. Every evening, Maelin prepared the rooms and waited for you to return.',
+      'You remember leaving Greyhaven this morning. Mara remembers the same. Maelin is not claiming that you forgot eleven years. She says the inn lived those years without you.',
+    ],
+    choices: [
+      {
+        id: 'c2-believe-maelin',
+        label: 'Tell Maelin you believe what happened to her.',
+        detail: 'Build trust without claiming you understand the cause.',
+        next: 'c2-investigate',
+        changes: { rapport: 1 },
+        addFlags: ['c2-believed-maelin', 'c2-trusted-maelin'],
+        result: 'Her shoulders lower. “Good. I am tired of proving I was lonely.”',
+      },
+      {
+        id: 'c2-compare-memories',
+        label: 'Ask everyone to describe the last time they saw this inn.',
+        detail: 'Spend 1 Command. Separate shared facts from fear and guesses.',
+        next: 'c2-investigate',
+        changes: { command: -1 },
+        requires: { command: 1 },
+        addFlags: ['c2-compared-memories'],
+        result: 'The escort remembers passing an empty field. Maelin remembers waving from the door. Both memories include the same lightning strike.',
+      },
+      {
+        id: 'c2-test-book',
+        label: 'Check the guest book, ink, and paper for a trick.',
+        detail: 'Look for ordinary proof before accepting an impossible answer.',
+        next: 'c2-investigate',
+        changes: { resolve: 1 },
+        addFlags: ['c2-tested-ledger'],
+        result: 'The ink ages from fresh black to faded brown across eleven years. The book is real.',
+      },
+    ],
+  },
+
+  'c2-investigate': {
+    id: 'c2-investigate',
+    kicker: 'One inn, three clues',
+    title: 'Where the Lost Years Went',
+    location: 'Bellweather Inn',
+    objective: 'Find what is holding the inn inside the broken road.',
+    threat: 'Rising',
+    art: 'inn',
+    body: (state) => [
+      'Rain strikes every window at a different speed. The bell above the front door moves even though there is no wind inside.',
+      state.flags.includes('c2-searched-inn')
+        ? 'Your earlier search found that both outside doors open onto the same yard. The wrong shape begins under the building.'
+        : 'Tivik walks the inner walls and returns to his starting point too soon. The common room is smaller inside than the outside walls allow.',
+      'Maelin offers three places to begin. Her guest book records each return. The cellar shakes whenever the road changes. The wounded attacker carries orders protected by Crown wax.',
+      'You have time to investigate one before someone must take the first night watch.',
+    ],
+    choices: [
+      {
+        id: 'c2-ledger-route',
+        label: 'Read the guest book with Maelin.',
+        detail: 'Follow eleven years of repeated arrivals and departures.',
+        next: 'c2-ledger',
+        changes: { resolve: -1 },
+        addFlags: ['c2-ledger-route'],
+        result: 'Maelin turns to the first page bearing your name. A line beneath it has been cut out with a knife.',
+      },
+      {
+        id: 'c2-cellar-route',
+        label: 'Inspect the shaking cellar with Tivik.',
+        detail: 'Spend 1 Stamina. Search the most dangerous part of the building first.',
+        next: 'c2-cellar',
+        changes: { stamina: -1 },
+        requires: { stamina: 1 },
+        addFlags: ['c2-cellar-route'],
+        result: 'The cellar steps tilt while you descend, then settle pointing in a different direction.',
+      },
+      {
+        id: 'c2-attacker-route',
+        label: 'Question the attacker about the Crown orders.',
+        detail: 'Seek the person responsible before studying the magic.',
+        next: 'c2-attacker',
+        changes: { command: 1 },
+        addFlags: ['c2-attacker-route'],
+        result: 'The attacker opens his eyes when you place the sealed order case beside his face.',
+      },
+    ],
+  },
+
+  'c2-ledger': {
+    id: 'c2-ledger',
+    kicker: 'Ink remembers',
+    title: 'Fifteen Arrivals',
+    location: 'Bellweather Inn Taproom',
+    objective: 'Find the pattern inside Maelin’s record.',
+    threat: 'Rising',
+    art: 'inn',
+    body: () => [
+      'The book records fifteen versions of your arrival. In some, Mara is missing. In others, the treaty wagon burns in the yard. One entry says you arrived alone and refused to remove your red cloak.',
+      'Every visit ends at midnight. The front bell rings. The guests run toward the cellar. Then Maelin wakes the next morning with the rooms empty and another year beginning.',
+      'The cut line on the first page is still readable where the pen pressed into the paper beneath it: They pulled the road pin too early.',
+    ],
+    choices: [
+      {
+        id: 'c2-copy-pattern',
+        label: 'Copy the repeated times and cellar details.',
+        detail: 'Preserve a clear record before the book changes again.',
+        next: 'c2-night-watch',
+        changes: { command: 1 },
+        addFlags: ['c2-knows-midnight-pattern', 'c2-found-road-pin-term'],
+        result: 'You mark midnight, the cellar, and the words road pin. The useful pattern fits on one page.',
+      },
+      {
+        id: 'c2-ask-missing-mara',
+        label: 'Ask Maelin what happened when Mara was missing.',
+        detail: 'Risk a painful answer to learn what the changing road can alter.',
+        next: 'c2-night-watch',
+        changes: { rapport: 1, resolve: -1 },
+        addFlags: ['c2-heard-mara-version', 'c2-found-road-pin-term'],
+        result: '“You searched for her until the bell rang,” Maelin says. “Then the road returned you without her.”',
+      },
+      {
+        id: 'c2-study-cloak-version',
+        label: 'Study the entry about the man wearing your cloak.',
+        detail: 'Follow the clue that resembles the figure seen across the water.',
+        next: 'c2-night-watch',
+        changes: { resolve: 1 },
+        addFlags: ['c2-cloak-double', 'c2-found-road-pin-term'],
+        result: 'The man knew your name but had a deep burn across his face. Maelin never saw him remove the cloak.',
+      },
+    ],
+  },
+
+  'c2-cellar': {
+    id: 'c2-cellar',
+    kicker: 'Stone beneath timber',
+    title: 'The Road Under the Floor',
+    location: 'Bellweather Inn Cellar',
+    objective: 'Learn why the cellar moves when the road changes.',
+    threat: 'Immediate',
+    art: 'inn',
+    body: () => [
+      'The cellar floor is not packed earth. It is the King’s Road, complete with pale stones marking its middle. The inn was built over it long ago.',
+      'Tivik kneels beside a crack. Cold silver light shines below. Each time thunder sounds, the stones slide a finger’s width east or west. Shelves move with them, but the outer walls stay still.',
+      'A long iron spike sits in a locked bracket on the wall. Its label reads: Road pin key. The key itself is gone.',
+      'Footsteps cross the ceiling above you. Everyone else is in the common room.',
+    ],
+    choices: [
+      {
+        id: 'c2-mark-moving-stone',
+        label: 'Mark one road stone and watch where it moves.',
+        detail: 'Use a clear physical test before touching the iron bracket.',
+        next: 'c2-night-watch',
+        changes: { command: 1 },
+        addFlags: ['c2-tracked-stone', 'c2-found-road-pin-term'],
+        result: 'The marked stone moves toward the front door, then appears beside the back door without crossing the room.',
+      },
+      {
+        id: 'c2-break-bracket',
+        label: 'Pull the iron spike from its bracket.',
+        detail: 'Spend 1 Stamina. Take a possible tool before the unseen footsteps reach the stairs.',
+        next: 'c2-night-watch',
+        changes: { stamina: -1 },
+        requires: { stamina: 1 },
+        addFlags: ['c2-has-pin-key', 'c2-found-road-pin-term'],
+        result: 'The bracket breaks. The spike is heavy, warm, and shaped to fit something much larger.',
+      },
+      {
+        id: 'c2-follow-footsteps',
+        label: 'Follow the footsteps from below.',
+        detail: 'Risk the moving cellar to learn who is walking in the empty rooms.',
+        next: 'c2-night-watch',
+        changes: { resolve: -1, rapport: 1 },
+        addFlags: ['c2-tracked-double', 'c2-found-road-pin-term'],
+        result: 'The footsteps stop over your head. A man with your voice says, “Not this door. Not yet.”',
+      },
+    ],
+  },
+
+  'c2-attacker': {
+    id: 'c2-attacker',
+    kicker: 'The hired blade speaks',
+    title: 'Orders Without a Name',
+    location: 'Bellweather Inn Pantry',
+    objective: 'Learn what the attacker was ordered to do at the inn.',
+    threat: 'Rising',
+    art: 'inn',
+    body: (state) => [
+      state.flags.includes('c2-saved-attacker')
+        ? 'The medicine has cleared the attacker’s eyes. He gives his name as Sable Orr and asks whether the road has reached the sea yet.'
+        : 'The attacker struggles to breathe. He gives his name as Sable Orr, but blood darkens the bandage around his side.',
+      'Sable says his group was hired to force the escort into Bellweather Inn. They were told not to enter after midnight and not to touch the iron beneath the road.',
+      'His order carries a Crown seal but no royal name. The final line reads: When the bell rings, remove the road pin and leave the witnesses inside.',
+      'Before you can ask who wrote it, the bell above the front door rings once.',
+    ],
+    choices: [
+      {
+        id: 'c2-demand-employer',
+        label: 'Demand the name of the person who hired him.',
+        detail: 'Spend 1 Resolve. Push for a direct answer before his condition changes.',
+        next: 'c2-night-watch',
+        changes: { resolve: -1, command: 1 },
+        addFlags: ['c2-crown-voice', 'c2-found-road-pin-term'],
+        result: 'Sable never saw a face. He heard a calm man speaking from behind a royal screen in Greyhaven Palace.',
+      },
+      {
+        id: 'c2-offer-protection',
+        label: 'Offer Sable protection if he testifies.',
+        detail: 'Make a normal promise, not a magical Oath. His answer will depend on whether he trusts you.',
+        next: 'c2-night-watch',
+        changes: { rapport: 1 },
+        addFlags: ['c2-offered-sable-safety', 'c2-found-road-pin-term'],
+        result: 'Sable studies you, then gives one warning. “The Crown has people inside your Wardens.”',
+      },
+      {
+        id: 'c2-take-orders',
+        label: 'Take the orders and let him rest.',
+        detail: 'Preserve physical evidence instead of risking his life for another answer.',
+        next: 'c2-night-watch',
+        changes: { resolve: 1 },
+        addFlags: ['c2-kept-crown-orders', 'c2-found-road-pin-term'],
+        result: 'You place the sealed orders inside your armour. Sable closes his eyes but keeps breathing.',
+      },
+    ],
+  },
+
+  'c2-night-watch': {
+    id: 'c2-night-watch',
+    kicker: 'A quiet hour borrowed',
+    title: 'What the Road Can Take',
+    location: 'Bellweather Inn Upper Landing',
+    objective: 'Share the watch with Mara while the others rest.',
+    threat: 'Uneasy',
+    art: 'inn',
+    body: (state) => [
+      'Mara sits beside an upper window with her bow across her knees. Outside, one road leads east under heavy rain. The next time lightning flashes, the same road leads west toward Greyhaven.',
+      state.flags.includes('c2-heard-mara-version')
+        ? 'You tell her about the version in Maelin’s book where Mara never reached the inn. Her usual smile does not return.'
+        : 'You tell her enough about the night’s clues to make the danger clear. She listens without looking away from the yard.',
+      '“I can face an arrow,” she says. “I hate this. A road can take a person, and the rest of us may remember a world where they were never beside us.”',
+      'Her hand rests on the floor between you. Close enough to touch. She waits for an honest answer, not an order.',
+    ],
+    choices: [
+      {
+        id: 'c2-name-fear',
+        label: 'Tell Mara you are afraid of failing everyone at once.',
+        detail: 'Speak honestly and recover 1 Resolve through trust.',
+        next: 'c2-bell',
+        changes: { resolve: 1, rapport: 1 },
+        addFlags: ['c2-shared-fear'],
+        result: 'Mara takes your hand. “Then stop carrying us as one weight. We are people. Let us carry you back.”',
+      },
+      {
+        id: 'c2-kiss-mara',
+        label: 'Touch her hand and ask if you may kiss her.',
+        detail: 'Requires 4 Rapport. Let attraction become a clear choice for both of you.',
+        next: 'c2-bell',
+        changes: { rapport: 2, resolve: 1 },
+        requires: { rapport: 4 },
+        addFlags: ['c2-kissed-mara'],
+        result: 'Mara says yes. The kiss is warm, brief, and interrupted when the road outside changes direction again.',
+      },
+      {
+        id: 'c2-promise-as-captain',
+        label: 'Promise that you will not let the road separate the group.',
+        detail: 'Offer steady leadership without creating a magical Oath.',
+        next: 'c2-bell',
+        changes: { command: 1 },
+        addFlags: ['c2-captain-promise'],
+        result: 'Mara nods, but leaves her hand where it is. “I asked what you fear, not what you plan to do.”',
+      },
+    ],
+  },
+
+  'c2-bell': {
+    id: 'c2-bell',
+    kicker: 'Midnight arrives',
+    title: 'The Bell Rings Twice',
+    location: 'Bellweather Inn',
+    objective: 'Keep the inn from scattering the group across different roads.',
+    threat: 'Critical',
+    art: 'inn',
+    body: (state) => [
+      'The front bell rings. A second bell answers from the cellar. Every flame in the inn bends toward the floor.',
+      state.flags.includes('c2-knows-midnight-pattern')
+        ? 'You expected midnight, but knowing the time does not stop the walls from moving.'
+        : 'The common room stretches. The wounded slide away from one another as the floor grows into a long road.',
+      'The front door opens by itself. Outside stands another Bellweather Inn. Through its windows, you see another Caelan ordering another group of guards.',
+      'Maelin shouts from the stairs. “The cellar first. That is where you always lose each other.”',
+    ],
+    choices: [
+      {
+        id: 'c2-anchor-people',
+        label: 'Tie the wounded and guards together with wagon rope.',
+        detail: 'Spend 1 Command. Keep everyone connected while the room changes.',
+        next: 'c2-common-room-crisis',
+        changes: { command: -1 },
+        requires: { command: 1 },
+        addFlags: ['c2-rope-line'],
+        result: 'The floor stretches, but the rope keeps every person linked to the next.',
+      },
+      {
+        id: 'c2-hold-door',
+        label: 'Brace the front door before the other group enters.',
+        detail: 'Spend 2 Stamina. Stop the two versions of the inn from meeting.',
+        next: 'c2-common-room-crisis',
+        changes: { stamina: -2 },
+        requires: { stamina: 2 },
+        addFlags: ['c2-held-door'],
+        result: 'The door pushes back with your own strength. Through the gap, your other face looks directly at you.',
+      },
+      {
+        id: 'c2-oath-anchor',
+        label: 'Use your Oath to hold every promised life in this room.',
+        detail: 'Spend 2 Oathfire. The Oath protects people, but not the building.',
+        next: 'c2-common-room-crisis',
+        changes: { oathfire: -2 },
+        requires: { oathfire: 2 },
+        addFlags: ['c2-oath-anchored'],
+        result: 'Warm points of life fill your awareness. Walls move through darkness, but nobody disappears.',
+      },
+      {
+        id: 'c2-follow-maelin',
+        label: 'Trust Maelin and move everyone toward the cellar.',
+        detail: 'Follow the one person who has survived this night before.',
+        next: 'c2-common-room-crisis',
+        changes: { rapport: 1 },
+        addFlags: ['c2-trusted-maelin'],
+        result: 'Maelin opens a door that was a cupboard one moment earlier. Stone steps wait behind it.',
+      },
+    ],
+  },
+
+  'c2-common-room-crisis': {
+    id: 'c2-common-room-crisis',
+    kicker: 'The inn opens',
+    title: 'Guests From Other Nights',
+    location: 'Bellweather Inn Common Room',
+    objective: 'Protect the wounded while clearing a path to the cellar.',
+    threat: 'Critical',
+    art: 'inn',
+    body: (state) => [
+      state.flags.includes('c2-rope-line')
+        ? 'The rope pulls tight as three doors open onto three different nights. The people tied together remain in the same room.'
+        : state.flags.includes('c2-held-door')
+          ? 'The front door cracks but holds. The second inn begins pushing through the walls instead.'
+          : 'The walls pass through a moment of darkness. When the fire returns, the room is crowded.',
+      'Other versions of the escort stand between you and the cellar. One has no Mara. One carries an unbroken treaty chest. One follows the burned man wearing your red cloak.',
+      'They are as frightened as your people. Then the burned Caelan points at Maelin and says, “She keeps the road trapped. Take the key from her.”',
+      'Your wounded cannot survive a fight against people who share your training and your face.',
+    ],
+    choices: [
+      {
+        id: 'c2-order-no-fight',
+        label: 'Order every Warden to lower weapons.',
+        detail: 'Spend 2 Command. Use the same commands all versions were trained to obey.',
+        next: 'c2-descend',
+        changes: { command: -2 },
+        requires: { command: 2 },
+        addFlags: ['c2-no-fight'],
+        result: 'Your voice and the burned man’s voice collide. Enough guards hesitate for Mara to clear the cellar door.',
+      },
+      {
+        id: 'c2-show-orders',
+        label: 'Show the Crown orders and name the real enemy.',
+        detail: 'Available if you preserved the attacker’s written orders.',
+        next: 'c2-descend',
+        changes: { resolve: 1 },
+        requiresFlags: ['c2-kept-crown-orders'],
+        addFlags: ['c2-united-versions'],
+        result: 'The nearest guards recognise the Crown wax. They turn their weapons away from Maelin and toward the burned man.',
+      },
+      {
+        id: 'c2-protect-current-group',
+        label: 'Form a shield line and move your own group downstairs.',
+        detail: 'Spend 1 Stamina. Avoid the other versions instead of defeating them.',
+        next: 'c2-descend',
+        changes: { stamina: -1 },
+        requires: { stamina: 1 },
+        addFlags: ['c2-shielded-descent'],
+        result: 'Shields strike shields, but nobody swings a blade. Your group reaches the stairs together.',
+      },
+      {
+        id: 'c2-give-maelin-key',
+        label: 'Ask Maelin to open the hidden cellar path.',
+        detail: 'Available because you trusted or believed her before the crisis.',
+        next: 'c2-descend',
+        changes: { rapport: 1 },
+        requiresFlags: ['c2-trusted-maelin'],
+        addFlags: ['c2-maelin-secret-path'],
+        result: 'Maelin turns her lamp hook inside a wall crack. A narrow stair opens behind the fireplace.',
+      },
+      {
+        id: 'c2-block-versions',
+        label: 'Tip the heavy tables over and divide the room.',
+        detail: 'Create a path without spending a resource, but leave supplies behind.',
+        next: 'c2-descend',
+        addFlags: ['c2-left-supplies'],
+        result: 'The tables slow the other group. Your people reach the cellar, but food and blankets remain on the wrong side.',
+      },
+    ],
+  },
+
+  'c2-descend': {
+    id: 'c2-descend',
+    kicker: 'Below the waiting room',
+    title: 'Who Goes Under the Road',
+    location: 'Bellweather Inn Cellar Stairs',
+    objective: 'Choose who will help you find the cause while Brann guards the wounded.',
+    threat: 'Immediate',
+    art: 'inn',
+    body: (state) => [
+      'Brann can hold the stair for a few minutes. Tivik must come because the iron mechanism below is built like a machine. You can take one more person without leaving the wounded unprotected.',
+      state.flags.includes('c2-saved-lysara')
+        ? 'Lysara can use both hands again. She says the green light under the floor feels like the living magic inside her glass seed.'
+        : 'Lysara’s injured hand is wrapped against her chest, but she still offers to study the magic.',
+      state.flags.includes('c2-saved-nilo')
+        ? 'Nilo is awake enough to tell Maelin that he remembers the cellar from a dream he had last night.'
+        : 'Mara checks Nilo’s weak pulse, then stands and reaches for her bow.',
+      'The bell rings again. Dust falls from the ceiling. Time is running out.',
+    ],
+    choices: [
+      {
+        id: 'c2-take-mara',
+        label: 'Take Mara and leave Lysara with the wounded.',
+        detail: 'Bring the scout who notices movement and hidden paths.',
+        next: 'c2-folded-cellar',
+        changes: { rapport: 1 },
+        addFlags: ['c2-mara-below'],
+        result: 'Mara lights an arrow from the fire and follows you into the moving dark.',
+      },
+      {
+        id: 'c2-take-lysara',
+        label: 'Take Lysara and leave Mara in command upstairs.',
+        detail: 'Bring the ambassador who understands living magic.',
+        next: 'c2-folded-cellar',
+        changes: { command: 1 },
+        addFlags: ['c2-lysara-below'],
+        result: 'Lysara ties back her injured hand and follows. Mara takes your place at the stair without complaint.',
+      },
+      {
+        id: 'c2-take-maelin',
+        label: 'Take Maelin through the place she has feared for eleven years.',
+        detail: 'Bring the person who remembers every version of the inn.',
+        next: 'c2-folded-cellar',
+        changes: { resolve: 1 },
+        addFlags: ['c2-maelin-below'],
+        result: 'Maelin grips her axe and lamp. “About time,” she says, and leads the way down.',
+      },
+    ],
+  },
+
+  'c2-folded-cellar': {
+    id: 'c2-folded-cellar',
+    kicker: 'Distance breaks below',
+    title: 'The Cellar With No End',
+    location: 'Beneath Bellweather Inn',
+    objective: 'Cross the folded cellar without losing the stair behind you.',
+    threat: 'Immediate',
+    art: 'inn',
+    body: (state) => [
+      'The steps end on the King’s Road. It runs through the cellar and continues into darkness in both directions. Shelves repeat beside it, each holding the same cracked jar and dead mouse.',
+      state.flags.includes('c2-mara-below')
+        ? 'Mara fires a burning arrow ahead. A moment later it passes behind you, still moving in the same direction.'
+        : state.flags.includes('c2-lysara-below')
+          ? 'Lysara’s glass seed turns green near one section of wall and dark near another. The brighter path is the one that leads away from the inn.'
+          : 'Maelin counts doors under her breath. At the ninth door, she stops. “This is where the road took you every time.”',
+      'Tivik points to a silver crack crossing the road. “The stones are not moving,” he says. “The distance between them is changing.”',
+      'Behind you, the stair begins to fade. You need a way to mark one true path.',
+    ],
+    choices: [
+      {
+        id: 'c2-use-rope-path',
+        label: 'Tie your rope to the stair and follow its pull.',
+        detail: 'Use a physical connection to keep one route real.',
+        next: 'c2-road-pin',
+        changes: { command: 1 },
+        addFlags: ['c2-rope-path'],
+        result: 'The rope bends around empty air, revealing a turn your eyes cannot see.',
+      },
+      {
+        id: 'c2-use-pin-key',
+        label: 'Drag the iron key along the road stones.',
+        detail: 'Available if you took the iron spike from the cellar wall.',
+        next: 'c2-road-pin',
+        changes: { resolve: 1 },
+        requiresFlags: ['c2-has-pin-key'],
+        addFlags: ['c2-key-found-path'],
+        result: 'The iron pulls toward the silver crack. A hidden section of road becomes solid beneath your feet.',
+      },
+      {
+        id: 'c2-follow-companion',
+        label: 'Trust your companion’s reading of the cellar.',
+        detail: 'Spend 1 Resolve. Follow a human judgment when your own senses disagree.',
+        next: 'c2-road-pin',
+        changes: { resolve: -1, rapport: 1 },
+        requires: { resolve: 1 },
+        addFlags: ['c2-trusted-below'],
+        result: 'You stop trying to force the cellar into a normal shape. Your companion leads you across the broken distance.',
+      },
+    ],
+  },
+
+  'c2-road-pin': {
+    id: 'c2-road-pin',
+    kicker: 'The cause beneath the inn',
+    title: 'The Iron That Holds a Mile',
+    location: 'The Buried King’s Road',
+    objective: 'Understand the damaged road pin before touching it.',
+    threat: 'Rising',
+    art: 'inn',
+    body: (state) => [
+      'The hidden path ends at an iron spike taller than you are. It passes through the road and deep into the earth. Silver cracks spread from an empty keyhole near its top.',
+      state.flags.includes('c2-found-road-pin-term')
+        ? 'This is the road pin named in the book, bracket, and Crown order. Now you can see what the words mean.'
+        : 'Tivik calls it a road pin because it holds each mile of road in the correct place.',
+      'The pin is not fully removed. Someone turned it halfway and left it trapped. Each ring of the midnight bell shakes it looser, allowing Bellweather Inn to touch another year and another stretch of road.',
+      'A fresh Crown mark has been cut into the iron. Whoever damaged it had official tools and expected your escort to be inside when it failed.',
+    ],
+    choices: [
+      {
+        id: 'c2-study-keyhole',
+        label: 'Let Tivik study the empty keyhole.',
+        detail: 'Learn how to move the pin without breaking the road completely.',
+        next: 'c2-remove-pin',
+        changes: { command: 1 },
+        addFlags: ['c2-safe-removal'],
+        result: 'Tivik finds three locking teeth. Two are broken. The last can guide the pin out if everyone pulls together.',
+      },
+      {
+        id: 'c2-read-crown-mark',
+        label: 'Compare the Crown mark with the sealed orders.',
+        detail: 'Connect the sabotage to a tool controlled by Greyhaven Palace.',
+        next: 'c2-remove-pin',
+        changes: { resolve: 1 },
+        addFlags: ['c2-proved-crown-tool'],
+        result: 'The cut and the wax seal use the same small crown with one damaged point. The evidence matches.',
+      },
+      {
+        id: 'c2-feel-oath-pin',
+        label: 'Touch the pin and ask your Oath what lives depend on it.',
+        detail: 'Spend 1 Oathfire. Feel the human cost before choosing how to remove it.',
+        next: 'c2-remove-pin',
+        changes: { oathfire: -1 },
+        requires: { oathfire: 1 },
+        addFlags: ['c2-felt-road-lives'],
+        result: 'Hundreds of travellers flare at the edge of your awareness. The broken road is threatening people far beyond the inn.',
+      },
+    ],
+  },
+
+  'c2-remove-pin': {
+    id: 'c2-remove-pin',
+    kicker: 'The inn begins to tear',
+    title: 'Pull Before Midnight Ends',
+    location: 'The Buried King’s Road',
+    objective: 'Free the road pin before the inn chooses another year.',
+    threat: 'Critical',
+    art: 'inn',
+    body: (state) => [
+      'The bell above rings a third time. The silver cracks widen. Through them you see the inn burning, buried in snow, standing in summer, and lying as empty ruins.',
+      'Tivik loops a chain through the top of the road pin. The chain leads back toward the wagon team above. You can guide the pull, add your own strength, or use the treaty wagon as a weight.',
+      state.flags.includes('c2-safe-removal')
+        ? 'Because Tivik found the final locking tooth, one careful pull may remove the pin cleanly.'
+        : 'The locking teeth grind inside the road. A bad pull could break the pin and leave part of it buried.',
+      'The other Caelan steps through a silver crack behind you. The burn across his face shines red. “Leave it,” he says. “This is the only road that still reaches what we lost.”',
+    ],
+    choices: [
+      {
+        id: 'c2-command-pull',
+        label: 'Call the timing and make the whole escort pull together.',
+        detail: 'Spend 2 Command. Remove the pin through coordination instead of force.',
+        next: 'c2-last-testimony',
+        changes: { command: -2 },
+        requires: { command: 2 },
+        addFlags: ['c2-pin-whole'],
+        result: 'Your count travels up the chain. The pin rises one hand at a time until it tears free in one piece.',
+      },
+      {
+        id: 'c2-strength-pull',
+        label: 'Join the chain and pull with everything left in you.',
+        detail: 'Spend 3 Stamina. Free the pin before the burned man can stop you.',
+        next: 'c2-last-testimony',
+        changes: { stamina: -3, resolve: 1 },
+        requires: { stamina: 3 },
+        addFlags: ['c2-pin-whole', 'c2-caelan-injured'],
+        result: 'Pain tears across your back. The pin comes free, and you fall with it across your legs.',
+      },
+      {
+        id: 'c2-oath-pull',
+        label: 'Swear that this road will carry the living home.',
+        detail: 'Spend 2 Resolve. Gain 3 Oathfire and accept a binding duty to repair the road.',
+        next: 'c2-last-testimony',
+        changes: { resolve: -2, oathfire: 3 },
+        requires: { resolve: 3 },
+        addFlags: ['c2-oath-repair-road', 'c2-pin-whole'],
+        result: 'Fire crosses the chain. Every living hand pulls at once, and the road pin rises toward your promise.',
+      },
+      {
+        id: 'c2-wagon-break',
+        label: 'Drop the treaty wagon through the silver crack.',
+        detail: 'Sacrifice the wagon and break the pin free without spending a resource.',
+        next: 'c2-last-testimony',
+        changes: { rapport: -1 },
+        addFlags: ['c2-pin-broken', 'treaty-damaged'],
+        result: 'The wagon falls through the crack and yanks the chain tight. The pin snaps. Most of it comes free, but a black fragment remains below.',
+      },
+    ],
+  },
+
+  'c2-last-testimony': {
+    id: 'c2-last-testimony',
+    kicker: 'The road returns',
+    title: 'A Crown in the Iron',
+    location: 'Bellweather Inn at Dawn',
+    objective: 'Choose what evidence and duty you will carry toward Harrowfen.',
+    threat: 'Rising',
+    art: 'inn',
+    body: (state) => [
+      'The road pin leaves the earth. Bellweather Inn slams back into one place and one morning. Windows break. The other guests disappear. The burned Caelan reaches for you, then fades with the silver light.',
+      'Outside, the King’s Road runs east and west again. A market town stands on the eastern horizon. Maelin says Harrowfen should be three days away. The mile stone says it is one mile.',
+      state.flags.includes('c2-saved-attacker')
+        ? 'Sable walks into the yard with Brann supporting him. “I will testify,” he says. “The order came from the Crown, but the man behind the screen wore a Warden ring.”'
+        : 'Sable is dying when Brann carries him into the yard. He grips your sleeve and forces out seven words: “Crown order. Warden ring. Road pin. Harrowfen.”',
+      state.flags.includes('c2-pin-broken')
+        ? 'Tivik holds the broken top of the road pin. The fragment left underground is already pulling at the eastern road.'
+        : 'The full road pin lies in the mud. The damaged Crown mark is clear enough for any court to recognise.',
+    ],
+    choices: [
+      {
+        id: 'c2-carry-testimony',
+        label: 'Take Sable and his testimony to Harrowfen.',
+        detail: 'Protect the witness and gain 7 Wayfire. His survival depends on your earlier medicine choice.',
+        next: 'c2-ending-testimony',
+        changes: { wayfire: 7 },
+        addFlags: ['c2-chose-testimony'],
+        result: 'You place Sable on the safest wagon and order Brann to keep him under constant guard.',
+      },
+      {
+        id: 'c2-carry-pin',
+        label: 'Carry the road pin as proof and study its pull.',
+        detail: 'Follow the magical evidence toward Harrowfen and gain 7 Wayfire.',
+        next: 'c2-ending-pin',
+        changes: { wayfire: 7 },
+        addFlags: ['c2-chose-pin'],
+        result: 'Tivik wraps the iron in chains. Even on the wagon, it points toward Harrowfen.',
+      },
+      {
+        id: 'c2-swear-crown-truth',
+        label: 'Swear to expose the Crown officer behind the attack.',
+        detail: 'Spend 2 Resolve. Gain 3 Oathfire, 8 Wayfire, and a binding duty.',
+        next: 'c2-ending-oath',
+        changes: { resolve: -2, oathfire: 3, wayfire: 8 },
+        requires: { resolve: 3 },
+        addFlags: ['c2-oath-expose-crown'],
+        result: 'The promise catches fire inside your chest. The Crown mark on the iron glows in answer.',
+      },
+    ],
+  },
+
+  'c2-ending-testimony': {
+    id: 'c2-ending-testimony',
+    kicker: 'Chapter Two complete',
+    title: 'The Witness on the Wagon',
+    location: 'The Eastern Road to Harrowfen',
+    objective: 'Keep Sable alive and learn who inside the Wardens served the Crown plot.',
+    threat: 'Rising',
+    art: 'inn',
+    final: true,
+    body: (state) => [
+      state.flags.includes('c2-saved-attacker')
+        ? 'Sable remains awake as Bellweather Inn shrinks behind you. He names two safe houses and one Warden officer who took payment from the Palace.'
+        : 'Sable dies before the first mile marker. He leaves no full name, but the Warden ring clue changes the enemy you must search for.',
+      state.flags.includes('c2-saved-nilo')
+        ? 'Nilo rides beside Maelin and waves when he notices you looking back.'
+        : 'Maelin stays beside Nilo’s stretcher. His breathing is weak but steady enough for the short road ahead.',
+      'Harrowfen grows larger with every step. Then its eastern gate opens, and another version of your escort rides out to meet you.',
+    ],
+    choices: [],
+  },
+
+  'c2-ending-pin': {
+    id: 'c2-ending-pin',
+    kicker: 'Chapter Two complete',
+    title: 'Iron That Points East',
+    location: 'The Eastern Road to Harrowfen',
+    objective: 'Reach Harrowfen and learn why the road pin is pulling toward it.',
+    threat: 'Unknown',
+    art: 'inn',
+    final: true,
+    body: (state) => [
+      state.flags.includes('c2-pin-broken')
+        ? 'The broken road pin jumps inside its chains whenever the wagon turns away from Harrowfen. Something under the town is pulling at the missing half.'
+        : 'The road pin turns inside its chains until its Crown mark faces Harrowfen. Tivik says iron should not know where a town is.',
+      state.flags.includes('c2-kissed-mara')
+        ? 'Mara rides beside you. Her hand brushes yours once, private and deliberate, before she points toward the eastern gate.'
+        : 'Mara rides ahead and returns with a warning. Fresh wagon tracks leave Harrowfen, and they match your own wheels.',
+      'The gate opens. Town guards raise a bill bearing your signature. It says your escort arrived three days ago.',
+    ],
+    choices: [],
+  },
+
+  'c2-ending-oath': {
+    id: 'c2-ending-oath',
+    kicker: 'Chapter Two complete',
+    title: 'The Ring Inside the Crown',
+    location: 'The Eastern Road to Harrowfen',
+    objective: 'Find the false Warden and expose the Crown plot.',
+    threat: 'Immediate',
+    art: 'inn',
+    final: true,
+    body: (state) => [
+      'Your new Oath pulls east like a hot chain. Someone connected to the Crown plot is waiting in Harrowfen or has recently passed through it.',
+      state.flags.includes('c2-oath-repair-road')
+        ? 'The promise to repair the road pulls in the same direction. Two duties now agree, which makes their combined strength more dangerous.'
+        : 'The freed road lies straight behind you, but each mile marker carries a fresh cut shaped like a Warden ring.',
+      'An arrow strikes the wagon beside your hand. A note is tied below its head: Captain Vey, you already failed here three days from now.',
     ],
     choices: [],
   },
@@ -1152,6 +2113,26 @@ export const nodeOrder = [
   'ending-forward',
   'ending-height',
   'ending-oath',
+  'c2-arrival',
+  'c2-threshold',
+  'c2-triage',
+  'c2-medicine',
+  'c2-eleven-years',
+  'c2-investigate',
+  'c2-ledger',
+  'c2-cellar',
+  'c2-attacker',
+  'c2-night-watch',
+  'c2-bell',
+  'c2-common-room-crisis',
+  'c2-descend',
+  'c2-folded-cellar',
+  'c2-road-pin',
+  'c2-remove-pin',
+  'c2-last-testimony',
+  'c2-ending-testimony',
+  'c2-ending-pin',
+  'c2-ending-oath',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {
@@ -1172,8 +2153,14 @@ export function requirementText(choice: Choice) {
   const parts = Object.entries(choice.requires ?? {}).map(
     ([key, value]) => `${statLabels[key as StatKey]} ${value}`,
   );
-  if (choice.requiresFlags?.includes('captured-attacker')) {
-    parts.push('a captured attacker');
+  const flagLabels: Record<string, string> = {
+    'captured-attacker': 'a captured attacker',
+    'c2-kept-crown-orders': 'the preserved Crown orders',
+    'c2-trusted-maelin': 'Maelin’s trust',
+    'c2-has-pin-key': 'the iron road pin key',
+  };
+  for (const flag of choice.requiresFlags ?? []) {
+    parts.push(flagLabels[flag] ?? 'an earlier story choice');
   }
   return parts.join(', ');
 }
