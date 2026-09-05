@@ -11,7 +11,7 @@ export type GameStats = Record<StatKey, number>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2;
+  chapter: 1 | 2 | 3;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -43,7 +43,7 @@ export type StoryNode = {
     body: string;
   };
   introduces?: StatKey[];
-  art?: 'departure' | 'folded' | 'inn';
+  art?: 'departure' | 'folded' | 'inn' | 'harrowfen';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
@@ -2037,6 +2037,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'inn',
     final: true,
+    nextChapter: 'c3-arrival',
     body: (state) => [
       state.flags.includes('c2-saved-attacker')
         ? 'Sable remains awake as Bellweather Inn shrinks behind you. He names two safe houses and one Warden officer who took payment from the Palace.'
@@ -2058,6 +2059,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'inn',
     final: true,
+    nextChapter: 'c3-arrival',
     body: (state) => [
       state.flags.includes('c2-pin-broken')
         ? 'The broken road pin jumps inside its chains whenever the wagon turns away from Harrowfen. Something under the town is pulling at the missing half.'
@@ -2079,12 +2081,879 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'inn',
     final: true,
+    nextChapter: 'c3-arrival',
     body: (state) => [
       'Your new Oath pulls east like a hot chain. Someone connected to the Crown plot is waiting in Harrowfen or has recently passed through it.',
       state.flags.includes('c2-oath-repair-road')
         ? 'The promise to repair the road pulls in the same direction. Two duties now agree, which makes their combined strength more dangerous.'
         : 'The freed road lies straight behind you, but each mile marker carries a fresh cut shaped like a Warden ring.',
       'An arrow strikes the wagon beside your hand. A note is tied below its head: Captain Vey, you already failed here three days from now.',
+    ],
+    choices: [],
+  },
+
+  'c3-arrival': {
+    id: 'c3-arrival',
+    kicker: 'Chapter Three',
+    title: 'The Town at the Wrong Mile',
+    location: 'West Gate, Harrowfen',
+    objective: 'Enter Harrowfen without letting the false escort divide your people.',
+    threat: 'Immediate',
+    art: 'harrowfen',
+    body: (state) => [
+      'Harrowfen should be three days from Bellweather Inn. You reach its west gate before the morning mist has left your cloak.',
+      'The town sits inside a ring of black reeds. Houses lean over narrow canals, and bright market awnings stretch between old stone towers. It would look welcoming if fifty archers were not aiming at you from the wall.',
+      'A second escort waits outside the gate. The riders wear your green road cloaks. Their wagon carries the same split wheel as yours. At their front sits a man with your face, your sword, and dried blood across his mouth.',
+      'Mara whispers, “Tell me you see him.” Before you can answer, the other Caelan raises two fingers in your private signal for danger behind. Then he and every rider around him fade into the mist.',
+      state.flags.includes('c2-oath-expose-crown')
+        ? 'The Oath inside your chest pulls toward the gatehouse hard enough to hurt. Someone tied to the Crown plot is close.'
+        : 'A town guard lowers a speaking horn. “Captain Vey, you were ordered never to return. Put down your weapons.”',
+    ],
+    choices: [
+      {
+        id: 'c3-command-calm',
+        label: 'Order your guards to lower their weapons.',
+        detail: 'Show control before fear starts a fight. Gain 1 Command.',
+        next: 'c3-gate',
+        changes: { command: 1 },
+        addFlags: ['c3-calm-entry'],
+        result: 'Your order moves down the line. Twenty blades return to their sheaths before one frightened hand can begin a battle.',
+      },
+      {
+        id: 'c3-shield-wounded',
+        label: 'Place yourself between the archers and the wounded.',
+        detail: 'Spend 1 Stamina to protect the wagons while Mara speaks for you.',
+        next: 'c3-gate',
+        requires: { stamina: 1 },
+        changes: { stamina: -1, rapport: 1 },
+        addFlags: ['c3-shielded-wounded'],
+        result: 'You stand in the open with empty hands raised. Mara names every injured traveller behind you until the archers begin to look ashamed.',
+      },
+      {
+        id: 'c3-show-evidence',
+        label: 'Hold up the Crown marked iron.',
+        detail: 'Make the guards look at the strange evidence instead of your weapons.',
+        next: 'c3-gate',
+        addFlags: ['c3-showed-iron'],
+        result: 'The iron turns in your grip and points through the closed gate. Several guards step back as if it has named them.',
+      },
+    ],
+  },
+
+  'c3-gate': {
+    id: 'c3-gate',
+    kicker: 'One mile from nowhere',
+    title: 'A Debt Already Paid',
+    location: 'West Gate, Harrowfen',
+    objective: 'Prove that you are not the man who threatened Harrowfen.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    body: (state) => [
+      'The gate opens only wide enough for one woman to step through. Warden Elene Marr is broad shouldered, grey haired, and carrying a crossbow with a silver bolt.',
+      'She pushes a folded bill into your hand. It charges your escort for three nights of rooms, two broken doors, and the burial of a royal courier. At the bottom is your signature. The curve of every letter is yours.',
+      '“You arrived three days ago,” Elene says. “You asked questions about an iron spike. Last night you robbed our archive and promised to burn the town if we followed.”',
+      state.flags.includes('c2-saved-attacker')
+        ? 'Sable lifts his head from the wagon. “I have met that courier,” he says weakly. “He gave us the order at Bellweather.”'
+        : 'Brann points at a dark stain beside the gate. A body was dragged from there toward the old watch house.',
+      'Behind you, one of the wounded cries out. Lysara says his fever is rising. The archers above draw their strings tighter.',
+    ],
+    choices: [
+      {
+        id: 'c3-test-signature',
+        label: 'Sign your name again in front of Elene.',
+        detail: 'Give her a simple fact she can compare for herself.',
+        next: 'c3-triage',
+        changes: { resolve: 1 },
+        addFlags: ['c3-tested-signature'],
+        result: 'The fresh signature matches the old one until Elene holds both near the iron. The older ink crawls toward it.',
+      },
+      {
+        id: 'c3-give-command-word',
+        label: 'Ask Brann for yesterday’s command word.',
+        detail: 'Use a Warden check that an imitation should not know. Requires 2 Command.',
+        next: 'c3-triage',
+        requires: { command: 2 },
+        changes: { command: -1 },
+        addFlags: ['c3-proved-command'],
+        result: 'Brann gives the challenge. You answer with the private reply. Elene admits the earlier Caelan knew a word that will not be chosen until tomorrow.',
+      },
+      {
+        id: 'c3-let-mara-search-you',
+        label: 'Let Mara hand Elene your weapons and papers.',
+        detail: 'Accept a temporary loss of control to earn trust. Gain 1 Rapport.',
+        next: 'c3-triage',
+        changes: { rapport: 1 },
+        addFlags: ['c3-entered-unarmed'],
+        result: 'Mara removes your sword with careful hands. “I expect this back,” she tells Elene. The warning earns the first small smile on the wall.',
+      },
+    ],
+  },
+
+  'c3-triage': {
+    id: 'c3-triage',
+    kicker: 'A town under suspicion',
+    title: 'Three Urgent Roads',
+    location: 'Reed Market, Harrowfen',
+    objective: 'Choose what the escort needs before the false arrival strikes again.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    lesson: {
+      title: 'Your focus changes what you learn',
+      body: 'You can investigate the false escort, protect the wounded, or seek a safe road out. Every route reaches the same crisis, but it changes who trusts you and what proof you carry.',
+    },
+    body: () => [
+      'Elene allows six of you inside. Harrowfen smells of wet rope, baked pears, and the dark water under its streets. Traders are packing their stalls even though the morning bell has not rung.',
+      'The wounded need Harrowfen’s healer. The robbed archive may hold a record of the false escort. A masked road broker named Varris offers a third answer: a route to Greyhaven in exchange for one look at your iron fragment.',
+      'Lysara wants the archive searched before more records vanish. Mara wants beds, locked doors, and guards around the injured. Both are right, and both are waiting for you to choose.',
+    ],
+    choices: [
+      {
+        id: 'c3-focus-archive',
+        label: 'Search the archive with Lysara.',
+        detail: 'Follow the false escort’s trail before it goes cold.',
+        next: 'c3-archive',
+        changes: { resolve: 1 },
+        addFlags: ['c3-route-archive', 'c3-backed-lysara'],
+        result: 'You give Mara command of the wagons and follow Lysara toward the old watch house.',
+      },
+      {
+        id: 'c3-focus-wounded',
+        label: 'Secure the healer with Mara.',
+        detail: 'Protect the people already paying for your mission. Gain 1 Rapport.',
+        next: 'c3-healer',
+        changes: { rapport: 1 },
+        addFlags: ['c3-route-healer', 'c3-backed-mara'],
+        result: 'You send Lysara with Elene and help Mara push the first wagon through the frightened crowd.',
+      },
+      {
+        id: 'c3-focus-road',
+        label: 'Hear Varris’s offer without giving him the iron.',
+        detail: 'Look for an escape route while keeping the evidence in your hands.',
+        next: 'c3-broker',
+        changes: { command: 1 },
+        addFlags: ['c3-route-broker'],
+        result: 'You make Tivik hold the wrapped iron while Varris leads you into a shop with six doors and no windows.',
+      },
+    ],
+  },
+
+  'c3-archive': {
+    id: 'c3-archive',
+    kicker: 'Investigation route',
+    title: 'The Page That Remembers You',
+    location: 'Old Watch Archive, Harrowfen',
+    objective: 'Find what the false escort stole and why it needed your name.',
+    threat: 'Uneasy',
+    art: 'harrowfen',
+    body: () => [
+      'The archive door is broken inward. Shelves cover the round room from floor to roof, but only one ledger lies open. Its page records your arrival again and again in different ink.',
+      'In one entry you came alone. In another, Mara was dead. In a third, Harrowfen had no west gate. Each entry ends with the same line: Captain Vey asked for the Mileless Bridge.',
+      'Lysara leans close enough that her sleeve touches yours. “This is not a list of lies,” she says. “The paper believes every version happened.” A floorboard creaks behind the shelves.',
+    ],
+    choices: [
+      {
+        id: 'c3-catch-archive-spy',
+        label: 'Circle the shelves and catch whoever is hiding.',
+        detail: 'Spend 1 Stamina to move before the watcher escapes.',
+        next: 'c3-bill',
+        requires: { stamina: 1 },
+        changes: { stamina: -1 },
+        addFlags: ['c3-caught-clerk'],
+        result: 'You catch a young clerk with a Crown seal in his pocket. He swears a royal courier paid him to leave the ledger open.',
+      },
+      {
+        id: 'c3-copy-bridge-entry',
+        label: 'Copy every entry about the Mileless Bridge.',
+        detail: 'Preserve the clear clue before chasing anyone.',
+        next: 'c3-bill',
+        changes: { resolve: 1 },
+        addFlags: ['c3-bridge-record'],
+        result: 'Lysara copies seven locations for one bridge. None of them agree with Harrowfen’s current maps.',
+      },
+      {
+        id: 'c3-ask-lysara-what-she-sees',
+        label: 'Ask Lysara to read the living ink.',
+        detail: 'Trust her magic and gain 1 Rapport.',
+        next: 'c3-bill',
+        changes: { rapport: 1 },
+        addFlags: ['c3-lysara-read-ink'],
+        result: 'Lysara touches the page. The ink forms the outline of a man carrying your sword but wearing a royal courier’s silver gloves.',
+      },
+    ],
+  },
+
+  'c3-healer': {
+    id: 'c3-healer',
+    kicker: 'Protection route',
+    title: 'Beds Beside Black Water',
+    location: 'Mother Senna’s Canal House, Harrowfen',
+    objective: 'Make the wounded safe before the town turns against them.',
+    threat: 'Immediate',
+    art: 'harrowfen',
+    body: (state) => [
+      'Mother Senna’s healing house stands on stilts above a canal. She opens the door, sees Nilo, and drops a bowl. “I buried that boy yesterday,” she says.',
+      state.flags.includes('c2-saved-nilo')
+        ? 'Nilo stares at her. “I have never met you.” Senna touches his living face, then points to a fresh grave across the water.'
+        : 'The weak boy on Maelin’s stretcher has the same face as the child in a charcoal death portrait hanging beside the door.',
+      'Stones strike the roof. People outside believe your escort brought a sickness that copies the dead. Mara bars the door and looks to you for an order.',
+    ],
+    choices: [
+      {
+        id: 'c3-hold-healer-door',
+        label: 'Hold the door while Senna treats the wounded.',
+        detail: 'Spend 1 Stamina and refuse to answer fear with steel.',
+        next: 'c3-bill',
+        requires: { stamina: 1 },
+        changes: { stamina: -1, command: 1 },
+        addFlags: ['c3-secured-healer'],
+        result: 'You take the stones on your shield until Elene’s guards clear the bridge. No wounded traveller is touched.',
+      },
+      {
+        id: 'c3-show-nilo-memory',
+        label: 'Ask Nilo to prove he is himself.',
+        detail: 'Let a frightened boy answer in his own words.',
+        next: 'c3-bill',
+        changes: { rapport: 1 },
+        addFlags: ['c3-nilo-spoke'],
+        result: 'Nilo tells Senna how he earned the scar on his thumb. The dead copy had no scar. Senna opens every bed she has.',
+      },
+      {
+        id: 'c3-command-canal-line',
+        label: 'Place guards on both canal bridges.',
+        detail: 'Spend 1 Command to create a safe treatment area.',
+        next: 'c3-bill',
+        requires: { command: 1 },
+        changes: { command: -1 },
+        addFlags: ['c3-canal-defence'],
+        result: 'Brann forms a calm line and gives the crowd room to retreat. The shouting loses its courage when nobody pushes back.',
+      },
+    ],
+  },
+
+  'c3-broker': {
+    id: 'c3-broker',
+    kicker: 'Road route',
+    title: 'The Shop of Six Doors',
+    location: 'Varris’s Route House, Harrowfen',
+    objective: 'Learn what the iron can buy without losing it.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    body: () => [
+      'Each door in Varris’s shop opens onto a different street. One shows Greyhaven under summer sun. One shows a red desert. One opens above a black ocean with stars below it.',
+      'Varris wears a smooth wooden mask. “The iron does not open roads,” he says. “It tells a road which answer is true. Let me place it on my table and I will send your wounded home.”',
+      'Tivik tightens both hands around the wrapped fragment. Through the wall, you hear Varris whisper the same offer in your own voice.',
+    ],
+    choices: [
+      {
+        id: 'c3-mark-false-door',
+        label: 'Use a drop of blood to mark the Greyhaven door.',
+        detail: 'Spend 1 Stamina to test whether the view is physically real.',
+        next: 'c3-bill',
+        requires: { stamina: 1 },
+        changes: { stamina: -1 },
+        addFlags: ['c3-tested-door'],
+        result: 'Your blood falls through the sunny doorway and lands behind you. The route is a loop wearing Greyhaven’s face.',
+      },
+      {
+        id: 'c3-offer-the-wrapping',
+        label: 'Give Varris the iron’s stained wrapping.',
+        detail: 'Trade a trace of its power for his map while keeping the fragment.',
+        next: 'c3-bill',
+        changes: { resolve: 1 },
+        addFlags: ['c3-varris-map'],
+        result: 'Varris presses the cloth to a blank map. A bridge appears east of town, then slides away whenever the fragment moves.',
+      },
+      {
+        id: 'c3-seize-mask',
+        label: 'Pull off Varris’s mask when your voice speaks again.',
+        detail: 'Act before the imitation finishes distracting you. Requires 2 Resolve.',
+        next: 'c3-bill',
+        requires: { resolve: 2 },
+        changes: { resolve: -1, command: 1 },
+        addFlags: ['c3-unmasked-varris'],
+        result: 'The mask comes away. Varris has no mouth, only moving ink that shapes your signature across his skin. He points in terror toward the watch house.',
+      },
+    ],
+  },
+
+  'c3-bill': {
+    id: 'c3-bill',
+    kicker: 'One impossible fact',
+    title: 'Ink Pulled by Iron',
+    location: 'Reed Market, Harrowfen',
+    objective: 'Discover why the old bill reacts to the road pin.',
+    threat: 'Uneasy',
+    art: 'harrowfen',
+    body: (state) => [
+      state.flags.includes('c3-route-archive')
+        ? 'You return with proof that Harrowfen’s ledger remembers several arrivals.'
+        : state.flags.includes('c3-route-healer')
+          ? 'You return knowing that a second Nilo died here before the living boy arrived.'
+          : 'You return with a map on which the same bridge refuses to stay in one place.',
+      'Tivik sets the wrapped road pin on an empty stall. The false bill slides across the wood toward it. When he lifts the iron, the ink changes. The date moves forward one day, then back four.',
+      'Lysara keeps her explanation short. “The fragment is forcing one possible journey to remain real. Harrowfen is remembering the travellers who used that journey.”',
+      'Mara looks across the market. “Then somewhere in this town, a possible version of us is still walking.”',
+    ],
+    choices: [
+      {
+        id: 'c3-anchor-bill',
+        label: 'Pin the bill down and move the iron around it.',
+        detail: 'Test which direction makes the false date stable.',
+        next: 'c3-evidence',
+        changes: { resolve: 1 },
+        addFlags: ['c3-found-east-pull'],
+        result: 'The date stops moving only when the iron points east, toward the old watch house and the bridge beyond it.',
+      },
+      {
+        id: 'c3-ask-town-memory',
+        label: 'Ask witnesses for one detail they all remember.',
+        detail: 'Use ordinary questions to find the solid fact. Gain 1 Command.',
+        next: 'c3-evidence',
+        changes: { command: 1 },
+        addFlags: ['c3-witness-pattern'],
+        result: 'Every witness remembers silver gloves. Faces and names change, but the false escort’s courier always wore them.',
+      },
+      {
+        id: 'c3-let-iron-point',
+        label: 'Unwrap the fragment and let it turn freely.',
+        detail: 'Risk showing its power so you can follow it.',
+        next: 'c3-evidence',
+        addFlags: ['c3-iron-exposed'],
+        result: 'The fragment spins once, cuts a line into the stall, and stops toward the old watch house. A royal seal shines in a high window.',
+      },
+    ],
+  },
+
+  'c3-evidence': {
+    id: 'c3-evidence',
+    kicker: 'A trail through memory',
+    title: 'The Courier Who Died Twice',
+    location: 'Burial Canal, Harrowfen',
+    objective: 'Identify the royal courier before he learns you are following him.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    body: (state) => [
+      'Elene leads you to the courier’s grave. The earth is wet and newly packed. His name board reads Ordan Vale, Royal Road Office.',
+      state.flags.includes('c2-saved-attacker')
+        ? 'Sable confirms the name. Ordan Vale gave the Bellweather attackers their orders from behind a screen.'
+        : 'Inside the grave you find only a silver glove filled with black reeds. There is no body.',
+      'A bell rings from the watch house. Across the canal, a living man in silver gloves watches you from an upper window. He smiles, closes the shutters, and sets the building on fire.',
+    ],
+    choices: [
+      {
+        id: 'c3-save-grave-record',
+        label: 'Take the name board before the fire reaches it.',
+        detail: 'Keep simple proof of Ordan Vale’s presence.',
+        next: 'c3-watch-house',
+        addFlags: ['c3-kept-name-board'],
+        result: 'You pull the board free. The burial date changes in your hand, but Ordan’s name remains.',
+      },
+      {
+        id: 'c3-rush-burning-house',
+        label: 'Run for the watch house before Ordan escapes.',
+        detail: 'Spend 2 Stamina to reach the fire first.',
+        next: 'c3-watch-house',
+        requires: { stamina: 2 },
+        changes: { stamina: -2 },
+        addFlags: ['c3-reached-house-first'],
+        result: 'You cross the canal bridge before the first burning beam falls and see Ordan enter a room with no outer door.',
+      },
+      {
+        id: 'c3-order-streets-closed',
+        label: 'Have Elene close every road out of town.',
+        detail: 'Spend 1 Command to trap the courier inside Harrowfen.',
+        next: 'c3-watch-house',
+        requires: { command: 1 },
+        changes: { command: -1 },
+        addFlags: ['c3-closed-roads'],
+        result: 'Horns sound at each gate. Ordan cannot leave by an ordinary road, which tells you what kind of escape he needs.',
+      },
+    ],
+  },
+
+  'c3-watch-house': {
+    id: 'c3-watch-house',
+    kicker: 'The false arrival',
+    title: 'A Room Built Tomorrow',
+    location: 'Burning Watch House, Harrowfen',
+    objective: 'Search Ordan’s hidden room before the fire destroys it.',
+    threat: 'Immediate',
+    art: 'harrowfen',
+    body: () => [
+      'Smoke presses down the stairwell. Behind the upper records room stands a new door in an old wall. The wood is cold and rain runs upward across it.',
+      'Inside, tomorrow has already happened. A broken market bell lies on the floor. Your red cloak hangs from a peg, wet with blood you have not lost. Ordan’s desk holds a list of people the false escort frightened into leaving town.',
+      'At the bottom of the list is one instruction: keep Captain Vey busy until the Nail fragment can be taken east.',
+    ],
+    choices: [
+      {
+        id: 'c3-take-courier-list',
+        label: 'Take Ordan’s list and leave before the roof falls.',
+        detail: 'Secure clear evidence without spending a resource.',
+        next: 'c3-divided-loyalty',
+        addFlags: ['c3-kept-courier-list'],
+        result: 'You fold the list into your coat. The names stay fixed after you carry it away from the cold door.',
+      },
+      {
+        id: 'c3-free-future-cloak',
+        label: 'Pull your bloody cloak from the peg.',
+        detail: 'Spend 1 Resolve to face a possible death and inspect it.',
+        next: 'c3-divided-loyalty',
+        requires: { resolve: 1 },
+        changes: { resolve: -1 },
+        addFlags: ['c3-took-future-cloak'],
+        result: 'The blood is warm. A cut in the cloth matches no weapon you know, but a scrap of silver glove is caught inside it.',
+      },
+      {
+        id: 'c3-destroy-future-room',
+        label: 'Push the burning desk against the cold door.',
+        detail: 'Spend 1 Stamina to stop this room from shaping the town again.',
+        next: 'c3-divided-loyalty',
+        requires: { stamina: 1 },
+        changes: { stamina: -1, command: 1 },
+        addFlags: ['c3-burned-future-room'],
+        result: 'The cold door catches fire. Outside, three people suddenly remember that the false escort never entered their homes.',
+      },
+    ],
+  },
+
+  'c3-divided-loyalty': {
+    id: 'c3-divided-loyalty',
+    kicker: 'A breath before danger',
+    title: 'What Comes First',
+    location: 'Healer’s Roof, Harrowfen',
+    objective: 'Settle the split in your group before Ordan makes his move.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    body: (state) => [
+      'For a few minutes, rain quiets the town. Mara waits on the healer’s roof while Lysara checks the canal for movement. Both women are tired. Neither steps away when you join them.',
+      state.flags.includes('c3-backed-mara')
+        ? 'Lysara says your wounded are safe because you chose people before answers. She respects it, but warns that Ordan used the delay.'
+        : state.flags.includes('c3-backed-lysara')
+          ? 'Mara says the archive clue may save the town. She also reminds you that frightened people remember who stood beside their beds.'
+          : 'Mara admits that seeking a road out was sensible. Lysara answers that sensible choices can still leave an enemy free.',
+      'Their disagreement is not about pride. Mara fears losing people you can protect now. Lysara fears that saving one room will mean little if Ordan can rewrite the road beneath it.',
+    ],
+    choices: [
+      {
+        id: 'c3-stand-with-mara',
+        label: 'Tell Mara that protecting lives comes first.',
+        detail: 'Make your priority clear and gain 1 Rapport with Mara’s path.',
+        next: 'c3-market-memory',
+        changes: { rapport: 1 },
+        addFlags: ['c3-priority-people'],
+        result: 'Mara’s shoulders loosen. She touches your wrist and says, “Then make sure you come back as one of them.”',
+      },
+      {
+        id: 'c3-stand-with-lysara',
+        label: 'Tell Lysara that finding the cause may save more lives.',
+        detail: 'Accept the colder duty and gain 1 Resolve.',
+        next: 'c3-market-memory',
+        changes: { resolve: 1 },
+        addFlags: ['c3-priority-cause'],
+        result: 'Lysara studies you, then gives a small, warm smile. “Good. I was afraid your courage had made you simple.”',
+      },
+      {
+        id: 'c3-name-the-real-plan',
+        label: 'Give each woman part of the same plan.',
+        detail: 'Requires 2 Command. Spend 1 Command so protection and investigation support each other.',
+        next: 'c3-market-memory',
+        requires: { command: 2 },
+        changes: { command: -1, rapport: 1 },
+        addFlags: ['c3-balanced-plan'],
+        result: 'Mara takes the wounded. Lysara watches the iron. Their hands meet over your map, and the argument becomes a plan.',
+      },
+    ],
+  },
+
+  'c3-market-memory': {
+    id: 'c3-market-memory',
+    kicker: 'The town remembers',
+    title: 'Yesterday Walks into the Market',
+    location: 'Reed Market, Harrowfen',
+    objective: 'Keep the market calm when old versions of the town return.',
+    threat: 'Critical',
+    art: 'harrowfen',
+    body: () => [
+      'At noon, every bell in Harrowfen rings at once. The canals empty upward into the sky. Market stalls change colour. Missing houses appear between standing ones and push stone walls aside.',
+      'People walk out of those houses carrying meals cooked three days ago. Some meet older versions of themselves. Others find family members they buried years before. Joy turns to panic when the returned people begin fading at the edges.',
+      'The iron fragment tears free of its chains and floats above Tivik’s hands. Each time it turns, another version of Harrowfen replaces part of the market.',
+    ],
+    choices: [
+      {
+        id: 'c3-command-market',
+        label: 'Call everyone toward the fixed stone well.',
+        detail: 'Spend 2 Command to give the crowd one place and one instruction.',
+        next: 'c3-pin-test',
+        requires: { command: 2 },
+        changes: { command: -2 },
+        addFlags: ['c3-saved-market-crowd'],
+        result: 'Your guards repeat the order until frightened voices become one moving line. The old well remains in every version of the square.',
+      },
+      {
+        id: 'c3-carry-children',
+        label: 'Carry two trapped children across the changing street.',
+        detail: 'Spend 2 Stamina to save them before their house vanishes.',
+        next: 'c3-pin-test',
+        requires: { stamina: 2 },
+        changes: { stamina: -2, rapport: 1 },
+        addFlags: ['c3-saved-market-children'],
+        result: 'The road becomes a canal under your final step. Mara catches your arm and pulls all three of you onto fixed stone.',
+      },
+      {
+        id: 'c3-follow-tiviks-rule',
+        label: 'Order everyone to stop moving the iron.',
+        detail: 'Use what you learned and make the fragment hold one version in place.',
+        next: 'c3-pin-test',
+        changes: { resolve: 1 },
+        addFlags: ['c3-stilled-fragment'],
+        result: 'Tivik lowers the fragment onto the well. The market stops changing, though cries continue from streets trapped in other versions.',
+      },
+    ],
+  },
+
+  'c3-pin-test': {
+    id: 'c3-pin-test',
+    kicker: 'The answer in motion',
+    title: 'One Version Held Still',
+    location: 'Stone Well, Harrowfen',
+    objective: 'Use the fragment carefully enough to understand its effect.',
+    threat: 'Immediate',
+    art: 'harrowfen',
+    body: () => [
+      'The fragment rests on the well. Around it, one market remains solid. Beyond a circle of ten steps, streets slide through different days.',
+      'Tivik turns the iron a finger’s width. A safe stone bridge replaces a burning canal. He turns it back, and the canal returns. The effect is now clear: the iron fixes one possible distance and destination in place. When it moves, the road remembers other answers.',
+      'Lysara points across the square. Your double stands beside the watch house, solid now. He is holding Mara with a knife at her throat. The real Mara is still beside you.',
+    ],
+    choices: [
+      {
+        id: 'c3-approach-double-alone',
+        label: 'Approach your double alone.',
+        detail: 'Keep both Maras in sight and risk only yourself.',
+        next: 'c3-duplicate',
+        changes: { resolve: 1 },
+        addFlags: ['c3-faced-double-alone'],
+        result: 'You cross the fixed circle with empty hands. Your double watches you with the hatred of a man who knows your next mistake.',
+      },
+      {
+        id: 'c3-send-real-mara',
+        label: 'Let the real Mara circle behind him.',
+        detail: 'Trust her skill and gain 1 Rapport.',
+        next: 'c3-duplicate',
+        changes: { rapport: 1 },
+        addFlags: ['c3-mara-flanked-double'],
+        result: 'Mara vanishes into the moving streets. A moment later, her knife appears against your double’s back.',
+      },
+      {
+        id: 'c3-use-oath-sight',
+        label: 'Use Oathfire to find which person made a real promise.',
+        detail: 'Spend 1 Oathfire. A true promise leaves heat that a copied memory cannot create.',
+        next: 'c3-duplicate',
+        requires: { oathfire: 1 },
+        changes: { oathfire: -1 },
+        addFlags: ['c3-saw-false-oath'],
+        result: 'Fire traces the promise Mara made at Bellweather. The woman beside your double has no heat at all. She is a road memory, not your companion.',
+      },
+    ],
+  },
+
+  'c3-duplicate': {
+    id: 'c3-duplicate',
+    kicker: 'The man with your face',
+    title: 'A Memory Given Orders',
+    location: 'Shifting Market Edge, Harrowfen',
+    objective: 'Learn who controls the false Caelan without losing Mara.',
+    threat: 'Critical',
+    art: 'harrowfen',
+    body: (state) => [
+      'Your double speaks in your voice. “Ordan showed me what happens if you keep going. Mara dies at the bridge. Lysara opens a door she cannot close. I am the version of you that learned to stop.”',
+      state.flags.includes('c3-saw-false-oath')
+        ? 'Oathfire shows no promise inside him. His fear is real, but it was copied from a possible future and given someone else’s purpose.'
+        : 'He knows memories you have never lived, yet he repeats Ordan’s name like an order he cannot question.',
+      'The false Mara drives her elbow back. Your double’s knife cuts her throat, but no blood falls. She breaks into rain. He stares at his empty hand, suddenly unsure what he is.',
+    ],
+    choices: [
+      {
+        id: 'c3-talk-double-down',
+        label: 'Tell him fear does not get to choose for both of you.',
+        detail: 'Spend 1 Resolve to face the future he remembers.',
+        next: 'c3-courier',
+        requires: { resolve: 1 },
+        changes: { resolve: -1 },
+        addFlags: ['c3-double-yielded'],
+        result: 'Your double lowers the knife. “Then do better than I did,” he says before the rain takes him.',
+      },
+      {
+        id: 'c3-disarm-double',
+        label: 'Disarm him while he is confused.',
+        detail: 'Spend 1 Stamina to end the threat quickly.',
+        next: 'c3-courier',
+        requires: { stamina: 1 },
+        changes: { stamina: -1 },
+        addFlags: ['c3-double-disarmed'],
+        result: 'You strike the knife away. The double grips your sleeve and whispers that Ordan is already beside the well.',
+      },
+      {
+        id: 'c3-ask-future-warning',
+        label: 'Ask what waits at the bridge.',
+        detail: 'Take one clear warning before the memory fades.',
+        next: 'c3-courier',
+        addFlags: ['c3-bridge-warning'],
+        result: '“Do not trust the first end of the bridge,” he says. “And the thief is not working for Ordan.” Then his face becomes mist.',
+      },
+    ],
+  },
+
+  'c3-courier': {
+    id: 'c3-courier',
+    kicker: 'The theft',
+    title: 'Silver Gloves at the Well',
+    location: 'Stone Well, Harrowfen',
+    objective: 'Stop Ordan Vale from taking the iron fragment.',
+    threat: 'Critical',
+    art: 'harrowfen',
+    body: (state) => [
+      'You turn toward the well. Ordan Vale is already there, alive and smiling in his silver gloves. He looks ordinary, which makes the bodies and burning streets around him feel worse.',
+      '“Thank you for carrying it out of Bellweather,” he says. “A royal tool cannot be stolen until a loyal officer calls it evidence.”',
+      state.flags.includes('c3-closed-roads')
+        ? 'The ordinary gates are shut, so Ordan presses a brass token against the fragment and opens a narrow road straight through the market.'
+        : 'He presses a brass token against the fragment. A narrow road opens through the crowd toward an ancient bridge standing beyond the eastern reeds.',
+      'His glove closes around the iron. Harrowfen begins changing again.',
+    ],
+    choices: [
+      {
+        id: 'c3-cut-glove',
+        label: 'Cut the silver glove from Ordan’s hand.',
+        detail: 'Spend 2 Stamina to strike before the road opens fully.',
+        next: 'c3-collapse',
+        requires: { stamina: 2 },
+        changes: { stamina: -2 },
+        addFlags: ['c3-cut-silver-glove'],
+        result: 'Your blade opens the glove and Ordan’s palm. He keeps the fragment, but his blood marks the route he uses to escape.',
+      },
+      {
+        id: 'c3-order-volley',
+        label: 'Order the archers to break the road around him.',
+        detail: 'Spend 2 Command to control the shot through a crowded market.',
+        next: 'c3-collapse',
+        requires: { command: 2 },
+        changes: { command: -2 },
+        addFlags: ['c3-broke-escape-road'],
+        result: 'Arrows strike in a clean ring. Ordan’s road cracks, forcing him to run across the unstable edge instead of vanishing at once.',
+      },
+      {
+        id: 'c3-mark-ordan',
+        label: 'Throw the changing bill onto Ordan’s back.',
+        detail: 'Mark him with ink that is pulled toward the fragment.',
+        next: 'c3-collapse',
+        addFlags: ['c3-marked-ordan'],
+        result: 'The bill wraps around Ordan’s coat. Its ink burns bright and draws a black line through every road he crosses.',
+      },
+    ],
+  },
+
+  'c3-collapse': {
+    id: 'c3-collapse',
+    kicker: 'A town coming apart',
+    title: 'The Last Fixed Street',
+    location: 'Reed Market, Harrowfen',
+    objective: 'Save a path through town while keeping Ordan in sight.',
+    threat: 'Critical',
+    art: 'harrowfen',
+    body: (state) => [
+      'Ordan runs east with the fragment. Harrowfen tears into pieces behind him. One canal becomes a road of white bone. A tower falls upward. Half the healing house begins to fade with the wounded still inside.',
+      state.flags.includes('c3-balanced-plan')
+        ? 'Mara already has the wounded moving while Lysara marks a stable line with green light. The plan you gave them buys precious seconds.'
+        : state.flags.includes('c3-priority-people')
+          ? 'Mara has the wounded ready, but Lysara is trapped across a street that changes every breath.'
+          : 'Lysara can see Ordan’s path, but Mara is carrying patients from the fading healing house alone.',
+      'You can spend your remaining strength on the town, the chase, or a promise powerful enough to touch both.',
+    ],
+    choices: [
+      {
+        id: 'c3-save-healing-house',
+        label: 'Hold the healing house in place while people escape.',
+        detail: 'Spend 2 Stamina. Ordan gains distance, but the wounded survive.',
+        next: 'c3-pursuit',
+        requires: { stamina: 2 },
+        changes: { stamina: -2, rapport: 1 },
+        addFlags: ['c3-saved-healing-house'],
+        result: 'You brace a fading support post until Mara carries the last patient out. The building vanishes the moment you let go.',
+      },
+      {
+        id: 'c3-keep-courier-in-sight',
+        label: 'Lead a small group after Ordan now.',
+        detail: 'Trust Elene to protect the town while you continue the chase.',
+        next: 'c3-pursuit',
+        addFlags: ['c3-kept-close'],
+        result: 'Elene takes the square. You, Mara, and Lysara follow Ordan’s marked route before it can close.',
+      },
+      {
+        id: 'c3-oath-hold-harrowfen',
+        label: 'Swear that Harrowfen will not be erased today.',
+        detail: 'Spend 2 Resolve. Gain 3 Oathfire, but this promise binds you until the town is stable.',
+        next: 'c3-pursuit',
+        requires: { resolve: 2 },
+        changes: { resolve: -2, oathfire: 3 },
+        addFlags: ['c3-oath-hold-town'],
+        result: 'Fire fills the cracks between streets. Harrowfen stops fading, and your new promise burns whenever Ordan moves the fragment.',
+      },
+    ],
+  },
+
+  'c3-pursuit': {
+    id: 'c3-pursuit',
+    kicker: 'Beyond the eastern reeds',
+    title: 'A Bridge Missing from Every Map',
+    location: 'East Reeds, Harrowfen',
+    objective: 'Choose what you carry into the pursuit.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    body: (state) => [
+      'The last stable street ends among black reeds. Beyond them stands a ruined bridge with no river beneath it. Its broken arches cross clouds, desert, forest, and a field of stars at the same time.',
+      state.flags.includes('c3-marked-ordan')
+        ? 'The ink on Ordan’s coat leaves a line across the first arch.'
+        : state.flags.includes('c3-cut-silver-glove')
+          ? 'Drops of Ordan’s blood hang in the air above the first arch.'
+          : 'Broken stones show where Ordan’s unstable route struck the bridge.',
+      'A thin man in a dark coat waits under the first arch. He watches Ordan approach, smiles like a thief who has found an unlocked treasury, and disappears before you can see his face clearly.',
+      'Lysara says the bridge is real, but not fixed to one place. Mara checks her blades. Behind you, Harrowfen is still wounded and full of people who now know your name twice.',
+    ],
+    choices: [
+      {
+        id: 'c3-prepare-fast-pursuit',
+        label: 'Take Mara and begin the chase at once.',
+        detail: 'Trust Elene with Harrowfen and keep Ordan close.',
+        next: 'c3-world-nail',
+        changes: { rapport: 1 },
+        addFlags: ['c3-pursuit-mara'],
+        result: 'Mara fastens your sword belt herself. “Try not to meet another you,” she says. “One is enough trouble.”',
+      },
+      {
+        id: 'c3-prepare-safe-pursuit',
+        label: 'Give Lysara one hour to make the first arch safe.',
+        detail: 'Let the wounded rest and enter with a tested route.',
+        next: 'c3-world-nail',
+        changes: { resolve: 1 },
+        addFlags: ['c3-pursuit-lysara'],
+        result: 'Lysara grows a green thread across the stones. She warns that it will show a way back only once.',
+      },
+      {
+        id: 'c3-use-oath-trail',
+        label: 'Use Oathfire to mark Ordan’s direction.',
+        detail: 'Spend 1 Oathfire. Your promise creates a trail across changing distance.',
+        next: 'c3-world-nail',
+        requires: { oathfire: 1 },
+        changes: { oathfire: -1, command: 1 },
+        addFlags: ['c3-oath-trail'],
+        result: 'A red line burns across one arch, vanishes, and returns on another. The bridge cannot hide the direction Ordan took.',
+      },
+    ],
+  },
+
+  'c3-world-nail': {
+    id: 'c3-world-nail',
+    kicker: 'The name of the iron',
+    title: 'A Nail Through the World',
+    location: 'The Mileless Bridge',
+    objective: 'Decide your first duty on the impossible bridge.',
+    threat: 'Unknown',
+    art: 'harrowfen',
+    lesson: {
+      title: 'World Nail',
+      body: 'Lysara now names the iron you have already tested. A World Nail is an ancient anchor that keeps a road, border, or natural law in one stable form. Your fragment came from the Nail that fixes distance across Edrath.',
+    },
+    body: (state) => [
+      'At the first broken arch, Lysara finally names the iron. “It is part of a World Nail. Old stories say the Nails hold the world’s rules in place. This one keeps distances from changing.”',
+      'You have already seen the proof. Bellweather touched many years. Harrowfen stood one mile from an inn three days away. When the fragment moved, roads remembered other destinations.',
+      state.flags.includes('c3-bridge-warning')
+        ? 'Your double’s warning returns to you: do not trust the first end of the bridge, and the thief is not working for Ordan.'
+        : 'On the far arch, the dark coated stranger appears behind Ordan. His hand is already reaching for the stolen fragment.',
+      'Ordan steps into another sky. The stranger follows. The bridge begins to turn beneath your boots.',
+    ],
+    choices: [
+      {
+        id: 'c3-end-catch-courier',
+        label: 'Cross for Ordan before he can hide the fragment.',
+        detail: 'Make the royal courier your first target and gain 7 Wayfire.',
+        next: 'c3-ending-courier',
+        changes: { wayfire: 7 },
+        addFlags: ['c3-target-ordan'],
+        result: 'You step onto the turning bridge with Ordan’s trail fixed in your mind.',
+      },
+      {
+        id: 'c3-end-catch-thief',
+        label: 'Cut across the bridge toward the unknown thief.',
+        detail: 'Risk losing Ordan to learn why a second enemy wants the fragment. Gain 7 Wayfire.',
+        next: 'c3-ending-thief',
+        changes: { wayfire: 7 },
+        addFlags: ['c3-target-thief'],
+        result: 'You change direction as the thief closes his hand around Ordan’s prize.',
+      },
+      {
+        id: 'c3-end-secure-return',
+        label: 'Secure a way back before pursuing either man.',
+        detail: 'Protect your companions from being trapped and gain 8 Wayfire.',
+        next: 'c3-ending-return',
+        changes: { wayfire: 8, command: 1 },
+        addFlags: ['c3-secured-return'],
+        result: 'You drive a Warden spike into the first arch and tie your last rope to Harrowfen’s world.',
+      },
+    ],
+  },
+
+  'c3-ending-courier': {
+    id: 'c3-ending-courier',
+    kicker: 'Chapter Three complete',
+    title: 'The Courier’s Last Road',
+    location: 'The Mileless Bridge',
+    objective: 'Catch Ordan and recover the stolen World Nail fragment.',
+    threat: 'Immediate',
+    art: 'harrowfen',
+    final: true,
+    body: (state) => [
+      'You cross onto a bridge that passes through four skies. Ordan looks back and understands that you chose him over the easier mystery.',
+      state.flags.includes('c3-pursuit-mara')
+        ? 'Mara lands beside you with her blade ready. “He is yours,” she says. “I will handle the road.”'
+        : 'Lysara’s green thread holds behind you, thin but visible across the turning stone.',
+      'The dark coated thief reaches Ordan first. He steals the fragment from the courier’s belt, gives you an almost polite bow, and runs toward the broken centre of the bridge. Ordan draws a royal blade and blocks your path.',
+    ],
+    choices: [],
+  },
+
+  'c3-ending-thief': {
+    id: 'c3-ending-thief',
+    kicker: 'Chapter Three complete',
+    title: 'The Hand Between Worlds',
+    location: 'The Mileless Bridge',
+    objective: 'Stop the unknown thief from escaping with the World Nail fragment.',
+    threat: 'Critical',
+    art: 'harrowfen',
+    final: true,
+    body: (state) => [
+      'You leave Ordan’s marked road and cut across an arch hanging over a red desert. The stranger slips behind the courier and steals the iron fragment with two fingers.',
+      state.flags.includes('c3-bridge-warning')
+        ? 'He sees recognition in your face. “Good,” he says. “One of your impossible twins had a useful mouth.”'
+        : 'He gives you a quick grin. “Captain, I am about to improve your terrible morning.”',
+      'Ordan shouts for soldiers hidden on another version of the bridge. The thief throws the fragment into the air, and both of you reach for it as the arch breaks beneath your feet.',
+    ],
+    choices: [],
+  },
+
+  'c3-ending-return': {
+    id: 'c3-ending-return',
+    kicker: 'Chapter Three complete',
+    title: 'A Rope to Harrowfen',
+    location: 'The Mileless Bridge',
+    objective: 'Keep the bridge connected to Harrowfen and recover the World Nail fragment.',
+    threat: 'Rising',
+    art: 'harrowfen',
+    final: true,
+    body: (state) => [
+      'Your spike holds. The rope passes through three different skies, but its far end remains tied to Harrowfen. For the first time since Bellweather, you know there is a road behind you.',
+      state.flags.includes('c3-oath-hold-town')
+        ? 'Your Oath burns with steady heat. Harrowfen still exists, and the promise gives you a direction home.'
+        : 'Mara tests the knot and nods. Lysara marks the first arch so Elene can find it if the town changes again.',
+      'Ahead, the dark coated thief steals the fragment from Ordan. Royal soldiers emerge from a bridge that was empty a breath ago. The thief runs toward you with Ordan and six blades behind him.',
     ],
     choices: [],
   },
@@ -2133,6 +3002,26 @@ export const nodeOrder = [
   'c2-ending-testimony',
   'c2-ending-pin',
   'c2-ending-oath',
+  'c3-arrival',
+  'c3-gate',
+  'c3-triage',
+  'c3-archive',
+  'c3-healer',
+  'c3-broker',
+  'c3-bill',
+  'c3-evidence',
+  'c3-watch-house',
+  'c3-divided-loyalty',
+  'c3-market-memory',
+  'c3-pin-test',
+  'c3-duplicate',
+  'c3-courier',
+  'c3-collapse',
+  'c3-pursuit',
+  'c3-world-nail',
+  'c3-ending-courier',
+  'c3-ending-thief',
+  'c3-ending-return',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

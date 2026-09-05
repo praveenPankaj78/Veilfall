@@ -33,12 +33,17 @@ import {
   type StatKey,
 } from './game-data';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v4.save';
-const LEGACY_SAVE_KEYS = ['veilfall.chapter-one.v3.save', 'veilfall.chapter-one.v2.save'];
-type ChapterNumber = 1 | 2;
+const CURRENT_SAVE_KEY = 'veilfall.saga.v5.save';
+const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v4.save',
+  'veilfall.chapter-one.v3.save',
+  'veilfall.chapter-one.v2.save',
+];
+type ChapterNumber = 1 | 2 | 3;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   2: 'veilfall.chapter-two.v1.start',
+  3: 'veilfall.chapter-three.v1.start',
 };
 
 const chapterLibrary = [
@@ -51,6 +56,11 @@ const chapterLibrary = [
     number: 2 as const,
     title: 'The Inn That Waited',
     summary: 'Keep the wounded safe in Bellweather Inn and learn why the road changed.',
+  },
+  {
+    number: 3 as const,
+    title: 'The Town at the Wrong Mile',
+    summary: 'Face a false arrival in Harrowfen and learn what the iron fragment can do.',
   },
 ];
 
@@ -89,7 +99,11 @@ const statHelp: Record<StatKey, string> = {
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c2-') ? 2 : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c3-')
+    ? 3
+    : nodeId.startsWith('c2-')
+      ? 2
+      : (value.chapter ?? 1);
   const completedChapters = Array.from(new Set([
     ...(value.completedChapters ?? []),
     ...(nodes[nodeId]?.final ? [chapter] : []),
@@ -250,10 +264,12 @@ export default function Home() {
   }, []);
 
   const node = nodes[game.nodeId];
-  const isChapterTwo = game.chapter === 2;
   const chapterTwoUnlocked = game.chapter === 2 || game.completedChapters.includes(1);
+  const chapterThreeUnlocked = game.chapter === 3 || game.completedChapters.includes(2);
   const chapterTwoStartExists = loaded && typeof window !== 'undefined'
     && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[2]!));
+  const chapterThreeStartExists = loaded && typeof window !== 'undefined'
+    && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[3]!));
   const paragraphs = useMemo(() => node.body(game), [game, node]);
   const chapterProgress = node.final
     ? 100
@@ -329,6 +345,27 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterThree() {
+    if (game.stats.wayfire < 7) return;
+    const next: GameState = {
+      ...game,
+      nodeId: 'c3-arrival',
+      chapter: 3,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 2])),
+      stats: {
+        ...game.stats,
+        stamina: Math.min(8, game.stats.stamina + 2),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        command: Math.min(6, game.stats.command + 1),
+        wayfire: game.stats.wayfire - 7,
+      },
+      history: [...game.history, 'You spend 7 Wayfire and continue to Harrowfen.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[3]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return <main className="min-h-screen bg-[#07090b]" aria-label="Loading Veilfall" />;
   }
@@ -373,7 +410,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {isChapterTwo ? 'II' : 'I'}
+          Caelan {game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
         </div>
         <div className="top-actions">
           <Button
@@ -409,8 +446,10 @@ export default function Home() {
           </p>
           <div className="chapter-library-list">
             {chapterLibrary.map((chapter) => {
-              const unlocked = chapter.number === 1 || chapterTwoUnlocked;
-              const available = chapter.number === 1 || chapterTwoStartExists;
+              const unlocked = chapter.number === 1
+                || (chapter.number === 2 ? chapterTwoUnlocked : chapterThreeUnlocked);
+              const available = chapter.number === 1
+                || (chapter.number === 2 ? chapterTwoStartExists : chapterThreeStartExists);
               return (
                 <div className="chapter-library-entry" key={chapter.number}>
                   <div>
@@ -429,7 +468,9 @@ export default function Home() {
                       {chapter.number === game.chapter ? 'Replay' : 'Play again'}
                     </Button>
                   ) : (
-                    <span className="chapter-locked">Finish Chapter One to unlock</span>
+                    <span className="chapter-locked">
+                      Finish Chapter {chapter.number - 1} to unlock
+                    </span>
                   )}
                 </div>
               );
@@ -442,12 +483,16 @@ export default function Home() {
         <section className="story-column" aria-live="polite">
           <div className="scene-art-wrap">
             <Image
-              src={node.art === 'inn'
+              src={node.art === 'harrowfen'
+                ? '/art/harrowfen-wrong-mile.png'
+                : node.art === 'inn'
                 ? '/art/bellweather-inn.png'
                 : node.art === 'folded'
                   ? '/art/kings-road-folded.png'
                   : '/art/caelan-east-gate.png'}
-              alt={node.art === 'inn'
+              alt={node.art === 'harrowfen'
+                ? 'Caelan faces a shifting canal town while another version of him waits at the gate'
+                : node.art === 'inn'
                 ? 'Caelan leads the wounded escort into Bellweather Inn during a storm'
                 : node.art === 'folded'
                   ? 'Caelan and the wounded escort face an impossible sea across the King’s Road'
@@ -516,35 +561,58 @@ export default function Home() {
               <div className="ending-panel">
                 <p className="ending-label">Your path is recorded</p>
                 {node.nextChapter ? (
-                  <>
-                    <h2>Chapter Two is ready</h2>
-                    <p>
-                      You carry {game.stats.wayfire} Wayfire. Unlock The Inn That Waited
-                      for 5 Wayfire and continue with every consequence from this route.
-                    </p>
-                    <Button
-                      className="begin-button"
-                      size="lg"
-                      disabled={game.stats.wayfire < 5}
-                      onClick={startChapterTwo}
-                    >
-                      Unlock Chapter Two
-                      <ArrowRight data-icon="inline-end" />
-                    </Button>
-                    <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
-                      Replay Chapter One
-                      <RotateCcw data-icon="inline-end" />
-                    </Button>
-                  </>
+                  game.chapter === 1 ? (
+                    <>
+                      <h2>Chapter Two is ready</h2>
+                      <p>
+                        You carry {game.stats.wayfire} Wayfire. Unlock The Inn That Waited
+                        for 5 Wayfire and continue with every consequence from this route.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        disabled={game.stats.wayfire < 5}
+                        onClick={startChapterTwo}
+                      >
+                        Unlock Chapter Two
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter One
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <h2>Chapter Three is ready</h2>
+                      <p>
+                        You carry {game.stats.wayfire} Wayfire. Unlock The Town at the Wrong Mile
+                        for 7 Wayfire and bring every surviving consequence into Harrowfen.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        disabled={game.stats.wayfire < 7}
+                        onClick={startChapterThree}
+                      >
+                        Unlock Chapter Three
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter Two
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
+                  )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Three</h2>
+                    <h2>Caelan will return in Chapter Four</h2>
                     <p>
-                      You carry {game.stats.wayfire} Wayfire. Harrowfen and the mystery of
-                      the second escort wait in the next chapter.
+                      You carry {game.stats.wayfire} Wayfire. The Mileless Bridge is turning,
+                      and a thief has reached the World Nail fragment before you.
                     </p>
                     <Button className="begin-button" size="lg" onClick={restart}>
-                      Replay Chapter Two
+                      Replay Chapter Three
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>
@@ -585,7 +653,7 @@ export default function Home() {
 
           <div className="stats-list">
             {(Object.keys(game.stats) as StatKey[]).filter(
-              (key) => isChapterTwo || key !== 'medicine',
+              (key) => game.chapter >= 2 || key !== 'medicine',
             ).map((key) => {
               const Icon = statIcons[key];
               return (

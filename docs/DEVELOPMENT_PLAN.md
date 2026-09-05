@@ -59,9 +59,9 @@ Acceptance criteria:
 - no adjacent hyphens or em dash characters appear in game content;
 - at least three full playthroughs produce meaningfully different state.
 
-## Phase Four: travel and consequence proof
+## Phase Four: travel and consequence proof, complete
 
-Build Caelan Chapters Two and Three before writing the rest of the season. These chapters must prove:
+Caelan Chapters Two and Three are implemented. Together they prove:
 
 - a location can feel distinct in text and interface;
 - travel choices affect arrival state;
@@ -128,4 +128,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first two canonical chapters are implemented. The next production gate is to test several imported routes from Chapter One through Chapter Two, record comprehension and pacing issues, and confirm that the medicine choice and road pin reveal remain clear before Chapter Three begins.
+The foundation and the first three canonical chapters are implemented. The next production gate is to test several imported routes from Chapter One through Chapter Three, record comprehension and pacing issues, and confirm that the World Nail explanation is understood before Chapter Four begins.

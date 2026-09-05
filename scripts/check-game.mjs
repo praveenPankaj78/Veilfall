@@ -95,6 +95,24 @@ const chapterTwoBase = {
     medicine: 1,
   },
 };
+const chapterThreeKnownTerms = Object.keys(statLabels);
+const chapterThreeBase = {
+  ...initialState,
+  nodeId: 'c3-arrival',
+  chapter: 3,
+  chapterChoices: 0,
+  completedChapters: [1, 2],
+  stats: {
+    ...initialState.stats,
+    stamina: 7,
+    resolve: 6,
+    command: 5,
+    rapport: 6,
+    oathfire: 4,
+    medicine: 0,
+    wayfire: 0,
+  },
+};
 const stack = [
   { state: initialState, knownTerms: [] },
   {
@@ -120,12 +138,35 @@ const stack = [
     },
     knownTerms: chapterTwoKnownTerms,
   },
+  {
+    state: {
+      ...chapterThreeBase,
+      flags: ['c2-saved-attacker', 'c2-saved-nilo', 'c2-oath-expose-crown'],
+    },
+    knownTerms: chapterThreeKnownTerms,
+  },
+  {
+    state: {
+      ...chapterThreeBase,
+      flags: ['c2-pin-broken'],
+      stats: {
+        ...chapterThreeBase.stats,
+        stamina: 0,
+        resolve: 0,
+        command: 0,
+        rapport: 1,
+        oathfire: 0,
+      },
+    },
+    knownTerms: chapterThreeKnownTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
 const endings = new Set();
 const chapterOneEndings = new Set();
 const chapterTwoEndings = new Set();
+const chapterThreeEndings = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
 
@@ -157,7 +198,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
+    if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
+    else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
     if (node.choices.length) failures.push(`Final node has choices: ${node.id}`);
@@ -188,6 +230,7 @@ if (visited.size >= 100000) failures.push('State exploration exceeded its safety
 if (!endings.size) failures.push('No ending is reachable');
 if (chapterOneEndings.size !== 3) failures.push(`Expected 3 Chapter One endings, found ${chapterOneEndings.size}`);
 if (chapterTwoEndings.size !== 3) failures.push(`Expected 3 Chapter Two endings, found ${chapterTwoEndings.size}`);
+if (chapterThreeEndings.size !== 3) failures.push(`Expected 3 Chapter Three endings, found ${chapterThreeEndings.size}`);
 
 if (failures.length) {
   console.error('Game graph check failed:');
@@ -198,5 +241,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

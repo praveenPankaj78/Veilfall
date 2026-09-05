@@ -4,7 +4,7 @@ Veilfall is an original, story first fantasy decision RPG built around three tra
 
 ## Current status
 
-The redesigned foundation and the first two canonical chapters are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival. Chapter Two carries every surviving consequence into Bellweather Inn, where eleven missing years and a damaged road pin reveal a Crown plot.
+The redesigned foundation and the first three canonical chapters are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival. Chapter Two carries every surviving consequence into Bellweather Inn, where eleven missing years and a damaged road pin reveal a Crown plot. Chapter Three enters the shifting canal town of Harrowfen, answers the false arrival mystery, and begins the pursuit across the Mileless Bridge.
 
 The new canonical plan contains:
 
@@ -15,7 +15,7 @@ The new canonical plan contains:
 - Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
 - Separate finales whose consequences trigger the next protagonist's story.
 - A world map at `public/art/edrath-world-map.png`.
-- Two complete chapters with route based danger, visible threat, class resources, imported consequences, relationship choices, six total endings, and local saves.
+- Three complete chapters with route based danger, visible threat, class resources, imported consequences, relationship choices, nine total endings, and local saves.
 
 ## Canonical documents
 
@@ -30,6 +30,7 @@ The new canonical plan contains:
 - `docs/PLAYER_REVELATION_LEDGER.md` records the question, answer, next hook, and mechanic taught in every planned chapter.
 - `docs/CHAPTER_ONE_MAP.md` records the implemented structure and branches for The Road Before Rain.
 - `docs/CHAPTER_TWO_MAP.md` records the implemented structure, branches, reveal, and consequence imports for The Inn That Waited.
+- `docs/CHAPTER_THREE_MAP.md` records the three Harrowfen approaches, World Nail reveal, Rook entrance, and imported consequences for The Town at the Wrong Mile.
 - `docs/DEVELOPMENT_PLAN.md` gives the production order and approval gates.
 
 ## Review order
