@@ -18,7 +18,8 @@ The game saves progress in the browser on the current device. Use Restart inside
 * `app/game-data.ts` contains the playable chapter graph and story text.
 * `app/page.tsx` contains the choice engine, save system, character sheet, and player interface.
 * `public/art` contains original game artwork.
-* `docs` contains the creative vision, world bible, character bible, narrative rules, systems rules, and development roadmap.
+* `docs/SERIES_CHAPTER_OUTLINE.md` is the canonical high level plan for all forty character chapters and every major crossover.
+* `docs` also contains the creative vision, world bible, character bible, narrative rules, systems rules, and development roadmap.
 
 ## Current creative scope
 

@@ -6,6 +6,8 @@ Build one excellent Caelan season before producing another playable series. The 
 
 The full saga has four leads, but only two series should be in active production at once. Caelan launches first. Rook is the best second lead because his stealth and illusion play sharply contrasts Caelan’s protection and command.
 
+The canonical high level structure for every chapter in all four series is maintained in `SERIES_CHAPTER_OUTLINE.md`. If another planning document conflicts with it, the complete series outline takes priority.
+
 ## Current vertical slice
 
 The revised Chapter One proves:
