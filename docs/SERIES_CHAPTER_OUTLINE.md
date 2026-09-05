@@ -2,18 +2,21 @@
 
 ## Purpose
 
-This is the canonical high level plan for all thirty protagonist chapters. It fixes the main location, immediate objective, defining choice, character growth, romance movement, revelation, and end state. Scene prose and detailed branches come later.
+This is the canonical high level plan for thirty six protagonist chapters. It fixes the main location, immediate objective, defining choice, character growth, romance movement, revelation, and end state. Scene prose and detailed branches come later.
+
+The current structure uses twelve Caelan chapters, eleven Rook chapters, and thirteen Ilyra chapters. These are pacing decisions rather than quotas. Playtesting may split or combine a chapter when that improves understanding or emotional force.
 
 The recommended play order is Caelan, Rook, then Ilyra. Each series remains understandable when played alone. Imported choices enrich later series without withholding essential facts.
 
 ## Story rhythm
 
-- Chapters One and Two let the player settle into the lead's work, relationships, and class tools.
-- Chapter Three takes the lead beyond familiar safety.
-- Chapters Four through Six widen the world and reveal why the crisis requires travel.
-- Chapters Seven and Eight force personal costs and change regional powers.
-- Chapter Nine crosses into an outer realm or the deepest layer of the conflict.
-- Chapter Ten delivers a distinct world changing finale.
+- The opening chapters let the player settle into the lead's work, relationships, and ordinary class tools.
+- The first journey explains one strange effect before naming its place in the wider conflict.
+- Middle chapters give each major culture and relationship enough room to become emotionally useful.
+- A mechanic is used safely before it becomes decisive.
+- Later chapters force personal costs and change regional powers.
+- Outer realm chapters each have a clear local objective before advancing the cosmology.
+- Every series ends when its central character decision and world action meet, not when a fixed count is reached.
 
 # Series One: The Ember Oath
 
@@ -53,9 +56,25 @@ Romance movement: A quiet night watch lets Caelan and Mara name what each fears 
 
 Revelation: Distance itself is failing around an old iron spike beneath the road.
 
-End state: Caelan frees the road by removing the spike. A dying attacker calls it a World Nail and says the Crown ordered its removal.
+End state: Caelan frees the road by removing the spike. A dying attacker calls it a road pin and says the Crown ordered its removal. The term is incomplete but gives Caelan one useful trail.
 
-### Chapter Three: Thief at the Mileless Bridge
+### Chapter Three: The Town at the Wrong Mile
+
+Location: Harrowfen, a market town appearing beside the folded road where no town should stand.
+
+Main event: Caelan leads the survivors to food, shelter, and a healer. The residents insist the escort arrived three days earlier and show Caelan a bill he remembers never signing.
+
+Defining choice: Investigate the duplicate arrival, focus on the wounded, or trade the suspicious iron fragment for a route home.
+
+Class pressure: Caelan uses ordinary leadership while low on resources. Oathfire remains a dangerous option rather than the expected answer.
+
+Romance movement: Mara and Lysara disagree over whether protecting people or finding the cause comes first. Caelan's response establishes how he handles attraction mixed with divided loyalty.
+
+Revelation: The iron fragment fixes one version of distance in place. When it moves, roads remember other destinations.
+
+End state: A royal courier steals the fragment and escapes toward a bridge absent from every current map. Only now does Lysara identify the object as part of a World Nail.
+
+### Chapter Four: Thief at the Mileless Bridge
 
 Location: A ruined bridge that connects several distant roads at once.
 
@@ -71,9 +90,9 @@ Revelation: A map hidden in the fragment marks nine Nails across Edrath.
 
 End state: Rook escapes with a copy of the map. Caelan keeps the fragment and receives a royal order to bring it to Dragonspine rather than return to Greyhaven.
 
-Intersection: Rook appears with his own motive. His later version of the event focuses on theft and escape.
+Intersection: Rook appears with his own motive. His Chapter Three version of the event focuses on theft and escape.
 
-### Chapter Four: The Dragon's Cold Grave
+### Chapter Five: The Dragon's Cold Grave
 
 Location: The glass valleys of Dragonspine.
 
@@ -89,7 +108,7 @@ Revelation: Orivane gave her heart willingly, but the Concord cut living possibi
 
 End state: Caelan becomes an Ember Bearer and sees a vision of the Black Gate opening.
 
-### Chapter Five: The City on Wheels
+### Chapter Six: The City on Wheels
 
 Location: Kharad Vey, an orc wheel town crossing the Ember Steppe.
 
@@ -107,7 +126,7 @@ End state: The Red Moot chooses war, guarded alliance, or neutrality. Its decisi
 
 Intersection: Ilyra enters as a specialist with her own mission and leaves before Caelan's final road.
 
-### Chapter Six: The Red Wind Hunt
+### Chapter Seven: The Red Wind Hunt
 
 Location: The open Ember Steppe during a moving battle.
 
@@ -123,7 +142,7 @@ Revelation: Regent Malrec is deliberately moving armies away from the Black Gate
 
 End state: Caelan gains an army, a smaller chosen company, or a dangerous reputation and no formal allies.
 
-### Chapter Seven: Eight Empty Forts
+### Chapter Eight: Eight Empty Forts
 
 Location: The fortress ring surrounding the Black Gate.
 
@@ -139,7 +158,7 @@ Revelation: The Black Gate has been opening briefly for years, and the Crown hid
 
 End state: The first devil embassy crosses openly. Vexa Ash asks to speak only with Caelan.
 
-### Chapter Eight: The Price of a Name
+### Chapter Nine: The Price of a Name
 
 Location: A neutral fortress transformed into a Cinder Deep embassy.
 
@@ -153,9 +172,25 @@ Romance movement: Vexa may become a temporary lover, adversary, or trusted negot
 
 Revelation: Malrec plans to open the Gate from inside the Cinder Deep and use its released promises to break Worldroot.
 
-End state: Caelan enters the Cinder Deep with allies determined by his bargains and relationships.
+End state: Caelan crosses the Black Gate with allies determined by his bargains and relationships.
 
-### Chapter Nine: City of Every Price
+### Chapter Ten: The Ash Road
+
+Location: The road from the inner Black Gate to Vathis in the Cinder Deep.
+
+Main event: Caelan must lead mortals through a realm where spoken wants appear as offers along the road. Each companion receives a private bargain designed around what Caelan cannot give them.
+
+Defining choice: Keep the company together by sharing every offer, let each person negotiate privately, or take their temptations onto himself through a new Oath.
+
+Class pressure: The player learns the Cinder Deep's contract rules through small reversible bargains before facing the city. Old Oaths gain visible prices.
+
+Romance movement: Caelan and his closest partner decide what promises they are unwilling to make for one another. This creates intimacy through honest limits rather than another declaration of devotion.
+
+Revelation: The Cinder Deep is divided. Many devils oppose Malrec because a complete merger would destroy the laws that keep them individual.
+
+End state: Caelan reaches Vathis with a clear objective, a known contract risk, and a devil faction willing to help for a stated price.
+
+### Chapter Eleven: City of Every Price
 
 Location: Vathis, a devil city where streets, doors, and weather are purchased by contract.
 
@@ -171,7 +206,7 @@ Revelation: Malrec's daughter Elian answers from inside the engine and begs Cael
 
 End state: Caelan reaches the inner side of the Black Gate while it begins to open.
 
-### Chapter Ten: The Ember Oath
+### Chapter Twelve: The Ember Oath
 
 Location: Both faces of the Black Gate, seen at once.
 
@@ -275,7 +310,23 @@ Revelation: Senna is alive in the Luminous Court and has become the mortal voice
 
 End state: The only safe path to the Court begins in Serekh's mirror lake.
 
-### Chapter Six: The City That Shows Motive
+### Chapter Six: A Thief in Full Sun
+
+Location: Serekh's outer canal district and caravan court.
+
+Main event: Rook arrives expecting to hide in a crowd and learns that the city's mirrors show concealed motives as coloured shadows. Before he can seek the Unsea passage, a water keeper accuses Sen's contact of stealing an entire night of river flow.
+
+Defining choice: Solve the theft openly, create a false motive bright enough to hide the truth, or steal the accusation itself from the court record.
+
+Class pressure: The player learns Serekh's truth rules in a contained local case. Ordinary observation is safer than Glimmer, while every lie raises Heat visibly.
+
+Romance movement: Sen challenges Rook to complete one task without pretending not to care. Ilyra is glimpsed investigating the same failing law, creating anticipation before their formal meeting.
+
+Revelation: The mirror colours show desire, not guilt. Someone has taught the court to confuse the two.
+
+End state: Rook clears or sacrifices the contact and earns a path into the inner city. He now understands enough of the local rules for the larger theft to feel fair.
+
+### Chapter Seven: The City That Shows Motive
 
 Location: Serekh's bright capital and mirror markets.
 
@@ -293,7 +344,7 @@ End state: Rook and Ilyra open the mirror lake. Only one can carry the stable ro
 
 Intersection: Ilyra's later version focuses on repairing truth. Rook's objective remains reaching Senna.
 
-### Chapter Seven: The Lives He Did Not Live
+### Chapter Eight: The Lives He Did Not Live
 
 Location: The Unsea and an island made from Rook's possible lives.
 
@@ -309,7 +360,7 @@ Revelation: The Unsea's people are real possibilities, but bringing all of them 
 
 End state: Rook reaches the stair of dawn with one chosen memory and one person left behind.
 
-### Chapter Eight: No Shadows in Heaven
+### Chapter Nine: No Shadows in Heaven
 
 Location: The lower terraces of the Luminous Court.
 
@@ -325,7 +376,7 @@ Revelation: Senna chose to stay because the Court promised to prevent another fa
 
 End state: Rook finds Senna, but she refuses rescue unless he can prove freedom is safer than certainty.
 
-### Chapter Nine: The Seventh Bell
+### Chapter Ten: The Seventh Bell
 
 Location: The archive tower where laws are sung into existence.
 
@@ -341,7 +392,7 @@ Revelation: The Name of Dawn can be stolen, but Rook must replace it with anothe
 
 End state: The Seventh Bell rings while Rook stands inside the spoken law.
 
-### Chapter Ten: A Thief of Dawn
+### Chapter Eleven: A Thief of Dawn
 
 Location: The living sentence at the centre of the Luminous Court.
 
@@ -397,7 +448,23 @@ Revelation: The Nail was damaged from below by a root carrying celestial light a
 
 End state: The Tide Council sends Ilyra to Thornweald, where the root rises near the surface.
 
-### Chapter Three: The Forest That Remembers Cities
+### Chapter Three: The Ship That Sailed Yesterday
+
+Location: A witch vessel crossing from the Shard Coast to Thornweald through a storm that remembers several routes.
+
+Main event: Ilyra must guide one ship carrying both versions of her father and island witnesses. Each dawn, the vessel wakes on a different version of the previous day.
+
+Defining choice: Preserve the day with the most survivors, combine evidence from several days, or let the crew choose which shared memory becomes real.
+
+Class pressure: Threadread and Ward are used during travel before Memory Shards become a solution. The player sees how high Strain distorts details without hiding the objective.
+
+Romance movement: Tomas and Ilyra share ordinary work, food, and a private watch. Their attraction gains texture before the next political crisis.
+
+Revelation: The altered days follow a living root beneath the sea rather than the storm itself.
+
+End state: Ilyra reaches Thornweald knowing the root is carrying instability inland. The surviving father state becomes a lasting personal consequence.
+
+### Chapter Four: The Forest That Remembers Cities
 
 Location: Thornweald's moving elven groves.
 
@@ -413,7 +480,7 @@ Revelation: Worldroot is not failing on its own. Someone has taught it to grieve
 
 End state: A root map names the next wound on the Ember Steppe.
 
-### Chapter Four: Voices in the Red Wind
+### Chapter Five: Voices in the Red Wind
 
 Location: The Ember Steppe and Kharad Vey.
 
@@ -429,7 +496,7 @@ Revelation: The voices repeat a command hidden inside the Concord's original wor
 
 End state: Ilyra learns that the command can be removed only from Orivane's surviving memory in Dragonspine.
 
-### Chapter Five: The Heart Beneath Ice
+### Chapter Six: The Heart Beneath Ice
 
 Location: The highest dragon grave in Dragonspine.
 
@@ -443,9 +510,25 @@ Romance movement: A companion may enter the memory with Ilyra, revealing the lif
 
 Revelation: Orivane expected the Concord to be renewed by free agreement every thousand years. Mortal rulers removed that condition and made the boundary permanent.
 
-End state: Ilyra gains the lost renewal clause and becomes able to Rewrite one part of the Concord.
+End state: Ilyra hears the lost renewal clause but cannot yet use it safely. Orivane's remaining will sends her deeper into the grave.
 
-### Chapter Six: The Mirror Crown
+### Chapter Seven: The Last Dragon's Question
+
+Location: A chamber of living fire beneath the highest dragon grave.
+
+Main event: Orivane's remaining will tests whether Ilyra seeks truth, control, or forgiveness. Outside, the waking dragon begins to tear the mountain apart.
+
+Defining choice: Save the dragon by giving it Orivane's last memory, keep the memory as proof, or divide it among witnesses from several peoples.
+
+Class pressure: The player uses Rewrite first on a contained fire law before gaining access to the Concord itself. The cost is known and reversible only through a future alliance.
+
+Romance movement: A companion sees which personal memory Ilyra refuses to spend. Respect, conflict, or closeness follows from the reason rather than the resource value.
+
+Revelation: The Concord was meant to be renewed through free agreement every thousand years. Mortal rulers removed that condition and made the boundary permanent.
+
+End state: Ilyra becomes able to Rewrite one part of the Concord and knows she must seek living consent rather than collect only ancient proof.
+
+### Chapter Eight: The Mirror Crown
 
 Location: Serekh's capital during a succession trial.
 
@@ -455,13 +538,13 @@ Defining choice: Repair the Nail and risk civil war, crown a ruler whose motives
 
 Class pressure: Wards can contain reflected lies. Rewrite can solve the crisis quickly at the cost of a named personal memory.
 
-Romance movement: Rook may cross Ilyra's path before his final theft. If imported conditions allow, playful distrust can become intimacy or a firm refusal. Tomas or Korran paths are tested by distance and political disagreement.
+Romance movement: Rook may return to Serekh after his final theft. If imported conditions allow, their earlier playful distrust can become intimacy or a firm refusal. Tomas or Korran paths are tested by distance and political disagreement.
 
 Revelation: Malrec built his realm engine here using an early design supplied by a celestial judge.
 
 End state: The mirror lake opens a route to the part of the Unsea holding Elian.
 
-### Chapter Seven: The Daughter Who Was Possible
+### Chapter Nine: The Daughter Who Was Possible
 
 Location: An Unsea island made from Malrec's lost family life.
 
@@ -477,23 +560,39 @@ Revelation: Elian is real, but there are thousands of equally real versions. Mal
 
 End state: Malrec takes, loses, or abandons his chosen Elian. Ilyra leaves with the complete knowledge needed to reach Worldroot.
 
-### Chapter Eight: The World Without Night
+### Chapter Ten: The World Without Night
 
 Location: Edrath after Rook's theft has changed dawn.
 
-Main event: Ilyra returns to a world altered by Rook's chosen stolen word. She must cross collapsing regions and gather consent from the cultures whose ancestors made the Concord.
+Main event: Ilyra returns from the Unsea and finds that the altered dawn present since her first chapter has grown unstable. She must stop one spreading collapse before asking a frightened world to approve any permanent solution.
 
-Defining choice: Seek unanimous agreement and lose precious time, accept a broad majority, or claim the right to act as Orivane's magical heir.
+Defining choice: Protect a crowded mortal region, preserve the route between realms, or stabilise the shared root that will make later agreement possible.
 
-Class pressure: Regional allies restore Mana or absorb Strain. Ignored cultures create weaknesses in the final spell.
+Class pressure: Regional allies restore Mana or absorb Strain. The emergency forces the player to apply familiar mechanics at continental scale without adding a new system.
 
-Romance movement: Ilyra decides who, if anyone, belongs in the life she is trying to preserve. Commitment does not require that the partner enter Worldroot.
+Romance movement: Ilyra decides who may share the burden of the approaching ritual. Commitment does not require that the partner enter Worldroot.
 
 Revelation: There is no restoration of the old world. Caelan and Rook have made permanent changes, and every viable ending creates a new age.
 
-End state: The entrance to Worldroot opens beneath Thornweald as all three realms begin to overlap.
+End state: The immediate collapse stops. Leaders from the affected cultures agree to meet, but each arrives with a different demand.
 
-### Chapter Nine: The Root of Every Self
+### Chapter Eleven: The Consent of Kingdoms
+
+Location: A travelling council that uses repaired roots to meet in Greyhaven, Brassreach, Kharad Vey, Thornweald, Serekh, and the Shard Coast without reducing them to one capital.
+
+Main event: Ilyra must build authority for a new Concord among peoples who bear different costs from separation and contact. Earlier regional outcomes decide who speaks and what they require.
+
+Defining choice: Demand unanimous agreement and risk running out of time, accept a broad agreement with protected dissent, or claim emergency authority while promising a future renewal vote.
+
+Class pressure: This is a relationship and consequence chapter rather than a spell contest. Magic verifies consent but cannot create it.
+
+Romance movement: Ilyra decides who, if anyone, belongs in the life beyond the crisis. Partners may disagree with her political method without the scene treating disagreement as failed love.
+
+Revelation: No solution benefits every region equally. A legitimate Concord must include a way to change itself later.
+
+End state: The entrance to Worldroot opens beneath Thornweald with a clear mandate, a contested mandate, or only Ilyra's claimed authority.
+
+### Chapter Twelve: The Root of Every Self
 
 Location: Worldroot, where memories form landscapes and choices grow as branches.
 
@@ -509,7 +608,7 @@ Revelation: Worldroot does not need a ruler. It needs a rule for how different r
 
 End state: Ilyra reaches the empty place where Orivane's heart once beat.
 
-### Chapter Ten: The Worldroot Witch
+### Chapter Thirteen: The Worldroot Witch
 
 Location: The heart of Worldroot, felt simultaneously in every changed region.
 
@@ -527,13 +626,45 @@ Final image: Far from any capital, a child finds a small door in an old tree. It
 
 # Intersection and consequence map
 
-1. Caelan Chapter Three and Rook Chapter Three share the Mileless Bridge, with different objectives and decisions.
-2. Caelan Chapter Five introduces Ilyra on the Ember Steppe. Ilyra Chapter Four later reveals what she was trying to prevent.
-3. Caelan's Chapter Ten changes the Black Gate and destabilises dawn, creating Rook Chapter One.
-4. Rook Chapter Six and Ilyra Chapter Six intersect in Serekh from different sides of the truth Nail crisis.
-5. Rook Chapter Seven and Ilyra Chapter Seven may overlap in the Unsea, but each pursues a different person and makes a different decision.
-6. Rook's Chapter Ten changes one world law, creating Ilyra Chapter Eight.
-7. Only Ilyra enters the final chamber of Worldroot. Caelan and Rook influence it through consequences, not a shared final fight.
+1. Caelan Chapter Four and Rook Chapter Three share the Mileless Bridge, with different objectives and decisions.
+2. Caelan Chapter Six introduces Ilyra as a capable nonplayer ally on the Ember Steppe. Ilyra Chapter Five later returns there and reveals the deeper purpose of her work.
+3. Caelan Chapter Twelve changes the Black Gate and destabilises dawn, creating Rook Chapter One.
+4. Rook Chapter Seven introduces Ilyra in Serekh from his suspicious viewpoint. Ilyra Chapter Eight later returns to the city with her own objective and the consequences of Rook's actions.
+5. Rook Chapter Eight and Ilyra Chapter Nine enter different islands in the Unsea. Imported choices may let them cross, but neither chapter repeats the other's main event.
+6. Rook Chapter Eleven changes one world law. The immediate effect creates Ilyra Chapter One and worsens again in Ilyra Chapter Ten.
+7. Only Ilyra enters the final chamber of Worldroot. Caelan and Rook influence it through consequences, relationships, and altered laws rather than a shared final fight.
+
+# Player knowledge gates
+
+The outline is written with full author knowledge. The player receives that knowledge in controlled stages.
+
+## Caelan gate
+
+- Chapters One and Two: the player knows only that a sealed route changed and distance is behaving impossibly.
+- Chapter Three: the player sees what the iron fragment does before hearing the term World Nail.
+- Chapter Four: the player learns that several Nails exist, but not their origin or Malrec's motive.
+- Chapters Five through Seven: the player learns why different peoples have a stake in the system.
+- Chapters Eight through Ten: the player understands the Black Gate and contract rules before entering the devil city.
+- Chapters Eleven and Twelve: Malrec's personal motive and the cost of merger become clear before Caelan chooses the Gate's future.
+
+## Rook gate
+
+- Chapters One through Three: the player understands Rook's personal goal, Heat, and ordinary theft before Glimmer becomes central.
+- Chapters Four and Five: Brassreach teaches that broken world laws affect tools and doors.
+- Chapters Six and Seven: Serekh teaches motive reflections through a local case before the difficult passage theft.
+- Chapter Eight: the player experiences possible lives before anyone explains how the Unsea preserves them.
+- Chapters Nine through Eleven: the Luminous Court's rules are demonstrated through doors, purposes, and bells before Rook can steal a law.
+
+## Ilyra gate
+
+- Chapters One through Three: memory problems remain personal and local while the player learns Ilyra's costs.
+- Chapters Four through Seven: cultural history and Orivane's evidence reveal why the old Concord cannot simply be repaired.
+- Chapters Eight and Nine: truth and possible lives are investigated separately before their implications are combined.
+- Chapter Ten: the player sees the harm caused by the unstable world before debating a permanent answer.
+- Chapter Eleven: every major ending option is represented by people who would gain and lose from it.
+- Chapters Twelve and Thirteen: the player applies already understood rules. No new cosmology appears during the final decision.
+
+The detailed Known, Suspected, and Unknown lists belong in each chapter's scene plan before prose is drafted.
 
 # Ending families
 
@@ -551,8 +682,8 @@ Each world ending is scored separately from personal fulfilment, romance, region
 1. Approve the redesigned foundations and the three chapter routes.
 2. Rewrite Caelan Chapter One as a thirty to forty minute vertical slice.
 3. Prototype the travel, Oath, and consequence systems through Caelan Chapters Two and Three.
-4. Complete Caelan's ten chapter season.
+4. Complete Caelan's twelve chapter season.
 5. Build Rook Chapters One through Three and validate imported world state.
-6. Complete Rook's season.
-7. Build Ilyra's season after the final consequences from both earlier leads are stable.
+6. Complete Rook's eleven chapter season.
+7. Build Ilyra's thirteen chapter season after the final consequences from both earlier leads are stable.
 8. Add optional intimate scene variants only after relationship states and age gates are implemented.

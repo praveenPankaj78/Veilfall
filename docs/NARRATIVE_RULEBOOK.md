@@ -16,6 +16,8 @@ Use the revelation ladder in the world bible. Answer the current mystery before 
 2. Change what that fact means.
 3. Point to one next destination or decision.
 
+Before drafting, copy the chapter's Known, Suspected, and Unknown lists from the player experience plan. Do not let narrator knowledge leak into the protagonist's thoughts.
+
 ## Chapter structure
 
 Each chapter uses seven movements:
@@ -102,6 +104,14 @@ Keep one primary unresolved question in the player's mind. Secondary questions m
 Do not use confusion as suspense. Withheld information must have an in world reason. Villains can lie, but clues must allow a careful player to notice the shape of the lie.
 
 Chapter exits should use consequence hooks rather than arbitrary interruptions. End after the player has achieved something and the meaning changes.
+
+Use the player experience bible as the final authority for terminology limits, mechanical onboarding, recaps, journal information, and comprehension testing.
+
+## Anticipation
+
+The player should usually know one desirable or frightening thing waiting ahead: a city on wheels, a dragon grave, a mirror trial, a meeting with a lost sister, or a gate into another realm. Mystery hides what the encounter means, not whether the story has a direction.
+
+Seed an anticipated place or person before arrival through one concrete detail. Do not advertise five future wonders at once.
 
 ## Protagonist voice
 

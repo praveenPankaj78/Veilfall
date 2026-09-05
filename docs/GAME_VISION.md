@@ -14,6 +14,8 @@ The player should feel three things in every chapter:
 2. I want to see what waits beyond the next road, gate, or truth.
 3. My choices are changing people, places, and the kind of person I am becoming.
 
+The player is never expected to understand the world bible. They need only understand the present objective, the likely immediate cost of a choice, and the focused question pulling them forward. Deeper lore arrives after the player has seen its effect.
+
 ## The central conflict
 
 Long ago, the star dragon Orivane gave her living heart to create the Concord, a set of boundaries separating Edrath from three unstable outer realms. Nine World Nails hold those boundaries in place.
@@ -76,13 +78,25 @@ The player receives an answer before each larger question. Curiosity grows becau
 ## Scope guardrails
 
 - Three playable leads only: two men and one woman.
-- Ten chapters per lead.
+- Chapter count follows story and player comprehension rather than symmetry. The current plan uses twelve Caelan chapters, eleven Rook chapters, and thirteen Ilyra chapters.
 - One main location and one main objective per chapter.
 - No more than one major new lore concept introduced in a scene.
+- No more than three essential invented terms introduced in a chapter.
 - Most intersections involve two leads. The three never fight the same final battle together.
 - Creatures and cultures appear only when they change the conflict or offer a distinct way of living.
 - Every finale changes the world and the starting conditions of a later finale.
 - Choices alter routes, alliances, romances, abilities, and regional outcomes. They do not merely change the next paragraph.
+- The outline may split or combine chapters after playtesting when understanding, anticipation, or emotional pacing improves.
+
+## Player knowledge rule
+
+The writer tracks three lists for every chapter:
+
+- Known: facts the player has seen proved.
+- Suspected: focused possibilities supported by clues.
+- Unknown: facts the author knows but the player has no reason to consider yet.
+
+Active prose may use Known facts freely, offer Suspected facts as questions, and keep Unknown facts out of explanation. The player experience bible defines the full disclosure and comprehension system.
 
 ## Originality statement
 

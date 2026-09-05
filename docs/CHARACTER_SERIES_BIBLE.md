@@ -195,7 +195,7 @@ Possible path: intellectual flirtation, lovers, lasting partnership, or principl
 
 An optional slow relationship can begin when Ilyra and Caelan cross on the Ember Steppe. She respects that he acts while afraid. He respects that she names costs others hide. Attraction grows through shared command and quiet care after battle.
 
-This path requires both characters to be unattached when imported decisions are used. It can culminate in intimacy before Caelan enters the Cinder Deep, making his separate finale more personal without changing Ilyra's own final agency.
+This path requires both characters to be unattached when imported decisions are used. It can culminate in intimacy before Caelan enters the Cinder Deep during his series, or renew after his return during Ilyra's series. Either version makes their separate finales more personal without changing Ilyra's final agency.
 
 ### Rook Sable
 
@@ -226,7 +226,7 @@ Ilyra begins by believing enough knowledge can prevent regret. She ends facing a
 
 # Intersection rules
 
-- Caelan and Rook first cross in Chapter Three of Caelan's series.
+- Caelan and Rook first cross in Chapter Four of Caelan's series and Chapter Three of Rook's series.
 - Ilyra meets Caelan on the Ember Steppe after his road has become a public cause.
 - Rook and Ilyra cross in Serekh and again in the Unsea.
 - No intersection repeats the same scenes or objective from both viewpoints.

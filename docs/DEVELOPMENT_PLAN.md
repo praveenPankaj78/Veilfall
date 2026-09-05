@@ -10,7 +10,7 @@ The redesigned foundation now includes:
 - seven distinct mortal regions;
 - three connected outer realms and Worldroot;
 - exactly three playable leads;
-- thirty high level chapter plans;
+- thirty six high level chapter plans with flexible boundaries;
 - class resources and costs;
 - staggered world changing finales;
 - romance and intimacy rules;
@@ -22,7 +22,7 @@ Review these questions before new chapter prose begins:
 
 1. Does the mystery of the broken Concord feel strong enough to carry all three series?
 2. Are the three leads different enough in method and personality?
-3. Does each ten chapter route contain places the player will want to reach?
+3. Does each route contain places the player will want to reach without rushing the explanation?
 4. Are the four broad final world states morally interesting?
 5. Is the intended romance tone adventurous, mature, and meaningful without taking over the central plot?
 
@@ -71,7 +71,7 @@ Build Caelan Chapters Two and Three before writing the rest of the season. These
 
 ## Phase Five: complete Caelan season
 
-Produce Chapters Four through Ten in two chapter batches. After every batch, test continuity for Oaths, allies, routes, romance, and regional consequences.
+Produce Chapters Four through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -83,9 +83,17 @@ Prototype Glimmer and Echo mechanics in Rook Chapters One through Three. Test th
 
 ## Phase Seven: Ilyra season
 
-Begin Ilyra after Rook's four Dawn law outputs are stable. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Eight through Ten.
+Begin Ilyra after Rook's four Dawn law outputs are stable. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Ten through Thirteen.
 
 Memory Shards must change actual narration, knowledge, and relationships. They cannot function as renamed mana potions.
+
+## Player comprehension gate
+
+Before writing the next chapter, test the current chapter against `docs/PLAYER_EXPERIENCE_BIBLE.md`.
+
+Do not continue merely because the scene graph works. Continue when a first time player can identify the goal, class method, visible cost, new confirmed fact, and next anticipated event without an explanation from the writer.
+
+Chapter numbers are not production quotas. Split a chapter when two major revelations compete for attention. Combine chapters when a section repeats the same objective or emotional decision.
 
 ## Phase Eight: mature content implementation
 

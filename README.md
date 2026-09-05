@@ -9,7 +9,7 @@ The creative foundation has been redesigned. The current playable chapter and it
 The new canonical plan contains:
 
 - Three playable protagonists: Caelan Vey, Rook Sable, and Ilyra Fen.
-- Thirty high level chapters across three complete series.
+- Thirty six high level chapters across three complete series, with chapter boundaries allowed to change after playtesting.
 - Seven mortal regions, three outer realms, and Worldroot.
 - Distinct class methods and costs for every lead.
 - Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
@@ -25,6 +25,8 @@ The new canonical plan contains:
 - `docs/SERIES_CHAPTER_OUTLINE.md` defines the major event of every chapter and every crossover.
 - `docs/NARRATIVE_RULEBOOK.md` defines prose, mystery, choice, romance, intimacy, and location rules.
 - `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, Wayfire, saves, and imported decisions.
+- `docs/PLAYER_EXPERIENCE_BIBLE.md` defines information pacing, mechanical onboarding, recaps, journal design, and comprehension testing.
+- `docs/PLAYER_REVELATION_LEDGER.md` records the question, answer, next hook, and mechanic taught in every planned chapter.
 - `docs/CHAPTER_ONE_MAP.md` defines the next Caelan vertical slice without writing full prose.
 - `docs/DEVELOPMENT_PLAN.md` gives the production order and approval gates.
 
