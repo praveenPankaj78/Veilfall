@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Veilfall: The Crown Below',
-  description: 'A story driven dark fantasy decision RPG.',
+  title: 'Veilfall: The Broken Concord',
+  description: 'A travelling dark fantasy decision RPG about promises, dangerous roads, and a world coming apart.',
 };
 
 export default function RootLayout({

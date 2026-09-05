@@ -2,9 +2,9 @@
 
 Veilfall is an original, story first fantasy decision RPG built around three travelling protagonists and one shared crisis. The mortal world of Edrath is losing the boundaries that separate it from the Cinder Deep, the Luminous Court, and the Unsea. A soldier's promise, a thief's impossible theft, and a witch's final spell alter the world in sequence.
 
-## Redesign status
+## Current status
 
-The creative foundation has been redesigned. The current playable chapter and its two images remain only as a working interface prototype. They are not part of the new canon and will be replaced after the foundation is approved.
+The redesigned foundation and the canonical first chapter are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival when an enemy prepares for every route he might choose.
 
 The new canonical plan contains:
 
@@ -15,6 +15,7 @@ The new canonical plan contains:
 - Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
 - Separate finales whose consequences trigger the next protagonist's story.
 - A world map at `public/art/edrath-world-map.png`.
+- A thirty to forty minute first chapter with route based ambushes, visible threat, class resources, relationship consequences, three endings, and local saves.
 
 ## Canonical documents
 
@@ -42,14 +43,14 @@ For the fastest creative review, read:
 
 The remaining rulebooks explain how the approved plan will be written and implemented.
 
-## Prototype controls
+## Play locally
 
-To inspect the old interface prototype locally:
+To play the current canonical chapter:
 
 1. Run `npm install` if dependencies are not already present.
 2. Run `npm run dev`.
 3. Open the local address shown in the terminal.
 
-Use Restart inside the prototype to clear the local save.
+Use Restart inside the game to clear the local save and try another route.
 
 All story, world, character, history, and lore material in the redesigned canon was created for Veilfall.

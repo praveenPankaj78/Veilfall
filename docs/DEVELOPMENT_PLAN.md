@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and an old playable chapter. Treat the engine as a prototype worth preserving. Treat the old story content and old scene art as noncanonical.
+The project contains a functioning choice engine and the canonical playable version of Caelan Chapter One. The obsolete story content, save key, and old scene art have been removed.
 
 The redesigned foundation now includes:
 
@@ -40,11 +40,11 @@ Required work:
 - add travel and companion state;
 - add imported finale summaries;
 - add content preference for detailed intimacy or fade;
-- migrate or clearly reset prototype saves.
+- maintain versioned save migration or a clearly announced reset when the data model changes.
 
-## Phase Three: Caelan vertical slice
+## Phase Three: Caelan vertical slice, complete
 
-Rewrite Chapter One as The Road Before Rain with a thirty to forty minute target.
+Chapter One is implemented as The Road Before Rain with a thirty to forty minute target.
 
 Acceptance criteria:
 
@@ -128,4 +128,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The redesign is ready for full chapter writing when the user approves the central conflict, three leads, travel routes, and ending structure. Until then, revise the bibles and skeleton rather than polishing noncanonical prose.
+The foundation and first canonical chapter are in place. The next production gate is to test several full routes through Chapter One, record comprehension and pacing issues, then begin Chapter Two only after those issues are resolved.

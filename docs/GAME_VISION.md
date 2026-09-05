@@ -75,6 +75,20 @@ Every chapter uses five linked hooks:
 
 The player receives an answer before each larger question. Curiosity grows because the meaning changes, not because information is withheld forever.
 
+## Threat promise
+
+The player should feel that safety is temporary. Quiet scenes still carry a visible pressure such as weather, pursuit, political cost, a binding promise, limited time, injury, or a watched road.
+
+Threat must change shape rather than remain at maximum intensity. Use this rhythm:
+
+1. Signal a credible eventual danger.
+2. Let the player prepare or choose what matters.
+3. Turn part of the danger into an immediate event.
+4. Show a real cost and a short breath afterward.
+5. Reveal that the surviving problem is larger or closer than expected.
+
+A quiet relationship scene may reduce immediate danger, but it should remind the player what could be lost. Constant combat creates numbness. Persistent vulnerability creates anticipation.
+
 ## Scope guardrails
 
 - Three playable leads only: two men and one woman.

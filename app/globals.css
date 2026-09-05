@@ -507,6 +507,82 @@
   font-size: 0.72rem;
 }
 
+.mission-card {
+  margin: 0 0 0.75rem;
+  padding: 0.9rem;
+  border: 1px solid rgb(186 147 100 / 18%);
+  background: rgb(255 255 255 / 2%);
+}
+
+.mission-card > div {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  color: #9d8065;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mission-card svg,
+.threat-card svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.mission-card p {
+  margin: 0.55rem 0 0;
+  color: #cfc5b7;
+  font: 0.84rem/1.5 Georgia, serif;
+}
+
+.threat-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding: 0.65rem 0.8rem;
+  border-left: 2px solid #7f6a56;
+  background: rgb(106 86 68 / 8%);
+  color: #81776d;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.threat-card strong {
+  color: #b6a99b;
+  font-size: 0.68rem;
+}
+
+.threat-uneasy {
+  border-left-color: #a17a45;
+  background: rgb(129 88 41 / 10%);
+}
+
+.threat-rising {
+  border-left-color: #b85e3f;
+  background: rgb(144 61 38 / 11%);
+}
+
+.threat-immediate,
+.threat-critical {
+  border-left-color: #c44535;
+  background: rgb(151 42 35 / 14%);
+  color: #b88c7e;
+}
+
+.threat-critical strong {
+  color: #e3846f;
+}
+
+.threat-unknown {
+  border-left-color: #8268a2;
+  background: rgb(84 58 118 / 13%);
+}
+
 .stats-list {
   display: grid;
   gap: 0.2rem;

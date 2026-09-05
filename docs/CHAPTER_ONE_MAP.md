@@ -2,7 +2,7 @@
 
 ## Status
 
-The existing playable chapter is now a noncanonical interface prototype. This document defines the next vertical slice. Full prose should begin only after the redesigned foundations are approved.
+This canonical vertical slice is implemented and playable. The obsolete Greyhaven king escort prototype and its scene art have been removed.
 
 ## Chapter
 
@@ -17,6 +17,8 @@ Target play time: thirty to forty minutes on a first route
 Primary objective: escort Ambassador Lysara and a sealed treaty chest from Greyhaven to Bellweather Inn before night rain closes the low road.
 
 Primary mystery: who changed the route order inside Caelan's sealed case?
+
+Player facing threat rhythm: Low during the first duty, Uneasy as physical warning signs appear, Rising when the order proves impossible, Immediate during exposed travel, Critical during the ambush, and Unknown at the folded road.
 
 ## What the player learns naturally
 
@@ -108,9 +110,9 @@ All routes reach the folded road, but state remains distinct:
 
 ## Art plan
 
-Use no more than two scene illustrations in the rewritten chapter:
+The implemented chapter uses two canonical scene illustrations:
 
 1. Greyhaven's eastern gate at departure, with the wider road visible beyond it.
 2. The final reveal, with the King's Road ending at an impossible sea.
 
-Do not reuse the current courtyard and dungeon images as canon scenes.
+The images are stored as `public/art/caelan-east-gate.png` and `public/art/kings-road-folded.png`.

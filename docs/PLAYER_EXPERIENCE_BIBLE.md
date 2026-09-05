@@ -216,6 +216,19 @@ The player need not agree with the protagonist's companions, but should understa
 
 Before a betrayal, establish the relationship being betrayed. Before a sacrifice, establish what will be lost. Before intimacy, establish the immediate desire and any visible risk. Before a world decision, show at least one ordinary life affected by every major option.
 
+## Threat continuity
+
+Most scenes carry either immediate danger or eventual danger. The active objective panel names the practical task, while the threat indicator uses Low, Uneasy, Rising, Immediate, Critical, or Unknown.
+
+- Low is reserved for brief settling scenes where the player learns what normal life feels like.
+- Uneasy means a credible sign exists but violence has not begun.
+- Rising means the danger has a direction, limit, or likely source.
+- Immediate means harm can occur during the present scene.
+- Critical means the current choice decides who or what survives.
+- Unknown follows a supernatural change whose rules are not yet understood.
+
+Do not hold Critical for several scenes in a row. After crisis, lower the intensity while keeping pursuit, injury, time, or exposure active. The player should feel relief without assuming the problem has ended.
+
 ## Final approval test
 
 A chapter is ready only when:
