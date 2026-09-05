@@ -1,133 +1,196 @@
 # Narrative Rulebook
 
-## Point of view
+## Reader contract
 
-Gameplay prose uses second person and present tense. The narrator may state involuntary senses, trained observations, established memories, and immediate physical reactions. It must not choose the player's motive.
+The player is the protagonist. Prose uses second person and present tense. Choices express intent, not hidden outcomes. The interface shows important costs before the player commits.
 
-Good: Your hand tightens around the key.
+The story may surprise the player, but it must not make them feel foolish for lacking information the protagonist should know.
 
-Avoid: You tighten your hand because you finally accept that revenge is right.
+## Clarity before complexity
 
-## Scene engine
+Every scene has one immediate question. Every chapter has one main objective and one main mystery. A new proper noun appears only when the player can connect it to a person, place, threat, or desire already on the page.
 
-Every playable scene contains five parts.
+Use the revelation ladder in the world bible. Answer the current mystery before promoting a larger one. A useful reveal follows this pattern:
 
-1. A concrete goal the player understands.
-2. A physical or social obstacle.
-3. One sensory detail unique to the place.
-4. A turn that changes the meaning of the scene.
-5. A choice between competing values or methods.
+1. Confirm one suspicion.
+2. Change what that fact means.
+3. Point to one next destination or decision.
 
-If a scene has no turn, combine it with another scene or remove it.
+## Chapter structure
 
-## Hook design
+Each chapter uses seven movements:
 
-Use three kinds of open question at once.
+1. Settle: establish the location, current relationship, and immediate need.
+2. Disturb: one concrete problem interrupts the expected plan.
+3. Choose approach: let the class identity shape the response.
+4. Pay: make the cost visible in resources, trust, time, or safety.
+5. Discover: answer the active mystery.
+6. Decide: force a value choice that cannot be solved by power alone.
+7. Depart: show one consequence and open one new question.
 
-* The immediate question concerns survival or the next action.
-* The personal question concerns identity, trust, guilt, love, or change.
-* The saga question concerns the Veil, the crown, or the fate of the world.
+The first chapter of every series spends more time in Settle. It teaches normal life before breaking it.
 
-Answer at least one meaningful question per chapter. An answer should alter what the player wants to know next. Do not delay every answer until the finale.
+## Scene length and choice rhythm
 
-Chapter endings should combine a consequence with a fresh fact. “An attacker escapes” is weak alone. “The captured attacker knows a scar hidden under your glove” changes both danger and identity.
+- Standard reading block: 80 to 180 words.
+- Quiet relationship block: up to 240 words when interaction keeps changing.
+- Choice frequency: normally every one to three reading blocks.
+- Important decisions: two to four options.
+- Never place two choices in a row without showing a consequence between them.
+- After a major choice, show an immediate physical or emotional result before moving on.
 
-## Curiosity without confusion
+## Simple but immersive language
 
-The player should usually know four things: who they are, what they want now, who is present, and what decision is being made. A mystery may hide cause or identity, but it should not hide the basic action.
+Prefer familiar words used with precise detail. Describe what the viewpoint character can sense and why it matters.
 
-Use a reveal ladder:
+Weak: The forest was strange and magical.
 
-1. Establish normal life and a clear duty.
-2. Introduce one fact that does not fit.
-3. Let the player test that fact through action.
-4. Confirm part of the answer.
-5. Show one deeper implication.
+Stronger: Pale leaves turn toward your voice. When you stop speaking, they turn toward Mara instead.
 
-Do not skip from ordinary life to several ancient names, factions, prophecies, and alternate histories in one chapter. A proper noun earns a place only if the player must remember it now.
+Use one or two strong sensory facts per block. Let action carry description. Avoid decorative paragraphs that do not alter mood, choice, character, or understanding.
 
-At the end of each scene, list the active questions during editing. If more than three require immediate attention, answer, combine, or delay one.
+## Location rule
+
+Every major location needs five anchors:
+
+- Silhouette: what the player sees first from a distance.
+- Motion: what is always moving there.
+- Sound: what can be heard before it is seen.
+- Social rule: one behaviour visitors must understand.
+- Danger: one local threat that grows from the place rather than being dropped into it.
+
+Revisit at least one changed location in each series. Consequences feel larger when the player recognises what has been lost or improved.
+
+## Creature rule
+
+A creature or people enters the story only if it provides at least two of these:
+
+- A way of living that challenges the protagonist.
+- A class problem requiring a distinct solution.
+- A stake in the Concord.
+- A relationship that changes the journey.
+- A memorable visual or physical danger.
+
+Never add a dragon, devil, goblin, elf, or monster merely to announce that the world is fantasy.
 
 ## Choice quality
 
-A strong choice has no obviously correct answer. Options should express different values, risks, or methods.
+Good choices oppose values, not intelligence. Examples include:
 
-Each choice must change at least two of these layers:
+- Save one known person or protect many unseen people.
+- Tell a painful truth now or preserve trust until evidence is complete.
+- Spend a resource to avoid harm or keep it for a greater danger the player knows is coming.
+- Accept help with a real price or refuse and risk the objective.
 
-* the immediate outcome
-* a player stat or resource
-* a relationship
-* a fact another character learns
-* an item, injury, promise, or debt
-* access to a later scene
-* the meaning of a past event
+Avoid options that are obviously foolish, pointlessly cruel, or identical under different wording.
 
-Avoid choices that differ only in tone unless tone changes a relationship. Avoid hiding all consequences. The player should understand the nature of the risk even when the exact result remains uncertain.
+## Consequence horizons
 
-## Branching model
+Every important choice should create at least two consequences from different horizons:
 
-Use braided branches. A choice may return to a shared location, but it must carry a visible difference into that location. Changed prose, available actions, witnesses, injuries, items, and later viewpoint scenes make convergence honest.
+- Immediate: injury, escape, information, resource use.
+- Chapter: route, ally, encounter, solution.
+- Series: relationship, ability, faction, regional fate.
+- Saga: Gate state, Dawn law, Concord ending.
 
-Major branches occur at season midpoint and finale. These may change locations, allies, bosses, or political control. Smaller branches accumulate state that reshapes those large decisions.
+The story should surface consequences naturally. Do not explain an invisible score when a changed greeting, closed road, scar, or new ally can show it.
 
-Never present the same response to choices that claimed to be morally or tactically different.
+## Mystery discipline
 
-## Character voice
+Keep one primary unresolved question in the player's mind. Secondary questions may exist, but the prose should make the next useful action clear.
 
-The world remains consistent while observation changes by lead.
+Do not use confusion as suspense. Withheld information must have an in world reason. Villains can lie, but clues must allow a careful player to notice the shape of the lie.
 
-* Caelan notices hands, exits, balance, wounds, equipment, and duty.
-* Rook notices value, vanity, routes, locks, and social weakness.
-* Ilyra notices reflection, pattern, word choice, and missing memory.
-* Orren notices scent, rhythm, contradiction, and hidden violence.
+Chapter exits should use consequence hooks rather than arbitrary interruptions. End after the player has achieved something and the meaning changes.
 
-## Language standard
+## Protagonist voice
 
-Use plain words with exact detail. Prefer a wet wool cloak over a garment. Prefer a nicked prison sword over a weapon. Let one strong detail carry a paragraph.
+### Caelan
 
-Main prose aims for sentences of 8 to 22 words, with shorter sentences at moments of shock. Paragraphs should usually contain 1 to 4 sentences for comfortable mobile reading.
+Concrete, protective, disciplined. He notices responsibility before beauty, then notices beauty when it interrupts discipline. Choices sound like commitments.
 
-Dialogue should contain pressure, intent, or concealment. Cut greetings and repeated explanations unless etiquette itself creates tension.
+### Rook
 
-## Forbidden habits
+Fast, observant, irreverent. He notices value and attention. His jokes conceal fear until an honest line lands without decoration. Choices sound like tactics.
 
-* Never use two hyphens together in any player facing text.
-* Avoid em dash punctuation in story prose.
-* Do not use stock lines that tell the reader a hidden danger will be revealed later.
-* Do not call ordinary things a tapestry, testament, symphony, or dance.
-* Avoid the pattern “not only this, but also that.”
-* Do not explain a symbol directly after showing it.
-* Do not repeat the player's last action in three different ways.
-* Do not end every scene with a vague threat watching from darkness.
-* Do not use lore terms when a character would use an ordinary word.
+### Ilyra
 
-## Blood and horror
+Measured, sensory, intellectually direct. She notices patterns and costs. Attraction sharpens her attention rather than reducing her judgment. Choices sound like hypotheses with human consequences.
 
-Violence should change the problem. Blood can reveal a wound, magical cost, identity, or loss of control. Do not add gore only to signal maturity. After intense violence, include a human consequence such as shock, treatment, guilt, cleanup, or changed trust.
+## Romance and flirtation
 
-## Romance and desire
+Romance is frequent enough to add warmth, tension, and vulnerability, but it remains connected to the journey.
 
-Romance is optional and slow enough to earn belief. Build it through attention, risk, humor, useful cooperation, boundaries, disagreement, and repaired mistakes. A player may leave any romance without losing essential plot access.
+Flirtation can:
 
-Frequent flirting is welcome when it changes tone or relationship state. A flirt choice should reveal how the lead handles vulnerability. Caelan may use dry warmth, Rook may hide behind charm, Ilyra may become exact and unexpectedly bold, and Orren may show care through controlled attention.
+- test whether two people respect one another's skill;
+- relieve pressure while revealing fear;
+- create leverage in a negotiation;
+- make a later separation costly;
+- expose a desire that conflicts with duty.
 
-Later chapters may contain detailed sensual intimacy between clearly adult characters. Such a scene requires an established relationship path, clear consent in the moment, privacy, emotional purpose, and a meaningful consequence or change in understanding. The game offers full detail and early fade settings. Both settings receive the same plot facts, relationship state, and rewards.
+Do not make every attractive character available. Rejection, incompatible values, timing, and chosen commitment make the world feel inhabited rather than arranged for the protagonist.
 
-Intimacy cannot be used as a reward for a correct dialogue answer. It grows from a pattern of trust. The writing should focus on the specific characters, their communication, physical reactions, boundaries, and emotional change rather than generic performance.
+## Temporary and motive driven intimacy
 
-Consent is especially clear in stories involving rank, captivity, magic, medical care, or transformation. Supernatural influence cannot produce a valid romantic choice. Characters may behave badly, but the story recognizes coercion as harm.
+A relationship does not require a season of courtship before intimacy. Two adults may choose one another because of desire, danger, comfort, curiosity, loneliness, celebration, or strategy.
 
-## Revision pass
+When one person has a hidden objective:
 
-Before a chapter is approved, read it aloud and answer these questions.
+1. Both still choose the physical encounter voluntarily.
+2. The concealed motive creates a later consequence.
+3. The seducing character retains a full goal and personality beyond attractiveness.
+4. The protagonist may notice warning signs and proceed, refuse, or set terms.
+5. Magic, threats, captivity, severe intoxication, or inability to refuse make intimacy unavailable.
 
-1. What does the player want on the first screen?
-2. What changes before the first decision?
-3. Does every option have a believable reason?
-4. Does at least one earlier choice alter later prose or access?
-5. What question is answered?
-6. What sharper question remains?
-7. Could any paragraph belong to a different fantasy story without changes?
-8. Did the prose state a motive the player should choose?
-9. Is any sentence trying to sound grand instead of being clear?
-10. Did the text pass the punctuation and forbidden phrase check?
+## Writing attraction
+
+Attractive characters should feel physical without being reduced to parts. Select details through the protagonist's attention:
+
+- the confidence or hesitation in a movement;
+- how clothing follows a turn, stride, or breath;
+- warmth at close distance;
+- strength shown through work;
+- a voice becoming softer or rougher;
+- eye contact held a moment longer than necessary;
+- an exposed wrist, loosened collar, wet hair, or familiar scent when the scene supports it.
+
+Use restraint. One charged detail often feels more intimate than a full inventory.
+
+## Intimate scenes in later chapters
+
+Intimate scenes can become detailed, but their primary purpose is emotional and narrative change. Structure them around attention, choice, response, and trust. Keep both participants active. Confirm desire through behaviour and words suitable to their relationship.
+
+Each scene must change at least one state such as trust, information, debt, loyalty, vulnerability, or future risk. Provide a fade option for players who want the relationship consequence without detailed content.
+
+## Violence and horror
+
+Blood is useful when it proves danger, changes a choice, or shows cost. Pain affects movement and judgment after the fight. Avoid repeated gore that adds no new meaning.
+
+Horror in Veilfall comes from familiar laws changing: a road that remembers another destination, an ancestor using the wrong childhood nickname, a beautiful court removing choice with sincere kindness.
+
+## Avoiding machine shaped prose
+
+- Do not repeat sentence patterns in groups of three as a habit.
+- Avoid vague poetic contrast when a physical observation is available.
+- Do not summarise an emotion immediately after showing it.
+- Give supporting characters interruptions, preferences, mistakes, and private work.
+- Let dialogue include unfinished thoughts, deflection, and specific shared history.
+- Remove generic phrases that could belong to any fantasy story.
+- Read every passage aloud during editing.
+- Never use adjacent hyphens or an em dash in story files.
+
+## Revision checklist
+
+Before a scene is approved, confirm:
+
+1. The player knows the immediate goal.
+2. The location has a distinct physical behaviour.
+3. The protagonist notices details in their own voice.
+4. At least one choice reflects class method.
+5. Every power use has a visible cost.
+6. Flirtation or intimacy, if present, changes the relationship or problem.
+7. The scene introduces no unnecessary lore.
+8. The ending shows a result before opening the next question.
+9. The prose contains no adjacent hyphens or em dash characters.
+10. The passage sounds natural when read aloud.

@@ -1,30 +1,53 @@
-# Veilfall: The Crown Below
+# Veilfall: The Broken Concord
 
-Veilfall is an original, story first medieval fantasy decision RPG. The first series follows Caelan Vey, a respected royal oathkeeper whose ordinary escort duty is broken by an attack planned by someone using his face, voice, seal, and handwriting.
+Veilfall is an original, story first fantasy decision RPG built around three travelling protagonists and one shared crisis. The mortal world of Edrath is losing the boundaries that separate it from the Cinder Deep, the Luminous Court, and the Unsea. A soldier's promise, a thief's impossible theft, and a witch's final spell alter the world in sequence.
 
-The project includes a playable first chapter, branching consequences, persistent local saves, character resources, Cinders as a future unlock currency, three chapter endings, and original scene art.
+## Redesign status
 
-## Play locally
+The creative foundation has been redesigned. The current playable chapter and its two images remain only as a working interface prototype. They are not part of the new canon and will be replaced after the foundation is approved.
 
-1. Open a terminal in this folder.
-2. Run `npm install` if dependencies are not already present.
-3. Run `npm run dev`.
-4. Open the local address shown in the terminal.
+The new canonical plan contains:
 
-The game saves progress in the browser on the current device. Use Restart inside the game to clear the save and test another route.
+- Three playable protagonists: Caelan Vey, Rook Sable, and Ilyra Fen.
+- Thirty high level chapters across three complete series.
+- Seven mortal regions, three outer realms, and Worldroot.
+- Distinct class methods and costs for every lead.
+- Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
+- Separate finales whose consequences trigger the next protagonist's story.
+- A world map at `public/art/edrath-world-map.png`.
 
-## Project map
+## Canonical documents
 
-* `app/game-data.ts` contains the playable chapter graph and story text.
-* `app/page.tsx` contains the choice engine, save system, character sheet, and player interface.
-* `public/art` contains original game artwork.
-* `docs/SERIES_CHAPTER_OUTLINE.md` is the canonical high level plan for all forty character chapters and every major crossover.
-* `docs` also contains the creative vision, world bible, character bible, narrative rules, systems rules, and development roadmap.
+- `docs/GAME_VISION.md` defines the player promise, central conflict, scope, and hook structure.
+- `docs/WORLD_BIBLE.md` defines Edrath, the World Nails, cultures, realms, magic, and antagonist.
+- `docs/WORLD_MAP.md` explains geography, travel times, routes, and map continuity.
+- `docs/CHARACTER_SERIES_BIBLE.md` defines the three leads, their specialties, costs, growth, and relationships.
+- `docs/SERIES_CHAPTER_OUTLINE.md` defines the major event of every chapter and every crossover.
+- `docs/NARRATIVE_RULEBOOK.md` defines prose, mystery, choice, romance, intimacy, and location rules.
+- `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, Wayfire, saves, and imported decisions.
+- `docs/CHAPTER_ONE_MAP.md` defines the next Caelan vertical slice without writing full prose.
+- `docs/DEVELOPMENT_PLAN.md` gives the production order and approval gates.
 
-## Current creative scope
+## Review order
 
-The shared saga has four playable leads, three men and one woman. Each has a clear problem solving style and a resource cost unique to the class. Their stories intersect at a few major events, while most chapters remain focused on one lead and one understandable goal.
+For the fastest creative review, read:
 
-Chapter One is a vertical slice. It establishes Caelan’s normal life, his work, his relationship with Mara Renn, the choice system, class resources, one central mystery, and the first three consequences of that mystery.
+1. `docs/GAME_VISION.md`
+2. `docs/CHARACTER_SERIES_BIBLE.md`
+3. `docs/SERIES_CHAPTER_OUTLINE.md`
+4. `docs/WORLD_MAP.md`
+5. `docs/WORLD_BIBLE.md`
 
-All story, world, character, and lore material in this repository was created for Veilfall.
+The remaining rulebooks explain how the approved plan will be written and implemented.
+
+## Prototype controls
+
+To inspect the old interface prototype locally:
+
+1. Run `npm install` if dependencies are not already present.
+2. Run `npm run dev`.
+3. Open the local address shown in the terminal.
+
+Use Restart inside the prototype to clear the local save.
+
+All story, world, character, history, and lore material in the redesigned canon was created for Veilfall.

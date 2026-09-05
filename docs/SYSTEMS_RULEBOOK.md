@@ -2,163 +2,182 @@
 
 ## Design goal
 
-Systems make story choices feel remembered. Every powerful method has a cost. Numbers support character identity and consequence without turning reading into constant arithmetic.
+Systems should make the player feel the protagonist's method and its cost. They support the story rather than interrupt it with constant arithmetic.
 
-## Shared structure
+## Shared character states
 
-Each lead has:
+Each protagonist tracks:
 
-* one physical or magical resource spent on strong actions
-* one mental control resource
-* one skill or preparation resource
-* relationship state appropriate to the scene
-* Cinders as the shared chapter currency
+- Vitality: physical condition. Zero causes injury, capture, or a costly rescue rather than an unexplained restart.
+- Morale: willingness to continue. It affects desperate choices and recovery.
+- Coin: ordinary purchases, bribes, lodging, and supplies.
+- Wayfire: account level progression currency used to unlock chapters.
+- Reputation: separate values for major regions and factions.
+- Bonds: named relationship states with trust, attraction, respect, and conflict flags.
+- World state: the condition of each Nail, route, people, and imported finale.
 
-Resources usually range from 0 to 6. A chapter begins with enough power to make several strong choices, but not every strong choice. Restoring a resource requires time, safety, food, treatment, honesty, or another action that has its own opportunity cost.
+## Class economies
 
-## Caelan’s resources
+### Caelan
 
-### Stamina
+- Stamina starts at 8 and fuels physical actions.
+- Resolve starts at 6 and resists fear, pain, and manipulation.
+- Oathfire begins locked. Swearing a meaningful Oath fills it.
+- Active Oaths are named duties with success and breach conditions.
+- Oathscars record broken promises and alter powers, dialogue, and ending options.
 
-Powers shield charges, difficult climbs, forced movement, endurance, and taking a blow for another person. Heavy physical choices cost 1 or 2 Stamina. At zero, Caelan remains playable but cannot select actions that demand force or protection until he rests or receives treatment.
+Recovery:
 
-### Resolve
+- Stamina returns through food, rest, medicine, or surrendering the pace of pursuit.
+- Resolve returns through honest connection, completed duties, and accepting help.
+- Oathfire returns only by advancing an active Oath or freely accepting a new cost.
 
-Powers command, resistance to fear, calm under pain, and later oath abilities. Keeping a difficult promise may restore Resolve. Breaking an active oath reduces it and creates an Oathscar with a different ability path.
+### Rook
 
-### Insight
+- Dexterity starts at 8 and fuels movement, locks, sleight of hand, and escape.
+- Focus starts at 7 and fuels disguise, planning, and illusion.
+- Heat starts at 0 and rises when evidence, witnesses, or patterns point toward Rook.
+- Echoes record lives borrowed through Glimmer. Some provide knowledge while others distort identity.
 
-Represents tactical observation and preparation. The player earns it by checking equipment, studying people, or delaying action to understand a scene. Strong plans spend Insight because they use the prepared advantage.
+Recovery:
 
-### Rapport
+- Dexterity returns through rest and safe equipment maintenance.
+- Focus returns through sleep, honest conversation, and time without maintaining a persona.
+- Heat falls when Rook changes region, destroys a clue, frames a credible rival, or accepts a faction debt.
 
-Represents practical trust with the people in the current arc. It grows through honesty, humor, care, delegation, and respect for another person’s skill. Later production should split it into named relationships rather than one universal value.
+### Ilyra
 
-### Oath slots
+- Mana starts at 9 and fuels prepared magic.
+- Strain starts at 0 and rises when she forces spells or works without preparation.
+- Memory Shards are named memories, not anonymous points.
+- Corruption marks record magic performed through a true name without permission.
 
-From Chapter Three, Caelan can hold three active promises. Each oath grants a clear ability and a clear duty.
+Recovery:
 
-Example:
+- Mana returns through rest, ritual, nourishing food, and safe emotional connection.
+- Strain falls through sleep, grounding, or sharing the magical burden.
+- Spent Memory Shards do not return automatically. A rare recovery always changes the memory or costs something else.
 
-Promise: No member of my escort is left behind.
+## Visible cost rule
 
-Gift: Spend one less Stamina when rescuing a guard.
+Before selecting a choice, the player sees relevant changes in plain language, such as:
 
-Trigger: Leaving a living escort member in known danger breaks the oath.
+- Costs 2 Stamina
+- Gains 1 Heat
+- Risks a Memory Shard if the ward breaks
+- Creates the Oath: Bring every survivor to the Gate
 
-Breaking cost: Lose Resolve and gain the Oathscar ability Ruthless Retreat.
+Exact downstream plot consequences remain unknown, but immediate mechanical costs do not.
 
-## Rook’s resources
+## Checks and failure
 
-### Dexterity
+Most choices do not roll. If the player has the required resource, skill, item, or relationship, the action succeeds and its cost applies.
 
-Powers stealth, climbing, escape, lock work, pickpocketing, and precise attacks. Injury, restraint, exhaustion, and carrying heavy objects reduce it. A failed Dexterity path changes position or raises Heat instead of simply ending play.
+Uncertain checks are reserved for moments when risk itself is dramatic. The game shows the likely range rather than a hidden percentage. Luck can shift the result, but never erases a carefully built advantage.
 
-### Focus
+Failure moves the story forward through injury, lost time, increased Heat, damaged trust, altered routes, or a harder objective. It does not repeat the same passage.
 
-Powers illusions. A false sound costs 1 Focus. A still visual disguise costs 1 or 2. A moving human figure costs 3 and demands concentration. Taking damage or maintaining another complex action may break the illusion.
+## Wayfire economy
 
-### Heat
+Wayfire is the future chapter unlock currency. The fiction treats it as the warmth left when a person makes a choice they cannot take back.
 
-Measures attention from law officers, rivals, and the Lantern Court. Heat is not spent. Risky theft and recognizable tricks raise it. Laying low, planting a false trail, or paying a contact reduces it.
+Recommended launch rules:
 
-## Ilyra’s resources
+- Completing a chapter grants enough Wayfire to unlock the next chapter in the active series during normal play.
+- Optional discoveries, difficult class solutions, and replay milestones grant reserve Wayfire.
+- Ads may later grant bonus Wayfire, but no player should be forced to repeat content or choose a worse story outcome to continue.
+- Currency is never spent inside a choice to purchase moral superiority, romance, consent, or survival.
+- Premium purchase and ad rewards must use the same clear conversion rate.
+- The player can preview the next chapter title, lead, location, and opening premise before unlocking it.
 
-### Mana
+This keeps monetisation attached to access pace rather than narrative integrity.
 
-Powers wards, lenses, threads, and Glassforms. Small spells cost 1 Mana. Strong area effects cost 2 or 3. Mana returns through sleep, prepared focus stones, food, and calm concentration.
+## Luck
 
-### Memory shards
+Luck is a rare consumable capped at 3. It can:
 
-Power rare spells that affect identity, history, or perception. Creating a shard removes a specific memory from Ilyra until she breaks the shard and gives up its stored spell. The interface names the memory before the player spends it.
+- turn a costly failure into success with a complication;
+- reveal an extra class approach;
+- preserve one resource point after a dangerous action.
 
-### Strain
+Luck cannot force affection, reverse a final world decision, or replace a missing required alliance.
 
-Rises when Ilyra casts without enough Mana or maintains several spells. High Strain causes tremors, sensory mistakes, and unreliable magical evidence. Rest and medical help reduce it.
+## Relationship state
 
-## Orren’s resources
+Each major relationship tracks four independent values:
 
-### Control
+- Trust: belief that the protagonist will act honestly or reliably.
+- Attraction: physical and romantic interest.
+- Respect: belief in competence and values.
+- Friction: unresolved hurt, rivalry, or conflicting aims.
 
-Keeps human judgment in charge during transformation. Anger, pain, deliberate shifting, and concealed violence consume Control. At low Control, physical power increases while dialogue, restraint, and fine movement become harder.
+High attraction alone can allow consensual temporary intimacy when context supports it. Commitment requires trust and respect. Friction can make flirtation sharper, but high friction also creates boundaries the protagonist must respect.
 
-### Change
+## Travel system
 
-Measures how far Orren has transformed. Higher Change grants scent, speed, healing, and strength. Returning toward human form requires safety, familiar voices, or a chosen grounding action.
+At each major departure, the player chooses a route or travel preparation. The choice may affect:
 
-### Scent marks
+- time elapsed;
+- supplies and Coin;
+- class resources at arrival;
+- companion presence;
+- faction encounters;
+- which local crisis has worsened.
 
-Orren can hold a limited set of detailed scent memories. Marking a person, place, substance, or emotional trace occupies one slot. Comparing the right marks opens investigative conclusions. Replacing a mark means giving up older evidence.
+Travel passages include at least one decision or relationship beat. Avoid empty summaries and random encounters with no later consequence.
 
-## Cinders
+## World Nail states
 
-Cinders are the shared narrative currency earned at chapter endings and selected rare discoveries.
+Each Nail has one of five states:
 
-Cinders can unlock:
+- Stable: the local law works normally.
+- Frayed: strange effects appear but remain limited.
+- Open: the local law can be manipulated.
+- Broken: the failure changes the region permanently.
+- Rewritten: a protagonist or faction has installed a new law.
 
-* an optional memory scene
-* an alternate problem solving route
-* a romantic interlude that adds depth but no required plot fact
-* a viewpoint echo from another lead
-* early access to the next chapter
+Chapter data reads these states to select descriptions, routes, creatures, and ending options.
 
-Cinders never purchase a required good ending. Free choices always support a complete story. Paid or ad earned Cinders buy breadth, speed, replay value, and extra context.
+## Imported decisions
 
-## Currency economy
+On starting a later series, the player may import a completed local save. If no save exists, the game offers three short world state questions with clear summaries.
 
-The first chapter is free and awards 3 to 5 Cinders. A normal chapter may cost 4 Cinders to unlock early. One optional rewarded ad may grant 2 Cinders. Final values require player testing.
-
-Rules:
-
-1. Show the cost before an ad or purchase.
-2. Never remove earned Cinders without a chosen action.
-3. Never interrupt danger, grief, romance, or intimacy with an ad prompt.
-4. Place unlock prompts at chapter boundaries or optional sealed scenes.
-5. Keep at least one complete free route while retention is being tested.
-6. The full detail and early fade romance settings have the same price and rewards.
-
-## Choice checks
-
-Requirements are visible before selection. A locked choice names the needed resource. Core story checks use fixed thresholds rather than random rolls, so players understand why an option is available.
-
-A choice may both require and spend a resource. Requirement text means Caelan must have enough Stamina to attempt the action. The consequence preview tells the player how much will be spent.
-
-## Failure
-
-Failure moves the story. It may cause injury, lost time, higher Heat, lower Control, damaged trust, lost evidence, or a harder route. Reloading is a player choice, not the expected way to discover a correct answer.
-
-Character death is reserved for declared high risk choices, season finales, and endings. Death creates a complete ending or lasting state for another viewpoint.
-
-## Relationships and romance
-
-Production relationship state tracks Trust, Attraction, Fear, and Debt separately. Flirting can raise Attraction while lowering Trust if used to avoid honesty. Protecting someone may raise Trust and Fear at the same time.
-
-An intimate scene requires:
-
-* all involved characters are at least twenty-five
-* mutual Attraction and sufficient Trust
-* no active captivity, magical compulsion, medical dependency, or direct command pressure
-* an explicit player choice to continue
-* a content setting for full detail or earlier fade
-
-Intimacy changes conversation, trust, vulnerability, and later decisions. It does not grant combat power by itself.
+Imported choices change circumstances, never basic comprehension. For example, Rook Chapter One always begins with locks opening, but the reason and duration depend on Caelan's Gate ending.
 
 ## Save model
 
-The vertical slice uses one automatic browser save. Production supports cloud saves, three chronicle slots, completed chapter replay, a schema version, content version, resource state, relationships, inventory, currency ledger, and ordered choice history.
+Save after every choice. Store:
 
-## Content data model
+- current series, chapter, and passage;
+- shared and class resources;
+- named Oaths, Oathscars, Echoes, Memory Shards, and corruption marks;
+- inventory and route state;
+- faction reputation and relationship values;
+- Nail states and regional outcomes;
+- content preference for detailed intimacy or fade;
+- completed finale summaries for import.
 
-Each scene needs an id, viewpoint, location, time marker, body blocks, conditional variants, choices, requirements, resource changes, result text, content settings, and analytics labels.
+Use versioned migrations so later content updates do not invalidate long term saves.
 
-Story content remains separate from presentation code so writers can test chapters without changing the interface.
+## Choice data shape
 
-## Balance targets
+Every authored choice should include:
 
-* Every chapter supports at least two class approaches.
-* A strong class action always spends or risks something.
-* No core resource remains unused for more than two chapters.
-* Committing to one style creates both strength and a meaningful weakness.
-* At least 25 percent of scene text changes across a full replay route.
-* A season supports at least four materially different end states.
-* No purchase changes the canonical outcome by itself.
+- visible intent label;
+- optional class identity tag;
+- visible immediate cost;
+- requirements;
+- state changes;
+- consequence passage;
+- memory text used in later callbacks;
+- analytics identifier unrelated to prose wording.
+
+## Balance rules
+
+1. A class resource should matter at least twice per chapter.
+2. No chapter should punish every use of the protagonist's signature ability.
+3. At least one difficult problem should reward preparation from an earlier chapter.
+4. Low resources create altered approaches, not dead ends.
+5. Romance does not grant the universally strongest route.
+6. Regional alliances should be as valuable as personal power in the final chapters.
+7. Grand power always increases the scale of responsibility.

@@ -1,84 +1,116 @@
-# Chapter One Map
+# Redesigned Chapter One Map
 
-## Title
+## Status
 
-The Last Quiet Morning
+The existing playable chapter is now a noncanonical interface prototype. This document defines the next vertical slice. Full prose should begin only after the redesigned foundations are approved.
 
-## Chapter purpose
+## Chapter
 
-Let the player live inside Caelan’s ordinary world before asking them to protect it. Establish his profession, values, routine, friendship with Brann, attraction to Mara, and personal approach to command.
+Series: The Ember Oath
 
-## Clear player goal
+Lead: Caelan Vey
 
-Prepare the guard and escort King Aldren safely from Southwatch to the river ceremony.
+Title: The Road Before Rain
 
-## One active mystery
+Target play time: thirty to forty minutes on a first route
 
-Who copied Caelan’s face, voice, handwriting, private knowledge, and command seal to arrange an attack on the king?
+Primary objective: escort Ambassador Lysara and a sealed treaty chest from Greyhaven to Bellweather Inn before night rain closes the low road.
 
-The chapter does not introduce the Veil, the Crown Below, altered gods, or several unknown factions. Those ideas enter later after the false identity question has produced useful answers.
+Primary mystery: who changed the route order inside Caelan's sealed case?
 
-## Story flow
+## What the player learns naturally
 
-### Morning routine
+- Caelan is trusted and experienced.
+- Mara knows him well enough to tease and challenge him.
+- Greyhaven is one part of a wider world.
+- Guard, Command, Stamina, Resolve, and promises shape Caelan's play.
+- Elves, goblins, orcs, and witches are ordinary political actors, not an exposition parade.
+- The King's Road is supposed to be safe and reliable.
+- One impossible change has occurred.
 
-The player chooses training, careful equipment inspection, or breakfast with the night watch. This establishes Caelan as a working captain and sets an early resource preference.
+Do not explain the Concord, outer realms, all nine Nails, Orivane, Elian, or Malrec's full motive in this chapter.
 
-### Courtyard and Mara
+## Opening movement: a normal morning
 
-Mara Renn checks Caelan’s armor. The player may flirt, ask about her patrol, or admit worry about a palace promotion. Every option develops character and has a practical effect.
+Caelan walks the gate yard before departure. The player chooses what he checks first: people, horses, route, or treaty chest. Each option establishes his competence and gives a small later benefit.
 
-### The cloak
+Mara returns from scouting with rain in her hair and a stolen pear. Their familiarity allows one playful response, one professional response, and one guarded response. This creates tone rather than locking romance.
 
-The player chooses the visible red captain’s cloak, the old brown cloak made familiar by family history, or trusts Mara to choose. The cloak changes later description and risk.
+A goblin wheelwright argues with a human guard about the load balance. The player can listen, command silence, or inspect the axle. This teaches that good leadership includes expertise outside Caelan's own.
 
-### The escort
+## Inciting disturbance
 
-King Aldren appears as a person rather than a lore device. The player sees Caelan’s team at work and chooses between physical help, observation, or a playful promise to Mara.
+Ambassador Lysara arrives from Thornweald. Her presence is memorable but the scene focuses on the treaty mission. She notes that Caelan's written route differs from the route agreed the night before.
 
-### The false order
+Caelan opens his dispatch case. The seal is intact. The order inside carries his handwriting and names the low road.
 
-After the world feels stable, one wrong fact arrives. An order in Caelan’s hand redirects the escort. The seal, writing, and voice reported by the messenger all match him.
+The player chooses whether to trust the document, Mara, or a fresh inspection. Each route remains playable and changes the ambush terrain.
 
-### The route decision
+## Road movement
 
-The player chooses Riverteeth, the original King’s Road, or a decoy plan unlocked through enough Insight. Each route faces the same planned attack in a different form.
+The escort leaves Greyhaven. The city falls behind, creating a clear sense of departure. Short conversations establish the wider map through things the party can see or needs for the mission.
 
-### The response
+One calm class decision occurs before danger:
 
-Caelan may protect the king, pursue the clearest answer, or trust his guard while fighting beside Mara. Stamina, Insight, Resolve, and Rapport make different options possible.
+- Guard an overloaded wagon and spend Stamina.
+- Command a faster formation and risk lower morale.
+- Promise the nervous envoy that everyone will reach the inn and create the first optional Oath.
+- Ask Mara to range farther ahead, improving warning but reducing immediate relationship time.
 
-## Endings
+## Ambush movement
 
-### The Weight of the Cloak
+The attack uses the chosen route:
 
-Caelan protects people and earns the king’s trust. A wounded attacker says Caelan hired him yesterday. Mara promises he will not face the accusation alone.
+- Low road: floodwater, hidden archers, and a wagon at risk of overturning.
+- Ridge road: falling stone, narrow footing, and a signal mirror.
+- Inspection route: delayed departure exposes a saboteur at the rear while hired riders attack the front.
 
-### The Man Who Hired Them
+The player chooses a class approach, then a value choice. The class approach determines how Caelan responds. The value choice determines whom or what he protects when he cannot keep everything safe.
 
-Caelan captures an attacker and receives a detailed description of his own face and private scars. The player gains the strongest evidence but has taken greater personal or political risk.
+Possible losses include treaty pages, a named guard's health, the captured attacker, the horses, or Mara's trust. Chapter One does not kill Mara or Lysara.
 
-### After the Noise
+## Mystery answer
 
-Caelan and Mara solve the physical danger through trust. Their attraction becomes a real bond. A tavern receipt proves that someone using Caelan’s identity arranged the meeting.
+The party captures or searches an attacker. Evidence proves the ambushers received Caelan's changed route before Caelan opened the sealed case.
 
-## Questions answered
+This answers whether the change was a clerical mistake. It was not.
 
-* Was the false order connected to a real attack? Yes.
-* Did an ordinary forger make a careless copy? No. The impostor knew private physical and personal details.
-* Does Mara believe Caelan? Her behavior reflects the trust built by the player.
+The attacker carries road dust containing salt crystals from the Shard Coast, although no normal journey could have brought them east so quickly. This is a clue, not a lecture.
 
-## Question carried forward
+## Closing movement
 
-Where was Caelan yesterday, and who could imitate him closely enough to fool people who met him face to face?
+Caelan orders a retreat toward Greyhaven. After one mile, the sea appears ahead of them. Greyhaven is visible across the water behind the party, far beyond swimming distance.
 
-## State carried to Chapter Two
+The road has folded.
 
-* morning routine and first approach preference
-* red cloak, brown cloak, or Mara’s choice
-* openness with Mara
-* trust earned from Brann, young guards, and King Aldren
-* false order disclosed, privately investigated, or shared first with Mara
-* route selected
-* attacker captured or left wounded
-* Stamina, Resolve, Insight, Rapport, and Cinders
+Mara asks one practical question: Which way is home now?
+
+The player makes the chapter's final choice:
+
+- Follow the road forward to the unknown inn.
+- Climb for a view and risk the wounded.
+- Swear to bring everyone home, gaining Oathfire and a dangerous duty.
+
+The chapter ends with movement, not paralysis. The next objective is to reach shelter and understand the folded road.
+
+## Branch convergence
+
+All routes reach the folded road, but state remains distinct:
+
+- who is injured;
+- whether the treaty is intact;
+- whether an attacker can be questioned;
+- Mara's trust and attraction;
+- Lysara's respect and suspicion;
+- remaining Stamina and Resolve;
+- whether Caelan carries his first active Oath;
+- which ambush detail points toward the saboteur.
+
+## Art plan
+
+Use no more than two scene illustrations in the rewritten chapter:
+
+1. Greyhaven's eastern gate at departure, with the wider road visible beyond it.
+2. The final reveal, with the King's Road ending at an impossible sea.
+
+Do not reuse the current courtyard and dungeon images as canon scenes.

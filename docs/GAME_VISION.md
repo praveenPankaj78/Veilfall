@@ -1,74 +1,89 @@
-# Game Vision
+# Veilfall: The Broken Concord
 
-## Chosen title
+## Canon status
 
-Veilfall: The Crown Below
+This document begins the redesigned canon. The existing playable chapter remains a useful interface prototype, but its city bound plot is no longer the story foundation.
 
-Veilfall is short, easy to remember, and tied to the central danger of the saga. The Veil is the border between the real world and histories that never happened. The first season lets the player care about people and places before the deeper meaning of that border is revealed.
+## The promise
 
-Series labels follow a clear pattern:
+Veilfall is a choice driven fantasy RPG about three adults crossing a dangerous world while the borders between realities fail. Each series is complete on its own. Playing all three reveals how a soldier's promise, a thief's impossible theft, and a witch's final spell reshape one another.
 
-* Veilfall: The King’s Road, Caelan’s series
-* Veilfall: A Knife for Tomorrow, Rook’s series
-* Veilfall: The Glass Memory, Ilyra’s series
-* Veilfall: The Court Wolf, Orren’s series
+The player should feel three things in every chapter:
 
-## Player promise
+1. I know what I am trying to do now.
+2. I want to see what waits beyond the next road, gate, or truth.
+3. My choices are changing people, places, and the kind of person I am becoming.
 
-You enter a dangerous medieval fantasy through one memorable person at a time. You learn their daily life, skills, relationships, and private fears before the world asks them to make larger sacrifices. Decisions change trust, ability costs, available truths, and later crises.
+## The central conflict
 
-## Scope
+Long ago, the star dragon Orivane gave her living heart to create the Concord, a set of boundaries separating Edrath from three unstable outer realms. Nine World Nails hold those boundaries in place.
 
-There are four playable leads. Caelan, Rook, and Orren are men. Ilyra is a woman. Supporting characters can be any gender and should have lives beyond their connection to a lead.
+Someone is pulling the Nails out.
 
-The four stories cross at selected turning points. They do not constantly interrupt one another. A player can understand a single series without reading all three others. Additional viewpoints deepen the truth rather than supply missing basic explanations.
+At first, the damage looks local: warm snow, roads that return travellers to yesterday, devils walking beneath borrowed names, and sunlight that refuses to enter certain rooms. The truth arrives in measured steps. Regent Malrec Vale is breaking the Concord because its creation erased his young daughter from history. He believes all lost lives exist in the Unsea and that merging the realms will restore them. He is partly right. The cost is that every living mind will be forced to share several incompatible lives until identity itself fails.
 
-## Core pillars
+Malrec is not the only threat. The Luminous Court wants perfect order, the Cinder Deep wants every promise priced, and mortal rulers want control of the World Nails. The protagonists may oppose Malrec while still choosing very different futures.
 
-### Let the player settle in
+## Why the story travels
 
-The opening chapter establishes work, home, friends, attraction, habits, and an achievable duty. The first strange event arrives only after the player knows what normal life feels like.
+Each World Nail belongs to a place and a people who built their lives around it. No library contains the full answer. No city can solve the crisis. Every destination must provide all four of these:
 
-### Curiosity before confusion
+1. A visual identity the player can picture quickly.
+2. A local conflict that matters even without the larger plot.
+3. A culture with an understandable desire and internal disagreement.
+4. A permanent change to the protagonist's power, belief, relationship, or route.
 
-Introduce one major unexplained fact at a time. Give the player a clear immediate goal even when the wider cause is unknown. Repeat important names and ideas naturally through action. Answer a useful question before introducing another mystery of equal size.
+Travel is never a tour. Crossing a region consumes time, supplies, trust, and sometimes memory. Returning to a changed place lets consequences feel real.
 
-### Every class solves problems differently
+## The three series
 
-Caelan protects and commands. Rook sneaks and misdirects. Ilyra studies and casts structured spells. Orren investigates and controls transformation. Their strongest actions consume a class resource, so power always creates a later weakness or risk.
+### Series One: The Ember Oath
 
-### Choices leave evidence
+The first playable lead is Caelan Vey, a male human Oathwarden. He begins on a routine royal escort outside Greyhaven. His road crosses the western kingdom, the Dragonspine, the Ember Steppe, and finally the Cinder Deep. His strength comes from promises, and every promise limits his future choices.
 
-A decision affects at least two things from this list: immediate danger, a resource, a relationship, an item, a secret, a future scene, or another character’s view of the event.
+His finale decides whether the Black Gate remains closed, becomes a controlled passage, or breaks open. That outcome changes the world but does not end the saga.
 
-### Romance belongs to the plot
+### Series Two: A Thief of Dawn
 
-Flirting appears often when chemistry, safety, and character allow it. Romantic choices reveal trust, fear, ambition, humor, or conflict. They are never filler placed between important scenes. Later chapters may contain optional detailed intimacy between clearly adult, consenting characters after the relationship has earned it.
+Rook Sable, a male human thief and illusionist, follows a stolen map through Greyhaven, the goblin Underways, Brassreach, Serekh, the Unsea, and the Luminous Court. He survives by never belonging to anything. His growth asks whether freedom without loyalty is merely another prison.
 
-## Mystery pacing rule
+His finale steals one law from heaven. The stolen law changes sunrise, death, or truth across Edrath and creates the conditions for the last series.
 
-Each chapter may actively carry:
+### Series Three: The Worldroot Witch
 
-* one immediate unanswered question
-* one personal relationship question
-* one quiet background question for the season
+Ilyra Fen, a female half elf witch, begins among the storm islands of the Shard Coast. She crosses Thornweald, the Ember Steppe, the wounded heart of Dragonspine, and the outer realms before descending into Worldroot. Her spells consume mana, memory, and certainty.
 
-Only the immediate question needs frequent attention. Background mysteries appear through small evidence rather than long explanations. A chapter ending sharpens the current question or replaces it after an answer. It should not introduce several unrelated threats at once.
+Her finale uses the altered world left by Caelan and Rook. She decides what the Concord becomes and which sacrifices the new world will remember.
 
-## Audience and rating
+## Tone and audience experience
 
-The target audience is teen and adult readers who enjoy dark fantasy, character drama, tactical decisions, meaningful romance, and short mobile sessions. The expected rating is Mature 16 or Mature 18 depending on the final treatment of violence and optional intimate scenes.
+The language stays clear and direct. Description uses concrete senses, physical action, and specific choices. Mystery comes from one active question at a time, not a flood of unexplained names.
 
-Every intimate character is at least twenty-five years old. Intimate scenes require clear consent, privacy, trust, and a reason connected to the relationship. Players receive a content setting that allows full romance detail or an earlier fade without losing rewards or plot information.
+Violence can be bloody when the cost matters. Romance can be warm, playful, dangerous, or transactional. All romantic and intimate characters are adults. Physical intimacy is voluntary even when a character hides an objective or uses attraction as leverage. Attraction is shown through voice, movement, expression, clothing, attention, and proximity rather than a catalogue of body parts.
 
-## Session shape
+## Hook structure
 
-* A scene takes 2 to 4 minutes.
-* A chapter takes 15 to 22 minutes.
-* A chapter contains 5 to 8 decisions.
-* A season contains 10 chapters.
-* A lead receives 2 seasons before the shared endgame.
+Every chapter uses five linked hooks:
 
-## First playable promise
+1. Arrival hook: a place behaves in one striking way.
+2. Human hook: someone wants something understandable from the protagonist.
+3. Class hook: the protagonist can solve the problem in a way nobody else can.
+4. Cost hook: using that method closes another option or creates a debt.
+5. Exit hook: the immediate goal resolves, then one new consequence changes the road ahead.
 
-Chapter One gives Caelan an ordinary morning, introduces his guard command, friendship with Brann, long romantic tension with Mara, and a simple royal escort. The only major mystery is a false order written and sealed as if Caelan made it. The attack and three endings develop that same mystery instead of replacing it with a larger one.
+The player receives an answer before each larger question. Curiosity grows because the meaning changes, not because information is withheld forever.
+
+## Scope guardrails
+
+- Three playable leads only: two men and one woman.
+- Ten chapters per lead.
+- One main location and one main objective per chapter.
+- No more than one major new lore concept introduced in a scene.
+- Most intersections involve two leads. The three never fight the same final battle together.
+- Creatures and cultures appear only when they change the conflict or offer a distinct way of living.
+- Every finale changes the world and the starting conditions of a later finale.
+- Choices alter routes, alliances, romances, abilities, and regional outcomes. They do not merely change the next paragraph.
+
+## Originality statement
+
+The setting, characters, history, plot, factions, magic rules, and chapter structures in this canon were created for Veilfall. Familiar fantasy peoples are used through original cultures, conflicts, and social structures rather than borrowed story lines.
