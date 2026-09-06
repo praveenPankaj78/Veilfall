@@ -347,14 +347,14 @@ const originalNodes: Record<string, StoryNode> = {
     art: 'departure',
     body: (state) => [
       'Ambassador Lysara Quill arrives without any formal announcement. She is taller than you expected, with silver brown hair tied behind her neck and a coat of dark green silk that folds like leaves when she moves. The cloth tightens slightly with her pulse. It comes from Thornweald and is alive enough to dislike the cold.',
-      'Her attention settles first on Tivik, then the wheel, then you. “Captain Vey. I was told you keep promises longer than kings keep treaties.”',
-      state.flags.includes('found-file-mark')
-        ? 'You show her the scored pin. She does not look surprised, which is more worrying than fear.'
-        : state.flags.includes('steady-axle')
-          ? 'She thanks Tivik in his own language before checking the repaired axle herself.'
-          : 'She tests the wagon step with one boot and glances toward the heavy rear wheel.',
       'Inside the wagon rests a chest made from pale living wood. Its contents are meant to end a border quarrel before winter. If the chest fails to reach Bellweather, soldiers on both sides will assume the other kingdom refused peace.',
       'The route register carries the approval of Ordan Vale from the Royal Road Office. He is one of only six officials who knew the escort would leave today, although the final road was supposed to remain your choice.',
+      state.flags.includes('found-file-mark')
+        ? 'Her attention settles first on Tivik, then the wheel, then you. You show her the scored pin. She does not look surprised, which is more worrying than fear.'
+        : state.flags.includes('steady-axle')
+          ? 'Her attention settles first on Tivik, then the wheel, then you. She thanks Tivik in his own language before checking the repaired axle herself.'
+          : 'Her attention settles first on Tivik, then the wheel, then you. She tests the wagon step with one boot and glances toward the heavy rear wheel.',
+      '“Captain Vey. I was told you keep promises longer than kings keep treaties.”',
     ],
     choices: [
       {
@@ -705,11 +705,11 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('mara-ahead')
         ? 'With Mara ranging ahead, the space beside you feels wrong. You keep looking toward each break in the trees and finding only rain.'
         : 'Mara rides close enough that your knees touch when the road narrows. Each accidental contact lasts a fraction longer than the road requires.',
-      'Lysara leaves the wagon and rides on your other side. Up close, her living coat smells faintly of crushed leaves after lightning. “You have looked at every shadow except the one inside my sleeve,” she says.',
-      'She shows you a seed of clear glass. It holds a curl of green light. “Proof that my queen agreed to peace. If the chest is lost, this may still stop a war. If our attackers know I carry it, they will stop aiming at the wagon.”',
       state.flags.includes('oath-safe-arrival')
         ? 'The Oathfire tightens at the thought of hidden attackers. The power feels useful. The duty feels larger.'
         : 'A branch snaps somewhere beyond the ditch. Brann hears it too. His hand never leaves his reins.',
+      'Lysara leaves the wagon and rides on your other side. Up close, her living coat smells faintly of crushed leaves after lightning. “You have looked at every shadow except the one inside my sleeve,” she says.',
+      'She shows you a seed of clear glass. It holds a curl of green light. “Proof that my queen agreed to peace. If the chest is lost, this may still stop a war. If our attackers know I carry it, they will stop aiming at the wagon.”',
     ],
     choices: [
       {

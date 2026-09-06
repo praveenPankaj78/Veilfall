@@ -102,6 +102,36 @@ for (const node of Object.values(nodes)) {
   }
 }
 
+for (const [id, node] of Object.entries(nodes)) {
+  const spokenChoices = node.choices.filter((choice) => isSpokenReplyLabel(choice.label));
+  if (!spokenChoices.length) continue;
+  const paragraphs = node.body(initialState);
+  const lastParagraph = paragraphs.at(-1) ?? '';
+  if (!lastParagraphSupportsReply(lastParagraph)) {
+    failures.push(
+      `Spoken reply choices in ${id} need a spoken line in the last paragraph (${spokenChoices.map((choice) => choice.id).join(', ')})`,
+    );
+  }
+}
+
+function isSpokenReplyLabel(label) {
+  const text = label.trim();
+  if (/^[“"]/.test(text)) return true;
+  if (/^Tell (her|him|them|[A-Z\p{Lu}])/u.test(text)) return true;
+  if (/^(Promise|Admit|Answer)\b/i.test(text)) return true;
+  if (/^Ask (who|what|how|why|whether|if)\b/i.test(text)) return true;
+  if (/^Ask [\p{L}’']+ (what|who|how|why|whether|if)\b/iu.test(text)) return true;
+  if (/^(Demand|Challenge)\b/i.test(text)) return true;
+  if (/^Offer [A-Z\p{Lu}]/u.test(text)) return true;
+  if (/^Make [\p{L}’']+ answer\b/iu.test(text)) return true;
+  if (/^Accept .+\baccount\b/i.test(text)) return true;
+  return false;
+}
+
+function lastParagraphSupportsReply(paragraph) {
+  return /[“"]/.test(paragraph) || /\bwaits for (an honest )?answer\b/i.test(paragraph);
+}
+
 function applyChoice(state, choice) {
   const stats = { ...state.stats };
   for (const [key, value] of Object.entries(choice.changes ?? {})) {
@@ -349,6 +379,16 @@ while (stack.length && visited.size < 100000) {
     continue;
   }
   const available = node.choices.filter((choice) => canChoose(choice, state));
+
+  const spokenReplyChoices = node.choices.filter((choice) => isSpokenReplyLabel(choice.label));
+  if (spokenReplyChoices.length) {
+    const lastParagraph = (node.body(state).at(-1) ?? '');
+    if (!lastParagraphSupportsReply(lastParagraph)) {
+      failures.push(
+        `Spoken reply choices in ${node.id} need a spoken line in the last paragraph (${spokenReplyChoices.map((choice) => choice.id).join(', ')})`,
+      );
+    }
+  }
 
   for (const choice of node.choices) {
     const choiceText = `${choice.label} ${choice.detail}`;

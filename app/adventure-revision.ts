@@ -36,9 +36,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('captured-attacker')
         ? 'Brann brings your wounded prisoner inside and ties him beside the pantry. The man finally gives his name as Sable when he sees the body under the sheet.'
         : 'Beside the pantry, a wounded attacker is tied to a post. Maelin found him crawling from the cellar at dawn. He gives his name as Sable and carries the same sealed orders as the road attackers.',
-      '“His name was Jory,” Maelin says. “He arrived three days ago with an arrow in his back and a warning in your handwriting. He said royal soldiers would attack this place after you arrived.”',
       'A lamp burns above one untouched place setting. Maelin says it belongs to her husband, Dain, who stepped through the stable door during Ordan’s first road test three weeks ago and never returned. She lights it every night in case he finds his way home.',
-      'You did not write Jory’s warning. Outside, a hunting horn sounds once in the rain. The attackers are close enough to watch the windows.',
+      'You did not write the warning she is holding. Outside, a hunting horn sounds once in the rain. The attackers are close enough to watch the windows.',
+      '“His name was Jory,” Maelin says. “He arrived three days ago with an arrow in his back and a warning in your handwriting. He said royal soldiers would attack this place after you arrived.”',
     ],
   },
   'c2-triage': {
@@ -147,11 +147,11 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     threat: 'Immediate',
     body: (state) => [
       'You find Mara fastening leather around her forearm. Firelight warms her brown skin and catches on the rain still shining at her throat. She looks tired, dangerous, and very close.',
+      'The attraction between you has survived years of bad roads and worse timing. It does not remove the danger outside. It gives both of you a reason to survive it.',
+      'A crossbow string snaps in the yard. Your quiet minute is ending.',
       state.relationships.mara.trust >= 5
         ? '“You keep carrying everyone as if the road will forgive you for dropping yourself,” she says. Her fingers close around your wrist. “Tell me what you are afraid of before we walk back downstairs.”'
         : '“We have one minute before Brann calls us,” she says. “Use it to breathe, make a plan, or say whatever you keep refusing to say.”',
-      'The attraction between you has survived years of bad roads and worse timing. It does not remove the danger outside. It gives both of you a reason to survive it.',
-      'A crossbow string snaps in the yard. Your quiet minute is ending.',
     ],
   },
   'c2-bell': {
@@ -401,9 +401,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
               ? 'You reach Lantern Bridge with Varris and the true brass map you forced him to reveal. The map proves where Ordan intends to escape.'
               : 'You reach Lantern Bridge with Varris, the true bridge map, and proof that Ordan ordered the broker killed. The dark coated thief who took Ordan’s missing key is somewhere ahead.',
       'Ordan waits on the raised centre span with town guards and civilians watching from both banks. He does not deny Bellweather. He argues that independent roads let smugglers, foreign armies, and border lords escape the king’s protection.',
+      'Elene hears him, but Ordan’s soldiers still control the bridge winch. Smoke is already rising from the old watch house behind him.',
       '“Your treaty delays one war,” he says. “A Crown road ends every border war before it begins. You command people for their safety, Captain. You bind them with promises. I am only willing to finish what men like you begin.”',
       'He admits why he needed the escort. Your road authority and Lysara’s living seed unlocked the Bellweather pin. He forged Jory’s warning and the Harrowfen evidence, but not the sealed order that changed inside your case. “That was waiting for me,” he says. “Someone above my office wanted you on this road.”',
-      'Elene hears the admission, but Ordan’s soldiers still control the bridge winch. He raises one hand. Smoke rises from the old watch house behind him.',
     ],
   },
   'c3-evidence': {
@@ -439,11 +439,12 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'For a few minutes, the bathhouse roof gives you distance from the smoke. Below, Mara watches the wounded streets. Lysara studies Ordan’s route map.',
       state.relationships.mara.attraction >= 4
         ? 'Mara steps close enough that her hip touches yours. Smoke has darkened her cheek, and a tear in her shirt reveals the firm line above her ribs. Her eyes stay on your face. “When this is over,” she says, “I want one night where neither of us has to listen for a horn.”'
-        : 'Mara rests her shoulder against yours. “People first,” she says. Lysara answers, “And the cause of this, before it creates more wounded.”',
+        : 'Mara rests her shoulder against yours. Lysara keeps her eyes on the map. Both wait for you to choose which danger comes first.',
       state.stats.health <= 2
         ? 'Mara’s hand closes around your wrist when your balance shifts. Lysara looks from the blood on your sleeve to the burning market. Neither woman says retreat. Both understand that another direct charge may be your last.'
         : 'Smoke stings your lungs, but the brief pause steadies your legs before the market fight.',
       'Mara wants guards at the healing house. Lysara wants to reach the east market before Ordan opens the bridge. Supporting either woman will protect something important and leave something else exposed. A larger plan will demand more from your tired guards.',
+      'Mara looks down at the streets. “People first.” Lysara’s hand stays on the map. “And the cause of this, before it creates more wounded.”',
     ],
   },
   'c3-market-memory': {
@@ -483,10 +484,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Harrowfen East Market',
     objective: 'Defeat Renn and learn Ordan’s final plan.',
     body: () => [
-      'Renn’s courage breaks when the town guards recognise your old cloak. He draws anyway. “Ordan promised the Wardens would command every road in the kingdom,” he says.',
       'His orders say the Mileless Bridge leads to many borders. With the joined iron pieces, Ordan could move soldiers across the world without crossing the lands between them.',
-      'Elene arrests Renn in front of the market. Harrowfen’s guards turn on Ordan’s soldiers, and the town bells declare the royal warrant false. Your name is not clean everywhere, but here the people have seen what kind of captain you chose to be.',
-      'Behind Renn, Ordan reaches the well and cuts the fragment free from Mara’s shield straps. You have won the town. You have one breath to stop him taking the road.',
+      'Elene’s guards have already turned on Ordan’s soldiers. The town bells begin to declare the royal warrant false. Your name is not clean everywhere, but here the people have seen what kind of captain you chose to be.',
+      'Renn’s courage breaks when the town guards recognise your old cloak. He draws anyway. “Ordan promised the Wardens would command every road in the kingdom,” he says.',
     ],
   },
   'c3-courier': {

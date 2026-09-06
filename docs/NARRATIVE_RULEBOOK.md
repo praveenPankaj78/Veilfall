@@ -42,6 +42,7 @@ The first chapter of every series spends more time in Settle. It teaches normal 
 - Important decisions: two to four options.
 - Never place two choices in a row without showing a consequence between them.
 - After a major choice, show an immediate physical or emotional result before moving on.
+- If a choice is spoken dialogue or a reply to a person, the last paragraph must be the line or question it answers. Do not place later observations, evidence, or new events between that line and the options.
 
 ## Simple but immersive language
 
@@ -240,3 +241,4 @@ Before a scene is approved, confirm:
 10. The passage sounds natural when read aloud.
 11. A reader aged twelve or thirteen can explain what physically happened.
 12. Every ability, item, person, or place named in a choice has already been introduced on that route.
+13. If any option is spoken dialogue or a reply, the last paragraph is the line it answers.
