@@ -76,12 +76,12 @@ const chapterLibrary = [
   {
     number: 2 as const,
     title: 'The Inn That Waited',
-    summary: 'Keep the wounded safe in Bellweather Inn and learn why the road changed.',
+    summary: 'Defend the wounded during an inn siege and repair the road beneath it.',
   },
   {
     number: 3 as const,
     title: 'The Town at the Wrong Mile',
-    summary: 'Face a false arrival in Harrowfen and learn what the iron fragment can do.',
+    summary: 'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
   },
 ];
 
@@ -244,18 +244,18 @@ function knownTruths(game: GameState) {
   const truths = game.chapter > 1 || game.chapterChoices >= 4
     ? ['Someone altered an official route order to force the escort onto a prepared road.']
     : ['Caelan is leading Ambassador Lysara and a Warden escort toward Bellweather Inn.'];
-  const timeRevealNodes = [
+  const roadRevealNodes = [
     'c2-eleven-years', 'c2-investigate', 'c2-ledger', 'c2-cellar', 'c2-attacker',
     'c2-night-watch', 'c2-bell', 'c2-common-room-crisis', 'c2-descend',
     'c2-folded-cellar', 'c2-road-pin', 'c2-remove-pin', 'c2-last-testimony',
   ];
-  if (game.chapter >= 3 || timeRevealNodes.includes(game.nodeId)) {
-    truths.push('Bellweather Inn lived through eleven years while the escort experienced only one day.');
+  if (game.chapter >= 3 || roadRevealNodes.includes(game.nodeId)) {
+    truths.push('Ordan used a false warning and a loosened road pin to prepare the attack on Bellweather Inn.');
   }
   if (game.chapter >= 3
     || game.flags.includes('c2-found-road-pin-term')
     || ['c2-road-pin', 'c2-remove-pin', 'c2-last-testimony'].includes(game.nodeId)) {
-    truths.push('A damaged road pin made one place touch different roads and different years.');
+    truths.push('A damaged road pin pulled distant road ends beside Bellweather Inn until Caelan drove it back into place.');
   }
   const courierRevealNodes = [
     'c3-evidence', 'c3-watch-house', 'c3-divided-loyalty', 'c3-market-memory',
@@ -263,7 +263,7 @@ function knownTruths(game: GameState) {
     'c3-world-nail', 'c3-ending-courier', 'c3-ending-thief', 'c3-ending-return',
   ];
   if (courierRevealNodes.includes(game.nodeId) || game.completedChapters.includes(3)) {
-    truths.push('Royal courier Ordan Vale arranged the Bellweather attack and used false versions of the escort.');
+    truths.push('Royal courier Ordan Vale arranged the Bellweather attack, forged Caelan’s orders, and hired a Warden to impersonate him.');
   }
   if (game.nodeId === 'c3-world-nail'
     || game.flags.includes('c3-target-ordan')
@@ -279,8 +279,8 @@ function activePromises(game: GameState) {
   if (game.flags.includes('oath-bring-them-home')) promises.push('Bring the escort home alive.');
   if (game.flags.includes('c2-oath-repair-road')) promises.push('Repair the damaged King’s Road.');
   if (game.flags.includes('c2-oath-expose-crown')) promises.push('Expose the Crown officer behind the attack.');
-  if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen be erased.');
-  if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back freeing the road pin.');
+  if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen fall while Ordan is pursued.');
+  if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
   return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
 }
 
@@ -298,17 +298,17 @@ function majorConsequences(game: GameState) {
   if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, he survived the worst of his wound.');
   if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand and the living proof remain safe.');
   if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Sable, he can identify the royal courier who hired him.');
-  if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you know the inn remembered fifteen possible arrivals.');
-  if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you saw distance change before the midnight crisis.');
+  if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you connected Ordan to the supplies used in the siege.');
+  if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you found the enemy rope and the shifted coastal road before the siege.');
   if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Sable, you connected the road pin to sealed Crown orders.');
   if (game.flags.includes('c2-pin-broken')) consequences.push('Because the road pin broke, part of its power remains beneath Bellweather Inn.');
   if (game.flags.includes('c2-kissed-mara')) consequences.push('Because you and Mara chose to kiss, your attraction is no longer unspoken.');
-  if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped before the healing house vanished.');
+  if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped the burning healing house.');
   if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
-  if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned the false Caelan, you know the unknown thief is not working for Ordan.');
-  if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied the records that place one bridge in several locations.');
-  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Harrowfen’s healer learned that the living Nilo was not the boy she buried.');
-  if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned that false routes can loop back on themselves.');
+  if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned Renn, you know the unknown thief opposes Ordan but wants the iron for himself.');
+  if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied Ordan’s route to the Mileless Bridge.');
+  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Sable survived to identify Ordan’s personal guard.');
+  if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned how Ordan planned to open the Mileless Bridge.');
   if (game.flags.includes('c3-priority-people')) consequences.push('Because you chose immediate lives first, Mara knows exactly where your duty begins.');
   if (game.flags.includes('c3-priority-cause')) consequences.push('Because you chose the wider danger first, Lysara trusts you to face difficult truths.');
   if (game.flags.includes('c3-balanced-plan')) consequences.push('Because you joined protection and investigation, Mara and Lysara were ready when Harrowfen changed.');
@@ -738,7 +738,7 @@ export default function Home() {
                   ? '/art/kings-road-folded.png'
                   : '/art/caelan-east-gate.png'}
               alt={node.art === 'harrowfen'
-                ? 'Caelan faces a shifting canal town while another version of him waits at the gate'
+                ? 'Caelan approaches Harrowfen while royal archers watch from the canal gate'
                 : node.art === 'inn'
                 ? 'Caelan leads the wounded escort into Bellweather Inn during a storm'
                 : node.art === 'folded'

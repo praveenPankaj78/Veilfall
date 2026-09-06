@@ -20,23 +20,23 @@ Mechanic: Stamina, Guard, and Command through safe escort work.
 
 ## 2. The Inn That Waited
 
-Active question: How can the survivors get home?
+Active question: Who prepared the siege at Bellweather Inn, and how will the survivors stop it?
 
-Answer: Moving an iron road pin releases one trapped route.
+Answer: Ordan used a forged warning and a loosened road pin to create a secret route for Crown soldiers. Driving the pin home closes it.
 
-Next hook: Why did the Crown order the pin removed?
+Next hook: Can Caelan reach Harrowfen before Ordan uses the remaining fragment?
 
-Mechanic: Resolve and the immediate burden of a minor Oath.
+Mechanic: Medicine, siege priorities, and the immediate burden of a minor Oath.
 
 ## 3. The Town at the Wrong Mile
 
-Active question: What does the iron fragment do?
+Active question: Can Caelan clear his name and catch Ordan before the courier escapes Harrowfen?
 
-Answer: It holds one version of distance in place and belongs to a World Nail.
+Answer: The fragment pulls distant roads together and belongs to the larger World Nail that keeps distance stable.
 
-Next hook: Who is carrying it toward the impossible bridge?
+Next hook: Why does Rook steal the fragment from Ordan on the Mileless Bridge?
 
-Mechanic: Low resource leadership and recovery tradeoffs.
+Mechanic: Low resource leadership during a manhunt, with visible rescue and pursuit tradeoffs.
 
 ## 4. Thief at the Mileless Bridge
 

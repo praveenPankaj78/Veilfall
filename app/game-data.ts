@@ -1,3 +1,5 @@
+import { adventureChoiceUpdates, adventureNodeUpdates } from './adventure-revision';
+
 export type StatKey =
   | 'stamina'
   | 'resolve'
@@ -162,7 +164,7 @@ function hasAny(state: GameState, flags: string[]) {
   return flags.some((flag) => state.flags.includes(flag));
 }
 
-export const nodes: Record<string, StoryNode> = {
+const originalNodes: Record<string, StoryNode> = {
   'gate-yard': {
     id: 'gate-yard',
     kicker: 'Chapter One',
@@ -3036,6 +3038,20 @@ export const nodes: Record<string, StoryNode> = {
     choices: [],
   },
 };
+
+export const nodes = Object.fromEntries(
+  Object.entries(originalNodes).map(([id, node]) => [
+    id,
+    {
+      ...node,
+      ...adventureNodeUpdates[id],
+      choices: node.choices.map((choice) => ({
+        ...choice,
+        ...adventureChoiceUpdates[choice.id],
+      })),
+    },
+  ]),
+) as Record<string, StoryNode>;
 
 export const nodeOrder = [
   'gate-yard',

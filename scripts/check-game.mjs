@@ -2,11 +2,26 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
 
+const compilerOptions = {
+  module: ts.ModuleKind.CommonJS,
+  target: ts.ScriptTarget.ES2022,
+};
+
+const adventureSource = await readFile('app/adventure-revision.ts', 'utf8');
+const adventureCompiled = ts.transpileModule(adventureSource, {
+  compilerOptions,
+}).outputText;
+const adventureExports = {};
+vm.runInNewContext(adventureCompiled, {
+  exports: adventureExports,
+  module: { exports: adventureExports },
+  console,
+}, { filename: 'adventure-revision.js' });
+
 const source = await readFile('app/game-data.ts', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: {
-    module: ts.ModuleKind.CommonJS,
-    target: ts.ScriptTarget.ES2022,
+    ...compilerOptions,
   },
 }).outputText;
 
@@ -15,6 +30,10 @@ const context = {
   exports: exported,
   module: { exports: exported },
   console,
+  require: (specifier) => {
+    if (specifier === './adventure-revision') return adventureExports;
+    throw new Error(`Unexpected module in game graph check: ${specifier}`);
+  },
 };
 vm.runInNewContext(compiled, context, { filename: 'game-data.js' });
 
@@ -127,6 +146,30 @@ const chapterThreeBase = {
     wayfire: 0,
   },
 };
+const retiredPlotPhrases = [
+  /eleven years/i,
+  /other versions?/i,
+  /different years/i,
+  /false Caelan/i,
+  /room (?:built )?tomorrow/i,
+  /died twice/i,
+  /living Nilo/i,
+];
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c2-') && !id.startsWith('c3-')) continue;
+  const sampleState = id.startsWith('c2-') ? chapterTwoBase : chapterThreeBase;
+  const activeText = [
+    node.title,
+    node.objective,
+    node.lesson?.title,
+    node.lesson?.body,
+    ...node.body(sampleState),
+    ...node.choices.flatMap((choice) => [choice.label, choice.detail, choice.result]),
+  ].filter(Boolean).join(' ');
+  for (const phrase of retiredPlotPhrases) {
+    if (phrase.test(activeText)) failures.push(`Retired plot phrase ${phrase} remains active in ${id}`);
+  }
+}
 const stack = [
   { state: initialState, knownTerms: [] },
   {

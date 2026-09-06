@@ -46,33 +46,33 @@ End state: The escort survives an attack, but the road behind them now leads to 
 
 Location: Bellweather Inn, an isolated coaching house caught in a folded road.
 
-Main event: Caelan shelters the wounded in the inn and discovers that its keeper has waited eleven years for an evening that the guests remember happening yesterday.
+Main event: Caelan shelters the wounded inside Bellweather Inn while Crown killers and a pale mire hound surround it. Maelin Bellweather has waited three days because a dying Warden arrived early through a displaced shortcut with a forged warning in Caelan's hand.
 
 Defining choice: Spend scarce medicine on the envoy, a child, or the attacker who may know the route out.
 
-Class pressure: Protection competes with investigation. A new Oath can secure loyalty but creates a duty.
+Class pressure: Protection competes with investigation. The player chooses who receives the only medicine, which lead to follow, and who joins Caelan beneath the inn.
 
 Romance movement: A quiet night watch lets Caelan and Mara name what each fears losing.
 
-Revelation: Distance itself is failing around an old iron spike beneath the road.
+Revelation: A road pin normally keeps road ends connected to the correct places. Ordan loosened it to create a secret attack route beneath the inn.
 
-End state: Caelan frees the road by removing the spike. A dying attacker calls it a road pin and says the Crown ordered its removal. The term is incomplete but gives Caelan one useful trail.
+End state: Caelan wins the siege and drives the road pin back into place. A broken fragment still pulls toward Harrowfen, where Ordan has gone to open a greater road.
 
 ### Chapter Three: The Town at the Wrong Mile
 
 Location: Harrowfen, a market town appearing beside the folded road where no town should stand.
 
-Main event: Caelan leads the survivors to food, shelter, and a healer. The residents insist the escort arrived three days earlier and show Caelan a bill he remembers never signing.
+Main event: Caelan reaches Harrowfen after one shortened mile. Ordan has arrived first with forged royal orders naming Caelan a traitor. Caelan must enter the town, protect his witnesses, clear his name, and hunt Ordan through canals, burning bridges, and a crowded market.
 
-Defining choice: Investigate the duplicate arrival, focus on the wounded, or trade the suspicious iron fragment for a route home.
+Defining choice: Search the archive for proof, protect a living witness at the healing house, or force a road broker to reveal Ordan's escape route.
 
 Class pressure: Caelan uses ordinary leadership while low on resources. Oathfire remains a dangerous option rather than the expected answer.
 
-Romance movement: Mara and Lysara disagree over whether protecting people or finding the cause comes first. Caelan's response establishes how he handles attraction mixed with divided loyalty.
+Romance movement: Mara and Lysara disagree over whether protecting people or finding the cause comes first. A brief roof scene lets attraction and fear breathe without stopping the hunt.
 
-Revelation: The iron fragment fixes one version of distance in place. When it moves, roads remember other destinations.
+Revelation: The fragment can briefly pull distant roads together. Ordan plans to join it to a larger piece and give a Crown army a road into any kingdom.
 
-End state: A royal courier steals the fragment and escapes toward a bridge absent from every current map. Only now does Lysara identify the object as part of a World Nail.
+End state: Ordan steals the fragment and escapes onto the Mileless Bridge. Rook steals it from him, forcing Caelan to choose between the known enemy, the unknown thief, and Harrowfen's safety. Only now does Lysara name the larger anchor as the World Nail.
 
 ### Chapter Four: Thief at the Mileless Bridge
 

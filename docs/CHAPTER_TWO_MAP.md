@@ -12,78 +12,54 @@ Lead: Caelan Vey
 
 Title: The Inn That Waited
 
-Target play time: thirty five to forty five minutes on a first route
+Primary objective: protect the wounded during the siege of Bellweather Inn, then drive the loosened road pin back into place.
 
-Primary objective: shelter the wounded at Bellweather Inn, then free the inn from the folded road before midnight tears the group apart.
+Primary mystery: who prepared the inn as a trap, and why do the attackers want the buried iron?
 
-Primary mystery: why has Maelin Bellweather waited eleven years for guests who remember visiting only yesterday?
-
-Player facing threat rhythm: Immediate during the crossing, Rising during treatment and investigation, Uneasy during the private watch, Critical when the inn opens into other versions of itself, and Rising or Unknown after the road returns.
+Player facing threat rhythm: Immediate during arrival, Rising while treating the wounded and investigating, Uneasy during one private watch, Critical during the siege and tunnel fight, then Rising when Ordan's trail points toward Harrowfen.
 
 ## Imported consequences
 
-Chapter Two preserves the route, injuries, relationships, Oaths, evidence, and surviving resources from Chapter One. The opening changes according to whether Caelan followed the underwater road, waited on high ground, or used an Oath to guide the survivors.
-
-Chapter Two continues freely after Chapter One, and earned Wayfire is preserved for later optional content. Caelan recovers a small amount of Stamina and Resolve during the final approach. One sealed dose of Medicine survives in the damaged supply box.
-
-## Mechanical introduction
-
-Medicine is explained before it appears in a choice. It represents the group’s strongest healing supply. Only one dose remains, and the story shows the condition of every possible patient before asking the player to spend it.
-
-Oathfire remains optional. Players without Oathfire or with very low ordinary resources always have a playable route.
+The opening remembers how Caelan crossed the broken road, who survived, current relationships, active Oaths, evidence, and remaining resources. One sealed dose of Medicine survives.
 
 ## Opening movement
 
-The escort crosses the broken road while a pale eyed creature follows beneath the water. Bellweather Inn stands on a small patch of land. The same road enters its yard from opposite directions.
+A pale mire hound follows the bleeding escort through the flood. Maelin Bellweather gets them inside and reveals that Warden Jory arrived three days earlier with an arrow in his back and a forged warning in Caelan's handwriting.
 
-Maelin Bellweather opens the door and greets Caelan and Nilo by name. She claims they are late. The player must balance caution with the immediate need to bring the wounded inside.
+Jory used a distant shortcut that had been pulled beside the inn. This establishes the only strange rule the player needs: a loosened road pin has brought the wrong road ends together. It changed distance, not time.
 
-## Defining medicine choice
+## Medicine choice
 
-The only dose can go to:
-
-- Lysara, whose cracked glass seed is sending living magic into her hand;
-- Nilo, a twelve year old boy losing blood from an arrow wound;
-- Sable Orr, an attacker who may know who ordered the ambush.
-
-All three choices preserve forward progress. The medicine determines later help, testimony, relationships, and who remains in danger.
+The final dose can go to Lysara, Nilo, or captured attacker Sable. The condition and future value of each person are explained before the choice. No answer blocks progress.
 
 ## Investigation routes
 
-The player investigates one source before midnight:
+The player chooses one lead:
 
-- Maelin’s guest book, which records fifteen versions of the escort arriving across eleven years;
-- the cellar, where the King’s Road runs beneath the floor and changes direction;
-- Sable’s sealed Crown orders, which tell the attackers to remove a road pin after the bell rings.
+- Maelin's ledger links Ordan to rope, oil, hooks, and disguised royal soldiers.
+- The cellar reveals the enemy chain and the coastal road pulled against the old tunnel.
+- Sable identifies Ordan and explains that the attackers plan to pull the pin free.
 
-Each route explains one part of the same problem. The player never needs information from all three routes to understand the main event.
+Each route supplies a distinct advantage during the same siege.
 
 ## Relationship movement
 
-During a quiet watch, Mara admits that she fears being removed from the lives of people who remember her. Caelan can share his own fear, ask to kiss her when their relationship has enough Trust and Attraction, or answer only as her captain. Any kiss is clearly requested and accepted.
+Before the attack, Caelan and Mara receive one quiet minute. They can name a fear, acknowledge their attraction, kiss when Trust and Attraction permit it, or remain focused on duty. The scene gives the player something personal to protect.
 
-## Midnight crisis
+## Siege and dungeon
 
-The bell rings and the inn touches other versions of the same night. Different versions of the escort enter the common room, including a burned man wearing Caelan’s red cloak.
+Crown soldiers attack the front while the mire hound breaks through the pantry. Caelan protects the wounded, identifies the cellar as the true target, and chooses Mara, Lysara, or Maelin for the descent.
 
-The player protects the wounded, chooses one companion for the cellar, crosses broken distance, and finds a damaged iron road pin beneath the inn.
+The cellar opens into an old road tunnel touching a distant beach and mountain pass. The player crosses a physical dungeon with enemy soldiers, unstable stone, and the pursuing mire hound.
 
 ## Mystery answer
 
-The road pin holds each mile of the King’s Road in its proper location. Someone used an official Crown tool to turn it halfway. Each midnight bell loosened it further, causing the inn to touch different years and distant roads.
-
-Removing the pin returns Bellweather Inn to one place and one morning.
+The road pin is an ancient anchor that keeps road ends connected to the correct places. Ordan loosened it to create an attack route. Caelan reseats it through command, strength, Oathfire, or a broken wagon axle.
 
 ## Closing choice
 
-Sable identifies a Warden ring and a Crown order before the escort leaves for Harrowfen. The player chooses to:
-
-- protect Sable and carry his testimony;
-- carry the road pin as physical and magical evidence;
-- swear an Oath to expose the Crown officer behind the attack.
-
-Every ending reveals that Harrowfen believes Caelan’s escort arrived three days earlier. This creates one clear question for Chapter Three.
+Caelan carries ordinary testimony, the broken iron fragment, or a public Oath against the Crown plot. The fragment still pulls toward Harrowfen, shortening the next journey to one mile.
 
 ## Art
 
-The chapter uses one canonical illustration of the wounded escort reaching Bellweather Inn. It is stored as `public/art/bellweather-inn.png`.
+The canonical illustration is `public/art/bellweather-inn.png`.

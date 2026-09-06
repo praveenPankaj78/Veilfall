@@ -6,7 +6,9 @@ This document begins the redesigned canon. The existing playable chapter remains
 
 ## The promise
 
-Veilfall is a choice driven fantasy RPG about three adults crossing a dangerous world while the borders between realities fail. Each series is complete on its own. Playing all three reveals how a soldier's promise, a thief's impossible theft, and a witch's final spell reshape one another.
+Veilfall is an adventure first choice driven fantasy RPG about three adults crossing a dangerous world while its ancient protections fail. Each series is complete on its own. Playing all three reveals how a soldier's promise, a thief's impossible theft, and a witch's final spell reshape one another.
+
+The intended balance is roughly seventy percent adventure, travel, conflict, companionship, and romance, with thirty percent dark mystery. The player first faces a concrete problem such as an ambush, siege, hunt, rescue, theft, or dangerous crossing. Strange lore complicates that adventure after the goal is clear. Mystery never replaces the adventure.
 
 The player should feel three things in every chapter:
 
@@ -22,7 +24,7 @@ Long ago, the star dragon Orivane gave her living heart to create the Concord, a
 
 Someone is pulling the Nails out.
 
-At first, the damage looks local: warm snow, roads that return travellers to yesterday, devils walking beneath borrowed names, and sunlight that refuses to enter certain rooms. The truth arrives in measured steps. Regent Malrec Vale is breaking the Concord because its creation erased his young daughter from history. He believes all lost lives exist in the Unsea and that merging the realms will restore them. He is partly right. The cost is that every living mind will be forced to share several incompatible lives until identity itself fails.
+At first, the damage looks local: a road joins the wrong coast, soldiers use a loosened road pin to attack an inn, and a hidden bridge opens onto distant borders. The truth arrives in measured steps. Regent Malrec Vale is breaking the Concord because its creation erased his young daughter from history. He believes all lost lives exist in the Unsea and that merging the realms will restore them. He is partly right. The cost is that every living mind will be forced to share several incompatible lives until identity itself fails.
 
 Malrec is not the only threat. The Luminous Court wants perfect order, the Cinder Deep wants every promise priced, and mortal rulers want control of the World Nails. The protagonists may oppose Malrec while still choosing very different futures.
 
@@ -35,7 +37,7 @@ Each World Nail belongs to a place and a people who built their lives around it.
 3. A culture with an understandable desire and internal disagreement.
 4. A permanent change to the protagonist's power, belief, relationship, or route.
 
-Travel is never a tour. Crossing a region consumes time, supplies, trust, and sometimes memory. Returning to a changed place lets consequences feel real.
+Travel is never a tour. Crossing a region consumes time, supplies, trust, and sometimes memory. Most journeys include a visible pursuit, rival, rescue, negotiation, hunt, or survival problem. Returning to a changed place lets consequences feel real.
 
 ## The three series
 

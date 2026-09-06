@@ -12,74 +12,50 @@ Lead: Caelan Vey
 
 Title: The Town at the Wrong Mile
 
-Target play time: thirty five to forty five minutes on a first route
+Primary objective: clear Caelan's name, capture Ordan, and stop him reaching the Mileless Bridge with the iron fragment.
 
-Primary objective: protect the escort inside Harrowfen, identify the false arrival, and stop a royal courier from taking the iron fragment.
+Primary mystery: why did Ordan arrange the Bellweather attack and frame Caelan?
 
-Primary mystery: why does Harrowfen remember Caelan and his escort arriving three days earlier?
-
-Player facing threat rhythm: Immediate at the gate, Rising during the first investigation, Uneasy while the iron is tested, Critical when older versions of the market return, and Immediate on the Mileless Bridge.
-
-## Imported consequences
-
-Chapter Three keeps every stat, Oath, survivor, romance flag, evidence choice, and route consequence from the first two chapters.
-
-Chapter Three continues freely after Chapter Two, and earned Wayfire is preserved for later optional content. Caelan recovers a small amount of Stamina, Resolve, and Command on the short approach. The recovery is limited because Bellweather Inn and Harrowfen are only one impossible mile apart.
+Player facing threat rhythm: Immediate at the gate, Rising through the investigation, Immediate during the watch house fire, a short relationship breath, Critical in the market battle, and Immediate on the Mileless Bridge.
 
 ## Opening movement
 
-The escort reaches Harrowfen before the morning mist clears. Another version of the group waits outside the gate, led by a wounded man with Caelan's face. The false group fades after giving Caelan a private danger signal.
+The fragment shortens the road to Harrowfen because it is pulling toward a larger piece near the town. The story states clearly that the town has not moved through time and there is only one Harrowfen.
 
-The town guards produce a bill signed by Caelan. It records three nights he never spent in Harrowfen and the burial of royal courier Ordan Vale.
+Ordan has arrived first with a forged royal order naming Caelan a traitor. Crown riders close from behind while Caelan must expose a mistaken Warden mark and get his wounded through the gate.
 
-## Defining focus choice
+## Investigation routes
 
-The player chooses one urgent approach:
+The player chooses one concrete lead:
 
-- search the robbed archive with Lysara;
-- secure a healer and protect the wounded with Mara;
-- hear a masked road broker's offer while keeping the iron fragment.
+- Search the archive for Ordan's route requests and royal payments.
+- Defend Sable at the healing house so he can identify Ordan's personal guard.
+- Confront road broker Varris and learn how Ordan plans to open the Mileless Bridge.
 
-Each route gives one clear piece of the same answer. No route is required to understand the later reveal.
+All routes converge on blue black royal ink, Ordan's forgery, and his burning safe room.
 
-## Shared investigation
+## Watch house and relationship movement
 
-The false bill moves toward the iron fragment, and its date changes when the iron turns. Witnesses remember different versions of Caelan's arrival, but every version includes a man wearing silver gloves.
+The watch house is a physical fire rescue. Its orders reveal that Captain Renn, a corrupt Warden, has Caelan's spare cloak and plans to commit crimes in his name.
 
-The buried courier is Ordan Vale, the same royal agent connected to the Bellweather attack. His grave is empty. A living Ordan burns the watch house after Caelan sees him.
+On a bathhouse roof, Mara and Lysara disagree about saving people versus stopping the wider attack. Attraction can surface with Mara without suspending the urgent hunt.
 
-Inside the fire is a room from tomorrow. It contains Caelan's bloody future cloak and an instruction to keep him occupied until the Nail fragment can be taken east.
+## Market battle
 
-## Relationship movement
+Ordan's soldiers attack among boats, stalls, and rope bridges. Renn impersonates Caelan in front of the town guard. When the fragment is uncovered, one market street briefly joins a snowy mountain road. This is the chapter's single controlled magical escalation.
 
-Mara and Lysara disagree about priority, not affection or pride. Mara wants to protect lives that are in reach. Lysara wants to find the cause before the danger spreads.
+The event demonstrates the threat before it is named: a joined fragment could give an army a direct road into any kingdom.
 
-Caelan may support either view or use Command to make both women responsible for one connected plan. The choices establish his leadership and allow light attraction without stopping the crisis.
+## Pursuit and answer
 
-## Harrowfen crisis
+Caelan exposes Renn, but Ordan steals the fragment and burns the canal bridges during his escape. The player chooses between rescue, a faster pursuit, or spending Oathfire to do both.
 
-Every bell rings at noon. Old streets, missing houses, and past residents return. The iron fragment holds one version of the market in place, but the town changes whenever the fragment moves.
-
-Caelan confronts a false version of himself created from a possible future. The double remembers Mara dying on the Mileless Bridge. The player can reason with him, disarm him, or ask for one warning.
-
-## Mystery answer
-
-The player sees the iron's effect before hearing its name. It fixes one possible distance and destination in place. Moving it causes roads to remember other answers.
-
-At the Mileless Bridge, Lysara names the fragment as part of a World Nail. A World Nail is an ancient anchor that keeps a road, border, or natural law stable. This fragment came from the Nail that fixes distance across Edrath.
+At the east arch, Lysara explains the World Nail in plain language. It is a greater ancient anchor that keeps distant places apart. Road pins are pieces of it.
 
 ## Closing movement
 
-Ordan steals the fragment and escapes east while Harrowfen comes apart. Caelan can save the healing house, continue the chase, or swear an Oath that Harrowfen will not be erased.
-
-At the Mileless Bridge, an unknown thief steals the fragment from Ordan. The player chooses to:
-
-- pursue Ordan as the known Crown enemy;
-- intercept the unknown thief;
-- secure a route back to Harrowfen before advancing.
-
-Each ending creates a distinct opening position for Chapter Four. All three introduce Rook through action without explaining his history too early.
+Rook steals the fragment from Ordan on the Mileless Bridge. Caelan chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Each ending begins Chapter Four from a distinct position without introducing another mystery before the current one is answered.
 
 ## Art
 
-The chapter uses one canonical illustration of Caelan approaching Harrowfen's guarded west gate. It is stored as `public/art/harrowfen-wrong-mile.png`.
+The canonical illustration is `public/art/harrowfen-wrong-mile.png`.

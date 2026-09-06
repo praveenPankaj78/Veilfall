@@ -4,7 +4,7 @@ Veilfall is an original, story first fantasy decision RPG built around three tra
 
 ## Current status
 
-The redesigned foundation and the first three canonical chapters are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival. Chapter Two carries every surviving consequence into Bellweather Inn, where eleven missing years and a damaged road pin reveal a Crown plot. Chapter Three enters the shifting canal town of Harrowfen, answers the false arrival mystery, and begins the pursuit across the Mileless Bridge.
+The redesigned foundation and the first three canonical chapters are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival. Chapter Two carries every surviving consequence into a siege at Bellweather Inn, where Caelan learns how Ordan weaponised a damaged road pin. Chapter Three becomes a manhunt through Harrowfen, clears Caelan’s name, and begins the pursuit across the Mileless Bridge.
 
 The new canonical plan contains:
 
