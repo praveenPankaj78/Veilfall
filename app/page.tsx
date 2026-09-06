@@ -48,13 +48,15 @@ import {
   resolveNext,
   statLabels,
   type Choice,
+  type GameStats,
   type GameState,
   type RelationshipKey,
   type StatKey,
 } from './game-data';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v6.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v7.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v6.save',
   'veilfall.saga.v5.save',
   'veilfall.saga.v4.save',
   'veilfall.chapter-one.v3.save',
@@ -99,24 +101,25 @@ type ModelContext = {
 };
 
 const statIcons: Record<StatKey, typeof Heart> = {
-  stamina: Heart,
+  health: Heart,
   resolve: Shield,
   command: Swords,
-  rapport: Heart,
   oathfire: Flame,
   medicine: Heart,
   wayfire: Sparkles,
 };
 
 const statHelp: Record<StatKey, string> = {
-  stamina: 'Caelan spends this on force, endurance, and physical protection.',
+  health: 'Injury and exhaustion reduce this. At zero, Caelan dies.',
   resolve: 'His strength against fear, pain, manipulation, and despair.',
   command: 'Readiness and trust he can spend to coordinate the escort.',
-  rapport: 'Understanding people beyond your closest personal relationships.',
   oathfire: 'Magic gained from a binding promise and spent on extraordinary protection.',
   medicine: 'Strong healing supplies. The story explains who can benefit before you spend any.',
   wayfire: 'Optional path currency earned through lasting choices and chapter completion.',
 };
+
+const coreStatKeys: StatKey[] = ['health', 'resolve', 'command', 'oathfire'];
+const resourceStatKeys: StatKey[] = ['medicine', 'wayfire'];
 
 function migrateRelationships(value: Partial<GameState>) {
   if (value.relationships) {
@@ -164,16 +167,25 @@ function normaliseState(value: Partial<GameState>): GameState {
     : nodeId.startsWith('c2-')
       ? 2
       : (value.chapter ?? 1);
+  const savedStats = (value.stats ?? {}) as Partial<GameStats> & { stamina?: number };
+  const health = savedStats.health ?? savedStats.stamina ?? initialState.stats.health;
   const completedChapters = Array.from(new Set([
     ...(value.completedChapters ?? []),
-    ...(nodes[nodeId]?.final ? [chapter] : []),
+    ...(nodes[nodeId]?.final && health > 0 && !value.defeat ? [chapter] : []),
   ]));
   return {
     nodeId,
     chapter,
     chapterChoices: value.chapterChoices ?? (chapter === 1 ? value.history?.length ?? 0 : 0),
     completedChapters,
-    stats: { ...initialState.stats, ...value.stats },
+    stats: {
+      health,
+      resolve: savedStats.resolve ?? initialState.stats.resolve,
+      command: savedStats.command ?? initialState.stats.command,
+      oathfire: savedStats.oathfire ?? initialState.stats.oathfire,
+      medicine: savedStats.medicine ?? initialState.stats.medicine,
+      wayfire: savedStats.wayfire ?? initialState.stats.wayfire,
+    },
     relationships: migrateRelationships(value),
     contentPreference: {
       ...initialState.contentPreference,
@@ -181,6 +193,20 @@ function normaliseState(value: Partial<GameState>): GameState {
     },
     flags: value.flags ?? [],
     history: value.history ?? [],
+    defeat: value.defeat ?? null,
+  };
+}
+
+function defeatForChoice(chapter: ChapterNumber, choice: Choice) {
+  const bodies: Record<ChapterNumber, string> = {
+    1: 'You complete the action, but your wounds finally take your strength. Rain fills your mouth as the road darkens above you. The escort continues for only a few steps before the enemy closes in.',
+    2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
+    3: 'Your choice changes the fight, but blood and exhaustion pull you down beside the canal. Harrowfen’s lanterns blur on the water as Ordan escapes toward the eastern bridge.',
+  };
+  return {
+    title: 'Caelan has fallen',
+    body: bodies[chapter],
+    choiceId: choice.id,
   };
 }
 
@@ -207,6 +233,7 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     );
   }
   const completedChapters = nodes[nodeId]?.final
+    && nextStats.health > 0
     ? Array.from(new Set([...state.completedChapters, state.chapter]))
     : state.completedChapters;
   return {
@@ -219,10 +246,16 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     contentPreference: state.contentPreference,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
+    defeat: nextStats.health <= 0 ? defeatForChoice(state.chapter, choice) : null,
   };
 }
 
-function changeSummary(choice: Choice) {
+function wouldBeFatal(choice: Choice, state: GameState) {
+  const healthChange = choice.changes?.health ?? 0;
+  return healthChange < 0 && state.stats.health + healthChange <= 0;
+}
+
+function changeSummary(choice: Choice, state: GameState) {
   const statChanges = Object.entries(choice.changes ?? {})
     .filter(([, value]) => value !== 0)
     .map(([key, value]) => {
@@ -237,7 +270,11 @@ function changeSummary(choice: Choice) {
         return `${relationshipLabels[person as RelationshipKey]} ${dimension} ${sign}${value}`;
       }),
   );
-  return [...statChanges, ...personalChanges];
+  return [
+    ...statChanges,
+    ...personalChanges,
+    ...(wouldBeFatal(choice, state) ? ['Lethal at current Health'] : []),
+  ];
 }
 
 function knownTruths(game: GameState) {
@@ -411,9 +448,12 @@ export default function Home() {
           title: currentNode.title,
           stats: current.stats,
           relationships: current.relationships,
-          actions: currentNode.choices
-            .filter((choice) => canChoose(choice, current))
-            .map((choice) => ({ id: choice.id, label: choice.label })),
+          defeat: current.defeat,
+          actions: current.defeat
+            ? []
+            : currentNode.choices
+              .filter((choice) => canChoose(choice, current))
+              .map((choice) => ({ id: choice.id, label: choice.label })),
         };
       },
     });
@@ -437,6 +477,9 @@ export default function Home() {
         if (typeof choiceId !== 'string') throw new Error('choiceId must be a string');
 
         const current = gameRef.current;
+        if (current.defeat) {
+          throw new Error('Caelan has fallen. Return to the chapter start before choosing again');
+        }
         const choice = nodes[current.nodeId].choices.find((item) => item.id === choiceId);
         if (!choice || !canChoose(choice, current)) {
           throw new Error('That action is not available in the current scene');
@@ -470,7 +513,7 @@ export default function Home() {
     : Math.min(96, Math.round((game.chapterChoices / 15) * 100));
 
   function choose(choice: Choice) {
-    if (!canChoose(choice, game)) return;
+    if (game.defeat || !canChoose(choice, game)) return;
     const next = applyChoice(game, choice);
     scrollAfterChoice.current = nodes[next.nodeId].art !== node.art ? 'scene' : 'story';
     setLastResult(choice.result);
@@ -484,6 +527,25 @@ export default function Home() {
     setStarted(true);
     setShowChapterLibrary(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function returnToChapterStart() {
+    const checkpoint = chapterStart(game.chapter) ?? initialState;
+    loadChapterState({
+      ...checkpoint,
+      stats: {
+        ...checkpoint.stats,
+        health: Math.max(3, checkpoint.stats.health),
+      },
+      defeat: null,
+    });
+  }
+
+  function restartStoryAfterDeath() {
+    for (const key of [CURRENT_SAVE_KEY, ...LEGACY_SAVE_KEYS, ...Object.values(CHAPTER_START_KEYS)]) {
+      window.localStorage.removeItem(key);
+    }
+    loadChapterState(initialState);
   }
 
   function chapterStart(chapter: ChapterNumber) {
@@ -539,7 +601,7 @@ export default function Home() {
       completedChapters: Array.from(new Set([...game.completedChapters, 1])),
       stats: {
         ...game.stats,
-        stamina: Math.min(8, game.stats.stamina + 2),
+        health: Math.min(8, game.stats.health + 2),
         resolve: Math.min(8, game.stats.resolve + 1),
         medicine: 1,
       },
@@ -558,7 +620,7 @@ export default function Home() {
       completedChapters: Array.from(new Set([...game.completedChapters, 2])),
       stats: {
         ...game.stats,
-        stamina: Math.min(8, game.stats.stamina + 2),
+        health: Math.min(8, game.stats.health + 2),
         resolve: Math.min(8, game.stats.resolve + 1),
         command: Math.min(6, game.stats.command + 1),
       },
@@ -604,7 +666,7 @@ export default function Home() {
   }
 
   return (
-    <main className="game-shell min-h-screen text-[#eee7d8]">
+    <main className={`game-shell min-h-screen text-[#eee7d8] ${game.stats.health <= 2 ? 'health-critical' : ''}`}>
       <header className="topbar">
         <div className="wordmark">
           <span className="wordmark-rune" aria-hidden="true">V</span>
@@ -714,8 +776,8 @@ export default function Home() {
           <strong>{node.threat}</strong>
         </div>
         <div>
-          <span>Stamina</span>
-          <strong>{game.stats.stamina}</strong>
+          <span>Health</span>
+          <strong>{game.stats.health}</strong>
         </div>
         <div>
           <span>Resolve</span>
@@ -785,7 +847,8 @@ export default function Home() {
                 <p className="choice-prompt">What do you do?</p>
                 {node.choices.map((choice, index) => {
                   const available = canChoose(choice, game);
-                  const changes = changeSummary(choice);
+                  const changes = changeSummary(choice, game);
+                  const lethal = wouldBeFatal(choice, game);
                   return (
                     <Button
                       key={choice.id}
@@ -798,7 +861,7 @@ export default function Home() {
                       <span className="choice-copy">
                         <strong>{choice.label}</strong>
                         <span>{choice.detail}</span>
-                        <span className="choice-effects">
+                        <span className={`choice-effects ${lethal ? 'choice-effects-lethal' : ''}`}>
                           {available ? changes.join(' · ') : `Requires ${requirementText(choice)}`}
                         </span>
                       </span>
@@ -908,12 +971,10 @@ export default function Home() {
           </div>
 
           <div className="stats-list">
-            {(Object.keys(game.stats) as StatKey[]).filter(
-              (key) => game.chapter >= 2 || key !== 'medicine',
-            ).map((key) => {
+            {coreStatKeys.map((key) => {
               const Icon = statIcons[key];
               return (
-                <div className={`stat-row ${key === 'wayfire' ? 'currency-row' : ''}`} key={key}>
+                <div className={`stat-row ${key === 'health' && game.stats.health <= 2 ? 'danger-row' : ''}`} key={key}>
                   <Icon aria-hidden="true" />
                   <div>
                     <span>{statLabels[key]}</span>
@@ -923,6 +984,18 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+
+          <div className="resources-panel">
+            <p className="panel-title">Resources</p>
+            {resourceStatKeys.filter(
+              (key) => game.chapter >= 2 || key !== 'medicine',
+            ).map((key) => (
+              <div className="resource-row" key={key}>
+                <span>{statLabels[key]}</span>
+                <strong>{game.stats[key]}</strong>
+              </div>
+            ))}
           </div>
 
           <div className="relationships-panel">
@@ -1041,10 +1114,15 @@ export default function Home() {
             <SheetDescription>{node.objective}</SheetDescription>
           </SheetHeader>
           <div className="mobile-sheet-grid">
-            {(Object.keys(game.stats) as StatKey[]).filter(
+            {coreStatKeys.map((key) => (
+              <div key={key}><span>{statLabels[key]}</span><strong>{game.stats[key]}</strong></div>
+            ))}
+          </div>
+          <div className="mobile-sheet-resources">
+            {resourceStatKeys.filter(
               (key) => game.chapter >= 2 || key !== 'medicine',
             ).map((key) => (
-              <div key={key}><span>{statLabels[key]}</span><strong>{game.stats[key]}</strong></div>
+              <p key={key}><span>{statLabels[key]}</span><strong>{game.stats[key]}</strong></p>
             ))}
           </div>
           <div className="mobile-sheet-relationships">
@@ -1057,6 +1135,22 @@ export default function Home() {
           </div>
         </SheetContent>
       </Sheet>
+
+      <AlertDialog open={Boolean(game.defeat)}>
+        <AlertDialogContent className="death-dialog">
+          <AlertDialogHeader>
+            <p className="eyebrow">The road ends here</p>
+            <AlertDialogTitle>{game.defeat?.title}</AlertDialogTitle>
+            <AlertDialogDescription>{game.defeat?.body}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={restartStoryAfterDeath}>Restart the story</AlertDialogCancel>
+            <AlertDialogAction className="confirm-replay" onClick={returnToChapterStart}>
+              Return to chapter start
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <AlertDialog open={pendingReplay !== null} onOpenChange={(open) => !open && setPendingReplay(null)}>
         <AlertDialogContent className="replay-dialog">

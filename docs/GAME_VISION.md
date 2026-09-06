@@ -2,7 +2,7 @@
 
 ## Canon status
 
-This document begins the redesigned canon. The existing playable chapter remains a useful interface prototype, but its city bound plot is no longer the story foundation.
+This document defines the redesigned canon. The first three playable chapters now form its canonical opening act.
 
 ## The promise
 
@@ -51,11 +51,15 @@ His finale decides whether the Black Gate remains closed, becomes a controlled p
 
 Rook Sable, a male human thief and illusionist, follows a stolen map through Greyhaven, the goblin Underways, Brassreach, Serekh, the Unsea, and the Luminous Court. He survives by never belonging to anything. His growth asks whether freedom without loyalty is merely another prison.
 
+Rook's play promise is surprise with fair preparation. He builds Setup through observation and stagecraft, then spends it on options that shock enemies and companions while remaining logical in hindsight. His humour redirects attention and hides fear without weakening serious consequences.
+
 His finale steals one law from heaven. The stolen law changes sunrise, death, or truth across Edrath and creates the conditions for the last series.
 
 ### Series Three: The Worldroot Witch
 
 Ilyra Fen, a female half elf witch, begins among the storm islands of the Shard Coast. She crosses Thornweald, the Ember Steppe, the wounded heart of Dragonspine, and the outer realms before descending into Worldroot. Her spells consume mana, memory, and certainty.
+
+Ilyra's play promise is controlled influence. She reads fear, desire, pride, and loyalty, then turns named Leverage toward a cause she considers just. Beauty, flirtation, and sexual confidence can serve that method, but magic cannot create consent and manipulation may cost trust, expose her, or become real attachment.
 
 Her finale uses the altered world left by Caelan and Rook. She decides what the Concord becomes and which sacrifices the new world will remember.
 
@@ -93,6 +97,8 @@ Threat must change shape rather than remain at maximum intensity. Use this rhyth
 
 A quiet relationship scene may reduce immediate danger, but it should remind the player what could be lost. Constant combat creates numbness. Persistent vulnerability creates anticipation.
 
+Health makes that vulnerability real for all three leads. Costs are visible, a choice that would reach zero is marked as lethal, and death returns the player to a chapter checkpoint. Currency and romance never purchase survival.
+
 ## Scope guardrails
 
 - Three playable leads only: two men and one woman.
@@ -101,6 +107,7 @@ A quiet relationship scene may reduce immediate danger, but it should remind the
 - No more than one major new lore concept introduced in a scene.
 - No more than three essential invented terms introduced in a chapter.
 - Most intersections involve two leads. The three never fight the same final battle together.
+- The active hero owns the decisive choice in an intersection, while visiting heroes keep their distinct goals, methods, humour, pride, and boundaries.
 - Creatures and cultures appear only when they change the conflict or offer a distinct way of living.
 - Every finale changes the world and the starting conditions of a later finale.
 - Choices alter routes, alliances, romances, abilities, and regional outcomes. They do not merely change the next paragraph.

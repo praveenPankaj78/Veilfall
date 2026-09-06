@@ -38,7 +38,7 @@ Primary actions:
 
 ## Power and cost
 
-- Stamina powers combat, pursuit, climbing, and physical protection.
+- Health powers combat, pursuit, climbing, and physical protection.
 - Resolve resists fear, pain, manipulation, and despair.
 - Oathfire enables mythic feats such as holding a burning gate or cutting a devil's contract.
 - Every active Oath has a clear condition. Breaking it causes an Oathscar, removes an ability, damages trust, and changes later choices.
@@ -93,28 +93,36 @@ He says he wants money and freedom. In truth, he wants proof that nobody can own
 
 ## How he solves problems
 
-Rook avoids the strongest part of a problem. He observes routines, creates one believable distraction, and moves through the space people stop watching. In conversation he lies with truth, letting someone reach the wrong conclusion without making a claim he must later defend.
+Rook avoids the strongest part of a problem. He studies what everyone expects, prepares one detail they will trust, then does the thing nobody thought was useful. He may surrender to enter a locked archive, replace a royal seal with a theatre ticket, or save an enemy because the rescued enemy is the best distraction in the room. His solution should shock the people around him while making the player think, of course he prepared that.
+
+His acquired art is the Pocket Stage, a reversible coat and compact theatre kit inherited from his troupe. It holds wax, wire, flash salt, voice reeds, blank seals, false buttons, mirrored coins, dye, and thin tools. The kit is not an answer by itself. Rook earns Setup by observing a scene, planting an object, learning a habit, or persuading someone to expect the wrong event. His boldest options spend that Setup.
+
+In conversation he lies with truth. He lets someone reach the wrong conclusion without making a claim he must later defend. He often offers the most ridiculous option at the table, then reveals that its first half has already happened.
 
 Primary actions:
 
 - Slip: cross a watched space through timing and agility.
 - Palm: move, plant, or replace a small object unnoticed.
 - Mimic: reproduce a voice, posture, or social role after study.
+- Stage: spend Setup to turn an established prop, expectation, or planted detail into an audacious reversal.
 - Glimmer: borrow a sight or sound from a nearby possible event.
 - Vanish: spend every advantage to end pursuit, usually abandoning something valuable.
 
 ## Power and cost
 
-- Dexterity powers climbing, locks, escapes, and precise theft.
+- Health records wounds, exhaustion, and the physical price of climbing, pursuit, and escape.
 - Focus maintains disguises, calculations, and Glimmers.
 - Heat measures how strongly factions are searching for him.
+- Setup is temporary and scene specific. It is earned on the page, spent on surprising options, and cleared when the location or plan changes.
 - Glimmers borrow unrealised possibilities from the Unsea. Heavy use creates Echoes, brief moments when Rook remembers a life he never lived.
 
 Growth path: rooftop thief, impossible burglar, walker of unreal roads, then thief of a law that governs the world.
 
 ## Voice
 
-Rook notices value, weight, windows, clothing, insecurity, and the rhythm of attention. His jokes are fast and often hide a precise judgment. When he speaks without wit, the moment matters.
+Rook notices value, weight, windows, clothing, insecurity, and the rhythm of attention. His jokes are fast and often hide a precise judgment. Humour may release pressure before danger or puncture an enemy's pride after a reversal. It never mocks grief, injury, or a companion's sincere fear. When Rook stops joking, everyone should notice.
+
+Every major Rook chapter offers at least two well seeded but unconventional approaches. The choice label makes his intent and immediate cost clear, while the exact execution remains a pleasure to discover. A Glimmer may enhance the trick, but magic never replaces preparation.
 
 ## Central relationships
 
@@ -156,15 +164,20 @@ Rook begins by treating escape as victory. He ends with the power to steal a law
 
 Ilyra was born to an elven root singer and a human storm captain. She grew up between cultures that each believed the other careless with memory. When a childhood storm destroyed her island, she saved several neighbours with a spell she cannot remember learning. The spell cost every memory of her father.
 
-She became a forensic witch to learn where magic ends and self deception begins. She is composed, observant, and capable of frightening decisions when evidence supports them. Her private fear is that her personality is only the shape left by things she has forgotten.
+She became a forensic witch to learn where magic ends and self deception begins. She is composed, observant, proud, and deliberately manipulative. In her view, every court, lover, priest, and merchant already tries to shape other people. She would rather understand that pressure and control it than pretend it does not exist. Her cause is just from her point of view: no ruler should be allowed to edit a people's memory and call the result peace.
+
+Ilyra knows that beauty, desire, attention, and intimacy can create access that force cannot. She uses them when they serve her objective, including with powerful men and the other heroes. She does not think this makes her lesser, and she never accepts being treated as property or payment. Her private fear is that beneath all this control, her personality may be only the shape left by things she has forgotten.
 
 ## How she solves problems
 
-Ilyra names the hidden rule, prepares the correct spell, and changes one relationship at a time. She is strongest with time, evidence, and a willing ritual circle. When surprised, she can force magic quickly by paying with memory or bodily Strain.
+Ilyra names the hidden rule, finds the person who can move it, and studies what that person wants. Threadread can reveal fear, pride, desire, debt, loyalty, or a secret attachment. That knowledge becomes named Leverage tied to one person. She can spend it through reassurance, temptation, calculated honesty, jealousy, political pressure, or seduction. The player always knows what she noticed and what she intends to gain, even when the target does not.
+
+She is strongest with time, evidence, and a willing ritual circle. When surprised, she can force magic quickly by paying with memory or bodily Strain. Manipulation is powerful but not automatic. A target may recognise the tactic, demand terms, feed her false information, or become genuinely important to her.
 
 Primary actions:
 
 - Threadread: see the emotional or magical connection between people and objects.
+- Turn: spend named Leverage to redirect a person's choice without controlling their mind.
 - Ward: define what may cross a boundary and under which condition.
 - Glassform: store a memory, spell, or sensation in prepared glass.
 - Rootcall: ask a living place what changed within it.
@@ -172,16 +185,20 @@ Primary actions:
 
 ## Power and cost
 
+- Health records wounds, exhaustion, and the physical harm caused by high Strain.
 - Mana powers prepared spells and returns through rest, food, ritual, and safe connection.
 - Memory Shards are specific personal memories stored as emergency power. Spending one changes later narration, relationships, or available knowledge.
 - Strain rises when Ilyra forces magic. High Strain causes sensory mistakes and unreliable options that are signalled to the player.
+- Leverage is a named, person specific opportunity rather than a general score. Using one closes some future approaches and may create desire, resentment, exposure, or attachment.
 - Names give spells precision. Using a true name without permission creates a lasting corruption mark.
+
+Magic may reveal desire but cannot create consent. All intimate partners are adults. Ilyra may hide her wider political goal, but the other person must freely choose the physical encounter and remain able to stop. She will not submit under captivity, threats, magical compulsion, or a bargain that treats her body as an owed price.
 
 Growth path: forensic witch, storm binder, realm walker, Worldroot author.
 
 ## Voice
 
-Ilyra notices patterns, smells, changes in light, exact wording, living things, and what a speaker avoids. Her wit is patient and unexpectedly sharp. Desire makes her more direct, not less intelligent.
+Ilyra notices patterns, smells, changes in light, exact wording, living things, and what a speaker avoids. She notices when attraction changes posture, breath, confidence, or silence, and she decides whether to encourage it. Her wit is patient and unexpectedly sharp. Desire makes her more direct, not less intelligent. When a plan becomes personal, her careful control begins to show cracks.
 
 ## Central relationships
 
@@ -189,17 +206,17 @@ Ilyra notices patterns, smells, changes in light, exact wording, living things, 
 
 Tomas is a 37 year old human historian and travelling printer. He has a broad, ink stained build, an easy laugh, and the habit of rolling his sleeves before an argument. He believes truth should be public. Ilyra believes some truth belongs to the person who survived it.
 
-Possible path: intellectual flirtation, lovers, lasting partnership, or principled separation. Their intimacy works best after a disagreement is resolved through respect rather than surrender.
+Possible path: intellectual flirtation, lovers, lasting partnership, or principled separation. Ilyra may use Tomas's old attraction and access to place evidence before the public. He knows when she is telling a selective truth, so intimacy cannot settle the argument for her. Their relationship deepens only when each accepts the other's right to refuse.
 
 ### Caelan Vey
 
-An optional slow relationship can begin when Ilyra and Caelan cross on the Ember Steppe. She respects that he acts while afraid. He respects that she names costs others hide. Attraction grows through shared command and quiet care after battle.
+An optional slow relationship can begin when Ilyra and Caelan cross on the Ember Steppe. She first tests whether attraction can move his public position. His Oath training makes him unusually good at hearing what she leaves unsaid. He may name her tactic, refuse it, or consent while setting his own terms. She respects that he acts while afraid. He respects that she names costs others hide. Attraction grows through shared command, frank negotiation, and quiet care after battle.
 
 This path requires both characters to be unattached when imported decisions are used. It can culminate in intimacy before Caelan enters the Cinder Deep during his series, or renew after his return during Ilyra's series. Either version makes their separate finales more personal without changing Ilyra's final agency.
 
 ### Rook Sable
 
-An optional volatile relationship can begin in Serekh or the Unsea. Ilyra sees through his performance, while Rook makes her laugh when certainty becomes heavy. Their magic interacts dangerously because his Glimmers offer memories she might have lived.
+An optional volatile relationship can begin in Serekh or the Unsea. Ilyra sees through Rook's performance, while Rook notices when she is arranging a conversation before she finishes the first sentence. Each tries to turn the other's tactic into an advantage. Neither reliably wins. Their magic interacts dangerously because his Glimmers offer memories she might have lived.
 
 This path is mutually exclusive with other committed paths. A physical relationship may begin before either trusts the other, but it develops only if Rook does not steal her memories and Ilyra does not read him without permission.
 
@@ -207,11 +224,11 @@ This path is mutually exclusive with other committed paths. A physical relations
 
 Korran is a 39 year old male orc wind caller and seasonal leader on the Ember Steppe. He is tall, scarred, patient, and openly appreciative without assuming ownership. He wants Ilyra to stop the dead from directing the living, even if it means losing his mother's returned voice.
 
-Possible path: respectful flirtation, a brief intimate bond during the steppe campaign, political alliance, or moral opposition. He remains important to the regional outcome even if romance ends.
+Possible path: respectful flirtation, a brief intimate bond during the steppe campaign, political alliance, or moral opposition. Korran's directness makes several of Ilyra's usual pressures fail. He responds to openly stated desire and shared risk, not manufactured jealousy. He remains important to the regional outcome even if romance ends.
 
 ## Character arc
 
-Ilyra begins by believing enough knowledge can prevent regret. She ends facing a choice no complete evidence can settle. Her growth is learning that uncertainty does not excuse inaction and that memory is part of a person, not the whole of one.
+Ilyra begins by believing enough knowledge and careful pressure can produce the least harmful choice. She ends facing a choice no complete evidence can settle and no seduction can make morally hers. Her growth is learning that uncertainty does not excuse inaction, that memory is part of a person rather than the whole of one, and that a just future must be chosen with informed allies rather than arranged around them.
 
 # Shared relationship rules
 
@@ -232,3 +249,10 @@ Ilyra begins by believing enough knowledge can prevent regret. She ends facing a
 - No intersection repeats the same scenes or objective from both viewpoints.
 - Imported decisions appear as changed circumstances, not a long summary of another series.
 - The protagonist whose series is being played retains the decisive action in every crossover.
+- A visiting hero never becomes a generic helper. The current protagonist owns the final choice, while every guest pursues a recognisable goal through their own method.
+- Caelan enters through the vulnerable point, protects someone, names the hard truth, and commits. Even when he follows another hero's plan, he negotiates the duty he is accepting.
+- Rook controls attention, steals or replaces something useful, and offers an audacious option that was prepared in plain sight. He never stands quietly waiting for orders. His humour remains present until harm makes honesty necessary.
+- Ilyra reads leverage, reveals or withholds truth deliberately, and reshapes the alliance before she spends magic. Her beauty and sexuality may serve a plan, but a crossover never reduces her to a reward or distraction.
+- A hero cannot easily defeat another hero inside that hero's specialty. Caelan can corner Rook but not outsteal him. Rook can expose Ilyra's setup but not read its full emotional cost. Ilyra can move Caelan but cannot make his Oath for him.
+- Imported relationship choices alter trust, attraction, resentment, and willingness to cooperate. They never erase a lead's core personality.
+- Every crossover draft receives a personality pass. Remove any line or action that could be reassigned to another lead without changing it.

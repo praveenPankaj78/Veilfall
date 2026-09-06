@@ -83,11 +83,11 @@ Characters should not deliver long explanations before the player has a reason t
 
 Teach one shared resource and two signature class ideas through low risk use before combat or crisis. Show the result immediately.
 
-For Caelan, the player first learns Stamina, Resolve, Command, and Empathy during escort preparation. Mara and Lysara receive separate Trust and Attraction values. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
+For Caelan, the player first learns Health, Resolve, and Command during escort preparation. Mara and Lysara receive separate Trust and Attraction values. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
 
-For Rook, the player first uses Dexterity, attention, and Heat during a controlled theft. Glimmer appears only after the ordinary plan fails.
+For Rook, the player first uses Health, Focus, Heat, and a named Setup during a controlled theft. The player creates the Setup before seeing an audacious option that spends it. Glimmer appears only after the ordinary plan fails.
 
-For Ilyra, the player first uses Mana, Threadread, and a simple Ward during familiar community work. Memory Shards become available only after their personal meaning is understood.
+For Ilyra, the player first uses Health, Mana, Threadread, and a simple Ward during familiar community work. Threadread identifies one person's named Leverage before the player may spend it. Memory Shards become available only after their personal meaning is understood.
 
 ### Later chapters
 
@@ -99,6 +99,24 @@ For Ilyra, the player first uses Mana, Threadread, and a simple Ward during fami
 - Show costs on the choice before selection.
 - After selection, show the resource change and its fictional effect together.
 - Do not expose every hidden relationship or world value as a number.
+
+### Health and death
+
+- Health is always visible and explained before the first dangerous choice.
+- A Health cost that would reach zero is labelled Lethal at current Health before selection.
+- Death receives a short consequence grounded in the current location, then offers a return to the chapter start or a full restart.
+- The death screen never sells survival, spends Wayfire automatically, or suggests that romance should have protected the protagonist.
+- Low Health should change the feel of the interface and later prose so the player senses danger before the final point is lost.
+
+## Playable identity during intersections
+
+The active protagonist owns the decisive choice, but visiting heroes keep their established method and agenda.
+
+- Caelan protects the vulnerable point, names the duty, and commits.
+- Rook controls attention, uses a planted detail, and surprises the room with an option only he would attempt.
+- Ilyra reads desire or fear, creates Leverage, and redirects the alliance toward her purpose.
+
+An intersection is ready only if a reader could identify each speaker without dialogue tags. Imported trust and romance change warmth, suspicion, and cooperation, but never replace these personality constants.
 
 ## Player facing journal
 
@@ -141,7 +159,7 @@ Never recap the entire cosmology. Never reveal information the current route has
 
 Choice text describes intent in the protagonist's voice.
 
-Good Caelan choice: Hold the wagon while Mara gets the wounded clear. Costs 2 Stamina.
+Good Caelan choice: Hold the wagon while Mara gets the wounded clear. Costs 2 Health.
 
 Good Rook choice: Let the guard see the coat, not the man inside it. Costs 1 Focus. Heat may rise.
 

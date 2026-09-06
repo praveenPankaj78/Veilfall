@@ -135,9 +135,23 @@ Concrete, protective, disciplined. He notices responsibility before beauty, then
 
 Fast, observant, irreverent. He notices value and attention. His jokes conceal fear until an honest line lands without decoration. Choices sound like tactics.
 
+His most enjoyable options are surprising in execution but fair in preparation. Seed the prop, habit, route, or false expectation before he uses it. Give him at least two audacious approaches in a major chapter. Humour may challenge pride, hide fear, or redirect attention. It does not interrupt grief or mock sincere pain.
+
 ### Ilyra
 
 Measured, sensory, intellectually direct. She notices patterns and costs. Attraction sharpens her attention rather than reducing her judgment. Choices sound like hypotheses with human consequences.
+
+She is deliberately manipulative and believes controlled pressure can serve a just cause. Show what she notices in a person and what she hopes to gain before offering a Leverage choice. Beauty, flirtation, and sexual confidence are tools she may choose, not her only competence. Her manipulation can fail, backfire, or become genuine feeling. Magic never creates consent.
+
+## Crossover voice test
+
+When two or three leads share a scene, the current protagonist makes the decisive choice and every visiting hero keeps an independent objective.
+
+- Caelan moves toward danger and responsibility.
+- Rook moves attention, ownership, or the apparent rules of the room.
+- Ilyra moves relationships, information, and consent to the plan.
+
+Do not let a visiting hero wait silently for the player to assign a task. Let companions disagree through their own methods. Before approving the scene, hide speaker names and test whether the lines and actions still identify each hero. If two actions can be swapped without changing the scene, rewrite them.
 
 ## Romance and flirtation
 

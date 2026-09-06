@@ -595,6 +595,11 @@
   text-transform: uppercase;
 }
 
+.choice-effects-lethal {
+  color: #ef6f62;
+  text-shadow: 0 0 18px rgb(205 55 45 / 35%);
+}
+
 .choice-arrow {
   color: #87553d;
   transition: transform 180ms ease;
@@ -796,6 +801,36 @@
   font: 500 1.2rem/1 Georgia, serif;
 }
 
+.danger-row {
+  border-color: rgb(220 73 62 / 38%);
+  background: rgb(125 28 24 / 15%);
+}
+
+.danger-row > svg,
+.danger-row strong {
+  color: #ef7566;
+}
+
+.resources-panel {
+  margin-top: 1rem;
+  padding: 0.85rem;
+  border: 1px solid rgb(186 147 100 / 18%);
+  background: rgb(255 255 255 / 2%);
+}
+
+.resource-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  color: #a79c90;
+  font-size: 0.78rem;
+}
+
+.resource-row strong {
+  color: #d28a57;
+}
+
 .currency-row {
   margin-top: 0.5rem;
   border: 1px solid rgb(189 116 70 / 25%);
@@ -909,7 +944,7 @@
 
 .mobile-sheet-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.55rem;
   padding: 0 1rem;
 }
@@ -947,6 +982,49 @@
 .replay-dialog {
   border-color: rgb(186 147 100 / 35%);
   background: #111419;
+}
+
+.death-dialog {
+  border-color: rgb(178 55 47 / 58%);
+  background:
+    radial-gradient(circle at top, rgb(112 26 22 / 22%), transparent 54%),
+    #0d1014;
+}
+
+.death-dialog [data-slot='alert-dialog-title'] {
+  color: #f0d7d1;
+  font: 500 2rem/1.1 Georgia, serif;
+}
+
+.death-dialog [data-slot='alert-dialog-description'] {
+  color: #c2aca6;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.health-critical .mobile-status-strip {
+  border-bottom-color: rgb(213 66 57 / 45%);
+  box-shadow: 0 8px 24px rgb(91 12 10 / 20%);
+}
+
+.mobile-sheet-resources {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.mobile-sheet-resources p {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.7rem;
+  border: 1px solid rgb(186 147 100 / 18%);
+  color: #a79c90;
+}
+
+.mobile-sheet-resources strong {
+  color: #d28a57;
 }
 
 .confirm-replay {

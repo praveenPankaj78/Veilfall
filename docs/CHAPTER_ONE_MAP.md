@@ -25,7 +25,7 @@ Player facing threat rhythm: Low during the first duty, Uneasy as physical warni
 - Caelan is trusted and experienced.
 - Mara knows him well enough to tease and challenge him.
 - Greyhaven is one part of a wider world.
-- Guard, Command, Stamina, Resolve, and promises shape Caelan's play.
+- Guard, Command, Health, Resolve, and promises shape Caelan's play.
 - Elves, goblins, orcs, and witches are ordinary political actors, not an exposition parade.
 - The King's Road is supposed to be safe and reliable.
 - One impossible change has occurred.
@@ -54,7 +54,7 @@ The escort leaves Greyhaven. The city falls behind, creating a clear sense of de
 
 One calm class decision occurs before danger:
 
-- Guard an overloaded wagon and spend Stamina.
+- Guard an overloaded wagon and spend Health.
 - Command a faster formation and risk lower morale.
 - Promise the nervous envoy that everyone will reach the inn and create the first optional Oath.
 - Ask Mara to range farther ahead, improving warning but reducing immediate relationship time.
@@ -104,7 +104,7 @@ All routes reach the folded road, but state remains distinct:
 - whether an attacker can be questioned;
 - Mara's trust and attraction;
 - Lysara's respect and suspicion;
-- remaining Stamina and Resolve;
+- remaining Health and Resolve;
 - whether Caelan carries his first active Oath;
 - which ambush detail points toward the saboteur.
 

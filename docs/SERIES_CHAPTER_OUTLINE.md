@@ -34,7 +34,7 @@ Main event: Caelan prepares a routine diplomatic escort, meets Nilo and Joren, s
 
 Defining choice: Follow the altered route, trust Mara's remembered route, or stop and risk insulting the envoy.
 
-Class pressure: Basic Stamina, Resolve, Guard, Command, and one minor promise.
+Class pressure: Basic Health, Resolve, Guard, Command, and one minor promise.
 
 Romance movement: Mara's teasing and trust establish the possibility of more without forcing it.
 
@@ -90,7 +90,7 @@ Revelation: A map hidden in the fragment marks nine Nails across Edrath.
 
 End state: Rook escapes with a copy of the map. Caelan keeps the fragment and receives a royal order to bring it to Dragonspine rather than return to Greyhaven.
 
-Intersection: Rook appears with his own motive. His Chapter Three version of the event focuses on theft and escape.
+Intersection: Caelan holds the failing path and protects the wounded while Rook turns the pursuit into a staged robbery. Rook has already planted the object that creates his exit and refuses to obey without bargaining. Caelan owns the final duty choice in this version. Rook owns the theft in his version.
 
 ### Chapter Five: The Dragon's Cold Grave
 
@@ -100,7 +100,7 @@ Main event: Caelan's party climbs toward the fire Nail while cold flames hunt bo
 
 Defining choice: Free Vaor, take his ember by force, or make a pact that gives him a voice inside Caelan.
 
-Class pressure: Stamina cannot recover in cold fire. Oathfire can protect the group but exposes Caelan to the dragon's grief.
+Class pressure: Health cannot recover in cold fire. Oathfire can protect the group but exposes Caelan to the dragon's grief.
 
 Romance movement: Mara treats Caelan's burns. Their first kiss is possible after an honest admission, not as a reward for bravery.
 
@@ -124,7 +124,7 @@ Revelation: The dead voices are drawn from the Unsea, but some know things no im
 
 End state: The Red Moot chooses war, guarded alliance, or neutrality. Its decision changes the forces available at the Black Gate.
 
-Intersection: Ilyra enters as a specialist with her own mission and leaves before Caelan's final road.
+Intersection: Ilyra enters with her own investigation and tests Caelan's position by reading what he wants to protect. She may use attraction or political leverage, but Caelan hears the missing terms and decides which duty he will accept. In her later version, she owns the attempt to move the clans and Caelan becomes the powerful man she cannot simply arrange.
 
 ### Chapter Seven: The Red Wind Hunt
 
@@ -230,6 +230,8 @@ Core arc: A thief who confuses escape with freedom becomes the only person capab
 
 Primary route: Greyhaven, Mileless Bridge, Underways, Brassreach, Serekh, Unsea, Luminous Court.
 
+Play contract: Rook's normal visible states are Health, Focus, and Heat. Setup is a named advantage earned within the current plan. Every major chapter offers at least two audacious, well seeded Stage options whose execution surprises allies and enemies. A rare Glimmer can reveal an impossible opening, but it spends Focus and risks an Echo. His humour exposes pride, redirects attention, or hides fear. It stops when grief or real harm requires honesty.
+
 ### Chapter One: One Breath Open
 
 Location: Greyhaven's river roofs and sealed royal archive.
@@ -238,7 +240,9 @@ Main event: During the strange sunrise caused by Caelan's finale, every lock ope
 
 Defining choice: Take Senna's file, the valuable Crown ledger, or a living map that calls him by an abandoned name.
 
-Class pressure: Basic Dexterity, Focus, Heat, Palm, Slip, and a minor Glimmer.
+Class pressure: Basic Health, Focus, Heat, Palm, Slip, and Setup are introduced during a controlled theft. A minor Glimmer appears only after the ordinary plan breaks.
+
+Signature surprise: Rook can let the archive guard arrest him because he has already exchanged the evidence locker key for a prop in the guard's pocket.
 
 Romance movement: Sen Aldis helps prepare the theft and makes it clear that their familiar physical relationship no longer excuses Rook's emotional absence.
 
@@ -270,7 +274,7 @@ Main event: Rook steals a Nail fragment from a Crown courier and is cornered by 
 
 Defining choice: Save the fragment, Caelan's wounded guard, or the one route that protects Rook's identity.
 
-Class pressure: Dexterity finds paths while Glimmer shows several fatal versions of the next ten seconds.
+Class pressure: Setup and quick movement reveal physical paths while Glimmer shows several fatal versions of the next ten seconds.
 
 Romance movement: Sen sees whether Rook's concern for her survives when she is not the easiest person to save.
 
@@ -286,7 +290,7 @@ Main event: Rook must ride a city sized machine through unstable tunnels while i
 
 Defining choice: Help Nyra steal the compass from her own council, expose the sabotage, or take it alone.
 
-Class pressure: Tight machinery rewards Dexterity. Illusions fail against pressure sensors and increase Heat with the Compact.
+Class pressure: Tight machinery rewards observation, Setup, and precise movement. Illusions fail against pressure sensors and increase Heat with the Compact.
 
 Romance movement: Nyra's competitive flirtation can become a brief affair, mutual fascination, or sharp distrust.
 
@@ -342,7 +346,7 @@ Revelation: Malrec passed through Serekh years ago and returned with memories of
 
 End state: Rook and Ilyra open the mirror lake. Only one can carry the stable route home.
 
-Intersection: Ilyra's later version focuses on repairing truth. Rook's objective remains reaching Senna.
+Intersection: Rook notices Ilyra arranging the negotiation and replaces the evidence she planned to reveal. Ilyra recognises the switch, uses his desire to reach Senna as Leverage, and redirects him toward the failing Nail. Rook owns the theft in this version. Ilyra owns the political result in hers. Neither becomes the other's obedient companion.
 
 ### Chapter Eight: The Lives He Did Not Live
 
@@ -368,7 +372,7 @@ Main event: Rook infiltrates a realm where every citizen has an assigned purpose
 
 Defining choice: Pretend to accept a fixed purpose, corrupt a celestial law, or teach Aveline how to make an unapproved choice.
 
-Class pressure: Dexterity matters less than conceptual theft. Focus is spent maintaining a reason he does not believe.
+Class pressure: Physical skill matters less than conceptual theft. Focus is spent maintaining a reason he does not believe.
 
 Romance movement: Aveline's fascination can become consensual intimacy, mercy, manipulation, or betrayal. This is a planned optional detailed scene when both adults can freely leave. The encounter changes whether she hides Rook from the Court, and a fade choice preserves the same nonphysical conversation and consequence.
 
@@ -400,7 +404,7 @@ Main event: Rook steals one word from the Name of Dawn while celestial judges, S
 
 Defining choice: Steal obedience so choice can never be removed, steal ending so some lives cannot die, steal secrecy so all hidden truth becomes visible, or steal return so the outer realms cannot invade Edrath again.
 
-Class pressure: Dexterity, Focus, Heat, Echoes, relationships, and every identity Rook used determine what the theft takes from him.
+Class pressure: Health, Focus, Heat, Setup payoffs, Echoes, relationships, and every identity Rook used determine what the theft takes from him.
 
 Personal ending: Rook may return to Sen, travel with Ilyra, remain with Aveline, rebuild his family, become a wanted realm walker, or lose his name while preserving his freedom.
 
@@ -416,6 +420,8 @@ Core arc: A witch who trusts evidence more than choice becomes the person who mu
 
 Primary route: Shard Coast, Thornweald, Ember Steppe, Dragonspine, Serekh, Unsea, Worldroot.
 
+Play contract: Ilyra's visible states are Health, Mana, and Strain. Threadread discovers named Leverage tied to a particular person. She may spend it through calculated truth, reassurance, temptation, jealousy, political pressure, or seduction. Her manipulation serves her goal and may succeed, fail, create attachment, or expose her. Magic can reveal desire but never create sexual consent. Ilyra keeps her pride, terms, and independent purpose in every romance and crossover.
+
 ### Chapter One: Two Fathers at the Door
 
 Location: Ilyra's storm island home on the Shard Coast.
@@ -426,7 +432,7 @@ Defining choice: Shelter both, ward one outside, or ask each to surrender a memo
 
 Class pressure: Basic Mana, Threadread, Ward, Glassform, and manageable Strain.
 
-Romance movement: Tomas arrives with his travelling press and resumes an old flirtation complicated by their disagreement over publishing private memories.
+Romance movement: Tomas arrives with his travelling press and resumes an old flirtation complicated by their disagreement over publishing private memories. Ilyra tests whether old attraction can gain access to his press. Tomas notices the selective truth and makes her state what she actually wants.
 
 Revelation: Both fathers carry genuine memories, but only one history can remain stable until dawn.
 
@@ -490,7 +496,7 @@ Defining choice: Silence every ancestor, preserve a limited council of the dead,
 
 Class pressure: Threadread can distinguish bonds, but each reading adds Strain as Ilyra feels another person's grief.
 
-Romance movement: Korran Red Wind offers direct attraction and patient companionship. A brief affair, deeper bond, or friendship can grow from mutual respect. Imported choices may instead renew an unattached Caelan path.
+Romance movement: Korran Red Wind offers direct attraction and patient companionship. Ilyra first tries indirect pressure, discovers that he responds only to openly stated desire and shared risk, then chooses whether to meet him honestly. A brief affair, deeper bond, or friendship can grow from mutual respect. Imported choices may instead renew an unattached Caelan path, where Caelan names her tactic before choosing his own terms.
 
 Revelation: The voices repeat a command hidden inside the Concord's original wording.
 
@@ -538,7 +544,7 @@ Defining choice: Repair the Nail and risk civil war, crown a ruler whose motives
 
 Class pressure: Wards can contain reflected lies. Rewrite can solve the crisis quickly at the cost of a named personal memory.
 
-Romance movement: Rook may return to Serekh after his final theft. If imported conditions allow, their earlier playful distrust can become an optional detailed intimate scene or a firm refusal. Tomas or Korran paths are tested by distance and political disagreement. The scene has a fade alternative and resolves a relationship question before the final Worldroot journey.
+Romance movement: Rook may return to Serekh after his final theft. Ilyra tries to use his attachment to Senna as Leverage, while Rook has already planted a false route to discover whether she will exploit it. If imported conditions allow, their mutual challenge can become an optional detailed intimate scene or a firm refusal. Tomas or Korran paths are tested by distance and political disagreement. The scene has a fade alternative and resolves a relationship question before the final Worldroot journey.
 
 Revelation: Malrec built his realm engine here using an early design supplied by a celestial judge.
 
@@ -584,7 +590,7 @@ Main event: Ilyra must build authority for a new Concord among peoples who bear 
 
 Defining choice: Demand unanimous agreement and risk running out of time, accept a broad agreement with protected dissent, or claim emergency authority while promising a future renewal vote.
 
-Class pressure: This is a relationship and consequence chapter rather than a spell contest. Magic verifies consent but cannot create it.
+Class pressure: This is a relationship and consequence chapter rather than a spell contest. Ilyra can spend accumulated Leverage to win faster support, but doing so may produce a weaker mandate. Magic verifies consent but cannot create it.
 
 Romance movement: Ilyra decides who, if anyone, belongs in the life beyond the crisis. Partners may disagree with her political method without the scene treating disagreement as failed love.
 
@@ -626,11 +632,11 @@ Final image: Far from any capital, a child finds a small door in an old tree. It
 
 # Intersection and consequence map
 
-1. Caelan Chapter Four and Rook Chapter Three share the Mileless Bridge, with different objectives and decisions.
-2. Caelan Chapter Six introduces Ilyra as a capable nonplayer ally on the Ember Steppe. Ilyra Chapter Five later returns there and reveals the deeper purpose of her work.
+1. Caelan Chapter Four and Rook Chapter Three share the Mileless Bridge. Caelan anchors the path and chooses his duty. Rook stages the theft and chooses what he refuses to surrender.
+2. Caelan Chapter Six introduces Ilyra on the Ember Steppe. She reads the clans and tests Caelan's position rather than waiting for an assignment. Ilyra Chapter Five later returns there and owns the deeper memory conflict.
 3. Caelan Chapter Twelve changes the Black Gate and destabilises dawn, creating Rook Chapter One.
-4. Rook Chapter Seven introduces Ilyra in Serekh from his suspicious viewpoint. Ilyra Chapter Eight later returns to the city with her own objective and the consequences of Rook's actions.
-5. Rook Chapter Eight and Ilyra Chapter Nine enter different islands in the Unsea. Imported choices may let them cross, but neither chapter repeats the other's main event.
+4. Rook Chapter Seven introduces Ilyra in Serekh from his suspicious viewpoint. He replaces evidence she intended to use, while she turns his personal goal into Leverage. Ilyra Chapter Eight later returns to the city with her own objective and the consequences of Rook's actions.
+5. Rook Chapter Eight and Ilyra Chapter Nine enter different islands in the Unsea. Imported choices may let them cross. Rook controls the route through an audacious theft, while Ilyra controls which memories may be shared. Neither chapter repeats the other's main event.
 6. Rook Chapter Eleven changes one world law. The immediate effect creates Ilyra Chapter One and worsens again in Ilyra Chapter Ten.
 7. Only Ilyra enters the final chamber of Worldroot. Caelan and Rook influence it through consequences, relationships, and altered laws rather than a shared final fight.
 

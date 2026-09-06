@@ -79,11 +79,13 @@ Do not write the Cinder Deep finale until its possible contracts and imported wo
 
 Begin Rook only after Caelan's finale outputs are stable. His opening should immediately reflect the selected Black Gate state without requiring a recap.
 
-Prototype Glimmer and Echo mechanics in Rook Chapters One through Three. Test that illusion choices feel clever and carry understandable costs.
+Prototype Health, Focus, Heat, Setup, Glimmer, and Echo mechanics in Rook Chapters One through Three. Each major chapter needs at least two prepared but audacious Stage options. Test that players feel surprised by the execution without feeling that Rook produced an answer from nowhere. Test humour separately during pressure, relief, and grief so it sharpens his voice without weakening consequences.
 
 ## Phase Seven: Ilyra season
 
-Begin Ilyra after Rook's four Dawn law outputs are stable. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Ten through Thirteen.
+Begin Ilyra after Rook's four Dawn law outputs are stable. Prototype Health, Mana, Strain, and named person specific Leverage before the main season draft. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Ten through Thirteen. The matrix must distinguish attraction from trust and record when manipulation succeeds, fails, creates exposure, or becomes genuine attachment.
+
+Every crossover receives a personality audit. The active lead keeps the decisive action, and visiting leads retain their own objective and method. Reject any scene where Caelan, Rook, or Ilyra could exchange dialogue or actions without changing the scene.
 
 Memory Shards must change actual narration, knowledge, and relationships. They cannot function as renamed mana potions.
 

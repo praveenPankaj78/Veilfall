@@ -73,11 +73,13 @@ function applyChoice(state, choice) {
   }
   return {
     nodeId: resolveNext(choice, state),
+    chapter: state.chapter,
     stats,
     relationships,
     contentPreference: state.contentPreference,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
+    defeat: stats.health <= 0,
   };
 }
 
@@ -93,10 +95,9 @@ function stateKey(state) {
     'c2-saved-attacker',
   ]);
   const requirementCaps = {
-    stamina: 2,
+    health: 2,
     resolve: 4,
     command: 2,
-    rapport: 3,
     oathfire: 2,
     medicine: 1,
     wayfire: 0,
@@ -120,10 +121,9 @@ const chapterTwoBase = {
   completedChapters: [1],
   stats: {
     ...initialState.stats,
-    stamina: 8,
+    health: 8,
     resolve: 6,
     command: 4,
-    rapport: 5,
     oathfire: 4,
     medicine: 1,
   },
@@ -137,10 +137,9 @@ const chapterThreeBase = {
   completedChapters: [1, 2],
   stats: {
     ...initialState.stats,
-    stamina: 7,
+    health: 7,
     resolve: 6,
     command: 5,
-    rapport: 6,
     oathfire: 4,
     medicine: 0,
     wayfire: 0,
@@ -224,10 +223,9 @@ const stack = [
       flags: ['oath-bring-them-home'],
       stats: {
         ...chapterTwoBase.stats,
-        stamina: 0,
+        health: 1,
         resolve: 0,
         command: 0,
-        rapport: 1,
         oathfire: 0,
       },
     },
@@ -246,10 +244,9 @@ const stack = [
       flags: ['c2-pin-broken'],
       stats: {
         ...chapterThreeBase.stats,
-        stamina: 0,
+        health: 1,
         resolve: 0,
         command: 0,
-        rapport: 1,
         oathfire: 0,
       },
     },
@@ -262,6 +259,7 @@ const endings = new Set();
 const chapterOneEndings = new Set();
 const chapterTwoEndings = new Set();
 const chapterThreeEndings = new Set();
+const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
 
@@ -280,6 +278,10 @@ while (stack.length && visited.size < 100000) {
   }
 
   reachableNodes.add(node.id);
+  if (state.defeat || state.stats.health <= 0) {
+    deathChapters.add(state.chapter);
+    continue;
+  }
   const available = node.choices.filter((choice) => canChoose(choice, state));
 
   for (const choice of node.choices) {
@@ -326,6 +328,9 @@ if (!endings.size) failures.push('No ending is reachable');
 if (chapterOneEndings.size !== 3) failures.push(`Expected 3 Chapter One endings, found ${chapterOneEndings.size}`);
 if (chapterTwoEndings.size !== 3) failures.push(`Expected 3 Chapter Two endings, found ${chapterTwoEndings.size}`);
 if (chapterThreeEndings.size !== 3) failures.push(`Expected 3 Chapter Three endings, found ${chapterThreeEndings.size}`);
+for (const chapter of [1, 2, 3]) {
+  if (!deathChapters.has(chapter)) failures.push(`Chapter ${chapter} has no reachable lethal choice`);
+}
 
 if (failures.length) {
   console.error('Game graph check failed:');
@@ -336,5 +341,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

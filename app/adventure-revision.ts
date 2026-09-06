@@ -392,7 +392,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'Ordan’s hidden soldiers attack among fruit boats and hanging lanterns. They cut two rope bridges, overturn a fish cart, and drive civilians toward the canal.',
       'At the centre of the market, Captain Renn wears your red cloak and shouts orders in your name. Town guards hesitate because they cannot tell which captain is the traitor.',
-      'High above them, the dark coated thief swings from a dye merchant’s rope. He catches a falling child with one arm, sets her on a balcony, and removes a silver key from an Ordan guard with the other. Then he follows Ordan across the roofs.',
+      'High above them, the dark coated thief swings from a dye merchant’s rope. He catches a falling child with one arm, sets her on a balcony, and removes a silver key from an Ordan guard with the other. As he swings past Mara’s shield, you see a fine wire slip beneath the fragment’s leather strap. Then he follows Ordan across the roofs.',
       'The fragment tears through its wrapping. For a few seconds, one market street connects to a snowy mountain pass. Cold wind and snow burst between the stalls. The road returns when Mara slams the fragment under a shield.',
       'Now the danger is clear. If Ordan joins this fragment to the larger piece near the bridge, he can pull an army road into Harrowfen.',
     ],
@@ -459,7 +459,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'Lysara names the iron at last. “World Nail,” she says. “Old stories say it fixed distance in place when the world was young. These road pins are broken pieces of it.”',
       'Ordan presses your fragment against a larger shard set into the bridge. An arch opens onto ranks of Crown soldiers. You strike his arm while Lysara pulls the pieces apart with living thread. The army road closes. Harrowfen is safe from invasion, and Ordan’s immediate plan has failed.',
-      'A dark coated thief drops from the arch above and steals the fragment from Ordan’s belt. He is quick, young, and smiling as if the end of the world is a private joke.',
+      'The dark coated thief drops from the arch above and pulls the wire he planted in the market. The fragment leaps from Ordan’s belt into his sleeve. “Good news,” he says. “Your road works. Bad news, I need it.” He is quick, young, and smiling as if the end of the world is a private joke.',
       'Ordan draws his sword. The thief runs toward the broken centre. Behind you, Harrowfen’s guide rope begins to slip. You must choose what matters now.',
     ],
   },
@@ -484,7 +484,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c3-bridge-warning')
         ? 'Renn’s warning returns to you: this thief opposes Ordan, but wants the iron for a reason of his own.'
         : '“Captain,” the thief calls, “I stole it from the villain. That usually earns applause.”',
-      'Ordan orders his soldiers to fire. The thief throws the fragment over the gap, forcing you to choose between catching him and catching the iron as the stone breaks beneath both of you.',
+      'Ordan orders his soldiers to fire. The thief throws the fragment over the gap. You dive and catch it, then feel a smooth mirrored coin in your palm. The real iron flashes between his fingers. “That was the rehearsal,” he says as the stone breaks beneath both of you.',
     ],
   },
   'c3-ending-return': {
@@ -496,7 +496,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c3-oath-hold-town')
         ? 'Your Oath burns with steady heat. The town is safe from the army road for now, and your promise gives every guard behind you courage.'
         : 'Mara tests the knot and nods. Lysara marks the arch so Elene’s guards can follow.',
-      'Ahead, the dark coated thief takes the fragment from Ordan. The courier and his soldiers chase him toward the broken centre. You now have allies behind you and two dangerous men ahead.',
+      'Ahead, the dark coated thief pulls a wire you did not see him plant. The fragment jumps from Ordan’s belt into his hand, and he bows before running toward the broken centre. The courier and his soldiers chase him. You now have allies behind you and two dangerous men ahead.',
     ],
   },
 };
@@ -573,7 +573,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c2-break-bracket': {
     label: 'Cut the enemy rope from the iron bracket.',
-    detail: 'Spend 1 Stamina to slow their pull on the road pin.',
+    detail: 'Spend 1 Health to slow their pull on the road pin.',
     result: 'The rope snaps. The attackers must reach the pin chamber and attach another chain.',
   },
   'c2-follow-footsteps': {
@@ -598,12 +598,12 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c2-protect-current-group': {
     label: 'Form a shield line and force a way to the cellar.',
-    detail: 'Spend 1 Stamina. Push through the pantry fight without defeating every attacker.',
+    detail: 'Spend 1 Health. Push through the pantry fight without defeating every attacker.',
     result: 'Shields strike armour. Your group reaches the cellar stairs while Brann holds the line behind you.',
   },
   'c2-hold-door': {
     label: 'Hold the broken pantry against the mire hound.',
-    detail: 'Spend 2 Stamina and keep the beast away from the wounded.',
+    detail: 'Spend 2 Health and keep the beast away from the wounded.',
     result: 'You drive the mire hound back with shield and fire while Brann secures the room.',
   },
   'c2-give-maelin-key': {
@@ -643,7 +643,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c2-strength-pull': {
     label: 'Force the pin into place with your own strength.',
-    detail: 'Spend 3 Stamina. Succeed now and accept a lasting injury.',
+    detail: 'Spend 3 Health. Succeed now and accept a lasting injury.',
     result: 'You drive the iron home. Pain tears across your back, but the distant roads vanish from the tunnel.',
   },
   'c2-oath-pull': {
@@ -684,7 +684,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c3-catch-archive-spy': {
     label: 'Catch the masked soldier before he reaches the stove.',
-    detail: 'Spend 1 Stamina. Preserve a witness and the last page.',
+    detail: 'Spend 1 Health. Preserve a witness and the last page.',
     result: 'You drag the soldier away from the fire and save Ordan’s signed request.',
   },
   'c3-copy-bridge-entry': {
@@ -714,7 +714,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c3-seize-mask': {
     label: 'Seize the killer behind the curtain.',
-    detail: 'Spend 1 Stamina. Protect Varris and take Ordan’s written threat.',
+    detail: 'Spend 1 Health. Protect Varris and take Ordan’s written threat.',
     result: 'You disarm Ordan’s man and recover a note ordering Varris killed after the sale.',
   },
   'c3-anchor-bill': {
@@ -759,7 +759,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c3-carry-children': {
     label: 'Carry trapped children across the broken bridge.',
-    detail: 'Spend 2 Stamina. Save lives while Ordan reaches the well.',
+    detail: 'Spend 2 Health. Save lives while Ordan reaches the well.',
     result: 'You carry two children through smoke and falling rope. Their mother points out Ordan at the well.',
   },
   'c3-follow-tiviks-rule': {
@@ -784,12 +784,12 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c3-talk-double-down': {
     label: 'Offer Renn a chance to surrender.',
-    detail: 'Use Empathy to break Ordan’s hold on him.',
+    detail: 'Use honest insight to break Ordan’s hold on him.',
     result: 'Renn lowers his blade and warns that the thief on the bridge is Ordan’s rival, not his ally.',
   },
   'c3-disarm-double': {
     label: 'Disarm Renn before he can give another order.',
-    detail: 'Spend 2 Stamina. End the false command quickly.',
+    detail: 'Spend 2 Health. End the false command quickly.',
     result: 'You break Renn’s copied guard and put him on the stones before Ordan reaches the well.',
   },
   'c3-ask-future-warning': {
@@ -799,7 +799,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c3-cut-glove': {
     label: 'Cut the fragment from Ordan’s silver glove.',
-    detail: 'Spend 2 Stamina. Risk a close fight before he reaches the arch.',
+    detail: 'Spend 2 Health. Risk a close fight before he reaches the arch.',
     result: 'Your blade tears one glove, but Ordan drops a fire flask and keeps the fragment.',
   },
   'c3-order-volley': {
@@ -819,7 +819,7 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c3-keep-courier-in-sight': {
     label: 'Keep Ordan in sight through the burning market.',
-    detail: 'Spend 1 Stamina. Leave the rescue to Elene’s guards.',
+    detail: 'Spend 1 Health. Leave the rescue to Elene’s guards.',
     result: 'You stay close enough to see Ordan use the bridge key at the east arch.',
   },
   'c3-oath-hold-harrowfen': {

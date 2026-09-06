@@ -48,7 +48,7 @@ On a bathhouse roof, Mara and Lysara disagree about saving people versus stoppin
 
 Ordan's soldiers attack among boats, stalls, and rope bridges. Renn impersonates Caelan in front of the town guard. When the fragment is uncovered, one market street briefly joins a snowy mountain road. This is the chapter's single controlled magical escalation.
 
-The dark coated thief is seeded before the ending. Every investigation route reveals that he stole one of Ordan's bridge keys. During the market fight, Caelan sees him rescue a child, steal another key, and follow Ordan across the roofs.
+The dark coated thief is seeded before the ending. Every investigation route reveals that he stole one of Ordan's bridge keys. During the market fight, Caelan sees him rescue a child, steal another key, and plant a fine wire beneath the fragment's strap before following Ordan across the roofs. The rescue, theft, and preparation happen inside one movement, establishing Rook's unusual competence and priorities.
 
 The event demonstrates the threat before it is named: a joined fragment could give an army a direct road into any kingdom.
 
@@ -60,7 +60,7 @@ At the east arch, Lysara explains the World Nail in plain language. It is a grea
 
 ## Closing movement
 
-Caelan and Lysara stop Ordan from opening an army road into Harrowfen. This gives the player a clear victory before Rook steals the loose fragment from Ordan. Caelan then chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Each ending begins Chapter Four from a distinct position without introducing another mystery before the current one is answered.
+Caelan and Lysara stop Ordan from opening an army road into Harrowfen. This gives the player a clear victory before Rook pulls the planted wire and steals the loose fragment from Ordan. If Caelan follows him, Rook throws a mirrored coin disguised as the fragment and reveals the switch only after Caelan catches it. The trick is surprising but uses preparation the player already saw. Caelan then chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Each ending begins Chapter Four from a distinct position without introducing another mystery before the current one is answered.
 
 ## Art
 

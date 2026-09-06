@@ -11,11 +11,11 @@ The new canonical plan contains:
 - Three playable protagonists: Caelan Vey, Rook Sable, and Ilyra Fen.
 - Thirty six high level chapters across three complete series, with chapter boundaries allowed to change after playtesting.
 - Seven mortal regions, three outer realms, and Worldroot.
-- Distinct class methods and costs for every lead.
+- Distinct class methods and costs for every lead, including Rook's staged surprises and Ilyra's person specific Leverage.
 - Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
 - Separate finales whose consequences trigger the next protagonist's story.
 - A world map at `public/art/edrath-world-map.png`.
-- Three complete chapters with route based danger, visible threat, class resources, imported consequences, relationship choices, nine total endings, and local saves.
+- Three complete chapters with route based danger, visible Health costs, lethal outcomes with chapter checkpoints, class resources, imported consequences, relationship choices, nine total endings, and local saves.
 
 ## Canonical documents
 

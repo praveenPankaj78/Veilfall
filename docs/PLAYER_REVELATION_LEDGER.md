@@ -16,7 +16,7 @@ Answer: The attackers received plans for every route before Caelan chose. The se
 
 Next hook: How can the same road lead to the wrong coast, and why was Ordan listed among the few officials who knew the escort date?
 
-Mechanic: Stamina, Guard, and Command through safe escort work.
+Mechanic: Health, Guard, and Command through safe escort work.
 
 ## 2. The Inn That Waited
 
@@ -138,7 +138,7 @@ Answer: Senna is alive somewhere outside Edrath and a living map points toward h
 
 Next hook: Why was she taken to a place absent from the world?
 
-Mechanic: Dexterity and Heat during a controlled theft.
+Mechanic: Health, Focus, Heat, and a named Setup during a controlled theft.
 
 ## 2. The Name in His Pocket
 
