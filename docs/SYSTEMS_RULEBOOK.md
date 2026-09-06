@@ -11,7 +11,7 @@ Each protagonist tracks:
 - Vitality: physical condition. Zero causes injury, capture, or a costly rescue rather than an unexplained restart.
 - Morale: willingness to continue. It affects desperate choices and recovery.
 - Coin: ordinary purchases, bribes, lodging, and supplies.
-- Wayfire: account level progression currency used to unlock chapters.
+- Wayfire: account level progression currency used for optional paths, preparations, and future early access.
 - Reputation: separate values for major regions and factions.
 - Bonds: named relationship states with trust, attraction, respect, and conflict flags.
 - World state: the condition of each Nail, route, people, and imported finale.
@@ -80,18 +80,19 @@ Failure moves the story forward through injury, lost time, increased Heat, damag
 
 ## Wayfire economy
 
-Wayfire is the future chapter unlock currency. The fiction treats it as the warmth left when a person makes a choice they cannot take back.
+Wayfire is an optional progression currency. The fiction treats it as the warmth left when a person makes a choice they cannot take back.
 
 Recommended launch rules:
 
-- Completing a chapter grants enough Wayfire to unlock the next chapter in the active series during normal play.
+- Main story chapters continue freely during the foundation arc. The player keeps all earned Wayfire.
+- Wayfire can unlock optional scenes, preparations, alternate approaches, and future early access without changing consent or moral outcomes.
 - Optional discoveries, difficult class solutions, and replay milestones grant reserve Wayfire.
 - Ads may later grant bonus Wayfire, but no player should be forced to repeat content or choose a worse story outcome to continue.
 - Currency is never spent inside a choice to purchase moral superiority, romance, consent, or survival.
 - Premium purchase and ad rewards must use the same clear conversion rate.
-- The player can preview the next chapter title, lead, location, and opening premise before unlocking it.
+- The player can preview optional content before deciding whether to spend Wayfire on it.
 
-This keeps monetisation attached to access pace rather than narrative integrity.
+This keeps monetisation attached to optional access and preparation rather than narrative integrity. A later release may test chapter early access, but a completed chapter must always provide a clear free continuation path.
 
 ## Luck
 
@@ -105,10 +106,13 @@ Luck cannot force affection, reverse a final world decision, or replace a missin
 
 ## Relationship state
 
-Each major relationship tracks four independent values:
+The playable Caelan foundation currently tracks two independent values for Mara and Lysara:
 
 - Trust: belief that the protagonist will act honestly or reliably.
 - Attraction: physical and romantic interest.
+
+Later relationship depth can add two further values when the story begins testing long term commitment:
+
 - Respect: belief in competence and values.
 - Friction: unresolved hurt, rivalry, or conflicting aims.
 

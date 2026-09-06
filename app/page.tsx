@@ -17,24 +17,45 @@ import {
 
 import { Button } from '@/components/ui/button';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
   Progress,
   ProgressLabel,
   ProgressValue,
 } from '@/components/ui/progress';
 import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import {
   canChoose,
   initialState,
   nodes,
+  relationshipChanges,
+  relationshipLabels,
   requirementText,
   resolveNext,
   statLabels,
   type Choice,
   type GameState,
+  type RelationshipKey,
   type StatKey,
 } from './game-data';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v5.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v6.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v5.save',
   'veilfall.saga.v4.save',
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
@@ -91,11 +112,50 @@ const statHelp: Record<StatKey, string> = {
   stamina: 'Caelan spends this on force, endurance, and physical protection.',
   resolve: 'His strength against fear, pain, manipulation, and despair.',
   command: 'Readiness and trust he can spend to coordinate the escort.',
-  rapport: 'Trust and attraction earned through attention, honesty, and shared risk.',
+  rapport: 'Understanding people beyond your closest personal relationships.',
   oathfire: 'Magic gained from a binding promise and spent on extraordinary protection.',
   medicine: 'Strong healing supplies. The story explains who can benefit before you spend any.',
-  wayfire: 'Chapter currency earned through choices you cannot undo and chapter completion.',
+  wayfire: 'Optional path currency earned through lasting choices and chapter completion.',
 };
+
+function migrateRelationships(value: Partial<GameState>) {
+  if (value.relationships) {
+    return {
+      mara: { ...initialState.relationships.mara, ...value.relationships.mara },
+      lysara: { ...initialState.relationships.lysara, ...value.relationships.lysara },
+    };
+  }
+
+  const flags = new Set(value.flags ?? []);
+  const count = (names: string[]) => names.filter((flag) => flags.has(flag)).length;
+  return {
+    mara: {
+      trust: 2 + count([
+        'trusted-mara-scouting', 'shared-unease', 'mara-read-order', 'ridge-route',
+        'planned-evening', 'trusted-mara-in-fight', 'saved-mara', 'mara-tended',
+        'c2-mara-led-entry', 'c2-compressed-wound', 'c2-shared-fear', 'c2-mara-below',
+        'c3-shielded-wounded', 'c3-entered-unarmed', 'c3-backed-mara',
+        'c3-priority-people', 'c3-mara-flanked-double', 'c3-pursuit-mara',
+      ]),
+      attraction: 1 + count([
+        'flirted-mara', 'shared-unease', 'planned-evening', 'saved-mara',
+        'mara-tended', 'c2-shared-fear', 'c2-kissed-mara', 'c3-entered-unarmed',
+        'c3-priority-people', 'c3-pursuit-mara',
+      ]),
+    },
+    lysara: {
+      trust: Math.max(0, count([
+        'kept-seed-secret', 'seed-safe', 'found-shard-salt', 'c2-lysara-led-care',
+        'c2-saved-lysara', 'c2-lysara-below', 'c3-backed-lysara',
+        'c3-lysara-read-ink', 'c3-priority-cause', 'c3-pursuit-lysara',
+      ]) - (flags.has('revealed-seed') ? 1 : 0)),
+      attraction: count([
+        'intrigued-lysara', 'kept-seed-secret', 'c3-lysara-read-ink',
+        'c3-priority-cause', 'c3-pursuit-lysara',
+      ]),
+    },
+  };
+}
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
@@ -114,6 +174,11 @@ function normaliseState(value: Partial<GameState>): GameState {
     chapterChoices: value.chapterChoices ?? (chapter === 1 ? value.history?.length ?? 0 : 0),
     completedChapters,
     stats: { ...initialState.stats, ...value.stats },
+    relationships: migrateRelationships(value),
+    contentPreference: {
+      ...initialState.contentPreference,
+      ...value.contentPreference,
+    },
     flags: value.flags ?? [],
     history: value.history ?? [],
   };
@@ -126,6 +191,21 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     nextStats[stat] = Math.max(0, nextStats[stat] + (value ?? 0));
   }
   const nodeId = resolveNext(choice, state);
+  const nextRelationships = {
+    mara: { ...state.relationships.mara },
+    lysara: { ...state.relationships.lysara },
+  };
+  for (const [person, changes] of Object.entries(relationshipChanges(choice))) {
+    const key = person as RelationshipKey;
+    nextRelationships[key].trust = Math.max(
+      0,
+      nextRelationships[key].trust + (changes?.trust ?? 0),
+    );
+    nextRelationships[key].attraction = Math.max(
+      0,
+      nextRelationships[key].attraction + (changes?.attraction ?? 0),
+    );
+  }
   const completedChapters = nodes[nodeId]?.final
     ? Array.from(new Set([...state.completedChapters, state.chapter]))
     : state.completedChapters;
@@ -135,18 +215,107 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     chapterChoices: state.chapterChoices + 1,
     completedChapters,
     stats: nextStats,
+    relationships: nextRelationships,
+    contentPreference: state.contentPreference,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
   };
 }
 
 function changeSummary(choice: Choice) {
-  return Object.entries(choice.changes ?? {})
+  const statChanges = Object.entries(choice.changes ?? {})
     .filter(([, value]) => value !== 0)
     .map(([key, value]) => {
       const sign = (value ?? 0) > 0 ? '+' : '';
       return `${statLabels[key as StatKey]} ${sign}${value}`;
     });
+  const personalChanges = Object.entries(relationshipChanges(choice)).flatMap(
+    ([person, changes]) => Object.entries(changes ?? {})
+      .filter(([, value]) => value !== 0)
+      .map(([dimension, value]) => {
+        const sign = (value ?? 0) > 0 ? '+' : '';
+        return `${relationshipLabels[person as RelationshipKey]} ${dimension} ${sign}${value}`;
+      }),
+  );
+  return [...statChanges, ...personalChanges];
+}
+
+function knownTruths(game: GameState) {
+  const truths = game.chapter > 1 || game.chapterChoices >= 4
+    ? ['Someone altered an official route order to force the escort onto a prepared road.']
+    : ['Caelan is leading Ambassador Lysara and a Warden escort toward Bellweather Inn.'];
+  const timeRevealNodes = [
+    'c2-eleven-years', 'c2-investigate', 'c2-ledger', 'c2-cellar', 'c2-attacker',
+    'c2-night-watch', 'c2-bell', 'c2-common-room-crisis', 'c2-descend',
+    'c2-folded-cellar', 'c2-road-pin', 'c2-remove-pin', 'c2-last-testimony',
+  ];
+  if (game.chapter >= 3 || timeRevealNodes.includes(game.nodeId)) {
+    truths.push('Bellweather Inn lived through eleven years while the escort experienced only one day.');
+  }
+  if (game.chapter >= 3
+    || game.flags.includes('c2-found-road-pin-term')
+    || ['c2-road-pin', 'c2-remove-pin', 'c2-last-testimony'].includes(game.nodeId)) {
+    truths.push('A damaged road pin made one place touch different roads and different years.');
+  }
+  const courierRevealNodes = [
+    'c3-evidence', 'c3-watch-house', 'c3-divided-loyalty', 'c3-market-memory',
+    'c3-pin-test', 'c3-duplicate', 'c3-courier', 'c3-collapse', 'c3-pursuit',
+    'c3-world-nail', 'c3-ending-courier', 'c3-ending-thief', 'c3-ending-return',
+  ];
+  if (courierRevealNodes.includes(game.nodeId) || game.completedChapters.includes(3)) {
+    truths.push('Royal courier Ordan Vale arranged the Bellweather attack and used false versions of the escort.');
+  }
+  if (game.nodeId === 'c3-world-nail'
+    || game.flags.includes('c3-target-ordan')
+    || game.flags.includes('c3-target-thief')
+    || game.flags.includes('c3-secured-return')) {
+    truths.push('The iron is part of a World Nail that normally keeps distance stable across Edrath.');
+  }
+  return truths;
+}
+
+function activePromises(game: GameState) {
+  const promises: string[] = [];
+  if (game.flags.includes('oath-bring-them-home')) promises.push('Bring the escort home alive.');
+  if (game.flags.includes('c2-oath-repair-road')) promises.push('Repair the damaged King’s Road.');
+  if (game.flags.includes('c2-oath-expose-crown')) promises.push('Expose the Crown officer behind the attack.');
+  if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen be erased.');
+  if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back freeing the road pin.');
+  return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
+}
+
+function majorConsequences(game: GameState) {
+  const consequences: string[] = [];
+  if (game.flags.includes('checked-people')) consequences.push('Because you inspected your people, a feverish guard avoided the hardest part of the march.');
+  if (game.flags.includes('checked-horses')) consequences.push('Because you checked the harness, the escort avoided a planned equipment failure.');
+  if (game.flags.includes('mara-read-order')) consequences.push('Because you trusted Mara with the changed order, she helped prove the page was physically altered.');
+  if (game.flags.includes('low-route')) consequences.push('Because you took the low road, the escort found the hidden silver route beneath the flood.');
+  if (game.flags.includes('ridge-route')) consequences.push('Because you trusted Mara’s ridge, the escort gained height but faced the ambush exposed to the storm.');
+  if (game.flags.includes('inspection-route')) consequences.push('Because you delayed for an inspection, the escort found sabotage before entering either road.');
+  if (game.flags.includes('saved-family')) consequences.push('Because you rescued the roadside family, more civilians survived the first ambush.');
+  if (game.flags.includes('captured-attacker')) consequences.push('Because you captured an attacker, the Crown plot gained a living witness.');
+  if (game.flags.includes('treaty-damaged')) consequences.push('Because the treaty wagon was damaged, peace now depends more heavily on Lysara’s second proof.');
+  if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, he survived the worst of his wound.');
+  if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand and the living proof remain safe.');
+  if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Sable, he can identify the royal courier who hired him.');
+  if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you know the inn remembered fifteen possible arrivals.');
+  if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you saw distance change before the midnight crisis.');
+  if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Sable, you connected the road pin to sealed Crown orders.');
+  if (game.flags.includes('c2-pin-broken')) consequences.push('Because the road pin broke, part of its power remains beneath Bellweather Inn.');
+  if (game.flags.includes('c2-kissed-mara')) consequences.push('Because you and Mara chose to kiss, your attraction is no longer unspoken.');
+  if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped before the healing house vanished.');
+  if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
+  if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned the false Caelan, you know the unknown thief is not working for Ordan.');
+  if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied the records that place one bridge in several locations.');
+  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Harrowfen’s healer learned that the living Nilo was not the boy she buried.');
+  if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned that false routes can loop back on themselves.');
+  if (game.flags.includes('c3-priority-people')) consequences.push('Because you chose immediate lives first, Mara knows exactly where your duty begins.');
+  if (game.flags.includes('c3-priority-cause')) consequences.push('Because you chose the wider danger first, Lysara trusts you to face difficult truths.');
+  if (game.flags.includes('c3-balanced-plan')) consequences.push('Because you joined protection and investigation, Mara and Lysara were ready when Harrowfen changed.');
+  if (game.flags.includes('c3-target-ordan')) consequences.push('Because you targeted Ordan, the Crown courier must face you before reaching the thief.');
+  if (game.flags.includes('c3-target-thief')) consequences.push('Because you targeted the thief, you reach for the fragment as the bridge breaks.');
+  if (game.flags.includes('c3-secured-return')) consequences.push('Because you secured the first arch, your companions still have a path back to Harrowfen.');
+  return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }
 
 export default function Home() {
@@ -155,7 +324,15 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const [lastResult, setLastResult] = useState<string | null>(null);
   const [showChapterLibrary, setShowChapterLibrary] = useState(false);
+  const [showJournal, setShowJournal] = useState(false);
+  const [showCharacterSheet, setShowCharacterSheet] = useState(false);
+  const [showReturnRecap, setShowReturnRecap] = useState(false);
+  const [pendingReplay, setPendingReplay] = useState<ChapterNumber | null>(null);
+  const [showMatureConfirm, setShowMatureConfirm] = useState(false);
   const gameRef = useRef(game);
+  const storyRef = useRef<HTMLElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const scrollAfterChoice = useRef<'story' | 'scene' | null>(null);
 
   useEffect(() => {
     gameRef.current = game;
@@ -174,6 +351,7 @@ export default function Home() {
           if (parsed.nodeId && nodes[parsed.nodeId]) {
             setGame(parsed);
             setStarted(true);
+            setShowReturnRecap(true);
           }
         } catch {
           window.localStorage.removeItem(CURRENT_SAVE_KEY);
@@ -191,6 +369,15 @@ export default function Home() {
       window.localStorage.setItem(CURRENT_SAVE_KEY, JSON.stringify(game));
     }
   }, [game, loaded, started]);
+
+  useEffect(() => {
+    if (!scrollAfterChoice.current) return;
+    const target = scrollAfterChoice.current === 'scene' ? sceneRef.current : storyRef.current;
+    scrollAfterChoice.current = null;
+    window.requestAnimationFrame(() => {
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [game.nodeId]);
 
   useEffect(() => {
     const modelContext = (document as Document & { modelContext?: ModelContext }).modelContext;
@@ -220,6 +407,7 @@ export default function Home() {
           sceneId: current.nodeId,
           title: currentNode.title,
           stats: current.stats,
+          relationships: current.relationships,
           actions: currentNode.choices
             .filter((choice) => canChoose(choice, current))
             .map((choice) => ({ id: choice.id, label: choice.label })),
@@ -271,15 +459,19 @@ export default function Home() {
   const chapterThreeStartExists = loaded && typeof window !== 'undefined'
     && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[3]!));
   const paragraphs = useMemo(() => node.body(game), [game, node]);
+  const truths = useMemo(() => knownTruths(game), [game]);
+  const promises = useMemo(() => activePromises(game), [game]);
+  const consequences = useMemo(() => majorConsequences(game), [game]);
   const chapterProgress = node.final
     ? 100
     : Math.min(96, Math.round((game.chapterChoices / 15) * 100));
 
   function choose(choice: Choice) {
     if (!canChoose(choice, game)) return;
+    const next = applyChoice(game, choice);
+    scrollAfterChoice.current = nodes[next.nodeId].art !== node.art ? 'scene' : 'story';
     setLastResult(choice.result);
-    setGame((current) => applyChoice(current, choice));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setGame(next);
   }
 
   function loadChapterState(next: GameState) {
@@ -316,16 +508,26 @@ export default function Home() {
       return;
     }
 
+    for (const later of ([2, 3] as ChapterNumber[]).filter((number) => number > chapter)) {
+      const key = CHAPTER_START_KEYS[later];
+      if (key) window.localStorage.removeItem(key);
+    }
     const savedStart = chapterStart(chapter);
     if (savedStart) loadChapterState(savedStart);
   }
 
   function restart() {
-    replayChapter(game.chapter);
+    setPendingReplay(game.chapter);
+  }
+
+  function confirmReplay() {
+    if (!pendingReplay) return;
+    const chapter = pendingReplay;
+    setPendingReplay(null);
+    replayChapter(chapter);
   }
 
   function startChapterTwo() {
-    if (game.stats.wayfire < 5) return;
     const next: GameState = {
       ...game,
       nodeId: 'c2-arrival',
@@ -337,16 +539,14 @@ export default function Home() {
         stamina: Math.min(8, game.stats.stamina + 2),
         resolve: Math.min(8, game.stats.resolve + 1),
         medicine: 1,
-        wayfire: game.stats.wayfire - 5,
       },
-      history: [...game.history, 'You spend 5 Wayfire and continue to Bellweather Inn.'],
+      history: [...game.history, 'You continue to Bellweather Inn with every earlier consequence.'],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[2]!, JSON.stringify(next));
     loadChapterState(next);
   }
 
   function startChapterThree() {
-    if (game.stats.wayfire < 7) return;
     const next: GameState = {
       ...game,
       nodeId: 'c3-arrival',
@@ -358,9 +558,8 @@ export default function Home() {
         stamina: Math.min(8, game.stats.stamina + 2),
         resolve: Math.min(8, game.stats.resolve + 1),
         command: Math.min(6, game.stats.command + 1),
-        wayfire: game.stats.wayfire - 7,
       },
-      history: [...game.history, 'You spend 7 Wayfire and continue to Harrowfen.'],
+      history: [...game.history, 'You continue to Harrowfen with every earlier consequence.'],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[3]!, JSON.stringify(next));
     loadChapterState(next);
@@ -414,6 +613,15 @@ export default function Home() {
         </div>
         <div className="top-actions">
           <Button
+            className="journal-button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowJournal(true)}
+          >
+            <BookOpen data-icon="inline-start" />
+            Journal
+          </Button>
+          <Button
             className="chapter-menu-button"
             variant="ghost"
             size="sm"
@@ -429,6 +637,24 @@ export default function Home() {
           </Button>
         </div>
       </header>
+
+      {showReturnRecap && (
+        <aside className="return-recap" aria-label="Returning player recap">
+          <div>
+            <p className="eyebrow">Welcome back</p>
+            <strong>{node.objective}</strong>
+            <p>{game.history.at(-1) ?? truths.at(-1)}</p>
+          </div>
+          <div className="return-recap-actions">
+            <Button variant="outline" size="sm" onClick={() => setShowJournal(true)}>
+              Open journal
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => setShowReturnRecap(false)}>
+              Continue reading
+            </Button>
+          </div>
+        </aside>
+      )}
 
       {showChapterLibrary && (
         <aside className="chapter-library" aria-label="Unlocked chapters">
@@ -463,7 +689,7 @@ export default function Home() {
                       variant="outline"
                       size="sm"
                       disabled={!available}
-                      onClick={() => replayChapter(chapter.number)}
+                      onClick={() => setPendingReplay(chapter.number)}
                     >
                       {chapter.number === game.chapter ? 'Replay' : 'Play again'}
                     </Button>
@@ -479,9 +705,30 @@ export default function Home() {
         </aside>
       )}
 
+      <section className="mobile-status-strip" aria-label="Current status">
+        <div>
+          <span>Threat</span>
+          <strong>{node.threat}</strong>
+        </div>
+        <div>
+          <span>Stamina</span>
+          <strong>{game.stats.stamina}</strong>
+        </div>
+        <div>
+          <span>Resolve</span>
+          <strong>{game.stats.resolve}</strong>
+        </div>
+        <Button variant="ghost" size="sm" onClick={() => setShowJournal(true)}>
+          Journal
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => setShowCharacterSheet(true)}>
+          Stats
+        </Button>
+      </section>
+
       <div className="game-grid">
         <section className="story-column" aria-live="polite">
-          <div className="scene-art-wrap">
+          <div className="scene-art-wrap" ref={sceneRef}>
             <Image
               src={node.art === 'harrowfen'
                 ? '/art/harrowfen-wrong-mile.png'
@@ -506,7 +753,7 @@ export default function Home() {
             <div className="location-stamp">{node.location}</div>
           </div>
 
-          <article className="story-page" key={node.id}>
+          <article className="story-page" key={node.id} ref={storyRef}>
             <p className="eyebrow">{node.kicker}</p>
             <h1>{node.title}</h1>
 
@@ -560,21 +807,28 @@ export default function Home() {
             ) : (
               <div className="ending-panel">
                 <p className="ending-label">Your path is recorded</p>
+                <div className="ending-consequences">
+                  <h3>Because you chose</h3>
+                  <ul>
+                    {consequences.slice(-4).map((consequence) => (
+                      <li key={consequence}>{consequence}</li>
+                    ))}
+                  </ul>
+                </div>
                 {node.nextChapter ? (
                   game.chapter === 1 ? (
                     <>
                       <h2>Chapter Two is ready</h2>
                       <p>
-                        You carry {game.stats.wayfire} Wayfire. Unlock The Inn That Waited
-                        for 5 Wayfire and continue with every consequence from this route.
+                        Continue into The Inn That Waited with every consequence from this route.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
                         size="lg"
-                        disabled={game.stats.wayfire < 5}
                         onClick={startChapterTwo}
                       >
-                        Unlock Chapter Two
+                        Continue to Chapter Two
                         <ArrowRight data-icon="inline-end" />
                       </Button>
                       <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
@@ -586,16 +840,15 @@ export default function Home() {
                     <>
                       <h2>Chapter Three is ready</h2>
                       <p>
-                        You carry {game.stats.wayfire} Wayfire. Unlock The Town at the Wrong Mile
-                        for 7 Wayfire and bring every surviving consequence into Harrowfen.
+                        Continue into The Town at the Wrong Mile with every surviving consequence.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
                         size="lg"
-                        disabled={game.stats.wayfire < 7}
                         onClick={startChapterThree}
                       >
-                        Unlock Chapter Three
+                        Continue to Chapter Three
                         <ArrowRight data-icon="inline-end" />
                       </Button>
                       <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
@@ -669,6 +922,17 @@ export default function Home() {
             })}
           </div>
 
+          <div className="relationships-panel">
+            <p className="panel-title">Relationships</p>
+            {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
+              <div className="relationship-row" key={person}>
+                <strong>{relationshipLabels[person]}</strong>
+                <span>Trust {game.relationships[person].trust}</span>
+                <span>Attraction {game.relationships[person].attraction}</span>
+              </div>
+            ))}
+          </div>
+
           <div className="chronicle">
             <p className="panel-title">Recent choices</p>
             {game.history.length ? (
@@ -683,6 +947,161 @@ export default function Home() {
           </div>
         </aside>
       </div>
+
+      <Sheet open={showJournal} onOpenChange={setShowJournal}>
+        <SheetContent className="journal-sheet" side="right">
+          <SheetHeader>
+            <SheetTitle>Caelan’s journal</SheetTitle>
+            <SheetDescription>Only facts Caelan has learned appear here.</SheetDescription>
+          </SheetHeader>
+          <div className="journal-sections">
+            <section>
+              <span>Now</span>
+              <h3>{node.title}</h3>
+              <p>{node.objective}</p>
+              <small>{node.location} · Threat {node.threat}</small>
+            </section>
+            <section>
+              <span>Confirmed knowledge</span>
+              <ul>{truths.map((truth) => <li key={truth}>{truth}</li>)}</ul>
+            </section>
+            <section>
+              <span>People</span>
+              <div className="journal-people">
+                {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
+                  <p key={person}>
+                    <strong>{relationshipLabels[person]}</strong>
+                    Trust {game.relationships[person].trust}, Attraction {game.relationships[person].attraction}
+                  </p>
+                ))}
+              </div>
+            </section>
+            <section>
+              <span>Promises and injuries</span>
+              <ul>{promises.map((promise) => <li key={promise}>{promise}</li>)}</ul>
+            </section>
+            <section>
+              <span>Because you chose</span>
+              <ul>{consequences.map((consequence) => <li key={consequence}>{consequence}</li>)}</ul>
+            </section>
+            <section>
+              <span>Recent path</span>
+              <ol>
+                {game.history.slice(-8).map((entry, index) => (
+                  <li key={`${entry}-${index}`}>{entry}</li>
+                ))}
+              </ol>
+            </section>
+            <section>
+              <span>Future intimate scenes</span>
+              <p>
+                These scenes are optional and are not part of the first three chapters.
+                Fade keeps the relationship and story consequence without explicit detail.
+              </p>
+              <div className="content-preference">
+                <Button
+                  variant={game.contentPreference.intimacy === 'fade' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setGame((current) => ({
+                    ...current,
+                    contentPreference: { ...current.contentPreference, intimacy: 'fade' },
+                  }))}
+                >
+                  Fade
+                </Button>
+                <Button
+                  variant={game.contentPreference.intimacy === 'detailed' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => {
+                    if (game.contentPreference.adultConfirmed) {
+                      setGame((current) => ({
+                        ...current,
+                        contentPreference: { ...current.contentPreference, intimacy: 'detailed' },
+                      }));
+                    } else {
+                      setShowMatureConfirm(true);
+                    }
+                  }}
+                >
+                  Detailed, adults only
+                </Button>
+              </div>
+            </section>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={showCharacterSheet} onOpenChange={setShowCharacterSheet}>
+        <SheetContent className="mobile-character-sheet" side="bottom">
+          <SheetHeader>
+            <SheetTitle>Caelan Vey</SheetTitle>
+            <SheetDescription>{node.objective}</SheetDescription>
+          </SheetHeader>
+          <div className="mobile-sheet-grid">
+            {(Object.keys(game.stats) as StatKey[]).filter(
+              (key) => game.chapter >= 2 || key !== 'medicine',
+            ).map((key) => (
+              <div key={key}><span>{statLabels[key]}</span><strong>{game.stats[key]}</strong></div>
+            ))}
+          </div>
+          <div className="mobile-sheet-relationships">
+            {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
+              <p key={person}>
+                <strong>{relationshipLabels[person]}</strong>
+                Trust {game.relationships[person].trust} · Attraction {game.relationships[person].attraction}
+              </p>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <AlertDialog open={pendingReplay !== null} onOpenChange={(open) => !open && setPendingReplay(null)}>
+        <AlertDialogContent className="replay-dialog">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Replay Chapter {pendingReplay}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {pendingReplay === 1
+                ? 'This restarts Caelan’s journey and removes all Chapter Two and Chapter Three progress on this device.'
+                : pendingReplay === 2
+                  ? 'This restores the Chapter Two checkpoint and removes all Chapter Three progress created by the current path.'
+                  : 'This restores the Chapter Three checkpoint and replaces every choice made after it.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep current path</AlertDialogCancel>
+            <AlertDialogAction className="confirm-replay" onClick={confirmReplay}>
+              Replay chapter
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={showMatureConfirm} onOpenChange={setShowMatureConfirm}>
+        <AlertDialogContent className="replay-dialog">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm adult content preference</AlertDialogTitle>
+            <AlertDialogDescription>
+              Detailed intimate scenes are intended only for players who are at least 18 years old.
+              They remain optional and can be changed back to Fade at any time.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep Fade</AlertDialogCancel>
+            <AlertDialogAction
+              className="confirm-replay"
+              onClick={() => {
+                setGame((current) => ({
+                  ...current,
+                  contentPreference: { intimacy: 'detailed', adultConfirmed: true },
+                }));
+                setShowMatureConfirm(false);
+              }}
+            >
+              I am 18 or older
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

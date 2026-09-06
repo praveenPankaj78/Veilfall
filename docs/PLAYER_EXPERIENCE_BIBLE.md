@@ -83,7 +83,7 @@ Characters should not deliver long explanations before the player has a reason t
 
 Teach one shared resource and two signature class ideas through low risk use before combat or crisis. Show the result immediately.
 
-For Caelan, the player first learns Stamina, Resolve, Command, and Rapport during escort preparation. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
+For Caelan, the player first learns Stamina, Resolve, Command, and Empathy during escort preparation. Mara and Lysara receive separate Trust and Attraction values. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
 
 For Rook, the player first uses Dexterity, attention, and Heat during a controlled theft. Glimmer appears only after the ordinary plan fails.
 

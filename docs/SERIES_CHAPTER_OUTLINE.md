@@ -168,7 +168,7 @@ Defining choice: Bargain, steal the fragment during negotiations, or expose Vexa
 
 Class pressure: Exact language becomes combat. Oathfire can cut one clause, but doing so destroys one earlier Oath.
 
-Romance movement: Vexa may become a temporary lover, adversary, or trusted negotiator. Any intimate encounter is an informed bargain that reveals why she fears a total merger.
+Romance movement: Vexa may become a temporary lover, adversary, or trusted negotiator. Any intimate encounter is an informed bargain that reveals why she fears a total merger. This is the first planned optional detailed intimacy scene in Caelan's series. It receives a fade alternative and remains unavailable if the negotiation includes captivity, magical pressure, or an unclear right to refuse.
 
 Revelation: Malrec plans to open the Gate from inside the Cinder Deep and use its released promises to break Worldroot.
 
@@ -184,7 +184,7 @@ Defining choice: Keep the company together by sharing every offer, let each pers
 
 Class pressure: The player learns the Cinder Deep's contract rules through small reversible bargains before facing the city. Old Oaths gain visible prices.
 
-Romance movement: Caelan and his closest partner decide what promises they are unwilling to make for one another. This creates intimacy through honest limits rather than another declaration of devotion.
+Romance movement: Caelan and his closest partner decide what promises they are unwilling to make for one another. This creates intimacy through honest limits rather than another declaration of devotion. A committed adult relationship can lead to a second optional detailed scene after those limits are agreed. The physical scene must reveal vulnerability or change the danger waiting on the Ash Road rather than interrupting the plot.
 
 Revelation: The Cinder Deep is divided. Many devils oppose Malrec because a complete merger would destroy the laws that keep them individual.
 
@@ -370,7 +370,7 @@ Defining choice: Pretend to accept a fixed purpose, corrupt a celestial law, or 
 
 Class pressure: Dexterity matters less than conceptual theft. Focus is spent maintaining a reason he does not believe.
 
-Romance movement: Aveline's fascination can become consensual intimacy, mercy, manipulation, or betrayal. The encounter changes whether she hides Rook from the Court.
+Romance movement: Aveline's fascination can become consensual intimacy, mercy, manipulation, or betrayal. This is a planned optional detailed scene when both adults can freely leave. The encounter changes whether she hides Rook from the Court, and a fade choice preserves the same nonphysical conversation and consequence.
 
 Revelation: Senna chose to stay because the Court promised to prevent another family from disappearing as theirs did.
 
@@ -538,7 +538,7 @@ Defining choice: Repair the Nail and risk civil war, crown a ruler whose motives
 
 Class pressure: Wards can contain reflected lies. Rewrite can solve the crisis quickly at the cost of a named personal memory.
 
-Romance movement: Rook may return to Serekh after his final theft. If imported conditions allow, their earlier playful distrust can become intimacy or a firm refusal. Tomas or Korran paths are tested by distance and political disagreement.
+Romance movement: Rook may return to Serekh after his final theft. If imported conditions allow, their earlier playful distrust can become an optional detailed intimate scene or a firm refusal. Tomas or Korran paths are tested by distance and political disagreement. The scene has a fade alternative and resolves a relationship question before the final Worldroot journey.
 
 Revelation: Malrec built his realm engine here using an early design supplied by a celestial judge.
 

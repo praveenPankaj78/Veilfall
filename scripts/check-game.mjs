@@ -23,6 +23,7 @@ const {
   initialState,
   nodeOrder,
   nodes,
+  relationshipChanges,
   resolveNext,
   statLabels,
 } = context.module.exports;
@@ -43,9 +44,19 @@ function applyChoice(state, choice) {
   for (const [key, value] of Object.entries(choice.changes ?? {})) {
     stats[key] = Math.max(0, stats[key] + (value ?? 0));
   }
+  const relationships = {
+    mara: { ...state.relationships.mara },
+    lysara: { ...state.relationships.lysara },
+  };
+  for (const [person, changes] of Object.entries(relationshipChanges(choice))) {
+    relationships[person].trust = Math.max(0, relationships[person].trust + (changes?.trust ?? 0));
+    relationships[person].attraction = Math.max(0, relationships[person].attraction + (changes?.attraction ?? 0));
+  }
   return {
     nodeId: resolveNext(choice, state),
     stats,
+    relationships,
+    contentPreference: state.contentPreference,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
   };
@@ -75,7 +86,10 @@ function stateKey(state) {
     .map(([key, value]) => `${key}:${Math.min(value, requirementCaps[key] ?? value)}`)
     .join('|');
   const flags = state.flags.filter((flag) => navigationFlags.has(flag)).sort().join('|');
-  return `${state.nodeId}|${stats}|${flags}`;
+  const relationships = Object.entries(state.relationships)
+    .map(([person, score]) => `${person}:${Math.min(score.trust, 4)}:${Math.min(score.attraction, 3)}`)
+    .join('|');
+  return `${state.nodeId}|${stats}|${relationships}|${flags}`;
 }
 
 const chapterTwoKnownTerms = Object.keys(statLabels).filter((term) => term !== 'medicine');

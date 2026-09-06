@@ -24,7 +24,7 @@ Player facing threat rhythm: Immediate during the crossing, Rising during treatm
 
 Chapter Two preserves the route, injuries, relationships, Oaths, evidence, and surviving resources from Chapter One. The opening changes according to whether Caelan followed the underwater road, waited on high ground, or used an Oath to guide the survivors.
 
-Starting Chapter Two costs 5 Wayfire. Caelan recovers a small amount of Stamina and Resolve during the final approach. One sealed dose of Medicine survives in the damaged supply box.
+Chapter Two continues freely after Chapter One, and earned Wayfire is preserved for later optional content. Caelan recovers a small amount of Stamina and Resolve during the final approach. One sealed dose of Medicine survives in the damaged supply box.
 
 ## Mechanical introduction
 
@@ -60,7 +60,7 @@ Each route explains one part of the same problem. The player never needs informa
 
 ## Relationship movement
 
-During a quiet watch, Mara admits that she fears being removed from the lives of people who remember her. Caelan can share his own fear, ask to kiss her when their Rapport is high enough, or answer only as her captain. Any kiss is clearly requested and accepted.
+During a quiet watch, Mara admits that she fears being removed from the lives of people who remember her. Caelan can share his own fear, ask to kiss her when their relationship has enough Trust and Attraction, or answer only as her captain. Any kiss is clearly requested and accepted.
 
 ## Midnight crisis
 

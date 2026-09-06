@@ -336,6 +336,43 @@
   text-align: right;
 }
 
+.return-recap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  width: min(88rem, 92vw);
+  margin: 1.25rem auto 0;
+  padding: 1rem 1.2rem;
+  border: 1px solid rgb(186 147 100 / 28%);
+  background: rgb(18 21 25 / 94%);
+  box-shadow: 0 14px 35px rgb(0 0 0 / 24%);
+}
+
+.return-recap strong {
+  display: block;
+  margin: 0.3rem 0;
+  color: #eee7d8;
+  font: 500 1rem/1.35 Georgia, serif;
+}
+
+.return-recap p:not(.eyebrow) {
+  margin: 0;
+  color: #aaa197;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.return-recap-actions {
+  display: flex;
+  flex: none;
+  gap: 0.4rem;
+}
+
+.mobile-status-strip {
+  display: none;
+}
+
 .game-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 22rem;
@@ -356,6 +393,7 @@
   border: 1px solid rgb(182 137 89 / 34%);
   border-radius: 0.35rem 0.35rem 0 0;
   background: #101419;
+  scroll-margin-top: 5rem;
 }
 
 .scene-art {
@@ -398,6 +436,10 @@
     repeating-linear-gradient(0deg, transparent 0 30px, rgb(255 255 255 / 1%) 31px);
   box-shadow: 0 34px 80px rgb(0 0 0 / 34%);
   animation: page-in 420ms ease-out both;
+}
+
+.story-page {
+  scroll-margin-top: 5rem;
 }
 
 .story-page::before {
@@ -765,6 +807,153 @@
   color: #d17e4c;
 }
 
+.relationships-panel {
+  margin-top: 1.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgb(186 147 100 / 20%);
+}
+
+.relationship-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 5%);
+}
+
+.relationship-row strong {
+  color: #e0d7c9;
+  font: 500 0.88rem/1.3 Georgia, serif;
+}
+
+.relationship-row span {
+  color: #91877c;
+  font-size: 0.68rem;
+}
+
+.journal-sheet {
+  width: min(38rem, 92vw) !important;
+  max-width: 38rem !important;
+  overflow-y: auto;
+  border-color: rgb(186 147 100 / 32%);
+  background: #0e1115;
+}
+
+.journal-sections {
+  display: grid;
+  gap: 0.9rem;
+  padding: 0 1rem 2rem;
+}
+
+.journal-sections section {
+  padding: 1rem;
+  border: 1px solid rgb(186 147 100 / 18%);
+  background: rgb(255 255 255 / 2%);
+}
+
+.journal-sections section > span {
+  color: #c68c5c;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.journal-sections h3 {
+  margin: 0.35rem 0;
+  color: #eee7d8;
+  font: 500 1.25rem/1.3 Georgia, serif;
+}
+
+.journal-sections p,
+.journal-sections li,
+.journal-sections small {
+  color: #aaa197;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.journal-sections ul,
+.journal-sections ol {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.65rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.journal-people p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.65rem 0 0;
+}
+
+.journal-people strong {
+  color: #ddd3c4;
+}
+
+.content-preference {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+.mobile-character-sheet {
+  max-height: 82svh;
+  overflow-y: auto;
+  border-color: rgb(186 147 100 / 32%);
+  background: #0e1115;
+}
+
+.mobile-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  padding: 0 1rem;
+}
+
+.mobile-sheet-grid > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border: 1px solid rgb(186 147 100 / 18%);
+  color: #aaa197;
+  font-size: 0.78rem;
+}
+
+.mobile-sheet-grid strong {
+  color: #eee7d8;
+}
+
+.mobile-sheet-relationships {
+  padding: 0 1rem 1.5rem;
+}
+
+.mobile-sheet-relationships p {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #9d958c;
+  font-size: 0.8rem;
+}
+
+.mobile-sheet-relationships strong {
+  color: #e0d7c9;
+}
+
+.replay-dialog {
+  border-color: rgb(186 147 100 / 35%);
+  background: #111419;
+}
+
+.confirm-replay {
+  background: #8e382d;
+  color: #fff9ec;
+}
+
 .chronicle {
   margin-top: 1.8rem;
   padding-top: 1.4rem;
@@ -822,6 +1011,28 @@
   font: 500 1.8rem/1.2 Georgia, serif;
 }
 
+.ending-consequences {
+  margin: 0.9rem 0 1.5rem;
+  padding: 1rem;
+  border-left: 2px solid #9d6245;
+  background: rgb(255 255 255 / 3%);
+}
+
+.ending-consequences h3 {
+  margin: 0 0 0.6rem;
+  color: #d8c3ad;
+  font: 500 1rem/1.3 Georgia, serif;
+}
+
+.ending-consequences ul {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #a99f94;
+  font: 0.84rem/1.5 Georgia, serif;
+}
+
 .ending-panel > p:not(.ending-label) {
   max-width: 35rem;
   margin: 0 0 1.5rem;
@@ -845,14 +1056,49 @@
 }
 
 @media (max-width: 950px) {
+  .mobile-status-strip {
+    position: sticky;
+    z-index: 18;
+    top: 4.3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto auto;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.65rem 4vw;
+    border-bottom: 1px solid rgb(184 145 99 / 20%);
+    background: rgb(10 13 16 / 94%);
+    backdrop-filter: blur(14px);
+  }
+
+  .mobile-status-strip > div {
+    display: flex;
+    gap: 0.45rem;
+    align-items: baseline;
+  }
+
+  .mobile-status-strip span {
+    color: #847a70;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+  }
+
+  .mobile-status-strip strong {
+    color: #e1d8ca;
+    font-size: 0.85rem;
+  }
+
+  .mobile-status-strip button {
+    padding: 0 0.45rem;
+    font-size: 0.72rem;
+  }
+
   .game-grid {
     grid-template-columns: 1fr;
     width: min(50rem, 92vw);
   }
 
   .character-panel {
-    position: static;
-    grid-row: 1;
+    display: none;
   }
 
   .stats-list {
@@ -864,9 +1110,8 @@
     border-bottom: 0;
   }
 
-  .stat-row small,
-  .chronicle {
-    display: none;
+  .return-recap {
+    width: min(50rem, 92vw);
   }
 }
 
@@ -893,6 +1138,32 @@
   .topbar {
     grid-template-columns: 1fr auto;
     padding: 0 1rem;
+  }
+
+  .journal-button {
+    display: none;
+  }
+
+  .return-recap {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: calc(100% - 2rem);
+  }
+
+  .return-recap-actions {
+    justify-content: space-between;
+  }
+
+  .mobile-status-strip {
+    grid-template-columns: repeat(3, 1fr) auto auto;
+    gap: 0.35rem;
+    padding: 0.55rem 0.7rem;
+  }
+
+  .mobile-status-strip > div {
+    display: grid;
+    gap: 0.1rem;
   }
 
   .chapter-label {

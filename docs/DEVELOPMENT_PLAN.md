@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the canonical playable version of Caelan Chapter One. The obsolete story content, save key, and old scene art have been removed.
+The project contains a functioning choice engine and the first three canonical Caelan chapters. The reader now includes named relationship values, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -28,7 +28,7 @@ Review these questions before new chapter prose begins:
 
 Only decisions that change the chapter skeleton should be settled here. Names and small lore details can remain flexible.
 
-## Phase Two: data model migration
+## Phase Two: data model migration, in progress
 
 Preserve the working reader interface, then replace the story state with a versioned shared model.
 
@@ -36,10 +36,10 @@ Required work:
 
 - add protagonist specific resource schemas;
 - add world Nail and regional state;
-- add named relationship dimensions;
+- add named relationship dimensions, with Trust and Attraction now implemented for Mara and Lysara;
 - add travel and companion state;
 - add imported finale summaries;
-- add content preference for detailed intimacy or fade;
+- add content preference for detailed intimacy or fade, now implemented with an adult confirmation gate;
 - maintain versioned save migration or a clearly announced reset when the data model changes.
 
 ## Phase Three: Caelan vertical slice, complete

@@ -24,7 +24,7 @@ Player facing threat rhythm: Immediate at the gate, Rising during the first inve
 
 Chapter Three keeps every stat, Oath, survivor, romance flag, evidence choice, and route consequence from the first two chapters.
 
-Starting Chapter Three costs 7 Wayfire. Caelan recovers a small amount of Stamina, Resolve, and Command on the short approach. The recovery is limited because Bellweather Inn and Harrowfen are only one impossible mile apart.
+Chapter Three continues freely after Chapter Two, and earned Wayfire is preserved for later optional content. Caelan recovers a small amount of Stamina, Resolve, and Command on the short approach. The recovery is limited because Bellweather Inn and Harrowfen are only one impossible mile apart.
 
 ## Opening movement
 

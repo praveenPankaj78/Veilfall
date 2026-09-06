@@ -9,12 +9,26 @@ export type StatKey =
 
 export type GameStats = Record<StatKey, number>;
 
+export type RelationshipKey = 'mara' | 'lysara';
+
+export type RelationshipScore = {
+  trust: number;
+  attraction: number;
+};
+
+export type Relationships = Record<RelationshipKey, RelationshipScore>;
+
 export type GameState = {
   nodeId: string;
   chapter: 1 | 2 | 3;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
+  relationships: Relationships;
+  contentPreference: {
+    intimacy: 'fade' | 'detailed';
+    adultConfirmed: boolean;
+  };
   flags: string[];
   history: string[];
 };
@@ -27,6 +41,7 @@ export type Choice = {
   changes?: Partial<GameStats>;
   addFlags?: string[];
   requires?: Partial<GameStats>;
+  requiresRelationships?: Partial<Record<RelationshipKey, Partial<RelationshipScore>>>;
   requiresFlags?: string[];
   result: string;
 };
@@ -64,6 +79,14 @@ export const initialState: GameState = {
     medicine: 0,
     wayfire: 0,
   },
+  relationships: {
+    mara: { trust: 2, attraction: 1 },
+    lysara: { trust: 0, attraction: 0 },
+  },
+  contentPreference: {
+    intimacy: 'fade',
+    adultConfirmed: false,
+  },
   flags: [],
   history: [],
 };
@@ -72,11 +95,62 @@ export const statLabels: Record<StatKey, string> = {
   stamina: 'Stamina',
   resolve: 'Resolve',
   command: 'Command',
-  rapport: 'Rapport',
+  rapport: 'Empathy',
   oathfire: 'Oathfire',
   medicine: 'Medicine',
   wayfire: 'Wayfire',
 };
+
+export const relationshipLabels: Record<RelationshipKey, string> = {
+  mara: 'Mara',
+  lysara: 'Lysara',
+};
+
+const relationshipEffects: Record<string, Partial<Relationships>> = {
+  'flirt-mara': { mara: { trust: 0, attraction: 1 } },
+  'ask-marker': { mara: { trust: 1, attraction: 0 } },
+  'admit-unease': { mara: { trust: 1, attraction: 1 } },
+  'answer-lysara': { lysara: { trust: 0, attraction: 1 } },
+  'trust-mara': { mara: { trust: 1, attraction: 0 } },
+  'take-ridge': { mara: { trust: 1, attraction: 0 } },
+  'take-tower': { mara: { trust: 1, attraction: 0 } },
+  'protect-lysara-secret': { lysara: { trust: 1, attraction: 1 } },
+  'tell-brann-seed': { lysara: { trust: -1, attraction: 0 } },
+  'ask-mara-future': { mara: { trust: 1, attraction: 1 } },
+  'trust-mara-opening': { mara: { trust: 1, attraction: 0 } },
+  'save-mara-ridge': { mara: { trust: 2, attraction: 1 } },
+  'protect-lysara': { lysara: { trust: 2, attraction: 0 } },
+  'take-leader': { mara: { trust: 1, attraction: 0 } },
+  'steady-mara': { mara: { trust: 1, attraction: 1 } },
+  'test-salt': { lysara: { trust: 1, attraction: 0 } },
+  'c2-trust-mara-entry': { mara: { trust: 1, attraction: 0 } },
+  'c2-work-beside-mara': { mara: { trust: 1, attraction: 0 } },
+  'c2-let-lysara-lead-care': { lysara: { trust: 1, attraction: 0 } },
+  'c2-medicine-lysara': { lysara: { trust: 2, attraction: 0 } },
+  'c2-ask-missing-mara': { mara: { trust: 1, attraction: 0 } },
+  'c2-name-fear': { mara: { trust: 2, attraction: 1 } },
+  'c2-kiss-mara': { mara: { trust: 1, attraction: 2 } },
+  'c2-take-mara': { mara: { trust: 1, attraction: 0 } },
+  'c2-take-lysara': { lysara: { trust: 1, attraction: 0 } },
+  'c3-shield-wounded': { mara: { trust: 1, attraction: 0 } },
+  'c3-let-mara-search-you': { mara: { trust: 1, attraction: 1 } },
+  'c3-focus-archive': { lysara: { trust: 1, attraction: 0 } },
+  'c3-focus-wounded': { mara: { trust: 1, attraction: 0 } },
+  'c3-ask-lysara-what-she-sees': { lysara: { trust: 1, attraction: 1 } },
+  'c3-stand-with-mara': { mara: { trust: 1, attraction: 1 } },
+  'c3-stand-with-lysara': { lysara: { trust: 1, attraction: 1 } },
+  'c3-name-the-real-plan': {
+    mara: { trust: 1, attraction: 0 },
+    lysara: { trust: 1, attraction: 0 },
+  },
+  'c3-send-real-mara': { mara: { trust: 1, attraction: 0 } },
+  'c3-prepare-fast-pursuit': { mara: { trust: 1, attraction: 1 } },
+  'c3-prepare-safe-pursuit': { lysara: { trust: 1, attraction: 1 } },
+};
+
+export function relationshipChanges(choice: Choice) {
+  return relationshipEffects[choice.id] ?? {};
+}
 
 function routeDestination(state: GameState) {
   if (state.flags.includes('low-route')) return 'low-crisis';
@@ -98,7 +172,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Low',
     lesson: {
       title: 'Your strengths',
-      body: 'Stamina powers hard physical actions. Resolve helps you face fear, pain, and doubt. Command shows how ready your guards are to follow difficult orders. Rapport measures trust and attraction. A choice will always show a known cost before you select it.',
+      body: 'Stamina powers hard physical actions. Resolve helps you face fear, pain, and doubt. Command shows how ready your guards are to follow difficult orders. Empathy helps you understand people outside your closest bonds. Mara and Lysara each have separate Trust and Attraction scores. A choice always shows a known cost before you select it.',
     },
     introduces: ['stamina', 'resolve', 'command', 'rapport'],
     art: 'departure',
@@ -170,7 +244,6 @@ export const nodes: Record<string, StoryNode> = {
         label: '“I was promised pleasant company.”',
         detail: 'Let the old attraction show without dismissing her warning.',
         next: 'wheelwright',
-        changes: { rapport: 1 },
         addFlags: ['flirted-mara'],
         result: 'Mara’s gaze travels over your mail and returns to your eyes. “The horse is spoken for.”',
       },
@@ -179,7 +252,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Ask exactly how the mile marker was moved.',
         detail: 'Put her field knowledge before your assumptions.',
         next: 'wheelwright',
-        changes: { command: 1, rapport: 1 },
+        changes: { command: 1 },
         addFlags: ['trusted-mara-scouting'],
         result: 'She draws the disturbed stones in rainwater. The marks suggest one person did the work without a cart.',
       },
@@ -188,7 +261,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Tell her the road feels wrong this morning.',
         detail: 'Share your instinct instead of hiding behind rank.',
         next: 'wheelwright',
-        changes: { resolve: 1, rapport: 1 },
+        changes: { resolve: 1 },
         addFlags: ['shared-unease'],
         result: 'Her teasing fades. “Then I will trust the part of you that noticed.”',
       },
@@ -284,7 +357,6 @@ export const nodes: Record<string, StoryNode> = {
         label: '“Ride with me and judge the stories yourself.”',
         detail: 'Meet her challenge with warmth and confidence.',
         next: 'sealed-case',
-        changes: { rapport: 1 },
         addFlags: ['intrigued-lysara'],
         result: 'One corner of her mouth lifts. Mara sees it and finds the far horizon suddenly interesting.',
       },
@@ -320,7 +392,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Give Mara the page and ask what she sees.',
         detail: 'Let her confirm or challenge your memory.',
         next: 'choose-road',
-        changes: { rapport: 1 },
         addFlags: ['mara-read-order'],
         result: 'She finds your ink, your paper, and one grain of pale salt pressed beneath the wax.',
       },
@@ -369,7 +440,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Trust Mara and take the ridge.',
         detail: 'Choose the route your scout saw, knowing the sky is turning dangerous.',
         next: 'ridge-road',
-        changes: { rapport: 1 },
         addFlags: ['ridge-route'],
         result: 'Mara rides first. The line turns uphill while thunder walks behind the eastern peaks.',
       },
@@ -454,7 +524,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Climb with Mara and take the tower.',
         detail: 'Spend 2 Stamina to silence the watcher before the storm arrives.',
         next: 'march-order',
-        changes: { stamina: -2, rapport: 1 },
+        changes: { stamina: -2 },
         addFlags: ['took-tower'],
         result: 'You find a warm mirror, fresh boot prints, and a view of the escort exposed below.',
       },
@@ -613,7 +683,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Keep Lysara’s second proof hidden.',
         detail: 'Protect the person while accepting that she withheld a danger.',
         next: 'ambush-warning',
-        changes: { rapport: 1 },
         addFlags: ['kept-seed-secret'],
         result: 'Lysara closes your fingers around the cool seed, then takes it back before your hands part.',
       },
@@ -622,17 +691,17 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Tell Brann there is a second target.',
         detail: 'Spend trust with Lysara to make your formation honest.',
         next: 'ambush-warning',
-        changes: { command: 1, rapport: -1 },
+        changes: { command: 1 },
         addFlags: ['revealed-seed'],
         result: 'Brann changes the formation without asking questions. Lysara’s face becomes carefully unreadable.',
       },
       {
         id: 'ask-mara-future',
         label: 'Ask Mara what she planned for the evening.',
-        detail: 'Take one personal moment while the road is briefly quiet.',
+        detail: 'Requires Mara trust 3. Take one personal moment while the road is briefly quiet.',
         next: 'ambush-warning',
-        changes: { rapport: 1, resolve: 1 },
-        requires: { rapport: 2 },
+        changes: { resolve: 1 },
+        requiresRelationships: { mara: { trust: 3 } },
         addFlags: ['planned-evening'],
         result: '“A bath, a fire, and deciding whether you look better without the cloak,” she says. Then her eyes snap toward the trees.',
       },
@@ -691,10 +760,9 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'trust-mara-opening',
         label: 'Follow Mara’s signal without looking for her.',
-        detail: 'Requires 3 Rapport. Trust her view of the trap over your own.',
+        detail: 'Requires Mara trust 3. Trust her view of the trap over your own.',
         next: routeDestination,
-        changes: { rapport: 1 },
-        requires: { rapport: 3 },
+        requiresRelationships: { mara: { trust: 3 } },
         addFlags: ['trusted-mara-in-fight'],
         result: 'You move right as her arrow crosses left. A hidden attacker falls into the space you refused to occupy.',
       },
@@ -782,7 +850,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Go over the ledge for Mara and the guard.',
         detail: 'Spend 2 Stamina and let the wagon strike the rocks.',
         next: 'aftermath',
-        changes: { stamina: -2, rapport: 2 },
+        changes: { stamina: -2 },
         requires: { stamina: 2 },
         addFlags: ['saved-wounded', 'saved-mara', 'treaty-damaged', 'attacker-escaped'],
         result: 'You lock one arm around the root and haul both of them up as the wagon breaks behind you.',
@@ -842,7 +910,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Put the strongest guards around Lysara and the seed.',
         detail: 'Spend 1 Command and let the treaty wagon absorb the attack.',
         next: 'aftermath',
-        changes: { command: -1, rapport: 1 },
+        changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['seed-safe', 'treaty-damaged', 'guard-wounded'],
         result: 'Lysara survives inside a wall of shields. Axes open the wagon before the riders retreat.',
@@ -850,10 +918,10 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'take-leader',
         label: 'Trust Mara with the escort and take the leader alive.',
-        detail: 'Requires 3 Rapport. Risk the mission for the person carrying answers.',
+        detail: 'Requires Mara trust 4. Risk the mission for the person carrying answers.',
         next: 'aftermath',
-        changes: { rapport: 1, resolve: -1 },
-        requires: { rapport: 3 },
+        changes: { resolve: -1 },
+        requiresRelationships: { mara: { trust: 4 } },
         addFlags: ['captured-attacker', 'treaty-damaged', 'guard-wounded'],
         result: 'Mara takes command without hesitation. You drag the leader from his saddle and keep him breathing.',
       },
@@ -914,10 +982,10 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'steady-mara',
         label: 'Check Mara’s wounds and let her check yours.',
-        detail: 'Use trust to recover 1 Resolve while the guards form a defensive ring.',
+        detail: 'Requires Mara trust 3. Recover 1 Resolve while the guards form a defensive ring.',
         next: 'evidence',
-        changes: { resolve: 1, rapport: 1 },
-        requires: { rapport: 2 },
+        changes: { resolve: 1 },
+        requiresRelationships: { mara: { trust: 3 } },
         addFlags: ['mara-tended'],
         result: 'Her fingers are careful at your thigh. “You are allowed to bleed,” she says. “You are not allowed to hide it.”',
       },
@@ -963,7 +1031,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Ask Lysara to examine the pale crystals.',
         detail: 'Trust unfamiliar knowledge and preserve the wax tube for later.',
         next: 'retreat',
-        changes: { rapport: 1 },
         addFlags: ['found-shard-salt'],
         result: 'She tastes one grain. “Shard Coast sea salt. Wet this morning. That coast is five days by ship.”',
       },
@@ -1188,10 +1255,9 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'c2-trust-mara-entry',
         label: 'Let Mara choose the safest path through the water.',
-        detail: 'Requires 3 Rapport. Trust her judgment while you watch the wounded.',
+        detail: 'Requires Mara trust 4. Trust her judgment while you watch the wounded.',
         next: 'c2-threshold',
-        changes: { rapport: 1 },
-        requires: { rapport: 3 },
+        requiresRelationships: { mara: { trust: 4 } },
         addFlags: ['c2-mara-led-entry'],
         result: 'Mara finds firm road stones beneath the water. Nobody falls, and the creature never gets close enough to strike.',
       },
@@ -1248,7 +1314,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Carry Nilo straight to the fire.',
         detail: 'Spend 1 Stamina. Treat the child before demanding answers.',
         next: 'c2-triage',
-        changes: { stamina: -1, rapport: 1 },
+        changes: { stamina: -1 },
         requires: { stamina: 1 },
         addFlags: ['c2-carried-nilo'],
         result: 'Maelin clears a table before you reach it. She knows exactly where you are going to set him down.',
@@ -1307,7 +1373,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Let Lysara direct the treatment despite her pain.',
         detail: 'Trust her medical knowledge and save your strength.',
         next: 'c2-medicine',
-        changes: { rapport: 1 },
         addFlags: ['c2-lysara-led-care'],
         result: 'Lysara gives calm instructions while green light spreads across her wrist. She understands every wound except her own.',
       },
@@ -1333,7 +1398,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Give the medicine to Lysara.',
         detail: 'Spend 1 Medicine. Save her hand and protect the second proof of peace.',
         next: 'c2-eleven-years',
-        changes: { medicine: -1, rapport: 1 },
+        changes: { medicine: -1 },
         requires: { medicine: 1 },
         addFlags: ['c2-saved-lysara'],
         result: 'The green lines withdraw from Lysara’s arm. She closes her fingers around yours and says, “I know what this cost.”',
@@ -1376,6 +1441,7 @@ export const nodes: Record<string, StoryNode> = {
       '“You all came yesterday,” she says. “You ate this stew. The boy asked for honey. At midnight, the bell rang and the road carried you away. I woke alone.”',
       'She opens the book. Eleven years of dates fill the pages after your names. Each page is written in the same careful hand. Every evening, Maelin prepared the rooms and waited for you to return.',
       'You remember leaving Greyhaven this morning. Mara remembers the same. Maelin is not claiming that you forgot eleven years. She says the inn lived those years without you.',
+      'The simplest way to understand it is this: you and the inn followed different roads after midnight. Your road lasted one day. The inn’s road lasted eleven years. The broken magic has pushed those roads together again at this door.',
     ],
     choices: [
       {
@@ -1468,6 +1534,7 @@ export const nodes: Record<string, StoryNode> = {
     body: () => [
       'The book records fifteen versions of your arrival. In some, Mara is missing. In others, the treaty wagon burns in the yard. One entry says you arrived alone and refused to remove your red cloak.',
       'Every visit ends at midnight. The front bell rings. The guests run toward the cellar. Then Maelin wakes the next morning with the rooms empty and another year beginning.',
+      'These are not fifteen groups hiding somewhere in the inn. They are fifteen possible journeys touching the same room. Each journey left a memory in the book even though only one can remain when the road is repaired.',
       'The cut line on the first page is still readable where the pen pressed into the paper beneath it: They pulled the road pin too early.',
     ],
     choices: [
@@ -1485,7 +1552,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Ask Maelin what happened when Mara was missing.',
         detail: 'Risk a painful answer to learn what the changing road can alter.',
         next: 'c2-night-watch',
-        changes: { rapport: 1, resolve: -1 },
+        changes: { resolve: -1 },
         addFlags: ['c2-heard-mara-version', 'c2-found-road-pin-term'],
         result: '“You searched for her until the bell rang,” Maelin says. “Then the road returned you without her.”',
       },
@@ -1512,6 +1579,7 @@ export const nodes: Record<string, StoryNode> = {
     body: () => [
       'The cellar floor is not packed earth. It is the King’s Road, complete with pale stones marking its middle. The inn was built over it long ago.',
       'Tivik kneels beside a crack. Cold silver light shines below. Each time thunder sounds, the stones slide a finger’s width east or west. Shelves move with them, but the outer walls stay still.',
+      'The stones are not sliding through the room like loose tiles. One moment a stone belongs near the front door. The next moment the broken road makes that same spot belong near the back door. The cellar stays still while the distance inside it changes.',
       'A long iron spike sits in a locked bracket on the wall. Its label reads: Road pin key. The key itself is gone.',
       'Footsteps cross the ceiling above you. Everyone else is in the common room.',
     ],
@@ -1540,7 +1608,7 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Follow the footsteps from below.',
         detail: 'Risk the moving cellar to learn who is walking in the empty rooms.',
         next: 'c2-night-watch',
-        changes: { resolve: -1, rapport: 1 },
+        changes: { resolve: -1 },
         addFlags: ['c2-tracked-double', 'c2-found-road-pin-term'],
         result: 'The footsteps stop over your head. A man with your voice says, “Not this door. Not yet.”',
       },
@@ -1608,7 +1676,8 @@ export const nodes: Record<string, StoryNode> = {
         ? 'You tell her about the version in Maelin’s book where Mara never reached the inn. Her usual smile does not return.'
         : 'You tell her enough about the night’s clues to make the danger clear. She listens without looking away from the yard.',
       '“I can face an arrow,” she says. “I hate this. A road can take a person, and the rest of us may remember a world where they were never beside us.”',
-      'Her hand rests on the floor between you. Close enough to touch. She waits for an honest answer, not an order.',
+      'She turns toward you. Damp hair has come loose around her face, and the open neck of her riding coat shows the warm line of skin above her collarbone. Her strength is usually in motion. Sitting this close makes you notice the quieter things: the curve of her mouth when she is worried, the steady rise of her breath, and the scar near her thumb resting on the floor between you.',
+      'Her hand is close enough to touch. She waits for an honest answer, not an order.',
     ],
     choices: [
       {
@@ -1616,19 +1685,19 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Tell Mara you are afraid of failing everyone at once.',
         detail: 'Speak honestly and recover 1 Resolve through trust.',
         next: 'c2-bell',
-        changes: { resolve: 1, rapport: 1 },
+        changes: { resolve: 1 },
         addFlags: ['c2-shared-fear'],
         result: 'Mara takes your hand. “Then stop carrying us as one weight. We are people. Let us carry you back.”',
       },
       {
         id: 'c2-kiss-mara',
         label: 'Touch her hand and ask if you may kiss her.',
-        detail: 'Requires 4 Rapport. Let attraction become a clear choice for both of you.',
+        detail: 'Requires Mara trust 4 and attraction 3. Let desire become a clear choice for both of you.',
         next: 'c2-bell',
-        changes: { rapport: 2, resolve: 1 },
-        requires: { rapport: 4 },
+        changes: { resolve: 1 },
+        requiresRelationships: { mara: { trust: 4, attraction: 3 } },
         addFlags: ['c2-kissed-mara'],
-        result: 'Mara says yes. The kiss is warm, brief, and interrupted when the road outside changes direction again.',
+        result: 'Mara says yes and closes the last space herself. Her fingers settle against your jaw. Her mouth is warm, slow at first, then certain enough to make the cold landing disappear. The road changes outside, and she parts from you with her breath still touching your lips.',
       },
       {
         id: 'c2-promise-as-captain',
@@ -1655,6 +1724,7 @@ export const nodes: Record<string, StoryNode> = {
       state.flags.includes('c2-knows-midnight-pattern')
         ? 'You expected midnight, but knowing the time does not stop the walls from moving.'
         : 'The common room stretches. The wounded slide away from one another as the floor grows into a long road.',
+      'Nothing is moving faster than your eyes can follow. The space between each person is simply becoming longer. A friend who stood two steps away is now twenty steps away, even though neither of you moved.',
       'The front door opens by itself. Outside stands another Bellweather Inn. Through its windows, you see another Caelan ordering another group of guards.',
       'Maelin shouts from the stairs. “The cellar first. That is where you always lose each other.”',
     ],
@@ -1795,7 +1865,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Take Mara and leave Lysara with the wounded.',
         detail: 'Bring the scout who notices movement and hidden paths.',
         next: 'c2-folded-cellar',
-        changes: { rapport: 1 },
         addFlags: ['c2-mara-below'],
         result: 'Mara lights an arrow from the fire and follows you into the moving dark.',
       },
@@ -1835,6 +1904,11 @@ export const nodes: Record<string, StoryNode> = {
         : state.flags.includes('c2-lysara-below')
           ? 'Lysara’s glass seed turns green near one section of wall and dark near another. The brighter path is the one that leads away from the inn.'
           : 'Maelin counts doors under her breath. At the ninth door, she stops. “This is where the road took you every time.”',
+      state.flags.includes('c2-mara-below')
+        ? 'Mara’s arrow did not turn around. The cellar has bent the route into a loop. Going forward long enough brings the arrow back to the place it started, like walking around a ring.'
+        : state.flags.includes('c2-lysara-below')
+          ? 'The brighter path is not automatically the way back. It shows where the road is stretching. The dark path stays close to the inn and is safer for returning.'
+          : 'The repeated doors are the same door reached through different lengths of road. Maelin counts them so you can tell when the route begins to repeat.',
       'Tivik points to a silver crack crossing the road. “The stones are not moving,” he says. “The distance between them is changing.”',
       'Behind you, the stair begins to fade. You need a way to mark one true path.',
     ],
@@ -1885,6 +1959,7 @@ export const nodes: Record<string, StoryNode> = {
         ? 'This is the road pin named in the book, bracket, and Crown order. Now you can see what the words mean.'
         : 'Tivik calls it a road pin because it holds each mile of road in the correct place.',
       'The pin is not fully removed. Someone turned it halfway and left it trapped. Each ring of the midnight bell shakes it looser, allowing Bellweather Inn to touch another year and another stretch of road.',
+      'Tivik explains the result in plain terms. The pin normally tells this mile where it belongs. Half turned, it gives several answers at once. That is why the doors open onto different places and why Maelin remembers years that you never lived.',
       'A fresh Crown mark has been cut into the iron. Whoever damaged it had official tools and expected your escort to be inside when it failed.',
     ],
     choices: [
@@ -1929,6 +2004,7 @@ export const nodes: Record<string, StoryNode> = {
     art: 'inn',
     body: (state) => [
       'The bell above rings a third time. The silver cracks widen. Through them you see the inn burning, buried in snow, standing in summer, and lying as empty ruins.',
+      'Each view is a possible place the inn could have reached while the pin was loose. They are not dreams. Only one will remain solid after you repair the road.',
       'Tivik loops a chain through the top of the road pin. The chain leads back toward the wagon team above. You can guide the pull, add your own strength, or use the treaty wagon as a weight.',
       state.flags.includes('c2-safe-removal')
         ? 'Because Tivik found the final locking tooth, one careful pull may remove the pin cleanly.'
@@ -1989,6 +2065,7 @@ export const nodes: Record<string, StoryNode> = {
     body: (state) => [
       'The road pin leaves the earth. Bellweather Inn slams back into one place and one morning. Windows break. The other guests disappear. The burned Caelan reaches for you, then fades with the silver light.',
       'Outside, the King’s Road runs east and west again. A market town stands on the eastern horizon. Maelin says Harrowfen should be three days away. The mile stone says it is one mile.',
+      'The inn is fixed, but the loose iron still points the road toward the wrong destination. That is why Harrowfen is close enough to see. The danger has moved with the fragment instead of ending.',
       state.flags.includes('c2-saved-attacker')
         ? 'Sable walks into the yard with Brann supporting him. “I will testify,” he says. “The order came from the Crown, but the man behind the screen wore a Warden ring.”'
         : 'Sable is dying when Brann carries him into the yard. He grips your sleeve and forces out seven words: “Crown order. Warden ring. Road pin. Harrowfen.”',
@@ -2125,7 +2202,7 @@ export const nodes: Record<string, StoryNode> = {
         detail: 'Spend 1 Stamina to protect the wagons while Mara speaks for you.',
         next: 'c3-gate',
         requires: { stamina: 1 },
-        changes: { stamina: -1, rapport: 1 },
+        changes: { stamina: -1 },
         addFlags: ['c3-shielded-wounded'],
         result: 'You stand in the open with empty hands raised. Mara names every injured traveller behind you until the archers begin to look ashamed.',
       },
@@ -2180,9 +2257,8 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'c3-let-mara-search-you',
         label: 'Let Mara hand Elene your weapons and papers.',
-        detail: 'Accept a temporary loss of control to earn trust. Gain 1 Rapport.',
+        detail: 'Accept a temporary loss of control and let Mara handle your weapons.',
         next: 'c3-triage',
-        changes: { rapport: 1 },
         addFlags: ['c3-entered-unarmed'],
         result: 'Mara removes your sword with careful hands. “I expect this back,” she tells Elene. The warning earns the first small smile on the wall.',
       },
@@ -2219,7 +2295,7 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'c3-focus-wounded',
         label: 'Secure the healer with Mara.',
-        detail: 'Protect the people already paying for your mission. Gain 1 Rapport.',
+        detail: 'Protect the people already paying for your mission and support Mara’s priority.',
         next: 'c3-healer',
         changes: { rapport: 1 },
         addFlags: ['c3-route-healer', 'c3-backed-mara'],
@@ -2273,9 +2349,8 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'c3-ask-lysara-what-she-sees',
         label: 'Ask Lysara to read the living ink.',
-        detail: 'Trust her magic and gain 1 Rapport.',
+        detail: 'Trust Lysara’s magic and let her read the dangerous ink.',
         next: 'c3-bill',
-        changes: { rapport: 1 },
         addFlags: ['c3-lysara-read-ink'],
         result: 'Lysara touches the page. The ink forms the outline of a man carrying your sword but wearing a royal courier’s silver gloves.',
       },
@@ -2525,7 +2600,7 @@ export const nodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'harrowfen',
     body: (state) => [
-      'For a few minutes, rain quiets the town. Mara waits on the healer’s roof while Lysara checks the canal for movement. Both women are tired. Neither steps away when you join them.',
+      'For a few minutes, rain quiets the town. Mara waits on the healer’s roof with her coat open at the throat and wet hair clinging to the strong line of her neck. Lysara checks the canal beside her. Rain beads on the living silk fitted around the envoy’s waist, and the cloth opens and closes like dark leaves with every measured breath. Both women are tired. Neither steps away when you join them.',
       state.flags.includes('c3-backed-mara')
         ? 'Lysara says your wounded are safe because you chose people before answers. She respects it, but warns that Ordan used the delay.'
         : state.flags.includes('c3-backed-lysara')
@@ -2537,9 +2612,8 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'c3-stand-with-mara',
         label: 'Tell Mara that protecting lives comes first.',
-        detail: 'Make your priority clear and gain 1 Rapport with Mara’s path.',
+        detail: 'Make your priority clear and strengthen Mara’s trust and attraction.',
         next: 'c3-market-memory',
-        changes: { rapport: 1 },
         addFlags: ['c3-priority-people'],
         result: 'Mara’s shoulders loosen. She touches your wrist and says, “Then make sure you come back as one of them.”',
       },
@@ -2548,7 +2622,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Tell Lysara that finding the cause may save more lives.',
         detail: 'Accept the colder duty and gain 1 Resolve.',
         next: 'c3-market-memory',
-        changes: { resolve: 1 },
         addFlags: ['c3-priority-cause'],
         result: 'Lysara studies you, then gives a small, warm smile. “Good. I was afraid your courage had made you simple.”',
       },
@@ -2558,7 +2631,7 @@ export const nodes: Record<string, StoryNode> = {
         detail: 'Requires 2 Command. Spend 1 Command so protection and investigation support each other.',
         next: 'c3-market-memory',
         requires: { command: 2 },
-        changes: { command: -1, rapport: 1 },
+        changes: { command: -1 },
         addFlags: ['c3-balanced-plan'],
         result: 'Mara takes the wounded. Lysara watches the iron. Their hands meet over your map, and the argument becomes a plan.',
       },
@@ -2573,7 +2646,14 @@ export const nodes: Record<string, StoryNode> = {
     objective: 'Keep the market calm when old versions of the town return.',
     threat: 'Critical',
     art: 'harrowfen',
-    body: () => [
+    body: (state) => [
+      state.flags.includes('c3-priority-people')
+        ? state.flags.includes('c2-kissed-mara')
+          ? 'Before you leave the roof, Mara catches the front of your coat and kisses you again. This one is not cautious. Her body is warm against your rain cold armour, and for several breaths neither of you belongs to the road. She lets go first. “That was for coming back,” she says. “The next one is for surviving.”'
+          : 'Before you leave the roof, Mara catches the front of your coat. She draws close enough that her breath warms the rain on your mouth, but stops there. “Survive the next hour,” she says softly. “Then we can decide what this is.”'
+        : state.flags.includes('c3-priority-cause')
+          ? 'Lysara follows you from the roof. At the stair she straightens the edge of your red cloak, her fingers lingering against the bare skin at your throat. Her living sleeve curls around her wrist as her eyes hold yours. “Do not mistake agreement for obedience,” she says. The warmth in her voice makes the warning feel more intimate, not less.'
+          : 'Mara and Lysara leave the roof on opposite stairs, each carrying the part of the plan you gave her. The brief peace between them feels earned rather than complete.',
       'At noon, every bell in Harrowfen rings at once. The canals empty upward into the sky. Market stalls change colour. Missing houses appear between standing ones and push stone walls aside.',
       'People walk out of those houses carrying meals cooked three days ago. Some meet older versions of themselves. Others find family members they buried years before. Joy turns to panic when the returned people begin fading at the edges.',
       'The iron fragment tears free of its chains and floats above Tivik’s hands. Each time it turns, another version of Harrowfen replaces part of the market.',
@@ -2637,9 +2717,8 @@ export const nodes: Record<string, StoryNode> = {
       {
         id: 'c3-send-real-mara',
         label: 'Let the real Mara circle behind him.',
-        detail: 'Trust her skill and gain 1 Rapport.',
+        detail: 'Trust Mara’s skill while your double still has a blade.',
         next: 'c3-duplicate',
-        changes: { rapport: 1 },
         addFlags: ['c3-mara-flanked-double'],
         result: 'Mara vanishes into the moving streets. A moment later, her knife appears against your double’s back.',
       },
@@ -2824,7 +2903,6 @@ export const nodes: Record<string, StoryNode> = {
         label: 'Take Mara and begin the chase at once.',
         detail: 'Trust Elene with Harrowfen and keep Ordan close.',
         next: 'c3-world-nail',
-        changes: { rapport: 1 },
         addFlags: ['c3-pursuit-mara'],
         result: 'Mara fastens your sword belt herself. “Try not to meet another you,” she says. “One is enough trouble.”',
       },
@@ -3028,10 +3106,16 @@ export function canChoose(choice: Choice, state: GameState) {
   const hasStats = !choice.requires || Object.entries(choice.requires).every(
     ([key, value]) => state.stats[key as StatKey] >= (value ?? 0),
   );
+  const hasRelationships = !choice.requiresRelationships
+    || Object.entries(choice.requiresRelationships).every(([person, needs]) => {
+      const score = state.relationships[person as RelationshipKey];
+      return (!needs?.trust || score.trust >= needs.trust)
+        && (!needs?.attraction || score.attraction >= needs.attraction);
+    });
   const hasFlags = !choice.requiresFlags || choice.requiresFlags.every(
     (flag) => state.flags.includes(flag),
   );
-  return hasStats && hasFlags;
+  return hasStats && hasRelationships && hasFlags;
 }
 
 export function resolveNext(choice: Choice, state: GameState) {
@@ -3042,6 +3126,10 @@ export function requirementText(choice: Choice) {
   const parts = Object.entries(choice.requires ?? {}).map(
     ([key, value]) => `${statLabels[key as StatKey]} ${value}`,
   );
+  for (const [person, needs] of Object.entries(choice.requiresRelationships ?? {})) {
+    if (needs?.trust) parts.push(`${relationshipLabels[person as RelationshipKey]} trust ${needs.trust}`);
+    if (needs?.attraction) parts.push(`${relationshipLabels[person as RelationshipKey]} attraction ${needs.attraction}`);
+  }
   const flagLabels: Record<string, string> = {
     'captured-attacker': 'a captured attacker',
     'c2-kept-crown-orders': 'the preserved Crown orders',

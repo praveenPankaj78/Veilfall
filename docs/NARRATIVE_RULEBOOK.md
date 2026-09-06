@@ -177,6 +177,10 @@ Attractive characters should feel physical without being reduced to parts. Selec
 
 Use restraint. One charged detail often feels more intimate than a full inventory.
 
+Restraint does not mean avoiding the body. When desire has become direct, the prose may clearly describe an adult character's shape, warmth, skin, clothing, movement, and physical response. Choose details Caelan would genuinely notice in that moment. A full paragraph may briefly leave the immediate mission to let attraction breathe, but the scene must return with a changed feeling, decision, or risk.
+
+Vary the distance. Early attraction often uses one subtle detail. Established desire can be more direct. A detailed intimate scene can slow down further, provided both adults remain active people rather than a list of body parts.
+
 ## Intimate scenes in later chapters
 
 Intimate scenes can become detailed, but their primary purpose is emotional and narrative change. Structure them around attention, choice, response, and trust. Keep both participants active. Confirm desire through behaviour and words suitable to their relationship.
