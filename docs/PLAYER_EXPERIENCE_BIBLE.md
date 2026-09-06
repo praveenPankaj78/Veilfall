@@ -12,7 +12,8 @@ At every choice, the player should be able to answer:
 
 1. What am I trying to achieve right now?
 2. What will this choice probably cost immediately?
-3. Why might I prefer this approach as this character?
+3. What useful advantage does that cost purchase?
+4. Why might I prefer this approach as this character?
 
 At every chapter ending, the player should be able to answer:
 
@@ -97,6 +98,9 @@ For Ilyra, the player first uses Health, Mana, Threadread, and a simple Ward dur
 - Explain a mechanic before its name appears in a selectable choice. A sidebar definition may support the explanation, but it cannot replace an introduction in the main reading flow.
 - Before the first use, state what the mechanic represents, how the player gains it, what spending it can do, and any lasting risk.
 - Show costs on the choice before selection.
+- Label the concrete advantage beside every resource cost before selection.
+- Do not rely on a positive stat badge to explain why an option is worthwhile.
+- A player choosing by numbers alone should still face a real trade between different advantages, not a correct profitable option and a costly roleplay option.
 - After selection, show the resource change and its fictional effect together.
 - Do not expose every hidden relationship or world value as a number.
 

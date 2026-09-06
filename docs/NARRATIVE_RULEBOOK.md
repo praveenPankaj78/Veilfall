@@ -98,6 +98,10 @@ Good choices oppose values, not intelligence. Examples include:
 
 Avoid options that are obviously foolish, pointlessly cruel, or identical under different wording.
 
+A resource cost must buy a visible advantage. Do not ask the player to spend Health, Command, Resolve, Oathfire, or a later protagonist resource merely because the action sounds brave or characteristic. Show what becomes safer, faster, known, protected, or possible because of the expenditure. Then let the result and a later callback prove it.
+
+When two choices reach the same next scene, compare them from a player who can see the numbers. A costly option needs a distinct person saved, threat reduced, proof secured, relationship changed, resource preserved, or later route opened. If a free option provides the same or greater practical result, revise the consequences or remove the cost.
+
 ## Consequence horizons
 
 Every important choice should create at least two consequences from different horizons:

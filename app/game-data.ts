@@ -1,4 +1,5 @@
 import { adventureChoiceUpdates, adventureNodeUpdates } from './adventure-revision';
+import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
   | 'health'
@@ -43,6 +44,7 @@ export type Choice = {
   id: string;
   label: string;
   detail: string;
+  advantage?: string;
   next: string | ((state: GameState) => string);
   changes?: Partial<GameStats>;
   addFlags?: string[];
@@ -165,6 +167,19 @@ function routeDestination(state: GameState) {
 
 function hasAny(state: GameState, flags: string[]) {
   return flags.some((flag) => state.flags.includes(flag));
+}
+
+function openingProtection(state: GameState) {
+  if (state.flags.includes('shielded-opening')) {
+    return 'Because you took the opening volley on your shield, every wounded traveller remains behind cover and the treaty wagon keeps moving.';
+  }
+  if (state.flags.includes('ordered-walls')) {
+    return 'Your two moving shield walls hold. No horse bolts, no guard is isolated, and the attackers lose the panic they expected.';
+  }
+  if (state.flags.includes('felt-mortal-blow')) {
+    return 'The Oath shows you one arrow burning brighter than the rest. You knock it away before it reaches Joren’s throat.';
+  }
+  return 'The first volley breaks the formation. Brann drags the wounded inward while the wagon struggles to keep moving.';
 }
 
 const originalNodes: Record<string, StoryNode> = {
@@ -628,7 +643,13 @@ const originalNodes: Record<string, StoryNode> = {
         : state.flags.includes('ridge-route')
           ? 'The escort leaves the exposed ridge. Rain hides the signal tower, but someone may still be inside it.'
           : 'The riders keep their distance, never close enough for a clear banner and never far enough to forget.',
-      'Bellweather Inn lies somewhere beyond the next wooded rise. If the old mile stones are right, you can reach its walls before full dark. If someone has moved those stones too, the road may be longer than your maps admit.',
+      state.flags.includes('saved-family')
+        ? 'The rescued farmers know a dry cattle path beside the next wooded rise. Their directions recover some of the time spent saving them.'
+        : state.flags.includes('fast-column')
+          ? 'Your forced pace puts the flood behind the rear wagon. The attackers have less time to close their trap, but several guards are breathing hard.'
+          : state.flags.includes('read-water')
+            ? 'The safe curve you found keeps every wheel out of the deepest water. The red signal on the ridge gives Mara a direction to watch.'
+            : 'Bellweather Inn lies somewhere beyond the next wooded rise. If the old mile stones are right, you can reach its walls before full dark. If someone has moved those stones too, the road may be longer than your maps admit.',
       'Brann asks where you want the strongest guards. Mara watches the tree line. Lysara sits beside the pale chest with one hand inside her coat, holding something she has not shown you.',
     ],
     choices: [
@@ -742,6 +763,10 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'Mara’s warning whistle cuts through the rain. One note from ahead, two from the left. Archers and something moving on the road.'
         : state.flags.includes('watched-trees')
           ? 'You see the bow bend. Your warning leaves your mouth before the first black arrow reaches the road.'
+          : state.flags.includes('guarding-wagon')
+            ? 'The first black arrow flies toward the treaty wagon. You are already beside it, and the shaft breaks against your raised shield instead of entering the chest.'
+            : state.flags.includes('forced-march')
+              ? 'The attackers fire while their rear group is still running into position. Their first arrows arrive together, but their blades do not.'
           : 'The first black arrow passes through a guard’s shoulder and nails his cloak to the wagon. His scream is the signal for the rest.',
       'More strings snap. Horses rear. Someone ahead overturns a timber cart across the road while shapes rush from the ditch behind you.',
       state.flags.includes('oath-safe-arrival')
@@ -801,6 +826,7 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     body: (state) => [
       'The escort reaches Willow Bridge under arrow fire. Floodwater strikes the supports hard enough to shake mud from the rails. Then a hidden charge breaks the centre span.',
+      openingProtection(state),
       state.flags.includes('steady-axle')
         ? 'The treaty wagon’s repaired wheel holds at the edge of the gap.'
         : 'The scored rear pin snaps. The wagon turns sideways, trapping young Joren beneath the axle.',
@@ -849,10 +875,13 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     body: (state) => [
       'The attackers do not need to reach you. A horn sounds above, and the ridge begins to move. Cut ropes whip free from wooden support frames. Stones crash toward the road.',
+      openingProtection(state),
       state.flags.includes('took-tower')
         ? 'Because you cleared the tower, one signal comes late. The first boulder misses the lead riders.'
         : state.flags.includes('false-signal')
           ? 'The valley group moves early, fooled by your answer, but the rockfall still catches the rear wagon.'
+          : state.flags.includes('tight-column')
+            ? 'The shields above the tight column turn falling stone and splintered timber away from the treaty chest.'
           : 'The rockfall strikes both ends of the formation at once.',
       'Mara hangs from a wet root below the ledge with a wounded guard gripping her wrist. The treaty wagon rolls backward toward them. Above, the signaler turns to flee with a dispatch case under one arm.',
       'Your next decision will leave something unguarded.',
@@ -899,6 +928,7 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     body: (state) => [
       'Twelve riders emerge from the rain wearing plain armour with no badges or banners. Four race for the lead horses. The rest split around the orchard walls and close on the treaty wagon.',
+      openingProtection(state),
       state.flags.includes('ready-for-riders')
         ? 'Your line meets them square. The first rider falls before his sword clears leather.'
         : state.flags.includes('rough-formation')
@@ -3061,6 +3091,9 @@ export const nodes = Object.fromEntries(
       choices: node.choices.map((choice) => ({
         ...choice,
         ...adventureChoiceUpdates[choice.id],
+        advantage: adventureChoiceUpdates[choice.id]?.advantage
+          ?? choice.advantage
+          ?? choiceAdvantages[choice.id],
       })),
     },
   ]),

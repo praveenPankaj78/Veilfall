@@ -85,6 +85,31 @@ Before selecting a choice, the player sees relevant changes in plain language, s
 
 Exact downstream plot consequences remain unknown, but immediate mechanical costs do not.
 
+## Cost and advantage contract
+
+Every choice that reduces Health, Resolve, Command, Oathfire, Medicine, Wayfire, Focus, Mana, Setup, Leverage, or another limited value must purchase a clear advantage. A numerical loss is never justified only by personality or by a differently worded paragraph.
+
+Before selection, the option shows both the cost and the advantage in plain language. The player may remain unsure about the exact later event, but must understand what the protagonist is trying to secure.
+
+The advantage must be one or more of the following:
+
+- save a named person or group;
+- protect an item, place, route, or political objective;
+- gain evidence or information unavailable through the safer options;
+- act before an enemy can prepare, escape, or destroy something;
+- reduce a later threat, injury, resource cost, or number of enemies;
+- preserve another limited resource for later;
+- strengthen or protect a relationship in a way the other person recognises;
+- unlock a route, ability, ally, or solution prepared by the current action.
+
+A cost of 2 or more must buy an exclusive or lasting advantage. It cannot lead to the same practical state as a free option. If the story cannot support a meaningful advantage, remove the resource cost.
+
+Positive numbers do not automatically make a choice better. A choice that gains a stat must still surrender time, safety, information, position, trust, or another story opportunity when competing with a costly option. Never place a free stat gain beside a resource loss that reaches the same outcome with no additional benefit.
+
+After selection, immediate prose proves that the promised advantage occurred. When the advantage matters beyond the scene, store it and call it back through later danger, dialogue, access, evidence, injury, geography, or the journal.
+
+This contract applies to every protagonist. Rook never spends Focus, Health, Setup, or Glimmer for a trick that a free option performs equally well. Ilyra never spends Mana, Health, a Memory Shard, or person specific Leverage without securing a distinct result and accepting a fitting risk.
+
 ## Checks and failure
 
 Most choices do not roll. If the player has the required resource, skill, item, or relationship, the action succeeds and its cost applies.

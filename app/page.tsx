@@ -259,15 +259,17 @@ function changeSummary(choice: Choice, state: GameState) {
   const statChanges = Object.entries(choice.changes ?? {})
     .filter(([, value]) => value !== 0)
     .map(([key, value]) => {
-      const sign = (value ?? 0) > 0 ? '+' : '';
-      return `${statLabels[key as StatKey]} ${sign}${value}`;
+      const amount = Math.abs(value ?? 0);
+      return (value ?? 0) < 0
+        ? `Cost: ${statLabels[key as StatKey]} ${amount}`
+        : `Gain: ${statLabels[key as StatKey]} ${amount}`;
     });
   const personalChanges = Object.entries(relationshipChanges(choice)).flatMap(
     ([person, changes]) => Object.entries(changes ?? {})
       .filter(([, value]) => value !== 0)
       .map(([dimension, value]) => {
-        const sign = (value ?? 0) > 0 ? '+' : '';
-        return `${relationshipLabels[person as RelationshipKey]} ${dimension} ${sign}${value}`;
+        const direction = (value ?? 0) < 0 ? 'Lose' : 'Gain';
+        return `${direction}: ${relationshipLabels[person as RelationshipKey]} ${dimension} ${Math.abs(value ?? 0)}`;
       }),
   );
   return [
@@ -861,8 +863,16 @@ export default function Home() {
                       <span className="choice-copy">
                         <strong>{choice.label}</strong>
                         <span>{choice.detail}</span>
+                        {choice.advantage ? (
+                          <span className="choice-advantage">
+                            <b>Advantage</b>
+                            {choice.advantage}
+                          </span>
+                        ) : null}
                         <span className={`choice-effects ${lethal ? 'choice-effects-lethal' : ''}`}>
-                          {available ? changes.join(' · ') : `Requires ${requirementText(choice)}`}
+                          {available
+                            ? changes.join(' · ')
+                            : [`Requires ${requirementText(choice)}`, ...changes].join(' · ')}
                         </span>
                       </span>
                       <ArrowRight className="choice-arrow" aria-hidden="true" />

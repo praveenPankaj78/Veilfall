@@ -18,6 +18,17 @@ vm.runInNewContext(adventureCompiled, {
   console,
 }, { filename: 'adventure-revision.js' });
 
+const economySource = await readFile('app/choice-economy.ts', 'utf8');
+const economyCompiled = ts.transpileModule(economySource, {
+  compilerOptions,
+}).outputText;
+const economyExports = {};
+vm.runInNewContext(economyCompiled, {
+  exports: economyExports,
+  module: { exports: economyExports },
+  console,
+}, { filename: 'choice-economy.js' });
+
 const source = await readFile('app/game-data.ts', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: {
@@ -32,6 +43,7 @@ const context = {
   console,
   require: (specifier) => {
     if (specifier === './adventure-revision') return adventureExports;
+    if (specifier === './choice-economy') return economyExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -64,6 +76,18 @@ const statKeyByLabel = Object.fromEntries(
 const visibleCostPattern = /(Spend|Gain) ([0-9]+) (Health|Resolve|Command|Oathfire|Medicine|Wayfire)/gi;
 for (const node of Object.values(nodes)) {
   for (const choice of node.choices) {
+    const resourceCosts = Object.entries(choice.changes ?? {})
+      .filter(([, value]) => (value ?? 0) < 0);
+    const relationshipCosts = Object.values(relationshipChanges(choice))
+      .flatMap((changes) => Object.values(changes ?? {}))
+      .filter((value) => (value ?? 0) < 0);
+    const hasKnownCost = resourceCosts.length || relationshipCosts.length;
+    if (hasKnownCost && !choice.advantage?.trim()) {
+      failures.push(`Costly choice ${choice.id} has no player facing advantage`);
+    }
+    if (hasKnownCost && !(choice.addFlags?.length)) {
+      failures.push(`Costly choice ${choice.id} stores no consequence flag`);
+    }
     for (const match of choice.detail.matchAll(visibleCostPattern)) {
       const stat = statKeyByLabel[match[3].toLowerCase()];
       const direction = match[1].toLowerCase() === 'spend' ? -1 : 1;
@@ -226,6 +250,28 @@ for (const [flag, expected] of routeProofChecks) {
     flags: [flag],
   });
   if (!expected.test(entrance)) failures.push(`Harrowfen entrance does not pay off ${flag}`);
+}
+const costlyPayoffChecks = [
+  ['guarding-wagon', 'ambush-warning', /breaks against your raised shield/i],
+  ['shielded-opening', 'low-crisis', /every wounded traveller remains behind cover/i],
+  ['c2-faced-creature', 'c2-threshold', /drew it away from every stretcher/i],
+  ['c2-carried-nilo', 'c2-triage', /stopped the deepest bleeding early/i],
+  ['c2-shielded-descent', 'c2-descend', /without losing anyone/i],
+  ['c3-reached-house-first', 'c3-watch-house', /before the last route order burned/i],
+  ['c3-saved-market-children', 'c3-pin-test', /boat passage beside the well/i],
+  ['c3-double-disarmed', 'c3-courier', /only two bridge guards/i],
+  ['c3-cut-silver-glove', 'c3-collapse', /can no longer close it behind him/i],
+  ['c3-broke-escape-road', 'c3-collapse', /follow one at a time/i],
+  ['c3-oath-trail', 'c3-world-nail', /without delay/i],
+];
+for (const [flag, nodeId, expected] of costlyPayoffChecks) {
+  const sampleState = nodeId.startsWith('c2-')
+    ? chapterTwoBase
+    : nodeId.startsWith('c3-')
+      ? chapterThreeBase
+      : initialState;
+  const payoff = renderedBody(nodeId, { ...sampleState, flags: [flag] });
+  if (!expected.test(payoff)) failures.push(`Stored advantage ${flag} has no payoff in ${nodeId}`);
 }
 const stack = [
   { state: initialState, knownTerms: [] },

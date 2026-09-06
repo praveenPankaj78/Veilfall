@@ -109,6 +109,9 @@ Create lightweight authoring checks for:
 
 - forbidden adjacent hyphens and em dash characters;
 - missing visible costs;
+- resource costs without a named player facing advantage;
+- costly options dominated by a free option reaching the same practical result;
+- advantages promised on the option but not proved in the result or stored for later use;
 - broken passage links;
 - unreachable endings;
 - choices with no stored consequence;

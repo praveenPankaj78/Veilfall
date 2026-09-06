@@ -580,16 +580,33 @@
   font: 500 1rem/1.35 Georgia, serif;
 }
 
-.choice-copy > span:not(.choice-effects) {
+.choice-copy > span:not(.choice-effects, .choice-advantage) {
   color: #989087;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   line-height: 1.45;
+}
+
+.choice-advantage {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.28rem;
+  color: #c7b27c;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.choice-advantage b {
+  flex: none;
+  color: #e0c98f;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 }
 
 .choice-effects {
   margin-top: 0.25rem;
   color: #b77654;
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;

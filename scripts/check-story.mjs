@@ -2,7 +2,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
 
 const roots = ['docs'];
-const directFiles = ['app/game-data.ts', 'app/page.tsx', 'README.md'];
+const directFiles = ['app/choice-economy.ts', 'app/game-data.ts', 'app/page.tsx', 'README.md'];
 const forbidden = [
   { value: String.fromCharCode(45, 45), label: 'two adjacent hyphens' },
   { value: String.fromCharCode(8212), label: 'em dash punctuation' },
