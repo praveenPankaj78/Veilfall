@@ -142,13 +142,13 @@ Mechanic: Health, Focus, Heat, and a named Setup during a controlled theft.
 
 ## 2. The Name in His Pocket
 
-Active question: Who can read the living map?
+Active question: Can Rook reach a name broker before the identity token exposes him?
 
-Answer: It was drawn in Brassreach using ink from the Unsea.
+Answer: The Crown kept Rook's childhood identity active after taking his family. The living map was drawn in Brassreach using ink from the Unsea.
 
 Next hook: How can Rook reach Brassreach before the Crown catches him?
 
-Mechanic: Focus and one clearly marked Echo.
+Mechanic: Setup against search wards, with one clearly marked Echo if Rook uses Glimmer.
 
 ## 3. Thief at the Mileless Bridge
 
@@ -250,7 +250,7 @@ Answer: Both carry genuine lives, but Worldroot cannot hold both identities safe
 
 Next hook: Why is Worldroot choosing between possible lives now?
 
-Mechanic: Mana, Threadread, and a familiar Ward.
+Mechanic: Health, Mana, Threadread, a familiar Ward, and one named Leverage learned during ordinary community work.
 
 ## 2. The Price of Remembering
 
@@ -262,15 +262,15 @@ Next hook: Where does that root reach the surface?
 
 Mechanic: One named Memory Shard after its personal meaning is clear.
 
-## 3. The Ship That Sailed Yesterday
+## 3. The Ship of Borrowed Memories
 
-Active question: Is the storm causing the repeated days?
+Active question: Which remembered route matches the real sea around the ship?
 
-Answer: The repetitions follow the root beneath the sea.
+Answer: A living root beneath the sea is carrying conflicting voyage memories into the crew. Time itself has not changed.
 
 Next hook: What is the root growing inside Thornweald?
 
-Mechanic: High Strain warning signs in a contained journey.
+Mechanic: Threadread, a helm Ward, named Leverage, and clear high Strain warning signs during one physical journey.
 
 ## 4. The Forest That Remembers Cities
 
@@ -292,27 +292,17 @@ Next hook: Where can the original wording be found?
 
 Mechanic: Threadread under emotional overload.
 
-## 6. The Heart Beneath Ice
+## 6. The Last Dragon's Memory
 
 Active question: What did Orivane intend when creating the Concord?
 
-Answer: She included a renewal clause, but Ilyra cannot yet use it safely.
+Answer: She included a renewal clause that can work only through living agreement. Ilyra learns to carry it by rewriting one contained fire law while the dragon grave breaks around her.
 
-Next hook: What right does a living person have to use a dead dragon's intent?
+Next hook: Which living peoples will consent to renew the Concord, and under what terms?
 
-Mechanic: Memory entry with permission and corruption risk.
+Mechanic: Memory entry with permission and corruption risk, followed by Rewrite on one contained fire law.
 
-## 7. The Last Dragon's Question
-
-Active question: Can the renewal clause become a working spell?
-
-Answer: It can, but only through living agreement rather than ancient authority alone.
-
-Next hook: Which peoples would consent, and under what terms?
-
-Mechanic: Rewrite used first on one contained fire law.
-
-## 8. The Mirror Crown
+## 7. The Mirror Crown
 
 Active question: Can the truth Nail test the renewal clause fairly?
 
@@ -322,7 +312,7 @@ Next hook: Which Elian has been speaking to Malrec?
 
 Mechanic: Truth reflection separated from moral judgment.
 
-## 9. The Daughter Who Was Possible
+## 8. The Daughter Who Was Possible
 
 Active question: Is Elian real, and can she simply return?
 
@@ -332,7 +322,7 @@ Next hook: How can the world survive without choosing one person's preferred rea
 
 Mechanic: Duplicate memory and identity costs in the Unsea.
 
-## 10. The World Without Night
+## 9. The World Without Night
 
 Active question: What damage must be stopped before negotiation is possible?
 
@@ -342,7 +332,7 @@ Next hook: What future will each affected culture accept?
 
 Mechanic: Known mechanics applied at regional scale.
 
-## 11. The Consent of Kingdoms
+## 10. The Consent of Kingdoms
 
 Active question: Can every people agree on one permanent answer?
 
@@ -352,7 +342,7 @@ Next hook: What rule can protect identity without making change impossible?
 
 Mechanic: Consent verification without magical persuasion.
 
-## 12. The Root of Every Self
+## 11. The Root of Every Self
 
 Active question: Does Worldroot need a ruler?
 
@@ -362,7 +352,7 @@ Next hook: What will Ilyra write, and what part of herself will it cost?
 
 Mechanic: Selecting final Memory Shards with fully known effects.
 
-## 13. The Worldroot Witch
+## 12. The Worldroot Witch
 
 Active question: What should replace the old Concord?
 

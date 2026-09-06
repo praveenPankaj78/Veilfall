@@ -56,7 +56,7 @@ The cellar opens into an old road tunnel touching a distant beach and mountain p
 
 ## Mystery answer
 
-The road pin is an ancient anchor that keeps road ends connected to the correct places. Its two old locks respond to a Warden captain's road authority and Thornweald living magic. Ordan sabotaged the treaty escort to bring Caelan and Lysara over the lock together, then wounded the group so sheltering at Bellweather became unavoidable. Caelan reseats the pin through command, strength, Oathfire, or a broken wagon axle.
+The road pin is an ancient anchor that keeps road ends connected to the correct places. Its two old locks respond to a Warden captain's road authority and Thornweald living magic. Ordan sabotaged the treaty escort to bring Caelan and Lysara over the lock together, then wounded the group so sheltering at Bellweather became unavoidable. Caelan reseats the pin through command, strength, a new binding Oath, or a broken wagon axle.
 
 ## Closing choice
 

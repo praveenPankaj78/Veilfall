@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This is the canonical high level plan for thirty six protagonist chapters. It fixes the main location, immediate objective, defining choice, character growth, romance movement, revelation, and end state. Scene prose and detailed branches come later.
+This is the canonical high level plan for thirty five protagonist chapters. It fixes the main location, immediate objective, defining choice, character growth, romance movement, revelation, and end state. Scene prose and detailed branches come later.
 
-The current structure uses twelve Caelan chapters, eleven Rook chapters, and thirteen Ilyra chapters. These are pacing decisions rather than quotas. Playtesting may split or combine a chapter when that improves understanding or emotional force.
+The current structure uses twelve Caelan chapters, eleven Rook chapters, and twelve Ilyra chapters. These are pacing decisions rather than quotas. Playtesting may split or combine a chapter when that improves understanding or emotional force.
 
 The recommended play order is Caelan, Rook, then Ilyra. Each series remains understandable when played alone. Imported choices enrich later series without withholding essential facts.
 
@@ -254,17 +254,17 @@ End state: Crown hunters identify Rook, forcing him to leave the city by the Mil
 
 Location: A night market built along the unstable King's Road.
 
-Main event: Rook seeks someone able to read the living map while a stolen name in his pocket begins answering questions in his own voice.
+Main event: Rook seeks someone able to read the living map while a brass identity token stolen from the archive speaks his oldest name whenever a Crown search ward passes nearby. The token gives hunters a clear trail through the night market.
 
 Defining choice: Sell a lesser secret, cheat the name broker, or trust Sen with his real history.
 
-Class pressure: Glimmers solve social traps but create the first Echo, a memory of Rook dying on a stage.
+Class pressure: Setup can misdirect the search wards, while a Glimmer can show where the next ward will appear. Using the Glimmer creates the first Echo, a memory of Rook dying on a stage.
 
 Romance movement: Sen can remain a lover, demand commitment, or end the physical relationship while staying an ally.
 
-Revelation: The map was drawn in Brassreach with ink gathered from the Unsea.
+Revelation: The token proves the Crown kept Rook's childhood identity active after his family disappeared. The living map was drawn in Brassreach with ink gathered from the Unsea.
 
-End state: Rook learns the fastest route passes through the bridge where Caelan once caught him.
+End state: Rook silences, alters, or deliberately keeps the token. He learns the fastest route to Senna passes through the bridge where Caelan once caught him.
 
 ### Chapter Three: Thief at the Mileless Bridge
 
@@ -430,7 +430,7 @@ Main event: Ilyra begins a familiar morning of memory work, community disputes, 
 
 Defining choice: Shelter both, ward one outside, or ask each to surrender a memory as proof.
 
-Class pressure: Basic Mana, Threadread, Ward, Glassform, and manageable Strain.
+Class pressure: Basic Health, Mana, Threadread, Ward, and manageable Strain. A familiar community dispute teaches one named Leverage before Ilyra uses the same method on either father.
 
 Romance movement: Tomas arrives with his travelling press and resumes an old flirtation complicated by their disagreement over publishing private memories. Ilyra tests whether old attraction can gain access to his press. Tomas notices the selective truth and makes her state what she actually wants.
 
@@ -454,21 +454,21 @@ Revelation: The Nail was damaged from below by a root carrying celestial light a
 
 End state: The Tide Council sends Ilyra to Thornweald, where the root rises near the surface.
 
-### Chapter Three: The Ship That Sailed Yesterday
+### Chapter Three: The Ship of Borrowed Memories
 
-Location: A witch vessel crossing from the Shard Coast to Thornweald through a storm that remembers several routes.
+Location: A witch vessel crossing from the Shard Coast to Thornweald through a memory storm and real coastal reefs.
 
-Main event: Ilyra must guide one ship carrying both versions of her father and island witnesses. Each dawn, the vessel wakes on a different version of the previous day.
+Main event: The ship remains in one present, but sailors begin remembering different versions of the voyage. Each group insists on a different map, lighthouse, and safe channel while the real vessel drifts toward visible reefs. Ilyra must establish which remembered details match the water around them.
 
-Defining choice: Preserve the day with the most survivors, combine evidence from several days, or let the crew choose which shared memory becomes real.
+Defining choice: Follow the official chart, combine useful details from the conflicting memories, or ask the crew to choose which route they are willing to trust.
 
-Class pressure: Threadread and Ward are used during travel before Memory Shards become a solution. The player sees how high Strain distorts details without hiding the objective.
+Class pressure: Threadread separates fear from useful memory. A Ward keeps conflicting orders from crossing the helm, while named Leverage can make an influential sailor admit that his remembered lighthouse is wrong. High Strain distorts details without hiding the objective.
 
 Romance movement: Tomas and Ilyra share ordinary work, food, and a private watch. Their attraction gains texture before the next political crisis.
 
-Revelation: The altered days follow a living root beneath the sea rather than the storm itself.
+Revelation: The conflicting memories rise from a living root beneath the sea. The storm carries them into people, but time itself has not changed.
 
-End state: Ilyra reaches Thornweald knowing the root is carrying instability inland. The surviving father state becomes a lasting personal consequence.
+End state: Ilyra reaches Thornweald knowing the root is carrying unstable memories inland. The surviving father state becomes a lasting personal consequence.
 
 ### Chapter Four: The Forest That Remembers Cities
 
@@ -502,39 +502,23 @@ Revelation: The voices repeat a command hidden inside the Concord's original wor
 
 End state: Ilyra learns that the command can be removed only from Orivane's surviving memory in Dragonspine.
 
-### Chapter Six: The Heart Beneath Ice
+### Chapter Six: The Last Dragon's Memory
 
-Location: The highest dragon grave in Dragonspine.
+Location: The highest dragon grave in Dragonspine and its chamber of living fire.
 
-Main event: Ilyra descends into a sleeping dragon's shared memory and witnesses the making of the Concord from Orivane's point of view.
+Main event: Ilyra descends into a sleeping dragon's shared memory and witnesses the making of the Concord from Orivane's point of view. Removing the hidden truth wakes the dragon and begins tearing the grave apart around her.
 
-Defining choice: Wake the dragon, take the memory without permission, or sacrifice a cherished Memory Shard to speak with Orivane's remaining will.
+Defining choice: Wake the dragon by returning Orivane's last memory, keep the memory as proof, or divide it among witnesses from several peoples.
 
-Class pressure: Memory magic reaches a new tier. Unauthorised access creates a corruption mark and changes dragon alliances.
+Class pressure: Memory magic reaches a new tier. Unauthorised access creates a corruption mark and changes dragon alliances. Ilyra must first use Rewrite on a contained fire law before she can carry the lost agreement safely.
 
-Romance movement: A companion may enter the memory with Ilyra, revealing the life each secretly wants after the crisis.
+Romance movement: A companion may enter the memory with Ilyra, revealing the life each secretly wants after the crisis. The companion also sees which personal memory Ilyra refuses to spend, creating respect, conflict, or closeness.
 
 Revelation: Orivane expected the Concord to be renewed by free agreement every thousand years. Mortal rulers removed that condition and made the boundary permanent.
 
-End state: Ilyra hears the lost renewal clause but cannot yet use it safely. Orivane's remaining will sends her deeper into the grave.
-
-### Chapter Seven: The Last Dragon's Question
-
-Location: A chamber of living fire beneath the highest dragon grave.
-
-Main event: Orivane's remaining will tests whether Ilyra seeks truth, control, or forgiveness. Outside, the waking dragon begins to tear the mountain apart.
-
-Defining choice: Save the dragon by giving it Orivane's last memory, keep the memory as proof, or divide it among witnesses from several peoples.
-
-Class pressure: The player uses Rewrite first on a contained fire law before gaining access to the Concord itself. The cost is known and reversible only through a future alliance.
-
-Romance movement: A companion sees which personal memory Ilyra refuses to spend. Respect, conflict, or closeness follows from the reason rather than the resource value.
-
-Revelation: The Concord was meant to be renewed through free agreement every thousand years. Mortal rulers removed that condition and made the boundary permanent.
-
 End state: Ilyra becomes able to Rewrite one part of the Concord and knows she must seek living consent rather than collect only ancient proof.
 
-### Chapter Eight: The Mirror Crown
+### Chapter Seven: The Mirror Crown
 
 Location: Serekh's capital during a succession trial.
 
@@ -550,7 +534,7 @@ Revelation: Malrec built his realm engine here using an early design supplied by
 
 End state: The mirror lake opens a route to the part of the Unsea holding Elian.
 
-### Chapter Nine: The Daughter Who Was Possible
+### Chapter Eight: The Daughter Who Was Possible
 
 Location: An Unsea island made from Malrec's lost family life.
 
@@ -566,7 +550,7 @@ Revelation: Elian is real, but there are thousands of equally real versions. Mal
 
 End state: Malrec takes, loses, or abandons his chosen Elian. Ilyra leaves with the complete knowledge needed to reach Worldroot.
 
-### Chapter Ten: The World Without Night
+### Chapter Nine: The World Without Night
 
 Location: Edrath after Rook's theft has changed dawn.
 
@@ -582,7 +566,7 @@ Revelation: There is no restoration of the old world. Caelan and Rook have made 
 
 End state: The immediate collapse stops. Leaders from the affected cultures agree to meet, but each arrives with a different demand.
 
-### Chapter Eleven: The Consent of Kingdoms
+### Chapter Ten: The Consent of Kingdoms
 
 Location: A travelling council that uses repaired roots to meet in Greyhaven, Brassreach, Kharad Vey, Thornweald, Serekh, and the Shard Coast without reducing them to one capital.
 
@@ -598,7 +582,7 @@ Revelation: No solution benefits every region equally. A legitimate Concord must
 
 End state: The entrance to Worldroot opens beneath Thornweald with a clear mandate, a contested mandate, or only Ilyra's claimed authority.
 
-### Chapter Twelve: The Root of Every Self
+### Chapter Eleven: The Root of Every Self
 
 Location: Worldroot, where memories form landscapes and choices grow as branches.
 
@@ -614,7 +598,7 @@ Revelation: Worldroot does not need a ruler. It needs a rule for how different r
 
 End state: Ilyra reaches the empty place where Orivane's heart once beat.
 
-### Chapter Thirteen: The Worldroot Witch
+### Chapter Twelve: The Worldroot Witch
 
 Location: The heart of Worldroot, felt simultaneously in every changed region.
 
@@ -635,9 +619,9 @@ Final image: Far from any capital, a child finds a small door in an old tree. It
 1. Caelan Chapter Four and Rook Chapter Three share the Mileless Bridge. Caelan anchors the path and chooses his duty. Rook stages the theft and chooses what he refuses to surrender.
 2. Caelan Chapter Six introduces Ilyra on the Ember Steppe. She reads the clans and tests Caelan's position rather than waiting for an assignment. Ilyra Chapter Five later returns there and owns the deeper memory conflict.
 3. Caelan Chapter Twelve changes the Black Gate and destabilises dawn, creating Rook Chapter One.
-4. Rook Chapter Seven introduces Ilyra in Serekh from his suspicious viewpoint. He replaces evidence she intended to use, while she turns his personal goal into Leverage. Ilyra Chapter Eight later returns to the city with her own objective and the consequences of Rook's actions.
-5. Rook Chapter Eight and Ilyra Chapter Nine enter different islands in the Unsea. Imported choices may let them cross. Rook controls the route through an audacious theft, while Ilyra controls which memories may be shared. Neither chapter repeats the other's main event.
-6. Rook Chapter Eleven changes one world law. The immediate effect creates Ilyra Chapter One and worsens again in Ilyra Chapter Ten.
+4. Rook Chapter Seven introduces Ilyra in Serekh from his suspicious viewpoint. He replaces evidence she intended to use, while she turns his personal goal into Leverage. Ilyra Chapter Seven later returns to the city with her own objective and the consequences of Rook's actions.
+5. Rook Chapter Eight and Ilyra Chapter Eight enter different islands in the Unsea. Imported choices may let them cross. Rook controls the route through an audacious theft, while Ilyra controls which memories may be shared. Neither chapter repeats the other's main event.
+6. Rook Chapter Eleven changes one world law. The immediate effect creates Ilyra Chapter One and worsens again in Ilyra Chapter Nine.
 7. Only Ilyra enters the final chamber of Worldroot. Caelan and Rook influence it through consequences, relationships, and altered laws rather than a shared final fight.
 
 # Player knowledge gates
@@ -664,11 +648,11 @@ The outline is written with full author knowledge. The player receives that know
 ## Ilyra gate
 
 - Chapters One through Three: memory problems remain personal and local while the player learns Ilyra's costs.
-- Chapters Four through Seven: cultural history and Orivane's evidence reveal why the old Concord cannot simply be repaired.
-- Chapters Eight and Nine: truth and possible lives are investigated separately before their implications are combined.
-- Chapter Ten: the player sees the harm caused by the unstable world before debating a permanent answer.
-- Chapter Eleven: every major ending option is represented by people who would gain and lose from it.
-- Chapters Twelve and Thirteen: the player applies already understood rules. No new cosmology appears during the final decision.
+- Chapters Four through Six: cultural history and Orivane's evidence reveal why the old Concord cannot simply be repaired.
+- Chapters Seven and Eight: truth and possible lives are investigated separately before their implications are combined.
+- Chapter Nine: the player sees the harm caused by the unstable world before debating a permanent answer.
+- Chapter Ten: every major ending option is represented by people who would gain and lose from it.
+- Chapters Eleven and Twelve: the player applies already understood rules. No new cosmology appears during the final decision.
 
 The detailed Known, Suspected, and Unknown lists belong in each chapter's scene plan before prose is drafted.
 
@@ -691,5 +675,5 @@ Each world ending is scored separately from personal fulfilment, romance, region
 4. Complete Caelan's twelve chapter season.
 5. Build Rook Chapters One through Three and validate imported world state.
 6. Complete Rook's eleven chapter season.
-7. Build Ilyra's thirteen chapter season after the final consequences from both earlier leads are stable.
+7. Build Ilyra's twelve chapter season after the final consequences from both earlier leads are stable.
 8. Add optional intimate scene variants only after relationship states and age gates are implemented.

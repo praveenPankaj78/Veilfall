@@ -209,9 +209,9 @@ The player learns the ordinary world through duty and travel. The first three ch
 
 The player already knows the world is changing, so the mystery moves faster. Extra room is given to learning Brassreach and Serekh because both places change how stealth and deception work.
 
-### Ilyra, thirteen chapters
+### Ilyra, twelve chapters
 
-The player enters with the most world knowledge, but Ilyra's magic and final choice are more complex. Her series separates evidence gathering, cultural consent, and the final spell so the player never learns a cosmological truth in the same moment they must judge it.
+The player enters with the most world knowledge, but Ilyra's magic and final choice are more complex. Her Dragonspine discovery and dragon crisis occupy one substantial chapter because they share one location, one objective, and one revelation. Her series still separates evidence gathering, cultural consent, and the final spell so the player never learns a cosmological truth in the same moment they must judge it.
 
 These counts are planning decisions, not permanent quotas. Testing may split or combine chapters when player understanding or emotional pacing demands it.
 

@@ -54,7 +54,7 @@ The event demonstrates the threat before it is named: a joined fragment could gi
 
 ## Pursuit and answer
 
-Caelan exposes Renn in front of Harrowfen. Elene arrests him, the town rejects Ordan's warrant, and the guards turn against the hidden Crown soldiers. Ordan steals the fragment and burns the canal bridges during his escape. The player chooses between rescue, a faster pursuit, or spending Oathfire to do both.
+Caelan exposes Renn in front of Harrowfen. Elene arrests him, the town rejects Ordan's warrant, and the guards turn against the hidden Crown soldiers. Ordan steals the fragment and burns the canal bridges during his escape. The player chooses between rescue, a faster pursuit, or accepting a new binding Oath to do both.
 
 At the east arch, Lysara explains the World Nail in plain language. It is a greater ancient anchor that keeps distant places apart. Road pins are pieces of it.
 

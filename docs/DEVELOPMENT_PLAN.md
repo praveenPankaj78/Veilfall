@@ -10,7 +10,7 @@ The redesigned foundation now includes:
 - seven distinct mortal regions;
 - three connected outer realms and Worldroot;
 - exactly three playable leads;
-- thirty six high level chapter plans with flexible boundaries;
+- thirty five high level chapter plans with flexible boundaries;
 - class resources and costs;
 - staggered world changing finales;
 - romance and intimacy rules;
@@ -83,7 +83,7 @@ Prototype Health, Focus, Heat, Setup, Glimmer, and Echo mechanics in Rook Chapte
 
 ## Phase Seven: Ilyra season
 
-Begin Ilyra after Rook's four Dawn law outputs are stable. Prototype Health, Mana, Strain, and named person specific Leverage before the main season draft. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Ten through Thirteen. The matrix must distinguish attraction from trust and record when manipulation succeeds, fails, creates exposure, or becomes genuine attachment.
+Begin Ilyra after Rook's four Dawn law outputs are stable. Prototype Health, Mana, Strain, and named person specific Leverage before the main season draft. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Nine through Twelve. The matrix must distinguish attraction from trust and record when manipulation succeeds, fails, creates exposure, or becomes genuine attachment.
 
 Every crossover receives a personality audit. The active lead keeps the decisive action, and visiting leads retain their own objective and method. Reject any scene where Caelan, Rook, or Ilyra could exchange dialogue or actions without changing the scene.
 

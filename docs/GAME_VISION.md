@@ -102,7 +102,7 @@ Health makes that vulnerability real for all three leads. Costs are visible, a c
 ## Scope guardrails
 
 - Three playable leads only: two men and one woman.
-- Chapter count follows story and player comprehension rather than symmetry. The current plan uses twelve Caelan chapters, eleven Rook chapters, and thirteen Ilyra chapters.
+- Chapter count follows story and player comprehension rather than symmetry. The current plan uses twelve Caelan chapters, eleven Rook chapters, and twelve Ilyra chapters.
 - One main location and one main objective per chapter.
 - No more than one major new lore concept introduced in a scene.
 - No more than three essential invented terms introduced in a chapter.

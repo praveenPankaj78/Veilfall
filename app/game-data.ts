@@ -429,6 +429,11 @@ const originalNodes: Record<string, StoryNode> = {
         : state.flags.includes('mara-read-order')
           ? 'Mara rubs the pale salt between finger and thumb. “Not road salt. Sea salt. Fresh enough to taste.”'
           : 'Every piece of the case says the low road order is real. Only your memory says otherwise.',
+      state.flags.includes('checked-route')
+        ? 'The weather marks you copied at dawn now matter. The low road will flood first, while lightning will reach the ridge before sunset.'
+        : state.flags.includes('tested-case')
+          ? 'Your inspection found no broken lock or replaced wax. Whatever changed the page defeated protections you know how to test.'
+          : 'You must judge the routes with only Mara’s warning and the sky above you.',
       'The low road is faster, already flooding, and written on the altered page. The ridge is slower, exposed to lightning, and clear when Mara crossed it. A full inspection might uncover sabotage, but the delay could trap the escort outside both safe routes.',
       'Lysara rests one hand on the living wood chest. “My people can survive another winter. The soldiers gathering at our border may not allow them to.”',
       'The gate chains groan behind you. Once the heavy doors close for the storm, Greyhaven will not open them again before morning.',
@@ -962,6 +967,9 @@ const originalNodes: Record<string, StoryNode> = {
         : state.flags.includes('saved-mara')
           ? 'Mara stays close enough that her wet shoulder touches yours while both of you count the living.'
           : 'Mara moves among the guards, checking eyes, hands, and arrow wounds with quick calm touches.',
+      state.stats.health <= 2
+        ? 'When you straighten, pain closes around your ribs and your vision narrows. Mara catches your arm. “One more fight like that will kill you,” she says. The fear in her voice is quieter than the rain.'
+        : 'Your muscles ache, but your breathing settles as the survivors form around the wagons.',
       'Joren is alive. Three guards cannot ride. One horse must be put down. Brann says the attackers who escaped went east, not back toward Greyhaven.',
       'Nilo sits beside the rear wheel, pressing both hands over a cut in his leg. He insists he can walk. Tivik quietly moves him onto the wagon before the boy can prove it.',
       state.flags.includes('oath-safe-arrival')
@@ -1012,6 +1020,11 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('captured-attacker') || state.flags.includes('captured-saboteur')
         ? 'Your prisoner sits against a wheel with wrists bound. He keeps looking at your face as if comparing it with someone he met before.'
         : 'The living attackers escaped. The dead left weapons, boot marks, and whatever they failed to burn.',
+      state.flags.includes('secure-perimeter')
+        ? 'The shield ring you ordered keeps the tree line back. Mara can search the saddles without another arrow reaching the wounded.'
+        : state.flags.includes('wounded-stable')
+          ? 'Because you treated Joren first, he is awake enough to remember that one attacker checked three different route cards.'
+          : 'The wounded remain restless while you search, and every sound from the woods pulls a guard away from the evidence.',
       'Mara finds a small wax tube beneath a saddle flap. Lysara finds pale crystals packed into an arrowhead. Brann watches the tree line and reminds you that the escort is wounded, exposed, and still expected at Bellweather.',
       'You cannot learn everything before moving. You need one answer now: whether the ambush reacted to your choice or knew it beforehand.',
     ],
@@ -1134,9 +1147,9 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'take-high-ground',
         label: 'Move the survivors to high ground and study the fold.',
-        detail: 'Spend 1 Health. Gain 5 Wayfire and risk giving the attackers time to return.',
+        detail: 'Spend 1 Health. Gain 1 Command and 5 Wayfire by preparing a defensible route.',
         next: 'ending-height',
-        changes: { health: -1, wayfire: 5 },
+        changes: { health: -1, command: 1, wayfire: 5 },
         requires: { health: 1 },
         addFlags: ['chose-high-ground'],
         result: 'You turn away from the impossible shore long enough to find a hill the wounded can defend.',
@@ -2972,9 +2985,9 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'c3-end-secure-return',
         label: 'Secure a way back before pursuing either man.',
-        detail: 'Protect your companions from being trapped and gain 8 Wayfire.',
+        detail: 'Protect your companions while both enemies gain distance. Gain 7 Wayfire.',
         next: 'c3-ending-return',
-        changes: { wayfire: 8, command: 1 },
+        changes: { wayfire: 7 },
         addFlags: ['c3-secured-return'],
         result: 'You drive a Warden spike into the first arch and tie your last rope to Harrowfen’s world.',
       },

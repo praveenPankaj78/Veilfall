@@ -58,6 +58,26 @@ for (const id of nodeOrder) {
   if (!nodes[id]) failures.push(`nodeOrder references a missing node: ${id}`);
 }
 
+const statKeyByLabel = Object.fromEntries(
+  Object.entries(statLabels).map(([key, label]) => [label.toLowerCase(), key]),
+);
+const visibleCostPattern = /(Spend|Gain) ([0-9]+) (Health|Resolve|Command|Oathfire|Medicine|Wayfire)/gi;
+for (const node of Object.values(nodes)) {
+  for (const choice of node.choices) {
+    for (const match of choice.detail.matchAll(visibleCostPattern)) {
+      const stat = statKeyByLabel[match[3].toLowerCase()];
+      const direction = match[1].toLowerCase() === 'spend' ? -1 : 1;
+      const visibleChange = direction * Number(match[2]);
+      const actualChange = choice.changes?.[stat] ?? 0;
+      if (actualChange !== visibleChange) {
+        failures.push(
+          `Choice ${choice.id} says ${match[0]} but changes ${stat} by ${actualChange}`,
+        );
+      }
+    }
+  }
+}
+
 function applyChoice(state, choice) {
   const stats = { ...state.stats };
   for (const [key, value] of Object.entries(choice.changes ?? {})) {

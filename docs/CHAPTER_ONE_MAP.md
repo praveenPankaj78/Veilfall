@@ -90,7 +90,7 @@ Mara asks one practical question: Which way is home now?
 The player makes the chapter's final choice:
 
 - Follow the road forward to the unknown inn.
-- Climb for a view and risk the wounded.
+- Climb for a view, spend Health, and gain Command by preparing defensible ground.
 - Swear to bring everyone home, gaining Oathfire and a dangerous duty.
 
 The chapter ends with movement, not paralysis. The next objective is to reach shelter and understand the folded road.
@@ -102,8 +102,8 @@ All routes reach the folded road, but state remains distinct:
 - who is injured;
 - whether the treaty is intact;
 - whether an attacker can be questioned;
-- Mara's trust and attraction;
-- Lysara's respect and suspicion;
+- Mara's Trust and Attraction;
+- Lysara's Trust and Attraction;
 - remaining Health and Resolve;
 - whether Caelan carries his first active Oath;
 - which ambush detail points toward the saboteur.
