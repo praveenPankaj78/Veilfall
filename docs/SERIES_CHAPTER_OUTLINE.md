@@ -30,7 +30,7 @@ Primary route: Greyhaven, King's Road, Dragonspine, Ember Steppe, Black Gate, Ci
 
 Location: Greyhaven's eastern gate and the first day of the King's Road.
 
-Main event: Caelan prepares a routine diplomatic escort, checks horses and supplies, shares easy familiarity with Mara, and chooses how to handle a small roadside dispute. After the party leaves, a sealed route order changes inside his own dispatch case.
+Main event: Caelan prepares a routine diplomatic escort, meets Nilo and Joren, shares easy familiarity with Mara, and sees Ordan Vale's approval on the route register. After the party leaves, a sealed route order changes inside his own dispatch case.
 
 Defining choice: Follow the altered route, trust Mara's remembered route, or stop and risk insulting the envoy.
 
@@ -38,7 +38,7 @@ Class pressure: Basic Stamina, Resolve, Guard, Command, and one minor promise.
 
 Romance movement: Mara's teasing and trust establish the possibility of more without forcing it.
 
-Revelation: Someone can alter a protected instruction after it has been sealed.
+Revelation: The attackers received plans for every possible route before Caelan chose. Someone altered a protected instruction after it was sealed, but the chapter does not yet pretend to know who possessed that greater power.
 
 End state: The escort survives an attack, but the road behind them now leads to a shore hundreds of miles away. Caelan's next goal is simple: get the survivors home.
 
@@ -46,7 +46,7 @@ End state: The escort survives an attack, but the road behind them now leads to 
 
 Location: Bellweather Inn, an isolated coaching house caught in a folded road.
 
-Main event: Caelan shelters the wounded inside Bellweather Inn while Crown killers and a pale mire hound surround it. Maelin Bellweather has waited three days because a dying Warden arrived early through a displaced shortcut with a forged warning in Caelan's hand.
+Main event: Caelan shelters the wounded inside Bellweather Inn while Crown killers and a pale mire hound surround it. Maelin Bellweather waits for Dain, her husband, who vanished through a shifted road during Ordan's first test. A dying Warden later arrived through the same shortcut with a forged warning in Caelan's hand.
 
 Defining choice: Spend scarce medicine on the envoy, a child, or the attacker who may know the route out.
 
@@ -54,7 +54,7 @@ Class pressure: Protection competes with investigation. The player chooses who r
 
 Romance movement: A quiet night watch lets Caelan and Mara name what each fears losing.
 
-Revelation: A road pin normally keeps road ends connected to the correct places. Ordan loosened it to create a secret attack route beneath the inn.
+Revelation: A road pin normally keeps road ends connected to the correct places. Ordan lured Caelan and Lysara there because their road authority and living treaty magic open the pin's two old locks.
 
 End state: Caelan wins the siege and drives the road pin back into place. A broken fragment still pulls toward Harrowfen, where Ordan has gone to open a greater road.
 
@@ -62,17 +62,17 @@ End state: Caelan wins the siege and drives the road pin back into place. A brok
 
 Location: Harrowfen, a market town appearing beside the folded road where no town should stand.
 
-Main event: Caelan reaches Harrowfen after one shortened mile. Ordan has arrived first with forged royal orders naming Caelan a traitor. Caelan must enter the town, protect his witnesses, clear his name, and hunt Ordan through canals, burning bridges, and a crowded market.
+Main event: Caelan reaches Harrowfen after one shortened mile. Ordan uses Caelan's genuine route authority, the real costs of the escort, planted evidence, and crimes committed by Renn in Caelan's cloak to frame him. Caelan must earn limited entry, protect his witnesses, clear his name, and hunt Ordan through canals, burning bridges, and a crowded market.
 
 Defining choice: Search the archive for proof, protect a living witness at the healing house, or force a road broker to reveal Ordan's escape route.
 
 Class pressure: Caelan uses ordinary leadership while low on resources. Oathfire remains a dangerous option rather than the expected answer.
 
-Romance movement: Mara and Lysara disagree over whether protecting people or finding the cause comes first. A brief roof scene lets attraction and fear breathe without stopping the hunt.
+Romance movement: Mara and Lysara disagree over whether protecting people or finding the cause comes first. A brief roof scene lets attraction and fear breathe without stopping the hunt or telling the player that both choices are equally valid.
 
 Revelation: The fragment can briefly pull distant roads together. Ordan plans to join it to a larger piece and give a Crown army a road into any kingdom.
 
-End state: Ordan steals the fragment and escapes onto the Mileless Bridge. Rook steals it from him, forcing Caelan to choose between the known enemy, the unknown thief, and Harrowfen's safety. Only now does Lysara name the larger anchor as the World Nail.
+End state: Harrowfen rejects Ordan's warrant and Caelan prevents the army road from opening. Ordan escapes onto the Mileless Bridge, where the dark coated thief seen twice earlier steals the fragment from him. Caelan chooses between the known enemy, the now foreshadowed thief, and Harrowfen's safety. Only now does Lysara name the larger anchor as the World Nail.
 
 ### Chapter Four: Thief at the Mileless Bridge
 

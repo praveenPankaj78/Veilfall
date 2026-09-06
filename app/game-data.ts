@@ -181,6 +181,7 @@ const originalNodes: Record<string, StoryNode> = {
     body: () => [
       'Rain has turned Greyhaven’s stone walls almost black by the time you reach Eastwatch. Water pours from the gatehouse drains and gathers around the boots of twenty guards pretending not to be cold.',
       'Your name is Caelan Vey. You are thirty one, captain of the King’s Road Wardens, and responsible for every person leaving with the green treaty wagon. Your task sounds simple when spoken quickly: escort Ambassador Lysara to Bellweather Inn before night rain floods the low road.',
+      'Seven years ago, you promised a trapped patrol that you would return before moonrise. You returned late and carried two bodies home. Since then, you choose every promise as carefully as a road above a cliff.',
       'Beyond the raised iron gate, the King’s Road bends through wet hills and disappears under dark storm clouds. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
       'Sergeant Brann raises the departure ledger. “Gate opens in half an hour. What do you want checked first?”',
     ],
@@ -192,7 +193,7 @@ const originalNodes: Record<string, StoryNode> = {
         next: 'mara-returns',
         changes: { command: 1 },
         addFlags: ['checked-people'],
-        result: 'You move one feverish guard to the rear wagon and give Brann a line that can still hold.',
+        result: 'You move one feverish guard to the rear wagon. Joren takes his place, while twelve year old Nilo carries spare bandages to the wagon.',
       },
       {
         id: 'check-horses',
@@ -281,6 +282,7 @@ const originalNodes: Record<string, StoryNode> = {
     body: (state) => [
       'A hammer rings beneath the treaty wagon. Tivik Brassthumb, the goblin wheelwright hired by the embassy, crawls out between two guards. He is compact, copper skinned, and furious enough to ignore the men towering over him.',
       '“I balanced this axle last night,” he says. “Someone added two lead chests after I left. Put them on wet ground and the rear pin will snap.”',
+      'His twelve year old apprentice, Nilo, kneels beside a box of spare pins. Guard Joren holds the wagon frame above him and says, “Tell me when to lift, little master.” Nilo tries not to smile.',
       state.flags.includes('checked-treaty')
         ? 'You show him the fresh scrape. Tivik touches it once and smells his fingertip. “File mark. Someone tested how much iron remained.”'
         : 'The senior guard calls him nervous. Tivik raises the hammer and asks whether nervous people usually volunteer to stand beneath a loaded wagon.',
@@ -334,6 +336,7 @@ const originalNodes: Record<string, StoryNode> = {
           ? 'She thanks Tivik in his own language before checking the repaired axle herself.'
           : 'She tests the wagon step with one boot and glances toward the heavy rear wheel.',
       'Inside the wagon rests a chest made from pale living wood. Its contents are meant to end a border quarrel before winter. If the chest fails to reach Bellweather, soldiers on both sides will assume the other kingdom refused peace.',
+      'The route register carries the approval of Ordan Vale from the Royal Road Office. He is one of only six officials who knew the escort would leave today, although the final road was supposed to remain your choice.',
     ],
     choices: [
       {
@@ -957,6 +960,7 @@ const originalNodes: Record<string, StoryNode> = {
           ? 'Mara stays close enough that her wet shoulder touches yours while both of you count the living.'
           : 'Mara moves among the guards, checking eyes, hands, and arrow wounds with quick calm touches.',
       'Joren is alive. Three guards cannot ride. One horse must be put down. Brann says the attackers who escaped went east, not back toward Greyhaven.',
+      'Nilo sits beside the rear wheel, pressing both hands over a cut in his leg. He insists he can walk. Tivik quietly moves him onto the wagon before the boy can prove it.',
       state.flags.includes('oath-safe-arrival')
         ? 'Your promise remains warm inside you. Shelter is no longer the mission written by a court. It is a debt carried in your own blood.'
         : 'The woods have gone quiet again. This time nobody mistakes quiet for safety.',

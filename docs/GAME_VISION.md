@@ -77,6 +77,8 @@ Every chapter uses five linked hooks:
 
 The player receives an answer before each larger question. Curiosity grows because the meaning changes, not because information is withheld forever.
 
+The opening act follows one causal spine. Ordan sabotages the treaty escort because Bellweather's road pin responds to a Warden captain's authority and Lysara's living treaty magic. He plans to blame Caelan, provoke a border crisis, and use that crisis to justify Crown control of every road. Caelan saves Bellweather, carries a chosen form of proof into Harrowfen, defeats the immediate invasion plan, and then learns the conspiracy is larger than Ordan.
+
 ## Threat promise
 
 The player should feel that safety is temporary. Quiet scenes still carry a visible pressure such as weather, pursuit, political cost, a binding promise, limited time, injury, or a watched road.

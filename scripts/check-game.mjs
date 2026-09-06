@@ -170,6 +170,44 @@ for (const [id, node] of Object.entries(nodes)) {
     if (phrase.test(activeText)) failures.push(`Retired plot phrase ${phrase} remains active in ${id}`);
   }
 }
+
+function renderedBody(nodeId, state) {
+  return nodes[nodeId].body(state).join(' ');
+}
+
+const safeTreatyArrival = renderedBody('c2-arrival', {
+  ...chapterTwoBase,
+  flags: ['treaty-safe'],
+});
+if (!/sealed treaty chest/i.test(safeTreatyArrival) || /cracked treaty chest/i.test(safeTreatyArrival)) {
+  failures.push('Chapter Two does not preserve the protected treaty chest');
+}
+const damagedTreatyArrival = renderedBody('c2-arrival', {
+  ...chapterTwoBase,
+  flags: ['treaty-damaged'],
+});
+if (!/cracked treaty chest/i.test(damagedTreatyArrival)) {
+  failures.push('Chapter Two does not preserve the damaged treaty chest');
+}
+const knownPrisonerThreshold = renderedBody('c2-threshold', {
+  ...chapterTwoBase,
+  flags: ['captured-attacker'],
+});
+if (!/your wounded prisoner/i.test(knownPrisonerThreshold) || /Maelin found him/i.test(knownPrisonerThreshold)) {
+  failures.push('Chapter Two does not preserve the captured attacker route');
+}
+const routeProofChecks = [
+  ['c2-chose-testimony', /Sable|Jory/i],
+  ['c2-chose-pin', /fragment/i],
+  ['c2-oath-expose-crown', /Oath/i],
+];
+for (const [flag, expected] of routeProofChecks) {
+  const entrance = renderedBody('c3-arrival', {
+    ...chapterThreeBase,
+    flags: [flag],
+  });
+  if (!expected.test(entrance)) failures.push(`Harrowfen entrance does not pay off ${flag}`);
+}
 const stack = [
   { state: initialState, knownTerms: [] },
   {

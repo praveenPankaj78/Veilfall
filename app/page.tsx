@@ -250,7 +250,7 @@ function knownTruths(game: GameState) {
     'c2-folded-cellar', 'c2-road-pin', 'c2-remove-pin', 'c2-last-testimony',
   ];
   if (game.chapter >= 3 || roadRevealNodes.includes(game.nodeId)) {
-    truths.push('Ordan used a false warning and a loosened road pin to prepare the attack on Bellweather Inn.');
+    truths.push('Ordan lured Caelan and Lysara to Bellweather because their road authority and living magic could unlock the road pin.');
   }
   if (game.chapter >= 3
     || game.flags.includes('c2-found-road-pin-term')
@@ -295,13 +295,16 @@ function majorConsequences(game: GameState) {
   if (game.flags.includes('saved-family')) consequences.push('Because you rescued the roadside family, more civilians survived the first ambush.');
   if (game.flags.includes('captured-attacker')) consequences.push('Because you captured an attacker, the Crown plot gained a living witness.');
   if (game.flags.includes('treaty-damaged')) consequences.push('Because the treaty wagon was damaged, peace now depends more heavily on Lysara’s second proof.');
-  if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, he survived the worst of his wound.');
-  if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand and the living proof remain safe.');
-  if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Sable, he can identify the royal courier who hired him.');
+  if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, his injured leg can recover.');
+  if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand, living magic, and treaty work remain safe.');
+  if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Sable, he can testify publicly that Ordan hired the attackers.');
   if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you connected Ordan to the supplies used in the siege.');
   if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you found the enemy rope and the shifted coastal road before the siege.');
   if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Sable, you connected the road pin to sealed Crown orders.');
   if (game.flags.includes('c2-pin-broken')) consequences.push('Because the road pin broke, part of its power remains beneath Bellweather Inn.');
+  if (game.flags.includes('c2-chose-testimony')) consequences.push('Because you carried testimony to Harrowfen, Sable or Jory’s papers challenged Ordan before the gate.');
+  if (game.flags.includes('c2-chose-pin')) consequences.push('Because you carried the iron as your main proof, its pull exposed the danger beneath Harrowfen.');
+  if (game.flags.includes('c2-oath-expose-crown')) consequences.push('Because you swore publicly against the Crown plot, Elene could test your promise at Harrowfen’s gate.');
   if (game.flags.includes('c2-kissed-mara')) consequences.push('Because you and Mara chose to kiss, your attraction is no longer unspoken.');
   if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped the burning healing house.');
   if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');

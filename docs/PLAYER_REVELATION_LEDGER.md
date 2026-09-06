@@ -10,11 +10,11 @@ The answer closes the active mystery. The next hook supplies anticipation. The m
 
 ## 1. The Road Before Rain
 
-Active question: Who changed Caelan's sealed route?
+Active question: Was the sealed route deliberately changed, and did the attackers know how Caelan might respond?
 
-Answer: The change was deliberate and known to the ambushers.
+Answer: The attackers received plans for every route before Caelan chose. The sealed change was deliberate, but its maker remains unknown.
 
-Next hook: How can the same road lead to the wrong coast?
+Next hook: How can the same road lead to the wrong coast, and why was Ordan listed among the few officials who knew the escort date?
 
 Mechanic: Stamina, Guard, and Command through safe escort work.
 
@@ -22,7 +22,7 @@ Mechanic: Stamina, Guard, and Command through safe escort work.
 
 Active question: Who prepared the siege at Bellweather Inn, and how will the survivors stop it?
 
-Answer: Ordan used a forged warning and a loosened road pin to create a secret route for Crown soldiers. Driving the pin home closes it.
+Answer: Ordan used a forged warning and a loosened road pin to create a secret route for Crown soldiers. He needed Caelan's road authority and Lysara's living seed to open its old locks. Driving the pin home closes it.
 
 Next hook: Can Caelan reach Harrowfen before Ordan uses the remaining fragment?
 
@@ -32,7 +32,7 @@ Mechanic: Medicine, siege priorities, and the immediate burden of a minor Oath.
 
 Active question: Can Caelan clear his name and catch Ordan before the courier escapes Harrowfen?
 
-Answer: The fragment pulls distant roads together and belongs to the larger World Nail that keeps distance stable.
+Answer: The fragment pulls distant roads together and belongs to the larger World Nail that keeps distance stable. Ordan forged the later evidence, but admits the impossible sealed order came from someone above him.
 
 Next hook: Why does Rook steal the fragment from Ordan on the Mileless Bridge?
 

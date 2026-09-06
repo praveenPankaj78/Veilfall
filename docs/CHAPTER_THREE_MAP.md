@@ -22,7 +22,9 @@ Player facing threat rhythm: Immediate at the gate, Rising through the investiga
 
 The fragment shortens the road to Harrowfen because it is pulling toward a larger piece near the town. The story states clearly that the town has not moved through time and there is only one Harrowfen.
 
-Ordan has arrived first with a forged royal order naming Caelan a traitor. Crown riders close from behind while Caelan must expose a mistaken Warden mark and get his wounded through the gate.
+Ordan has arrived first with Caelan's genuine route authority, a royal warrant, witness statements, planted evidence, and accusations based on the real cost of the escort. Renn committed crimes in Caelan's cloak and used valid Warden commands. Crown riders close from behind while Caelan must accept a meaningful condition to get his wounded through the gate. The opening grants only limited entry and does not clear his name.
+
+Chapter Two's closing choice changes the confrontation. Testimony lets Sable or Jory's papers challenge Ordan publicly but draws an assassin's bolt. The iron reacts to Harrowfen's hidden shard, proving the danger while frightening the guards. The public Oath pulls toward Ordan and allows Elene to test Caelan's promise.
 
 ## Investigation routes
 
@@ -32,7 +34,9 @@ The player chooses one concrete lead:
 - Defend Sable at the healing house so he can identify Ordan's personal guard.
 - Confront road broker Varris and learn how Ordan plans to open the Mileless Bridge.
 
-All routes converge on blue black royal ink, Ordan's forgery, and his burning safe room.
+All routes converge at Lantern Bridge, where Ordan must defend his actions before Harrowfen.
+
+Ordan argues that independent roads let smugglers, armies, and local rulers evade the Crown. He claims that central control will prevent more wars than Caelan's individual acts of protection. He also admits that Caelan's authority and Lysara's living seed unlocked Bellweather. He forged the later evidence, but the original sealed order came from someone more powerful.
 
 ## Watch house and relationship movement
 
@@ -44,17 +48,19 @@ On a bathhouse roof, Mara and Lysara disagree about saving people versus stoppin
 
 Ordan's soldiers attack among boats, stalls, and rope bridges. Renn impersonates Caelan in front of the town guard. When the fragment is uncovered, one market street briefly joins a snowy mountain road. This is the chapter's single controlled magical escalation.
 
+The dark coated thief is seeded before the ending. Every investigation route reveals that he stole one of Ordan's bridge keys. During the market fight, Caelan sees him rescue a child, steal another key, and follow Ordan across the roofs.
+
 The event demonstrates the threat before it is named: a joined fragment could give an army a direct road into any kingdom.
 
 ## Pursuit and answer
 
-Caelan exposes Renn, but Ordan steals the fragment and burns the canal bridges during his escape. The player chooses between rescue, a faster pursuit, or spending Oathfire to do both.
+Caelan exposes Renn in front of Harrowfen. Elene arrests him, the town rejects Ordan's warrant, and the guards turn against the hidden Crown soldiers. Ordan steals the fragment and burns the canal bridges during his escape. The player chooses between rescue, a faster pursuit, or spending Oathfire to do both.
 
 At the east arch, Lysara explains the World Nail in plain language. It is a greater ancient anchor that keeps distant places apart. Road pins are pieces of it.
 
 ## Closing movement
 
-Rook steals the fragment from Ordan on the Mileless Bridge. Caelan chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Each ending begins Chapter Four from a distinct position without introducing another mystery before the current one is answered.
+Caelan and Lysara stop Ordan from opening an army road into Harrowfen. This gives the player a clear victory before Rook steals the loose fragment from Ordan. Caelan then chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Each ending begins Chapter Four from a distinct position without introducing another mystery before the current one is answered.
 
 ## Art
 

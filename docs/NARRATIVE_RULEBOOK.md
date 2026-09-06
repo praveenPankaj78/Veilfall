@@ -6,6 +6,8 @@ The player is the protagonist. Prose uses second person and present tense. Choic
 
 The story may surprise the player, but it must not make them feel foolish for lacking information the protagonist should know.
 
+Trust the scene to show that a decision is difficult. Do not tell the player that there is no correct answer, that two characters are both right, or that every option is valid. Give each person an understandable desire, make each cost concrete, and let the player judge.
+
 ## Clarity before complexity
 
 Every scene has one immediate question. Every chapter has one main objective and one main mystery. A new proper noun appears only when the player can connect it to a person, place, threat, or desire already on the page.
