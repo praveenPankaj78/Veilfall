@@ -81,7 +81,7 @@ export const choiceAdvantages: Record<string, string> = {
   'c3-carry-children': 'Save two children and gain a safe way through the market crowd.',
   'c3-use-oath-sight': 'Expose Renn as the false captain in front of Harrowfen.',
   'c3-disarm-double': 'Stop Renn from warning Ordan’s bridge guards or giving another order.',
-  'c3-ask-future-warning': 'Learn where Ordan will join the two World Nail fragments.',
+  'c3-ask-future-warning': 'Learn where Ordan will join the two iron fragments.',
   'c3-cut-glove': 'Damage Ordan’s control glove so he cannot close the road behind him.',
   'c3-order-volley': 'Force Ordan onto a narrow, exposed crossing with fewer defenders.',
   'c3-save-healing-house': 'Bring every trapped patient out of the collapsing healing house.',

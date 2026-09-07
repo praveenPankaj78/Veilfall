@@ -66,12 +66,21 @@ export type StoryNode = {
     body: string;
   };
   introduces?: StatKey[];
+  introducesStoryTerms?: StoryTermKey[];
   art?: 'departure' | 'folded' | 'inn' | 'harrowfen';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
   nextChapter?: string;
 };
+
+export type StoryTermKey =
+  | 'Oathwarden'
+  | 'glass seed'
+  | 'mire hound'
+  | 'road pin'
+  | 'Mileless Bridge'
+  | 'World Nail';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -637,6 +646,7 @@ const originalNodes: Record<string, StoryNode> = {
       body: 'Caelan is an Oathwarden. When he makes a serious promise aloud and accepts its duty, the promise becomes a magical Oath. Creating one costs Resolve and gives him Oathfire. He can spend Oathfire to protect people or perform an impossible act. The Oath stays active until he fulfils it. Breaking it causes lasting harm.',
     },
     introduces: ['oathfire'],
+    introducesStoryTerms: ['Oathwarden'],
     body: (state) => [
       state.flags.includes('low-route')
         ? 'The floodplain falls behind, but muddy water follows the road in thin searching streams.'
@@ -701,6 +711,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Alderwood Rise',
     objective: 'Use the brief calm without forgetting the threat.',
     threat: 'Uneasy',
+    introducesStoryTerms: ['glass seed'],
     body: (state) => [
       state.flags.includes('mara-ahead')
         ? 'With Mara ranging ahead, the space beside you feels wrong. You keep looking toward each break in the trees and finding only rain.'
@@ -709,7 +720,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'The Oathfire tightens at the thought of hidden attackers. The power feels useful. The duty feels larger.'
         : 'A branch snaps somewhere beyond the ditch. Brann hears it too. His hand never leaves his reins.',
       'Lysara leaves the wagon and rides on your other side. Up close, her living coat smells faintly of crushed leaves after lightning. “You have looked at every shadow except the one inside my sleeve,” she says.',
-      'She shows you a seed of clear glass. It holds a curl of green light. “Proof that my queen agreed to peace. If the chest is lost, this may still stop a war. If our attackers know I carry it, they will stop aiming at the wagon.”',
+      'She shows you a glass seed, a clear shell holding a curl of green light. “Proof that my queen agreed to peace. If the chest is lost, this may still stop a war. If our attackers know I carry it, they will stop aiming at the wagon.”',
     ],
     choices: [
       {

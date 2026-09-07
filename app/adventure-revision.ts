@@ -11,6 +11,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       title: 'One dose remains',
       body: 'Medicine tracks the strong healing supplies carried by the group. Only one sealed dose survived the road. A later choice will show exactly who can receive it and what the dose can treat.',
     },
+    introducesStoryTerms: ['mire hound'],
     body: (state) => [
       state.flags.includes('chose-silver-road')
         ? 'The hidden road rises from the flood beneath your boots. Bellweather Inn stands ahead on a low hill, its windows bright through the rain.'
@@ -19,7 +20,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'Mara supports Joren while Brann leads the horses. Lysara carries the sealed treaty chest. Tivik has found one dose of medicine, but the rest of your supplies are soaked.'
         : 'Mara supports Joren while Brann leads the horses. Lysara carries the cracked treaty chest against her body. Tivik has found one dose of medicine, but the rest of your supplies are soaked.',
       'A pale beast moves through the water behind you. Its back is ridged like a crocodile, but its long front legs reach for the road stones. It smells the blood of your wounded.',
-      'An older woman opens the inn door and raises a crossbow. “Captain Vey, get them inside. The Crown men who attacked you are coming back.”',
+      'An older woman opens the inn door and raises a crossbow at the pale beast. “Mire hound,” she says, giving the creature a name. “Captain Vey, get them inside. The Crown men who attacked you are coming back.”',
     ],
   },
   'c2-threshold': {
@@ -36,7 +37,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           : state.flags.includes('c2-oath-found-child')
             ? 'Your Oath led Mara to Nilo before the mire hound could follow the smell of his reopened wound.'
             : state.flags.includes('c2-mara-led-entry')
-              ? 'Mara found firm stones beneath the flood and brought the whole escort to the door. The mire hound never came close enough to learn which traveller was hurt.'
+              ? 'The mire hound snaps at the rain where Mara’s false trail leaves the flood. It searches the wrong side of the yard, buying Maelin time to keep the doorway open for the wounded.'
               : 'The mire hound circles beyond the eaves. It kept its distance while learning your scent and the sound of your shield.',
       state.flags.includes('captured-attacker')
         ? 'Brann guards your wounded prisoner beside the last wagon. The man is conscious enough to watch Maelin, and she looks as if she recognises him.'
@@ -114,9 +115,11 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'Names Written Before Blood',
     location: 'Bellweather Inn, Upper Hall',
     objective: 'Use the guest ledger to identify the enemy plan.',
+    introducesStoryTerms: ['road pin'],
     body: () => [
       'The ledger shows six royal couriers stayed here during the last month. Five bought meals. Ordan Vale bought lamp oil, rope, butcher hooks, and every room facing the yard.',
       'A stable note says Ordan travelled with men wearing plain coats over royal armour. One page has been cut away, but the pressure of the missing writing remains on the sheet beneath it.',
+      'Two words remain deep enough to read: road pin. The note calls it an iron anchor beneath the inn and lists a crew to pull it at midnight.',
       'Mara leans close while you angle the page toward the lamp. Her damp hair brushes your cheek. “He planned for us before you chose a road,” she says. “He needed the captain and ambassador to arrive, not one exact route.”',
       'Below you, the pale beast strikes the back wall hard enough to shake dust from the beams.',
     ],
@@ -125,9 +128,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'Sabotage Beneath the Floor',
     location: 'Bellweather Inn, Cellar Steps',
     objective: 'Inspect the old road tunnel without letting the enemy inside.',
+    introducesStoryTerms: ['road pin'],
     body: () => [
       'The cellar smells of wet earth and split ale. Behind the barrels, fresh tool marks lead to a stone arch sealed with an iron bracket.',
-      'Cold air moves through the crack. For one heartbeat you hear gulls, although the nearest sea lies many days west. The loose pin has pulled the end of a coastal road against this tunnel.',
+      'Cold air moves through the crack. For one heartbeat you hear gulls, although the nearest sea lies many days west. Tivik points to words stamped into the bracket: ROAD PIN. He says it is the anchor holding this mile in place, though the buried iron lies deeper in the tunnel.',
       'Boot prints cross the mud beneath the arch. The attackers already used the shifted road to reach the inn unseen. A rope tied to the bracket runs deeper underground.',
       'Someone above knocks over a chair. You have seconds to mark what matters before returning to the common room.',
     ],
@@ -136,12 +140,13 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'The Man Who Took Crown Silver',
     location: 'Bellweather Inn, Pantry',
     objective: 'Make Sable reveal who ordered the ambush.',
+    introducesStoryTerms: ['road pin'],
     body: (state) => [
       state.flags.includes('captured-attacker')
         ? 'Sable sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
         : 'The wounded man gives his name as Sable. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
-      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Sable’s company to wound the escort, drive you to Bellweather, and pull the iron pin free during the confusion.',
-      '“He needed the captain’s road seal and the elf’s living seed under the same roof,” Sable says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
+      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Sable’s company to wound the escort, drive you to Bellweather, and pull free an iron anchor called a road pin during the confusion.',
+      '“He needed the captain’s road seal and the living magic in the elf’s glass seed under the same roof,” Sable says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
       'A second horn answers the first. Sable looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
     ],
   },
@@ -241,6 +246,13 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     },
     body: (state) => [
       'The black pin leans halfway out of a round stone socket. Lines cut into the floor point toward Greyhaven, Harrowfen, the western sea, and lands you do not know.',
+      state.flags.includes('c2-ledger-route')
+        ? 'This is the road pin named in Ordan’s midnight note. The iron anchor is far larger than the two words made you imagine.'
+        : state.flags.includes('c2-cellar-route')
+          ? 'This is the road pin Tivik identified on the cellar bracket. Now you can see the buried anchor that bracket was meant to protect.'
+          : state.flags.includes('c2-attacker-route')
+            ? 'This is the road pin Sable warned you about. His story becomes iron, rope, and soldiers pulling in front of you.'
+            : 'Tivik calls the iron a road pin and explains that it anchors this mile to the roads around it.',
       state.flags.includes('c2-trusted-below')
         ? 'Your companion’s chosen path avoided the falling western arch. You reach the chamber before the next enemy pull and keep the whole group on its feet.'
         : 'Loose stones fall behind you. The slower approach leaves the enemy chain tight before you reach the socket.',
@@ -359,6 +371,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       title: 'Each lead gives different proof',
       body: 'The archive can provide written proof. The healing house holds a living witness. Varris knows Ordan’s escape route. Every lead can move the hunt forward, but each gives you a different advantage.',
     },
+    introducesStoryTerms: ['Mileless Bridge'],
     body: () => [
       'Elene lets your wounded into a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him.',
       'The town archive holds the orders he filed. The healing house shelters a witness his soldiers may try to kill. A road broker named Varris sold him a route to the hidden Mileless Bridge.',
@@ -426,7 +439,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Ordan waits on the raised centre span with town guards and civilians watching from both banks. He does not deny Bellweather. He argues that independent roads let smugglers, foreign armies, and border lords escape the king’s protection.',
       'Elene hears him, but Ordan’s soldiers still control the bridge winch. Smoke is already rising from the old watch house behind him.',
       '“Your treaty delays one war,” he says. “A Crown road ends every border war before it begins. You command people for their safety, Captain. You bind them with promises. I am only willing to finish what men like you begin.”',
-      'He admits why he needed the escort. Your road authority and Lysara’s living seed unlocked the Bellweather pin. He forged Jory’s warning and the Harrowfen evidence, but not the sealed order that changed inside your case. “That was waiting for me,” he says. “Someone above my office wanted you on this road.”',
+      'He admits why he needed the escort. Your road authority and the living magic inside Lysara’s glass seed unlocked the Bellweather pin. He forged Jory’s warning and the Harrowfen evidence, but not the sealed order that changed inside your case. “That was waiting for me,” he says. “Someone above my office wanted you on this road.”',
     ],
   },
   'c3-evidence': {
@@ -578,6 +591,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'The World Nail',
     location: 'The Mileless Bridge',
     objective: 'Understand the threat, then choose your target.',
+    introducesStoryTerms: ['World Nail'],
     lesson: {
       title: 'The World Nail',
       body: 'Road pins are pieces of a greater ancient anchor called the World Nail. It keeps distant places apart. Joined fragments can briefly connect chosen roads. Ordan wants that power for an army.',

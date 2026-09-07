@@ -261,3 +261,5 @@ Before a scene is approved, confirm:
 15. Every branch flag is consumed under the exact name written by its choice.
 16. The journal reveals no conclusion before the playable scene proves it.
 17. Every revised route has an automated continuity check or an explicit route walkthrough record.
+18. The first use of an invented creature, place, object, power, faction, or title connects its plain description to its name. Add important terms to `StoryTermKey`, mark the node that introduces them, and let the game check every route.
+19. A consequence states what the chosen action achieved. The next scene must move forward by showing a new effect, reaction, danger, or complication instead of repeating that achievement.

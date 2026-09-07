@@ -179,6 +179,8 @@ function applyChoice(state, choice) {
   return {
     nodeId: resolveNext(choice, state),
     chapter: state.chapter,
+    chapterChoices: (state.chapterChoices ?? 0) + 1,
+    completedChapters: state.completedChapters ?? [],
     stats,
     relationships,
     contentPreference: state.contentPreference,
@@ -218,6 +220,7 @@ function stateKey(state) {
 }
 
 const chapterTwoKnownTerms = Object.keys(statLabels).filter((term) => term !== 'medicine');
+const chapterTwoKnownStoryTerms = ['Oathwarden', 'glass seed'];
 const chapterTwoBase = {
   ...initialState,
   nodeId: 'c2-arrival',
@@ -234,6 +237,11 @@ const chapterTwoBase = {
   },
 };
 const chapterThreeKnownTerms = Object.keys(statLabels);
+const chapterThreeKnownStoryTerms = [
+  ...chapterTwoKnownStoryTerms,
+  'mire hound',
+  'road pin',
+];
 const chapterThreeBase = {
   ...initialState,
   nodeId: 'c3-arrival',
@@ -250,6 +258,48 @@ const chapterThreeBase = {
     wayfire: 0,
   },
 };
+const storyTermRules = {
+  Oathwarden: {
+    use: /\bOathwarden\b/i,
+    introduction: /Caelan is an Oathwarden\. When he makes a serious promise aloud/i,
+  },
+  'glass seed': {
+    use: /\bglass seed\b/i,
+    introduction: /shows you a glass seed, a clear shell holding a curl of green light/i,
+  },
+  'mire hound': {
+    use: /\bmire hound\b/i,
+    introduction: /“Mire hound,” she says, giving the creature a name/i,
+  },
+  'road pin': {
+    use: /\broad pin\b/i,
+    introduction: /(?:words remain deep enough to read: road pin|stamped into the bracket: ROAD PIN|iron anchor called a road pin)/i,
+  },
+  'Mileless Bridge': {
+    use: /\bMileless Bridge\b/i,
+    introduction: /route to the hidden Mileless Bridge/i,
+  },
+  'World Nail': {
+    use: /\bWorld Nail\b/i,
+    introduction: /names the iron at last\. “World Nail,”/i,
+  },
+};
+for (const [id, node] of Object.entries(nodes)) {
+  const sampleState = id.startsWith('c2-') ? chapterTwoBase : id.startsWith('c3-') ? chapterThreeBase : initialState;
+  const introductionText = [
+    node.lesson?.title,
+    node.lesson?.body,
+    ...node.body(sampleState),
+  ].filter(Boolean).join(' ');
+  for (const term of node.introducesStoryTerms ?? []) {
+    const rule = storyTermRules[term];
+    if (!rule) {
+      failures.push(`Story term ${term} introduced in ${id} is missing from the controlled term registry`);
+    } else if (!rule.introduction.test(introductionText)) {
+      failures.push(`Story term ${term} is not plainly introduced in ${id}`);
+    }
+  }
+}
 const retiredPlotPhrases = [
   /eleven years/i,
   /other versions?/i,
@@ -317,8 +367,29 @@ const maraEntryThreshold = renderedBody('c2-threshold', {
   ...chapterTwoBase,
   flags: ['c2-mara-led-entry'],
 });
-if (!/never came close enough/i.test(maraEntryThreshold) || /learn the smell of your wounded/i.test(maraEntryThreshold)) {
-  failures.push('Mara’s successful entry is not preserved at the threshold');
+if (!/searches the wrong side of the yard/i.test(maraEntryThreshold)
+  || !/buying Maelin time/i.test(maraEntryThreshold)
+  || /Mara found firm stones|never came close enough/i.test(maraEntryThreshold)) {
+  failures.push('Mara’s successful entry does not advance to a new threshold consequence');
+}
+const roadPinDiscoveryChecks = [
+  ['c2-ledger', /words remain deep enough to read: road pin/i],
+  ['c2-cellar', /stamped into the bracket: ROAD PIN/i],
+  ['c2-attacker', /iron anchor called a road pin/i],
+];
+for (const [nodeId, expected] of roadPinDiscoveryChecks) {
+  if (!expected.test(renderedBody(nodeId, chapterTwoBase))) {
+    failures.push(`${nodeId} sets road pin knowledge without introducing the term`);
+  }
+}
+const roadPinCallbackChecks = [
+  ['c2-ledger-route', /named in Ordan’s midnight note/i],
+  ['c2-cellar-route', /identified on the cellar bracket/i],
+  ['c2-attacker-route', /Sable warned you about/i],
+];
+for (const [flag, expected] of roadPinCallbackChecks) {
+  const chamber = renderedBody('c2-road-pin', { ...chapterTwoBase, flags: [flag] });
+  if (!expected.test(chamber)) failures.push(`The road pin chamber forgets how ${flag} introduced the term`);
 }
 const cellarRouteBell = renderedBody('c2-bell', {
   ...chapterTwoBase,
@@ -557,14 +628,16 @@ for (const [flag, nodeId, expected] of costlyPayoffChecks) {
   if (!expected.test(payoff)) failures.push(`Stored advantage ${flag} has no payoff in ${nodeId}`);
 }
 const stack = [
-  { state: initialState, knownTerms: [] },
+  { state: initialState, knownTerms: [], knownStoryTerms: [] },
   {
     state: { ...chapterTwoBase, flags: ['chose-silver-road', 'captured-attacker'] },
     knownTerms: chapterTwoKnownTerms,
+    knownStoryTerms: chapterTwoKnownStoryTerms,
   },
   {
     state: { ...chapterTwoBase, flags: ['chose-high-ground'] },
     knownTerms: chapterTwoKnownTerms,
+    knownStoryTerms: chapterTwoKnownStoryTerms,
   },
   {
     state: {
@@ -579,6 +652,7 @@ const stack = [
       },
     },
     knownTerms: chapterTwoKnownTerms,
+    knownStoryTerms: chapterTwoKnownStoryTerms,
   },
   {
     state: {
@@ -586,6 +660,7 @@ const stack = [
       flags: ['c2-saved-attacker', 'c2-saved-nilo', 'c2-oath-expose-crown'],
     },
     knownTerms: chapterThreeKnownTerms,
+    knownStoryTerms: chapterThreeKnownStoryTerms,
   },
   {
     state: {
@@ -600,6 +675,7 @@ const stack = [
       },
     },
     knownTerms: chapterThreeKnownTerms,
+    knownStoryTerms: chapterThreeKnownStoryTerms,
   },
 ];
 const visited = new Set();
@@ -616,7 +692,11 @@ while (stack.length && visited.size < 100000) {
   const current = stack.pop();
   const state = current.state;
   const knownTerms = Array.from(new Set([...current.knownTerms, ...(nodes[state.nodeId]?.introduces ?? [])]));
-  const key = `${stateKey(state)}|known:${knownTerms.slice().sort((a, b) => a.localeCompare(b)).join(',')}`;
+  const knownStoryTerms = Array.from(new Set([
+    ...current.knownStoryTerms,
+    ...(nodes[state.nodeId]?.introducesStoryTerms ?? []),
+  ]));
+  const key = `${stateKey(state)}|known:${knownTerms.slice().sort((a, b) => a.localeCompare(b)).join(',')}|story:${knownStoryTerms.slice().sort((a, b) => a.localeCompare(b)).join(',')}`;
   if (visited.has(key)) continue;
   visited.add(key);
 
@@ -652,6 +732,29 @@ while (stack.length && visited.size < 100000) {
     }
   }
 
+  const activeStoryText = [
+    node.kicker,
+    node.title,
+    node.location,
+    node.objective,
+    node.lesson?.title,
+    node.lesson?.body,
+    ...node.body(state),
+    ...knownTruths(state),
+    ...majorConsequences(state),
+    ...node.choices.flatMap((choice) => [
+      choice.label,
+      choice.detail,
+      choice.advantage ?? '',
+      choice.result,
+    ]),
+  ].filter(Boolean).join(' ');
+  for (const [term, rule] of Object.entries(storyTermRules)) {
+    if (rule.use.test(activeStoryText) && !knownStoryTerms.includes(term)) {
+      failures.push(`Node ${node.id} uses ${term} before it is introduced on this route`);
+    }
+  }
+
   if (node.final) {
     endings.add(node.id);
     if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
@@ -674,7 +777,7 @@ while (stack.length && visited.size < 100000) {
       failures.push(`Choice ${choice.id} reaches missing node: ${next.nodeId}`);
       continue;
     }
-    stack.push({ state: next, knownTerms });
+    stack.push({ state: next, knownTerms, knownStoryTerms });
   }
 }
 

@@ -887,7 +887,7 @@ export default function Home() {
             <div>
               <p className="eyebrow">The Ember Oath</p>
               <h2>Caelan Vey</h2>
-              <p>Oathwarden and road captain</p>
+              <p>Road captain who binds magic to promises</p>
             </div>
           </div>
 
