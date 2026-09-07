@@ -132,6 +132,10 @@ Seed an anticipated place or person before arrival through one concrete detail. 
 
 ## Protagonist voice
 
+Veilfall normally uses close second person. Describe the world through what the current protagonist notices, remembers, feels, fears, wants, or deliberately refuses to feel. Neutral description is useful for fast action and clear geography, but major discoveries and decisions should pass through the protagonist’s mind before the player chooses.
+
+Do not force an opinion that belongs to the player. Involuntary reactions, professional habits, memories, conflicting impulses, and uncertainty can reveal character without deciding the moral answer. The narrator cannot state a fact merely because the author knows it. Show who told the protagonist, what they observed, or what evidence allowed the conclusion.
+
 ### Caelan
 
 Concrete, protective, disciplined. He notices responsibility before beauty, then notices beauty when it interrupts discipline. Choices sound like commitments.
@@ -263,3 +267,5 @@ Before a scene is approved, confirm:
 17. Every revised route has an automated continuity check or an explicit route walkthrough record.
 18. The first use of an invented creature, place, object, power, faction, or title connects its plain description to its name. Add important terms to `StoryTermKey`, mark the node that introduces them, and let the game check every route.
 19. A consequence states what the chosen action achieved. The next scene must move forward by showing a new effect, reaction, danger, or complication instead of repeating that achievement.
+20. Every non-obvious fact in the protagonist’s thoughts has an observable source on that route.
+21. Most scenes, especially decisions and revelations, include a close point of view beat rather than only external stage direction.

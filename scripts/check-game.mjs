@@ -331,6 +331,18 @@ for (const [id, node] of Object.entries(nodes)) {
   }
 }
 
+const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|understand|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
+for (const chapter of [1, 2, 3]) {
+  const chapterNodes = nodeOrder.filter((id) => chapter === 1
+    ? !id.startsWith('c2-') && !id.startsWith('c3-')
+    : id.startsWith(`c${chapter}-`));
+  const sampleState = chapter === 1 ? initialState : chapter === 2 ? chapterTwoBase : chapterThreeBase;
+  const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
+  if (closeNodes.length / chapterNodes.length < 0.6) {
+    failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
+  }
+}
+
 function renderedBody(nodeId, state) {
   return nodes[nodeId].body(state).join(' ');
 }
@@ -371,6 +383,11 @@ if (!/searches the wrong side of the yard/i.test(maraEntryThreshold)
   || !/buying Maelin time/i.test(maraEntryThreshold)
   || /Mara found firm stones|never came close enough/i.test(maraEntryThreshold)) {
   failures.push('Mara’s successful entry does not advance to a new threshold consequence');
+}
+const urgentLeads = renderedBody('c3-triage', chapterThreeBase);
+if (!/Elene explains the third lead/i.test(urgentLeads)
+  || !/watchm(?:a|e)n saw Ordan pay Varris/i.test(urgentLeads)) {
+  failures.push('Caelan learns about Varris without an identified source at the Chapter Three leads');
 }
 const roadPinDiscoveryChecks = [
   ['c2-ledger', /words remain deep enough to read: road pin/i],

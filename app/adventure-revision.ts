@@ -19,6 +19,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('treaty-safe')
         ? 'Mara supports Joren while Brann leads the horses. Lysara carries the sealed treaty chest. Tivik has found one dose of medicine, but the rest of your supplies are soaked.'
         : 'Mara supports Joren while Brann leads the horses. Lysara carries the cracked treaty chest against her body. Tivik has found one dose of medicine, but the rest of your supplies are soaked.',
+      'You count the distance to the door, then count the people who cannot cross it quickly. Shelter is close enough to touch, which only makes the danger behind you feel crueler.',
       'A pale beast moves through the water behind you. Its back is ridged like a crocodile, but its long front legs reach for the road stones. It smells the blood of your wounded.',
       'An older woman opens the inn door and raises a crossbow at the pale beast. “Mire hound,” she says, giving the creature a name. “Captain Vey, get them inside. The Crown men who attacked you are coming back.”',
     ],
@@ -30,6 +31,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     threat: 'Rising',
     body: (state) => [
       'The woman keeps the door open while your escort gathers beneath the narrow eaves. Her name is Maelin Bellweather. She has run this inn for thirty years and looks strong enough to throw out anyone who doubts it.',
+      'Being expected should make you feel safer. Instead, the fact that Maelin knows your face and name makes the skin between your shoulders tighten.',
       state.flags.includes('c2-faced-creature')
         ? 'The mire hound remains in the flooded yard, fixed on the blood running down your shield. Your choice drew it away from every stretcher.'
         : state.flags.includes('c2-ordered-entry')
@@ -62,6 +64,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'The helpers repeat the tasks you gave them. For once, the room answers danger with clear reports instead of shouting.'
         : 'People move between the beds without a plan until Mara begins assigning clean cloth and water.',
       'The sealed medicine can save only one of them from the worst danger. Water, clean cloth, and steady hands must help the others.',
+      'You search for the choice that saves everyone and find none. That familiar failure settles behind your ribs before you force yourself to study what each person will lose.',
       state.flags.includes('c2-carried-nilo')
         ? 'Because you carried Nilo directly to the fire, Maelin stopped the deepest bleeding early. He will survive without the bottle, although his leg remains in danger.'
         : 'Nilo lost more blood while the entrance was secured. He will live through the hour, but delaying treatment again may kill him.',
@@ -98,6 +101,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Jory reached Bellweather through a shortcut that should begin two days east. Maelin later opened the stable door and saw a moonlit coast that lies many days west. The places did not travel through time. The damaged road pulled their entrances beside the inn.',
       'Maelin’s husband, Dain, vanished through that stable door during the first disturbance three weeks ago. Since then, she has lit a lamp at his place every night and watched each strange road in case one brings him home.',
       'Jory died before he could explain what lies beneath the cellar or why the forged warning demanded your arrival. His message proves only that someone prepared the inn and expected your escort before you chose a route.',
+      'You understand why Maelin keeps lighting Dain’s lamp. Understanding does not make it easier to admit that your arrival may have brought the danger back to her door.',
       'Maelin lays Jory’s broken arrow on the table. A silver crown is stamped into its head. “Help me stop whoever is coming,” she says, looking at Dain’s lamp. “Then we learn what they wanted from you.”',
     ],
   },
@@ -108,6 +112,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'Brann can hold the doors for a short time. That gives you one chance to investigate.',
       'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show what the enemy changed beneath the inn. Sable may identify the officer who paid him.',
+      'Your instinct is to split the group and take all three leads. One look at the wounded and the dark windows tells you that would leave nobody strong enough for the attack.',
       'You cannot search every lead before dark. Your choice will decide what advantage you carry into the siege.',
     ],
   },
@@ -132,6 +137,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'The cellar smells of wet earth and split ale. Behind the barrels, fresh tool marks lead to a stone arch sealed with an iron bracket.',
       'Cold air moves through the crack. For one heartbeat you hear gulls, although the nearest sea lies many days west. Tivik points to words stamped into the bracket: ROAD PIN. He says it is the anchor holding this mile in place, though the buried iron lies deeper in the tunnel.',
+      'Your eyes say cellar. Your ears say coast. You hold both facts in your mind instead of trying to invent a reason one must be false.',
       'Boot prints cross the mud beneath the arch. The attackers already used the shifted road to reach the inn unseen. A rope tied to the bracket runs deeper underground.',
       'Someone above knocks over a chair. You have seconds to mark what matters before returning to the common room.',
     ],
@@ -146,6 +152,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'Sable sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
         : 'The wounded man gives his name as Sable. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
       'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Sable’s company to wound the escort, drive you to Bellweather, and pull free an iron anchor called a road pin during the confusion.',
+      'Anger comes clean and hot. Ordan turned every person you protected into a tool for reaching something under the inn, and he counted on you behaving exactly like yourself.',
       '“He needed the captain’s road seal and the living magic in the elf’s glass seed under the same roof,” Sable says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
       'A second horn answers the first. Sable looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
     ],
@@ -176,6 +183,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'The two strokes match the signal recorded in Ordan’s stable note.'
           : 'Brann calls out movement at the front while Mara hears wood breaking behind the pantry. The two rings have opened two sides of the attack.',
       'Royal soldiers rush the front yard under dark cloaks. At the back wall, the pale mire hound climbs from the flooded ditch and drives its claws into the timber.',
+      'The double attack stops feeling like chaos once you see its purpose. That clarity steadies you: the wounded are bait, and the real target lies below.',
       'A soldier in the yard shouts for the others to ignore the wounded and reach the cellar. The front assault is cover. Whatever they came to take is under the inn.',
     ],
   },
@@ -206,6 +214,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('c2-ledger-route')
           ? 'Brann can hold the common room. You must go below. The rope listed among Ordan’s supplies now runs through the broken cellar arch and tightens around something buried in the road.'
           : 'Brann can hold the common room. You must go below. Sable’s warning leads you to the broken cellar arch, where an enemy chain is pulling at something buried in the road.',
+      'Leaving the wounded above fights every protective instinct you have. Taking the wrong companion below could cost just as many lives.',
       state.flags.includes('c2-no-fight')
         ? 'The shield wall remains intact behind you. Brann has enough guards to hold the wounded line until you return.'
         : state.flags.includes('c2-shielded-descent')
@@ -234,6 +243,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'Jory’s route and your map agree on one narrow turn. You recognise it before the moonlit beach can pull you away from the true tunnel.'
           : 'The joined roads look equally solid, so each step must be tested before the group follows.',
       'The mire hound drops into the tunnel behind you. Ahead, three soldiers drag a chain attached to a black iron spike as tall as your arm.',
+      'Relief comes from finally seeing the problem. Fear follows when you realise how little stone remains between the moving iron and a road torn completely apart.',
     ],
   },
   'c2-road-pin': {
@@ -258,6 +268,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : 'Loose stones fall behind you. The slower approach leaves the enemy chain tight before you reach the socket.',
       'Each pull on the enemy chain moves the pin another finger width. When it shifts, the beach beside you becomes a mountain pass for a breath, then returns. Distance is breaking around the chamber.',
       'Two fresh lines glow around the socket. One answers your Warden seal. The other answers the green light in Lysara’s injured hand. Ordan needed both of you here before his tools could move the iron.',
+      'The truth feels like a hand closing around your throat. Ordan did not chase you into this trap despite your duty. He used your duty to lead you here.',
       'A crown has been scratched into the pin. Beneath it are Ordan’s initials and a fresh map line pointing east toward Harrowfen.',
       'The pin does not need to be understood in every detail. It needs to be driven home before the tunnel tears apart.',
     ],
@@ -268,6 +279,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Reseat the road pin before the tunnel collapses.',
     body: () => [
       'The soldiers pull from the far side while you push. The iron is cold enough to numb your palms. Stone splits above your head and the mire hound charges through the falling dust.',
+      'Pain makes every option look slower than it is. You force your attention away from the falling roof and onto the resources still under your control.',
       'You can use command to time everyone’s effort, strength to force the pin down, a new Oath to bind your promise to the road, or a wagon axle as a hammer. Each method solves the same urgent problem at a different cost.',
       'The last strike will decide whether Bellweather remains connected to Eastmere or becomes a doorway for every army that learns the trick.',
     ],
@@ -280,6 +292,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       'The pin slams into its socket. The beach, mountain, and distant rain vanish. Only the proper Eastmere tunnel remains.',
       'A corner of the socket has broken away. The fragment hums when you face east. Ordan escaped with the missing map page, but he left his orders, his crown mark, and proof that he used you and Lysara to unlock the pin.',
+      'You want to carry every scrap of proof. Weight, wounded people, and the enemy ahead reduce that wish to one decision.',
       state.flags.includes('c2-saved-nilo')
         ? 'Nilo keeps his leg, but Lysara’s hand remains bound and Sable may not survive the road to Harrowfen.'
         : state.flags.includes('c2-saved-lysara')
@@ -300,6 +313,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c2-saved-attacker')
         ? 'You leave Bellweather with Jory’s false warning, Ordan’s supply record, and Sable awake enough to name him. The proof is plain enough for any guard to understand.'
         : 'You leave Bellweather with Jory’s false warning and Ordan’s supply record. Sable fades in and out of fever, so Mara guards every breath he may still use to testify.',
+      'You know written proof can be dismissed and a wounded witness can be silenced. Carrying both still feels stronger than asking Harrowfen to trust your name alone.',
       'Behind you, Maelin boards the broken wall while Brann protects the wounded. Ahead, Harrowfen’s towers rise beyond a field that should lead to three more days of road.',
       'Maelin leaves Dain’s lamp in the eastern window. She no longer waits beside it. She has given you his road journal and asked you to bring back an answer.',
       'The fragment in your pack pulls toward the town. At the eastern gate, royal archers turn their bows toward you. A silver gloved courier stands behind them.',
@@ -311,6 +325,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Carry the broken road pin fragment safely into Harrowfen.',
     body: () => [
       'The iron fragment is heavy in your pack and warm whenever you face east. Lysara wraps it in living cloth, but its pull still shortens the road to Harrowfen.',
+      'You feel its direction through every step. Proof should not be able to guide you toward the person who wants it back, yet that is exactly what the iron is doing.',
       'Mara checks the trees for Ordan’s scouts. “He wanted that piece,” she says. “He will not stop because we won one room beneath an inn.”',
       'Harrowfen appears after a single mile. Its gate closes, and royal archers raise bows above the canal wall.',
     ],
@@ -335,6 +350,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     },
     body: (state) => [
       'Harrowfen should be three days east of Bellweather. You reach it after one mile because the fragment in your pack pulls toward something inside the town.',
+      'The shortened journey gives you no time to recover. Part of you is grateful for that. Exhaustion is easier to manage than the thought of Ordan preparing another town while you rest.',
       'The city rises from black canals on timber walks and stone islands. Rope bridges join tall houses painted blue, red, and gold. Market boats crowd the water below the gate.',
       'Royal archers aim down at you. Ordan Vale stands on the wall in silver gloves. He holds the real route authority you signed in Greyhaven beside a royal warrant accusing you of using that mission to attack Bellweather and steal Crown iron.',
       state.flags.includes('c2-chose-testimony')
@@ -355,6 +371,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Earn limited entry without surrendering your wounded to Ordan.',
     body: (state) => [
       'Gate Captain Elene comes through the small door with twelve guards. The route authority is genuine. You signed it. Ordan has attached witness statements claiming a captain in your red cloak robbed the archive, struck two residents, and used correct Warden commands.',
+      'Seeing your real signature beneath his lies feels worse than any crude forgery. Your own authority has become the weapon pointed at your people.',
       state.flags.includes('treaty-damaged')
         ? 'He also displays the damaged treaty pages and calls them proof that you sacrificed peace to seize the road weapon. The damage came from your attempt to save lives, but frightened citizens cannot see that choice from a piece of torn paper.'
         : 'The treaty chest remains sealed, which weakens one charge. Ordan answers by naming the people hurt during the ambush and claiming your Oathfire caused the broken road.',
@@ -373,9 +390,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     },
     introducesStoryTerms: ['Mileless Bridge'],
     body: () => [
-      'Elene lets your wounded into a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him.',
-      'The town archive holds the orders he filed. The healing house shelters a witness his soldiers may try to kill. A road broker named Varris sold him a route to the hidden Mileless Bridge.',
-      'Every lead matters, but Ordan is already moving. Choose the one that best matches what you need: written proof, a living witness, or his escape route.',
+      'Elene lets your wounded into a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him. Relief should follow the closing gate. Instead, you keep thinking about how easily he reached the lining of your cloak.',
+      'The town archive holds the orders he filed. The healing house shelters Sable, the witness his soldiers may try to kill. Elene explains the third lead: one of her watchmen saw Ordan pay Varris, a road broker, for a route to the hidden Mileless Bridge.',
+      'You sort the choices by what they can give you. The archive offers proof, Sable offers a living accusation, and Varris offers the road Ordan may use to escape. You cannot reach all three before he moves again.',
     ],
   },
   'c3-archive': {
@@ -385,6 +402,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Recover the records Ordan tried to steal.',
     body: () => [
       'The archive is built above the canal on black oak posts. Inside, a clerk is feeding route records into a stove while a masked soldier watches the door.',
+      'Your attention goes first to the open window, then the soldier’s sword hand, then the page curling in the heat. Proof can die here without spilling blood.',
       'Ordan requested maps of the Mileless Bridge, the east gate winch, and the oldest road marker in the market. Those three locations form a straight escape line across town.',
       'The soldier reaches for another page. If he burns it, Ordan can still run, but you will lose the proof that royal money funded the attack.',
     ],
@@ -400,6 +418,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'The medicine kept his mind clear enough to name both intruders as Ordan’s personal guards.'
         : 'His fever is worsening. He can identify one intruder before his strength fails, which makes the next few breaths important.',
       'Healer Iven shouts for you to protect the children in the next room. Sable shouts that the man outside is Ordan’s personal guard. Both claims matter, and the attackers know you cannot stand in two doorways.',
+      'For one sickening moment, the two doors become the patrol you failed years ago. You push the memory aside before it can choose for you.',
       'Across the canal, a silver gloved figure watches from a blue balcony. Ordan wants to see whether his witness dies.',
     ],
   },
@@ -411,6 +430,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'Varris sells smuggler paths from a shop hung with painted doors. Most are ordinary maps disguised as fortune telling. One is not.',
       'A brass plate shows the Mileless Bridge, an ancient crossing hidden behind Harrowfen’s east market. Varris sold Ordan the opening word and two brass keys. One key vanished from Ordan’s coat before he left the shop.',
+      'You dislike how quickly Varris smiles and how carefully he avoids looking at the iron in your pack. Distrust is useful, but only if it leaves enough room to hear the truth.',
       'Varris remembers the thief: a young man in a dark coat who asked whether the bridge reached places that did not want visitors. He paid for a copied route with a purse Varris had not yet noticed was missing.',
       '“He paid in royal silver,” Varris says. “Then he threatened to cut out my tongue.” A knife moves behind the curtain. Ordan left someone to make that threat real.',
     ],
@@ -439,6 +459,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Ordan waits on the raised centre span with town guards and civilians watching from both banks. He does not deny Bellweather. He argues that independent roads let smugglers, foreign armies, and border lords escape the king’s protection.',
       'Elene hears him, but Ordan’s soldiers still control the bridge winch. Smoke is already rising from the old watch house behind him.',
       '“Your treaty delays one war,” he says. “A Crown road ends every border war before it begins. You command people for their safety, Captain. You bind them with promises. I am only willing to finish what men like you begin.”',
+      'The comparison strikes closer than you want it to. You have used rank and Oaths to make frightened people obey. The difference, you believe, is that your promises also bind you. Ordan’s promises bind everyone except him.',
       'He admits why he needed the escort. Your road authority and the living magic inside Lysara’s glass seed unlocked the Bellweather pin. He forged Jory’s warning and the Harrowfen evidence, but not the sealed order that changed inside your case. “That was waiting for me,” he says. “Someone above my office wanted you on this road.”',
     ],
   },
@@ -455,6 +476,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'Harrowfen’s residents block the royal soldiers from following Ordan. The people he dismissed as a necessary cost now buy you a clear path to the fire.'
           : 'Elene repeats Ordan’s confession and strips him of authority in Harrowfen. His own escort hesitates, forcing him to flee without the town guard.',
       'Smoke rolls from the watch house roof. Ordan’s men have set the building on fire and barred the lower door to destroy the records behind his argument.',
+      'Your mind begins counting again: one bleeding boy, people above the fire, one fleeing enemy. The habit keeps panic useful, but it cannot make three urgent duties fit into one pair of hands.',
       'The courier boy carries a satchel of orders. People are trapped in the rooms above him. Ordan is escaping across the roofs. You can save only one advantage before the flames spread.',
     ],
   },
@@ -470,6 +492,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'The gate horns sound through the smoke. With every ordinary road closed, Ordan must reach the east arch on foot.'
           : 'Fire has taken the final route order. You know Ordan is heading east, but not how many guards wait there.',
       'One order also names a corrupt Warden officer called Captain Renn. Renn carries one of your spare red cloaks and has been told to commit the attack in your name.',
+      'You remember issuing that cloak to a young guard during a winter patrol. The thought of Renn wearing it turns the smoke bitter in your mouth.',
       'The ceiling cracks. You have time to take the courier list, free a bound town scout, or destroy the bridge opening word before jumping to the canal walk.',
     ],
   },
@@ -502,6 +525,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'Mara’s guards move the wounded while Lysara keeps the iron covered. Your divided group reaches the market without surrendering either duty.'
           : 'The wounded enter the market behind you, forcing Mara and Lysara to divide their attention.',
       'At the centre of the market, Captain Renn wears your red cloak and shouts orders in your name. Town guards hesitate because they cannot tell which captain is the traitor.',
+      'Hearing your commands in his voice feels like watching someone move your hand toward an innocent throat. Anger urges you forward. The civilians between you force it into patience.',
       'High above them, the dark coated thief swings from a dye merchant’s rope. He catches a falling child with one arm, sets her on a balcony, and removes a silver key from an Ordan guard with the other. As he swings past Mara’s shield, you see a fine wire slip beneath the fragment’s leather strap. Then he follows Ordan across the roofs.',
       'The fragment tears through its wrapping. For a few seconds, one market street connects to a snowy mountain pass. Cold wind and snow burst between the stalls. The road returns when Mara slams the fragment under a shield.',
       'Now the danger is clear. If Ordan joins this fragment to the larger piece near the bridge, he can pull an army road into Harrowfen.',
@@ -520,6 +544,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'The children’s mother opens a narrow boat passage beside the well. Mara uses it to move your group behind Renn’s line.'
           : 'Civilians remain between the two captains, giving Renn cover and making every attack dangerous.',
       'He is an ordinary man, frightened and ambitious, using your uniform to make every crime look like your order.',
+      'Part of you expected a monster. The ordinary fear in Renn’s face is worse because you have seen good Wardens wear the same look before making a terrible choice.',
       'Ordan circles toward the well while everyone watches the two captains. You can confront Renn alone, trust Mara to expose the cloak’s hidden mark, or use your Oath to make a promise only the real captain would keep.',
     ],
   },
@@ -531,6 +556,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'His orders say the Mileless Bridge leads to many borders. With the joined iron pieces, Ordan could move soldiers across the world without crossing the lands between them.',
       'Elene’s guards have already turned on Ordan’s soldiers. The town bells begin to declare the royal warrant false. Your name is not clean everywhere, but here the people have seen what kind of captain you chose to be.',
+      'Relief tries to reach you and fails. Clearing your name in one town means little while Ordan still carries the power to put an army inside another.',
       'Renn’s courage breaks when the town guards recognise your old cloak. He draws anyway. “Ordan promised the Wardens would command every road in the kingdom,” he says.',
     ],
   },
@@ -540,6 +566,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Stop Ordan escaping with the iron fragment.',
     body: (state) => [
       'Ordan holds the fragment in one silver glove and a small bridge key in the other. He is lean, clean shaven, and calm enough to look harmless until he smiles.',
+      'You finally understand what unsettles you about that smile. Ordan never looks surprised by suffering. He sees it as a number already included in his plan.',
       state.flags.includes('c3-double-disarmed')
         ? 'Renn never sent his warning. Only two bridge guards reach Ordan before Harrowfen’s soldiers close the market behind them.'
         : state.flags.includes('c3-bridge-warning')
@@ -572,6 +599,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Prepare for the Mileless Bridge and follow Ordan.',
     body: (state) => [
       'Beyond the arch, an ancient bridge curves into mist. Its first span hangs over Harrowfen’s canal. Farther spans appear beneath unfamiliar skies, each touching a distant border.',
+      'Awe catches you before fear does. Then your captain’s mind fills every distant arch with soldiers, refugees, and towns that would never see an invasion coming.',
       'The bridge does not create other times or other people. It joins faraway places. Ordan can use the fragment to choose which border touches the next arch.',
       state.flags.includes('c3-burned-future-room')
         ? 'Because you burned the opening word, Ordan must stop at the arch and force a brass key into its lock. The delay lets your group reach the bridge before he can disappear.'
@@ -598,6 +626,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     },
     body: (state) => [
       'Lysara names the iron at last. “World Nail,” she says. “Old stories say it fixed distance in place when the world was young. These road pins are broken pieces of it.”',
+      'The name is grander than the iron in front of you. Its meaning is not. Whoever controls these pieces can decide which homes a war reaches first.',
       state.flags.includes('c3-oath-trail')
         ? 'Your Oath leads the group across the correct spans without delay. You reach Ordan before the hidden soldiers can finish forming ranks.'
         : 'The moving spans cost precious time. The first rank of hidden soldiers is already crossing when you reach Ordan.',
@@ -624,6 +653,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Stop the unknown thief escaping with the World Nail fragment.',
     body: (state) => [
       'You leave Ordan’s path and race across a narrow arch above a red desert. The thief glances back, surprised that you can keep up.',
+      'Part of you hates abandoning Ordan. The rest knows that a captured courier matters less than the piece of iron changing hands in front of you.',
       state.flags.includes('c3-bridge-warning')
         ? 'Renn’s warning returns to you: this thief opposes Ordan, but wants the iron for a reason of his own.'
         : '“Captain,” the thief calls, “I stole it from the villain. That usually earns applause.”',

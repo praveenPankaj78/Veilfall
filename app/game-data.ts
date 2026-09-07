@@ -265,6 +265,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'The lead mare keeps working her tongue against the strange oil. Before you can trace the smell, a grey horse trots through the gate from the eastern road.'
         : 'A grey horse trots through the gate from the eastern road, mist lifting from its flanks.',
       'Mara Renn swings down before the animal stops. Rain has darkened her hair and drawn her green riding coat close across her shoulders. She carries her bow, a stolen pear, and the annoyed look that usually means she has found trouble.',
+      'Seeing her safely back eases a tightness you had refused to notice. The relief lasts only until you see how closely she is watching the road behind her.',
       'You have known her since both of you were children stealing nails from your father’s forge. She knows your silences well enough to sort anger from fear, which is useful in a scout and dangerous in a friend.',
       '“The ridge is clear,” she says. “The low road has water over the stones already. Also, someone moved the third mile marker during the night. It points back at Greyhaven.” She bites the pear. “Still want the easy duty?”',
     ],
@@ -313,6 +314,7 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('checked-treaty')
         ? 'You show him the fresh scrape. Tivik touches it once and smells his fingertip. “File mark. Someone tested how much iron remained.”'
         : 'The senior guard calls him nervous. Tivik raises the hammer and asks whether nervous people usually volunteer to stand beneath a loaded wagon.',
+      'Rank offers an easy answer: order him aside and leave on time. Your instincts keep returning to the fresh damage on a wagon that was safe last night.',
       'The gate clock sounds the quarter hour. Delay risks the storm. Leaving as planned risks the wheel failing where the road narrows.',
     ],
     choices: [
@@ -363,6 +365,7 @@ const originalNodes: Record<string, StoryNode> = {
         : state.flags.includes('steady-axle')
           ? 'Her attention settles first on Tivik, then the wheel, then you. She thanks Tivik in his own language before checking the repaired axle herself.'
           : 'Her attention settles first on Tivik, then the wheel, then you. She tests the wagon step with one boot and glances toward the heavy rear wheel.',
+      'You expected a sheltered diplomat. Her careful inspection makes you revise that judgment before either of you has spoken.',
       '“Captain Vey. I was told you keep promises longer than kings keep treaties.”',
     ],
     choices: [
@@ -460,6 +463,7 @@ const originalNodes: Record<string, StoryNode> = {
           : 'You must judge the routes with only Mara’s warning and the sky above you.',
       'The low road is faster, already flooding, and written on the altered page. The ridge is slower, exposed to lightning, and clear when Mara crossed it. A full inspection might uncover sabotage, but the delay could trap the escort outside both safe routes.',
       'Lysara rests one hand on the living wood chest. “My people can survive another winter. The soldiers gathering at our border may not allow them to.”',
+      'You feel every guard waiting for certainty from you. What you actually have is a changed order, worsening weather, and three ways to be wrong.',
       'The gate chains groan behind you. Once the heavy doors close for the storm, Greyhaven will not open them again before morning.',
     ],
     choices: [
@@ -506,6 +510,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'Tivik’s new pin holds when the left wheel drops into a hidden rut.'
         : 'The rear wheel strikes the rut. The old pin bends with a sharp metallic screech.',
       'A farmer and two children stand on a stranded hay cart fifty paces from the road. Behind them, the river has broken through the willow bank. Reaching them will cost time you may not have.',
+      'Your mind measures the water, the wagon, and the children before guilt can make the choice for you. The river is rising faster than any of them understand.',
       'Mara looks at the water, then the empty ridge above. “No birds,” she says. “Someone frightened them off before we arrived.”',
     ],
     choices: [
@@ -553,6 +558,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'The divided lead chests keep both wagons lighter, but your guards must watch twice as much road.'
         : 'The heavy rear wheel cuts a deep line close to the ledge.',
       'Sunlight flashes from an abandoned shepherd tower ahead. Once, twice, then three times. Not lightning. A signal mirror.',
+      'The open sky presses against your nerves. On the low road you would fear hidden attackers. Up here, you fear how clearly they can see you.',
       'Mara reaches for her bow. Thunder answers from the western sky, closer than before.',
     ],
     choices: [
@@ -600,6 +606,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'The file in his sleeve carries the same iron dust you found on the treaty wagon.'
         : 'Tivik knocks a file from his sleeve and spits a curse in two languages.',
       'The stranger kicks Brann’s knee, rolls between the wheels, and runs for the closing gate. At the same moment, Mara whistles from the road. Riders are approaching fast from the east.',
+      'The stolen cape angers you more than it should. Someone studied your Wardens closely enough to know what trust looks like from a distance.',
       'You have enough time to secure the wagon, catch the saboteur, or put the escort into a fighting formation. Not all three.',
     ],
     choices: [
@@ -846,6 +853,7 @@ const originalNodes: Record<string, StoryNode> = {
         : state.flags.includes('steady-axle')
           ? 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren and the wagon driver are hanging above the flood.'
           : 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren is trapped and a second guard is being pulled toward the gap.',
+      'Your training separates the danger into tasks. Your conscience puts a face on every one of them.',
       'Lysara braces the treaty chest with both hands. “Captain. Choose.”',
     ],
     choices: [
@@ -899,6 +907,7 @@ const originalNodes: Record<string, StoryNode> = {
             ? 'The shields above the tight column turn falling stone and splintered timber away from the treaty chest.'
           : 'The rockfall strikes both ends of the formation at once.',
       'Mara hangs from a wet root below the ledge with a wounded guard gripping her wrist. The treaty wagon rolls backward toward them. Above, the signaler turns to flee with a dispatch case under one arm.',
+      'Every instinct pulls you toward Mara. Command demands that you see the wagon, the wounded guard, and the escaping answer as clearly as you see her.',
       'Your next decision will leave something unguarded.',
     ],
     choices: [
@@ -950,6 +959,7 @@ const originalNodes: Record<string, StoryNode> = {
           ? 'Brann’s hurried line bends. One rider reaches the rear wagon and drives a blade into Joren’s side.'
           : 'The repaired brakes hold when the lead horses panic, saving the wagon from crushing its own guards.',
       'Mara points out a broad rider carrying the twin of your sealed dispatch case. Lysara draws the glass seed from her coat, making herself the brighter target.',
+      'The copied case confirms a fear you have carried since the gate: the enemy did not merely find your escort. They studied how you lead it.',
       'The enemy wants the treaty, the seed, and any witness who can say which one they took.',
     ],
     choices: [
@@ -1115,6 +1125,7 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('confirmed-advance-orders')
         ? 'The proof is plain. The attackers had plans for every route before you chose one. Someone did not predict your decision. Someone prepared around it.'
         : 'The salt gives you a new impossibility, but not yet a hand to blame.',
+      'You want to turn the escort toward walls, close the gates, and count everyone again. The memory of returning late to a trapped patrol warns you that safety chosen too slowly is only another kind of failure.',
       'Thunder closes over the road. Brann can make a stretcher for the wounded, but it will slow the wagon. Bellweather should be one mile east. Greyhaven should be several miles west behind locked storm gates.',
       'Mara wipes rain from her mouth. “They went east because they wanted us to turn back.” Lysara looks west. “Or because what waits behind us is worse.”',
       'The next attack could come in minutes. Standing still is the only choice certain to help your enemy.',
@@ -1224,6 +1235,7 @@ const originalNodes: Record<string, StoryNode> = {
     nextChapter: 'c2-arrival',
     body: (state) => [
       'The water reaches your knees and stops rising. Beneath your boots, the stone road remains shallow enough to walk on. The sea is deep on both sides and shallow only where the King’s Road continues.',
+      'You feel the rope at your waist tug with every frightened step behind you. The simple pull is reassuring: whatever happened to the world, your people are still connected.',
       state.flags.includes('planned-evening')
         ? 'Mara takes the rope behind you. “About that bath,” she says. “I am beginning to lower my standards.”'
         : 'Mara takes the rope behind you and tests the knot at your waist. “If the road tries to steal you, it gets both of us.”',
@@ -1246,6 +1258,7 @@ const originalNodes: Record<string, StoryNode> = {
     body: (state) => [
       'Rainwatch Hill gives you stone at your back and a view of the impossible shore. Brann sets a shield wall. Lysara tends the wounded while Mara counts arrows.',
       'From above, you see that the sea has not replaced the land. It fills a perfect bend in the road, like dark water poured into a crease in parchment.',
+      'You recognise the shape as a road folded until distant places touch. Knowing its shape does nothing to explain who bent it.',
       state.flags.includes('found-shard-salt')
         ? 'The same pale salt found on the attackers glitters along the new tide line.'
         : 'Pale salt glitters along the new tide line, fresh as frost.',
