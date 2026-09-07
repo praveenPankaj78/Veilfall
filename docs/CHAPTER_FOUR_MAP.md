@@ -12,7 +12,7 @@ Primary objective: recover the World Nail fragment and keep Caelan's people aliv
 
 Force identity: the soldiers on the bridge are the surviving part of Ordan's covert Asterra detachment. They wear the Crown badge of Caelan's own kingdom. At the end of the chapter, their willingness to abandon Ordan and Regent Malrec's genuine order prove that authority above Ordan is directing the recovery.
 
-Chapter answer: the fragment contains a map of nine World Nails. The northern mark at Dragonspine is already active.
+Chapter answer: the fragment belongs to the Nail of Distance and contains a map showing that it is one of nine World Nails. Bellweather and the Mileless Bridge used broken pieces of the same Nail. The different Nail protected at Dragonspine is already active.
 
 Next hook: Regent Malrec has issued a genuine order sending the fragment to Dragonspine. Caelan does not yet know whether the order is protection, a trap, or both.
 
@@ -40,7 +40,7 @@ These openings change advantage and feeling without changing the clear immediate
 4. React when Crown soldiers cut the Bell Arch loose.
 5. Decide how to protect the injured Brann without losing the pursuit.
 6. Choose one of three distinct spans.
-7. Cross the chosen environment and gain its route advantage.
+7. Cross the chosen environment and carry its route advantage into the later Crown fight.
 8. Use or limit Rook's false Crown officer performance.
 9. Decide whether Ordan is worth saving as a witness.
 10. Open the fragment and discover the map of nine Nails.
@@ -64,7 +64,7 @@ The player faces waves, poor footing, and hidden shooters. The storm conceals th
 
 The player crosses moving road plates inside a huge underground machine. The wheels can also cut off pursuit.
 
-Every route returns to the Crown Span after one decision. This gives the player a strong sense of travel without creating three separate chapter plots.
+Every route returns to the Crown Span after one decision. The snow prevents the last crossbow team from setting up, the storm leaves enemy bowstrings wet, and the brass wheels block the rear pursuit. Rook's stat free shortcuts preserve Caelan's resources but leave more soldiers able to follow. This gives the player a strong sense of travel without creating three separate chapter plots or a flavour only choice.
 
 ## Rook's surprise contract
 
@@ -78,7 +78,9 @@ Rook's large tricks use objects shown before the result:
 - voice changing reeds;
 - a compact travelling theatre curtain.
 
-His first large surprise impersonates Ordan and sends soldiers onto the wrong span. His second turns the same tools into false officers and false escape routes.
+His first large surprise impersonates Ordan, but Caelan must supply the correct Crown signal. His second uses the Mileless Bridge's repeating reflections to turn one disguised figure into false officers on nearby spans. Caelan must cover any weakness caused by tools Rook spent during earlier rescues.
+
+Rook's help always has a limit. The banner rescue destroys his strongest wire. Treating Brann damages his disguise coat. His environmental shortcuts preserve stats but leave pursuing soldiers in the later fight. Rook creates impossible openings; Caelan is still the person who turns them into survival.
 
 The player sees the ingredients first but should not predict the complete performance. Rook may cooperate, but he never becomes obedient. His humour stops during Brann's injury and returns only when the immediate human danger has passed.
 
@@ -101,9 +103,9 @@ Mara's scene comes after the map reveal and before the final assault. The danger
 The player can:
 
 - admit that law must bend when it stops protecting people;
-- bind Caelan to personal honesty through an Oath;
-- kiss Mara if enough Trust and Attraction have been earned;
-- protect the relationship without making a promise during a crisis.
+- decide that Rook deserves terms, then bind Caelan to personal honesty through an Oath;
+- decide that survival comes before rigid law, then kiss Mara if enough Trust and Attraction have been earned;
+- hear Rook out while delaying the personal answer until after the crisis.
 
 Mara's judgment continues into the final Rook decision. The scene does not pause the plot or turn danger into an excuse for intimacy.
 
@@ -111,7 +113,7 @@ Mara's judgment continues into the final Rook decision. The scene does not pause
 
 ### Arrest
 
-Caelan applies the law and takes Rook toward Dragonspine as a prisoner. Rook escapes the closed cuff but continues north. Caelan keeps the fragment.
+Caelan applies the law and takes Rook toward Dragonspine as a prisoner. Rook slips free, wears the unopened cuff on his own wrist, and remains on Caelan's north road under investigation. Caelan keeps the fragment.
 
 ### Bargain
 
@@ -125,7 +127,7 @@ All three endings award the same Wayfire. The choice expresses duty and relation
 
 ## Continuity rules for later chapters
 
-- Rook always leaves with at least a partial map copy.
+- Rook leaves with a complete nine mark copy only when Caelan permits it. Otherwise he has a thin scrap showing the northern mark and two blurred roads.
 - Caelan always keeps the real World Nail fragment.
 - Ordan's survival and custody depend on the bridge choice.
 - Sacrificing gear at the anchor removes part of the documentary case against the Crown.

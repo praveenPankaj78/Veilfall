@@ -1,5 +1,6 @@
 import { adventureChoiceUpdates, adventureNodeUpdates } from './adventure-revision';
 import { chapterFourNodes } from './chapter-four';
+import { chapterFiveNodes } from './chapter-five';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -23,7 +24,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4;
+  chapter: 1 | 2 | 3 | 4 | 5;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -75,7 +76,10 @@ export type StoryNode = {
     | 'harrowfen'
     | 'mileless'
     | 'crossroads'
-    | 'nails';
+    | 'nails'
+    | 'dragonspine'
+    | 'vaor'
+    | 'ember';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
@@ -91,7 +95,10 @@ export type StoryTermKey =
   | 'World Nail'
   | 'nine Nails'
   | 'Dragonspine'
-  | 'Regent Malrec';
+  | 'Regent Malrec'
+  | 'cold fire'
+  | 'Vaor'
+  | 'Orivane';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -180,6 +187,11 @@ const relationshipEffects: Record<string, Partial<Relationships>> = {
   'c4-promise-mara-truth': { mara: { trust: 2, attraction: 1 } },
   'c4-kiss-mara-bridge': { mara: { trust: 1, attraction: 2 } },
   'c4-trust-rook': { mara: { trust: 1, attraction: 0 } },
+  'c5-let-mara-check-burns': { mara: { trust: 1, attraction: 0 } },
+  'c5-seed-read-memories': { lysara: { trust: 1, attraction: 0 } },
+  'c5-admit-future-with-mara': { mara: { trust: 2, attraction: 1 } },
+  'c5-kiss-mara-after-truth': { mara: { trust: 1, attraction: 2 } },
+  'c5-admit-fear-to-mara': { mara: { trust: 2, attraction: 0 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -3134,6 +3146,7 @@ const originalNodes: Record<string, StoryNode> = {
 const allOriginalNodes: Record<string, StoryNode> = {
   ...originalNodes,
   ...chapterFourNodes,
+  ...chapterFiveNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -3240,6 +3253,26 @@ export const nodeOrder = [
   'c4-ending-arrest',
   'c4-ending-bargain',
   'c4-ending-trust',
+  'c5-north-road',
+  'c5-coldfire-rescue',
+  'c5-glass-shelter',
+  'c5-royal-camp',
+  'c5-three-climbs',
+  'c5-glass-stair',
+  'c5-frozen-river',
+  'c5-ash-tunnel',
+  'c5-grave-mouth',
+  'c5-memory-wall',
+  'c5-mara-burns',
+  'c5-vaor-wakes',
+  'c5-vaor-test',
+  'c5-crown-assault',
+  'c5-heart-memory',
+  'c5-grave-collapse',
+  'c5-ember-choice',
+  'c5-ending-free',
+  'c5-ending-force',
+  'c5-ending-pact',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

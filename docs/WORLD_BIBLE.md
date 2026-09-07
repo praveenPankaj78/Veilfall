@@ -18,11 +18,11 @@ The act saved millions. It also cut away lives and places that could not fit one
 
 Each Nail binds one law. Damaging one causes a specific kind of failure.
 
-1. Greyhaven Nail: distance. Broken roads fold, repeat, or lead to the wrong shore.
+1. Nail of Distance, also called the Greyhaven Nail: broken roads fold, repeat, or lead to the wrong shore. Road pins at Bellweather and the Mileless Bridge are broken pieces of this Nail, not separate Nails.
 2. Shard Coast Nail: memory. Dreams and lived events begin to exchange places.
 3. Thornweald Nail: growth. Forests remember extinct forms and reclaim settled land.
 4. Brassreach Nail: making. Tools invent purposes their makers never intended.
-5. Dragonspine Nail: fire. Heat gains hunger and cold begins to burn.
+5. Nail of Fire, protected at Dragonspine: heat gains hunger and cold begins to burn.
 6. Ember Steppe Nail: death. Ancestors return inside storms, but not always whole.
 7. Serekh Nail: truth. Mirrors show possible motives and lies become physical shadows.
 8. Black Gate Nail: promise. Spoken bargains acquire force, even when misunderstood.

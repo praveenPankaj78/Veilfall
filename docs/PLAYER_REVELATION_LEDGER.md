@@ -42,7 +42,7 @@ Mechanic: Low resource leadership during a manhunt, with visible rescue and purs
 
 Active question: Can Caelan recover the fragment and save the escort?
 
-Answer: The fragment contains a map of nine World Nails. The northern mark at Dragonspine is already active.
+Answer: The fragment belongs to the Nail of Distance and contains a map showing that it is one of nine World Nails. Bellweather and the Mileless Bridge used broken pieces of that Nail. Dragonspine protects a different Nail, which is already active.
 
 Next hook: Why is the Crown moving it toward Dragonspine?
 
@@ -52,9 +52,9 @@ Mechanic: Combined class solutions during a crossover.
 
 Active question: What waits at the fire mark on the map?
 
-Answer: A dragon guards evidence that the Concord was created through sacrifice.
+Answer: Vaor was buried alive beneath his own recorded memories. He guards proof that Orivane willingly gave her heart to create the Concord and that mortal rulers hid part of its cost.
 
-Next hook: What was cut away when the world became stable?
+Next hook: How should the living world answer for the possible lives that stability prevented, and why is the Black Gate opening now?
 
 Mechanic: Oathfire and a dragon pact, demonstrated before a major vow.
 

@@ -40,6 +40,17 @@ vm.runInNewContext(chapterFourCompiled, {
   console,
 }, { filename: 'chapter-four.js' });
 
+const chapterFiveSource = await readFile('app/chapter-five.ts', 'utf8');
+const chapterFiveCompiled = ts.transpileModule(chapterFiveSource, {
+  compilerOptions,
+}).outputText;
+const chapterFiveExports = {};
+vm.runInNewContext(chapterFiveCompiled, {
+  exports: chapterFiveExports,
+  module: { exports: chapterFiveExports },
+  console,
+}, { filename: 'chapter-five.js' });
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -67,6 +78,7 @@ const context = {
     if (specifier === './adventure-revision') return adventureExports;
     if (specifier === './choice-economy') return economyExports;
     if (specifier === './chapter-four') return chapterFourExports;
+    if (specifier === './chapter-five') return chapterFiveExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -98,6 +110,11 @@ const chapterFourArtAssets = {
   crossroads: 'public/art/mileless-three-spans.png',
   nails: 'public/art/nine-nails-revelation.png',
 };
+const chapterFiveArtAssets = {
+  dragonspine: 'public/art/dragonspine-coldfire.png',
+  vaor: 'public/art/vaor-memory-grave.png',
+  ember: 'public/art/ember-bearer-vision.png',
+};
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
 for (const [id, node] of Object.entries(nodes)) {
@@ -114,6 +131,24 @@ for (const [art, asset] of Object.entries(chapterFourArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Four artwork is missing: ${asset}`);
+  }
+}
+const earlierThanFiveArt = new Set([...earlierChapterArt, ...Object.keys(chapterFourArtAssets)]);
+const chapterFiveArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c5-')) continue;
+  if (!node.art) failures.push(`Chapter Five node has no explicit art: ${id}`);
+  if (earlierThanFiveArt.has(node.art)) {
+    failures.push(`Chapter Five node reuses earlier chapter art: ${id} uses ${node.art}`);
+  }
+  if (node.art) chapterFiveArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterFiveArtAssets)) {
+  if (!chapterFiveArtUsed.has(art)) failures.push(`Chapter Five never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Five artwork is missing: ${asset}`);
   }
 }
 
@@ -316,6 +351,29 @@ const chapterFourBase = {
     wayfire: 7,
   },
 };
+const chapterFiveKnownTerms = Object.keys(statLabels);
+const chapterFiveKnownStoryTerms = [
+  ...chapterFourKnownStoryTerms,
+  'nine Nails',
+  'Dragonspine',
+  'Regent Malrec',
+];
+const chapterFiveBase = {
+  ...initialState,
+  nodeId: 'c5-north-road',
+  chapter: 5,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4],
+  stats: {
+    ...initialState.stats,
+    health: 7,
+    resolve: 7,
+    command: 5,
+    oathfire: 4,
+    medicine: 0,
+    wayfire: 9,
+  },
+};
 const storyTermRules = {
   Oathwarden: {
     use: /\bOathwarden\b/i,
@@ -343,7 +401,7 @@ const storyTermRules = {
   },
   'nine Nails': {
     use: /\bnine (?:World )?Nails\b/i,
-    introduction: /fragment carries a map of nine World Nails/i,
+    introduction: /There are nine World Nails/i,
   },
   Dragonspine: {
     use: /\bDragonspine\b/i,
@@ -353,15 +411,29 @@ const storyTermRules = {
     use: /\bRegent Malrec\b/i,
     introduction: /Regent Malrec Vale rules Asterra while the young Queen is ill/i,
   },
+  'cold fire': {
+    use: /\bcold fire\b/i,
+    introduction: /damaged fire Nail has created blue flame that steals heat instead of giving it/i,
+  },
+  Vaor: {
+    use: /\bVaor\b/i,
+    introduction: /Vaor is an ancient dragon buried alive near the fire Nail/i,
+  },
+  Orivane: {
+    use: /\bOrivane\b/i,
+    introduction: /Orivane was the dragon who gave her living heart to power the Concord/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c4-')
-    ? chapterFourBase
-    : id.startsWith('c3-')
-      ? chapterThreeBase
-      : id.startsWith('c2-')
-        ? chapterTwoBase
-        : initialState;
+  const sampleState = id.startsWith('c5-')
+    ? chapterFiveBase
+    : id.startsWith('c4-')
+      ? chapterFourBase
+      : id.startsWith('c3-')
+        ? chapterThreeBase
+        : id.startsWith('c2-')
+          ? chapterTwoBase
+          : initialState;
   const introductionText = [
     node.lesson?.title,
     node.lesson?.body,
@@ -408,9 +480,9 @@ for (const [id, node] of Object.entries(nodes)) {
 }
 
 const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|understand|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3, 4]) {
+for (const chapter of [1, 2, 3, 4, 5]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
-    ? !/^c[234]-/.test(id)
+    ? !/^c[2345]-/.test(id)
     : id.startsWith(`c${chapter}-`));
   const sampleState = chapter === 1
     ? initialState
@@ -418,7 +490,9 @@ for (const chapter of [1, 2, 3, 4]) {
       ? chapterTwoBase
       : chapter === 3
         ? chapterThreeBase
-        : chapterFourBase;
+        : chapter === 4
+          ? chapterFourBase
+          : chapterFiveBase;
   const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
   if (closeNodes.length / chapterNodes.length < 0.6) {
     failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
@@ -790,6 +864,160 @@ for (const [flag, nodeId, expected] of costlyPayoffChecks) {
   const payoff = renderedBody(nodeId, { ...sampleState, flags: [flag] });
   if (!expected.test(payoff)) failures.push(`Stored advantage ${flag} has no payoff in ${nodeId}`);
 }
+
+const chapterFourNailExplanation = [
+  nodes['c4-nine-marks'].lesson?.body ?? '',
+  ...nodes['c4-nine-marks'].body(chapterFourBase),
+].join(' ');
+if (!/fragment belongs to the Nail of Distance/i.test(chapterFourNailExplanation)
+  || !/one of nine anchors/i.test(chapterFourNailExplanation)
+  || !/Bellweather and this bridge held broken pieces of it/i.test(chapterFourNailExplanation)
+  || !/Dragonspine guards another Nail/i.test(chapterFourNailExplanation)
+  || /Bellweather was only one of nine Nails/i.test(chapterFourNailExplanation)) {
+  failures.push('Chapter Four does not clearly distinguish the Nail of Distance, its broken pieces, and the other World Nails');
+}
+const chapterFourCollapse = renderedBody('c4-collapse', chapterFourBase);
+if (!/ignore Ordan’s order to take everyone alive/i.test(chapterFourCollapse)) {
+  failures.push('The Bell Arch collapse does not explicitly show Crown soldiers disobeying Ordan');
+}
+const bridgeRoutePayoffs = [
+  ['c4-snow-route', /upper squad.*last crossbow team/i],
+  ['c4-storm-route', /soaked the Crown crossbows.*strings will need time/i],
+  ['c4-brass-route', /brass wheels close behind.*find another way around/i],
+];
+for (const [flag, expected] of bridgeRoutePayoffs) {
+  const payoff = renderedBody('c4-stage-turn', { ...chapterFourBase, flags: [flag] });
+  if (!expected.test(payoff)) failures.push(`Chapter Four route ${flag} has no later pursuit payoff`);
+}
+const rookShortcutPayoff = renderedBody('c4-soldiers', {
+  ...chapterFourBase,
+  flags: ['c4-rook-shortcut-left-pursuit'],
+});
+if (!/Saving your strength has made this fight larger/i.test(rookShortcutPayoff)) {
+  failures.push('Rook’s stat free environmental shortcuts do not create a later drawback');
+}
+const bannerChoice = nodes['c4-collapse'].choices.find((choice) => choice.id === 'c4-use-hanging-banner');
+const splintChoice = nodes['c4-wounded'].choices.find((choice) => choice.id === 'c4-let-rook-splint-brann');
+if (!bannerChoice?.addFlags?.includes('c4-rook-lost-long-wire')
+  || !/wire snaps/i.test(bannerChoice?.result ?? '')) {
+  failures.push('Rook’s banner rescue still solves the collapse without consuming a useful tool');
+}
+if (!splintChoice?.addFlags?.includes('c4-rook-tore-coat-lining')
+  || !/disguise visibly incomplete/i.test(splintChoice?.result ?? '')) {
+  failures.push('Rook’s treatment of Brann still provides two benefits without weakening a later trick');
+}
+const damagedDisguise = renderedBody('c4-stage-turn', {
+  ...chapterFourBase,
+  flags: ['c4-snow-route', 'c4-rook-tore-coat-lining'],
+});
+if (!/disguise will work only at a distance/i.test(damagedDisguise)
+  || !/You recognise the western recall/i.test(damagedDisguise)) {
+  failures.push('Rook’s first performance does not remember his cost or depend on Caelan’s military knowledge');
+}
+const theatreExplanation = renderedBody('c4-theatre-plan', chapterFourBase);
+if (!/Bridge repeats reflections across neighbouring spans/i.test(theatreExplanation)
+  || !/one disguised figure/i.test(theatreExplanation)
+  || !/reflection onto three arches/i.test(theatreExplanation)) {
+  failures.push('Rook’s travelling theatre still creates three captains without a visible bridge mechanism');
+}
+const maraKissChoice = nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-kiss-mara-bridge');
+const maraDelayChoice = nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-return-to-duty');
+if (!/survival comes before rigid law.*then kiss/i.test(maraKissChoice?.label ?? '')
+  || !/hear Rook out.*delay/i.test(maraDelayChoice?.label ?? '')) {
+  failures.push('Mara’s personal choices do not answer her immediate question about Rook');
+}
+const chapterFourEndIds = ['c4-ending-arrest', 'c4-ending-bargain', 'c4-ending-trust'];
+for (const endingId of chapterFourEndIds) {
+  const limitedCopyEnding = renderedBody(endingId, {
+    ...chapterFourBase,
+    flags: ['c4-denied-rook-copy'],
+  });
+  const fullCopyEnding = renderedBody(endingId, {
+    ...chapterFourBase,
+    flags: ['c4-rook-full-copy'],
+  });
+  if (!/only the northern mark and two blurred roads/i.test(limitedCopyEnding)) {
+    failures.push(`${endingId} forgets that Caelan denied Rook a complete map copy`);
+  }
+  if (!/complete nine mark wax copy/i.test(fullCopyEnding)) {
+    failures.push(`${endingId} forgets that Caelan permitted Rook’s complete map copy`);
+  }
+}
+const arrestEnding = renderedBody('c4-ending-arrest', {
+  ...chapterFourBase,
+  flags: ['c4-rook-full-copy'],
+});
+if (!/cuff now hangs from his own wrist like a bracelet/i.test(arrestEnding)
+  || !/twenty steps ahead/i.test(arrestEnding)
+  || /around your wrist/i.test(arrestEnding)) {
+  failures.push('The Chapter Four arrest ending places the cuff incorrectly or erases the arrest choice');
+}
+
+const chapterFiveRookImports = [
+  ['c4-rook-arrested', /empty iron cuff worn as a bracelet/i],
+  ['c4-rook-bargain', /one honest warning per day/i],
+  ['c4-rook-trusted', /I led you by removing several bad guides/i],
+];
+for (const [flag, expected] of chapterFiveRookImports) {
+  const arrival = renderedBody('c5-north-road', { ...chapterFiveBase, flags: [flag] });
+  if (!expected.test(arrival)) failures.push(`Chapter Five forgets Rook import ${flag}`);
+}
+const capturedOrdanArrival = renderedBody('c5-north-road', {
+  ...chapterFiveBase,
+  flags: ['c4-rook-bargain', 'c4-captured-ordan'],
+});
+if (!/Elene took him into Harrowfen custody/i.test(capturedOrdanArrival)) {
+  failures.push('Chapter Five does not account for captured Ordan before the climb');
+}
+const chapterFiveRouteImports = [
+  ['c4-snow-route', /resembles the flame you crossed on the bridge’s mountain span/i],
+  ['c4-storm-route', /miss the storm span/i],
+  ['c4-brass-route', /measured turning of the bridge’s brass chamber/i],
+];
+for (const [flag, expected] of chapterFiveRouteImports) {
+  const arrival = renderedBody('c5-north-road', {
+    ...chapterFiveBase,
+    flags: ['c4-rook-bargain', flag],
+  });
+  if (!expected.test(arrival)) failures.push(`Chapter Five forgets bridge route ${flag}`);
+}
+const preparedBurnCare = renderedBody('c5-mara-burns', {
+  ...chapterFiveBase,
+  flags: ['c5-let-mara-check-burns'],
+});
+if (!/made you promise to show her the next burn/i.test(preparedBurnCare)) {
+  failures.push('Mara’s burn treatment forgets the earlier inspection choice');
+}
+const respectfulVaorMeeting = renderedBody('c5-vaor-wakes', {
+  ...chapterFiveBase,
+  flags: ['c5-asked-memory-permission'],
+});
+if (!/asked before touching what was mine/i.test(respectfulVaorMeeting)) {
+  failures.push('Vaor forgets that Caelan asked permission before touching a memory');
+}
+const extractionOrderAssault = renderedBody('c5-crown-assault', {
+  ...chapterFiveBase,
+  flags: ['c5-has-extraction-order'],
+});
+if (!/line permitting Vaor’s death/i.test(extractionOrderAssault)) {
+  failures.push('The Crown assault does not pay off the recovered extraction order');
+}
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c5-')) continue;
+  for (const choice of node.choices) {
+    if ((choice.changes?.health ?? 0) > 0) {
+      failures.push(`Chapter Five restores Health inside cold fire: ${choice.id}`);
+    }
+  }
+}
+const memoryGlassExplanation = [
+  nodes['c5-memory-wall'].lesson?.body ?? '',
+  ...nodes['c5-memory-wall'].body(chapterFiveBase),
+].join(' ');
+if (!/recordings of events he truly lived/i.test(memoryGlassExplanation)
+  || !/not other timelines or copies/i.test(memoryGlassExplanation)) {
+  failures.push('Chapter Five does not plainly distinguish memory glass from alternate timelines');
+}
 const stack = [
   { state: initialState, knownTerms: [], knownStoryTerms: [] },
   {
@@ -860,6 +1088,38 @@ const stack = [
     knownTerms: chapterFourKnownTerms,
     knownStoryTerms: chapterFourKnownStoryTerms,
   },
+  ...['c4-rook-arrested', 'c4-rook-bargain', 'c4-rook-trusted'].map((flag) => ({
+    state: { ...chapterFiveBase, flags: [flag] },
+    knownTerms: chapterFiveKnownTerms,
+    knownStoryTerms: chapterFiveKnownStoryTerms,
+  })),
+  {
+    state: {
+      ...chapterFiveBase,
+      flags: ['c4-rook-bargain', 'c4-captured-ordan'],
+      relationships: {
+        ...chapterFiveBase.relationships,
+        mara: { trust: 6, attraction: 5 },
+      },
+    },
+    knownTerms: chapterFiveKnownTerms,
+    knownStoryTerms: chapterFiveKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterFiveBase,
+      flags: ['c4-rook-trusted'],
+      stats: {
+        ...chapterFiveBase.stats,
+        health: 2,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+      },
+    },
+    knownTerms: chapterFiveKnownTerms,
+    knownStoryTerms: chapterFiveKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -868,6 +1128,7 @@ const chapterOneEndings = new Set();
 const chapterTwoEndings = new Set();
 const chapterThreeEndings = new Set();
 const chapterFourEndings = new Set();
+const chapterFiveEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -941,7 +1202,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c4-')) chapterFourEndings.add(node.id);
+    if (node.id.startsWith('c5-')) chapterFiveEndings.add(node.id);
+    else if (node.id.startsWith('c4-')) chapterFourEndings.add(node.id);
     else if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
@@ -976,7 +1238,8 @@ if (chapterOneEndings.size !== 3) failures.push(`Expected 3 Chapter One endings,
 if (chapterTwoEndings.size !== 3) failures.push(`Expected 3 Chapter Two endings, found ${chapterTwoEndings.size}`);
 if (chapterThreeEndings.size !== 3) failures.push(`Expected 3 Chapter Three endings, found ${chapterThreeEndings.size}`);
 if (chapterFourEndings.size !== 3) failures.push(`Expected 3 Chapter Four endings, found ${chapterFourEndings.size}`);
-for (const chapter of [1, 2, 3, 4]) {
+if (chapterFiveEndings.size !== 3) failures.push(`Expected 3 Chapter Five endings, found ${chapterFiveEndings.size}`);
+for (const chapter of [1, 2, 3, 4, 5]) {
   if (!deathChapters.has(chapter)) failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
 
@@ -989,5 +1252,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

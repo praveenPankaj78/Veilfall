@@ -71,7 +71,7 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 
 ## Phase Five: complete Caelan season, in progress
 
-Chapter Four is implemented. Produce Chapters Five through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four and Five are implemented. Produce Chapters Six through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -133,4 +133,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first four canonical chapters are implemented. The next production gate is to test the arrest, bargain, and trust routes through Chapter Four, confirm that Rook feels surprising without feeling unexplained, and confirm that the nine Nail reveal is understood before Chapter Five begins.
+The foundation and the first five canonical chapters are implemented. The next production gate is to test all three Dragonspine routes and all three ember endings, confirm that cold fire is understood before the first dangerous choice, and confirm that Orivane's sacrifice is clear without making the possible lives concept feel abstract or confusing.

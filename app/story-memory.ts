@@ -92,6 +92,29 @@ const nineNailsKnownNodes = new Set([
   'c4-ending-trust',
 ]);
 
+const vaorKnownNodes = new Set([
+  'c5-memory-wall',
+  'c5-mara-burns',
+  'c5-vaor-wakes',
+  'c5-vaor-test',
+  'c5-crown-assault',
+  'c5-heart-memory',
+  'c5-grave-collapse',
+  'c5-ember-choice',
+  'c5-ending-free',
+  'c5-ending-force',
+  'c5-ending-pact',
+]);
+
+const orivaneKnownNodes = new Set([
+  'c5-heart-memory',
+  'c5-grave-collapse',
+  'c5-ember-choice',
+  'c5-ending-free',
+  'c5-ending-force',
+  'c5-ending-pact',
+]);
+
 export function knownTruths(game: GameState) {
   const truths: string[] = [];
 
@@ -167,17 +190,36 @@ export function knownTruths(game: GameState) {
     || game.flags.includes('c3-secured-return')) {
     truths.push('The iron is part of a World Nail that normally keeps distance stable across Edrath.');
   }
-  if (rookKnownNodes.has(game.nodeId)) {
+  if (rookKnownNodes.has(game.nodeId) || game.chapter >= 5) {
     truths.push('Rook Sable stole the fragment to copy the map hidden inside it, not to control the iron itself.');
   }
-  if (nineNailsKnownNodes.has(game.nodeId)) {
-    truths.push('The fragment maps nine World Nails whose roads could reshape trade, war, and travel across the known world.');
+  if (nineNailsKnownNodes.has(game.nodeId) || game.chapter >= 5) {
+    truths.push('The fragment belongs to the Nail of Distance and maps all nine World Nails. Bellweather and the Mileless Bridge used broken pieces of the same Nail.');
   }
   if (game.nodeId === 'c4-duty'
     || game.nodeId === 'c4-ending-arrest'
     || game.nodeId === 'c4-ending-bargain'
-    || game.nodeId === 'c4-ending-trust') {
+    || game.nodeId === 'c4-ending-trust'
+    || game.chapter >= 5) {
     truths.push('A genuine order from Regent Malrec Vale commands that the fragment be carried to Dragonspine, where the next Nail is active.');
+  }
+  if (game.chapter === 5) {
+    truths.push('Cold fire from the damaged fire Nail steals warmth, follows living heat, and prevents Health from recovering while it burns nearby.');
+  }
+  if (vaorKnownNodes.has(game.nodeId)) {
+    truths.push('Vaor is an ancient living dragon imprisoned beneath glass plates that preserve events from his own life.');
+  }
+  if (orivaneKnownNodes.has(game.nodeId)) {
+    truths.push('Orivane willingly gave her heart to power the Concord, but mortal rulers hid that a stable world would prevent many possible lives from ever beginning.');
+  }
+  if (game.flags.includes('c5-freed-vaor')) {
+    truths.push('Vaor is free, and Caelan carries an ember the dragon gave willingly.');
+  }
+  if (game.flags.includes('c5-took-ember-by-force')) {
+    truths.push('Caelan took Vaor’s ember by force and left the freed dragon as an enemy.');
+  }
+  if (game.flags.includes('c5-vaor-pact')) {
+    truths.push('Caelan carries Vaor’s ember and voice through a pact with a clear shared end condition.');
   }
   return truths;
 }
@@ -232,5 +274,16 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he travels north as a named fugitive even after escaping the cuff.');
   if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he will guide you toward his buyer in Dragonspine.');
   if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook with the survivors, he showed you a safe road and accepted a personal debt.');
+  if (game.flags.includes('c5-has-extraction-order')) consequences.push('Because you recovered the Regent’s extraction order, you can prove the Crown intended to cut an ember from a living dragon.');
+  if (game.flags.includes('c5-rook-diverted-patrol')) consequences.push('Because you trusted Rook with a stolen seal, the returning royal patrol chased an embarrassing false emergency.');
+  if (game.flags.includes('c5-seed-scorched-river')) consequences.push('Because Lysara used her living seed to divert the cold fire, her treaty magic is weakened.');
+  if (game.flags.includes('c5-admitted-future-with-mara')) consequences.push('Because you told Mara you want a life that includes her, your future together is no longer hidden behind duty.');
+  if (game.flags.includes('c5-kissed-mara')) consequences.push('Because you and Mara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
+  if (game.flags.includes('c5-oath-carry-vaor-grief')) consequences.push('Because you promised to hear Vaor’s grief, part of the dragon’s pain now travels through your Oathfire.');
+  if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, royal witnesses carry the truth away from Dragonspine.');
+  if (game.flags.includes('c5-rook-copied-first-memory')) consequences.push('Because Rook copied Orivane’s memory, the buried proof can survive even if the mountain glass is destroyed.');
+  if (game.flags.includes('c5-freed-vaor')) consequences.push('Because you freed Vaor, an ancient dragon travels as a willing but independent ally.');
+  if (game.flags.includes('c5-took-ember-by-force')) consequences.push('Because you took the ember by force, its power obeys you while Vaor follows as an enemy.');
+  if (game.flags.includes('c5-vaor-pact')) consequences.push('Because you made a pact with Vaor, his voice, grief, and fire now travel inside you.');
   return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }

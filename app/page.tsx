@@ -55,8 +55,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v8.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v9.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v8.save',
   'veilfall.saga.v7.save',
   'veilfall.saga.v6.save',
   'veilfall.saga.v5.save',
@@ -64,7 +65,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5;
 
 const sceneArtwork = {
   departure: {
@@ -95,12 +96,25 @@ const sceneArtwork = {
     src: '/art/nine-nails-revelation.png',
     alt: 'Caelan, Mara, Lysara, and Rook discover the hidden map of nine World Nails',
   },
+  dragonspine: {
+    src: '/art/dragonspine-coldfire.png',
+    alt: 'Caelan and his companions climb through the glass valleys while cold fire hunts them',
+  },
+  vaor: {
+    src: '/art/vaor-memory-grave.png',
+    alt: 'Caelan finds the ancient dragon Vaor imprisoned beneath glass memories',
+  },
+  ember: {
+    src: '/art/ember-bearer-vision.png',
+    alt: 'Caelan carries Vaor’s ember while a vision of the Black Gate opens above him',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   2: 'veilfall.chapter-two.v1.start',
   3: 'veilfall.chapter-three.v1.start',
   4: 'veilfall.chapter-four.v1.start',
+  5: 'veilfall.chapter-five.v1.start',
 };
 
 const chapterLibrary = [
@@ -123,6 +137,11 @@ const chapterLibrary = [
     number: 4 as const,
     title: 'Thief at the Mileless Bridge',
     summary: 'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
+  },
+  {
+    number: 5 as const,
+    title: 'The Dragon’s Cold Grave',
+    summary: 'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
   },
 ];
 
@@ -201,13 +220,15 @@ function migrateRelationships(value: Partial<GameState>) {
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c4-')
-    ? 4
-    : nodeId.startsWith('c3-')
-      ? 3
-      : nodeId.startsWith('c2-')
-        ? 2
-        : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c5-')
+    ? 5
+    : nodeId.startsWith('c4-')
+      ? 4
+      : nodeId.startsWith('c3-')
+        ? 3
+        : nodeId.startsWith('c2-')
+          ? 2
+          : (value.chapter ?? 1);
   const savedStats = (value.stats ?? {}) as Partial<GameStats> & { stamina?: number };
   const health = savedStats.health ?? savedStats.stamina ?? initialState.stats.health;
   const completedChapters = Array.from(new Set([
@@ -244,6 +265,7 @@ function defeatForChoice(chapter: ChapterNumber, choice: Choice) {
     2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
     3: 'Your choice changes the fight, but blood and exhaustion pull you down beside the canal. Harrowfen’s lanterns blur on the water as Ordan escapes toward the eastern bridge.',
     4: 'You complete the action, but the moving bridge takes the last of your strength. Stone turns beneath you as Mara reaches for your hand and the World Nail fragment disappears into another sky.',
+    5: 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
   };
   return {
     title: 'Caelan has fallen',
@@ -329,6 +351,8 @@ function activePromises(game: GameState) {
   if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen fall while Ordan is pursued.');
   if (game.flags.includes('c4-oath-no-one-falls')) promises.push('Do not let anyone fall from the Mileless Bridge while you stand.');
   if (game.flags.includes('c4-oath-honest-with-mara')) promises.push('Do not hide behind duty when speaking with Mara.');
+  if (game.flags.includes('c5-oath-carry-vaor-grief')) promises.push('Hear Vaor’s grief without turning away.');
+  if (game.flags.includes('c5-vaor-pact')) promises.push('Carry Vaor’s voice and ember until both of you agree the duty is complete.');
   if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
   return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
 }
@@ -473,15 +497,6 @@ export default function Home() {
   }, []);
 
   const node = nodes[game.nodeId];
-  const chapterTwoUnlocked = game.chapter === 2 || game.completedChapters.includes(1);
-  const chapterThreeUnlocked = game.chapter === 3 || game.completedChapters.includes(2);
-  const chapterFourUnlocked = game.chapter === 4 || game.completedChapters.includes(3);
-  const chapterTwoStartExists = loaded && typeof window !== 'undefined'
-    && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[2]!));
-  const chapterThreeStartExists = loaded && typeof window !== 'undefined'
-    && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[3]!));
-  const chapterFourStartExists = loaded && typeof window !== 'undefined'
-    && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[4]!));
   const paragraphs = useMemo(() => node.body(game), [game, node]);
   const truths = useMemo(() => knownTruths(game), [game]);
   const promises = useMemo(() => activePromises(game), [game]);
@@ -551,7 +566,7 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4] as ChapterNumber[]).filter((number) => number > chapter)) {
+    for (const later of ([2, 3, 4, 5] as ChapterNumber[]).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -625,6 +640,25 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterFive() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c5-north-road',
+      chapter: 5,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 4])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 1),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        command: Math.min(6, game.stats.command + 1),
+      },
+      history: [...game.history, 'You follow the northern mark into Dragonspine with every earlier consequence.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[5]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return <main className="min-h-screen bg-[#07090b]" aria-label="Loading Veilfall" />;
   }
@@ -669,7 +703,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
+          Caelan {game.chapter === 5 ? 'V' : game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
         </div>
         <div className="top-actions">
           <Button
@@ -733,17 +767,11 @@ export default function Home() {
           <div className="chapter-library-list">
             {chapterLibrary.map((chapter) => {
               const unlocked = chapter.number === 1
-                || (chapter.number === 2
-                  ? chapterTwoUnlocked
-                  : chapter.number === 3
-                    ? chapterThreeUnlocked
-                    : chapterFourUnlocked);
+                || game.chapter === chapter.number
+                || game.completedChapters.includes(chapter.number - 1);
               const available = chapter.number === 1
-                || (chapter.number === 2
-                  ? chapterTwoStartExists
-                  : chapter.number === 3
-                    ? chapterThreeStartExists
-                    : chapterFourStartExists);
+                || (loaded && typeof window !== 'undefined'
+                  && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[chapter.number]!)));
               return (
                 <div className="chapter-library-entry" key={chapter.number}>
                   <div>
@@ -921,7 +949,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 3 ? (
                     <>
                       <h2>Chapter Four is ready</h2>
                       <p>
@@ -941,16 +969,36 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Five is ready</h2>
+                      <p>
+                        Continue into The Dragon&apos;s Cold Grave with every surviving consequence.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterFive}
+                      >
+                        Continue to Chapter Five
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter Four
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Five</h2>
+                    <h2>Caelan will return in Chapter Six</h2>
                     <p>
-                      You keep the World Nail fragment and {game.stats.wayfire} Wayfire.
-                      Dragonspine waits beneath cold blue fire, and the Regent has ordered you north.
+                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire.
+                      Kharad Vey moves across the Ember Steppe while the Black Gate begins to open.
                     </p>
                     <Button className="begin-button" size="lg" onClick={restart}>
-                      Replay Chapter Four
+                      Replay Chapter Five
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>
@@ -1179,10 +1227,12 @@ export default function Home() {
               {pendingReplay === 1
                 ? 'This restarts Caelan’s journey and removes all later chapter progress on this device.'
                 : pendingReplay === 2
-                  ? 'This restores the Chapter Two checkpoint and removes all Chapter Three and Chapter Four progress created by the current path.'
+                  ? 'This restores the Chapter Two checkpoint and removes all Chapter Three, Chapter Four, and Chapter Five progress created by the current path.'
                   : pendingReplay === 3
-                    ? 'This restores the Chapter Three checkpoint and removes all Chapter Four progress created by the current path.'
-                    : 'This restores the Chapter Four checkpoint and replaces every choice made after it.'}
+                    ? 'This restores the Chapter Three checkpoint and removes all Chapter Four and Chapter Five progress created by the current path.'
+                    : pendingReplay === 4
+                      ? 'This restores the Chapter Four checkpoint and removes all Chapter Five progress created by the current path.'
+                      : 'This restores the Chapter Five checkpoint and replaces every choice made after it.'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
