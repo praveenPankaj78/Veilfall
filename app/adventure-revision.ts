@@ -20,25 +20,25 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
   },
   'c2-threshold': {
     title: 'Maelin Bellweather',
-    location: 'Bellweather Inn, Common Room',
-    objective: 'Secure the inn and learn how Maelin knew you were coming.',
+    location: 'Bellweather Inn, Front Step',
+    objective: 'Choose how to bring the wounded through the unfamiliar doorway.',
     threat: 'Rising',
     body: (state) => [
-      'The woman bars the door behind you. Her name is Maelin Bellweather. She has run this inn for thirty years and looks strong enough to throw out anyone who doubts it.',
+      'The woman keeps the door open while your escort gathers beneath the narrow eaves. Her name is Maelin Bellweather. She has run this inn for thirty years and looks strong enough to throw out anyone who doubts it.',
       state.flags.includes('c2-faced-creature')
         ? 'The mire hound remains in the flooded yard, fixed on the blood running down your shield. Your choice drew it away from every stretcher.'
         : state.flags.includes('c2-ordered-entry')
-          ? 'The final guard crosses the threshold inside the shield wall. Not one wounded traveller was separated in the water.'
+          ? 'The shield wall reaches the front step without losing a stretcher or leaving anyone alone in the water.'
           : state.flags.includes('c2-oath-found-child')
             ? 'Your Oath led Mara to Nilo before the mire hound could follow the smell of his reopened wound.'
-            : 'The mire hound circles outside. It had enough time in the yard to learn the smell of your wounded.',
-      'The common room has been turned into a sick ward. A dead Warden lies beneath a grey sheet near the stairs.',
+            : state.flags.includes('c2-mara-led-entry')
+              ? 'Mara found firm stones beneath the flood and brought the whole escort to the door. The mire hound never came close enough to learn which traveller was hurt.'
+              : 'The mire hound circles beyond the eaves. It kept its distance while learning your scent and the sound of your shield.',
       state.flags.includes('captured-attacker')
-        ? 'Brann brings your wounded prisoner inside and ties him beside the pantry. The man finally gives his name as Sable when he sees the body under the sheet.'
-        : 'Beside the pantry, a wounded attacker is tied to a post. Maelin found him crawling from the cellar at dawn. He gives his name as Sable and carries the same sealed orders as the road attackers.',
-      'A lamp burns above one untouched place setting. Maelin says it belongs to her husband, Dain, who stepped through the stable door during Ordan’s first road test three weeks ago and never returned. She lights it every night in case he finds his way home.',
-      'You did not write the warning she is holding. Outside, a hunting horn sounds once in the rain. The attackers are close enough to watch the windows.',
-      '“His name was Jory,” Maelin says. “He arrived three days ago with an arrow in his back and a warning in your handwriting. He said royal soldiers would attack this place after you arrived.”',
+        ? 'Brann guards your wounded prisoner beside the last wagon. The man is conscious enough to watch Maelin, and she looks as if she recognises him.'
+        : 'Brann holds the last wagon at the step while Mara studies the dark common room beyond Maelin.',
+      'A weak cough comes from beneath a wagon blanket. Nilo is pale, and blood has soaked through the cloth around his injured leg.',
+      'She also knows your name. “A Warden called Jory said you would come,” she says. “He died waiting to tell you why.” A hunting horn sounds beyond the flooded yard before she can say more.',
     ],
   },
   'c2-triage': {
@@ -46,9 +46,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Bellweather Inn, Common Room',
     objective: 'Stabilise the wounded before the attack begins.',
     body: (state) => [
+      'Once the last traveller crosses the threshold, Maelin bars the door. The common room has already been cleared for the wounded. A dead Warden lies beneath a grey sheet near the stairs. This is Jory, the man who warned Maelin that you were coming.',
       state.flags.includes('captured-attacker')
-        ? 'Maelin points to three patients. Nilo’s injured leg has gone cold below the knee. Lysara’s burned hand has begun to swell. Sable, the attacker you captured, is shaking with fever.'
-        : 'Maelin points to three patients. Nilo’s injured leg has gone cold below the knee. Lysara’s burned hand has begun to swell. Sable, the attacker Maelin found below the inn, is shaking with fever.',
+        ? 'Brann ties your wounded prisoner beside the pantry. He gives his name as Sable when he sees Jory’s body. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Sable is shaking with fever.'
+        : 'A wounded attacker is already tied beside the pantry. Maelin found him crawling from the cellar at dawn. He gives his name as Sable and carries the same kind of sealed orders as the road attackers. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Sable is shaking with fever.',
       state.stats.health <= 2
         ? 'Maelin sees the way you favour one side and presses two fingers against the blood beneath your coat. “You can command another fight,” she says. “You cannot survive one.”'
         : 'Maelin checks the cuts beneath your coat and decides they can wait until the three patients are stable.',
@@ -84,15 +85,15 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Bellweather Inn, Hearth',
     objective: 'Understand Jory’s warning before the attackers return.',
     lesson: {
-      title: 'What the damaged road did',
-      body: 'The buried iron pin keeps nearby roads connected to the places they belong. Someone loosened it, pulling a distant shortcut beside the inn. It changed distance, not time. The pin’s old locks respond to a Warden captain’s authority and Thornweald living magic.',
+      title: 'Distance, not time',
+      body: 'Something beneath Bellweather is pulling distant road ends beside the inn. The coast, fields, and inn still exist in the present. The damaged road briefly makes faraway places touch as if they were neighbouring rooms.',
     },
     body: () => [
       'Maelin gives you Jory’s warning. The handwriting resembles yours, but the words do not sound like you. The order tells Maelin to shelter your party and open the cellar at midnight.',
-      'Jory rode here through a shortcut that should begin two days east. The road moved because someone loosened an ancient iron pin under the inn. The pin normally keeps road ends in their proper places.',
-      'Dain vanished during the first test. Since then, Maelin has kept his room prepared and watched every road that touches her door. Jory’s arrival proved the same people were returning for a larger attempt.',
-      'The pin’s stone lock needs two kinds of authority: a royal Warden captain and Thornweald’s living treaty magic. Ordan did not drive your escort here by chance. He brought both keys to the inn and wounded your people so you would carry them inside.',
-      'Maelin lays Jory’s broken arrow on the table. A silver crown is stamped into its head. “Help me close that road,” she says, looking at Dain’s lamp. “Then find the man who opened it.”',
+      'Jory reached Bellweather through a shortcut that should begin two days east. Maelin later opened the stable door and saw a moonlit coast that lies many days west. The places did not travel through time. The damaged road pulled their entrances beside the inn.',
+      'Maelin’s husband, Dain, vanished through that stable door during the first disturbance three weeks ago. Since then, she has lit a lamp at his place every night and watched each strange road in case one brings him home.',
+      'Jory died before he could explain what lies beneath the cellar or why the forged warning demanded your arrival. His message proves only that someone prepared the inn and expected your escort before you chose a route.',
+      'Maelin lays Jory’s broken arrow on the table. A silver crown is stamped into its head. “Help me stop whoever is coming,” she says, looking at Dain’s lamp. “Then we learn what they wanted from you.”',
     ],
   },
   'c2-investigate': {
@@ -101,7 +102,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Find how the enemy plans to enter before nightfall.',
     body: () => [
       'Brann can hold the doors for a short time. That gives you one chance to investigate.',
-      'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show how the road pin was loosened. Sable may identify the officer who paid him.',
+      'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show what the enemy changed beneath the inn. Sable may identify the officer who paid him.',
       'You cannot search every lead before dark. Your choice will decide what advantage you carry into the siege.',
     ],
   },
@@ -137,7 +138,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : 'The wounded man gives his name as Sable. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
       'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Sable’s company to wound the escort, drive you to Bellweather, and pull the iron pin free during the confusion.',
       '“He needed the captain’s road seal and the elf’s living seed under the same roof,” Sable says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
-      'A second horn answers the first. Sable looks toward the shutter. “That means they are in the yard.”',
+      'A second horn answers the first. Sable looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
     ],
   },
   'c2-night-watch': {
@@ -158,10 +159,15 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'The Bell Rings Twice',
     location: 'Bellweather Inn, Common Room',
     objective: 'Read the enemy signal and put everyone in position.',
-    body: () => [
-      'The inn bell rings once. Maelin is nowhere near its rope. A moment later it rings again, the signal Sable described for a two sided attack.',
+    body: (state) => [
+      'The inn bell rings once. Maelin is nowhere near its rope. A moment later it rings again.',
+      state.flags.includes('c2-attacker-route')
+        ? 'Sable’s warning becomes clear: the first ring begins the attack, and the second sends a hidden group toward the cellar.'
+        : state.flags.includes('c2-cloak-double')
+          ? 'The two strokes match the signal recorded in Ordan’s stable note.'
+          : 'Brann calls out movement at the front while Mara hears wood breaking behind the pantry. The two rings have opened two sides of the attack.',
       'Royal soldiers rush the front yard under dark cloaks. At the back wall, the pale mire hound climbs from the flooded ditch and drives its claws into the timber.',
-      'The enemy wants you looking at the soldiers while the beast breaks open the cellar route. If they reach the iron pin, every road around the inn may be torn loose.',
+      'A soldier in the yard shouts for the others to ignore the wounded and reach the cellar. The front assault is cover. Whatever they came to take is under the inn.',
     ],
   },
   'c2-common-room-crisis': {
@@ -175,18 +181,22 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('c2-oath-anchored')
           ? 'The inn shifts, but every living person remains a warm point in your awareness. You call two lost guards back before the moving hall can take them.'
           : state.flags.includes('c2-rope-line')
-            ? 'The wounded remain tied behind a disciplined shield line. The mire hound reaches the pantry, but it cannot reach the beds.'
+            ? 'The wounded remain behind a disciplined shield line. The mire hound reaches the pantry, but it cannot reach the beds.'
             : 'The mire hound tears through the pantry wall. It is pale, long limbed, and blind except for a strip of red eyes along its neck. Lysara throws green fire across its path, but the spell cannot hold it for long.',
       'A royal soldier shouts for his men to ignore the people and find the cellar. That order tells you exactly what matters.',
-      'You can command the whole room, expose Ordan’s written orders, protect the wounded line, or block the cellar with your own body.',
+      'You can command the whole room, use any proof you found, protect the wounded line, or block the cellar with your own body.',
     ],
   },
   'c2-descend': {
     title: 'Who Goes Below',
     location: 'Bellweather Inn, Broken Cellar Door',
-    objective: 'Choose one companion and reach the iron pin before Ordan’s soldiers.',
+    objective: 'Choose one companion and reach the buried iron before the Crown soldiers.',
     body: (state) => [
-      'Brann can hold the common room. You must go below. The rope found earlier is jerking through the broken arch as men in the tunnel pull at the buried iron.',
+      state.flags.includes('c2-cellar-route')
+        ? 'Brann can hold the common room. You must go below. The rope you found earlier is jerking through the broken arch as men in the tunnel pull at the buried iron.'
+        : state.flags.includes('c2-ledger-route')
+          ? 'Brann can hold the common room. You must go below. The rope listed among Ordan’s supplies now runs through the broken cellar arch and tightens around something buried in the road.'
+          : 'Brann can hold the common room. You must go below. Sable’s warning leads you to the broken cellar arch, where an enemy chain is pulling at something buried in the road.',
       state.flags.includes('c2-no-fight')
         ? 'The shield wall remains intact behind you. Brann has enough guards to hold the wounded line until you return.'
         : state.flags.includes('c2-shielded-descent')
@@ -201,12 +211,12 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
   'c2-folded-cellar': {
     title: 'The Road Under the Inn',
     location: 'Bellweather Road Tunnel',
-    objective: 'Cross the damaged tunnel before the enemy frees the pin.',
+    objective: 'Cross the damaged tunnel before the enemy removes the buried iron.',
     body: (state) => [
-      'The cellar arch opens into an old stone road beneath the inn. One side ends at a rain soaked field. The other touches a moonlit beach. The loose pin has dragged both road ends close, like ropes pulled through one ring.',
-      state.flags.includes('c2-took-mara')
-        ? 'Mara finds two soldiers hiding behind a broken cart and drops the first before he can shout. “The pin is ahead,” she says. “So is the rest of them.”'
-        : state.flags.includes('c2-took-lysara')
+      'The cellar arch opens into an old stone road beneath the inn. One side ends at a rain soaked field. The other touches a moonlit beach. Something below has dragged both road ends close, like ropes pulled through one ring.',
+      state.flags.includes('c2-mara-below')
+        ? 'Mara finds two soldiers hiding behind a broken cart and drops the first before he can shout. “The iron is ahead,” she says. “So is the rest of them.”'
+        : state.flags.includes('c2-lysara-below')
           ? 'Lysara ties green thread to the wall. “This is not another time,” she says. “Only two distant places forced together. Follow the thread and we can return.”'
           : 'Maelin strikes the wall with her lamp hook. “That beam carries the inn,” she says. “Break it and we bury everyone. Step where I step.”',
       state.flags.includes('c2-tracked-stone')
@@ -609,16 +619,16 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     changes: {},
   },
   'c2-oath-guided-entry': {
-    result: 'Your Oath draws you toward Nilo. The wound in his leg has reopened beneath the wagon blanket.',
+    result: 'Your Oath draws you toward Nilo beneath a wagon blanket. The wound in his leg has reopened.',
   },
   'c2-guard-rear': {
     result: 'The mire hound keeps its distance while it learns your scent. One claw cuts a red line into the final road stone.',
   },
   'c2-carry-first': {
-    result: 'You carry Nilo directly to Maelin’s fire and hold his wound closed. The deepest bleeding slows before the others enter.',
+    result: 'You carry Nilo directly to Maelin’s fire and hold his wound closed while Brann brings the final wagon through the doorway.',
   },
   'c2-search-threshold': {
-    result: 'The common room is clear. You find Jory’s covered body, Sable tied near the pantry, and fresh scratches on the cellar door.',
+    result: 'Mara checks the common room, finds Jory’s covered body, and traces fresh scratches on the cellar door. Only then does she signal Brann forward.',
   },
   'c2-medicine-lysara': {
     label: 'Give the medicine to Lysara.',

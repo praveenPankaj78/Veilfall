@@ -47,7 +47,7 @@ export const choiceAdvantages: Record<string, string> = {
   'c2-medicine-attacker': 'Keep Sable alive as a public witness against Ordan.',
   'c2-compare-memories': 'Understand the road distortion and identify the true tunnel later.',
   'c2-ledger-route': 'Secure written evidence connecting Ordan to the siege preparations.',
-  'c2-cellar-route': 'Discover the enemy entrance and how the road pin is being moved.',
+  'c2-cellar-route': 'Discover the hidden entrance and what the enemy is moving beneath the inn.',
   'c2-ask-missing-mara': 'Recover Ordan’s hidden note and strengthen Mara’s trust.',
   'c2-break-bracket': 'Delay the pin theft and take the iron key needed for a safer route.',
   'c2-follow-footsteps': 'Find the concealed pantry entrance used by Ordan’s soldiers.',

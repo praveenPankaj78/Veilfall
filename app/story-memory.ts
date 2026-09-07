@@ -34,20 +34,13 @@ const ambushKnownNodes = new Set([
   'ending-oath',
 ]);
 
-const roadRevealNodes = new Set([
-  'c2-eleven-years',
-  'c2-investigate',
-  'c2-ledger',
-  'c2-cellar',
-  'c2-attacker',
-  'c2-night-watch',
-  'c2-bell',
-  'c2-common-room-crisis',
-  'c2-descend',
-  'c2-folded-cellar',
+const pinRevealNodes = new Set([
   'c2-road-pin',
   'c2-remove-pin',
   'c2-last-testimony',
+  'c2-ending-testimony',
+  'c2-ending-pin',
+  'c2-ending-oath',
 ]);
 
 const courierRevealNodes = new Set([
@@ -91,7 +84,36 @@ export function knownTruths(game: GameState) {
 
   truths.push('The sealed route page did not match Caelan’s memory, and the attackers prepared for every route before he chose one.');
 
-  if (game.chapter >= 3 || roadRevealNodes.has(game.nodeId)) {
+  if (game.chapter === 2 && [
+    'c2-eleven-years',
+    'c2-investigate',
+    'c2-ledger',
+    'c2-cellar',
+    'c2-attacker',
+    'c2-night-watch',
+    'c2-bell',
+    'c2-common-room-crisis',
+    'c2-descend',
+    'c2-folded-cellar',
+    'c2-road-pin',
+    'c2-remove-pin',
+    'c2-last-testimony',
+    'c2-ending-testimony',
+    'c2-ending-pin',
+    'c2-ending-oath',
+  ].includes(game.nodeId)) {
+    truths.push('A damaged road beneath Bellweather is pulling distant entrances beside the inn. It changes distance, not time.');
+  }
+  if (game.nodeId === 'c2-ledger' || game.flags.includes('c2-ledger-route')) {
+    truths.push('Maelin’s records connect Ordan to supplies and disguised royal soldiers prepared around the inn.');
+  }
+  if (game.nodeId === 'c2-cellar' || game.flags.includes('c2-cellar-route')) {
+    truths.push('The attackers used a displaced coastal road and a hidden cellar entrance to reach Bellweather.');
+  }
+  if (game.nodeId === 'c2-attacker' || game.flags.includes('c2-attacker-route')) {
+    truths.push('Sable identifies Ordan as the officer who paid for the attack and ordered the escort driven to Bellweather.');
+  }
+  if (game.chapter >= 3 || pinRevealNodes.has(game.nodeId)) {
     truths.push('Ordan lured Caelan and Lysara to Bellweather because their road authority and living magic could unlock the road pin.');
   }
   if (game.chapter >= 3

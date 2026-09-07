@@ -26,9 +26,9 @@ The opening remembers how Caelan crossed the broken road, whether the treaty che
 
 A pale mire hound follows the bleeding escort through the flood. Maelin Bellweather gets them inside and reveals that Warden Jory arrived three days earlier with an arrow in his back and a forged warning in Caelan's handwriting.
 
-Maelin still lights a room for Dain, her husband, who vanished through the stable door during Ordan's first test three weeks earlier. Her wait gives the inn its title and makes closing the displaced road personal.
+Maelin still lights a room for Dain, her husband, who vanished through the stable door during the first road disturbance three weeks earlier. Her wait gives the inn its title and makes closing the displaced road personal.
 
-Jory used a distant shortcut that had been pulled beside the inn. This establishes the only strange rule the player needs: a loosened road pin has brought the wrong road ends together. It changed distance, not time.
+Jory used a distant shortcut that had been pulled beside the inn. At this stage, the player learns only the strange rule needed to understand the danger: distant road ends are being forced beside Bellweather. Distance is changing, not time. The road pin, its two locks, and Ordan's need for Caelan and Lysara are revealed only when the player reaches the buried chamber.
 
 ## Medicine choice
 

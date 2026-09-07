@@ -281,6 +281,97 @@ const knownPrisonerThreshold = renderedBody('c2-threshold', {
 if (!/your wounded prisoner/i.test(knownPrisonerThreshold) || /Maelin found him/i.test(knownPrisonerThreshold)) {
   failures.push('Chapter Two does not preserve the captured attacker route');
 }
+const thresholdBeforeEntry = renderedBody('c2-threshold', {
+  ...chapterTwoBase,
+  flags: ['c2-ordered-entry'],
+});
+if (!/front step|threshold|door open/i.test(thresholdBeforeEntry) || /bars the door behind you/i.test(thresholdBeforeEntry)) {
+  failures.push('Chapter Two threshold does not remain outside until the player chooses how to enter');
+}
+const maraEntryThreshold = renderedBody('c2-threshold', {
+  ...chapterTwoBase,
+  flags: ['c2-mara-led-entry'],
+});
+if (!/never came close enough/i.test(maraEntryThreshold) || /learn the smell of your wounded/i.test(maraEntryThreshold)) {
+  failures.push('Mara’s successful entry is not preserved at the threshold');
+}
+const cellarRouteBell = renderedBody('c2-bell', {
+  ...chapterTwoBase,
+  flags: ['c2-cellar-route'],
+});
+if (/Sable’s warning|Sable described/i.test(cellarRouteBell) || !/two sides of the attack/i.test(cellarRouteBell)) {
+  failures.push('The bell scene invents a Sable warning on the cellar route');
+}
+const sableRouteBell = renderedBody('c2-bell', {
+  ...chapterTwoBase,
+  flags: ['c2-attacker-route'],
+});
+if (!/Sable’s warning/i.test(sableRouteBell)) {
+  failures.push('The bell scene does not remember Sable’s warning on his investigation route');
+}
+const shieldLineCrisis = renderedBody('c2-common-room-crisis', {
+  ...chapterTwoBase,
+  flags: ['c2-rope-line'],
+});
+if (!/behind a disciplined shield line/i.test(shieldLineCrisis) || /wounded remain tied/i.test(shieldLineCrisis)) {
+  failures.push('The common room crisis misremembers the shield line as tied patients');
+}
+const companionPayoffs = [
+  ['c2-mara-below', /Mara finds two soldiers/i, /Maelin strikes the wall/i],
+  ['c2-lysara-below', /Lysara ties green thread/i, /Maelin strikes the wall/i],
+  ['c2-maelin-below', /Maelin strikes the wall/i, /Mara finds two soldiers|Lysara ties green thread/i],
+];
+for (const [flag, expected, forbidden] of companionPayoffs) {
+  const tunnel = renderedBody('c2-folded-cellar', {
+    ...chapterTwoBase,
+    flags: [flag],
+  });
+  if (!expected.test(tunnel) || forbidden.test(tunnel)) {
+    failures.push(`The folded cellar does not preserve companion flag ${flag}`);
+  }
+}
+const earlyRoadExplanation = [
+  nodes['c2-eleven-years'].lesson?.body ?? '',
+  ...nodes['c2-eleven-years'].body(chapterTwoBase),
+].join(' ');
+if (/road pin|two kinds of authority|Ordan.*(?:brought|needed)/i.test(earlyRoadExplanation)) {
+  failures.push('Chapter Two reveals the road pin or Ordan’s full plan before the investigation');
+}
+const investigateSetup = [
+  ...nodes['c2-investigate'].body(chapterTwoBase),
+  ...nodes['c2-investigate'].choices.flatMap((choice) => [choice.label, choice.detail, choice.advantage ?? '']),
+].join(' ');
+if (/road pin/i.test(investigateSetup)) {
+  failures.push('The Chapter Two investigation menu names the road pin before the player can discover it');
+}
+const earlyChapterTwoTruths = knownTruths({
+  ...chapterTwoBase,
+  nodeId: 'c2-eleven-years',
+});
+if (earlyChapterTwoTruths.some((truth) => /unlock the road pin|Ordan lured/i.test(truth))) {
+  failures.push('The Chapter Two journal reveals Ordan’s full plan too early');
+}
+const pinChamberTruths = knownTruths({
+  ...chapterTwoBase,
+  nodeId: 'c2-road-pin',
+});
+if (!pinChamberTruths.some((truth) => /Ordan lured|unlock the road pin/i.test(truth))) {
+  failures.push('The Chapter Two journal does not record Ordan’s plan at the pin chamber');
+}
+const descentRoutePayoffs = [
+  ['c2-cellar-route', /rope you found earlier/i, /Sable’s warning|listed among Ordan’s supplies/i],
+  ['c2-ledger-route', /listed among Ordan’s supplies/i, /rope you found earlier|Sable’s warning/i],
+  ['c2-attacker-route', /Sable’s warning/i, /rope you found earlier|listed among Ordan’s supplies/i],
+];
+for (const [flag, expected, forbidden] of descentRoutePayoffs) {
+  const descent = renderedBody('c2-descend', {
+    ...chapterTwoBase,
+    flags: [flag],
+  });
+  if (!expected.test(descent) || forbidden.test(descent)) {
+    failures.push(`The descent does not preserve investigation flag ${flag}`);
+  }
+}
 const lowRoadCases = [
   {
     flags: ['saved-family', 'steady-axle'],
