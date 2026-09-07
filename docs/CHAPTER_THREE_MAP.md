@@ -24,19 +24,19 @@ The fragment shortens the road to Harrowfen because it is pulling toward a large
 
 Ordan has arrived first with Caelan's genuine route authority, a royal warrant, witness statements, planted evidence, and accusations based on the real cost of the escort. Renn committed crimes in Caelan's cloak and used valid Warden commands. Crown riders close from behind while Caelan must accept a meaningful condition to get his wounded through the gate. The opening grants only limited entry and does not clear his name.
 
-Chapter Two's closing choice changes the confrontation. Testimony lets Sable or Jory's papers challenge Ordan publicly but draws an assassin's bolt. The iron reacts to Harrowfen's hidden shard, proving the danger while frightening the guards. The public Oath pulls toward Ordan and allows Elene to test Caelan's promise.
+Chapter Two's closing choice changes the confrontation. Testimony lets Garran or Jory's papers challenge Ordan publicly but draws an assassin's bolt. The iron reacts to Harrowfen's hidden shard, proving the danger while frightening the guards. The public Oath pulls toward Ordan and allows Elene to test Caelan's promise.
 
 ## Investigation routes
 
 The player chooses one concrete lead:
 
 - Search the archive for Ordan's route requests and royal payments.
-- Defend Sable at the healing house so he can identify Ordan's personal guard.
+- Defend Garran at the healing house so he can identify Ordan's personal guard.
 - Confront road broker Varris and learn how Ordan plans to open the Mileless Bridge.
 
 All routes converge at Lantern Bridge, where Ordan must defend his actions before Harrowfen.
 
-The healing house choices respond directly to its two threatened rooms: Caelan can hold the back door while Iven moves the children, shield Sable long enough to identify a guard, or divide his guards between both dangers. Each outcome changes the evidence brought to Lantern Bridge.
+The healing house choices respond directly to its two threatened rooms: Caelan can hold the back door while Iven moves the children, shield Garran long enough to identify a guard, or divide his guards between both dangers. Each outcome changes the evidence brought to Lantern Bridge.
 
 Ordan argues that independent roads let smugglers, armies, and local rulers evade the Crown. He claims that central control will prevent more wars than Caelan's individual acts of protection. He also admits that Caelan's authority and Lysara's living seed unlocked Bellweather. He forged the later evidence, but the original sealed order came from someone more powerful.
 

@@ -42,7 +42,7 @@ Mechanic: Low resource leadership during a manhunt, with visible rescue and purs
 
 Active question: Can Caelan recover the fragment and save the escort?
 
-Answer: The fragment is part of a map showing several Nail sites.
+Answer: The fragment contains a map of nine World Nails. The northern mark at Dragonspine is already active.
 
 Next hook: Why is the Crown moving it toward Dragonspine?
 

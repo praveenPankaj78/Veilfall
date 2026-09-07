@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the first three canonical Caelan chapters. The reader now includes named relationship values, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
+The project contains a functioning choice engine and the first four canonical Caelan chapters. The reader now includes named relationship values, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -69,9 +69,9 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 - Rook's crossover creates curiosity without confusion;
 - an Oath changes future options rather than acting as a temporary buff.
 
-## Phase Five: complete Caelan season
+## Phase Five: complete Caelan season, in progress
 
-Produce Chapters Four through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapter Four is implemented. Produce Chapters Five through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -125,7 +125,7 @@ Keep Wayfire chapter access separate from moral choices and romance. Test a gene
 
 Release order:
 
-1. Caelan Chapters One through Three as a free foundation arc.
+1. Caelan Chapters One through Four as a free foundation arc.
 2. Caelan's full season.
 3. Rook's season with Caelan import.
 4. Ilyra's season with both imports.
@@ -133,4 +133,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first three canonical chapters are implemented. The next production gate is to test several imported routes from Chapter One through Chapter Three, record comprehension and pacing issues, and confirm that the World Nail explanation is understood before Chapter Four begins.
+The foundation and the first four canonical chapters are implemented. The next production gate is to test the arrest, bargain, and trust routes through Chapter Four, confirm that Rook feels surprising without feeling unexplained, and confirm that the nine Nail reveal is understood before Chapter Five begins.

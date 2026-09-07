@@ -32,7 +32,7 @@ Jory used a distant shortcut that had been pulled beside the inn. At this stage,
 
 ## Medicine choice
 
-The final dose can go to Lysara, Nilo, or Sable. Sable is either the road prisoner or an attacker Maelin found emerging from the cellar, depending on the earlier route. Nilo survives without the dose but may lose his leg. Lysara may lose her hand, living magic, and ability to complete the treaty. Sable may die with the strongest testimony against Ordan.
+The final dose can go to Lysara, Nilo, or Garran. Garran is either the road prisoner or an attacker Maelin found emerging from the cellar, depending on the earlier route. Nilo survives without the dose but may lose his leg. Lysara may lose her hand, living magic, and ability to complete the treaty. Garran may die with the strongest testimony against Ordan.
 
 ## Investigation routes
 
@@ -40,7 +40,7 @@ The player chooses one lead:
 
 - Maelin's ledger links Ordan to rope, oil, hooks, and disguised royal soldiers.
 - The cellar reveals the enemy chain and the coastal road pulled against the old tunnel.
-- Sable identifies Ordan and explains that the attackers plan to pull the pin free.
+- Garran identifies Ordan and explains that the attackers plan to pull the pin free.
 
 Each route supplies a distinct advantage during the same siege.
 

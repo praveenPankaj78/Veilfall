@@ -4,6 +4,7 @@ import { extname, join } from 'node:path';
 const roots = ['docs'];
 const directFiles = [
   'app/choice-economy.ts',
+  'app/chapter-four.ts',
   'app/game-data.ts',
   'app/page.tsx',
   'app/story-memory.ts',

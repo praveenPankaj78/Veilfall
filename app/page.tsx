@@ -55,19 +55,21 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v7.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v8.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v7.save',
   'veilfall.saga.v6.save',
   'veilfall.saga.v5.save',
   'veilfall.saga.v4.save',
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3;
+type ChapterNumber = 1 | 2 | 3 | 4;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   2: 'veilfall.chapter-two.v1.start',
   3: 'veilfall.chapter-three.v1.start',
+  4: 'veilfall.chapter-four.v1.start',
 };
 
 const chapterLibrary = [
@@ -85,6 +87,11 @@ const chapterLibrary = [
     number: 3 as const,
     title: 'The Town at the Wrong Mile',
     summary: 'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
+  },
+  {
+    number: 4 as const,
+    title: 'Thief at the Mileless Bridge',
+    summary: 'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
   },
 ];
 
@@ -163,11 +170,13 @@ function migrateRelationships(value: Partial<GameState>) {
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c3-')
-    ? 3
-    : nodeId.startsWith('c2-')
-      ? 2
-      : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c4-')
+    ? 4
+    : nodeId.startsWith('c3-')
+      ? 3
+      : nodeId.startsWith('c2-')
+        ? 2
+        : (value.chapter ?? 1);
   const savedStats = (value.stats ?? {}) as Partial<GameStats> & { stamina?: number };
   const health = savedStats.health ?? savedStats.stamina ?? initialState.stats.health;
   const completedChapters = Array.from(new Set([
@@ -203,6 +212,7 @@ function defeatForChoice(chapter: ChapterNumber, choice: Choice) {
     1: 'You complete the action, but your wounds finally take your strength. Rain fills your mouth as the road darkens above you. The escort continues for only a few steps before the enemy closes in.',
     2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
     3: 'Your choice changes the fight, but blood and exhaustion pull you down beside the canal. Harrowfen’s lanterns blur on the water as Ordan escapes toward the eastern bridge.',
+    4: 'You complete the action, but the moving bridge takes the last of your strength. Stone turns beneath you as Mara reaches for your hand and the World Nail fragment disappears into another sky.',
   };
   return {
     title: 'Caelan has fallen',
@@ -286,6 +296,8 @@ function activePromises(game: GameState) {
   if (game.flags.includes('c2-oath-repair-road')) promises.push('Repair the damaged King’s Road.');
   if (game.flags.includes('c2-oath-expose-crown')) promises.push('Expose the Crown officer behind the attack.');
   if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen fall while Ordan is pursued.');
+  if (game.flags.includes('c4-oath-no-one-falls')) promises.push('Do not let anyone fall from the Mileless Bridge while you stand.');
+  if (game.flags.includes('c4-oath-honest-with-mara')) promises.push('Do not hide behind duty when speaking with Mara.');
   if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
   return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
 }
@@ -432,10 +444,13 @@ export default function Home() {
   const node = nodes[game.nodeId];
   const chapterTwoUnlocked = game.chapter === 2 || game.completedChapters.includes(1);
   const chapterThreeUnlocked = game.chapter === 3 || game.completedChapters.includes(2);
+  const chapterFourUnlocked = game.chapter === 4 || game.completedChapters.includes(3);
   const chapterTwoStartExists = loaded && typeof window !== 'undefined'
     && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[2]!));
   const chapterThreeStartExists = loaded && typeof window !== 'undefined'
     && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[3]!));
+  const chapterFourStartExists = loaded && typeof window !== 'undefined'
+    && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[4]!));
   const paragraphs = useMemo(() => node.body(game), [game, node]);
   const truths = useMemo(() => knownTruths(game), [game]);
   const promises = useMemo(() => activePromises(game), [game]);
@@ -505,7 +520,7 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3] as ChapterNumber[]).filter((number) => number > chapter)) {
+    for (const later of ([2, 3, 4] as ChapterNumber[]).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -562,6 +577,23 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterFour() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c4-bridge-start',
+      chapter: 4,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 3])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 1),
+      },
+      history: [...game.history, 'You enter the Mileless Bridge with every earlier consequence.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[4]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return <main className="min-h-screen bg-[#07090b]" aria-label="Loading Veilfall" />;
   }
@@ -606,7 +638,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
+          Caelan {game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
         </div>
         <div className="top-actions">
           <Button
@@ -670,9 +702,17 @@ export default function Home() {
           <div className="chapter-library-list">
             {chapterLibrary.map((chapter) => {
               const unlocked = chapter.number === 1
-                || (chapter.number === 2 ? chapterTwoUnlocked : chapterThreeUnlocked);
+                || (chapter.number === 2
+                  ? chapterTwoUnlocked
+                  : chapter.number === 3
+                    ? chapterThreeUnlocked
+                    : chapterFourUnlocked);
               const available = chapter.number === 1
-                || (chapter.number === 2 ? chapterTwoStartExists : chapterThreeStartExists);
+                || (chapter.number === 2
+                  ? chapterTwoStartExists
+                  : chapter.number === 3
+                    ? chapterThreeStartExists
+                    : chapterFourStartExists);
               return (
                 <div className="chapter-library-entry" key={chapter.number}>
                   <div>
@@ -842,7 +882,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 2 ? (
                     <>
                       <h2>Chapter Three is ready</h2>
                       <p>
@@ -862,16 +902,36 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Four is ready</h2>
+                      <p>
+                        Continue into Thief at the Mileless Bridge with every surviving consequence.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterFour}
+                      >
+                        Continue to Chapter Four
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter Three
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Four</h2>
+                    <h2>Caelan will return in Chapter Five</h2>
                     <p>
-                      You carry {game.stats.wayfire} Wayfire. The Mileless Bridge is turning,
-                      and a thief has reached the World Nail fragment before you.
+                      You keep the World Nail fragment and {game.stats.wayfire} Wayfire.
+                      Dragonspine waits beneath cold blue fire, and the Regent has ordered you north.
                     </p>
                     <Button className="begin-button" size="lg" onClick={restart}>
-                      Replay Chapter Three
+                      Replay Chapter Four
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>
@@ -1011,7 +1071,7 @@ export default function Home() {
             <section>
               <span>Future intimate scenes</span>
               <p>
-                These scenes are optional and are not part of the first three chapters.
+                These scenes are optional and are not part of the first four chapters.
                 Fade keeps the relationship and story consequence without explicit detail.
               </p>
               <div className="content-preference">
@@ -1098,10 +1158,12 @@ export default function Home() {
             <AlertDialogTitle>Replay Chapter {pendingReplay}?</AlertDialogTitle>
             <AlertDialogDescription>
               {pendingReplay === 1
-                ? 'This restarts Caelan’s journey and removes all Chapter Two and Chapter Three progress on this device.'
+                ? 'This restarts Caelan’s journey and removes all later chapter progress on this device.'
                 : pendingReplay === 2
-                  ? 'This restores the Chapter Two checkpoint and removes all Chapter Three progress created by the current path.'
-                  : 'This restores the Chapter Three checkpoint and replaces every choice made after it.'}
+                  ? 'This restores the Chapter Two checkpoint and removes all Chapter Three and Chapter Four progress created by the current path.'
+                  : pendingReplay === 3
+                    ? 'This restores the Chapter Three checkpoint and removes all Chapter Four progress created by the current path.'
+                    : 'This restores the Chapter Four checkpoint and replaces every choice made after it.'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

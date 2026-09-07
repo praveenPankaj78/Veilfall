@@ -1,4 +1,5 @@
 import { adventureChoiceUpdates, adventureNodeUpdates } from './adventure-revision';
+import { chapterFourNodes } from './chapter-four';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -22,7 +23,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3;
+  chapter: 1 | 2 | 3 | 4;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -80,7 +81,10 @@ export type StoryTermKey =
   | 'mire hound'
   | 'road pin'
   | 'Mileless Bridge'
-  | 'World Nail';
+  | 'World Nail'
+  | 'nine Nails'
+  | 'Dragonspine'
+  | 'Regent Malrec';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -162,6 +166,13 @@ const relationshipEffects: Record<string, Partial<Relationships>> = {
   'c3-send-real-mara': { mara: { trust: 1, attraction: 0 } },
   'c3-prepare-fast-pursuit': { mara: { trust: 1, attraction: 1 } },
   'c3-prepare-safe-pursuit': { lysara: { trust: 1, attraction: 1 } },
+  'c4-shield-rook': { mara: { trust: 1, attraction: 0 } },
+  'c4-send-mara-with-brann': { mara: { trust: 1, attraction: 0 } },
+  'c4-lysara-read-map': { lysara: { trust: 1, attraction: 0 } },
+  'c4-tell-mara-law-bends': { mara: { trust: 1, attraction: 1 } },
+  'c4-promise-mara-truth': { mara: { trust: 2, attraction: 1 } },
+  'c4-kiss-mara-bridge': { mara: { trust: 1, attraction: 2 } },
+  'c4-trust-rook': { mara: { trust: 1, attraction: 0 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -1704,9 +1715,9 @@ const originalNodes: Record<string, StoryNode> = {
     art: 'inn',
     body: (state) => [
       state.flags.includes('c2-saved-attacker')
-        ? 'The medicine has cleared the attacker’s eyes. He gives his name as Sable Orr and asks whether the road has reached the sea yet.'
-        : 'The attacker struggles to breathe. He gives his name as Sable Orr, but blood darkens the bandage around his side.',
-      'Sable says his group was hired to force the escort into Bellweather Inn. They were told not to enter after midnight and not to touch the iron beneath the road.',
+        ? 'The medicine has cleared the attacker’s eyes. He gives his name as Garran Orr and asks whether the road has reached the sea yet.'
+        : 'The attacker struggles to breathe. He gives his name as Garran Orr, but blood darkens the bandage around his side.',
+      'Garran says his group was hired to force the escort into Bellweather Inn. They were told not to enter after midnight and not to touch the iron beneath the road.',
       'His order carries a Crown seal but no royal name. The final line reads: When the bell rings, remove the road pin and leave the witnesses inside.',
       'Before you can ask who wrote it, the bell above the front door rings once.',
     ],
@@ -1718,15 +1729,15 @@ const originalNodes: Record<string, StoryNode> = {
         next: 'c2-night-watch',
         changes: { resolve: -1, command: 1 },
         addFlags: ['c2-crown-voice', 'c2-found-road-pin-term'],
-        result: 'Sable never saw a face. He heard a calm man speaking from behind a royal screen in Greyhaven Palace.',
+        result: 'Garran never saw a face. He heard a calm man speaking from behind a royal screen in Greyhaven Palace.',
       },
       {
         id: 'c2-offer-protection',
-        label: 'Offer Sable protection if he testifies.',
+        label: 'Offer Garran protection if he testifies.',
         detail: 'Make a normal promise, not a magical Oath. His answer will depend on whether he trusts you.',
         next: 'c2-night-watch',
         addFlags: ['c2-offered-sable-safety', 'c2-found-road-pin-term'],
-        result: 'Sable studies you, then gives one warning. “The Crown has people inside your Wardens.”',
+        result: 'Garran studies you, then gives one warning. “The Crown has people inside your Wardens.”',
       },
       {
         id: 'c2-take-orders',
@@ -1735,7 +1746,7 @@ const originalNodes: Record<string, StoryNode> = {
         next: 'c2-night-watch',
         changes: { resolve: 1 },
         addFlags: ['c2-kept-crown-orders', 'c2-found-road-pin-term'],
-        result: 'You place the sealed orders inside your armour. Sable closes his eyes but keeps breathing.',
+        result: 'You place the sealed orders inside your armour. Garran closes his eyes but keeps breathing.',
       },
     ],
   },
@@ -2142,8 +2153,8 @@ const originalNodes: Record<string, StoryNode> = {
       'Outside, the King’s Road runs east and west again. A market town stands on the eastern horizon. Maelin says Harrowfen should be three days away. The mile stone says it is one mile.',
       'The inn is fixed, but the loose iron still points the road toward the wrong destination. That is why Harrowfen is close enough to see. The danger has moved with the fragment instead of ending.',
       state.flags.includes('c2-saved-attacker')
-        ? 'Sable walks into the yard with Brann supporting him. “I will testify,” he says. “The order came from the Crown, but the man behind the screen wore a Warden ring.”'
-        : 'Sable is dying when Brann carries him into the yard. He grips your sleeve and forces out seven words: “Crown order. Warden ring. Road pin. Harrowfen.”',
+        ? 'Garran walks into the yard with Brann supporting him. “I will testify,” he says. “The order came from the Crown, but the man behind the screen wore a Warden ring.”'
+        : 'Garran is dying when Brann carries him into the yard. He grips your sleeve and forces out seven words: “Crown order. Warden ring. Road pin. Harrowfen.”',
       state.flags.includes('c2-pin-broken')
         ? 'Tivik holds the broken top of the road pin. The fragment left underground is already pulling at the eastern road.'
         : 'The full road pin lies in the mud. The damaged Crown mark is clear enough for any court to recognise.',
@@ -2151,12 +2162,12 @@ const originalNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c2-carry-testimony',
-        label: 'Take Sable and his testimony to Harrowfen.',
+        label: 'Take Garran and his testimony to Harrowfen.',
         detail: 'Protect the witness and gain 7 Wayfire. His survival depends on your earlier medicine choice.',
         next: 'c2-ending-testimony',
         changes: { wayfire: 7 },
         addFlags: ['c2-chose-testimony'],
-        result: 'You place Sable on the safest wagon and order Brann to keep him under constant guard.',
+        result: 'You place Garran on the safest wagon and order Brann to keep him under constant guard.',
       },
       {
         id: 'c2-carry-pin',
@@ -2185,15 +2196,15 @@ const originalNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Two complete',
     title: 'The Witness on the Wagon',
     location: 'The Eastern Road to Harrowfen',
-    objective: 'Keep Sable alive and learn who inside the Wardens served the Crown plot.',
+    objective: 'Keep Garran alive and learn who inside the Wardens served the Crown plot.',
     threat: 'Rising',
     art: 'inn',
     final: true,
     nextChapter: 'c3-arrival',
     body: (state) => [
       state.flags.includes('c2-saved-attacker')
-        ? 'Sable remains awake as Bellweather Inn shrinks behind you. He names two safe houses and one Warden officer who took payment from the Palace.'
-        : 'Sable dies before the first mile marker. He leaves no full name, but the Warden ring clue changes the enemy you must search for.',
+        ? 'Garran remains awake as Bellweather Inn shrinks behind you. He names two safe houses and one Warden officer who took payment from the Palace.'
+        : 'Garran dies before the first mile marker. He leaves no full name, but the Warden ring clue changes the enemy you must search for.',
       state.flags.includes('c2-saved-nilo')
         ? 'Nilo rides beside Maelin and waves when he notices you looking back.'
         : 'Maelin stays beside Nilo’s stretcher. His breathing is weak but steady enough for the short road ahead.',
@@ -2305,7 +2316,7 @@ const originalNodes: Record<string, StoryNode> = {
       'She pushes a folded bill into your hand. It charges your escort for three nights of rooms, two broken doors, and the burial of a royal courier. At the bottom is your signature. The curve of every letter is yours.',
       '“You arrived three days ago,” Elene says. “You asked questions about an iron spike. Last night you robbed our archive and promised to burn the town if we followed.”',
       state.flags.includes('c2-saved-attacker')
-        ? 'Sable lifts his head from the wagon. “I have met that courier,” he says weakly. “He gave us the order at Bellweather.”'
+        ? 'Garran lifts his head from the wagon. “I have met that courier,” he says weakly. “He gave us the order at Bellweather.”'
         : 'Brann points at a dark stain beside the gate. A body was dragged from there toward the old watch house.',
       'Behind you, one of the wounded cries out. Lysara says his fever is rising. The archers above draw their strings tighter.',
     ],
@@ -2583,7 +2594,7 @@ const originalNodes: Record<string, StoryNode> = {
     body: (state) => [
       'Elene leads you to the courier’s grave. The earth is wet and newly packed. His name board reads Ordan Vale, Royal Road Office.',
       state.flags.includes('c2-saved-attacker')
-        ? 'Sable confirms the name. Ordan Vale gave the Bellweather attackers their orders from behind a screen.'
+        ? 'Garran confirms the name. Ordan Vale gave the Bellweather attackers their orders from behind a screen.'
         : 'Inside the grave you find only a silver glove filled with black reeds. There is no body.',
       'A bell rings from the watch house. Across the canal, a living man in silver gloves watches you from an upper window. He smiles, closes the shutters, and sets the building on fire.',
     ],
@@ -3061,6 +3072,7 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'harrowfen',
     final: true,
+    nextChapter: 'c4-bridge-start',
     body: (state) => [
       'You cross onto a bridge that passes through four skies. Ordan looks back and understands that you chose him over the easier mystery.',
       state.flags.includes('c3-pursuit-mara')
@@ -3080,6 +3092,7 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'harrowfen',
     final: true,
+    nextChapter: 'c4-bridge-start',
     body: (state) => [
       'You leave Ordan’s marked road and cut across an arch hanging over a red desert. The stranger slips behind the courier and steals the iron fragment with two fingers.',
       state.flags.includes('c3-bridge-warning')
@@ -3099,6 +3112,7 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'harrowfen',
     final: true,
+    nextChapter: 'c4-bridge-start',
     body: (state) => [
       'Your spike holds. The rope passes through three different skies, but its far end remains tied to Harrowfen. For the first time since Bellweather, you know there is a road behind you.',
       state.flags.includes('c3-oath-hold-town')
@@ -3110,8 +3124,13 @@ const originalNodes: Record<string, StoryNode> = {
   },
 };
 
+const allOriginalNodes: Record<string, StoryNode> = {
+  ...originalNodes,
+  ...chapterFourNodes,
+};
+
 export const nodes = Object.fromEntries(
-  Object.entries(originalNodes).map(([id, node]) => {
+  Object.entries(allOriginalNodes).map(([id, node]) => {
     const revision = adventureNodeUpdates[id];
     return [
       id,
@@ -3194,6 +3213,26 @@ export const nodeOrder = [
   'c3-ending-courier',
   'c3-ending-thief',
   'c3-ending-return',
+  'c4-bridge-start',
+  'c4-chase',
+  'c4-corner',
+  'c4-collapse',
+  'c4-wounded',
+  'c4-three-spans',
+  'c4-snow-span',
+  'c4-storm-span',
+  'c4-brass-span',
+  'c4-stage-turn',
+  'c4-ordan',
+  'c4-nine-marks',
+  'c4-mara',
+  'c4-soldiers',
+  'c4-theatre-plan',
+  'c4-anchor',
+  'c4-duty',
+  'c4-ending-arrest',
+  'c4-ending-bargain',
+  'c4-ending-trust',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

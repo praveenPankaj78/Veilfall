@@ -29,6 +29,17 @@ vm.runInNewContext(economyCompiled, {
   console,
 }, { filename: 'choice-economy.js' });
 
+const chapterFourSource = await readFile('app/chapter-four.ts', 'utf8');
+const chapterFourCompiled = ts.transpileModule(chapterFourSource, {
+  compilerOptions,
+}).outputText;
+const chapterFourExports = {};
+vm.runInNewContext(chapterFourCompiled, {
+  exports: chapterFourExports,
+  module: { exports: chapterFourExports },
+  console,
+}, { filename: 'chapter-four.js' });
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -55,6 +66,7 @@ const context = {
   require: (specifier) => {
     if (specifier === './adventure-revision') return adventureExports;
     if (specifier === './choice-economy') return economyExports;
+    if (specifier === './chapter-four') return chapterFourExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -258,6 +270,28 @@ const chapterThreeBase = {
     wayfire: 0,
   },
 };
+const chapterFourKnownTerms = Object.keys(statLabels);
+const chapterFourKnownStoryTerms = [
+  ...chapterThreeKnownStoryTerms,
+  'Mileless Bridge',
+  'World Nail',
+];
+const chapterFourBase = {
+  ...initialState,
+  nodeId: 'c4-bridge-start',
+  chapter: 4,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3],
+  stats: {
+    ...initialState.stats,
+    health: 7,
+    resolve: 6,
+    command: 5,
+    oathfire: 4,
+    medicine: 0,
+    wayfire: 7,
+  },
+};
 const storyTermRules = {
   Oathwarden: {
     use: /\bOathwarden\b/i,
@@ -283,9 +317,27 @@ const storyTermRules = {
     use: /\bWorld Nail\b/i,
     introduction: /names the iron at last\. “World Nail,”/i,
   },
+  'nine Nails': {
+    use: /\bnine (?:World )?Nails\b/i,
+    introduction: /fragment carries a map of nine World Nails/i,
+  },
+  Dragonspine: {
+    use: /\bDragonspine\b/i,
+    introduction: /Dragonspine is the northern mountain realm/i,
+  },
+  'Regent Malrec': {
+    use: /\bRegent Malrec\b/i,
+    introduction: /Regent Malrec Vale rules Greyhaven while the young king is ill/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c2-') ? chapterTwoBase : id.startsWith('c3-') ? chapterThreeBase : initialState;
+  const sampleState = id.startsWith('c4-')
+    ? chapterFourBase
+    : id.startsWith('c3-')
+      ? chapterThreeBase
+      : id.startsWith('c2-')
+        ? chapterTwoBase
+        : initialState;
   const introductionText = [
     node.lesson?.title,
     node.lesson?.body,
@@ -332,11 +384,17 @@ for (const [id, node] of Object.entries(nodes)) {
 }
 
 const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|understand|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3]) {
+for (const chapter of [1, 2, 3, 4]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
-    ? !id.startsWith('c2-') && !id.startsWith('c3-')
+    ? !/^c[234]-/.test(id)
     : id.startsWith(`c${chapter}-`));
-  const sampleState = chapter === 1 ? initialState : chapter === 2 ? chapterTwoBase : chapterThreeBase;
+  const sampleState = chapter === 1
+    ? initialState
+    : chapter === 2
+      ? chapterTwoBase
+      : chapter === 3
+        ? chapterThreeBase
+        : chapterFourBase;
   const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
   if (closeNodes.length / chapterNodes.length < 0.6) {
     failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
@@ -402,7 +460,7 @@ for (const [nodeId, expected] of roadPinDiscoveryChecks) {
 const roadPinCallbackChecks = [
   ['c2-ledger-route', /named in Ordan’s midnight note/i],
   ['c2-cellar-route', /identified on the cellar bracket/i],
-  ['c2-attacker-route', /Sable warned you about/i],
+  ['c2-attacker-route', /Garran warned you about/i],
 ];
 for (const [flag, expected] of roadPinCallbackChecks) {
   const chamber = renderedBody('c2-road-pin', { ...chapterTwoBase, flags: [flag] });
@@ -412,15 +470,15 @@ const cellarRouteBell = renderedBody('c2-bell', {
   ...chapterTwoBase,
   flags: ['c2-cellar-route'],
 });
-if (/Sable’s warning|Sable described/i.test(cellarRouteBell) || !/two sides of the attack/i.test(cellarRouteBell)) {
-  failures.push('The bell scene invents a Sable warning on the cellar route');
+if (/Garran’s warning|Garran described/i.test(cellarRouteBell) || !/two sides of the attack/i.test(cellarRouteBell)) {
+  failures.push('The bell scene invents a Garran warning on the cellar route');
 }
 const sableRouteBell = renderedBody('c2-bell', {
   ...chapterTwoBase,
   flags: ['c2-attacker-route'],
 });
-if (!/Sable’s warning/i.test(sableRouteBell)) {
-  failures.push('The bell scene does not remember Sable’s warning on his investigation route');
+if (!/Garran’s warning/i.test(sableRouteBell)) {
+  failures.push('The bell scene does not remember Garran’s warning on his investigation route');
 }
 const shieldLineCrisis = renderedBody('c2-common-room-crisis', {
   ...chapterTwoBase,
@@ -472,9 +530,9 @@ if (!pinChamberTruths.some((truth) => /Ordan lured|unlock the road pin/i.test(tr
   failures.push('The Chapter Two journal does not record Ordan’s plan at the pin chamber');
 }
 const descentRoutePayoffs = [
-  ['c2-cellar-route', /rope you found earlier/i, /Sable’s warning|listed among Ordan’s supplies/i],
-  ['c2-ledger-route', /listed among Ordan’s supplies/i, /rope you found earlier|Sable’s warning/i],
-  ['c2-attacker-route', /Sable’s warning/i, /rope you found earlier|listed among Ordan’s supplies/i],
+  ['c2-cellar-route', /rope you found earlier/i, /Garran’s warning|listed among Ordan’s supplies/i],
+  ['c2-ledger-route', /listed among Ordan’s supplies/i, /rope you found earlier|Garran’s warning/i],
+  ['c2-attacker-route', /Garran’s warning/i, /rope you found earlier|listed among Ordan’s supplies/i],
 ];
 for (const [flag, expected, forbidden] of descentRoutePayoffs) {
   const descent = renderedBody('c2-descend', {
@@ -552,7 +610,7 @@ for (const evidenceChoice of nodes.evidence.choices) {
   }
 }
 const routeProofChecks = [
-  ['c2-chose-testimony', /Sable|Jory/i],
+  ['c2-chose-testimony', /Garran|Jory/i],
   ['c2-chose-pin', /fragment/i],
   ['c2-oath-expose-crown', /Oath/i],
 ];
@@ -577,7 +635,7 @@ if (!/back door.*children’s room/i.test(healerSceneChoices.get('c3-command-can
   failures.push('The healing house Command choice does not defend both threatened rooms');
 }
 const healerRoutePayoffs = [
-  ['c3-sable-identified-guard', /Sable’s identification/i],
+  ['c3-sable-identified-guard', /Garran’s identification/i],
   ['c3-secured-healer', /every patient alive/i],
   ['c3-canal-defence', /divided guard line trapped one intruder/i],
 ];
@@ -694,6 +752,26 @@ const stack = [
     knownTerms: chapterThreeKnownTerms,
     knownStoryTerms: chapterThreeKnownStoryTerms,
   },
+  ...['c3-target-ordan', 'c3-target-thief', 'c3-secured-return'].map((flag) => ({
+    state: { ...chapterFourBase, flags: [flag] },
+    knownTerms: chapterFourKnownTerms,
+    knownStoryTerms: chapterFourKnownStoryTerms,
+  })),
+  {
+    state: {
+      ...chapterFourBase,
+      flags: ['c3-target-thief'],
+      stats: {
+        ...chapterFourBase.stats,
+        health: 2,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+      },
+    },
+    knownTerms: chapterFourKnownTerms,
+    knownStoryTerms: chapterFourKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -701,6 +779,7 @@ const endings = new Set();
 const chapterOneEndings = new Set();
 const chapterTwoEndings = new Set();
 const chapterThreeEndings = new Set();
+const chapterFourEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -774,7 +853,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
+    if (node.id.startsWith('c4-')) chapterFourEndings.add(node.id);
+    else if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
@@ -807,7 +887,8 @@ if (!endings.size) failures.push('No ending is reachable');
 if (chapterOneEndings.size !== 3) failures.push(`Expected 3 Chapter One endings, found ${chapterOneEndings.size}`);
 if (chapterTwoEndings.size !== 3) failures.push(`Expected 3 Chapter Two endings, found ${chapterTwoEndings.size}`);
 if (chapterThreeEndings.size !== 3) failures.push(`Expected 3 Chapter Three endings, found ${chapterThreeEndings.size}`);
-for (const chapter of [1, 2, 3]) {
+if (chapterFourEndings.size !== 3) failures.push(`Expected 3 Chapter Four endings, found ${chapterFourEndings.size}`);
+for (const chapter of [1, 2, 3, 4]) {
   if (!deathChapters.has(chapter)) failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
 
@@ -820,5 +901,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

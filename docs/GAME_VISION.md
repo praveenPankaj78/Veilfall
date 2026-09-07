@@ -2,7 +2,7 @@
 
 ## Canon status
 
-This document defines the redesigned canon. The first three playable chapters now form its canonical opening act.
+This document defines the redesigned canon. The first four playable chapters now form its canonical opening act.
 
 ## The promise
 

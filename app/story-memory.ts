@@ -59,6 +59,39 @@ const courierRevealNodes = new Set([
   'c3-ending-return',
 ]);
 
+const rookKnownNodes = new Set([
+  'c4-corner',
+  'c4-collapse',
+  'c4-wounded',
+  'c4-three-spans',
+  'c4-snow-span',
+  'c4-storm-span',
+  'c4-brass-span',
+  'c4-stage-turn',
+  'c4-ordan',
+  'c4-nine-marks',
+  'c4-mara',
+  'c4-soldiers',
+  'c4-theatre-plan',
+  'c4-anchor',
+  'c4-duty',
+  'c4-ending-arrest',
+  'c4-ending-bargain',
+  'c4-ending-trust',
+]);
+
+const nineNailsKnownNodes = new Set([
+  'c4-nine-marks',
+  'c4-mara',
+  'c4-soldiers',
+  'c4-theatre-plan',
+  'c4-anchor',
+  'c4-duty',
+  'c4-ending-arrest',
+  'c4-ending-bargain',
+  'c4-ending-trust',
+]);
+
 export function knownTruths(game: GameState) {
   const truths: string[] = [];
 
@@ -111,7 +144,7 @@ export function knownTruths(game: GameState) {
     truths.push('The attackers used a displaced coastal road and a hidden cellar entrance to reach Bellweather.');
   }
   if (game.nodeId === 'c2-attacker' || game.flags.includes('c2-attacker-route')) {
-    truths.push('Sable identifies Ordan as the officer who paid for the attack and ordered the escort driven to Bellweather.');
+    truths.push('Garran identifies Ordan as the officer who paid for the attack and ordered the escort driven to Bellweather.');
   }
   if (game.chapter >= 3 || pinRevealNodes.has(game.nodeId)) {
     truths.push('Ordan lured Caelan and Lysara to Bellweather because their road authority and living magic could unlock the road pin.');
@@ -129,6 +162,18 @@ export function knownTruths(game: GameState) {
     || game.flags.includes('c3-target-thief')
     || game.flags.includes('c3-secured-return')) {
     truths.push('The iron is part of a World Nail that normally keeps distance stable across Edrath.');
+  }
+  if (rookKnownNodes.has(game.nodeId)) {
+    truths.push('Rook Sable stole the fragment to copy the map hidden inside it, not to control the iron itself.');
+  }
+  if (nineNailsKnownNodes.has(game.nodeId)) {
+    truths.push('The fragment maps nine World Nails whose roads could reshape trade, war, and travel across the known world.');
+  }
+  if (game.nodeId === 'c4-duty'
+    || game.nodeId === 'c4-ending-arrest'
+    || game.nodeId === 'c4-ending-bargain'
+    || game.nodeId === 'c4-ending-trust') {
+    truths.push('A genuine order from Regent Malrec Vale commands that the fragment be carried to Dragonspine, where the next Nail is active.');
   }
   return truths;
 }
@@ -149,12 +194,12 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('oath-bring-them-home')) consequences.push('Because you swore to bring everyone home, that duty now carries magical power and a binding cost.');
   if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, his injured leg can recover.');
   if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand, living magic, and treaty work remain safe.');
-  if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Sable, he can testify publicly that Ordan hired the attackers.');
+  if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Garran, he can testify publicly that Ordan hired the attackers.');
   if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you connected Ordan to the supplies used in the siege.');
   if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you found the enemy rope and the shifted coastal road before the siege.');
-  if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Sable, you connected the road pin to sealed Crown orders.');
+  if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Garran, you connected the road pin to sealed Crown orders.');
   if (game.flags.includes('c2-pin-broken')) consequences.push('Because the road pin broke, part of its power remains beneath Bellweather Inn.');
-  if (game.flags.includes('c2-chose-testimony')) consequences.push('Because you carried testimony to Harrowfen, Sable or Jory’s papers challenged Ordan before the gate.');
+  if (game.flags.includes('c2-chose-testimony')) consequences.push('Because you carried testimony to Harrowfen, Garran or Jory’s papers challenged Ordan before the gate.');
   if (game.flags.includes('c2-chose-pin')) consequences.push('Because you carried the iron as your main proof, its pull exposed the danger beneath Harrowfen.');
   if (game.flags.includes('c2-oath-expose-crown')) consequences.push('Because you swore publicly against the Crown plot, Elene could test your promise at Harrowfen’s gate.');
   if (game.flags.includes('c2-kissed-mara')) consequences.push('Because you and Mara chose to kiss, your attraction is no longer unspoken.');
@@ -162,7 +207,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
   if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned Renn, you know the unknown thief opposes Ordan but wants the iron for himself.');
   if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied Ordan’s route to the Mileless Bridge.');
-  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Sable survived to identify Ordan’s personal guard.');
+  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Garran survived to identify Ordan’s personal guard.');
   if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned how Ordan planned to open the Mileless Bridge.');
   if (game.flags.includes('c3-priority-people')) consequences.push('Because you chose immediate lives first, Mara knows exactly where your duty begins.');
   if (game.flags.includes('c3-priority-cause')) consequences.push('Because you chose the wider danger first, Lysara trusts you to face difficult truths.');
@@ -170,5 +215,17 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c3-target-ordan')) consequences.push('Because you targeted Ordan, the Crown courier must face you before reaching the thief.');
   if (game.flags.includes('c3-target-thief')) consequences.push('Because you targeted the thief, you reach for the fragment as the bridge breaks.');
   if (game.flags.includes('c3-secured-return')) consequences.push('Because you secured the first arch, your companions still have a path back to Harrowfen.');
+  if (game.flags.includes('c4-saved-brann')) consequences.push('Because you pulled Brann from the collapsing arch, he remains beside the escort despite your injuries.');
+  if (game.flags.includes('c4-held-collapse')) consequences.push('Because your Oath held the Bell Arch together, every companion crossed before it broke.');
+  if (game.flags.includes('c4-followed-rook-banner')) consequences.push('Because you trusted Rook’s hanging banner, everyone survived the first collapse without spending your strength.');
+  if (game.flags.includes('c4-captured-ordan')) consequences.push('Because you rescued Ordan for trial, the Crown conspiracy still has a living witness.');
+  if (game.flags.includes('c4-ordan-lower-road')) consequences.push('Because you dropped Ordan onto a lower road, you kept his dispatch but lost the prisoner.');
+  if (game.flags.includes('c4-rook-full-copy')) consequences.push('Because you allowed Rook to copy the map, he named his buyer’s meeting place and accepted a debt to you.');
+  if (game.flags.includes('c4-oath-honest-with-mara')) consequences.push('Because you promised honesty to Mara, duty can no longer be your excuse for silence with her.');
+  if (game.flags.includes('c4-kissed-mara')) consequences.push('Because you kissed Mara on the bridge, neither of you can call the attraction unspoken again.');
+  if (game.flags.includes('c4-lost-gear-and-proof')) consequences.push('Because you sacrificed gear and documents at the final anchor, everyone escaped but some proof against the Crown was lost.');
+  if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he travels north as a named fugitive even after escaping the cuff.');
+  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he will guide you toward his buyer in Dragonspine.');
+  if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook with the survivors, he showed you a safe road and accepted a personal debt.');
   return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }

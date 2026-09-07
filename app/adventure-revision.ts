@@ -55,8 +55,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       'Once the last traveller crosses the threshold, Maelin bars the door. The common room has already been cleared for the wounded. A dead Warden lies beneath a grey sheet near the stairs. This is Jory, the man who warned Maelin that you were coming.',
       state.flags.includes('captured-attacker')
-        ? 'Brann ties your wounded prisoner beside the pantry. He gives his name as Sable when he sees Jory’s body. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Sable is shaking with fever.'
-        : 'A wounded attacker is already tied beside the pantry. Maelin found him crawling from the cellar at dawn. He gives his name as Sable and carries the same kind of sealed orders as the road attackers. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Sable is shaking with fever.',
+        ? 'Brann ties your wounded prisoner beside the pantry. He gives his name as Garran when he sees Jory’s body. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Garran is shaking with fever.'
+        : 'A wounded attacker is already tied beside the pantry. Maelin found him crawling from the cellar at dawn. He gives his name as Garran and carries the same kind of sealed orders as the road attackers. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Garran is shaking with fever.',
       state.stats.health <= 2
         ? 'Maelin sees the way you favour one side and presses two fingers against the blood beneath your coat. “You can command another fight,” she says. “You cannot survive one.”'
         : 'Maelin checks the cuts beneath your coat and decides they can wait until the three patients are stable.',
@@ -80,12 +80,12 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Tivik holds up the small glass bottle. It can close a deep wound, stop an infection, or save a badly burned hand. It cannot do all three.',
       'Nilo will live with ordinary care, but the damage may cost him his leg. Lysara may lose her hand, the living magic inside it, and her ability to complete the border treaty.',
       state.flags.includes('captured-attacker')
-        ? 'Sable’s fever will kill him without the dose. His testimony may be the only proof strong enough to keep the Crown from executing you for the attack.'
-        : 'Sable’s fever will kill him without the dose. He may be the only witness who can identify the person who ordered the attack.',
+        ? 'Garran’s fever will kill him without the dose. His testimony may be the only proof strong enough to keep the Crown from executing you for the attack.'
+        : 'Garran’s fever will kill him without the dose. He may be the only witness who can identify the person who ordered the attack.',
       state.flags.includes('c2-compressed-wound')
         ? 'The pressure bandage you and Mara tied has bought Nilo time. Mara trusts you to make the choice with the danger clearly understood.'
         : 'Mara keeps both hands over Nilo’s bandage. Every fresh stain makes the choice more urgent.',
-      'Mara keeps pressure on Nilo’s wound. Lysara hides her shaking hand. Sable watches you through the fever. All three understand what the bottle means.',
+      'Mara keeps pressure on Nilo’s wound. Lysara hides her shaking hand. Garran watches you through the fever. All three understand what the bottle means.',
     ],
   },
   'c2-eleven-years': {
@@ -111,7 +111,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Find how the enemy plans to enter before nightfall.',
     body: () => [
       'Brann can hold the doors for a short time. That gives you one chance to investigate.',
-      'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show what the enemy changed beneath the inn. Sable may identify the officer who paid him.',
+      'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show what the enemy changed beneath the inn. Garran may identify the officer who paid him.',
       'Your instinct is to split the group and take all three leads. One look at the wounded and the dark windows tells you that would leave nobody strong enough for the attack.',
       'You cannot search every lead before dark. Your choice will decide what advantage you carry into the siege.',
     ],
@@ -145,16 +145,16 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
   'c2-attacker': {
     title: 'The Man Who Took Crown Silver',
     location: 'Bellweather Inn, Pantry',
-    objective: 'Make Sable reveal who ordered the ambush.',
+    objective: 'Make Garran reveal who ordered the ambush.',
     introducesStoryTerms: ['road pin'],
     body: (state) => [
       state.flags.includes('captured-attacker')
-        ? 'Sable sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
-        : 'The wounded man gives his name as Sable. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
-      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Sable’s company to wound the escort, drive you to Bellweather, and pull free an iron anchor called a road pin during the confusion.',
+        ? 'Garran sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
+        : 'The wounded man gives his name as Garran. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
+      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Garran’s company to wound the escort, drive you to Bellweather, and pull free an iron anchor called a road pin during the confusion.',
       'Anger comes clean and hot. Ordan turned every person you protected into a tool for reaching something under the inn, and he counted on you behaving exactly like yourself.',
-      '“He needed the captain’s road seal and the living magic in the elf’s glass seed under the same roof,” Sable says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
-      'A second horn answers the first. Sable looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
+      '“He needed the captain’s road seal and the living magic in the elf’s glass seed under the same roof,” Garran says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
+      'A second horn answers the first. Garran looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
     ],
   },
   'c2-night-watch': {
@@ -178,7 +178,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       'The inn bell rings once. Maelin is nowhere near its rope. A moment later it rings again.',
       state.flags.includes('c2-attacker-route')
-        ? 'Sable’s warning becomes clear: the first ring begins the attack, and the second sends a hidden group toward the cellar.'
+        ? 'Garran’s warning becomes clear: the first ring begins the attack, and the second sends a hidden group toward the cellar.'
         : state.flags.includes('c2-cloak-double')
           ? 'The two strokes match the signal recorded in Ordan’s stable note.'
           : 'Brann calls out movement at the front while Mara hears wood breaking behind the pantry. The two rings have opened two sides of the attack.',
@@ -213,7 +213,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'Brann can hold the common room. You must go below. The rope you found earlier is jerking through the broken arch as men in the tunnel pull at the buried iron.'
         : state.flags.includes('c2-ledger-route')
           ? 'Brann can hold the common room. You must go below. The rope listed among Ordan’s supplies now runs through the broken cellar arch and tightens around something buried in the road.'
-          : 'Brann can hold the common room. You must go below. Sable’s warning leads you to the broken cellar arch, where an enemy chain is pulling at something buried in the road.',
+          : 'Brann can hold the common room. You must go below. Garran’s warning leads you to the broken cellar arch, where an enemy chain is pulling at something buried in the road.',
       'Leaving the wounded above fights every protective instinct you have. Taking the wrong companion below could cost just as many lives.',
       state.flags.includes('c2-no-fight')
         ? 'The shield wall remains intact behind you. Brann has enough guards to hold the wounded line until you return.'
@@ -261,7 +261,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('c2-cellar-route')
           ? 'This is the road pin Tivik identified on the cellar bracket. Now you can see the buried anchor that bracket was meant to protect.'
           : state.flags.includes('c2-attacker-route')
-            ? 'This is the road pin Sable warned you about. His story becomes iron, rope, and soldiers pulling in front of you.'
+            ? 'This is the road pin Garran warned you about. His story becomes iron, rope, and soldiers pulling in front of you.'
             : 'Tivik calls the iron a road pin and explains that it anchors this mile to the roads around it.',
       state.flags.includes('c2-trusted-below')
         ? 'Your companion’s chosen path avoided the falling western arch. You reach the chamber before the next enemy pull and keep the whole group on its feet.'
@@ -294,15 +294,15 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'A corner of the socket has broken away. The fragment hums when you face east. Ordan escaped with the missing map page, but he left his orders, his crown mark, and proof that he used you and Lysara to unlock the pin.',
       'You want to carry every scrap of proof. Weight, wounded people, and the enemy ahead reduce that wish to one decision.',
       state.flags.includes('c2-saved-nilo')
-        ? 'Nilo keeps his leg, but Lysara’s hand remains bound and Sable may not survive the road to Harrowfen.'
+        ? 'Nilo keeps his leg, but Lysara’s hand remains bound and Garran may not survive the road to Harrowfen.'
         : state.flags.includes('c2-saved-lysara')
-          ? 'Lysara can move every finger again. Tivik says Nilo’s damaged leg may still be saved after a long recovery, while Sable burns with fever.'
-          : 'Sable is clear enough to testify. Lysara’s hand remains bound, and Tivik warns Nilo that saving his life may still cost the injured leg.',
+          ? 'Lysara can move every finger again. Tivik says Nilo’s damaged leg may still be saved after a long recovery, while Garran burns with fever.'
+          : 'Garran is clear enough to testify. Lysara’s hand remains bound, and Tivik warns Nilo that saving his life may still cost the injured leg.',
       state.flags.includes('c2-felt-road-lives')
         ? 'The lives tied to the pin still press against your Oath. Carrying the iron would help you follow that danger, but testimony may protect the people already caught inside it.'
         : 'The iron, the witnesses, and the public promise each prove a different part of what happened here.',
       'Above, the surviving attackers flee. Harrowfen should be several days away, yet Maelin can see its canal lights beyond the next hill. The broken fragment is still pulling that one road close.',
-      'You must decide which proof matters most when the Crown calls you a traitor: Jory’s warning and Sable’s testimony, the iron fragment itself, or an Oath sworn before every survivor.',
+      'You must decide which proof matters most when the Crown calls you a traitor: Jory’s warning and Garran’s testimony, the iron fragment itself, or an Oath sworn before every survivor.',
     ],
   },
   'c2-ending-testimony': {
@@ -311,8 +311,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Reach Harrowfen with witnesses to Ordan’s attack.',
     body: (state) => [
       state.flags.includes('c2-saved-attacker')
-        ? 'You leave Bellweather with Jory’s false warning, Ordan’s supply record, and Sable awake enough to name him. The proof is plain enough for any guard to understand.'
-        : 'You leave Bellweather with Jory’s false warning and Ordan’s supply record. Sable fades in and out of fever, so Mara guards every breath he may still use to testify.',
+        ? 'You leave Bellweather with Jory’s false warning, Ordan’s supply record, and Garran awake enough to name him. The proof is plain enough for any guard to understand.'
+        : 'You leave Bellweather with Jory’s false warning and Ordan’s supply record. Garran fades in and out of fever, so Mara guards every breath he may still use to testify.',
       'You know written proof can be dismissed and a wounded witness can be silenced. Carrying both still feels stronger than asking Harrowfen to trust your name alone.',
       'Behind you, Maelin boards the broken wall while Brann protects the wounded. Ahead, Harrowfen’s towers rise beyond a field that should lead to three more days of road.',
       'Maelin leaves Dain’s lamp in the eastern window. She no longer waits beside it. She has given you his road journal and asked you to bring back an answer.',
@@ -355,8 +355,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Royal archers aim down at you. Ordan Vale stands on the wall in silver gloves. He holds the real route authority you signed in Greyhaven beside a royal warrant accusing you of using that mission to attack Bellweather and steal Crown iron.',
       state.flags.includes('c2-chose-testimony')
         ? state.flags.includes('c2-saved-attacker')
-          ? 'Sable forces himself upright in the wagon and names Ordan before the entire wall. A hidden archer fires at him. Mara knocks the bolt aside, turning his testimony into immediate danger.'
-          : 'Sable tries to name Ordan, but fever steals his voice. Mara raises Jory’s warning and the supply ledger instead. A hidden archer fires at the papers, proving someone on the wall fears them.'
+          ? 'Garran forces himself upright in the wagon and names Ordan before the entire wall. A hidden archer fires at him. Mara knocks the bolt aside, turning his testimony into immediate danger.'
+          : 'Garran tries to name Ordan, but fever steals his voice. Mara raises Jory’s warning and the supply ledger instead. A hidden archer fires at the papers, proving someone on the wall fears them.'
         : state.flags.includes('c2-chose-pin')
           ? 'You unwrap the iron fragment. It pulls toward the east market so hard that its chains ring. The guards see proof of the danger, but several recoil from you for bringing the weapon inside bow range.'
           : state.flags.includes('c2-oath-expose-crown')
@@ -391,8 +391,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     introducesStoryTerms: ['Mileless Bridge'],
     body: () => [
       'Elene lets your wounded into a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him. Relief should follow the closing gate. Instead, you keep thinking about how easily he reached the lining of your cloak.',
-      'The town archive holds the orders he filed. The healing house shelters Sable, the witness his soldiers may try to kill. Elene explains the third lead: one of her watchmen saw Ordan pay Varris, a road broker, for a route to the hidden Mileless Bridge.',
-      'You sort the choices by what they can give you. The archive offers proof, Sable offers a living accusation, and Varris offers the road Ordan may use to escape. You cannot reach all three before he moves again.',
+      'The town archive holds the orders he filed. The healing house shelters Garran, the witness his soldiers may try to kill. Elene explains the third lead: one of her watchmen saw Ordan pay Varris, a road broker, for a route to the hidden Mileless Bridge.',
+      'You sort the choices by what they can give you. The archive offers proof, Garran offers a living accusation, and Varris offers the road Ordan may use to escape. You cannot reach all three before he moves again.',
     ],
   },
   'c3-archive': {
@@ -411,13 +411,13 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     kicker: 'A witness under fire',
     title: 'The Witness in the Healing House',
     location: 'Harrowfen Healing House',
-    objective: 'Keep Sable alive long enough to identify Ordan.',
+    objective: 'Keep Garran alive long enough to identify Ordan.',
     body: (state) => [
-      'Sable is awake when a quarrel breaks the window above his bed. Mara pulls him to the floor as two plain coated soldiers force the back door.',
+      'Garran is awake when a quarrel breaks the window above his bed. Mara pulls him to the floor as two plain coated soldiers force the back door.',
       state.flags.includes('c2-saved-attacker')
         ? 'The medicine kept his mind clear enough to name both intruders as Ordan’s personal guards.'
         : 'His fever is worsening. He can identify one intruder before his strength fails, which makes the next few breaths important.',
-      'Healer Iven shouts for you to protect the children in the next room. Sable shouts that the man outside is Ordan’s personal guard. Both claims matter, and the attackers know you cannot stand in two doorways.',
+      'Healer Iven shouts for you to protect the children in the next room. Garran shouts that the man outside is Ordan’s personal guard. Both claims matter, and the attackers know you cannot stand in two doorways.',
       'For one sickening moment, the two doors become the patrol you failed years ago. You push the memory aside before it can choose for you.',
       'Across the canal, a silver gloved figure watches from a blue balcony. Ordan wants to see whether his witness dies.',
     ],
@@ -447,10 +447,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           : 'You reach Lantern Bridge with Ordan’s signed requests and royal payment record. A dark coated stranger has already cut one brass key from the evidence chain, but left the papers untouched.'
         : state.flags.includes('c3-route-healer')
           ? state.flags.includes('c3-sable-identified-guard')
-            ? 'You reach Lantern Bridge with Sable’s identification and one of Ordan’s guards in chains. A dark coated stranger diverted the last crossbow bolt, then stole a brass key from the prisoner.'
+            ? 'You reach Lantern Bridge with Garran’s identification and one of Ordan’s guards in chains. A dark coated stranger diverted the last crossbow bolt, then stole a brass key from the prisoner.'
             : state.flags.includes('c3-secured-healer')
-              ? 'You reach Lantern Bridge with every patient alive. Sable cannot name the guard who escaped, but Healer Iven testifies that Ordan watched the attack from across the canal.'
-              : 'You reach Lantern Bridge after Brann’s divided guard line trapped one intruder inside the healing house. The prisoner carries Ordan’s silver and a brass bridge key, though Sable was too weak to identify him.'
+              ? 'You reach Lantern Bridge with every patient alive. Garran cannot name the guard who escaped, but Healer Iven testifies that Ordan watched the attack from across the canal.'
+              : 'You reach Lantern Bridge after Brann’s divided guard line trapped one intruder inside the healing house. The prisoner carries Ordan’s silver and a brass bridge key, though Garran was too weak to identify him.'
           : state.flags.includes('c3-unmasked-varris')
             ? 'You reach Lantern Bridge with Varris, Ordan’s written murder order, and the killer you disarmed. The evidence makes the broker willing to accuse Ordan in public.'
             : state.flags.includes('c3-tested-door')
@@ -707,9 +707,9 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     result: 'Warmth returns below Nilo’s knee. Tivik grips the boy’s hand and finally says that the leg can be saved.',
   },
   'c2-medicine-attacker': {
-    label: 'Give the medicine to Sable.',
+    label: 'Give the medicine to Garran.',
     detail: 'Spend 1 Medicine. Preserve the witness who may keep the Crown from condemning you.',
-    result: 'Sable’s breathing steadies. “Get me before a town guard,” he says, “and I will name the man in silver gloves.”',
+    result: 'Garran’s breathing steadies. “Get me before a town guard,” he says, “and I will name the man in silver gloves.”',
   },
   'c2-ledger-route': {
     label: 'Read the guest ledger with Maelin.',
@@ -896,17 +896,17 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     result: 'Green threads lift the scorched writing before it crumbles. Ordan’s name remains readable.',
   },
   'c3-show-nilo-memory': {
-    label: 'Put yourself between Sable and the crossbow.',
+    label: 'Put yourself between Garran and the crossbow.',
     detail: 'Spend 1 Resolve. Keep the witness alive while Mara fights the intruders.',
     changes: { resolve: -1 },
     requires: { resolve: 1 },
     addFlags: ['c3-sable-identified-guard'],
-    result: 'The next bolt strikes your shield. Sable sees Ordan’s guard clearly and gives you his name.',
+    result: 'The next bolt strikes your shield. Garran sees Ordan’s guard clearly and gives you his name.',
   },
   'c3-hold-healer-door': {
     label: 'Hold the back door while Iven moves the children.',
     detail: 'Spend 1 Health. Keep both rooms safe and gain 1 Command.',
-    result: 'You brace the door against two soldiers while Iven moves the children behind a stone counter and Mara shields Sable. Every patient survives.',
+    result: 'You brace the door against two soldiers while Iven moves the children behind a stone counter and Mara shields Garran. Every patient survives.',
   },
   'c3-command-canal-line': {
     label: 'Split the guards between the back door and the children’s room.',
