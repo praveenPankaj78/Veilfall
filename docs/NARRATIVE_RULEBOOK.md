@@ -227,6 +227,21 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 
 ## Revision checklist
 
+### Revision integrity
+
+When a scene is rewritten, treat the complete playable node as one contract. Review the kicker, title, location, objective, lesson, body, every choice label, every choice result, costs, flags, journal knowledge, and the next scene callbacks together. Replacing only the body is not a complete revision.
+
+For every revised branch:
+
+1. List the people, objects, dangers, and facts physically present in the new scene.
+2. Remove or rewrite every option that refers to anything outside that list unless an earlier route clearly introduced it.
+3. Follow every choice into the next scene and confirm that its exact flag is read there. Do not create a second name for the same choice memory.
+4. Test every mutually exclusive route, companion, rescue state, and imported consequence at least once.
+5. Search active lessons, kickers, objectives, choices, results, journal entries, and recaps for retired plot language.
+6. Add important retired terms and repaired flag combinations to automated story checks so later edits cannot restore them silently.
+
+The scene question and its options must share the same time, place, cast, and immediate danger. A player should never be asked to enter a room after the prose placed them inside, protect a person who is absent, investigate an answer already given, or use knowledge learned only on another route.
+
 Before a scene is approved, confirm:
 
 1. The player knows the immediate goal.
@@ -242,3 +257,7 @@ Before a scene is approved, confirm:
 11. A reader aged twelve or thirteen can explain what physically happened.
 12. Every ability, item, person, or place named in a choice has already been introduced on that route.
 13. If any option is spoken dialogue or a reply, the last paragraph is the line it answers.
+14. The active lesson, body, choices, and results belong to the same version of the plot.
+15. Every branch flag is consumed under the exact name written by its choice.
+16. The journal reveals no conclusion before the playable scene proves it.
+17. Every revised route has an automated continuity check or an explicit route walkthrough record.

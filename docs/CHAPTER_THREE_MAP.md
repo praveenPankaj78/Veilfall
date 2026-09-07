@@ -36,7 +36,11 @@ The player chooses one concrete lead:
 
 All routes converge at Lantern Bridge, where Ordan must defend his actions before Harrowfen.
 
+The healing house choices respond directly to its two threatened rooms: Caelan can hold the back door while Iven moves the children, shield Sable long enough to identify a guard, or divide his guards between both dangers. Each outcome changes the evidence brought to Lantern Bridge.
+
 Ordan argues that independent roads let smugglers, armies, and local rulers evade the Crown. He claims that central control will prevent more wars than Caelan's individual acts of protection. He also admits that Caelan's authority and Lysara's living seed unlocked Bellweather. He forged the later evidence, but the original sealed order came from someone more powerful.
+
+After that admission, the player challenges Crown control, centres the people Ordan harmed, or uses his confession to strip him of command. No option asks him to repeat information he has already given.
 
 ## Watch house and relationship movement
 

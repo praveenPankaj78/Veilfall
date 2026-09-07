@@ -70,16 +70,35 @@ const {
   statLabels,
 } = context.module.exports;
 const { knownTruths, majorConsequences } = memoryExports;
+const {
+  adventureChoiceUpdates,
+  adventureNodeUpdates,
+  reviewedUnchangedChoiceIds,
+} = adventureExports;
 
 const failures = [];
 const nodeIds = Object.keys(nodes);
 const ordered = new Set(nodeOrder);
+const reviewedUnchangedChoices = new Set(reviewedUnchangedChoiceIds);
 
 for (const id of nodeIds) {
   if (!ordered.has(id)) failures.push(`Node missing from nodeOrder: ${id}`);
 }
 for (const id of nodeOrder) {
   if (!nodes[id]) failures.push(`nodeOrder references a missing node: ${id}`);
+}
+for (const nodeId of Object.keys(adventureNodeUpdates)) {
+  if (!nodeId.startsWith('c2-') && !nodeId.startsWith('c3-')) continue;
+  for (const choice of nodes[nodeId].choices) {
+    if (!adventureChoiceUpdates[choice.id] && !reviewedUnchangedChoices.has(choice.id)) {
+      failures.push(`Revised node ${nodeId} inherits unaudited choice ${choice.id}`);
+    }
+  }
+}
+for (const choiceId of reviewedUnchangedChoices) {
+  const owners = Object.values(nodes).filter((node) => node.choices.some((choice) => choice.id === choiceId));
+  if (owners.length !== 1) failures.push(`Reviewed unchanged choice ${choiceId} has ${owners.length} owning nodes`);
+  if (adventureChoiceUpdates[choiceId]) failures.push(`Choice ${choiceId} is both revised and marked unchanged`);
 }
 
 const statKeyByLabel = Object.fromEntries(
@@ -236,6 +255,10 @@ const retiredPlotPhrases = [
   /other versions?/i,
   /different years/i,
   /false Caelan/i,
+  /false escort/i,
+  /the man with your face/i,
+  /a trail through memory/i,
+  /\bSenna\b/i,
   /room (?:built )?tomorrow/i,
   /died twice/i,
   /living Nilo/i,
@@ -244,7 +267,9 @@ for (const [id, node] of Object.entries(nodes)) {
   if (!id.startsWith('c2-') && !id.startsWith('c3-')) continue;
   const sampleState = id.startsWith('c2-') ? chapterTwoBase : chapterThreeBase;
   const activeText = [
+    node.kicker,
     node.title,
+    node.location,
     node.objective,
     node.lesson?.title,
     node.lesson?.body,
@@ -449,6 +474,65 @@ for (const [flag, expected] of routeProofChecks) {
     flags: [flag],
   });
   if (!expected.test(entrance)) failures.push(`Harrowfen entrance does not pay off ${flag}`);
+}
+const healerChoiceText = nodes['c3-healer'].choices
+  .flatMap((choice) => [choice.label, choice.detail, choice.result])
+  .join(' ');
+if (/\bSenna\b|both canal bridges/i.test(healerChoiceText)) {
+  failures.push('The Chapter Three healing house still contains choices from the retired plot');
+}
+const healerSceneChoices = new Map(nodes['c3-healer'].choices.map((choice) => [choice.id, choice]));
+if (!/Iven.*children/i.test(healerSceneChoices.get('c3-hold-healer-door')?.label ?? '')) {
+  failures.push('The healing house Health choice does not answer Iven’s immediate crisis');
+}
+if (!/back door.*children’s room/i.test(healerSceneChoices.get('c3-command-canal-line')?.label ?? '')) {
+  failures.push('The healing house Command choice does not defend both threatened rooms');
+}
+const healerRoutePayoffs = [
+  ['c3-sable-identified-guard', /Sable’s identification/i],
+  ['c3-secured-healer', /every patient alive/i],
+  ['c3-canal-defence', /divided guard line trapped one intruder/i],
+];
+for (const [flag, expected] of healerRoutePayoffs) {
+  const bridgeArrival = renderedBody('c3-bill', {
+    ...chapterThreeBase,
+    flags: ['c3-route-healer', flag],
+  });
+  if (!expected.test(bridgeArrival)) {
+    failures.push(`The healing house choice ${flag} has no accurate Lantern Bridge payoff`);
+  }
+}
+const investigationMenuText = [
+  nodes['c3-triage'].lesson?.title ?? '',
+  nodes['c3-triage'].lesson?.body ?? '',
+  ...nodes['c3-triage'].body(chapterThreeBase),
+  ...nodes['c3-triage'].choices.flatMap((choice) => [choice.label, choice.detail, choice.result]),
+].join(' ');
+if (/false escort|safe road out|old watch house/i.test(investigationMenuText)) {
+  failures.push('The Chapter Three investigation menu still describes the retired mystery');
+}
+const lanternBridgeBody = renderedBody('c3-bill', chapterThreeBase);
+const confessionChoice = nodes['c3-bill'].choices.find((choice) => choice.id === 'c3-let-iron-point');
+if (!/admits why he needed the escort/i.test(lanternBridgeBody)) {
+  failures.push('Lantern Bridge no longer contains Ordan’s confession');
+}
+if (/why Ordan needed you and Lysara/i.test(confessionChoice?.label ?? '')
+  || !confessionChoice?.addFlags?.includes('c3-stripped-ordan-command')) {
+  failures.push('Lantern Bridge asks for an answer Ordan has already given');
+}
+const debatePayoffs = [
+  ['c3-challenged-crown-control', /seize the bridge winch/i],
+  ['c3-centred-harrowfen-victims', /residents block the royal soldiers/i],
+  ['c3-stripped-ordan-command', /strips him of authority/i],
+];
+for (const [flag, expected] of debatePayoffs) {
+  const aftermath = renderedBody('c3-evidence', {
+    ...chapterThreeBase,
+    flags: [flag],
+  });
+  if (!expected.test(aftermath)) {
+    failures.push(`Lantern Bridge choice ${flag} has no immediate callback`);
+  }
 }
 const costlyPayoffChecks = [
   ['guarding-wagon', 'ambush-warning', /breaks against your raised shield/i],

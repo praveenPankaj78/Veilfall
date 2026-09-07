@@ -3087,20 +3087,24 @@ const originalNodes: Record<string, StoryNode> = {
 };
 
 export const nodes = Object.fromEntries(
-  Object.entries(originalNodes).map(([id, node]) => [
-    id,
-    {
-      ...node,
-      ...adventureNodeUpdates[id],
-      choices: node.choices.map((choice) => ({
-        ...choice,
-        ...adventureChoiceUpdates[choice.id],
-        advantage: adventureChoiceUpdates[choice.id]?.advantage
-          ?? choice.advantage
-          ?? choiceAdvantages[choice.id],
-      })),
-    },
-  ]),
+  Object.entries(originalNodes).map(([id, node]) => {
+    const revision = adventureNodeUpdates[id];
+    return [
+      id,
+      {
+        ...node,
+        ...revision,
+        lesson: revision ? revision.lesson : node.lesson,
+        choices: node.choices.map((choice) => ({
+          ...choice,
+          ...adventureChoiceUpdates[choice.id],
+          advantage: adventureChoiceUpdates[choice.id]?.advantage
+            ?? choice.advantage
+            ?? choiceAdvantages[choice.id],
+        })),
+      },
+    ];
+  }),
 ) as Record<string, StoryNode>;
 
 export const nodeOrder = [

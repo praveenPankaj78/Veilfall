@@ -7,6 +7,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'The Inn That Waited',
     location: 'Bellweather Inn, Eastmere Road',
     objective: 'Get the wounded inside before the creature in the flood reaches them.',
+    lesson: {
+      title: 'One dose remains',
+      body: 'Medicine tracks the strong healing supplies carried by the group. Only one sealed dose survived the road. A later choice will show exactly who can receive it and what the dose can treat.',
+    },
     body: (state) => [
       state.flags.includes('chose-silver-road')
         ? 'The hidden road rises from the flood beneath your boots. Bellweather Inn stands ahead on a low hill, its windows bright through the rain.'
@@ -347,9 +351,14 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-triage': {
+    kicker: 'Three urgent leads',
     title: 'Three Leads, One Fugitive',
     location: 'Harrowfen, West Canal',
     objective: 'Choose the fastest way to find Ordan.',
+    lesson: {
+      title: 'Each lead gives different proof',
+      body: 'The archive can provide written proof. The healing house holds a living witness. Varris knows Ordan’s escape route. Every lead can move the hunt forward, but each gives you a different advantage.',
+    },
     body: () => [
       'Elene lets your wounded into a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him.',
       'The town archive holds the orders he filed. The healing house shelters a witness his soldiers may try to kill. A road broker named Varris sold him a route to the hidden Mileless Bridge.',
@@ -357,6 +366,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-archive': {
+    kicker: 'Proof in the stove',
     title: 'The Map Ordan Wanted',
     location: 'Harrowfen Archive',
     objective: 'Recover the records Ordan tried to steal.',
@@ -367,6 +377,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-healer': {
+    kicker: 'A witness under fire',
     title: 'The Witness in the Healing House',
     location: 'Harrowfen Healing House',
     objective: 'Keep Sable alive long enough to identify Ordan.',
@@ -380,6 +391,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-broker': {
+    kicker: 'A map with a price',
     title: 'The Seller of Secret Roads',
     location: 'Varris Road House, Harrowfen',
     objective: 'Learn where Ordan plans to escape.',
@@ -391,6 +403,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-bill': {
+    kicker: 'Ordan’s defence',
     title: 'The Man Behind the Warrant',
     location: 'Harrowfen, Lantern Bridge',
     objective: 'Make Ordan answer for Bellweather in front of Harrowfen.',
@@ -404,7 +417,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
             ? 'You reach Lantern Bridge with Sable’s identification and one of Ordan’s guards in chains. A dark coated stranger diverted the last crossbow bolt, then stole a brass key from the prisoner.'
             : state.flags.includes('c3-secured-healer')
               ? 'You reach Lantern Bridge with every patient alive. Sable cannot name the guard who escaped, but Healer Iven testifies that Ordan watched the attack from across the canal.'
-              : 'You reach Lantern Bridge after the canal cordon trapped one intruder. The prisoner carries Ordan’s silver and a brass bridge key, though Sable was too weak to identify him.'
+              : 'You reach Lantern Bridge after Brann’s divided guard line trapped one intruder inside the healing house. The prisoner carries Ordan’s silver and a brass bridge key, though Sable was too weak to identify him.'
           : state.flags.includes('c3-unmasked-varris')
             ? 'You reach Lantern Bridge with Varris, Ordan’s written murder order, and the killer you disarmed. The evidence makes the broker willing to accuse Ordan in public.'
             : state.flags.includes('c3-tested-door')
@@ -417,11 +430,17 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-evidence': {
+    kicker: 'Ordan burns his trail',
     title: 'Fire at the Watch House',
     location: 'Harrowfen, Old Watch Lane',
     objective: 'Reach Ordan’s safe room before his men destroy the evidence.',
-    body: () => [
+    body: (state) => [
       'Ordan drops from Lantern Bridge onto a waiting boat and reaches Old Watch Lane before the guards can lower the span. A boy in a courier coat stumbles from the lane with blood on his sleeve.',
+      state.flags.includes('c3-challenged-crown-control')
+        ? 'Elene’s guards seize the bridge winch after hearing the threat inside Ordan’s promise of safety. He escapes by boat, but loses control of the crossing.'
+        : state.flags.includes('c3-centred-harrowfen-victims')
+          ? 'Harrowfen’s residents block the royal soldiers from following Ordan. The people he dismissed as a necessary cost now buy you a clear path to the fire.'
+          : 'Elene repeats Ordan’s confession and strips him of authority in Harrowfen. His own escort hesitates, forcing him to flee without the town guard.',
       'Smoke rolls from the watch house roof. Ordan’s men have set the building on fire and barred the lower door to destroy the records behind his argument.',
       'The courier boy carries a satchel of orders. People are trapped in the rooms above him. Ordan is escaping across the roofs. You can save only one advantage before the flames spread.',
     ],
@@ -458,6 +477,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-market-memory': {
+    kicker: 'Steel among the market boats',
     title: 'Battle in the Canal Market',
     location: 'Harrowfen East Market',
     objective: 'Protect the market and stop Ordan reaching the bridge marker.',
@@ -475,6 +495,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-pin-test': {
+    kicker: 'Two captains, one cloak',
     title: 'The False Captain',
     location: 'Harrowfen East Market',
     objective: 'Expose Renn before Ordan steals the fragment.',
@@ -490,6 +511,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     ],
   },
   'c3-duplicate': {
+    kicker: 'A uniform bought with silver',
     title: 'A Warden Bought by Silver',
     location: 'Harrowfen East Market',
     objective: 'Defeat Renn and learn Ordan’s final plan.',
@@ -805,6 +827,15 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     requiresRelationships: { mara: { trust: 5 } },
     result: 'Mara finds a practice forgery sewn into your cloak lining. Ordan planted his own proof.',
   },
+  'c3-focus-archive': {
+    detail: 'Recover Ordan’s written route requests and proof of royal payment.',
+    result: 'You leave Mara with the wounded and follow Lysara along the canal to Harrowfen’s archive.',
+  },
+  'c3-focus-road': {
+    label: 'Question Varris about Ordan’s escape route.',
+    detail: 'Find the hidden Mileless Bridge without surrendering the iron.',
+    result: 'Tivik keeps the fragment wrapped while Varris leads you into a shop with six painted doors and no windows.',
+  },
   'c3-catch-archive-spy': {
     label: 'Catch the masked soldier before he reaches the stove.',
     detail: 'Spend 1 Health. Preserve a witness and the last page.',
@@ -828,6 +859,16 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     addFlags: ['c3-sable-identified-guard'],
     result: 'The next bolt strikes your shield. Sable sees Ordan’s guard clearly and gives you his name.',
   },
+  'c3-hold-healer-door': {
+    label: 'Hold the back door while Iven moves the children.',
+    detail: 'Spend 1 Health. Keep both rooms safe and gain 1 Command.',
+    result: 'You brace the door against two soldiers while Iven moves the children behind a stone counter and Mara shields Sable. Every patient survives.',
+  },
+  'c3-command-canal-line': {
+    label: 'Split the guards between the back door and the children’s room.',
+    detail: 'Spend 1 Command. Protect both rooms and trap one of Ordan’s intruders.',
+    result: 'Brann seals the back door while two guards cover the children. One intruder escapes, but the other is trapped between the two lines.',
+  },
   'c3-mark-false-door': {
     label: 'Demand the real bridge map.',
     detail: 'Spend 1 Command. Refuse Varris’s tricks and make him choose a side.',
@@ -850,17 +891,20 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   'c3-anchor-bill': {
     label: 'Challenge Ordan’s idea of protection.',
     detail: 'Ask who can refuse a safe road when the Crown owns every exit.',
+    addFlags: ['c3-challenged-crown-control'],
     result: 'Ordan calls choice a luxury of peaceful times. Several town guards hear the threat hidden inside his answer.',
   },
   'c3-ask-town-memory': {
     label: 'Make Ordan answer to the people he endangered.',
     detail: 'Gain 1 Command by putting Harrowfen’s voices before a debate between officers.',
+    addFlags: ['c3-centred-harrowfen-victims'],
     result: 'Maelin’s journal and Harrowfen’s wounded are read aloud. Ordan defends the future while the crowd sees who paid for his plan today.',
   },
   'c3-let-iron-point': {
-    label: 'Demand to know why Ordan needed you and Lysara.',
-    detail: 'Force him to explain the trap in front of Elene and the town.',
-    result: 'Ordan admits that your road authority and Lysara’s living seed opened the two locks beneath Bellweather.',
+    label: 'Use Ordan’s confession to strip him of command.',
+    detail: 'Ask Elene whether a man who admits attacking Harrowfen still speaks for its Crown guard.',
+    addFlags: ['c3-stripped-ordan-command'],
+    result: 'Elene orders the town guard to leave Ordan’s command. He signals the watch house fire before they can seize him.',
   },
   'c3-save-grave-record': {
     label: 'Save the courier boy and his satchel.',
@@ -991,3 +1035,38 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     result: 'Your Oath pulls toward the fragment like a compass needle toward north.',
   },
 };
+
+export const reviewedUnchangedChoiceIds = [
+  'c2-shield-arrival',
+  'c2-lead-water',
+  'c2-trust-mara-entry',
+  'c2-organise-care',
+  'c2-work-beside-mara',
+  'c2-let-lysara-lead-care',
+  'c2-cellar-route',
+  'c2-attacker-route',
+  'c2-demand-employer',
+  'c2-offer-protection',
+  'c2-take-orders',
+  'c2-name-fear',
+  'c2-kiss-mara',
+  'c2-promise-as-captain',
+  'c2-oath-anchor',
+  'c2-follow-maelin',
+  'c2-take-mara',
+  'c2-take-lysara',
+  'c2-study-keyhole',
+  'c2-read-crown-mark',
+  'c2-feel-oath-pin',
+  'c2-swear-crown-truth',
+  'c3-command-calm',
+  'c3-shield-wounded',
+  'c3-show-evidence',
+  'c3-focus-wounded',
+  'c3-order-streets-closed',
+  'c3-stand-with-mara',
+  'c3-name-the-real-plan',
+  'c3-end-catch-courier',
+  'c3-end-catch-thief',
+  'c3-end-secure-return',
+] as const;
