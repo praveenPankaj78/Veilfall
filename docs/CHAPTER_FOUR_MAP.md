@@ -144,3 +144,12 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - every negative stat choice states an advantage and stores a consequence;
 - controlled story terms appear only after a plain introduction;
 - close point of view appears in at least sixty percent of scenes.
+- every Chapter Four scene names its artwork explicitly;
+- no Chapter Four scene falls back to artwork from Chapters One, Two, or Three;
+- all three Chapter Four image files exist and are used.
+
+## Chapter artwork
+
+- `public/art/mileless-bridge-chase.png` covers the pursuit, bridge collapse, Ordan, and Crown attack.
+- `public/art/mileless-three-spans.png` covers the three route choice and its snow, storm, and brass paths.
+- `public/art/nine-nails-revelation.png` covers the hidden map reveal and the northward chapter endings.

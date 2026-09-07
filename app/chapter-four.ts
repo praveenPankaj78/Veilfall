@@ -42,7 +42,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Mileless Bridge',
     objective: 'Recover the World Nail fragment and keep your people alive.',
     threat: 'Immediate',
-    art: 'folded',
+    art: 'mileless',
     body: (state) => [
       pursuitOpening(state),
       'The Mileless Bridge is not one bridge. Broken arches cross beneath a dozen different skies. One opens over a snowfield. Another hangs above a storming sea. A third ends inside a brass lit cavern. Green thread from Lysara’s glass seed runs back toward Harrowfen, showing you which stones still belong together.',
@@ -102,6 +102,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'A Turning Arch',
     objective: 'Reach the thief before the Crown kills him or takes the fragment.',
     threat: 'Immediate',
+    art: 'mileless',
     body: () => [
       'A crossbow bolt cuts toward the thief’s back. He bends to examine his boot at exactly the right moment, and the bolt strikes Ordan’s shoulder plate instead.',
       '“Terrible manners,” the thief calls up to the soldiers. “He was standing behind me.”',
@@ -160,6 +161,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Bell Arch',
     objective: 'Learn what Rook wants without losing the fragment.',
     threat: 'Rising',
+    art: 'mileless',
     body: (state) => [
       'You corner the thief beneath a cracked bronze bell. He cannot be much older than twenty eight. Rain darkens his brown hair, and amusement sits easily in his sharp face even with a sword at his throat.',
       '“Rook Sable,” he says. “Thief when honesty is affordable. Travelling performer when it is not.”',
@@ -208,6 +210,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Bell Arch',
     objective: 'Keep the collapsing bridge from taking your people.',
     threat: 'Critical',
+    art: 'mileless',
     body: () => [
       'The Crown soldiers do not advance. They cut three anchor ropes instead.',
       'The Bell Arch drops. Brann catches a stone rail with one hand. Two Harrowfen guards slide toward open air. Mara has the guide rope around her waist, but the sudden weight pulls her across the wet stone. Far below, several roads turn like spokes inside a wheel.',
@@ -267,6 +270,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'A Roofed Causeway',
     objective: 'Protect the wounded without losing Ordan’s trail.',
     threat: 'Rising',
+    art: 'mileless',
     body: (state) => [
       savedBrann(state),
       'The roofed causeway gives you one minute out of crossbow sight. You hate how quickly your mind turns a friend’s pain into a problem of distance, speed, and available hands. That is what command sometimes requires, and you have never learned to like it.',
@@ -313,6 +317,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Turning Junction',
     objective: 'Choose a span that can reach Ordan before his soldiers regroup.',
     threat: 'Uneasy',
+    art: 'crossroads',
     body: () => [
       'The bridge divides around a stone wheel. Ordan’s blood marks all three exits because the roads keep exchanging pieces beneath him.',
       'One span crosses a white mountain under cold blue flame. One clings to a black sea cliff inside a thunderstorm. The last descends through huge brass wheels turning deep underground.',
@@ -357,6 +362,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'A Snowbound Span',
     objective: 'Cross before the mountain wind buries Ordan’s trail.',
     threat: 'Immediate',
+    art: 'crossroads',
     body: (state) => [
       'Blue flames burn inside stone bowls along the mountain road, but they give no warmth. Your wet clothes begin to freeze. Ordan’s soldiers are visible on the ridge ahead, cutting steps into the only safe slope.',
       'You notice the cold slowing Brann and count how few minutes remain before hands become too numb to hold a rope.',
@@ -407,6 +413,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'A Storm Coast Span',
     objective: 'Cross before the next wave tears the road from the cliff.',
     threat: 'Immediate',
+    art: 'crossroads',
     body: (state) => [
       'The bridge narrows to wet black stone above a raging sea. Waves climb high enough to strike the underside and lift the whole span.',
       has(state, 'c4-mara-escorted-brann')
@@ -456,6 +463,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'A Brass Wheel Chamber',
     objective: 'Cross the moving gears before they divide your party.',
     threat: 'Immediate',
+    art: 'crossroads',
     body: (state) => [
       'Brass wheels lift sections of road and carry them through the cavern. The noise enters your bones. A wrong step would place a body between metal teeth.',
       'You notice a missing beat every seventh turn. It may be the only safe opening the machine gives you.',
@@ -506,6 +514,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Crown Span',
     objective: 'Use Rook’s deception without letting it control the mission.',
     threat: 'Rising',
+    art: 'mileless',
     body: (state) => [
       rookKit(state),
       'Rook reverses his coat. The blue lining becomes a Crown officer’s jacket. He presses wax beneath his nose, changes the shape of his face, then speaks through the little reed in Ordan’s exact voice.',
@@ -553,6 +562,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Central Break',
     objective: 'Decide what Ordan is worth while the bridge closes around him.',
     threat: 'Immediate',
+    art: 'mileless',
     body: () => [
       'Ordan reaches the central break ahead of you. His own soldiers cut the chain he is crossing. He catches it with both hands and hangs above a road filled with red dust.',
       'Shock strips the certainty from his face. “They were ordered to recover me.”',
@@ -600,6 +610,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Map Arch',
     objective: 'Read the map inside the fragment before the Crown takes it.',
     threat: 'Rising',
+    art: 'nails',
     introducesStoryTerms: ['nine Nails'],
     lesson: {
       title: 'The nine Nails',
@@ -661,6 +672,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'A Shelter Between Roads',
     objective: 'Decide how much of yourself Mara can see before the next attack.',
     threat: 'Uneasy',
+    art: 'mileless',
     body: (state) => [
       has(state, 'c4-mara-escorted-brann')
         ? 'Mara returns along Lysara’s guide rope just before the rear span closes. Brann is safe in Harrowfen. Relief loosens something in your chest that command had kept tight.'
@@ -719,6 +731,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Map Arch',
     objective: 'Keep the fragment out of Crown hands.',
     threat: 'Critical',
+    art: 'mileless',
     body: (state) => [
       'Crown soldiers enter from both ends of the Map Arch. Their captain orders you to surrender the fragment under royal authority. The words would once have stopped you. After Ordan, they only make you look for the trap inside the order.',
       'You suspect the captain wants you alive only until the fragment is safely in his hand.',
@@ -769,6 +782,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Final Anchor',
     objective: 'Turn Rook’s performance into a real escape.',
     threat: 'Immediate',
+    art: 'mileless',
     body: (state) => [
       'Rook empties his travelling theatre kit onto the road. A reversible coat, two voice reeds, black wax, flash salt, silver wire, and a curtain no larger than a hand somehow become three false captains arguing across three arches.',
       has(state, 'c4-rook-rang-retreat')
@@ -819,6 +833,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Final Anchor',
     objective: 'Keep one path stable until every survivor crosses.',
     threat: 'Critical',
+    art: 'mileless',
     body: (state) => [
       'The last anchor is a waist high ring of black iron. Roads tear away from it one by one. You can feel the fragment answering inside your fist, eager to open all of them at once.',
       'Rook moves ahead, finding footholds where stone has not arrived yet. Lysara feeds green thread through his path. Your part is less clever and more dangerous: hold one road in place while everyone crosses it.',
@@ -880,6 +895,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Last Stable Arch',
     objective: 'Choose what to do with Rook before the bridge separates you.',
     threat: 'Rising',
+    art: 'nails',
     introducesStoryTerms: ['Dragonspine', 'Regent Malrec'],
     lesson: {
       title: 'Dragonspine and the Regent',
@@ -938,7 +954,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The North Road',
     objective: 'Carry the fragment to Dragonspine and learn why the Regent wants its Nail.',
     threat: 'Rising',
-    art: 'folded',
+    art: 'nails',
     final: true,
     body: () => [
       'Rook leads you through two false walls and a road hidden behind falling water. At the final turn, the cuff is still closed around your wrist and his wrist is empty.',
@@ -956,7 +972,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The North Road',
     objective: 'Reach Dragonspine before Rook’s buyer claims the next World Nail.',
     threat: 'Rising',
-    art: 'folded',
+    art: 'nails',
     final: true,
     body: () => [
       'Rook guides every survivor through the hidden exit, then gives you the buyer’s meeting phrase and the first honest warning required by your bargain.',
@@ -974,7 +990,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The North Road',
     objective: 'Take the fragment to Dragonspine and decide whether the royal order is a trap.',
     threat: 'Rising',
-    art: 'folded',
+    art: 'nails',
     final: true,
     body: () => [
       'Rook finds a safe road for the wounded, the prisoner, and every surviving guard. Only when the last person reaches firm ground does he step onto a separate arch.',

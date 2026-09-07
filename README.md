@@ -14,7 +14,7 @@ The new canonical plan contains:
 - Distinct class methods and costs for every lead, including Rook's staged surprises and Ilyra's person specific Leverage.
 - Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
 - Separate finales whose consequences trigger the next protagonist's story.
-- A world map at `public/art/edrath-world-map.png`.
+- A clean regional map at `public/art/edrath-world-map.png` and a location focused story atlas at `public/art/edrath-story-atlas.png`.
 - Four complete chapters with route based danger, visible Health costs, lethal outcomes with chapter checkpoints, class resources, imported consequences, relationship choices, twelve total endings, and local saves.
 
 ## Canonical documents

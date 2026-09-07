@@ -1,10 +1,24 @@
 # World Map and Travel Logic
 
-## Canonical map
+## Canonical maps
 
-The visual map is stored at `public/art/edrath-world-map.png`.
+The clean regional map is stored at `public/art/edrath-world-map.png`.
 
-It shows the mortal continent of Edrath and three planar insets. The insets are symbolic windows, not physical places beyond the eastern ocean.
+The detailed story atlas is stored at `public/art/edrath-story-atlas.png`.
+
+Both show the mortal continent of Edrath and three planar insets. The insets are symbolic windows, not physical places beyond the eastern ocean. The regional map is for learning the world at a glance. The story atlas adds only locations that anchor major playable journeys.
+
+## Story atlas locations
+
+- Bellweather Inn stands east of Greyhaven on the King's Road.
+- Harrowfen lies beyond Bellweather and before the western Dragonspine approaches.
+- The Mileless Bridge is shown with a broken arch instead of a city marker. It joins distant roads and does not remain at one ordinary mile.
+- Tikket is an underground goblin settlement beneath the southern edge of Brassreach.
+- Kharad Vey is a fortified wheel town in the Ember Steppe.
+- Vathis is marked inside the Cinder Deep inset because it belongs to that outer realm.
+- Worldroot is deliberately absent as a fixed point. It lies beneath every region and can be reached only through particular living paths.
+
+Future critical settlements should be added to the story atlas when their route is approved. The regional map should remain uncluttered.
 
 ## Mortal layout
 

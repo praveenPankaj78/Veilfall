@@ -68,7 +68,14 @@ export type StoryNode = {
   };
   introduces?: StatKey[];
   introducesStoryTerms?: StoryTermKey[];
-  art?: 'departure' | 'folded' | 'inn' | 'harrowfen';
+  art?:
+    | 'departure'
+    | 'folded'
+    | 'inn'
+    | 'harrowfen'
+    | 'mileless'
+    | 'crossroads'
+    | 'nails';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;

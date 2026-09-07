@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
 
@@ -92,6 +92,30 @@ const failures = [];
 const nodeIds = Object.keys(nodes);
 const ordered = new Set(nodeOrder);
 const reviewedUnchangedChoices = new Set(reviewedUnchangedChoiceIds);
+
+const chapterFourArtAssets = {
+  mileless: 'public/art/mileless-bridge-chase.png',
+  crossroads: 'public/art/mileless-three-spans.png',
+  nails: 'public/art/nine-nails-revelation.png',
+};
+const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
+const chapterFourArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c4-')) continue;
+  if (!node.art) failures.push(`Chapter Four node has no explicit art: ${id}`);
+  if (earlierChapterArt.has(node.art)) {
+    failures.push(`Chapter Four node reuses earlier chapter art: ${id} uses ${node.art}`);
+  }
+  if (node.art) chapterFourArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterFourArtAssets)) {
+  if (!chapterFourArtUsed.has(art)) failures.push(`Chapter Four never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Four artwork is missing: ${asset}`);
+  }
+}
 
 for (const id of nodeIds) {
   if (!ordered.has(id)) failures.push(`Node missing from nodeOrder: ${id}`);

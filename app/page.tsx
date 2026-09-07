@@ -66,6 +66,37 @@ const LEGACY_SAVE_KEYS = [
 ];
 type ChapterNumber = 1 | 2 | 3 | 4;
 
+const sceneArtwork = {
+  departure: {
+    src: '/art/caelan-east-gate.png',
+    alt: 'Caelan and Mara travel with the diplomatic escort beyond Greyhaven',
+  },
+  folded: {
+    src: '/art/kings-road-folded.png',
+    alt: 'Caelan and the wounded escort face an impossible sea across the King’s Road',
+  },
+  inn: {
+    src: '/art/bellweather-inn.png',
+    alt: 'Caelan leads the wounded escort into Bellweather Inn during a storm',
+  },
+  harrowfen: {
+    src: '/art/harrowfen-wrong-mile.png',
+    alt: 'Caelan approaches Harrowfen while royal archers watch from the canal gate',
+  },
+  mileless: {
+    src: '/art/mileless-bridge-chase.png',
+    alt: 'Caelan pursues Rook and Ordan across the broken arches of the Mileless Bridge',
+  },
+  crossroads: {
+    src: '/art/mileless-three-spans.png',
+    alt: 'Caelan and his companions face three impossible roads beneath different skies',
+  },
+  nails: {
+    src: '/art/nine-nails-revelation.png',
+    alt: 'Caelan, Mara, Lysara, and Rook discover the hidden map of nine World Nails',
+  },
+} as const;
+
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   2: 'veilfall.chapter-two.v1.start',
   3: 'veilfall.chapter-three.v1.start',
@@ -767,20 +798,8 @@ export default function Home() {
         <section className="story-column" aria-live="polite">
           <div className="scene-art-wrap" ref={sceneRef}>
             <Image
-              src={node.art === 'harrowfen'
-                ? '/art/harrowfen-wrong-mile.png'
-                : node.art === 'inn'
-                ? '/art/bellweather-inn.png'
-                : node.art === 'folded'
-                  ? '/art/kings-road-folded.png'
-                  : '/art/caelan-east-gate.png'}
-              alt={node.art === 'harrowfen'
-                ? 'Caelan approaches Harrowfen while royal archers watch from the canal gate'
-                : node.art === 'inn'
-                ? 'Caelan leads the wounded escort into Bellweather Inn during a storm'
-                : node.art === 'folded'
-                  ? 'Caelan and the wounded escort face an impossible sea across the King’s Road'
-                  : 'Caelan and Mara travel with the diplomatic escort beyond Greyhaven'}
+              src={sceneArtwork[node.art ?? 'departure'].src}
+              alt={sceneArtwork[node.art ?? 'departure'].alt}
               width={1536}
               height={864}
               className="scene-art"
