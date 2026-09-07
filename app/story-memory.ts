@@ -117,6 +117,10 @@ export function knownTruths(game: GameState) {
 
   truths.push('The sealed route page did not match Caelan’s memory, and the attackers prepared for every route before he chose one.');
 
+  if (game.chapter >= 3) {
+    truths.push('Ordan’s soldiers belong to Asterra, the same kingdom Caelan serves. They are a covert royal detachment under his sealed orders, not a foreign army or the Queen’s whole force.');
+  }
+
   if (game.chapter === 2 && [
     'c2-eleven-years',
     'c2-investigate',
@@ -206,6 +210,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped the burning healing house.');
   if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
   if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned Renn, you know the unknown thief opposes Ordan but wants the iron for himself.');
+  if (game.flags.includes('c3-routed-ordan-plan')) consequences.push('Because you forced Renn to reveal Ordan’s plan, you know where the fragment must be joined to the larger shard.');
   if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied Ordan’s route to the Mileless Bridge.');
   if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Garran survived to identify Ordan’s personal guard.');
   if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned how Ordan planned to open the Mileless Bridge.');

@@ -327,7 +327,7 @@ const storyTermRules = {
   },
   'Regent Malrec': {
     use: /\bRegent Malrec\b/i,
-    introduction: /Regent Malrec Vale rules Greyhaven while the young king is ill/i,
+    introduction: /Regent Malrec Vale rules Asterra while the young Queen is ill/i,
   },
 };
 for (const [id, node] of Object.entries(nodes)) {
@@ -446,6 +446,18 @@ const urgentLeads = renderedBody('c3-triage', chapterThreeBase);
 if (!/Elene explains the third lead/i.test(urgentLeads)
   || !/watchm(?:a|e)n saw Ordan pay Varris/i.test(urgentLeads)) {
   failures.push('Caelan learns about Varris without an identified source at the Chapter Three leads');
+}
+if (!/service gate for the wounded wagons and six armed escorts/i.test(urgentLeads)
+  || !/remaining Wardens form a shield line outside/i.test(urgentLeads)
+  || !/drops the iron gate between them and Ordan’s charging riders/i.test(urgentLeads)) {
+  failures.push('The Chapter Three gate transition does not account for the wounded, remaining Wardens, and Crown riders');
+}
+const gatePolitics = renderedBody('c3-gate', chapterThreeBase);
+if (!/same kingdom as you, not a foreign ruler/i.test(gatePolitics)
+  || !/only Ordan’s hidden detachment/i.test(gatePolitics)
+  || !/young Queen is ill/i.test(gatePolitics)
+  || !/gives Elene lawful command inside its walls/i.test(gatePolitics)) {
+  failures.push('The Chapter Three gate does not plainly explain the Asterra force and Harrowfen command structure');
 }
 const roadPinDiscoveryChecks = [
   ['c2-ledger', /words remain deep enough to read: road pin/i],
@@ -657,14 +669,66 @@ const investigationMenuText = [
 if (/false escort|safe road out|old watch house/i.test(investigationMenuText)) {
   failures.push('The Chapter Three investigation menu still describes the retired mystery');
 }
-const lanternBridgeBody = renderedBody('c3-bill', chapterThreeBase);
 const confessionChoice = nodes['c3-bill'].choices.find((choice) => choice.id === 'c3-let-iron-point');
-if (!/admits why he needed the escort/i.test(lanternBridgeBody)) {
-  failures.push('Lantern Bridge no longer contains Ordan’s confession');
+const lanternRouteProofs = [
+  ['c3-route-archive', /signed route requests and royal payments aloud/i],
+  ['c3-route-healer', /Garran names Ordan as the man who paid/i],
+  ['c3-route-broker', /Varris holds up the brass bridge map and Ordan’s murder order/i],
+];
+for (const [flag, expected] of lanternRouteProofs) {
+  const routeBody = renderedBody('c3-bill', { ...chapterThreeBase, flags: [flag] });
+  if (!expected.test(routeBody)) failures.push(`Lantern Bridge does not use the evidence earned on ${flag}`);
+  if (!/Only one part remains outside the evidence/i.test(routeBody)
+    || !/came from above my office/i.test(routeBody)) {
+    failures.push(`Lantern Bridge does not isolate Ordan’s one new admission on ${flag}`);
+  }
 }
 if (/why Ordan needed you and Lysara/i.test(confessionChoice?.label ?? '')
   || !confessionChoice?.addFlags?.includes('c3-stripped-ordan-command')) {
   failures.push('Lantern Bridge asks for an answer Ordan has already given');
+}
+const rennPlanChoice = nodes['c3-duplicate'].choices.find((choice) => choice.id === 'c3-ask-future-warning');
+if (!rennPlanChoice?.addFlags?.includes('c3-routed-ordan-plan')
+  || rennPlanChoice.addFlags.includes('c3-bridge-warning')) {
+  failures.push('Renn’s bridge plan is still confused with knowledge about the thief');
+}
+const rennFightBody = renderedBody('c3-duplicate', {
+  ...chapterThreeBase,
+  flags: ['c3-mara-flanked-double'],
+});
+if (!/confrontation is not over/i.test(rennFightBody) || /warrant false/i.test(rennFightBody)) {
+  failures.push('The Renn confrontation clears Caelan before the player finishes the fight');
+}
+const postRennBody = renderedBody('c3-courier', {
+  ...chapterThreeBase,
+  flags: ['c3-routed-ordan-plan'],
+});
+if (!/Only after Renn is defeated/i.test(postRennBody)
+  || !/reopens the west service gate/i.test(postRennBody)
+  || !/exactly where Ordan means to join/i.test(postRennBody)) {
+  failures.push('The scene after Renn does not complete the fight, gate logistics, and plan payoff in order');
+}
+const rookMarketBody = renderedBody('c3-market-memory', chapterThreeBase);
+const rescueIndex = rookMarketBody.indexOf('catches a falling child');
+const keyIndex = rookMarketBody.indexOf('lift a silver key');
+const wireIndex = rookMarketBody.indexOf('hook a fine wire');
+if (rescueIndex < 0 || keyIndex <= rescueIndex || wireIndex <= keyIndex) {
+  failures.push('Rook’s market setup is not presented as three clear actions in physical order');
+}
+const worldNailBody = renderedBody('c3-world-nail', chapterThreeBase);
+if (!/not a foreign army entering Harrowfen/i.test(worldNailBody)
+  || !/secret Asterra force being placed on the Mileless Bridge/i.test(worldNailBody)) {
+  failures.push('The World Nail climax does not explain the army road’s origin and destination');
+}
+const pursueOrdanChoice = nodes['c3-world-nail'].choices.find((choice) => choice.id === 'c3-end-catch-courier');
+if (!/hidden soldiers/i.test(pursueOrdanChoice?.label ?? '')
+  || /hide the fragment/i.test(pursueOrdanChoice?.label ?? '')) {
+  failures.push('The final Ordan choice still implies he possesses the stolen fragment');
+}
+const returnEnding = renderedBody('c3-ending-return', chapterThreeBase);
+if (/did not see him plant/i.test(returnEnding)
+  || !/already carries the fragment/i.test(returnEnding)) {
+  failures.push('The return ending repeats or forgets Rook’s visible theft');
 }
 const debatePayoffs = [
   ['c3-challenged-crown-control', /seize the bridge winch/i],

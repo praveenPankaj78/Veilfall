@@ -3035,8 +3035,8 @@ const originalNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c3-end-catch-courier',
-        label: 'Cross for Ordan before he can hide the fragment.',
-        detail: 'Make the royal courier your first target and gain 7 Wayfire.',
+        label: 'Pursue Ordan before he reaches his hidden soldiers.',
+        detail: 'Let the thief escape with the fragment for now and capture the man responsible for Bellweather. Gain 7 Wayfire.',
         next: 'c3-ending-courier',
         changes: { wayfire: 7 },
         addFlags: ['c3-target-ordan'],

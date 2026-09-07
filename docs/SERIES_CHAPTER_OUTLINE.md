@@ -70,7 +70,7 @@ Class pressure: Caelan uses ordinary leadership while low on resources. Oathfire
 
 Romance movement: Mara and Lysara disagree over whether protecting people or finding the cause comes first. A brief roof scene lets attraction and fear breathe without stopping the hunt or telling the player that both choices are equally valid.
 
-Revelation: The fragment can briefly pull distant roads together. Ordan plans to join it to a larger piece and give a Crown army a road into any kingdom.
+Revelation: The fragment can briefly pull distant roads together. Ordan plans to place a covert Asterra force on the Mileless Bridge, then give that army a direct road into foreign kingdoms.
 
 End state: Harrowfen rejects Ordan's warrant and Caelan prevents the army road from opening. Ordan escapes onto the Mileless Bridge, where the dark coated thief seen twice earlier steals the fragment from him. Caelan chooses between the known enemy, the now foreshadowed thief, and Harrowfen's safety. Only now does Lysara name the larger anchor as the World Nail.
 

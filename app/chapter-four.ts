@@ -46,7 +46,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: (state) => [
       pursuitOpening(state),
       'The Mileless Bridge is not one bridge. Broken arches cross beneath a dozen different skies. One opens over a snowfield. Another hangs above a storming sea. A third ends inside a brass lit cavern. Green thread from Lysara’s glass seed runs back toward Harrowfen, showing you which stones still belong together.',
-      'The thief lands on the next arch with the iron fragment under one arm. He is lean, quick, and dressed in a coat that looks black until its lining flashes royal blue. Ordan lands behind him. Crown soldiers appear on a higher span and raise crossbows.',
+      'The thief lands on the next arch with the iron fragment under one arm. He is lean, quick, and dressed in a coat that looks black until its lining flashes royal blue. Ordan lands behind him. Soldiers from his hidden Asterra detachment appear on a higher span and raise crossbows. They wear the crown badge of your own kingdom, not the colours of a foreign army.',
       'You have seconds. You want the fragment, but Mara, Lysara, Brann, and the Harrowfen guards are still crossing behind you. The bridge shudders under all of them.',
     ],
     choices: [
@@ -883,13 +883,13 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     introducesStoryTerms: ['Dragonspine', 'Regent Malrec'],
     lesson: {
       title: 'Dragonspine and the Regent',
-      body: 'Dragonspine is the northern mountain realm around the next active World Nail. Regent Malrec Vale rules Greyhaven while the young king is ill.',
+      body: 'Dragonspine is the northern mountain realm around the next active World Nail. Regent Malrec Vale rules Asterra while the young Queen is ill.',
     },
     body: (state) => [
       has(state, 'c4-found-dispatch')
         ? 'You break the dispatch recovered from Ordan’s satchel.'
         : 'Lysara finds a royal dispatch sewn beneath the lining of Ordan’s satchel while the final arch steadies.',
-      'The order is real. Regent Malrec Vale, ruler of Greyhaven while the young king is ill, commands that the fragment be carried to Dragonspine. The name belongs to the northern mountain realm around the bright mark on the hidden map.',
+      'The order is real. Regent Malrec Vale, ruler of Asterra while the young Queen is ill, commands that the fragment be carried to Dragonspine. The name belongs to the northern mountain realm around the bright mark on the hidden map.',
       'The Regent ordered Ordan to deliver the fragment, yet his soldiers were willing to kill Ordan after he failed. You cannot tell whether the royal command is a warning, a trap, or both.',
       'You fear obedience may carry the fragment exactly where the enemy wants it. You also know ignoring the order could leave the next Nail undefended.',
       has(state, 'c4-rook-full-copy')

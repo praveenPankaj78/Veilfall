@@ -10,6 +10,8 @@ Target length: fifteen decisions on every route
 
 Primary objective: recover the World Nail fragment and keep Caelan's people alive while Crown soldiers destroy the stable bridge.
 
+Force identity: the soldiers on the bridge are the surviving part of Ordan's covert Asterra detachment. They wear the Crown badge of Caelan's own kingdom. At the end of the chapter, their willingness to abandon Ordan and Regent Malrec's genuine order prove that authority above Ordan is directing the recovery.
+
 Chapter answer: the fragment contains a map of nine World Nails. The northern mark at Dragonspine is already active.
 
 Next hook: Regent Malrec has issued a genuine order sending the fragment to Dragonspine. Caelan does not yet know whether the order is protection, a trap, or both.
@@ -142,4 +144,3 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - every negative stat choice states an advantage and stores a consequence;
 - controlled story terms appear only after a plain introduction;
 - close point of view appears in at least sixty percent of scenes.
-

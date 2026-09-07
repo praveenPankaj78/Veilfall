@@ -141,6 +141,14 @@ No people is uniformly noble, savage, wise, corrupt, comic, or seductive. Cultur
 
 The western human kingdom controls Greyhaven and claims the King's Road. Regent Malrec Vale rules while the young queen is ill. His public aim is to prevent panic and foreign invasion. His hidden aim is to reunite the worlds.
 
+The King's Road keeps the name of the ruler who first united it centuries ago. Asterra is currently ruled in the young Queen's name.
+
+Harrowfen is an eastern charter town inside Asterra. It owes service to the Crown, but its elected council and gate captain control law and defence inside the town unless the Queen issues a direct lawful command.
+
+The King's Road Wardens, Harrowfen's town guard, and Asterra's royal army all serve the same realm through different chains of command. Ordan secretly uses genuine pay, seals, and movement orders to gather a covert royal detachment. Some officers knowingly support him. Other soldiers believe they are following a lawful security deployment.
+
+When Caelan and Elene resist Ordan, they are not fighting the Queen or a foreign invasion. They are stopping a royal officer from using a hidden force to seize Harrowfen and place Asterra's army on the Mileless Bridge. Once on that bridge, the same army could reach foreign kingdoms without crossing the borders between.
+
 ### Root Assembly
 
 Elven groves send speakers whose authority lasts only while their home trees remain in agreement. The Assembly can act slowly, but its decisions survive generations.
