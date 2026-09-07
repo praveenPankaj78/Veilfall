@@ -507,7 +507,7 @@ const originalNodes: Record<string, StoryNode> = {
         next: 'march-order',
         changes: { health: -2 },
         addFlags: ['saved-family', 'late-arrival'],
-        result: 'Cold water reaches your chest, but all three farmers reach the road alive.',
+        result: 'Cold water reaches your chest, but the farmer and both children reach the road alive.',
       },
       {
         id: 'push-low',
@@ -828,30 +828,34 @@ const originalNodes: Record<string, StoryNode> = {
       'The escort reaches Willow Bridge under arrow fire. Floodwater strikes the supports hard enough to shake mud from the rails. Then a hidden charge breaks the centre span.',
       openingProtection(state),
       state.flags.includes('steady-axle')
-        ? 'The treaty wagon’s repaired wheel holds at the edge of the gap.'
+        ? 'The treaty wagon’s repaired wheel holds at the edge of the gap. The blast throws Joren against the broken rail, where he hangs above the flood.'
         : 'The scored rear pin snaps. The wagon turns sideways, trapping young Joren beneath the axle.',
-      'Across the broken span, an attacker lowers his bow and runs. A leather dispatch case hangs from his shoulder. Mara has a clear shot, but two children from the rescued farm family are sliding toward the water.',
+      state.flags.includes('saved-family')
+        ? 'Across the broken span, an attacker lowers his bow and runs with a dispatch case. Mara has a clear shot, but the two children you rescued are sliding toward the water.'
+        : state.flags.includes('steady-axle')
+          ? 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren and the wagon driver are hanging above the flood.'
+          : 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren is trapped and a second guard is being pulled toward the gap.',
       'Lysara braces the treaty chest with both hands. “Captain. Choose.”',
     ],
     choices: [
       {
         id: 'save-people-low',
-        label: 'Leave the chest and pull people from the water.',
+        label: 'Leave the chest and pull everyone clear of the flood.',
         detail: 'Protect lives while treaty pages and the attacker may escape.',
         next: 'aftermath',
         changes: { health: -1 },
         addFlags: ['saved-wounded', 'treaty-damaged', 'attacker-escaped'],
-        result: 'You drag Joren and the children clear while pale treaty pages scatter into brown water.',
+        result: 'You drag Joren and every trapped traveller onto solid stone while pale treaty pages scatter into brown water.',
       },
       {
         id: 'save-treaty-low',
-        label: 'Hold the wagon while Brann saves the trapped guard.',
-        detail: 'Spend 2 Health and trust someone else with a life.',
+        label: 'Hold the wagon while Brann clears the broken span.',
+        detail: 'Spend 2 Health. Protect the treaty while trusting Brann with the trapped people.',
         next: 'aftermath',
         changes: { health: -2, command: 1 },
         requires: { health: 2 },
-        addFlags: ['treaty-safe', 'guard-wounded', 'attacker-escaped'],
-        result: 'Your boots slide to the bridge edge. Brann frees Joren before your strength gives out.',
+        addFlags: ['treaty-safe', 'saved-wounded', 'guard-wounded', 'attacker-escaped'],
+        result: 'Your boots slide to the bridge edge. Brann pulls Joren and the others clear before your strength gives out.',
       },
       {
         id: 'capture-low',
@@ -1080,11 +1084,11 @@ const originalNodes: Record<string, StoryNode> = {
       },
       {
         id: 'test-salt',
-        label: 'Ask Lysara to examine the pale crystals.',
-        detail: 'Trust unfamiliar knowledge and preserve the wax tube for later.',
+        label: 'Have Lysara test the salt while Mara opens the wax tube.',
+        detail: 'Confirm the prepared routes and learn why the distant coast matters.',
         next: 'retreat',
-        addFlags: ['found-shard-salt'],
-        result: 'She tastes one grain. “Shard Coast sea salt. Wet this morning. That coast is five days by ship.”',
+        addFlags: ['confirmed-advance-orders', 'found-shard-salt'],
+        result: 'Lysara identifies fresh Shard Coast salt while Mara opens the tube beside you. It holds three route cards sealed before your dispatch case left your room.',
       },
     ],
   },

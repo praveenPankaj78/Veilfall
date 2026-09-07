@@ -53,6 +53,7 @@ import {
   type RelationshipKey,
   type StatKey,
 } from './game-data';
+import { knownTruths, majorConsequences } from './story-memory';
 
 const CURRENT_SAVE_KEY = 'veilfall.saga.v7.save';
 const LEGACY_SAVE_KEYS = [
@@ -279,40 +280,6 @@ function changeSummary(choice: Choice, state: GameState) {
   ];
 }
 
-function knownTruths(game: GameState) {
-  const truths = game.chapter > 1 || game.chapterChoices >= 4
-    ? ['Someone altered an official route order to force the escort onto a prepared road.']
-    : ['Caelan is leading Ambassador Lysara and a Warden escort toward Bellweather Inn.'];
-  const roadRevealNodes = [
-    'c2-eleven-years', 'c2-investigate', 'c2-ledger', 'c2-cellar', 'c2-attacker',
-    'c2-night-watch', 'c2-bell', 'c2-common-room-crisis', 'c2-descend',
-    'c2-folded-cellar', 'c2-road-pin', 'c2-remove-pin', 'c2-last-testimony',
-  ];
-  if (game.chapter >= 3 || roadRevealNodes.includes(game.nodeId)) {
-    truths.push('Ordan lured Caelan and Lysara to Bellweather because their road authority and living magic could unlock the road pin.');
-  }
-  if (game.chapter >= 3
-    || game.flags.includes('c2-found-road-pin-term')
-    || ['c2-road-pin', 'c2-remove-pin', 'c2-last-testimony'].includes(game.nodeId)) {
-    truths.push('A damaged road pin pulled distant road ends beside Bellweather Inn until Caelan drove it back into place.');
-  }
-  const courierRevealNodes = [
-    'c3-evidence', 'c3-watch-house', 'c3-divided-loyalty', 'c3-market-memory',
-    'c3-pin-test', 'c3-duplicate', 'c3-courier', 'c3-collapse', 'c3-pursuit',
-    'c3-world-nail', 'c3-ending-courier', 'c3-ending-thief', 'c3-ending-return',
-  ];
-  if (courierRevealNodes.includes(game.nodeId) || game.completedChapters.includes(3)) {
-    truths.push('Royal courier Ordan Vale arranged the Bellweather attack, forged Caelan’s orders, and hired a Warden to impersonate him.');
-  }
-  if (game.nodeId === 'c3-world-nail'
-    || game.flags.includes('c3-target-ordan')
-    || game.flags.includes('c3-target-thief')
-    || game.flags.includes('c3-secured-return')) {
-    truths.push('The iron is part of a World Nail that normally keeps distance stable across Edrath.');
-  }
-  return truths;
-}
-
 function activePromises(game: GameState) {
   const promises: string[] = [];
   if (game.flags.includes('oath-bring-them-home')) promises.push('Bring the escort home alive.');
@@ -321,43 +288,6 @@ function activePromises(game: GameState) {
   if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen fall while Ordan is pursued.');
   if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
   return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
-}
-
-function majorConsequences(game: GameState) {
-  const consequences: string[] = [];
-  if (game.flags.includes('checked-people')) consequences.push('Because you inspected your people, a feverish guard avoided the hardest part of the march.');
-  if (game.flags.includes('checked-horses')) consequences.push('Because you checked the harness, the escort avoided a planned equipment failure.');
-  if (game.flags.includes('mara-read-order')) consequences.push('Because you trusted Mara with the changed order, she helped prove the page was physically altered.');
-  if (game.flags.includes('low-route')) consequences.push('Because you took the low road, the escort found the hidden silver route beneath the flood.');
-  if (game.flags.includes('ridge-route')) consequences.push('Because you trusted Mara’s ridge, the escort gained height but faced the ambush exposed to the storm.');
-  if (game.flags.includes('inspection-route')) consequences.push('Because you delayed for an inspection, the escort found sabotage before entering either road.');
-  if (game.flags.includes('saved-family')) consequences.push('Because you rescued the roadside family, more civilians survived the first ambush.');
-  if (game.flags.includes('captured-attacker')) consequences.push('Because you captured an attacker, the Crown plot gained a living witness.');
-  if (game.flags.includes('treaty-damaged')) consequences.push('Because the treaty wagon was damaged, peace now depends more heavily on Lysara’s second proof.');
-  if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, his injured leg can recover.');
-  if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand, living magic, and treaty work remain safe.');
-  if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Sable, he can testify publicly that Ordan hired the attackers.');
-  if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you connected Ordan to the supplies used in the siege.');
-  if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you found the enemy rope and the shifted coastal road before the siege.');
-  if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Sable, you connected the road pin to sealed Crown orders.');
-  if (game.flags.includes('c2-pin-broken')) consequences.push('Because the road pin broke, part of its power remains beneath Bellweather Inn.');
-  if (game.flags.includes('c2-chose-testimony')) consequences.push('Because you carried testimony to Harrowfen, Sable or Jory’s papers challenged Ordan before the gate.');
-  if (game.flags.includes('c2-chose-pin')) consequences.push('Because you carried the iron as your main proof, its pull exposed the danger beneath Harrowfen.');
-  if (game.flags.includes('c2-oath-expose-crown')) consequences.push('Because you swore publicly against the Crown plot, Elene could test your promise at Harrowfen’s gate.');
-  if (game.flags.includes('c2-kissed-mara')) consequences.push('Because you and Mara chose to kiss, your attraction is no longer unspoken.');
-  if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped the burning healing house.');
-  if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
-  if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned Renn, you know the unknown thief opposes Ordan but wants the iron for himself.');
-  if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied Ordan’s route to the Mileless Bridge.');
-  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Sable survived to identify Ordan’s personal guard.');
-  if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned how Ordan planned to open the Mileless Bridge.');
-  if (game.flags.includes('c3-priority-people')) consequences.push('Because you chose immediate lives first, Mara knows exactly where your duty begins.');
-  if (game.flags.includes('c3-priority-cause')) consequences.push('Because you chose the wider danger first, Lysara trusts you to face difficult truths.');
-  if (game.flags.includes('c3-balanced-plan')) consequences.push('Because you joined protection and investigation, Mara and Lysara were ready when Harrowfen changed.');
-  if (game.flags.includes('c3-target-ordan')) consequences.push('Because you targeted Ordan, the Crown courier must face you before reaching the thief.');
-  if (game.flags.includes('c3-target-thief')) consequences.push('Because you targeted the thief, you reach for the fragment as the bridge breaks.');
-  if (game.flags.includes('c3-secured-return')) consequences.push('Because you secured the first arch, your companions still have a path back to Harrowfen.');
-  return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }
 
 export default function Home() {

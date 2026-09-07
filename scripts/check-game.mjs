@@ -29,6 +29,17 @@ vm.runInNewContext(economyCompiled, {
   console,
 }, { filename: 'choice-economy.js' });
 
+const memorySource = await readFile('app/story-memory.ts', 'utf8');
+const memoryCompiled = ts.transpileModule(memorySource, {
+  compilerOptions,
+}).outputText;
+const memoryExports = {};
+vm.runInNewContext(memoryCompiled, {
+  exports: memoryExports,
+  module: { exports: memoryExports },
+  console,
+}, { filename: 'story-memory.js' });
+
 const source = await readFile('app/game-data.ts', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: {
@@ -58,6 +69,7 @@ const {
   resolveNext,
   statLabels,
 } = context.module.exports;
+const { knownTruths, majorConsequences } = memoryExports;
 
 const failures = [];
 const nodeIds = Object.keys(nodes);
@@ -268,6 +280,72 @@ const knownPrisonerThreshold = renderedBody('c2-threshold', {
 });
 if (!/your wounded prisoner/i.test(knownPrisonerThreshold) || /Maelin found him/i.test(knownPrisonerThreshold)) {
   failures.push('Chapter Two does not preserve the captured attacker route');
+}
+const lowRoadCases = [
+  {
+    flags: ['saved-family', 'steady-axle'],
+    expected: [/two children you rescued/i, /hangs above the flood/i],
+    forbidden: [/trapping young Joren beneath the axle/i],
+  },
+  {
+    flags: ['saved-family'],
+    expected: [/two children you rescued/i, /trapping young Joren beneath the axle/i],
+    forbidden: [],
+  },
+  {
+    flags: ['steady-axle'],
+    expected: [/wagon driver/i, /hangs above the flood/i],
+    forbidden: [/children you rescued/i, /trapping young Joren beneath the axle/i],
+  },
+  {
+    flags: [],
+    expected: [/second guard/i, /trapping young Joren beneath the axle/i],
+    forbidden: [/children you rescued/i],
+  },
+];
+for (const testCase of lowRoadCases) {
+  const body = renderedBody('low-crisis', { ...initialState, flags: testCase.flags });
+  for (const expected of testCase.expected) {
+    if (!expected.test(body)) failures.push(`Low road continuity is missing ${expected} for ${testCase.flags.join(',') || 'no flags'}`);
+  }
+  for (const forbidden of testCase.forbidden) {
+    if (forbidden.test(body)) failures.push(`Low road continuity incorrectly includes ${forbidden} for ${testCase.flags.join(',') || 'no flags'}`);
+  }
+}
+const sealedCaseTruths = knownTruths({
+  ...initialState,
+  nodeId: 'sealed-case',
+  chapterChoices: 4,
+});
+if (sealedCaseTruths.some((truth) => /prepared road|someone altered/i.test(truth))) {
+  failures.push('The sealed case journal reveals the conspiracy before Caelan proves it');
+}
+if (!sealedCaseTruths.some((truth) => /does not match|although he remembers/i.test(truth))) {
+  failures.push('The sealed case journal does not record the observed route mismatch');
+}
+const provenAmbushTruths = knownTruths({
+  ...initialState,
+  nodeId: 'retreat',
+  flags: ['confirmed-advance-orders'],
+});
+if (!provenAmbushTruths.some((truth) => /every possible route/i.test(truth))) {
+  failures.push('The journal does not record advance route proof after it is discovered');
+}
+const lowHighConsequences = majorConsequences({
+  ...initialState,
+  nodeId: 'ending-height',
+  flags: ['low-route', 'chose-high-ground'],
+});
+if (lowHighConsequences.some((consequence) => /followed|found the hidden silver route/i.test(consequence))) {
+  failures.push('The low road and high ground recap invents a silver road choice');
+}
+if (!lowHighConsequences.some((consequence) => /defensible camp/i.test(consequence))) {
+  failures.push('The high ground ending is missing from the recap');
+}
+for (const evidenceChoice of nodes.evidence.choices) {
+  if (!evidenceChoice.addFlags?.includes('confirmed-advance-orders')) {
+    failures.push(`Evidence choice ${evidenceChoice.id} does not answer the chapter mystery`);
+  }
 }
 const routeProofChecks = [
   ['c2-chose-testimony', /Sable|Jory/i],
