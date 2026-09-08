@@ -206,6 +206,8 @@ When one person has a hidden objective:
 4. The protagonist may notice warning signs and proceed, refuse, or set terms.
 5. Magic, threats, captivity, severe intoxication, or inability to refuse make intimacy unavailable.
 
+Reading or magically inferring desire creates knowledge, not consent. A character who could exploit that knowledge must disclose it before an intimate approach or refuse to use it as leverage. The other person must understand what was learned and remain free to say no.
+
 ## Writing attraction
 
 Attractive characters should feel physical without being reduced to parts. Select details through the protagonist's attention:
@@ -229,6 +231,10 @@ Vary the distance. Early attraction often uses one subtle detail. Established de
 Intimate scenes can become detailed, but their primary purpose is emotional and narrative change. Structure them around attention, choice, response, and trust. Keep both participants active. Confirm desire through behaviour and words suitable to their relationship.
 
 Each scene must change at least one state such as trust, information, debt, loyalty, vulnerability, or future risk. Provide a fade option for players who want the relationship consequence without detailed content.
+
+Do not show the Fade or Detailed control before the story contains a scene that uses it. When that scene arrives, both versions must preserve the same decision, information, relationship state, and later consequences.
+
+Relationship choices use character language rather than procedural consent labels. Consent remains clear in the action and response: one person states or shows desire, the other has room to refuse, and mutual movement confirms the choice.
 
 ## Violence and horror
 

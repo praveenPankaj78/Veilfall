@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the first four canonical Caelan chapters. The reader now includes named relationship values, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
+The project contains a functioning choice engine and the first five canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -36,7 +36,7 @@ Required work:
 
 - add protagonist specific resource schemas;
 - add world Nail and regional state;
-- add named relationship dimensions, with Trust and Attraction now implemented for Mara and Lysara;
+- maintain Trust, Attraction, Respect, Friction, and explicit relationship intent for Mara and Lysara while showing only qualitative summaries to players;
 - add travel and companion state;
 - add imported finale summaries;
 - add content preference for detailed intimacy or fade, now implemented with an adult confirmation gate;

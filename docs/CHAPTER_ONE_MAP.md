@@ -4,6 +4,8 @@
 
 This canonical vertical slice is implemented and playable. The obsolete Greyhaven king escort prototype and its scene art have been removed.
 
+Every playable scene, branch transition, choice setup, result, ending, and Chapter One journal entry has received a close narration audit. The prose now enters through Caelan's actions and senses, leaves moral judgment to the player, and ends decision scenes on speech, movement, or immediate pressure.
+
 ## Chapter
 
 Series: The Ember Oath
@@ -16,7 +18,7 @@ Target play time: thirty to forty minutes on a first route
 
 Primary objective: escort Ambassador Lysara and a sealed treaty chest from Greyhaven to Bellweather Inn before night rain closes the low road.
 
-Primary mystery: who changed the route order inside Caelan's sealed case?
+Primary mystery: was Caelan's sealed route deliberately changed, and did the attackers prepare for his response?
 
 Player facing threat rhythm: Low during the first duty, Uneasy as physical warning signs appear, Rising when the order proves impossible, Immediate during exposed travel, Critical during the ambush, and Unknown at the folded road.
 
@@ -38,15 +40,15 @@ Caelan walks the gate yard before departure. The player chooses what he checks f
 
 Mara returns from scouting with rain in her hair and a stolen pear. Their familiarity allows one playful response, one professional response, and one guarded response. This creates tone rather than locking romance.
 
-A goblin wheelwright argues with a human guard about the load balance. The player can listen, command silence, or inspect the axle. This teaches that good leadership includes expertise outside Caelan's own.
+A goblin wheelwright argues with a human guard about the load balance. The player can trust his repair, redistribute the load, or help him prove the sabotage. This teaches that good leadership includes expertise outside Caelan's own.
 
 ## Inciting disturbance
 
-Ambassador Lysara arrives from Thornweald. Her presence is memorable but the scene focuses on the treaty mission. She notes that Caelan's written route differs from the route agreed the night before.
+Ambassador Lysara arrives from Thornweald. Her presence is memorable but the scene focuses on the treaty mission. The route register establishes Ordan Vale as one of six officials who knew the escort would leave.
 
 Caelan opens his dispatch case. The seal is intact. The order inside carries his handwriting and names the low road.
 
-The player chooses whether to trust the document, Mara, or a fresh inspection. Each route remains playable and changes the ambush terrain.
+The player chooses whether to trust Caelan's memory, ask Mara to inspect the page, or test the sealed case. The next decision changes the ambush terrain.
 
 ## Road movement
 
@@ -55,8 +57,8 @@ The escort leaves Greyhaven. The city falls behind, creating a clear sense of de
 One calm class decision occurs before danger:
 
 - Guard an overloaded wagon and spend Health.
-- Command a faster formation and risk lower morale.
-- Promise the nervous envoy that everyone will reach the inn and create the first optional Oath.
+- Spend Command on a faster formation that taxes the escort's discipline.
+- Promise that every living traveller will reach shelter and create the first optional Oath.
 - Ask Mara to range farther ahead, improving warning but reducing immediate relationship time.
 
 ## Ambush movement
@@ -81,7 +83,7 @@ The attacker carries road dust containing salt crystals from the Shard Coast, al
 
 ## Closing movement
 
-Caelan orders a retreat toward Greyhaven. After one mile, the sea appears ahead of them. Greyhaven is visible across the water behind the party, far beyond swimming distance.
+Caelan orders the survivors to move before the attackers return. After one mile, the sea appears ahead of them. Greyhaven is visible across the water, far beyond swimming distance.
 
 The road has folded.
 

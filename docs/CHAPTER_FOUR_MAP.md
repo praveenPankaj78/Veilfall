@@ -1,5 +1,11 @@
 # Chapter Four Map
 
+## Status
+
+This chapter is implemented and playable after every Chapter Three ending. Its full narration pass is complete across the bridge pursuit, all three environmental routes, relationship choices, Rook outcomes, endings, and journal entries.
+
+Rook creates surprising openings, but Caelan remains the body and mind through which the player experiences them. Humour, attraction, fear, and duty appear through interrupted action and character behaviour rather than narrator interpretation.
+
 ## Thief at the Mileless Bridge
 
 Playable lead: Caelan Vey
@@ -96,18 +102,18 @@ Caelan owns every duty decision:
 
 Rook owns theft, deception, strange routes, and his final escape with a copy. Neither hero can be exchanged for the other without changing the scene.
 
-## Romance movement
+## Relationship movement
 
-Mara's scene comes after the map reveal and before the final assault. The danger remains immediate, so the scene is brief but emotionally direct.
+The quiet arch after the map reveal is no longer a mandatory Mara interlude. The player visibly chooses where Caelan spends the available minute:
 
-The player can:
+- answer Mara as an old friend;
+- bind himself to honest answers without treating the Oath as romantic commitment;
+- let Mara initiate a kiss when their existing bond supports it;
+- ask Lysara about the founder seal that frightens her and hear a truth about her family;
+- define both relationships as platonic;
+- or take the minute alone without emotional punishment.
 
-- admit that law must bend when it stops protecting people;
-- decide that Rook deserves terms, then bind Caelan to personal honesty through an Oath;
-- decide that survival comes before rigid law, then kiss Mara if enough Trust and Attraction have been earned;
-- hear Rook out while delaying the personal answer until after the crisis.
-
-Mara's judgment continues into the final Rook decision. The scene does not pause the plot or turn danger into an excuse for intimacy.
+Lysara's route is political and personal rather than a copy of Mara's physical shorthand. Tactical agreement elsewhere in the chapter builds Trust or Respect, not automatic Attraction.
 
 ## Endings
 

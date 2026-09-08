@@ -32,7 +32,7 @@ Rook is therefore present at Sorin's shelter on every route, but for a different
 5. Choose the glass stair, frozen river, or ash tunnel.
 6. Survive the chosen route through a distinct physical danger.
 7. Open the grave while cold fire closes around the party.
-8. Let Mara or Lysara treat Caelan's burns and decide what personal truth to share.
+8. Follow the player’s earlier choice of Mara, Lysara, or Sorin for burn care and decide how to use the quiet minute.
 9. Cross memory glass without confusing recordings with alternate realities.
 10. Meet Vaor and decide how to begin the negotiation.
 11. Answer why the present world deserves protection.
@@ -42,6 +42,12 @@ Rook is therefore present at Sorin's shelter on every route, but for a different
 15. Free Vaor, take his ember by force, or make a pact that carries his voice.
 
 Every complete route contains exactly fifteen decisions.
+
+## Narration standard
+
+Chapter Five uses close second person. Caelan's judgement appears through physical reactions, remembered promises, trained habits, and the details that catch his attention under pressure. The narrator does not tell the player what to think or restate the choice menu at the end of a scene.
+
+Cold fire, Vaor, and Orivane are introduced through action or dialogue before the journal records them. Lesson cards are reserved for rules the player must use immediately. Costly options describe an expected advantage rather than promising an outcome before the action happens.
 
 ## The one new environmental rule
 
@@ -84,20 +90,25 @@ Rook remains a guest in Caelan's chapter, but never becomes a passive follower. 
 
 Caelan decides whether to trust each setup. Rook controls the surprising execution.
 
-## Romance movement
+## Relationship movement
 
-Mara or Lysara treats Caelan's cold burns before the party meets Vaor. This keeps the personal scene from interrupting the dragon's first conversation. The companion is selected by established attraction and commitment. An earlier promise or kiss with Mara keeps her path active. Otherwise, a stronger established Lysara relationship receives its own scene.
+The player chooses the caregiver visibly in Sorin's refuge. Hidden scores never select the partner. Caelan may ask Mara to own the burn check, ask Lysara to trace the Nail through it, or choose Sorin's professional care. Sending Rook to scout also leaves the later care with Sorin.
 
 On Mara's route, the player can:
 
 - admit that Caelan wants a future including Mara;
 - name his fear of surviving another failed promise;
 - keep the answer for a safer time;
-- or openly state desire, ask what Mara wants, and kiss her only after she answers.
+- define their bond as family and friendship;
+- or state the future he wants and leave the final movement to Mara.
 
 The kiss depends on established Trust and Attraction. It follows an honest admission inside the same choice and is never presented as a reward for combat.
 
-On Lysara's route, the player can admit wanting to know her beyond the treaty, protect her right to choose, delay an answer, or acknowledge mutual desire and kiss her after she answers. This prevents a long Lysara relationship from being silently replaced by a mandatory Mara romance.
+Lysara's route happens while she guides Caelan through moving memory glass. It centres on whether political trust and attraction can survive disagreement and evidence that may condemn both their governments. The player can choose desire, commitment, respectful alliance, explicit friendship, or an honest delay.
+
+Sorin's route is a complete professional scene with ordinary humour and no disappointed romantic partner. It can establish friendship with both women, centre Caelan on the people depending on him, learn who Vaor was before imprisonment, or let Rook distract the group from fear.
+
+Later Chapter Five crisis and pact text follow the caregiver the player named. A romance already being explored with one woman blocks commitment to the other until that bond has been honestly resolved.
 
 ## Defining endings
 
@@ -143,5 +154,9 @@ The game check verifies:
 - negative stats always buy a named advantage and store a consequence;
 - cold fire, Vaor, and Orivane are introduced before use;
 - close point of view appears in at least sixty percent of scenes;
+- Chapter Five's journal remains in Caelan's first person voice and does not reveal Vaor or Orivane early;
+- dramatic discoveries are not revealed in lesson cards before their scenes;
+- costly choices present benefits as expected outcomes rather than guarantees;
+- scenes do not end by repeating that the player must choose;
 - every scene explicitly selects Chapter Five artwork;
 - all three image files exist and no earlier chapter art is reused.

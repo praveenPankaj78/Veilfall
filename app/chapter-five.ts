@@ -6,10 +6,10 @@ function has(state: GameState, flag: string) {
 
 function rookArrival(state: GameState) {
   if (has(state, 'c4-rook-arrested')) {
-    return 'Rook walks twenty steps ahead with the empty iron cuff worn as a bracelet. You arrested him on the bridge. He escaped without leaving, which feels like the most irritating compromise he could invent.';
+    return 'Rook walks twenty steps ahead with the empty iron cuff worn as a bracelet. You arrested him on the bridge. He escaped without leaving. Each flash of iron at his wrist tightens your jaw.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Rook keeps the bargain he made on the bridge. He guides you north, names each hidden turn, and supplies exactly one honest warning per day. You have started to dread the honest ones.';
+    return 'Rook keeps the bargain he made on the bridge. He guides you north, names each hidden turn, and supplies exactly one honest warning per day. Whenever his smile disappears, your hand finds your sword.';
   }
   return 'You trusted Rook to choose his own road. He left after the bridge, then deliberately rejoined your group during the three day climb because his buyer is also somewhere in Dragonspine. He appeared above the path with dry boots and a stolen Crown map. “I led you by removing several bad guides,” he says.';
 }
@@ -25,31 +25,24 @@ function rookAtShelter(state: GameState) {
 }
 
 function relationshipInterlude(state: GameState) {
-  const mara = state.relationships.mara;
-  const lysara = state.relationships.lysara;
-  const committedToMara = has(state, 'c4-kissed-mara') || has(state, 'c4-oath-honest-with-mara');
-  if (!committedToMara
-    && lysara.trust >= 4
-    && lysara.attraction >= 3
-    && lysara.attraction > mara.attraction) {
-    return 'c5-lysara-burns';
-  }
-  return 'c5-mara-burns';
+  if (has(state, 'c5-chose-mara-care')) return 'c5-mara-burns';
+  if (has(state, 'c5-chose-lysara-care')) return 'c5-lysara-burns';
+  return 'c5-sorin-care';
 }
 
 function ordanCustody(state: GameState) {
   if (has(state, 'c4-captured-ordan')) {
-    return 'Ordan did not come north. Elene took him into Harrowfen custody with Garran and the surviving documents. You still feel the weight of leaving a living witness behind, but bringing a wounded prisoner into this mountain would have killed him.';
+    return 'Ordan did not come north. Elene took him into Harrowfen custody with Garran and the surviving documents. The choice left a living witness behind and kept a wounded prisoner out of a climb that would have killed him. It still sits badly beneath your ribs.';
   }
   if (has(state, 'c4-ordan-lower-road')) {
-    return 'Ordan escaped onto a lower road, but the dispatch taken from him led you here. You dislike depending on evidence stolen from a man you could not hold.';
+    return 'Ordan escaped onto a lower road, but the dispatch taken from him led you here. Every time you unfold it, the memory of his empty chain returns with it.';
   }
   return 'Ordan is gone, but the genuine royal dispatch from his coat led you here. His part in the pursuit is over. The authority above him is not.';
 }
 
 function routeMemory(state: GameState) {
   if (has(state, 'c4-snow-route')) {
-    return 'The blue fire resembles the flame you crossed on the bridge’s mountain span. This time you can feel it reaching for the warmth beneath your armour.';
+    return 'The blue fire resembles the flame from the bridge’s mountain span. There it only filled the sky. Here, cold fingers reach through your armour for the warmth underneath.';
   }
   if (has(state, 'c4-storm-route')) {
     return 'You miss the storm span for one foolish moment. Water tried to throw you into the sea, but at least water did not study you before it moved.';
@@ -74,7 +67,7 @@ function vaorResponse(state: GameState) {
   if (has(state, 'c5-broke-memory-slab')) {
     return 'The eye fixes on the broken plate behind you. “You destroyed one of my days to reach me faster,” the dragon says. His anger is quiet enough to frighten you.';
   }
-  return 'The dragon’s amber eye follows the iron in your fist. You feel his attention like heat returning to a numb hand.';
+  return 'The dragon’s amber eye follows the iron in your fist. Heat prickles through your numb fingers as that gaze settles on them.';
 }
 
 export const chapterFiveNodes: Record<string, StoryNode> = {
@@ -88,11 +81,11 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'dragonspine',
     introducesStoryTerms: ['cold fire'],
     lesson: {
-      title: 'Cold fire',
-      body: 'The damaged fire Nail has created blue flame that steals heat instead of giving it. It follows warm bodies and ordinary fires. While it burns nearby, rest can stop exhaustion from worsening, but Health cannot recover.',
+      title: 'Cold fire and Health',
+      body: 'While cold fire burns nearby, rest can stop exhaustion from worsening, but Health cannot recover. Leaving its reach removes this restriction.',
     },
     body: (state) => [
-      'The Mileless Bridge leaves you at Dragonspine’s lower road before dusk. That first night, no one dares light a fire. Mara shares her blanket without asking, and every boot against the glass sounds like someone following. By the third day, the mountains have swallowed the last green tree and any help that could arrive in time.',
+      'The last Mileless stone turns under your boot and becomes Dragonspine’s lower road before dusk. That first night, no one dares light a fire. Mara shares her blanket without asking, and every boot against the glass sounds like someone following. By the third day, the mountains have swallowed the last green tree and any help that could arrive in time.',
       ordanCustody(state),
       rookArrival(state),
       'Now blue flame rises from cracks on both sides of the path. It bends against the wind and reaches toward your lantern.',
@@ -114,7 +107,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-command-lantern-relay',
         label: 'Send the lanterns ahead in a timed relay.',
         detail: 'Spend 1 Command making the fire chase moving heat instead of your people.',
-        advantage: 'The whole party crosses quickly with its winter supplies intact.',
+        advantage: 'The relay should let the whole party cross quickly with its winter supplies intact.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-lantern-relay'],
@@ -125,7 +118,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-oath-draw-coldfire',
         label: 'Promise that no flame will touch anyone while you lead.',
         detail: 'Spend 1 Oathfire drawing the cold fire toward your sworn protection.',
-        advantage: 'Every companion crosses untouched, and you learn that the fire can hear an Oath.',
+        advantage: 'The promise should shield every companion and reveal whether the fire can hear an Oath.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
         addFlags: ['c5-fire-heard-oath', 'c5-carried-first-grief'],
@@ -136,7 +129,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-guard-rear-crossing',
         label: 'Take the rear and break every flame that reaches the path.',
         detail: 'Lose 1 Health keeping the cold fire away from the slower climbers.',
-        advantage: 'The party crosses at full speed and the fire cannot mark another traveller.',
+        advantage: 'Holding the rear should keep the party moving and stop the fire marking another traveller.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c5-burned-at-rear'],
@@ -157,14 +150,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: () => [
       'A man pounds on the inside of a fallen glass slab. One leg is pinned beneath it. Blue fire moves across the clear surface toward the heat of his hands.',
       '“Sorin,” he gasps when he sees you. “I keep the old path to the dragon’s grave. Please. Get this off me before the fire reaches my hands.”',
-      'His words promise answers. Blue fire reaches his knuckles before any question can matter.',
+      'Your burned fingers close around the edge of the slab. “The dragon’s grave,” Sorin gasps. Blue fire touches his knuckles, and the rest of the answer becomes a scream.',
     ],
     choices: [
       {
         id: 'c5-lift-glass-slab',
         label: 'Lift the slab while Mara pulls Sorin free.',
         detail: 'Lose 1 Health taking the glass weight through your injured body.',
-        advantage: 'Sorin keeps his pack, maps, and full ability to guide the climb.',
+        advantage: 'Reaching him directly should save Sorin with his maps and full ability to guide the climb.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c5-sorin-full-guide', 'c5-lifted-glass'],
@@ -175,7 +168,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-command-slab-rope',
         label: 'Build a rope lift and call the pull together.',
         detail: 'Spend 1 Command coordinating strength before the fire arrives.',
-        advantage: 'Sorin is freed without injury and the group learns the rhythm of mountain rescue.',
+        advantage: 'A clean lift should free Sorin without injury and teach the group the rhythm of mountain rescue.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-sorin-full-guide', 'c5-rope-lift'],
@@ -195,7 +188,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-feed-fragment-fire',
         label: 'Hold the fragment near the fire and draw it away.',
         detail: 'Spend 1 Resolve letting the active Nail pull against the iron in your hand.',
-        advantage: 'Sorin is saved, and the fragment reveals the direction of the buried dragon.',
+        advantage: 'The fragment may draw the fire away and reveal the direction of the buried dragon.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c5-sorin-saved', 'c5-fragment-found-grave'],
@@ -214,10 +207,6 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Uneasy',
     art: 'dragonspine',
     introducesStoryTerms: ['Vaor'],
-    lesson: {
-      title: 'The grave above',
-      body: 'Vaor is an ancient dragon buried alive near the fire Nail. Sorin’s people once tended the paths to his grave, but the Crown closed them a century ago.',
-    },
     body: (state) => [
       'Sorin leads you into a refuge cut entirely from glass. There is no hearth. A fire would call every blue flame in the valley, so the group shares blankets and eats cold grain.',
       'Your breathing settles, but the pale edges of your burns do not close. Outside, blue flame keeps circling the glass. Until you leave its reach, rest will not restore the Health it has taken.',
@@ -226,44 +215,44 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         : 'Mara sits beside you beneath one blanket. Her shoulder presses against yours while she studies the pale burn around your glove.',
       rookAtShelter(state),
       'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon buried alive beside the fire Nail. A royal survey force opened his grave two nights ago. Several soldiers died when their commander tested the drill, and the survivors carried the machine higher.',
-      'Sorin sketches three paths to the upper grave. Before you choose one, you have time to learn one useful thing. “What do you need first?” he asks.',
+      'Sorin sketches three paths to the upper grave, then plants the charcoal point in the centre of the map. “We have time for one question,” he says. “Make it count.”',
     ],
     choices: [
       {
         id: 'c5-let-mara-check-burns',
-        label: 'Let Mara inspect the cold burns now.',
-        detail: 'Give her the truth about your pain before it becomes a crisis.',
+        label: 'Ask Mara to take responsibility for the burn.',
+        detail: 'Choose Mara for the personal check before the final descent. Romance is not assumed.',
         advantage: 'Mara learns which burn may fail during the final climb.',
-        addFlags: ['c5-let-mara-check-burns'],
+        addFlags: ['c5-let-mara-check-burns', 'c5-chose-mara-care'],
         result: 'Mara unwraps your hand and marks the edge of the numb skin with ink. “If it crosses that line, you tell me,” she says. You promise without using magic.',
         next: 'c5-royal-camp',
       },
       {
         id: 'c5-ask-lysara-read-nail',
-        label: 'Ask Lysara to read the northern mark.',
-        detail: 'Spend 1 Resolve holding the fragment steady while her living thread enters it.',
-        advantage: 'You learn that the dragon and the fire Nail occupy the same chamber.',
+        label: 'Ask Lysara to trace the Nail’s heat through your burn.',
+        detail: 'Spend 1 Resolve and choose Lysara for the personal check before the final descent.',
+        advantage: 'The reading may show whether the dragon and the fire Nail occupy the same chamber.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c5-lysara-linked-grave'],
+        addFlags: ['c5-lysara-linked-grave', 'c5-chose-lysara-care'],
         result: 'Green thread passes through the black iron and points upward. Lysara feels a heartbeat behind the fire mark. The Nail is not merely near a dragon. It is touching one.',
         next: 'c5-royal-camp',
       },
       {
         id: 'c5-question-sorin-paths',
-        label: 'Ask Sorin what each route was built to protect.',
-        detail: 'Learn the purpose of the paths instead of only their speed.',
+        label: 'Ask Sorin to treat the burn and explain the old paths.',
+        detail: 'Choose professional care and learn the purpose of each route without entering a romance scene.',
         advantage: 'Sorin explains which danger belongs to each route before you commit.',
-        addFlags: ['c5-knows-route-purposes'],
-        result: 'The stair was built for soldiers, the frozen river for dragon keepers, and the ash tunnel for carrying injured climbers down. Each is dangerous for a different reason.',
+        addFlags: ['c5-knows-route-purposes', 'c5-chose-sorin-care'],
+        result: 'Sorin dresses the pale edge of the burn while he talks. The stair was built for soldiers, the frozen river for dragon keepers, and the ash tunnel for carrying injured climbers down.',
         next: 'c5-royal-camp',
       },
       {
         id: 'c5-send-rook-scouting',
         label: 'Let Rook scout the abandoned royal camp.',
-        detail: 'Trust him near evidence and unattended Crown property.',
+        detail: 'Let Sorin handle the burn while Rook scouts Crown property. This keeps the later interlude professional.',
         advantage: 'He returns with the patrol schedule and one item he refuses to name yet.',
-        addFlags: ['c5-rook-scouted-camp'],
+        addFlags: ['c5-rook-scouted-camp', 'c5-chose-sorin-care'],
         result: 'Rook leaves through the only doorway you were watching and returns through the solid wall. He gives you a patrol schedule. The square shape inside his coat is apparently none of your business.',
         next: 'c5-royal-camp',
       },
@@ -280,7 +269,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'dragonspine',
     body: (state) => [
       'The royal camp stands inside a ring of blue ash. Bedrolls are frozen to the ground. Three soldiers lie beside an iron drilling frame, their skin untouched and their bodies emptied of warmth.',
-      'These soldiers served the same kingdom as you. They were not the Queen’s whole army. Their sealed orders place them under Regent Malrec’s private authority while the Queen remains ill.',
+      'Asterra’s crowned shield marks every coat. Your colours. Your kingdom. Your stomach tightens. But each dead soldier also wears Malrec’s split mountain seal, and the orders beside them name the Regent’s private command while the Queen lies ill.',
       'Sorin recognises the split mountain seal stamped into the drill. Commander Hale led this expedition. Rook checks the same mark against the secret code used by his buyer. The buyer was connected to this camp, but is not among the dead and has already moved east.',
       'A diagram beside the drill names its target: a living ember, a piece of Vaor’s own fire. The ember is not the fire Nail. Hale means to cut it out of the dragon and use it to control the damaged Nail.',
       'A surviving patrol is climbing back toward camp. You hear boots on glass and estimate four minutes before they see you.',
@@ -293,7 +282,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-recover-regent-order',
         label: 'Open the command chest and take the written order.',
         detail: 'Spend 1 Command organising a fast search without disturbing the camp’s warning lines.',
-        advantage: 'You preserve direct proof that the Regent ordered an ember extracted from a living dragon.',
+        advantage: 'A careful search should preserve direct proof that the Regent ordered an ember extracted from a living dragon.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-has-extraction-order'],
@@ -304,7 +293,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-read-frozen-dead',
         label: 'Study where each soldier fell.',
         detail: 'Spend 1 Resolve facing the last moments of people who wore your colours.',
-        advantage: 'You learn that their own commander opened the fire channel and abandoned them.',
+        advantage: 'The positions of the dead may show who opened the fire channel and abandoned them.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c5-knows-commander-sacrifice'],
@@ -345,7 +334,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         ? 'Sorin repeats what each path was made to protect. The stair favours a disciplined defence. The river hides dragon keepers. The ash tunnel once carried wounded people down.'
         : 'Sorin points out three routes. Each reaches the same high chamber, but none offers the same danger.',
       'The glass stair is shortest and exposed to Crown archers. The frozen river runs beneath clear ice while blue fire moves above it. The ash tunnel is dark, narrow, and already shaking from the drill.',
-      'An arrow strikes the stair. Ice pops above the river. The drill knocks loose a stone inside the tunnel. Sorin grips his map. “Which sound do we follow?”',
+      'An arrow strikes the stair. Ice pops above the river. The drill knocks loose a stone inside the tunnel. Your body prepares for three different deaths. Sorin grips his map. “Which sound do we follow?”',
     ],
     choices: [
       {
@@ -389,14 +378,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: () => [
       'The stair climbs through open air. Each step is transparent. Looking down shows the lower valley far beneath your boots.',
       'Six royal archers fire from a stone lip. The arrows are ordinary. The blue fire spreading across the steps behind you is not. Standing still will let it reach the wounded first.',
-      'You notice that the glass throws six clear reflections of Rook and only one of everyone else. He notices you noticing and looks pleased.',
+      'Rook shifts one boot. Six clear reflections shift with him while the glass gives everyone else only one. Your eyes move from the copies to his mirrored coat buttons. His answering grin is far too pleased.',
     ],
     choices: [
       {
         id: 'c5-stair-shield-command',
         label: 'Advance the shields on your count.',
         detail: 'Spend 1 Command crossing between volleys without losing formation.',
-        advantage: 'The full group reaches the archers with its climbing gear intact.',
+        advantage: 'The timing should bring the full group to the archers with its climbing gear intact.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-stair-formation'],
@@ -407,7 +396,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-stair-breakline',
         label: 'Climb the outside rail and hit the archers from below.',
         detail: 'Lose 1 Health taking the exposed route around their aim.',
-        advantage: 'You break the archer line before it can warn the commander.',
+        advantage: 'The exposed climb may let you break the archer line before it can warn the commander.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c5-silenced-archers'],
@@ -437,14 +426,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: () => [
       'The river tunnel is high enough to crouch in and no more. Clear ice forms its roof. Blue fire follows directly above, matching the movement of each warm body below.',
       'A crack opens over Lysara. The fire presses a narrow finger into it. If the roof breaks, the whole river will become a channel for flame.',
-      'You notice the crack following Lysara’s breath. You cannot fight through the ceiling. You need to change what the fire follows or move everyone before the crack widens.',
+      'Lysara’s next breath clouds the ice. The crack crawls after it. She clamps a hand over her mouth, but another blue finger is already pressing through.',
     ],
     choices: [
       {
         id: 'c5-river-oath-decoy',
         label: 'Send your Oathfire ahead as a false heartbeat.',
         detail: 'Spend 1 Oathfire making the blue flame chase your promise through the ice.',
-        advantage: 'The party crosses safely and the fire reveals a hidden exit near the grave.',
+        advantage: 'The false heartbeat should draw the fire away and may reveal where it travels.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
         addFlags: ['c5-river-oath-path', 'c5-carried-first-grief'],
@@ -455,7 +444,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-river-hold-panic',
         label: 'Lead everyone through darkness by touch.',
         detail: 'Spend 1 Resolve controlling fear while the fire waits overhead.',
-        advantage: 'No light or sudden movement draws the flame through the crack.',
+        advantage: 'Moving slowly in darkness should keep light and panic from drawing the flame through the crack.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c5-river-dark-crossing'],
@@ -485,14 +474,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: () => [
       'The ash tunnel climbs beneath the royal drill. Each iron strike sends black dust from the ceiling. Warm air moves through cracks, but the next blow closes half the passage behind you.',
       'A support beam splits. Sorin strikes four sharp notes against it, the old keeper signal for a collapse, then says the tunnel will hold for perhaps one minute. Rook watches his hand and listens to the rhythm.',
-      'You hear the drill crew through the rock. You notice they strike in a steady rhythm. They do not know your party is below them.',
+      'Six blows travel through the rock. A pause. Six more. Muffled voices count above you, unaware that every strike drops stone onto the people below. Rook raises one finger before the next count begins.',
     ],
     choices: [
       {
         id: 'c5-tunnel-brace',
         label: 'Hold the broken beam while everyone passes.',
         detail: 'Lose 1 Health taking the mountain’s weight through your shoulders.',
-        advantage: 'Every companion and all remaining evidence reach the grave entrance.',
+        advantage: 'Holding the beam should let every companion and all remaining evidence reach the grave entrance.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c5-held-ash-beam'],
@@ -503,7 +492,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-tunnel-command-dig',
         label: 'Split the group between bracing and digging.',
         detail: 'Spend 1 Command keeping both teams in rhythm as the roof falls.',
-        advantage: 'The party opens a second exit and traps the drill crew above it.',
+        advantage: 'Two coordinated teams may open a second exit and trap the drill above it.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-trapped-drill-crew'],
@@ -532,29 +521,29 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'dragonspine',
     body: (state) => [
       'The three routes meet before a round glass door. Sorin places his palm on it, but the door does not move. The royal drill has shifted its inner ring out of place.',
-      'Cold fire pours from all three passages. It stretches into long jaws because the moving air gives it that shape. It is still flame, not an animal, but the difference will not matter if it closes around you.',
+      'Cold fire pours from all three passages and stretches into long jaws. Sorin flattens himself against the door. “Moving air gives it shape,” he says. “Still fire. Still kills.”',
       has(state, 'c5-fragment-found-grave')
-        ? 'The fragment pulls toward a narrow socket in the door. You found this direction below, and now you know where the iron belongs.'
+        ? 'The fragment pulls toward a narrow socket in the door. The bright direction it showed below ends here, with the iron straining toward its match.'
         : 'Lysara finds a narrow socket in the door that matches the fragment. Using it may open the grave or wake whatever is inside.',
-      'Your companions wait for the priority only you can set. Mara raises her shield and asks, “Which part do we hold?”',
+      'Mara raises her shield. Sorin braces both hands against the damaged ring while Lysara lifts the fragment. “Which part do we hold?” Mara asks.',
     ],
     choices: [
       {
         id: 'c5-oath-shelter-grave',
         label: 'Promise the fire will not cross your shield.',
         detail: 'Spend 2 Oathfire holding the flame back while Sorin repairs the ring.',
-        advantage: 'Everyone enters together, and the grave door remains usable behind you.',
+        advantage: 'The shield Oath should let everyone enter together and keep the grave door usable behind you.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c5-oath-held-grave', 'c5-carried-dragon-grief'],
-        result: 'Gold fire covers your shield. The blue jaws strike it and stop. With every impact, you feel a dragon remembering someone he could not save.',
+        result: 'Gold fire covers your shield. The blue jaws strike it and stop. With every impact, a dragon’s memory of someone he could not save presses through your arms.',
         next: relationshipInterlude,
       },
       {
         id: 'c5-break-frozen-channel',
         label: 'Smash the ice channels feeding the fire.',
         detail: 'Lose 2 Health cutting off the flame at arm’s reach.',
-        advantage: 'The cold fire drains away and cannot follow the party inside.',
+        advantage: 'Breaking the channels should drain the cold fire before it can follow the party inside.',
         changes: { health: -2 },
         requires: { health: 1 },
         addFlags: ['c5-broke-fire-channels'],
@@ -565,7 +554,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-command-heat-decoys',
         label: 'Divide the lanterns and pull the fire apart.',
         detail: 'Spend 1 Command sending three teams along prepared retreat lines.',
-        advantage: 'The flame separates long enough for Sorin to open the door without damaging it.',
+        advantage: 'The decoys should divide the flame long enough for Sorin to open the door without damaging it.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-split-coldfire'],
@@ -598,7 +587,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     },
     body: () => [
       'The gallery walls are built from thousands of clear plates. Inside each one, a small scene moves without sound. You see a young dragon learning to fly, a village sharing its first winter fire, and a woman resting her hand against a bronze scale.',
-      'Sorin explains the simple truth. Dragons store important memories in mountain glass so later generations can witness them. Someone stacked Vaor’s own memories over his living body and ran cold fire through them. The memories became the bars of his prison.',
+      'Sorin lays his palm against one moving scene. “Dragons stored important memories in mountain glass so later generations could witness them,” he says. “Someone stacked Vaor’s own memories over his living body and ran cold fire through them. They made his life into the bars of his prison.”',
       'A deep voice moves through the floor. “My name is Vaor. If you have come for my ember, captain, at least look at what your Crown buried with me.”',
       'Your hand wants the sword when he says your Crown. Fresh drill scars cross the glass above his eye. The blade stays down.',
     ],
@@ -607,7 +596,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-touch-memory-plate',
         label: 'Touch the plate nearest Vaor’s voice.',
         detail: 'Spend 1 Resolve experiencing part of a dragon’s grief without protection.',
-        advantage: 'You learn which memory the Crown feared enough to bury deepest.',
+        advantage: 'Enduring the contact may reveal which memory the Crown feared enough to bury deepest.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c5-found-orivane-memory', 'c5-carried-dragon-grief'],
@@ -627,7 +616,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-break-memory-slab',
         label: 'Break one binding plate and clear a direct path.',
         detail: 'Lose 1 Health cutting through glass and destroy one of Vaor’s lived days.',
-        advantage: 'You reach the dragon before the Crown can enter the gallery.',
+        advantage: 'Breaking a direct path should reach the dragon before the Crown enters the gallery.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c5-broke-memory-slab', 'c5-fast-to-vaor'],
@@ -658,12 +647,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       maraBurnOpening(state),
       'She warms a strip of cloth against her own skin, then winds it around your palm. Her fingers are steady and close. A loose strand of dark hair brushes your wrist when she bends over the bandage. Pain makes every small touch sharper.',
       has(state, 'c4-kissed-mara')
-        ? 'The kiss on the bridge removed the uncertainty between you. What neither of you has named is whether desire can become a future after the road.'
+        ? 'Her thumb passes over the place where your pulse beats hardest, and the bridge returns in a flash: her mouth on yours, the road breaking beneath both of you. Desire is no longer the question. What happens after the road is.'
         : 'She tightens the bandage with her teeth, as she did after your first sparring cut behind the old forge. This time she does not release your hand when the knot is finished.',
       has(state, 'c4-oath-honest-with-mara')
-        ? 'Your promise not to hide behind duty warms between you. Mara feels it too. “Do not give me a captain’s answer,” she says. “Tell me what you want if we leave this mountain.”'
+        ? 'Gold warmth stirs beneath the promise not to hide behind duty. Mara’s fingers tighten around yours. “Do not give me a captain’s answer,” she says. “Tell me what you want if we leave this mountain.”'
         : 'Mara ties the cloth and keeps hold of your hand. “You keep telling me who must survive,” she says. “Tell me what you want if you are one of them.”',
-      'A royal horn sounds deeper inside the grave. You have little time, but treating the burn before touching the Nail is necessary, and the truth no longer feels separate from survival. Mara keeps hold of your hand. “Tell me now,” she says.',
+      'A royal horn sounds deeper inside the grave. Mara does not release your hand. “Tell me now,” she says.',
     ],
     choices: [
       {
@@ -671,18 +660,20 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         label: 'Tell Mara you want a life that includes her.',
         detail: 'Make an honest admission without turning it into another magical duty.',
         advantage: 'Mara knows your desire is a choice, not a reward you expect for surviving.',
+        forbidsRelationshipIntents: { lysara: ['exploring', 'committed'] },
         addFlags: ['c5-admitted-future-with-mara'],
         result: 'You tell her you want ordinary mornings, arguments that can wait, and roads you choose together. Her smile is small, fierce, and more warming than the cloth.',
         next: 'c5-memory-wall',
       },
       {
         id: 'c5-kiss-mara-after-truth',
-        label: 'Admit you want her, ask what she wants, and kiss her only after she answers.',
-        detail: 'Let desire become clear through words and mutual choice.',
+        label: 'Tell Mara the future you want, then leave the last step to her.',
+        detail: 'Available when shared trust and attraction have become unmistakable.',
         advantage: 'You and Mara enter the final danger with your relationship openly changed.',
         requiresRelationships: { mara: { trust: 5, attraction: 4 } },
+        forbidsRelationshipIntents: { lysara: ['exploring', 'committed'] },
         addFlags: ['c5-admitted-future-with-mara', 'c5-kissed-mara'],
-        result: 'You speak before you move. Mara answers by pulling you close. Her mouth is warm and certain, and the hand at the back of your neck holds you there until the next horn reminds both of you where you are.',
+        result: 'You name the ordinary mornings and chosen roads you want with her. Mara searches your face, then smiles and pulls you close. Her mouth is warm and certain. When she parts from you, her hand remains at the back of your neck. “That was my answer,” she says.',
         next: 'c5-memory-wall',
       },
       {
@@ -695,12 +686,21 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-memory-wall',
       },
       {
+        id: 'c5-choose-mara-friendship',
+        label: 'Tell Mara you love her as family, not as a lover.',
+        detail: 'Choose a lasting friendship without asking her to wait for romance later.',
+        advantage: 'Your oldest bond gains a clear and honest shape.',
+        addFlags: ['c5-mara-friendship'],
+        result: 'Mara is silent long enough for the mountain to creak around you. Then she bumps her forehead against your shoulder, hard. “Family gets to drag you back from stupid deaths,” she says. “Remember that.” The old ease between you returns without becoming smaller.',
+        next: 'c5-memory-wall',
+      },
+      {
         id: 'c5-return-to-grave-duty',
         label: 'Thank her and return to the descent.',
         detail: 'Keep the feeling private until both of you are beyond the grave.',
         advantage: 'You make no promise under pressure and preserve every resource.',
         addFlags: ['c5-postponed-mara-answer'],
-        result: 'Mara accepts the choice without pretending it does not hurt. She tightens your glove over the bandage and takes position beside you.',
+        result: 'Mara nods and pulls your glove over the bandage with careful hands. “After the mountain,” she says. It is permission to wait, not a demand for a different answer.',
         next: 'c5-memory-wall',
       },
     ],
@@ -711,14 +711,16 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     kicker: 'Green light in a cold grave',
     title: 'What the Treaty Cannot Ask',
     location: 'A Shelter in the Memory Gallery',
-    objective: 'Let Lysara examine the fragment’s reaction to your burn.',
+    objective: 'Decide how much personal trust can survive the political truth ahead.',
     threat: 'Uneasy',
     art: 'vaor',
-    body: () => [
-      'Lysara sees green light moving beneath the burn on your palm and draws you into a narrow shelter between glass plates. She lays two fingers beside the wound. Her touch is cool, careful, and far more distracting than the pain.',
-      '“The Distance fragment and the fire Nail are answering each other,” she says. “I need to know whether the path runs through the iron or through you.” Her living thread circles your wrist and proves the heat remains inside the fragment.',
-      'At Harrowfen she trusted you with living ink no court was meant to see. Now her formal “Captain” has vanished, and the green thread around your wrist has become an excuse neither of you needs.',
-      'A royal horn sounds deeper in the grave. Lysara keeps your hand in hers. “If we survive, will I still be a duty you protect, or a woman you chose to know?”',
+    body: (state) => [
+      'Lysara loops green thread around your burned wrist and keeps walking. Each time the gallery floor shifts, the thread draws you around the dangerous plate before your numb hand can betray you. Care from her looks less like rest and more like refusing to let either of you fall behind.',
+      has(state, 'c4-lysara-private-truth')
+        ? 'The founder seal she showed you on the bridge returns inside three memories. Her mother’s house helped bury something here. Lysara sees the marks and does not slow down.'
+        : 'Three memories carry the seal of Lysara’s mother’s house. Her breath catches once. Then the court mask returns, thin enough that you can see the fear beneath it.',
+      '“If this grave condemns my family, I will speak against them,” she says. “If it condemns your Crown, I expect the same from you. Attraction is easy beside a fire. I need to know what survives disagreement.”',
+      'The thread reaches the next broken span and pulls taut between you. Lysara holds your eyes across it. “So answer me as Caelan. Not as my guard.”',
     ],
     choices: [
       {
@@ -726,27 +728,38 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         label: 'Tell Lysara you want to know her beyond the treaty.',
         detail: 'Choose a personal future without claiming that she owes you one.',
         advantage: 'Lysara knows your interest belongs to Caelan, not merely to her diplomatic value.',
+        forbidsRelationshipIntents: { mara: ['exploring', 'committed'] },
         addFlags: ['c5-admitted-future-with-lysara'],
         result: 'You tell her that the treaty may have placed her on your road, but it did not create what you feel. Her careful expression opens into a smile meant for no court.',
         next: 'c5-memory-wall',
       },
       {
         id: 'c5-kiss-lysara-after-truth',
-        label: 'Admit your desire, ask what she wants, and kiss her only after she answers.',
-        detail: 'Let the attraction become real through words and mutual choice.',
+        label: 'Tell her the road is not the only future you want.',
+        detail: 'If Lysara wants the same, let her close the distance on her own terms.',
         advantage: 'You and Lysara enter the grave knowing the desire is shared and freely chosen.',
         requiresRelationships: { lysara: { trust: 4, attraction: 3 } },
+        forbidsRelationshipIntents: { mara: ['exploring', 'committed'] },
         addFlags: ['c5-admitted-future-with-lysara', 'c5-kissed-lysara'],
-        result: 'Lysara answers by drawing you closer with the green thread still looped around your wrist. Her mouth is soft and deliberate. When the horn sounds again, she ends the kiss with her forehead against yours and no regret in her eyes.',
+        result: '“I want to know the man who exists when nobody is calling him Captain,” Lysara says. The thread around your wrist draws you closer, slowly enough for either of you to stop it. Neither does. Her kiss is soft, deliberate, and entirely her answer.',
         next: 'c5-memory-wall',
       },
       {
         id: 'c5-protect-lysara-choice',
-        label: 'Tell her your first duty is protecting her right to choose.',
-        detail: 'Answer with respect without promising a romance you cannot yet name.',
-        advantage: 'Lysara trusts that neither treaty nor attraction will become a claim over her.',
+        label: 'Promise to stand beside her truth even when you disagree.',
+        detail: 'Choose political and personal respect without making a romantic promise.',
+        advantage: 'Lysara may trust that disagreement will not become abandonment.',
         addFlags: ['c5-protected-lysara-choice'],
-        result: '“Then ask me again when neither of us is bleeding,” Lysara says. Her thumb passes once over your wrist before she releases it.',
+        result: '“Beside me is not the same as beneath my command,” Lysara says. You agree. The tension in the thread eases, and she leads you across without asking you to follow blindly.',
+        next: 'c5-memory-wall',
+      },
+      {
+        id: 'c5-choose-lysara-friendship',
+        label: 'Tell Lysara you want her trust and friendship, not romance.',
+        detail: 'Give the bond a complete shape without treating friendship as a consolation.',
+        advantage: 'Lysara gains an ally who has stated his limits as clearly as his loyalty.',
+        addFlags: ['c5-lysara-friendship'],
+        result: 'Lysara studies you as if testing for a polite lie. Then she unloops the thread and offers her bare hand. “Friendship between our positions may be the more dangerous choice,” she says. Her smile makes it clear she does not mean the lesser one.',
         next: 'c5-memory-wall',
       },
       {
@@ -755,7 +768,61 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         detail: 'Preserve the possibility without using danger to force certainty.',
         advantage: 'You make no promise under pressure and keep her trust intact.',
         addFlags: ['c5-postponed-lysara-answer'],
-        result: 'Disappointment touches her face, but she nods. “An honest delay is still honest.” She tightens the bandage and turns toward the grave.',
+        result: 'Lysara nods once. “An honest delay is still honest.” She keeps the guide thread between you until the broken span is behind both of you.',
+        next: 'c5-memory-wall',
+      },
+    ],
+  },
+
+  'c5-sorin-care': {
+    id: 'c5-sorin-care',
+    kicker: 'A wound treated without a promise',
+    title: 'The Keeper’s Hands',
+    location: 'A Workbench in the Memory Gallery',
+    objective: 'Prepare the burn and choose how to use a quiet minute without romance.',
+    threat: 'Uneasy',
+    art: 'vaor',
+    body: () => [
+      'Sorin sits you at a keeper’s bench and works powdered glass into warm resin. Mara holds the lamp. Lysara steadies the fragment in a loop of green thread. Nobody turns the treatment into a question about whom you desire.',
+      'The resin bites when Sorin presses it over the burn. Your hand begins to feel like your own again. “Pain means the cold has not taken it,” he says. “Useful news. Not pleasant news.”',
+      'Rook lays four stolen spoons in a neat row and claims this is medical support. Mara moves one toward him without looking. He pockets all four.',
+      'For once, the quiet belongs to you. Sorin ties the final knot. “Your minute, captain,” he says. “Use it.”',
+    ],
+    choices: [
+      {
+        id: 'c5-choose-both-friendship',
+        label: 'Tell Mara and Lysara you value both of them as friends.',
+        detail: 'Choose a full platonic path without leaving either relationship silently pending.',
+        advantage: 'Both women receive an honest place in your life that does not depend on romance.',
+        addFlags: ['c5-mara-friendship', 'c5-lysara-friendship'],
+        result: 'You say it plainly. Mara hooks an arm around your shoulders. Lysara leans against the other side with careful dignity until Rook calls it a treaty formation and all three of you tell him to be quiet.',
+        next: 'c5-memory-wall',
+      },
+      {
+        id: 'c5-use-quiet-for-names',
+        label: 'Write the names of everyone still depending on you.',
+        detail: 'Use the quiet to remember people without turning them into one burden.',
+        advantage: 'The list may steady Caelan when Vaor tests why he protects the living.',
+        addFlags: ['c5-wrote-living-names'],
+        result: 'The names fill half a page. Mara adds one you missed. Lysara corrects the spelling of another. The burden becomes people again.',
+        next: 'c5-memory-wall',
+      },
+      {
+        id: 'c5-ask-sorin-about-vaor',
+        label: 'Ask Sorin what Vaor was like before the Crown came.',
+        detail: 'Spend the minute learning about the prisoner as a person rather than a source of power.',
+        advantage: 'Sorin may give you one memory that helps Vaor hear your first words.',
+        addFlags: ['c5-knows-vaor-kindness'],
+        result: 'Sorin remembers Vaor warming the nursery glass before winter births. “He knew every child by the sound of their feet,” he says. The dragon ahead becomes harder to reduce to a mission.',
+        next: 'c5-memory-wall',
+      },
+      {
+        id: 'c5-let-rook-distract-pain',
+        label: 'Ask Rook why a thief carries four matching spoons.',
+        detail: 'Choose ordinary laughter before entering the oldest grief in the mountain.',
+        advantage: 'The group may reach Vaor less frightened and more human.',
+        addFlags: ['c5-rook-spoon-story'],
+        result: 'Rook gives four incompatible answers. By the third, Sorin is laughing too hard to tie the bandage. The danger has not changed, but your breathing has.',
         next: 'c5-memory-wall',
       },
     ],
@@ -775,7 +842,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'Lysara studies the iron cage fixed beneath Vaor’s breastbone. “That broken cage is the fire Nail,” she says. “The warm light inside Vaor is his living ember. They are not the same thing.”',
       'The fragment in your hand belongs to the Nail of Distance, but all nine Nails were forged with the same outer lock. The fragment can open the fire Nail without being part of it. Removing Vaor’s ember would restore heat to the valleys for a time, but doing it by force could kill him.',
       'Rook looks from the dragon to the narrow lock beside Vaor’s claw. “I have stolen from kings, graves, and one very possessive goose,” he says. “This is the first lock that can eat me.”',
-      'Vaor’s claw is pinned within reach. You must decide how the conversation begins.',
+      'Vaor flexes the claw pinned beneath the nearest plate. A crack runs toward your boot. “Captain,” he says. “Will your first answer be a weapon?”',
     ],
     choices: [
       {
@@ -809,7 +876,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-free-vaor-claw',
         label: 'Break the plate pinning Vaor’s nearest claw.',
         detail: 'Lose 1 Health proving action before asking for trust.',
-        advantage: 'Vaor can defend the chamber when the royal force arrives.',
+        advantage: 'Freeing the claw may let Vaor defend the chamber when the royal force arrives.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c5-freed-vaor-claw'],
@@ -831,8 +898,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'Vaor shows you a memory of the valleys before the cold fire. Dragons carried glass between mountain villages. Human children slept beneath warm wings during storms.',
       'Then the memory changes. Royal workers bind Vaor while the Regent watches from behind a screen of smoked glass. Malrec orders the dragon kept alive until he reveals where the first ember came from.',
       has(state, 'c5-carried-dragon-grief') || has(state, 'c5-carried-first-grief')
-        ? 'You recognise the grief that entered through your Oathfire. It belongs to Vaor, and it has been pressing against every promise made near the Nail.'
-        : 'You realise the cold fire carries emotion as well as hunger. Vaor’s grief has been pressing against every promise made near the Nail.',
+        ? 'The pressure that entered through your Oathfire returns behind your eyes. It belongs to Vaor, and it has been pressing against every promise made near the Nail.'
+        : 'The cold fire leans toward Vaor’s voice. His grief moves through it, pressing against every promise made near the Nail.',
       'Vaor asks, “Why should I help the people of those who chained me?” A polished answer rises to your tongue. The royal drill trembles through the glass, and you leave it unsaid.',
     ],
     choices: [
@@ -849,7 +916,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-oath-hear-dragon-grief',
         label: 'Promise to hear his grief without turning away.',
         detail: 'Lose 1 Resolve accepting Vaor’s pain and gain 2 Oathfire from the binding promise.',
-        advantage: 'You gain power for the coming assault and Vaor trusts you with the buried memory.',
+        advantage: 'The binding promise should return Oathfire and may earn Vaor’s trust with the buried memory.',
         changes: { resolve: -1, oathfire: 2 },
         requires: { resolve: 1 },
         addFlags: ['c5-oath-carry-vaor-grief', 'c5-vaor-trusted-memory'],
@@ -860,7 +927,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-command-shared-witness',
         label: 'Ask every companion to witness the truth with you.',
         detail: 'Spend 1 Command making the burden public instead of carrying it alone.',
-        advantage: 'Vaor’s evidence gains several witnesses the Crown cannot silence with one death.',
+        advantage: 'Shared witness should leave the Crown unable to silence Vaor’s evidence with one death.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-shared-dragon-witness'],
@@ -889,7 +956,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'vaor',
     body: (state) => [
       'Commander Hale enters with twelve royal soldiers and the portable drill. His authority comes from Regent Malrec, not from a new order spoken by the ill Queen. “Ordan wanted authority,” Hale says. “I want the world to survive long enough to condemn me.” Then he calls you a traitor and orders the fragment placed in the machine.',
-      'The accusation lands, but you refuse to spend Vaor’s remaining time defending your name. Whatever answer you give Hale will begin with stopping the drill.',
+      'Traitor still lands like a blow, even from Hale. Your answer rises, then the drill bites deeper and Vaor’s chains jerk tight. Reputation can wait. Stopping the drill comes first.',
       has(state, 'c5-has-extraction-order')
         ? 'You hold up the extraction order bearing his own seal. His soldiers see the line permitting Vaor’s death.'
         : has(state, 'c5-knows-commander-sacrifice')
@@ -898,14 +965,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       has(state, 'c5-crown-lost-trail') && !has(state, 'c5-crown-saw-flare')
         ? 'Hale arrived late because you hid your trail. Half his force is still searching the lower valley.'
         : 'The flare from the grave and the marked route brought his whole surviving force behind him.',
-      'The drill begins to turn. Vaor’s chains tighten. Hale watches the machine instead of his soldiers, but his eyes keep returning to a narrow seam behind the control platform. You have seconds to decide which part of the attack must fail first.',
+      'The drill begins to turn. Vaor’s chains tighten. Hale watches the machine instead of his soldiers, but his eyes keep returning to a narrow seam behind the control platform. Metal screams against the Nail.',
     ],
     choices: [
       {
         id: 'c5-break-royal-drill',
         label: 'Charge through the crossbows and break the drill.',
         detail: 'Lose 2 Health destroying the only machine that can cut out the ember quickly.',
-        advantage: 'The Crown loses its extraction weapon and cannot repeat the attempt elsewhere.',
+        advantage: 'Breaking the drill should stop this extraction and deny the Crown the machine for another attempt.',
         changes: { health: -2 },
         requires: { health: 1 },
         addFlags: ['c5-destroyed-royal-drill'],
@@ -916,7 +983,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-turn-hale-soldiers',
         label: 'Force Hale’s soldiers to face what he ordered.',
         detail: 'Spend 2 Command using the written order, the abandoned dead, or the killing drill against his authority.',
-        advantage: 'Part of the royal force turns on Hale and survives to carry the truth home.',
+        advantage: 'The evidence may turn part of the royal force against Hale and leave witnesses alive.',
         changes: { command: -2 },
         requires: { command: 2 },
         addFlags: ['c5-royal-witnesses-turned'],
@@ -927,7 +994,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-trust-rook-false-extraction',
         label: 'Help Rook stage the theft of a false ember.',
         detail: 'Spend 1 Resolve trusting his mirrored decoy while the real fragment remains in your hand.',
-        advantage: 'Hale sends his strongest soldiers after a false ember and leaves the drill exposed.',
+        advantage: 'The false ember may draw Hale’s strongest soldiers away and leave the drill exposed.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c5-rook-staged-ember-theft'],
@@ -938,7 +1005,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-free-claw-against-crown',
         label: 'Let Vaor strike through the loosening chains.',
         detail: 'Spend 2 Oathfire binding the dragon’s strike to the armed attackers only.',
-        advantage: 'Vaor destroys the drill without harming the frightened soldiers who surrender.',
+        advantage: 'The Oath should let Vaor destroy the drill while sparing soldiers who surrender.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c5-vaor-broke-drill', 'c5-oath-limited-vaor'],
@@ -957,24 +1024,20 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'vaor',
     introducesStoryTerms: ['Orivane'],
-    lesson: {
-      title: 'Orivane',
-      body: 'Orivane gave her living heart to create the Concord and stabilise Edrath. The memory shows what the rulers failed to tell her before she chose.',
-    },
     body: () => [
-      'With the drill stopped and Hale forced behind the control platform, Vaor gains one brief opening. He opens the deepest plate, and you stand inside a memory that truly happened. A red gold dragon named Orivane faces rulers from several peoples while unstable realms break roads, weather, and memory across Edrath.',
-      'Orivane chooses to give her heart. Nobody forces her. Her fire separates the colliding realms and gives Edrath one stable shape.',
+      'With the drill stopped and Hale forced behind the control platform, Vaor gains one brief opening. He opens the deepest plate, and you stand inside a memory that truly happened. A red gold dragon named Orivane prepares to give her living heart to create the Concord while unstable realms break roads, weather, and memory across Edrath.',
+      'Orivane gives her living heart to create the Concord. Nobody forces her. Her fire separates the colliding realms and gives Edrath one stable shape.',
       'Then the hidden cost becomes painfully simple. The memory shows one village existing in two forming histories. In both, families are already awake and children are eating breakfast. When the Concord settles, one village remains. The other turns transparent in the middle of an ordinary morning and is cut away from Edrath while its people are still reaching for one another.',
       'The rulers knew that some forming histories already held living people. They told Orivane only that unstable possibilities would be closed. She sees the village during her final breath and demands that future generations judge the Concord again. The memory does not show where the cut away people went.',
       'Lysara’s voice shakes beside you. “Her choice was willing. Their silence still stole part of that choice.” At the edge of the memory, Rook stretches painted theatre cloth between two cracked shelves and anchors it with wire. Hale is still hidden behind the platform, and Rook is preparing for his return.',
-      'The rulers seal the evidence inside Vaor’s grave. You must decide which part of the truth you carry into the danger ahead. Vaor asks, “What will you remember when the mountain falls?”',
+      'The rulers seal the evidence inside Vaor’s grave. The final image holds on Orivane’s open eye. Vaor’s voice enters the memory beside you. “What will you remember when the mountain falls?”',
     ],
     choices: [
       {
         id: 'c5-honour-orivane-choice',
         label: 'Stay with Orivane’s choice until the memory ends.',
         detail: 'Spend 1 Resolve witnessing her death without looking away.',
-        advantage: 'You learn that she demanded the Concord be questioned again by future generations.',
+        advantage: 'Staying to the end may preserve Orivane’s final demand beneath the rulers’ voices.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c5-knows-orivane-renewal-wish'],
@@ -985,7 +1048,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-study-rulers-concealment',
         label: 'Study the rulers who sealed the memory.',
         detail: 'Spend 1 Command memorising faces, seals, and the order of their decisions.',
-        advantage: 'You gain evidence that several governments knowingly hid the Concord’s cost.',
+        advantage: 'The seals may become evidence that several governments knowingly hid the Concord’s cost.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-memorised-founder-seals'],
@@ -1026,26 +1089,34 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       has(state, 'c5-rook-found-control-spike')
         ? 'Rook saw the spike earlier. His silver wire is already looped around its release, but someone must give him time to pull it.'
         : 'Rook sees the release only after the spike moves. His silver wire can reach it, but falling glass fills the space between.',
-      'Mara disappears beneath the edge of one collapsing shelf. Sorin hugs the oldest memory plate to his chest. Vaor’s freed or trapped claw strains against the cold chains.',
-      'Your first step is toward Mara. Above her, three more shelves tear loose. Lysara has both hands in the guide thread and no hand left for herself. “Caelan,” she shouts through the breaking glass. “Name the priority!”',
+      has(state, 'c5-chose-lysara-care')
+        ? 'Lysara disappears beneath the edge of one collapsing shelf. Mara catches the fragment against her shield while Sorin hugs the oldest memory plate to his chest.'
+        : has(state, 'c5-chose-mara-care')
+          ? 'Mara disappears beneath the edge of one collapsing shelf. Lysara catches the fragment in green thread while Sorin hugs the oldest memory plate to his chest.'
+          : 'Sorin disappears beneath the edge of one collapsing shelf. Mara catches the fragment against her shield while Lysara holds the guide thread open.',
+      has(state, 'c5-chose-lysara-care')
+        ? 'Your first step is toward Lysara. Three more shelves tear loose above her. Mara plants her shield and shouts through the breaking glass, “Name the priority!”'
+        : has(state, 'c5-chose-mara-care')
+          ? 'Your first step is toward Mara. Three more shelves tear loose above her. Lysara has both hands in the guide thread and shouts, “Caelan, name the priority!”'
+          : 'Your first step is toward Sorin, the keeper who gave you this climb and treated your hand without asking for anything back. Three more shelves tear loose. Mara shouts, “Name the priority!”',
     ],
     choices: [
       {
         id: 'c5-guard-mara-collapse',
-        label: 'Take the falling shelf meant for Mara.',
-        detail: 'Lose 2 Health saving Mara while the others follow Sorin’s marked exit.',
-        advantage: 'Mara survives unhurt and keeps the fragment secure during the collapse.',
+        label: 'Take the falling shelf before it crushes your chosen companion.',
+        detail: 'Lose 2 Health protecting the person whose care you accepted before the descent.',
+        advantage: 'Taking the impact should keep that companion unhurt and the fragment or evidence secure.',
         changes: { health: -2 },
         requires: { health: 1 },
-        addFlags: ['c5-saved-mara-from-glass'],
-        result: 'You reach Mara before the shelf does. Glass breaks across your back, and she keeps one hand around the fragment while dragging you clear.',
+        addFlags: ['c5-saved-mara-from-glass', 'c5-saved-chosen-companion'],
+        result: 'You reach them before the shelf does. Glass breaks across your back. Mara and Lysara drag you clear while Sorin gathers the evidence that survived the impact.',
         next: 'c5-ember-choice',
       },
       {
         id: 'c5-command-gallery-evacuation',
         label: 'Call a moving shelter through the falling gallery.',
         detail: 'Spend 2 Command placing every person where one shield can protect the next.',
-        advantage: 'The whole group escapes the first collapse with several memory plates intact.',
+        advantage: 'A moving shelter should bring the whole group out with several memory plates intact.',
         changes: { command: -2 },
         requires: { command: 2 },
         addFlags: ['c5-saved-memory-witnesses'],
@@ -1056,7 +1127,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-oath-hold-memories',
         label: 'Promise the grave will remember until everyone is clear.',
         detail: 'Spend 2 Oathfire holding the memory plates in place through Vaor’s grief.',
-        advantage: 'No person or surviving record is lost before the final choice.',
+        advantage: 'The Oath may hold every person and surviving record long enough to escape.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c5-oath-held-memory-grave', 'c5-carried-dragon-grief'],
@@ -1083,10 +1154,6 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     objective: 'Choose how the ember leaves Dragonspine.',
     threat: 'Critical',
     art: 'ember',
-    lesson: {
-      title: 'The choice before you',
-      body: 'Freeing Vaor earns a willing ember but releases a powerful dragon. Taking it by force gives Caelan control and makes Vaor an enemy. A pact places Vaor’s voice and grief inside Caelan until both agree the duty is complete.',
-    },
     body: (state) => [
       'The fire Nail splits around Vaor’s chest. Warm red gold light appears beneath the cold blue chains. The valleys need that ember carried away before the broken Nail consumes it.',
       has(state, 'c5-vaor-stated-terms')
@@ -1094,7 +1161,11 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         : 'Vaor explains the three paths plainly. Release brings his willing gift. Force takes the ember and leaves him alive but wounded. A pact lets the ember travel inside you with his voice.',
       has(state, 'c5-told-mara-survivor-fear')
         ? 'Mara’s warning stays with you. This cannot be a promise made only to punish yourself for older failures.'
-        : 'Mara watches your face, not the fire. She knows the most dangerous part of an Oath is how easily duty can hide desire or guilt.',
+        : has(state, 'c5-admitted-future-with-lysara') || has(state, 'c5-kissed-lysara') || has(state, 'c5-protected-lysara-choice')
+          ? 'Lysara stands where you can see her. Whatever you decide, she will judge the truth of it rather than reward agreement.'
+          : has(state, 'c5-chose-sorin-care')
+            ? 'Mara and Lysara stand on either side of Sorin’s bench. Neither woman asks this choice to prove what you feel for her.'
+            : 'Mara watches your face, not the fire. The most dangerous part of an Oath is how easily duty can hide desire or guilt.',
       'The Crown wanted a weapon. Vaor wants freedom. The world beyond the mountain needs heat. Vaor lowers his great head until one amber eye is level with you and waits for your decision.',
     ],
     choices: [
@@ -1112,7 +1183,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-take-ember-by-force',
         label: 'Cut the ember free and keep it under your command.',
         detail: 'Lose 2 Health taking the fastest power while Vaor resists you.',
-        advantage: 'You gain a strong controlled ember and prevent the dragon from deciding where it goes.',
+        advantage: 'The fastest extraction should give you a controlled ember while denying Vaor any choice over it.',
         changes: { health: -2, wayfire: 2 },
         requires: { health: 1 },
         addFlags: ['c5-took-ember-by-force', 'c5-vaor-enmity'],
@@ -1123,7 +1194,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         id: 'c5-pact-with-vaor',
         label: 'Make a pact and carry Vaor’s voice with the ember.',
         detail: 'Spend 2 Resolve sharing thought, grief, and power until the duty is complete.',
-        advantage: 'Vaor remains protected while his knowledge and living fire travel inside you.',
+        advantage: 'The pact should protect Vaor while carrying his knowledge and living fire inside you.',
         changes: { resolve: -2, wayfire: 2 },
         requires: { resolve: 1 },
         addFlags: ['c5-vaor-pact', 'c5-vaor-voice-within'],
@@ -1144,7 +1215,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     final: true,
     body: () => [
       'Vaor breaks through the mountain roof. Cold blue fire reaches for him and recoils from the warm ember now burning inside your chest.',
-      'You are an ember bearer now: a living carrier for part of the fire Nail. The power warms your blood, but you feel how easily it could become hunger if used without care.',
+      'You are an ember bearer now: a living carrier for part of the fire Nail. The power warms your blood. When your attention slips, that warmth curls toward hunger.',
       'Vaor circles once above the glass valleys, free for the first time in a century. He does not swear obedience and may refuse your next request. He promises only to meet you at Kharad Vey, the moving orc town that crosses the eastern steppe.',
       'Then the ember shows you one final danger: a black stone gate standing open by the width of a hand. Red light moves behind it, and something on the other side has noticed the road leading from your heart.',
     ],
@@ -1178,10 +1249,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'ember',
     final: true,
-    body: () => [
+    body: (state) => [
       'You leave the grave with a second heartbeat beneath your armour. Vaor’s body rests by choice inside the protective glass shell. He is no longer chained, and he can break free when he is ready to face the sky.',
       'You are an ember bearer now: a living carrier for part of the fire Nail. Warm flame answers your breath. So does Vaor’s grief, vast enough to make the eastern sky look painfully small.',
-      'Mara asks whether you can still hear her. You answer in your own voice. Vaor adds, inside your thoughts, that this is an excellent question to keep asking.',
+      has(state, 'c5-admitted-future-with-lysara') || has(state, 'c5-kissed-lysara')
+        ? 'Lysara asks you to repeat the last promise you made before the pact. You answer in your own voice. Vaor adds, inside your thoughts, that she is testing which memories remain yours. “Correct,” Lysara says aloud.'
+        : has(state, 'c5-chose-sorin-care')
+          ? 'Sorin asks whether your name still sounds like your own. You answer in your own voice. Vaor adds, inside your thoughts, that this keeper asks unusually sensible questions.'
+          : 'Mara asks whether you can still hear her. You answer in your own voice. Vaor adds, inside your thoughts, that this is an excellent question to keep asking.',
       'The ember shows both of you a black stone gate opening by the width of a hand. Beyond Dragonspine, Kharad Vey moves across the red steppe. The travelling orc town is the nearest place strong enough to help you face what is coming through.',
     ],
     choices: [],

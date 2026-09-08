@@ -2,7 +2,7 @@
 
 ## Status
 
-This chapter is implemented and playable after any Chapter One ending.
+This chapter is implemented and playable after any Chapter One ending. Its full narration pass is complete: all active scenes, route callbacks, choice results, endings, and journal entries use the continuous close second person style.
 
 ## Chapter
 
@@ -21,6 +21,8 @@ Player facing threat rhythm: Immediate during arrival, Rising while treating the
 ## Imported consequences
 
 The opening remembers how Caelan crossed the broken road, whether the treaty chest survived, whether an attacker was captured, who was wounded, current relationships, active Oaths, evidence, and remaining resources. One sealed dose of Medicine survives.
+
+Choice results enter the following scene as physical action rather than a detached recap. Caelan's thoughts appear through breath, touch, trained habits, interrupted movement, and what he cannot stop looking at. Explanations remain in dialogue or visible cause and effect whenever possible.
 
 ## Opening movement
 
@@ -46,7 +48,7 @@ Each route supplies a distinct advantage during the same siege.
 
 ## Relationship movement
 
-Before the attack, Caelan and Mara receive one quiet minute. They can name a fear, acknowledge their attraction, kiss when Trust and Attraction permit it, or remain focused on duty. The scene gives the player something personal to protect.
+Before the attack, Caelan and Mara receive one quiet minute. They can name a fear, kiss when their existing bond supports it, choose a close friendship explicitly, or remain focused on duty. Friendship restores Resolve and gives the relationship a complete future rather than postponing romance.
 
 ## Siege and dungeon
 

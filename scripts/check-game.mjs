@@ -89,6 +89,7 @@ const {
   initialState,
   nodeOrder,
   nodes,
+  nextRelationships,
   relationshipChanges,
   resolveNext,
   statLabels,
@@ -239,14 +240,7 @@ function applyChoice(state, choice) {
   for (const [key, value] of Object.entries(choice.changes ?? {})) {
     stats[key] = Math.max(0, stats[key] + (value ?? 0));
   }
-  const relationships = {
-    mara: { ...state.relationships.mara },
-    lysara: { ...state.relationships.lysara },
-  };
-  for (const [person, changes] of Object.entries(relationshipChanges(choice))) {
-    relationships[person].trust = Math.max(0, relationships[person].trust + (changes?.trust ?? 0));
-    relationships[person].attraction = Math.max(0, relationships[person].attraction + (changes?.attraction ?? 0));
-  }
+  const relationships = nextRelationships(state.relationships, choice);
   return {
     nodeId: resolveNext(choice, state),
     chapter: state.chapter,
@@ -271,6 +265,9 @@ function stateKey(state) {
     'c2-trusted-maelin',
     'c2-has-pin-key',
     'c2-saved-attacker',
+    'c5-chose-mara-care',
+    'c5-chose-lysara-care',
+    'c5-chose-sorin-care',
   ]);
   const requirementCaps = {
     health: 2,
@@ -285,7 +282,7 @@ function stateKey(state) {
     .join('|');
   const flags = state.flags.filter((flag) => navigationFlags.has(flag)).sort().join('|');
   const relationships = Object.entries(state.relationships)
-    .map(([person, score]) => `${person}:${Math.min(score.trust, 4)}:${Math.min(score.attraction, 3)}`)
+    .map(([person, score]) => `${person}:${Math.min(score.trust, 4)}:${Math.min(score.attraction, 3)}:${Math.min(score.respect ?? 0, 4)}:${Math.min(score.friction ?? 0, 3)}:${score.intent ?? 'unresolved'}`)
     .join('|');
   return `${state.nodeId}|${stats}|${relationships}|${flags}`;
 }
@@ -401,11 +398,11 @@ const storyTermRules = {
   },
   'nine Nails': {
     use: /\bnine (?:World )?Nails\b/i,
-    introduction: /There are nine World Nails/i,
+    introduction: /(?:There are nine World Nails|one of nine anchors)/i,
   },
   Dragonspine: {
     use: /\bDragonspine\b/i,
-    introduction: /Dragonspine is the northern mountain realm/i,
+    introduction: /Dragonspine (?:is the northern mountain realm|guards another Nail)/i,
   },
   'Regent Malrec': {
     use: /\bRegent Malrec\b/i,
@@ -413,15 +410,15 @@ const storyTermRules = {
   },
   'cold fire': {
     use: /\bcold fire\b/i,
-    introduction: /damaged fire Nail has created blue flame that steals heat instead of giving it/i,
+    introduction: /While cold fire burns nearby.*Health cannot recover/i,
   },
   Vaor: {
     use: /\bVaor\b/i,
-    introduction: /Vaor is an ancient dragon buried alive near the fire Nail/i,
+    introduction: /Vaor is an ancient dragon buried alive beside the fire Nail/i,
   },
   Orivane: {
     use: /\bOrivane\b/i,
-    introduction: /Orivane gave her living heart to create the Concord/i,
+    introduction: /Orivane (?:gave|gives) her living heart to create the Concord/i,
   },
 };
 for (const [id, node] of Object.entries(nodes)) {
@@ -639,6 +636,143 @@ const pinChamberTruths = knownTruths({
 if (!pinChamberTruths.some((truth) => /Ordan lured|unlock the road pin/i.test(truth))) {
   failures.push('The Chapter Two journal does not record Ordan’s plan at the pin chamber');
 }
+if (pinChamberTruths.some((truth) => /\bCaelan(?:’s)?\b/i.test(truth))) {
+  failures.push('The Chapter Two journal steps outside Caelan’s first person point of view');
+}
+if (!pinChamberTruths.some((truth) => /Lysara and me|my road authority/i.test(truth))) {
+  failures.push('The Chapter Two journal does not phrase the pin reveal as Caelan’s own knowledge');
+}
+const repairedPinTruths = knownTruths({
+  ...chapterTwoBase,
+  nodeId: 'c2-last-testimony',
+});
+if (!repairedPinTruths.some((truth) => /I drove the road pin back into place/i.test(truth))) {
+  failures.push('The Chapter Two journal does not update after Caelan repairs the road pin');
+}
+const roadPinLesson = nodes['c2-road-pin'].lesson?.body ?? '';
+if (/Ordan|Caelan|Lysara|road authority|living magic|old locks/i.test(roadPinLesson)) {
+  failures.push('The road pin lesson reveals the conspiracy before Caelan sees the two active locks');
+}
+const chapterTwoChoiceSummaryPattern = /\b(?:you (?:can|must|need to|have to) (?:choose|decide)|your choice|each method|the choice is)\b/i;
+for (const nodeId of nodeOrder.filter((id) => id.startsWith('c2-'))) {
+  const lastParagraph = nodes[nodeId].body(chapterTwoBase).at(-1) ?? '';
+  if (chapterTwoChoiceSummaryPattern.test(lastParagraph)) {
+    failures.push(`Chapter Two scene ${nodeId} ends with narrator choice coaching`);
+  }
+}
+const expectedAdvantageLanguage = /\b(?:should|could|may|might|likely|chance|aim)\b/i;
+for (const nodeId of nodeOrder.filter((id) => id.startsWith('c2-'))) {
+  for (const choice of nodes[nodeId].choices) {
+    const hasCost = Object.values(choice.changes ?? {}).some((value) => (value ?? 0) < 0);
+    if (hasCost && choice.advantage && !expectedAdvantageLanguage.test(choice.advantage)) {
+      failures.push(`Chapter Two choice ${choice.id} presents its expected advantage as a guaranteed outcome`);
+    }
+  }
+}
+const keyholeResult = nodes['c2-road-pin'].choices.find((choice) => choice.id === 'c2-study-keyhole')?.result ?? '';
+if (!/back into its socket/i.test(keyholeResult) || /remove|pull (?:it|the pin) out/i.test(keyholeResult)) {
+  failures.push('The keyhole choice still describes removing the road pin instead of reseating it');
+}
+for (const chapter of [3, 4]) {
+  const chapterPrefix = `c${chapter}-`;
+  const chapterState = chapter === 3 ? chapterThreeBase : chapterFourBase;
+  for (const nodeId of nodeOrder.filter((id) => id.startsWith(chapterPrefix))) {
+    const lastParagraph = nodes[nodeId].body(chapterState).at(-1) ?? '';
+    if (chapterTwoChoiceSummaryPattern.test(lastParagraph)) {
+      failures.push(`Chapter ${chapter} scene ${nodeId} ends with narrator choice coaching`);
+    }
+    for (const choice of nodes[nodeId].choices) {
+      const hasCost = Object.values(choice.changes ?? {}).some((value) => (value ?? 0) < 0);
+      if (hasCost && choice.advantage && !expectedAdvantageLanguage.test(choice.advantage)) {
+        failures.push(`Chapter ${chapter} choice ${choice.id} presents its expected advantage as a guaranteed outcome`);
+      }
+    }
+  }
+}
+const chapterThreeJournal = knownTruths({
+  ...chapterThreeBase,
+  nodeId: 'c3-world-nail',
+});
+if (chapterThreeJournal.some((truth) => /\bCaelan(?:’s)?\b/i.test(truth))) {
+  failures.push('The Chapter Three journal steps outside Caelan’s first person point of view');
+}
+if (!chapterThreeJournal.some((truth) => /\bI\b|\bmy\b|\bme\b/i.test(truth))) {
+  failures.push('The Chapter Three journal does not preserve Caelan’s first person voice');
+}
+const chapterFourJournal = knownTruths({
+  ...chapterFourBase,
+  nodeId: 'c4-duty',
+});
+if (chapterFourJournal.some((truth) => /\bCaelan(?:’s)?\b/i.test(truth))) {
+  failures.push('The Chapter Four journal steps outside Caelan’s first person point of view');
+}
+if (!chapterFourJournal.some((truth) => /\bI\b|\bmy\b|\bme\b/i.test(truth))) {
+  failures.push('The Chapter Four journal does not preserve Caelan’s first person voice');
+}
+const chapterFiveJournal = knownTruths({
+  ...chapterFiveBase,
+  nodeId: 'c5-ember-choice',
+});
+if (chapterFiveJournal.some((truth) => /\bCaelan(?:’s)?\b/i.test(truth))) {
+  failures.push('The Chapter Five journal steps outside Caelan’s first person point of view');
+}
+if (!chapterFiveJournal.some((truth) => /\bI\b|\bmy\b|\bme\b/i.test(truth))) {
+  failures.push('The Chapter Five journal does not preserve Caelan’s first person voice');
+}
+const shelterJournal = knownTruths({
+  ...chapterFiveBase,
+  nodeId: 'c5-glass-shelter',
+});
+if (shelterJournal.some((truth) => /\bVaor\b/i.test(truth))) {
+  failures.push('The Chapter Five journal names Vaor before Sorin introduces him in the shelter scene');
+}
+const campJournal = knownTruths({
+  ...chapterFiveBase,
+  nodeId: 'c5-royal-camp',
+});
+if (!campJournal.some((truth) => /Vaor is an ancient living dragon/i.test(truth))) {
+  failures.push('The Chapter Five journal does not record Sorin’s Vaor reveal after the shelter');
+}
+const heartMemoryJournal = knownTruths({
+  ...chapterFiveBase,
+  nodeId: 'c5-heart-memory',
+});
+if (heartMemoryJournal.some((truth) => /\bOrivane\b/i.test(truth))) {
+  failures.push('The Chapter Five journal reveals Orivane before the player witnesses her memory');
+}
+const collapseJournal = knownTruths({
+  ...chapterFiveBase,
+  nodeId: 'c5-grave-collapse',
+});
+if (!collapseJournal.some((truth) => /Orivane willingly gave her living heart/i.test(truth))) {
+  failures.push('The Chapter Five journal does not record Orivane after her memory ends');
+}
+for (const nodeId of nodeOrder.filter((id) => id.startsWith('c5-'))) {
+  const lastParagraph = nodes[nodeId].body(chapterFiveBase).at(-1) ?? '';
+  if (chapterTwoChoiceSummaryPattern.test(lastParagraph)) {
+    failures.push(`Chapter 5 scene ${nodeId} ends with narrator choice coaching`);
+  }
+  const bodyText = nodes[nodeId].body(chapterFiveBase).join(' ');
+  if (/\bYou (?:notice|understand|realise|must decide|need to choose|have to choose)\b/i.test(bodyText)) {
+    failures.push(`Chapter 5 scene ${nodeId} labels Caelan’s interpretation instead of dramatising it`);
+  }
+  for (const choice of nodes[nodeId].choices) {
+    const hasCost = Object.values(choice.changes ?? {}).some((value) => (value ?? 0) < 0);
+    if (hasCost && choice.advantage && !expectedAdvantageLanguage.test(choice.advantage)) {
+      failures.push(`Chapter 5 choice ${choice.id} presents its expected advantage as a guaranteed outcome`);
+    }
+  }
+}
+if (nodes['c5-glass-shelter'].lesson || nodes['c5-heart-memory'].lesson || nodes['c5-ember-choice'].lesson) {
+  failures.push('Chapter Five still reveals a dramatic discovery in a lesson before the scene prose');
+}
+const worldNailLessonText = nodes['c3-world-nail'].lesson?.body ?? '';
+if (/World Nail/i.test(worldNailLessonText)) {
+  failures.push('The Chapter Three lesson names the World Nail before Lysara reveals it in the scene');
+}
+if (nodes['c4-nine-marks'].lesson) {
+  failures.push('The Chapter Four lesson interrupts the nine Nails reveal before Lysara speaks');
+}
 const descentRoutePayoffs = [
   ['c2-cellar-route', /rope you found earlier/i, /Garran’s warning|listed among Ordan’s supplies/i],
   ['c2-ledger-route', /listed among Ordan’s supplies/i, /rope you found earlier|Garran’s warning/i],
@@ -692,7 +826,7 @@ const sealedCaseTruths = knownTruths({
 if (sealedCaseTruths.some((truth) => /prepared road|someone altered/i.test(truth))) {
   failures.push('The sealed case journal reveals the conspiracy before Caelan proves it');
 }
-if (!sealedCaseTruths.some((truth) => /does not match|although he remembers/i.test(truth))) {
+if (!sealedCaseTruths.some((truth) => /does not match|although I remember/i.test(truth))) {
   failures.push('The sealed case journal does not record the observed route mismatch');
 }
 const provenAmbushTruths = knownTruths({
@@ -702,6 +836,20 @@ const provenAmbushTruths = knownTruths({
 });
 if (!provenAmbushTruths.some((truth) => /every possible route/i.test(truth))) {
   failures.push('The journal does not record advance route proof after it is discovered');
+}
+if (sealedCaseTruths.some((truth) => /\bCaelan\b|\bhe\b|\bhis\b/i.test(truth))) {
+  failures.push('The Chapter One journal steps outside Caelan’s first person perspective');
+}
+const maraAheadConversation = renderedBody('road-conversation', {
+  ...initialState,
+  flags: ['mara-ahead'],
+});
+if (!/Mara appears between two alder trees/i.test(maraAheadConversation)) {
+  failures.push('The Chapter One road conversation offers Mara dialogue while she remains absent');
+}
+const oathEndingBody = renderedBody('ending-oath', initialState);
+if (/wearing your red cloak/i.test(oathEndingBody)) {
+  failures.push('The Chapter One Oath ending restores the retired false Caelan image');
 }
 const lowHighConsequences = majorConsequences({
   ...initialState,
@@ -794,7 +942,7 @@ const rennFightBody = renderedBody('c3-duplicate', {
   ...chapterThreeBase,
   flags: ['c3-mara-flanked-double'],
 });
-if (!/confrontation is not over/i.test(rennFightBody) || /warrant false/i.test(rennFightBody)) {
+if (!/Renn steps across the road to the well/i.test(rennFightBody) || /warrant false/i.test(rennFightBody)) {
   failures.push('The Renn confrontation clears Caelan before the player finishes the fight');
 }
 const postRennBody = renderedBody('c3-courier', {
@@ -814,8 +962,9 @@ if (rescueIndex < 0 || keyIndex <= rescueIndex || wireIndex <= keyIndex) {
   failures.push('Rook’s market setup is not presented as three clear actions in physical order');
 }
 const worldNailBody = renderedBody('c3-world-nail', chapterThreeBase);
-if (!/not a foreign army entering Harrowfen/i.test(worldNailBody)
-  || !/secret Asterra force being placed on the Mileless Bridge/i.test(worldNailBody)) {
+if (!/Asterra’s crowned shields fill the opening/i.test(worldNailBody)
+  || !/foreign border fort/i.test(worldNailBody)
+  || !/First rank forward/i.test(worldNailBody)) {
   failures.push('The World Nail climax does not explain the army road’s origin and destination');
 }
 const pursueOrdanChoice = nodes['c3-world-nail'].choices.find((choice) => choice.id === 'c3-end-catch-courier');
@@ -911,7 +1060,7 @@ const damagedDisguise = renderedBody('c4-stage-turn', {
   flags: ['c4-snow-route', 'c4-rook-tore-coat-lining'],
 });
 if (!/disguise will work only at a distance/i.test(damagedDisguise)
-  || !/You recognise the western recall/i.test(damagedDisguise)) {
+  || !/(?:You recognise|Your hand makes) the western recall/i.test(damagedDisguise)) {
   failures.push('Rook’s first performance does not remember his cost or depend on Caelan’s military knowledge');
 }
 const theatreExplanation = renderedBody('c4-theatre-plan', chapterFourBase);
@@ -920,11 +1069,11 @@ if (!/Bridge repeats reflections across neighbouring spans/i.test(theatreExplana
   || !/reflection onto three arches/i.test(theatreExplanation)) {
   failures.push('Rook’s travelling theatre still creates three captains without a visible bridge mechanism');
 }
-const maraKissChoice = nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-kiss-mara-bridge');
-const maraDelayChoice = nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-return-to-duty');
-if (!/survival comes before rigid law.*then kiss/i.test(maraKissChoice?.label ?? '')
-  || !/hear Rook out.*delay/i.test(maraDelayChoice?.label ?? '')) {
-  failures.push('Mara’s personal choices do not answer her immediate question about Rook');
+const quietArchChoiceIds = new Set(nodes['c4-mara'].choices.map((choice) => choice.id));
+if (!quietArchChoiceIds.has('c4-hear-lysara-private-risk')
+  || !quietArchChoiceIds.has('c4-keep-quiet-arch-platonic')
+  || !quietArchChoiceIds.has('c4-return-to-duty')) {
+  failures.push('The Chapter Four quiet arch still forces a private Mara scene');
 }
 const chapterFourEndIds = ['c4-ending-arrest', 'c4-ending-bargain', 'c4-ending-trust'];
 for (const endingId of chapterFourEndIds) {
@@ -979,7 +1128,7 @@ if (!/Elene took him into Harrowfen custody/i.test(capturedOrdanArrival)) {
   failures.push('Chapter Five does not account for captured Ordan before the climb');
 }
 const chapterFiveRouteImports = [
-  ['c4-snow-route', /resembles the flame you crossed on the bridge’s mountain span/i],
+  ['c4-snow-route', /resembles the flame from the bridge’s mountain span/i],
   ['c4-storm-route', /miss the storm span/i],
   ['c4-brass-route', /measured turning of the bridge’s brass chamber/i],
 ];
@@ -1072,7 +1221,7 @@ if (!/people of those who chained me/i.test(vaorQuestion)
 }
 const haleAssault = renderedBody('c5-crown-assault', chapterFiveBase);
 if (!/world to survive long enough to condemn me/i.test(haleAssault)
-  || !/stopping the drill/i.test(haleAssault)) {
+  || !/Stopping the drill comes first/i.test(haleAssault)) {
   failures.push('Commander Hale still lacks a distinct motive or a direct response from Caelan');
 }
 const haleOrderChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-turn-hale-soldiers');
@@ -1109,24 +1258,58 @@ const maraAfterBridgeKiss = renderedBody('c5-mara-burns', {
   ...chapterFiveBase,
   flags: ['c4-kissed-mara'],
 });
-if (!/kiss on the bridge removed the uncertainty/i.test(maraAfterBridgeKiss)) {
+if (!/bridge returns in a flash.*her mouth on yours/i.test(maraAfterBridgeKiss)) {
   failures.push('Mara’s Chapter Five scene forgets the Chapter Four kiss');
 }
 const graveEntryChoice = nodes['c5-grave-mouth'].choices[0];
-const lysaraInterludeState = {
+const lysaraCareState = { ...chapterFiveBase, flags: ['c5-chose-lysara-care'] };
+const maraCareState = { ...chapterFiveBase, flags: ['c5-chose-mara-care'] };
+const professionalCareState = { ...chapterFiveBase, flags: ['c5-chose-sorin-care'] };
+if (resolveNext(graveEntryChoice, lysaraCareState) !== 'c5-lysara-burns'
+  || resolveNext(graveEntryChoice, maraCareState) !== 'c5-mara-burns'
+  || resolveNext(graveEntryChoice, professionalCareState) !== 'c5-sorin-care') {
+  failures.push('Chapter Five does not honour the player’s visible choice of caregiver');
+}
+const chapterTwoFriendship = nodes['c2-night-watch'].choices.find((choice) => choice.id === 'c2-choose-mara-friendship');
+const friendshipState = nextRelationships(initialState.relationships, chapterTwoFriendship);
+if (friendshipState.mara.intent !== 'platonic' || friendshipState.mara.respect <= initialState.relationships.mara.respect) {
+  failures.push('The Chapter Two friendship choice is not a complete, strengthening relationship path');
+}
+for (const choiceId of ['c3-stand-with-mara', 'c3-stand-with-lysara']) {
+  const choice = Object.values(nodes).flatMap((node) => node.choices).find((candidate) => candidate.id === choiceId);
+  const effects = Object.values(relationshipChanges(choice)).flatMap((change) => [change?.attraction ?? 0]);
+  if (effects.some((value) => value !== 0)) {
+    failures.push(`Tactical agreement still awards romantic attraction: ${choiceId}`);
+  }
+}
+const lysaraKissChoice = nodes['c5-lysara-burns'].choices.find((choice) => choice.id === 'c5-kiss-lysara-after-truth');
+const openMaraBondState = {
   ...chapterFiveBase,
   relationships: {
-    mara: { trust: 2, attraction: 1 },
-    lysara: { trust: 6, attraction: 5 },
+    mara: { ...initialState.relationships.mara, trust: 6, attraction: 5, intent: 'exploring' },
+    lysara: { ...initialState.relationships.lysara, trust: 6, attraction: 5, intent: 'interested' },
   },
 };
-const committedMaraState = {
-  ...lysaraInterludeState,
-  flags: ['c4-kissed-mara'],
+const resolvedMaraBondState = {
+  ...openMaraBondState,
+  relationships: {
+    ...openMaraBondState.relationships,
+    mara: { ...openMaraBondState.relationships.mara, intent: 'platonic' },
+  },
 };
-if (resolveNext(graveEntryChoice, lysaraInterludeState) !== 'c5-lysara-burns'
-  || resolveNext(graveEntryChoice, committedMaraState) !== 'c5-mara-burns') {
-  failures.push('Chapter Five does not respect established Lysara attraction or Mara commitment when choosing the personal scene');
+if (canChoose(lysaraKissChoice, openMaraBondState) || !canChoose(lysaraKissChoice, resolvedMaraBondState)) {
+  failures.push('Chapter Five allows a new commitment before an existing romance is honestly resolved');
+}
+const lysaraCollapse = renderedBody('c5-grave-collapse', lysaraCareState);
+const sorinCollapse = renderedBody('c5-grave-collapse', professionalCareState);
+const lysaraPactEnding = renderedBody('c5-ending-pact', {
+  ...lysaraCareState,
+  flags: [...lysaraCareState.flags, 'c5-kissed-lysara'],
+});
+if (!/first step is toward Lysara/i.test(lysaraCollapse)
+  || !/first step is toward Sorin/i.test(sorinCollapse)
+  || !/Lysara asks you to repeat the last promise/i.test(lysaraPactEnding)) {
+  failures.push('Chapter Five returns the emotional camera to Mara after another caregiver was chosen');
 }
 const pactChoice = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-pact-with-vaor');
 const pactEnding = renderedBody('c5-ending-pact', chapterFiveBase);

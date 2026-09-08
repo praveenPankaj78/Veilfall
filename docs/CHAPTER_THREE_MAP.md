@@ -2,7 +2,9 @@
 
 ## Status
 
-This chapter is implemented and playable after any Chapter Two ending.
+This chapter is implemented and playable after any Chapter Two ending. Its full narration pass is complete across every active scene, investigation route, choice result, ending, and journal entry.
+
+The chapter remains inside Caelan's immediate experience. Politics appears through recognised uniforms, lawful seals, spoken orders, and the behaviour of frightened guards. Action scenes end on movement, dialogue, or impact instead of narrator summaries of the available choices.
 
 ## Chapter
 
@@ -48,7 +50,7 @@ After that admission, the player challenges Crown control, centres the people Or
 
 The watch house is a physical fire rescue. Its orders reveal that Captain Renn, a corrupt Warden, has Caelan's spare cloak and plans to commit crimes in his name.
 
-On a bathhouse roof, Mara and Lysara disagree about saving people versus stopping the wider attack. Attraction can surface with Mara without suspending the urgent hunt.
+On a bathhouse roof, Mara and Lysara disagree about saving people versus stopping the wider attack. The decision changes tactical Trust or Respect rather than awarding Attraction for agreeing with one woman’s policy.
 
 ## Market battle
 

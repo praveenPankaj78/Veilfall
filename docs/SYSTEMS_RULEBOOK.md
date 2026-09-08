@@ -11,7 +11,7 @@ Every protagonist has Health, plus the two or three resources that express that 
 - Health: wounds and exhaustion. The normal maximum is 8. Zero means the protagonist dies.
 - Class resources: Resolve and Oathfire for Caelan, Focus and Heat for Rook, Mana and Strain for Ilyra.
 - Temporary assets: scene specific advantages such as Rook's Setup or Ilyra's Leverage. These are named and explained rather than added to a permanent row of numbers.
-- Relationships: person specific Trust and Attraction, later joined by Respect or Friction when needed.
+- Relationships: person specific Trust, Attraction, Respect, Friction, and explicit intent.
 - World state: the condition of each Nail, route, people, faction, and imported finale.
 
 ## Class economies
@@ -147,19 +147,23 @@ Luck cannot force affection, reverse a final world decision, or replace a missin
 
 ## Relationship state
 
-The playable Caelan foundation currently tracks two independent values for Mara and Lysara:
+The playable game tracks five independent parts of each recurring relationship:
 
 - Trust: belief that the protagonist will act honestly or reliably.
 - Attraction: physical and romantic interest.
+- Respect: belief in competence and values, including after disagreement.
+- Friction: unresolved hurt, rivalry, carelessness, or conflicting aims.
+- Intent: unresolved, interested, exploring, committed, platonic, or ended.
 
-Later relationship depth can add two further values when the story begins testing long term commitment:
+Exact values remain internal. The player sees plain summaries such as "friendship chosen, deep trust" or "interest acknowledged, some tension." Tactical agreement usually changes Trust or Respect, not Attraction. Attraction changes through personal attention, vulnerability, flirtation, or freely chosen physical closeness.
 
-- Respect: belief in competence and values.
-- Friction: unresolved hurt, rivalry, or conflicting aims.
+A platonic decision is a complete relationship path. It can deepen Trust and Respect and must not be framed as a failed romance. Choosing commitment while another romance remains open requires that earlier bond to be resolved honestly first.
 
 High attraction alone can allow consensual temporary intimacy when context supports it. Commitment requires trust and respect. Friction can make flirtation sharper, but high friction also creates boundaries the protagonist must respect.
 
 Ilyra's Leverage remains separate from relationship scores. She can understand and use a person's desire without earning Trust, and using that knowledge may lower Trust even when Attraction rises. Sexual consent is never a resource check and cannot be produced by Threadread or any spell.
+
+If Threadread exposes desire, Ilyra must either disclose what she learned before using it in an intimate approach or deliberately avoid using that private knowledge as pressure. Knowing desire is not permission to exploit it.
 
 ## Travel system
 
@@ -202,7 +206,7 @@ Save after every choice. Store:
 - inventory and route state;
 - faction reputation and relationship values;
 - Nail states and regional outcomes;
-- content preference for detailed intimacy or fade;
+- content preference for detailed intimacy or fade, shown only when authored content uses it;
 - completed finale summaries for import.
 
 Use versioned migrations so later content updates do not invalidate long term saves.

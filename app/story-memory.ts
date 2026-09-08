@@ -60,7 +60,6 @@ const courierRevealNodes = new Set([
 ]);
 
 const rookKnownNodes = new Set([
-  'c4-corner',
   'c4-collapse',
   'c4-wounded',
   'c4-three-spans',
@@ -81,7 +80,6 @@ const rookKnownNodes = new Set([
 ]);
 
 const nineNailsKnownNodes = new Set([
-  'c4-nine-marks',
   'c4-mara',
   'c4-soldiers',
   'c4-theatre-plan',
@@ -93,7 +91,6 @@ const nineNailsKnownNodes = new Set([
 ]);
 
 const vaorKnownNodes = new Set([
-  'c5-glass-shelter',
   'c5-royal-camp',
   'c5-three-climbs',
   'c5-glass-stair',
@@ -103,6 +100,7 @@ const vaorKnownNodes = new Set([
   'c5-memory-wall',
   'c5-mara-burns',
   'c5-lysara-burns',
+  'c5-sorin-care',
   'c5-vaor-wakes',
   'c5-vaor-test',
   'c5-crown-assault',
@@ -115,7 +113,6 @@ const vaorKnownNodes = new Set([
 ]);
 
 const orivaneKnownNodes = new Set([
-  'c5-heart-memory',
   'c5-grave-collapse',
   'c5-ember-choice',
   'c5-ending-free',
@@ -127,21 +124,132 @@ export function knownTruths(game: GameState) {
   const truths: string[] = [];
 
   if (game.chapter === 1) {
-    truths.push('Caelan is leading Ambassador Lysara and a Warden escort toward Bellweather Inn.');
+    truths.push('I am leading Ambassador Lysara and a Warden escort toward Bellweather Inn.');
     if (pageKnownNodes.has(game.nodeId)) {
-      truths.push('The route page inside Caelan’s sealed case names the low road, although he remembers sealing an order for the ridge.');
+      truths.push('The route page inside my sealed case names the low road, although I remember sealing an order for the ridge.');
     }
     if (game.flags.includes('tested-case')) {
-      truths.push('The case lock and wax show no sign of ordinary tampering.');
+      truths.push('I found no sign of ordinary tampering on the case lock or wax.');
     }
     if (ambushKnownNodes.has(game.nodeId)) {
-      truths.push('An organised force attacked the escort on the route Caelan chose.');
+      truths.push('An organised force attacked us on the route I chose.');
     }
     if (game.flags.includes('confirmed-advance-orders')) {
-      truths.push('The attackers received plans for every possible route before Caelan made his decision.');
+      truths.push('The attackers received plans for every possible route before I made my decision.');
     }
     if (game.flags.includes('found-shard-salt')) {
-      truths.push('The ambush arrows carried fresh salt from the distant Shard Coast.');
+      truths.push('I found fresh salt from the distant Shard Coast inside an ambush arrow.');
+    }
+    return truths;
+  }
+
+  if (game.chapter === 2) {
+    truths.push('The sealed route page did not match my memory, and the attackers prepared for every route before I chose one.');
+
+    if ([
+      'c2-eleven-years',
+      'c2-investigate',
+      'c2-ledger',
+      'c2-cellar',
+      'c2-attacker',
+      'c2-night-watch',
+      'c2-bell',
+      'c2-common-room-crisis',
+      'c2-descend',
+      'c2-folded-cellar',
+      'c2-road-pin',
+      'c2-remove-pin',
+      'c2-last-testimony',
+      'c2-ending-testimony',
+      'c2-ending-pin',
+      'c2-ending-oath',
+    ].includes(game.nodeId)) {
+      truths.push('A damaged road beneath Bellweather is pulling distant entrances beside the inn. It changes distance, not time.');
+    }
+    if (game.nodeId === 'c2-ledger' || game.flags.includes('c2-ledger-route')) {
+      truths.push('Maelin’s records connect Ordan to supplies and disguised royal soldiers prepared around the inn.');
+    }
+    if (game.nodeId === 'c2-cellar' || game.flags.includes('c2-cellar-route')) {
+      truths.push('I found the shifted coastal road and the hidden cellar entrance used by the attackers.');
+    }
+    if (game.nodeId === 'c2-attacker' || game.flags.includes('c2-attacker-route')) {
+      truths.push('Garran identifies Ordan as the officer who paid for the attack and ordered us driven to Bellweather.');
+    }
+    if (pinRevealNodes.has(game.nodeId)) {
+      truths.push('Ordan lured Lysara and me to Bellweather because my road authority and her living magic could unlock the road pin.');
+    }
+    if (game.nodeId === 'c2-road-pin' || game.nodeId === 'c2-remove-pin') {
+      truths.push('The road pin normally keeps every road end in its proper place. I must drive it back into its socket.');
+    } else if ([
+      'c2-last-testimony',
+      'c2-ending-testimony',
+      'c2-ending-pin',
+      'c2-ending-oath',
+    ].includes(game.nodeId)) {
+      truths.push('I drove the road pin back into place, but a broken piece still pulls toward Harrowfen.');
+    } else if (game.flags.includes('c2-found-road-pin-term')) {
+      truths.push('The enemy records call the buried iron beneath Bellweather a road pin.');
+    }
+    return truths;
+  }
+
+  if (game.chapter === 3) {
+    truths.push('The sealed route page did not match my memory, and the attackers prepared for every route before I chose one.');
+    truths.push('Ordan’s soldiers belong to Asterra, the kingdom I serve. They follow his covert royal orders, not the Queen’s public command.');
+    truths.push('Ordan lured Lysara and me to Bellweather so our authority and living magic would unlock the road pin. I drove it back into place, but a fragment pulled us to Harrowfen.');
+    if (courierRevealNodes.has(game.nodeId) || game.completedChapters.includes(3)) {
+      truths.push('Ordan arranged the Bellweather attack, forged the later evidence against me, and paid Captain Renn to commit crimes in my cloak.');
+    }
+    if (game.flags.includes('c3-target-ordan')
+      || game.flags.includes('c3-target-thief')
+      || game.flags.includes('c3-secured-return')) {
+      truths.push('The iron is part of a World Nail that normally keeps distance stable across Edrath.');
+    }
+    return truths;
+  }
+
+  if (game.chapter === 4) {
+    truths.push('Ordan used a covert Asterra detachment to open Bellweather, frame me in Harrowfen, and place a secret royal force on the Mileless Bridge.');
+    truths.push('The iron fragment comes from a World Nail that normally keeps distance stable across Edrath.');
+    if (rookKnownNodes.has(game.nodeId)) {
+      truths.push('Rook Sable stole the fragment to copy the map hidden inside it, not to control the iron itself.');
+    }
+    if (nineNailsKnownNodes.has(game.nodeId)) {
+      truths.push('The fragment belongs to the Nail of Distance and maps all nine World Nails. Bellweather and the Mileless Bridge used broken pieces of the same Nail.');
+    }
+    if (game.nodeId === 'c4-ending-arrest'
+      || game.nodeId === 'c4-ending-bargain'
+      || game.nodeId === 'c4-ending-trust') {
+      truths.push('A genuine order from Regent Malrec commands me to carry the fragment to Dragonspine, where another Nail is active.');
+    }
+    return truths;
+  }
+
+  if (game.chapter === 5) {
+    truths.push('Ordan used a covert Asterra detachment to open Bellweather, frame me in Harrowfen, and place a secret royal force on the Mileless Bridge.');
+    truths.push('Rook stole the Distance fragment to copy the map hidden inside it. That map marks all nine World Nails.');
+    truths.push('A genuine order from Regent Malrec sent me to Dragonspine, where another Nail is active. His own private soldiers are already here.');
+
+    if (game.nodeId !== 'c5-north-road') {
+      truths.push('Cold fire from the damaged fire Nail steals warmth and follows living heat. My Health cannot recover while it burns nearby.');
+    }
+    if (vaorKnownNodes.has(game.nodeId)) {
+      truths.push('Vaor is an ancient living dragon imprisoned beneath glass near the fire Nail. Regent Malrec’s commander intends to cut out his living ember.');
+    }
+    if (['c5-vaor-wakes', 'c5-vaor-test', 'c5-crown-assault', 'c5-heart-memory', 'c5-grave-collapse', 'c5-ember-choice', 'c5-ending-free', 'c5-ending-force', 'c5-ending-pact'].includes(game.nodeId)) {
+      truths.push('The glass plates around Vaor preserve events he truly lived. They are memories, not alternate timelines.');
+    }
+    if (orivaneKnownNodes.has(game.nodeId)) {
+      truths.push('Orivane willingly gave her living heart to create the Concord, but the rulers hid that living people would be cut away from Edrath.');
+    }
+    if (game.flags.includes('c5-freed-vaor')) {
+      truths.push('I freed Vaor and carry an ember he gave willingly. He is an independent ally, not my weapon.');
+    }
+    if (game.flags.includes('c5-took-ember-by-force')) {
+      truths.push('I took Vaor’s ember by force. Its power obeys me, and the freed dragon follows as my enemy.');
+    }
+    if (game.flags.includes('c5-vaor-pact')) {
+      truths.push('I carry Vaor’s ember and voice through a pact with a clear shared end condition.');
     }
     return truths;
   }
@@ -152,26 +260,6 @@ export function knownTruths(game: GameState) {
     truths.push('Ordan’s soldiers belong to Asterra, the same kingdom Caelan serves. They are a covert royal detachment under his sealed orders, not a foreign army or the Queen’s whole force.');
   }
 
-  if (game.chapter === 2 && [
-    'c2-eleven-years',
-    'c2-investigate',
-    'c2-ledger',
-    'c2-cellar',
-    'c2-attacker',
-    'c2-night-watch',
-    'c2-bell',
-    'c2-common-room-crisis',
-    'c2-descend',
-    'c2-folded-cellar',
-    'c2-road-pin',
-    'c2-remove-pin',
-    'c2-last-testimony',
-    'c2-ending-testimony',
-    'c2-ending-pin',
-    'c2-ending-oath',
-  ].includes(game.nodeId)) {
-    truths.push('A damaged road beneath Bellweather is pulling distant entrances beside the inn. It changes distance, not time.');
-  }
   if (game.nodeId === 'c2-ledger' || game.flags.includes('c2-ledger-route')) {
     truths.push('Maelin’s records connect Ordan to supplies and disguised royal soldiers prepared around the inn.');
   }
@@ -236,7 +324,7 @@ export function majorConsequences(game: GameState) {
   const consequences: string[] = [];
   if (game.flags.includes('checked-people')) consequences.push('Because you inspected your people, a feverish guard avoided the hardest part of the march.');
   if (game.flags.includes('checked-horses')) consequences.push('Because you checked the harness, the escort avoided a planned equipment failure.');
-  if (game.flags.includes('mara-read-order')) consequences.push('Because you trusted Mara with the changed order, she helped prove the page was physically altered.');
+  if (game.flags.includes('mara-read-order')) consequences.push('Because you trusted Mara with the changed order, she found fresh sea salt trapped beneath its unbroken wax.');
   if (game.flags.includes('low-route')) consequences.push('Because you took the low road, the escort crossed the flooded fields and faced the collapse of Willow Bridge.');
   if (game.flags.includes('ridge-route')) consequences.push('Because you trusted Mara’s ridge, the escort gained height but faced the ambush exposed to the storm.');
   if (game.flags.includes('inspection-route')) consequences.push('Because you delayed for an inspection, the escort found sabotage before entering either road.');
@@ -257,6 +345,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c2-chose-pin')) consequences.push('Because you carried the iron as your main proof, its pull exposed the danger beneath Harrowfen.');
   if (game.flags.includes('c2-oath-expose-crown')) consequences.push('Because you swore publicly against the Crown plot, Elene could test your promise at Harrowfen’s gate.');
   if (game.flags.includes('c2-kissed-mara')) consequences.push('Because you and Mara chose to kiss, your attraction is no longer unspoken.');
+  if (game.flags.includes('c2-mara-friendship')) consequences.push('Because you chose Mara as family and friend, that bond no longer waits for a romantic answer.');
   if (game.flags.includes('c3-saved-healing-house')) consequences.push('Because you stayed behind, Harrowfen’s wounded escaped the burning healing house.');
   if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
   if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned Renn, you know the unknown thief opposes Ordan but wants the iron for himself.');
@@ -278,6 +367,8 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c4-rook-full-copy')) consequences.push('Because you allowed Rook to copy the map, he named his buyer’s meeting place and accepted a debt to you.');
   if (game.flags.includes('c4-oath-honest-with-mara')) consequences.push('Because you promised honesty to Mara, duty can no longer be your excuse for silence with her.');
   if (game.flags.includes('c4-kissed-mara')) consequences.push('Because you kissed Mara on the bridge, neither of you can call the attraction unspoken again.');
+  if (game.flags.includes('c4-lysara-private-truth')) consequences.push('Because you gave Lysara the quiet minute, she revealed that her own family may share the buried guilt.');
+  if (game.flags.includes('c4-platonic-mara') && game.flags.includes('c4-platonic-lysara')) consequences.push('Because you chose friendship with Mara and Lysara, neither woman is left waiting for a romance you do not want.');
   if (game.flags.includes('c4-lost-gear-and-proof')) consequences.push('Because you sacrificed gear and documents at the final anchor, everyone escaped but some proof against the Crown was lost.');
   if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he travels north as a named fugitive even after escaping the cuff.');
   if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he will guide you toward his buyer in Dragonspine.');
@@ -287,8 +378,10 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c5-seed-scorched-river')) consequences.push('Because Lysara used her living seed to divert the cold fire, her treaty magic is weakened.');
   if (game.flags.includes('c5-admitted-future-with-mara')) consequences.push('Because you told Mara you want a life that includes her, your future together is no longer hidden behind duty.');
   if (game.flags.includes('c5-kissed-mara')) consequences.push('Because you and Mara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
+  if (game.flags.includes('c5-mara-friendship')) consequences.push('Because you chose friendship with Mara, your oldest bond has a clear future without romantic expectation.');
   if (game.flags.includes('c5-admitted-future-with-lysara')) consequences.push('Because you chose to know Lysara beyond the treaty, your attraction is no longer hidden behind diplomatic duty.');
   if (game.flags.includes('c5-kissed-lysara')) consequences.push('Because you and Lysara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
+  if (game.flags.includes('c5-lysara-friendship')) consequences.push('Because you chose friendship with Lysara, political trust can deepen without romantic expectation.');
   if (game.flags.includes('c5-protected-lysara-choice')) consequences.push('Because you protected Lysara’s right to choose, she knows neither treaty nor attraction gives you a claim over her.');
   if (game.flags.includes('c5-oath-carry-vaor-grief')) consequences.push('Because you promised to hear Vaor’s grief, part of the dragon’s pain now travels through your Oathfire.');
   if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, royal witnesses carry the truth away from Dragonspine.');

@@ -41,9 +41,11 @@ import {
 import {
   canChoose,
   initialState,
+  nextRelationships,
   nodes,
   relationshipChanges,
   relationshipLabels,
+  relationshipSummary,
   requirementText,
   resolveNext,
   statLabels,
@@ -55,8 +57,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v9.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v10.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v9.save',
   'veilfall.saga.v8.save',
   'veilfall.saga.v7.save',
   'veilfall.saga.v6.save',
@@ -180,14 +183,37 @@ const coreStatKeys: StatKey[] = ['health', 'resolve', 'command', 'oathfire'];
 const resourceStatKeys: StatKey[] = ['medicine', 'wayfire'];
 
 function migrateRelationships(value: Partial<GameState>) {
+  const flags = new Set(value.flags ?? []);
+  const inferredIntent = (person: RelationshipKey) => {
+    if (person === 'mara') {
+      if (flags.has('c5-mara-friendship') || flags.has('c4-platonic-mara') || flags.has('c2-mara-friendship')) return 'platonic' as const;
+      if (flags.has('c5-admitted-future-with-mara')) return 'committed' as const;
+      if (flags.has('c5-kissed-mara') || flags.has('c4-kissed-mara') || flags.has('c2-kissed-mara')) return 'exploring' as const;
+      if (flags.has('flirted-mara') || flags.has('shared-unease')) return 'interested' as const;
+    } else {
+      if (flags.has('c5-lysara-friendship') || flags.has('c4-platonic-lysara')) return 'platonic' as const;
+      if (flags.has('c5-admitted-future-with-lysara')) return 'committed' as const;
+      if (flags.has('c5-kissed-lysara')) return 'exploring' as const;
+      if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara')) return 'interested' as const;
+    }
+    return 'unresolved' as const;
+  };
+
   if (value.relationships) {
     return {
-      mara: { ...initialState.relationships.mara, ...value.relationships.mara },
-      lysara: { ...initialState.relationships.lysara, ...value.relationships.lysara },
+      mara: {
+        ...initialState.relationships.mara,
+        ...value.relationships.mara,
+        intent: value.relationships.mara?.intent ?? inferredIntent('mara'),
+      },
+      lysara: {
+        ...initialState.relationships.lysara,
+        ...value.relationships.lysara,
+        intent: value.relationships.lysara?.intent ?? inferredIntent('lysara'),
+      },
     };
   }
 
-  const flags = new Set(value.flags ?? []);
   const count = (names: string[]) => names.filter((flag) => flags.has(flag)).length;
   return {
     mara: {
@@ -203,6 +229,9 @@ function migrateRelationships(value: Partial<GameState>) {
         'mara-tended', 'c2-shared-fear', 'c2-kissed-mara', 'c3-entered-unarmed',
         'c3-priority-people', 'c3-pursuit-mara',
       ]),
+      respect: 2 + count(['c3-priority-people', 'c4-told-mara-law-bends']),
+      friction: 0,
+      intent: inferredIntent('mara'),
     },
     lysara: {
       trust: Math.max(0, count([
@@ -214,6 +243,9 @@ function migrateRelationships(value: Partial<GameState>) {
         'intrigued-lysara', 'kept-seed-secret', 'c3-lysara-read-ink',
         'c3-priority-cause', 'c3-pursuit-lysara',
       ]),
+      respect: 1 + count(['c3-priority-cause', 'c4-lysara-private-truth']),
+      friction: flags.has('revealed-seed') ? 1 : 0,
+      intent: inferredIntent('lysara'),
     },
   };
 }
@@ -259,13 +291,17 @@ function normaliseState(value: Partial<GameState>): GameState {
   };
 }
 
-function defeatForChoice(chapter: ChapterNumber, choice: Choice) {
+function defeatForChoice(chapter: ChapterNumber, choice: Choice, state: GameState) {
   const bodies: Record<ChapterNumber, string> = {
     1: 'You complete the action, but your wounds finally take your strength. Rain fills your mouth as the road darkens above you. The escort continues for only a few steps before the enemy closes in.',
     2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
     3: 'Your choice changes the fight, but blood and exhaustion pull you down beside the canal. Harrowfen’s lanterns blur on the water as Ordan escapes toward the eastern bridge.',
     4: 'You complete the action, but the moving bridge takes the last of your strength. Stone turns beneath you as Mara reaches for your hand and the World Nail fragment disappears into another sky.',
-    5: 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
+    5: state.flags.includes('c5-chose-lysara-care')
+      ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Lysara calls your name and Vaor roars beneath the mountain.'
+      : state.flags.includes('c5-chose-sorin-care')
+        ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while your companions call your name and Vaor roars beneath the mountain.'
+        : 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
   };
   return {
     title: 'Caelan has fallen',
@@ -281,21 +317,7 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     nextStats[stat] = Math.max(0, nextStats[stat] + (value ?? 0));
   }
   const nodeId = resolveNext(choice, state);
-  const nextRelationships = {
-    mara: { ...state.relationships.mara },
-    lysara: { ...state.relationships.lysara },
-  };
-  for (const [person, changes] of Object.entries(relationshipChanges(choice))) {
-    const key = person as RelationshipKey;
-    nextRelationships[key].trust = Math.max(
-      0,
-      nextRelationships[key].trust + (changes?.trust ?? 0),
-    );
-    nextRelationships[key].attraction = Math.max(
-      0,
-      nextRelationships[key].attraction + (changes?.attraction ?? 0),
-    );
-  }
+  const updatedRelationships = nextRelationships(state.relationships, choice);
   const completedChapters = nodes[nodeId]?.final
     && nextStats.health > 0
     ? Array.from(new Set([...state.completedChapters, state.chapter]))
@@ -306,11 +328,11 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     chapterChoices: state.chapterChoices + 1,
     completedChapters,
     stats: nextStats,
-    relationships: nextRelationships,
+    relationships: updatedRelationships,
     contentPreference: state.contentPreference,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
-    defeat: nextStats.health <= 0 ? defeatForChoice(state.chapter, choice) : null,
+    defeat: nextStats.health <= 0 ? defeatForChoice(state.chapter, choice, state) : null,
   };
 }
 
@@ -329,12 +351,21 @@ function changeSummary(choice: Choice, state: GameState) {
         : `Gain: ${statLabels[key as StatKey]} ${amount}`;
     });
   const personalChanges = Object.entries(relationshipChanges(choice)).flatMap(
-    ([person, changes]) => Object.entries(changes ?? {})
-      .filter(([, value]) => value !== 0)
-      .map(([dimension, value]) => {
-        const direction = (value ?? 0) < 0 ? 'Lose' : 'Gain';
-        return `${direction}: ${relationshipLabels[person as RelationshipKey]} ${dimension} ${Math.abs(value ?? 0)}`;
-      }),
+    ([person, changes]) => {
+      const name = relationshipLabels[person as RelationshipKey];
+      const notes: string[] = [];
+      if ((changes?.trust ?? 0) > 0) notes.push(`${name}: trust may deepen`);
+      if ((changes?.trust ?? 0) < 0) notes.push(`${name}: trust may be damaged`);
+      if ((changes?.attraction ?? 0) > 0) notes.push(`${name}: attraction may deepen`);
+      if ((changes?.respect ?? 0) > 0) notes.push(`${name}: respect may deepen`);
+      if ((changes?.friction ?? 0) > 0) notes.push(`${name}: tension may rise`);
+      if (changes?.intent === 'platonic') notes.push(`${name}: friendship chosen`);
+      if (changes?.intent === 'interested') notes.push(`${name}: interest acknowledged`);
+      if (changes?.intent === 'exploring') notes.push(`${name}: relationship being explored`);
+      if (changes?.intent === 'committed') notes.push(`${name}: commitment chosen`);
+      if (changes?.intent === 'ended') notes.push(`${name}: romance ended`);
+      return notes;
+    },
   );
   return [
     ...statChanges,
@@ -367,7 +398,6 @@ export default function Home() {
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
   const [showReturnRecap, setShowReturnRecap] = useState(false);
   const [pendingReplay, setPendingReplay] = useState<ChapterNumber | null>(null);
-  const [showMatureConfirm, setShowMatureConfirm] = useState(false);
   const gameRef = useRef(game);
   const storyRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -1063,8 +1093,7 @@ export default function Home() {
             {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
               <div className="relationship-row" key={person}>
                 <strong>{relationshipLabels[person]}</strong>
-                <span>Trust {game.relationships[person].trust}</span>
-                <span>Attraction {game.relationships[person].attraction}</span>
+                <span>{relationshipSummary(game.relationships[person])}</span>
               </div>
             ))}
           </div>
@@ -1107,7 +1136,7 @@ export default function Home() {
                 {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
                   <p key={person}>
                     <strong>{relationshipLabels[person]}</strong>
-                    Trust {game.relationships[person].trust}, Attraction {game.relationships[person].attraction}
+                    {relationshipSummary(game.relationships[person])}
                   </p>
                 ))}
               </div>
@@ -1127,41 +1156,6 @@ export default function Home() {
                   <li key={`${entry}-${index}`}>{entry}</li>
                 ))}
               </ol>
-            </section>
-            <section>
-              <span>Future intimate scenes</span>
-              <p>
-                These scenes are optional and are not part of the first four chapters.
-                Fade keeps the relationship and story consequence without explicit detail.
-              </p>
-              <div className="content-preference">
-                <Button
-                  variant={game.contentPreference.intimacy === 'fade' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setGame((current) => ({
-                    ...current,
-                    contentPreference: { ...current.contentPreference, intimacy: 'fade' },
-                  }))}
-                >
-                  Fade
-                </Button>
-                <Button
-                  variant={game.contentPreference.intimacy === 'detailed' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => {
-                    if (game.contentPreference.adultConfirmed) {
-                      setGame((current) => ({
-                        ...current,
-                        contentPreference: { ...current.contentPreference, intimacy: 'detailed' },
-                      }));
-                    } else {
-                      setShowMatureConfirm(true);
-                    }
-                  }}
-                >
-                  Detailed, adults only
-                </Button>
-              </div>
             </section>
           </div>
         </SheetContent>
@@ -1189,7 +1183,7 @@ export default function Home() {
             {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
               <p key={person}>
                 <strong>{relationshipLabels[person]}</strong>
-                Trust {game.relationships[person].trust} · Attraction {game.relationships[person].attraction}
+                {relationshipSummary(game.relationships[person])}
               </p>
             ))}
           </div>
@@ -1237,32 +1231,6 @@ export default function Home() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <AlertDialog open={showMatureConfirm} onOpenChange={setShowMatureConfirm}>
-        <AlertDialogContent className="replay-dialog">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm adult content preference</AlertDialogTitle>
-            <AlertDialogDescription>
-              Detailed intimate scenes are intended only for players who are at least 18 years old.
-              They remain optional and can be changed back to Fade at any time.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Keep Fade</AlertDialogCancel>
-            <AlertDialogAction
-              className="confirm-replay"
-              onClick={() => {
-                setGame((current) => ({
-                  ...current,
-                  contentPreference: { intimacy: 'detailed', adultConfirmed: true },
-                }));
-                setShowMatureConfirm(false);
-              }}
-            >
-              I am 18 or older
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </main>
   );
 }

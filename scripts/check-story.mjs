@@ -87,6 +87,12 @@ if (pageSource.includes('className="choice-prompt"')) {
 if (!pageSource.includes('<b>Expected advantage</b>')) {
   failures.push('app/page.tsx: choice benefits must be presented as expected rather than guaranteed');
 }
+if (/Trust \{game\.relationships|Attraction \{game\.relationships|Future intimate scenes|Detailed, adults only/.test(pageSource)) {
+  failures.push('app/page.tsx: relationship scores or unused adult content controls remain visible to the player');
+}
+if (!pageSource.includes('relationshipSummary(game.relationships[person])')) {
+  failures.push('app/page.tsx: relationships are not presented as qualitative states');
+}
 const lessonPosition = pageSource.indexOf('{node.lesson && (');
 const prosePosition = pageSource.indexOf('<div className="prose">');
 if (lessonPosition === -1 || prosePosition === -1 || lessonPosition > prosePosition) {

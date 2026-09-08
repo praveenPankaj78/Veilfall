@@ -84,7 +84,7 @@ Characters should not deliver long explanations before the player has a reason t
 
 Teach one shared resource and two signature class ideas through low risk use before combat or crisis. Show the result immediately.
 
-For Caelan, the player first learns Health, Resolve, and Command during escort preparation. Mara and Lysara receive separate Trust and Attraction values. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
+For Caelan, the player first learns Health, Resolve, and Command during escort preparation. Mara and Lysara have separate relationship states that the interface describes in plain language. After using those ordinary strengths, the story explains Oaths and Oathfire in plain language before the first option to create an Oath appears.
 
 For Rook, the player first uses Health, Focus, Heat, and a named Setup during a controlled theft. The player creates the Setup before seeing an audacious option that spends it. Glimmer appears only after the ordinary plan fails.
 
@@ -137,6 +137,8 @@ Short conclusions written in the protagonist's voice. Record confirmed facts sep
 ### People
 
 Only recurring or currently relevant characters. Show the last meaningful change in the relationship rather than unexplained scores.
+
+Use qualitative relationship summaries in the character sheet and journal. Never expose exact Trust, Attraction, Respect, or Friction values in the normal interface. A locked personal choice names the kind of bond required instead of displaying a number to optimise.
 
 ### Places
 
