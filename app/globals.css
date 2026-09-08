@@ -259,8 +259,12 @@
   z-index: 19;
   top: 5rem;
   right: max(4vw, 1rem);
+  display: flex;
+  flex-direction: column;
   width: min(31rem, calc(100vw - 2rem));
+  max-height: calc(100svh - 6.25rem);
   padding: 1.25rem;
+  overflow: hidden;
   border: 1px solid rgb(186 147 100 / 35%);
   border-radius: 0.35rem;
   background: rgb(14 17 21 / 97%);
@@ -269,6 +273,7 @@
 
 .chapter-library-heading {
   display: flex;
+  flex-shrink: 0;
   align-items: start;
   justify-content: space-between;
   gap: 1rem;
@@ -281,6 +286,7 @@
 }
 
 .chapter-library-note {
+  flex-shrink: 0;
   margin: 1rem 0;
   color: #b9afa3;
   font-size: 0.86rem;
@@ -290,6 +296,10 @@
 .chapter-library-list {
   display: grid;
   gap: 0.65rem;
+  min-height: 0;
+  padding-bottom: 0.15rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .chapter-library-entry {
