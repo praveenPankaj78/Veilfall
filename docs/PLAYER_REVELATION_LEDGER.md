@@ -52,9 +52,9 @@ Mechanic: Combined class solutions during a crossover.
 
 Active question: What waits at the fire mark on the map?
 
-Answer: Vaor was buried alive beneath his own recorded memories. He guards proof that Orivane willingly gave her heart to create the Concord and that mortal rulers hid part of its cost.
+Answer: Vaor was buried alive beneath his own recorded memories. He guards proof that Orivane willingly gave her heart to create the Concord, but rulers failed to tell her that some forming histories already contained living people who would be cut away from Edrath.
 
-Next hook: How should the living world answer for the possible lives that stability prevented, and why is the Black Gate opening now?
+Next hook: What is opening beyond the eastern steppe, and can Kharad Vey help Caelan reach it?
 
 Mechanic: Oathfire and a dragon pact, demonstrated before a major vow.
 

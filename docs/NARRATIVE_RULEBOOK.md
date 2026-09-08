@@ -20,6 +20,8 @@ Use the revelation ladder in the world bible. Answer the current mystery before 
 
 Before drafting, copy the chapter's Known, Suspected, and Unknown lists from the player experience plan. Do not let narrator knowledge leak into the protagonist's thoughts.
 
+When a reveal is morally abstract, show one ordinary person or place experiencing it before explaining the larger idea. A single village being cut away is easier to understand and feel than a list of lives that might have existed.
+
 ## Chapter structure
 
 Each chapter uses seven movements:
@@ -43,6 +45,22 @@ The first chapter of every series spends more time in Settle. It teaches normal 
 - Never place two choices in a row without showing a consequence between them.
 - After a major choice, show an immediate physical or emotional result before moving on.
 - If a choice is spoken dialogue or a reply to a person, the last paragraph must be the line or question it answers. Do not place later observations, evidence, or new events between that line and the options.
+
+## Continuous player involvement
+
+The player should feel located inside Caelan's next breath, not briefed by an author standing above the scene.
+
+- Enter a scene through an action already in progress whenever continuity allows.
+- Turn thought into impulse, habit, or restraint. A hand moving toward a sword is stronger than the narrator announcing anger.
+- Let physical evidence lead to understanding. Show the flame follow a warm hand before stating its rule.
+- Do not certify the player's feelings with phrases such as "you understand," "you hate the choice," or "you cannot know." Present the pressure and leave room for the player to judge it.
+- End the final paragraph before a choice on impact, movement, sensory change, or a character demanding an answer.
+- Let companions initiate: interrupt, touch an object, challenge a plan, hide fear, or act on their own priority.
+- Keep one lived hour when crossing several uneventful days. One cold meal or sleepless watch preserves the sense of having travelled.
+- Vary scene rhythm. A collapse may use short physical steps. A relationship scene may slow down. A reveal may pause on one changed object.
+- Remove repeated interpretation after the image has already made the meaning clear.
+
+Choice result text is the first beat of the next scene, not a separate receipt. It should flow directly into new prose. Player facing advantages describe the expected benefit of an approach, not a guaranteed outcome.
 
 ## Simple but immersive language
 
@@ -228,6 +246,8 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 - Remove generic phrases that could belong to any fantasy story.
 - Read every passage aloud during editing.
 - Never use adjacent hyphens or an em dash in story files.
+- Do not give every scene the same four paragraph pattern of setting, interpretation, explanation, and menu summary.
+- Search each revision for repeated openings such as "You notice," "You feel," "You understand," and "You think." Keep only the phrasing that sounds like this protagonist in this exact moment.
 
 ## Revision checklist
 
@@ -269,3 +289,12 @@ Before a scene is approved, confirm:
 19. A consequence states what the chosen action achieved. The next scene must move forward by showing a new effect, reaction, danger, or complication instead of repeating that achievement.
 20. Every non-obvious fact in the protagonist’s thoughts has an observable source on that route.
 21. Most scenes, especially decisions and revelations, include a close point of view beat rather than only external stage direction.
+
+## Cross scene continuity checks
+
+- An environmental rule remains true for every option offered after it. Darkness cannot defeat a danger that follows warmth unless the story first shows how warmth is masked.
+- A character may use only a prop, skill, signal, or fact already established on that route. If the setup is optional, the payoff must either be optional or use a different established tool.
+- Before action gives way to a memory, romance, or lore scene, every incoming route must visibly contain the active weapon, enemy, or physical danger. The story can pause only after the characters earn that pause.
+- A returning or departing companion must be re-established in the current scene before becoming an option.
+- A relationship scene follows established commitment and attraction. It must not silently replace a developed path with the author's preferred partner.
+- End a chapter with one named destination or mystery. Additional threats may be shown physically and named in the next chapter.

@@ -10,9 +10,9 @@ The Nails are failing. Each failure creates a local wonder and a local disaster.
 
 Before recorded history, worlds touched without warning. A child might walk through a wheat field and return as an old woman. Devils could claim a spoken promise. Celestial judges could remove a city for violating a law it had never heard.
 
-Orivane, last of the star dragons, chose to end the crossings. She gave her heart willingly. Mortal smiths divided it into nine living embers. Elven root singers, goblin engineers, orc wind callers, human oathkeepers, and coastal witches placed the embers around Edrath. Together they created the Concord.
+Orivane, last of the star dragons, chose to end the crossings. She gave her heart willingly. The rulers who asked for her sacrifice told her that unstable possibilities would close. They did not tell her that some forming histories already held people living ordinary days. Mortal smiths divided her fire into nine living embers. Elven root singers, goblin engineers, orc wind callers, human oathkeepers, and coastal witches placed the embers around Edrath. Together they created the Concord.
 
-The act saved millions. It also cut away lives and places that could not fit one stable history. Those possibilities fell into the Unsea.
+The act saved millions. It also cut living histories away from Edrath. Orivane saw the truth during her final breath and demanded that later generations judge her choice again. The cut away histories fell into the Unsea, though nobody in Edrath knows exactly what survived there.
 
 ## The nine World Nails
 
@@ -112,7 +112,7 @@ The Court maintains the Name of Dawn, the law that makes each new day continue t
 
 ### Unsea
 
-The Unsea is a dark ocean filled with stars beneath the surface. Islands form from discarded possibilities: lives never lived, cities never founded, children never born. Visitors can meet a convincing lost person, but cannot easily know whether that person is a surviving soul, a possible self, or a hunger wearing memory.
+The Unsea is a dark ocean filled with stars beneath the surface. Its islands form from histories and possibilities cut away when Edrath became stable. Some contained people who were already living. Others never grew beyond what might have been. Visitors cannot easily know whether a person there is a survivor, a possible self, or a hunger wearing memory.
 
 The Unsea offers Malrec real evidence and false certainty. It is the source of the saga's deepest temptation.
 

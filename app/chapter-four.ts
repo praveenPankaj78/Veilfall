@@ -64,7 +64,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       pursuitOpening(state),
       'The Mileless Bridge is not one bridge. Broken arches cross beneath a dozen different skies. One opens over a snowfield. Another hangs above a storming sea. A third ends inside a brass lit cavern. Green thread from Lysara’s glass seed runs back toward Harrowfen, showing you which stones still belong together.',
       'The thief lands on the next arch with the iron fragment. Ordan lands behind him. Crown soldiers appear above and raise crossbows. Your Crown. Your soldiers. They are shooting at you anyway.',
-      'You have seconds. You want the fragment, but Mara, Lysara, Brann, and the Harrowfen guards are still crossing behind you. The bridge shudders under all of them.',
+      'The fragment is one arch ahead. Behind you, Mara catches a stumbling guard while Brann pulls Lysara’s green thread tight. The bridge shudders, and a crossbow string clicks above.',
     ],
     choices: [
       {
@@ -232,7 +232,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: () => [
       'The Crown soldiers ignore Ordan’s order to take everyone alive. Instead of advancing, they cut three anchor ropes.',
       'The Bell Arch drops. Brann catches a stone rail with one hand. Two Harrowfen guards slide toward open air. Mara has the guide rope around her waist, but the sudden weight pulls her across the wet stone. Far below, several roads turn like spokes inside a wheel.',
-      'You feel the choice narrowing before anyone asks you to make it. Saving one person may change what happens to the others.',
+      'Your hand reaches for Brann. The two guards slide faster, and Mara’s boots lose another span of wet stone.',
       'Rook hooks one boot through the broken bell frame. “Captain,” he says, all humour gone, “choose quickly.”',
     ],
     choices: [
@@ -291,8 +291,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     art: 'mileless',
     body: (state) => [
       savedBrann(state),
-      'The roofed causeway gives you one minute out of crossbow sight. You hate how quickly your mind turns a friend’s pain into a problem of distance, speed, and available hands. That is what command sometimes requires, and you have never learned to like it.',
-      'You feel every lost second, but leaving Brann without a plan would follow you long after this chase.',
+      'The roofed causeway gives you one minute out of crossbow sight. Your hands check Brann’s breathing while your eyes measure the distance to Ordan’s satchel. Friend and evidence refuse to become separate problems.',
       'Rook kneels near Brann but does not touch him. For once he waits for permission. Ordan’s dropped satchel lies on a ledge across the causeway, close enough to reach if someone else handles the wounded.',
     ],
     choices: [
@@ -339,8 +338,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: () => [
       'The bridge divides around a stone wheel. Ordan’s blood marks all three exits because the roads keep exchanging pieces beneath him.',
       'One span crosses a white mountain under cold blue flame. One clings to a black sea cliff inside a thunderstorm. The last descends through huge brass wheels turning deep underground.',
-      'Each road offers one clear advantage and one danger you cannot measure from here.',
-      'You cannot know which road is safest. You can know what kind of danger you are prepared to face.',
+      'Snow wind cuts your face from the first arch. Salt spray reaches you from the second. Beneath the third, brass teeth close hard enough to shake the junction.',
+      'Mara sets one hand on her sword. “Pick a sky, Captain. Ordan is bleeding into all three.”',
     ],
     choices: [
       {
@@ -640,7 +639,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: () => [
       'The World Nail fragment grows warm beside Lysara’s glass seed. Thin lines of light unfold from the iron and hang in the air. They form a map of the known world with nine bright marks driven through it.',
       '“This fragment belongs to the Nail of Distance,” Lysara says. “That Nail is one of nine anchors holding the world’s laws in place. Bellweather and this bridge held broken pieces of it. Dragonspine guards another Nail.”',
-      'The scale settles inside you. Whoever controls enough Nails could move armies across kingdoms, isolate cities, or cut nations away from food and trade.',
+      'One mark rests on Greyhaven. Another burns beneath the border treaty route. If each can become an army road overnight, no wall, harvest convoy, or distant village remains distant enough to be safe.',
       'Rook asks how much harm one wax copy can do. Lysara does not look away from him. “Enough to move an army between countries before either border sees it.” His smile fades, but his eyes keep following the marks.',
     ],
     choices: [
@@ -700,7 +699,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         ? 'Mara returns along Lysara’s guide rope just before the rear span closes. Brann is safe in Harrowfen. Relief loosens something in your chest that command had kept tight.'
         : 'Mara draws you into a stone shelter barely wide enough for two people. Her wet hair rests against her cheek, and the rise and fall of her breathing is close enough to feel through your coat.',
       'She looks past you toward Rook. “The law says arrest him. Staying alive says listen to him. Which answer will you pretend is simple?”',
-      'You have wanted Mara for longer than you have admitted. Wanting is easy. Letting her see the fear beneath your certainty is harder, especially while soldiers gather two arches away.',
+      'Mara still holds the pear knife she carried out of Greyhaven. Her thumb taps its handle once, the old signal she used whenever she caught you hiding fear behind a plan.',
       'Steel on stone announces the next battle outside. Mara says, “I need your answer.”',
     ],
     choices: [
@@ -935,12 +934,12 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         : 'Lysara finds a royal dispatch sewn beneath the lining of Ordan’s satchel while the final arch steadies.',
       'The order is real. Regent Malrec Vale, ruler of Asterra while the young Queen is ill, commands that the fragment be carried to Dragonspine. The name belongs to the northern mountain realm around the bright mark on the hidden map.',
       'The Regent ordered Ordan to deliver the fragment, yet his soldiers were willing to kill Ordan after he failed. You cannot tell whether the royal command is a warning, a trap, or both.',
-      'You fear obedience may carry the fragment exactly where the enemy wants it. You also know ignoring the order could leave the next Nail undefended.',
+      'The royal seal feels heavier than its wax should allow. The fragment pulls north in your other hand, toward the same place the Regent commands you to carry it.',
       has(state, 'c4-rook-full-copy')
         ? 'Rook has the complete nine mark map you allowed him to make. He waits beside an opening road, his promised debt sitting uneasily behind his smile.'
         : 'Rook flicks a thin wax scrap into his palm. It shows only the northern mark and two blurred roads. Refusing the full copy has limited what he can sell or follow.',
       '“I want the buyer who knew your sealed route,” Rook says. “Keep me alive until I reach them, and give me my freedom afterward. In return, I get you through roads your Wardens cannot see.” For once, the offer arrives without a joke.',
-      'Mara watches you. Arresting Rook serves the law. Bargaining may expose his buyer. Trusting him may save lives on roads no Warden can read. The bridge will not give you time to avoid the decision.',
+      'The opening road narrows behind Rook. He extends both hands, wrists together, and waits to learn whether they will hold a cuff, a bargain, or your trust.',
     ],
     choices: [
       {

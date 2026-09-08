@@ -171,6 +171,10 @@ Good Ilyra choice: Seal the memory until both fathers can be examined. Costs 2 M
 
 Avoid labels such as good choice, evil choice, romance choice, correct answer, or secret ending.
 
+The interface labels a plan's benefit as its expected advantage. This preserves clarity about why the player might choose it without promising that danger, opposition, or later consequences cannot change the result.
+
+Place any essential lesson before the active scene prose. The last story beat should lead directly into the choices without a tutorial card or generic prompt interrupting it.
+
 ## Consequence communication
 
 Use three signals:
@@ -180,6 +184,8 @@ Use three signals:
 - Later scenes call the consequence back through behaviour, access, injury, changed geography, or dialogue.
 
 Do not display a message for trivial variables. Do not hide consequences that the protagonist would clearly understand.
+
+The immediate result appears as the opening narrative beat of the next scene. Do not isolate it beneath a receipt style "Consequence" heading, and do not repeat the same completed action in the following paragraph.
 
 ## Character switching
 

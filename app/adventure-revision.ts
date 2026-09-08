@@ -101,7 +101,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Jory reached Bellweather through a shortcut that should begin two days east. Maelin later opened the stable door and saw a moonlit coast that lies many days west. The places did not travel through time. The damaged road pulled their entrances beside the inn.',
       'Maelin’s husband, Dain, vanished through that stable door during the first disturbance three weeks ago. Since then, she has lit a lamp at his place every night and watched each strange road in case one brings him home.',
       'Jory died before he could explain what lies beneath the cellar or why the forged warning demanded your arrival. His message proves only that someone prepared the inn and expected your escort before you chose a route.',
-      'You understand why Maelin keeps lighting Dain’s lamp. Understanding does not make it easier to admit that your arrival may have brought the danger back to her door.',
+      'Your eyes keep returning to Dain’s lamp. Maelin catches you looking and turns the wick higher, as if daring the road to claim that place forever.',
       'Maelin lays Jory’s broken arrow on the table. A silver crown is stamped into its head. “Help me stop whoever is coming,” she says, looking at Dain’s lamp. “Then we learn what they wanted from you.”',
     ],
   },
@@ -112,8 +112,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'Brann can hold the doors for a short time. That gives you one chance to investigate.',
       'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show what the enemy changed beneath the inn. Garran may identify the officer who paid him.',
-      'Your instinct is to split the group and take all three leads. One look at the wounded and the dark windows tells you that would leave nobody strong enough for the attack.',
-      'You cannot search every lead before dark. Your choice will decide what advantage you carry into the siege.',
+      'You begin to order three search teams. Brann looks toward the wounded and the words die before they leave your mouth.',
+      'A chain scrapes beneath the cellar. Garran coughs behind the pantry door. Maelin opens the ledger and pushes it toward you. “Pick one,” she says.',
     ],
   },
   'c2-ledger': {
@@ -350,8 +350,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       body: 'The broken iron fragment still pulls toward a larger piece hidden near Harrowfen. That shortens this one journey. The town has not moved through time, and there is only one version of it.',
     },
     body: (state) => [
-      'Harrowfen should be three days east of Bellweather. You reach it after one mile because the fragment in your pack pulls toward something inside the town.',
-      'The shortened journey gives you no time to recover. Part of you is grateful for that. Exhaustion is easier to manage than the thought of Ordan preparing another town while you rest.',
+      'Harrowfen rises after one mile. The chained fragment jerks toward its east market while your legs still ache from Bellweather, pulling this one journey shorter than the map allows.',
       'The city rises from black canals on timber walks and stone islands. Rope bridges join tall houses painted blue, red, and gold. Market boats crowd the water below the gate.',
       'Royal archers aim down at you. Ordan Vale stands on the wall in silver gloves. He holds the real route authority you signed in Greyhaven beside a royal warrant accusing you of using that mission to attack Bellweather and steal Crown iron.',
       state.flags.includes('c2-chose-testimony')
@@ -376,7 +375,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('treaty-damaged')
         ? 'He also displays the damaged treaty pages and calls them proof that you sacrificed peace to seize the road weapon. The damage came from your attempt to save lives, but frightened citizens cannot see that choice from a piece of torn paper.'
         : 'The treaty chest remains sealed, which weakens one charge. Ordan answers by naming the people hurt during the ambush and claiming your Oathfire caused the broken road.',
-      'You recognise Asterra’s crown badge on the riders. They serve the same kingdom as you, not a foreign ruler, but they are only Ordan’s hidden detachment. The young Queen is ill and a Regent governs in her name. Harrowfen’s charter still gives Elene lawful command inside its walls.',
+      'The lead rider gives the Third Road salute. You trained beside two of the badges behind him. They wear Asterra’s Crown, your own, yet they charge under Ordan’s private order while the young Queen lies ill. Elene touches the charter seal at her throat. Inside Harrowfen, even the Regent’s soldiers answer to her law.',
       'Elene does not trust Ordan, but she cannot ignore real signatures, wounded citizens, and a man who knew your commands. She will open the service gate for the wounded wagons and six armed escorts if you accept a condition that costs you authority, safety, or privacy.',
       'The riders behind you begin to charge. This choice will get the wounded through the gate. It will not clear your name.',
     ],
@@ -395,7 +394,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Elene opens the service gate for the wounded wagons and six armed escorts. The remaining Wardens form a shield line outside. As the last wagon passes, she drops the iron gate between them and Ordan’s charging riders. The riders stop rather than attack a royal town gate, then spread along the outer canal to watch your people.',
       'Elene sends the wounded to a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him. Relief should follow the closing gate. Instead, you think about how easily he reached the lining of your cloak.',
       'The town archive holds the orders he filed. The healing house shelters Garran, the witness his soldiers may try to kill. Elene explains the third lead: one of her watchmen saw Ordan pay Varris, a road broker, for a route to the hidden Mileless Bridge.',
-      'You cannot reach all three before he moves again.',
+      'Elene points to three canal lanes. “Choose your door. I will hold the other two as long as I can.”',
     ],
   },
   'c3-archive': {
@@ -468,7 +467,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'You join that proof to what Bellweather already taught you. Ordan needed your road authority and Lysara’s living magic to unlock the pin. He paid the attackers to drive both of you there, then used Renn and planted papers to make the result look like your crime.',
       'Elene hears the case against him, but Ordan’s soldiers still control the bridge winch. Smoke is already rising from the old watch house behind him.',
       '“One Crown road could reinforce every border before an invading army crosses it,” Ordan says. “You command people for their safety, Captain. You bind them with promises. I am willing to finish what men like you begin.”',
-      'The comparison strikes closer than you want it to. You have used rank and Oaths to make frightened people obey. The difference, you believe, is that your promises also bind you. Ordan’s promises bind everyone except him.',
+      'Your Oath scars tighten beneath your glove. You have ordered frightened people into danger and called it protection. Ordan notices the movement and smiles. He carries no matching scars.',
       'Only one part remains outside the evidence. Ordan forged the later papers, but he did not change the first order inside your sealed case. For the first time, his certainty slips. “That order came from above my office,” he says.',
     ],
   },

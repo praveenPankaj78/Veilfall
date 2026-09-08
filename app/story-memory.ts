@@ -93,8 +93,16 @@ const nineNailsKnownNodes = new Set([
 ]);
 
 const vaorKnownNodes = new Set([
+  'c5-glass-shelter',
+  'c5-royal-camp',
+  'c5-three-climbs',
+  'c5-glass-stair',
+  'c5-frozen-river',
+  'c5-ash-tunnel',
+  'c5-grave-mouth',
   'c5-memory-wall',
   'c5-mara-burns',
+  'c5-lysara-burns',
   'c5-vaor-wakes',
   'c5-vaor-test',
   'c5-crown-assault',
@@ -210,7 +218,7 @@ export function knownTruths(game: GameState) {
     truths.push('Vaor is an ancient living dragon imprisoned beneath glass plates that preserve events from his own life.');
   }
   if (orivaneKnownNodes.has(game.nodeId)) {
-    truths.push('Orivane willingly gave her heart to power the Concord, but mortal rulers hid that a stable world would prevent many possible lives from ever beginning.');
+    truths.push('Orivane willingly gave her heart to create the Concord, but rulers hid that some forming histories already held living people who would be cut away from Edrath.');
   }
   if (game.flags.includes('c5-freed-vaor')) {
     truths.push('Vaor is free, and Caelan carries an ember the dragon gave willingly.');
@@ -279,6 +287,9 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c5-seed-scorched-river')) consequences.push('Because Lysara used her living seed to divert the cold fire, her treaty magic is weakened.');
   if (game.flags.includes('c5-admitted-future-with-mara')) consequences.push('Because you told Mara you want a life that includes her, your future together is no longer hidden behind duty.');
   if (game.flags.includes('c5-kissed-mara')) consequences.push('Because you and Mara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
+  if (game.flags.includes('c5-admitted-future-with-lysara')) consequences.push('Because you chose to know Lysara beyond the treaty, your attraction is no longer hidden behind diplomatic duty.');
+  if (game.flags.includes('c5-kissed-lysara')) consequences.push('Because you and Lysara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
+  if (game.flags.includes('c5-protected-lysara-choice')) consequences.push('Because you protected Lysara’s right to choose, she knows neither treaty nor attraction gives you a claim over her.');
   if (game.flags.includes('c5-oath-carry-vaor-grief')) consequences.push('Because you promised to hear Vaor’s grief, part of the dragon’s pain now travels through your Oathfire.');
   if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, royal witnesses carry the truth away from Dragonspine.');
   if (game.flags.includes('c5-rook-copied-first-memory')) consequences.push('Because Rook copied Orivane’s memory, the buried proof can survive even if the mountain glass is destroyed.');

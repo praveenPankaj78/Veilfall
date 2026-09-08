@@ -841,19 +841,6 @@ export default function Home() {
             <p className="eyebrow">{node.kicker}</p>
             <h1>{node.title}</h1>
 
-            {lastResult && (
-              <aside className="consequence">
-                <span>Consequence</span>
-                <p>{lastResult}</p>
-              </aside>
-            )}
-
-            <div className="prose">
-              {paragraphs.map((paragraph, index) => (
-                <p key={`${node.id}-${index}`}>{paragraph}</p>
-              ))}
-            </div>
-
             {node.lesson && (
               <aside className="lesson-card">
                 <span>{node.lesson.title}</span>
@@ -861,9 +848,15 @@ export default function Home() {
               </aside>
             )}
 
+            <div className="prose">
+              {lastResult && <p>{lastResult}</p>}
+              {paragraphs.map((paragraph, index) => (
+                <p key={`${node.id}-${index}`}>{paragraph}</p>
+              ))}
+            </div>
+
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">
-                <p className="choice-prompt">What do you do?</p>
                 {node.choices.map((choice, index) => {
                   const available = canChoose(choice, game);
                   const changes = changeSummary(choice, game);
@@ -882,7 +875,7 @@ export default function Home() {
                         <span>{choice.detail}</span>
                         {choice.advantage ? (
                           <span className="choice-advantage">
-                            <b>Advantage</b>
+                            <b>Expected advantage</b>
                             {choice.advantage}
                           </span>
                         ) : null}

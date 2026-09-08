@@ -102,11 +102,11 @@ Defining choice: Free Vaor, take his ember by force, or make a pact that gives h
 
 Class pressure: Health cannot recover in cold fire. Oathfire can protect the group but exposes Caelan to the dragon's grief.
 
-Romance movement: Mara treats Caelan's burns. Their first kiss is possible after an honest admission, not as a reward for bravery.
+Romance movement: Mara or Lysara treats Caelan's burns according to earlier commitment and attraction. A previous Mara kiss is acknowledged. A developed Lysara path receives its own personal conversation instead of being silently replaced.
 
-Revelation: Orivane gave her heart willingly, but the Concord cut living possibilities away from the world.
+Revelation: Orivane gave her heart willingly, but rulers failed to tell her that some forming histories already held living people who would be cut away from Edrath.
 
-End state: Caelan becomes an Ember Bearer and sees a vision of the Black Gate opening.
+End state: Caelan becomes an Ember Bearer, learns that Kharad Vey is the next safe destination, and sees an unnamed black stone gate beginning to open.
 
 ### Chapter Six: The City on Wheels
 

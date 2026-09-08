@@ -192,6 +192,9 @@ const relationshipEffects: Record<string, Partial<Relationships>> = {
   'c5-admit-future-with-mara': { mara: { trust: 2, attraction: 1 } },
   'c5-kiss-mara-after-truth': { mara: { trust: 1, attraction: 2 } },
   'c5-admit-fear-to-mara': { mara: { trust: 2, attraction: 0 } },
+  'c5-admit-future-with-lysara': { lysara: { trust: 2, attraction: 1 } },
+  'c5-kiss-lysara-after-truth': { lysara: { trust: 1, attraction: 2 } },
+  'c5-protect-lysara-choice': { lysara: { trust: 2, attraction: 0 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -236,11 +239,11 @@ const originalNodes: Record<string, StoryNode> = {
     introduces: ['health', 'resolve', 'command'],
     art: 'departure',
     body: () => [
-      'Rain has turned Greyhaven’s stone walls almost black by the time you reach Eastwatch. Water pours from the gatehouse drains and gathers around the boots of twenty guards pretending not to be cold.',
-      'Your name is Caelan Vey. You are thirty one, captain of the King’s Road Wardens, and responsible for every person leaving with the green treaty wagon. Your task sounds simple when spoken quickly: escort Ambassador Lysara to Bellweather Inn before night rain floods the low road.',
-      'Seven years ago, you promised a trapped patrol that you would return before moonrise. You returned late and carried two bodies home. Since then, you choose every promise as carefully as a road above a cliff.',
+      'Rain has soaked the departure ledger before you finish the first name. You brace it against the green treaty wagon and write the people you must bring to Bellweather alive: Brann, Joren, Nilo, Mara, and an ambassador you have not yet met.',
+      'The last time you signed a list like this, two names came home beneath canvas. Your pen pauses above the final line until Sergeant Brann clears his throat.',
+      '“Captain Vey, gate opens in half an hour.” Twenty Road Wardens wait behind him, boots deep in water and every face turned toward you. The job is yours: carry a peace treaty east before the low road floods.',
       'Beyond the raised iron gate, the King’s Road bends through wet hills and disappears under dark storm clouds. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
-      'Sergeant Brann raises the departure ledger. “Gate opens in half an hour. What do you want checked first?”',
+      'Brann takes the wet ledger from your hand. “What do you want checked first?”',
     ],
     choices: [
       {
@@ -295,8 +298,8 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'The lead mare keeps working her tongue against the strange oil. Before you can trace the smell, a grey horse trots through the gate from the eastern road.'
         : 'A grey horse trots through the gate from the eastern road, mist lifting from its flanks.',
       'Mara Renn swings down before the animal stops. Rain has darkened her hair and drawn her green riding coat close across her shoulders. She carries her bow, a stolen pear, and the annoyed look that usually means she has found trouble.',
-      'Seeing her safely back eases a tightness you had refused to notice. The relief lasts only until you see how closely she is watching the road behind her.',
-      'You have known her since both of you were children stealing nails from your father’s forge. She knows your silences well enough to sort anger from fear, which is useful in a scout and dangerous in a friend.',
+      'Mara throws you the pear without looking. You catch it the same way you caught every warning she tossed across your father’s forge when both of you were small enough to hide beneath his workbench.',
+      'She is already watching the road behind her. The old habit in your hands says she came home. The stillness in her shoulders says the danger followed.',
       '“The ridge is clear,” she says. “The low road has water over the stones already. Also, someone moved the third mile marker during the night. It points back at Greyhaven.” She bites the pear. “Still want the easy duty?”',
     ],
     choices: [
@@ -344,8 +347,7 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('checked-treaty')
         ? 'You show him the fresh scrape. Tivik touches it once and smells his fingertip. “File mark. Someone tested how much iron remained.”'
         : 'The senior guard calls him nervous. Tivik raises the hammer and asks whether nervous people usually volunteer to stand beneath a loaded wagon.',
-      'Rank offers an easy answer: order him aside and leave on time. Your instincts keep returning to the fresh damage on a wagon that was safe last night.',
-      'The gate clock sounds the quarter hour. Delay risks the storm. Leaving as planned risks the wheel failing where the road narrows.',
+      'The gate clock sounds the quarter hour. Tivik crawls beneath the axle again and lays one palm against the scored pin. Above him, Nilo looks from the wagon to you. “Captain?”',
     ],
     choices: [
       {
@@ -883,7 +885,7 @@ const originalNodes: Record<string, StoryNode> = {
         : state.flags.includes('steady-axle')
           ? 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren and the wagon driver are hanging above the flood.'
           : 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren is trapped and a second guard is being pulled toward the gap.',
-      'Your training separates the danger into tasks. Your conscience puts a face on every one of them.',
+      'Your eyes find Joren first. Training drags them to the chest, the runner, and the rising water before your body can move.',
       'Lysara braces the treaty chest with both hands. “Captain. Choose.”',
     ],
     choices: [
@@ -937,8 +939,8 @@ const originalNodes: Record<string, StoryNode> = {
             ? 'The shields above the tight column turn falling stone and splintered timber away from the treaty chest.'
           : 'The rockfall strikes both ends of the formation at once.',
       'Mara hangs from a wet root below the ledge with a wounded guard gripping her wrist. The treaty wagon rolls backward toward them. Above, the signaler turns to flee with a dispatch case under one arm.',
-      'Every instinct pulls you toward Mara. Command demands that you see the wagon, the wounded guard, and the escaping answer as clearly as you see her.',
-      'Your next decision will leave something unguarded.',
+      'Your first step is toward Mara. The wagon wheel reaches the ledge, the signaler clears the first fence, and the wet root slides another inch through her hand.',
+      'Brann shouts your name from behind the rolling wagon.',
     ],
     choices: [
       {
@@ -1111,7 +1113,7 @@ const originalNodes: Record<string, StoryNode> = {
           ? 'Because you treated Joren first, he is awake enough to remember that one attacker checked three different route cards.'
           : 'The wounded remain restless while you search, and every sound from the woods pulls a guard away from the evidence.',
       'Mara finds a small wax tube beneath a saddle flap. Lysara finds pale crystals packed into an arrowhead. Brann watches the tree line and reminds you that the escort is wounded, exposed, and still expected at Bellweather.',
-      'You cannot learn everything before moving. You need one answer now: whether the ambush reacted to your choice or knew it beforehand.',
+      'Brann glances at the dark trees. “One answer, Captain. Then we move.”',
     ],
     choices: [
       {
@@ -3264,6 +3266,7 @@ export const nodeOrder = [
   'c5-grave-mouth',
   'c5-memory-wall',
   'c5-mara-burns',
+  'c5-lysara-burns',
   'c5-vaor-wakes',
   'c5-vaor-test',
   'c5-crown-assault',

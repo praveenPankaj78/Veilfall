@@ -421,7 +421,7 @@ const storyTermRules = {
   },
   Orivane: {
     use: /\bOrivane\b/i,
-    introduction: /Orivane was the dragon who gave her living heart to power the Concord/i,
+    introduction: /Orivane gave her living heart to create the Concord/i,
   },
 };
 for (const [id, node] of Object.entries(nodes)) {
@@ -479,7 +479,7 @@ for (const [id, node] of Object.entries(nodes)) {
   }
 }
 
-const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|understand|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
+const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
 for (const chapter of [1, 2, 3, 4, 5]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
     ? !/^c[2345]-/.test(id)
@@ -551,10 +551,10 @@ if (!/service gate for the wounded wagons and six armed escorts/i.test(urgentLea
   failures.push('The Chapter Three gate transition does not account for the wounded, remaining Wardens, and Crown riders');
 }
 const gatePolitics = renderedBody('c3-gate', chapterThreeBase);
-if (!/same kingdom as you, not a foreign ruler/i.test(gatePolitics)
-  || !/only Ordan’s hidden detachment/i.test(gatePolitics)
-  || !/young Queen is ill/i.test(gatePolitics)
-  || !/gives Elene lawful command inside its walls/i.test(gatePolitics)) {
+if (!/Asterra’s Crown, your own/i.test(gatePolitics)
+  || !/Ordan’s private order/i.test(gatePolitics)
+  || !/young Queen lies ill/i.test(gatePolitics)
+  || !/Inside Harrowfen, even the Regent’s soldiers answer to her law/i.test(gatePolitics)) {
   failures.push('The Chapter Three gate does not plainly explain the Asterra force and Harrowfen command structure');
 }
 const roadPinDiscoveryChecks = [
@@ -1027,6 +1027,127 @@ if (!/recordings of events he truly lived/i.test(memoryGlassExplanation)
   || !/not other timelines or copies/i.test(memoryGlassExplanation)) {
   failures.push('Chapter Five does not plainly distinguish memory glass from alternate timelines');
 }
+const chapterFiveOpening = [
+  nodes['c5-north-road'].objective,
+  ...nodes['c5-north-road'].body(chapterFiveBase),
+].join(' ');
+const coldCrossing = nodes['c5-north-road'].choices.find((choice) => choice.id === 'c5-cross-in-shadow');
+if (/extract its ember/i.test(nodes['c5-north-road'].objective)
+  || !/black glass.*steals enough heat/i.test(chapterFiveOpening)
+  || !/glass chilled cloth/i.test(coldCrossing?.label ?? '')) {
+  failures.push('Chapter Five either names the ember too early or lets darkness hide body heat from cold fire');
+}
+const sorinRescue = renderedBody('c5-coldfire-rescue', chapterFiveBase);
+const sorinShelter = renderedBody('c5-glass-shelter', chapterFiveBase);
+if (/Vaor|survey force|soldiers died|survivors carried/i.test(sorinRescue)
+  || !/Once he can breathe without shaking.*Vaor is an ancient dragon/i.test(sorinShelter)) {
+  failures.push('Sorin still delivers the Dragonspine history dump while trapped beneath the glass');
+}
+const royalCamp = renderedBody('c5-royal-camp', chapterFiveBase);
+if (!/living ember, a piece of Vaor’s own fire/i.test(royalCamp)
+  || !/buyer was connected to this camp.*already moved east/i.test(royalCamp)) {
+  failures.push('The royal camp does not introduce the ember plainly or continue Rook’s buyer thread');
+}
+const ashTunnel = renderedBody('c5-ash-tunnel', chapterFiveBase);
+if (!/four sharp notes.*old keeper signal for a collapse/i.test(ashTunnel)) {
+  failures.push('Rook’s copied collapse signal is not demonstrated before the ash tunnel choice');
+}
+const vaorMeeting = renderedBody('c5-vaor-wakes', chapterFiveBase);
+if (!/broken cage is the fire Nail/i.test(vaorMeeting)
+  || !/warm light inside Vaor is his living ember/i.test(vaorMeeting)
+  || !/fragment.*belongs to the Nail of Distance/i.test(vaorMeeting)
+  || !/same outer lock/i.test(vaorMeeting)
+  || /belongs to its outer ring/i.test(vaorMeeting)) {
+  failures.push('Vaor’s meeting does not distinguish the Distance fragment, fire Nail, and living ember');
+}
+const rookLockChoice = nodes['c5-vaor-wakes'].choices.find((choice) => choice.id === 'c5-let-rook-test-lock');
+if (!/established mirrored coins?/i.test(rookLockChoice?.result ?? '')
+  || /missing boot/i.test(chapterFiveSource)) {
+  failures.push('Rook still uses an unestablished object to test Vaor’s lock');
+}
+const vaorQuestion = renderedBody('c5-vaor-test', chapterFiveBase);
+if (!/people of those who chained me/i.test(vaorQuestion)
+  || /world that buried its price/i.test(vaorQuestion)) {
+  failures.push('Vaor asks about the Concord’s hidden price before showing it');
+}
+const haleAssault = renderedBody('c5-crown-assault', chapterFiveBase);
+if (!/world to survive long enough to condemn me/i.test(haleAssault)
+  || !/stopping the drill/i.test(haleAssault)) {
+  failures.push('Commander Hale still lacks a distinct motive or a direct response from Caelan');
+}
+const haleOrderChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-turn-hale-soldiers');
+const falseEmberChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-trust-rook-false-extraction');
+if (/read what he ordered/i.test(haleOrderChoice?.label ?? '')
+  || !/written order, the abandoned dead, or the killing drill/i.test(haleOrderChoice?.detail ?? '')
+  || !/false ember/i.test(falseEmberChoice?.label ?? '')) {
+  failures.push('The Hale assault choices still assume evidence the player may not have or hide Rook’s decoy');
+}
+const assaultResolutions = [
+  ['c5-break-royal-drill', /drill tears itself apart.*Hale retreats/i],
+  ['c5-turn-hale-soldiers', /drill stops.*Hale retreats/i],
+  ['c5-trust-rook-false-extraction', /stopping the drill.*forcing Hale behind/i],
+  ['c5-free-claw-against-crown', /crushes the drill.*Hale throws himself behind/i],
+];
+for (const [choiceId, expected] of assaultResolutions) {
+  const choice = nodes['c5-crown-assault'].choices.find((candidate) => candidate.id === choiceId);
+  if (!expected.test(choice?.result ?? '')) {
+    failures.push(`The battle does not reach a temporary resolution before Vaor’s memory after ${choiceId}`);
+  }
+}
+const heartMemory = renderedBody('c5-heart-memory', chapterFiveBase);
+if (!/drill stopped and Hale forced behind/i.test(heartMemory)
+  || !/one village existing in two forming histories/i.test(heartMemory)
+  || !/families are already awake/i.test(heartMemory)
+  || !/rulers knew that some forming histories already held living people/i.test(heartMemory)
+  || /Children who might have been born|Towns that might have grown/i.test(heartMemory)) {
+  failures.push('Orivane’s memory remains abstract or begins before the assault is contained');
+}
+if (!/Rook stretches painted theatre cloth.*anchors it with wire/i.test(heartMemory)) {
+  failures.push('Rook’s false gallery is not visibly prepared before the collapse');
+}
+const maraAfterBridgeKiss = renderedBody('c5-mara-burns', {
+  ...chapterFiveBase,
+  flags: ['c4-kissed-mara'],
+});
+if (!/kiss on the bridge removed the uncertainty/i.test(maraAfterBridgeKiss)) {
+  failures.push('Mara’s Chapter Five scene forgets the Chapter Four kiss');
+}
+const graveEntryChoice = nodes['c5-grave-mouth'].choices[0];
+const lysaraInterludeState = {
+  ...chapterFiveBase,
+  relationships: {
+    mara: { trust: 2, attraction: 1 },
+    lysara: { trust: 6, attraction: 5 },
+  },
+};
+const committedMaraState = {
+  ...lysaraInterludeState,
+  flags: ['c4-kissed-mara'],
+};
+if (resolveNext(graveEntryChoice, lysaraInterludeState) !== 'c5-lysara-burns'
+  || resolveNext(graveEntryChoice, committedMaraState) !== 'c5-mara-burns') {
+  failures.push('Chapter Five does not respect established Lysara attraction or Mara commitment when choosing the personal scene');
+}
+const pactChoice = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-pact-with-vaor');
+const pactEnding = renderedBody('c5-ending-pact', chapterFiveBase);
+if (!/protective glass shell he can break/i.test(pactChoice?.result ?? '')
+  || !/no longer chained.*break free when he is ready/i.test(pactEnding)) {
+  failures.push('The pact ending leaves Vaor’s physical captivity unresolved');
+}
+const freedomChoice = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-free-vaor');
+if (!/promises no obedience.*may refuse future help/i.test(freedomChoice?.advantage ?? '')) {
+  failures.push('Freeing Vaor remains a dominant ending without a clear future risk');
+}
+const emberChoiceBody = renderedBody('c5-ember-choice', chapterFiveBase);
+if (/No option protects every claim/i.test(emberChoiceBody)) {
+  failures.push('The ember choice still tells the player how to judge its balance');
+}
+for (const endingId of ['c5-ending-free', 'c5-ending-force', 'c5-ending-pact']) {
+  const ending = [nodes[endingId].objective, ...nodes[endingId].body(chapterFiveBase)].join(' ');
+  if (!/moving orc town/i.test(ending) || /Black Gate/.test(ending)) {
+    failures.push(`${endingId} does not define Kharad Vey simply before withholding the Gate’s proper name`);
+  }
+}
 const stack = [
   { state: initialState, knownTerms: [], knownStoryTerms: [] },
   {
@@ -1109,6 +1230,18 @@ const stack = [
       relationships: {
         ...chapterFiveBase.relationships,
         mara: { trust: 6, attraction: 5 },
+      },
+    },
+    knownTerms: chapterFiveKnownTerms,
+    knownStoryTerms: chapterFiveKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterFiveBase,
+      flags: ['c4-rook-trusted'],
+      relationships: {
+        mara: { trust: 2, attraction: 1 },
+        lysara: { trust: 6, attraction: 5 },
       },
     },
     knownTerms: chapterFiveKnownTerms,

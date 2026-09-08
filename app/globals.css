@@ -469,37 +469,9 @@
   font: 1.08rem/1.82 Georgia, 'Times New Roman', serif;
 }
 
-.prose p:first-child::first-letter {
-  float: left;
-  margin: 0.05rem 0.45rem 0 0;
-  color: #be7a4d;
-  font: 4rem/0.8 Georgia, serif;
-}
-
-.consequence {
-  margin: 0 0 2rem;
-  padding: 0.8rem 1rem;
-  border-left: 2px solid #9d4c39;
-  background: rgb(126 52 40 / 12%);
-}
-
-.consequence span {
-  color: #b96f50;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.consequence p {
-  margin: 0.25rem 0 0;
-  color: #cbbeb0;
-  font: italic 0.92rem/1.5 Georgia, serif;
-}
-
 .lesson-card {
   max-width: 46rem;
-  margin: 1.8rem 0 0;
+  margin: 0 0 1.8rem;
   padding: 1rem 1.15rem;
   border: 1px solid rgb(186 147 100 / 28%);
   border-left: 3px solid #be7a4d;
@@ -528,12 +500,6 @@
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid rgb(186 147 100 / 20%);
-}
-
-.choice-prompt {
-  margin: 0 0 0.35rem;
-  color: #c99a66;
-  font: italic 1rem/1.4 Georgia, serif;
 }
 
 .choice-card {

@@ -6,7 +6,7 @@ The player leaves the shifting roads and enters a physically clear mountain adve
 
 The chapter answers one main question: what waits at the active fire mark in Dragonspine?
 
-Answer: Vaor, an ancient living dragon, guards proof that Orivane willingly gave her heart to create the Concord. The rulers who accepted her sacrifice hid that stabilising one world prevented many possible lives from ever beginning.
+Answer: Vaor, an ancient living dragon, guards proof that Orivane willingly gave her heart to create the Concord. The rulers failed to tell her that some forming histories already contained living people who would be cut away from Edrath.
 
 The next hook is direct: Caelan carries a living ember toward Kharad Vey while the Black Gate begins to open.
 
@@ -32,8 +32,8 @@ Rook is therefore present at Sorin's shelter on every route, but for a different
 5. Choose the glass stair, frozen river, or ash tunnel.
 6. Survive the chosen route through a distinct physical danger.
 7. Open the grave while cold fire closes around the party.
-8. Cross memory glass without confusing recordings with alternate realities.
-9. Let Mara treat Caelan's burns and decide what truth to share with her.
+8. Let Mara or Lysara treat Caelan's burns and decide what personal truth to share.
+9. Cross memory glass without confusing recordings with alternate realities.
 10. Meet Vaor and decide how to begin the negotiation.
 11. Answer why the present world deserves protection.
 12. Stop Commander Hale's attempt to extract the ember.
@@ -77,18 +77,18 @@ Rook remains a guest in Caelan's chapter, but never becomes a passive follower. 
 
 - a stolen command seal becomes a ridiculous false emergency;
 - glass reflections become six visible thieves;
-- Sorin's voice reed stops a drill crew;
-- a stolen boot triggers Vaor's lock without risking a person;
+- Sorin demonstrates the keeper's four note collapse warning before Rook copies it to stop a drill crew;
+- an established mirrored coin tests Vaor's lock without risking a person;
 - a mirrored coin becomes a false ember during the assault;
-- silver wire and a painted ceiling trap Commander Hale.
+- silver wire and painted theatre cloth, visibly placed during the deep memory, trap Commander Hale.
 
 Caelan decides whether to trust each setup. Rook controls the surprising execution.
 
 ## Romance movement
 
-Mara treats Caelan's cold burns in a brief shelter inside the grave. The scene stays connected to survival and the coming decision.
+Mara or Lysara treats Caelan's cold burns before the party meets Vaor. This keeps the personal scene from interrupting the dragon's first conversation. The companion is selected by established attraction and commitment. An earlier promise or kiss with Mara keeps her path active. Otherwise, a stronger established Lysara relationship receives its own scene.
 
-The player can:
+On Mara's route, the player can:
 
 - admit that Caelan wants a future including Mara;
 - name his fear of surviving another failed promise;
@@ -97,11 +97,13 @@ The player can:
 
 The kiss depends on established Trust and Attraction. It follows an honest admission inside the same choice and is never presented as a reward for combat.
 
+On Lysara's route, the player can admit wanting to know her beyond the treaty, protect her right to choose, delay an answer, or acknowledge mutual desire and kiss her after she answers. This prevents a long Lysara relationship from being silently replaced by a mandatory Mara romance.
+
 ## Defining endings
 
 ### Freedom
 
-Caelan breaks Vaor's chains. Vaor gives an ember willingly and becomes a free, independent ally.
+Caelan breaks Vaor's chains. Vaor gives an ember willingly and becomes a free, independent power. He promises no obedience, may refuse future aid, and can be treated as an invading threat by frightened kingdoms.
 
 ### Force
 
@@ -109,7 +111,7 @@ Caelan cuts out the ember. He gains direct power, but Vaor survives as an enemy 
 
 ### Pact
 
-Caelan and Vaor agree to carry the ember together. Vaor's voice, knowledge, and grief remain inside Caelan until both accept that the duty is complete.
+Caelan and Vaor agree to carry the ember together. The remaining chains release Vaor's wounds and become a protective shell he can break when ready. His body rests safely by choice while his voice, knowledge, and grief remain inside Caelan until both accept that the duty is complete.
 
 Every ending grants equal Wayfire. The difference is power, consent, alliance, and the burden Caelan carries into Chapter Six.
 
@@ -118,11 +120,11 @@ Every ending grants equal Wayfire. The difference is power, consent, alliance, a
 - Caelan is always an ember bearer.
 - The ember was given, taken, or shared through a pact, and that origin must affect its behaviour.
 - Vaor is a free ally, a pursuing enemy, or a voice inside Caelan.
-- Mara remembers every admission, refusal, and kiss.
+- Mara and Lysara each remember every relevant admission, refusal, and kiss.
 - Lysara's seed remains scorched if it diverted the frozen river fire.
 - Royal witnesses exist only if Hale's soldiers turned.
 - Orivane's proof survives outside the grave only through preserved plates, shared witnesses, Caelan's memory, or Rook's wax copy.
-- The Black Gate is visibly beginning to open before Kharad Vey appears.
+- The endings define Kharad Vey as the moving orc town before showing one unnamed black stone gate beginning to open. Chapter Six can introduce the Gate's proper name after the mountain truth has landed.
 
 ## Chapter artwork
 
