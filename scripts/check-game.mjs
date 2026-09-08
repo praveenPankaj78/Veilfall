@@ -51,6 +51,17 @@ vm.runInNewContext(chapterFiveCompiled, {
   console,
 }, { filename: 'chapter-five.js' });
 
+const chapterSixSource = await readFile('app/chapter-six.ts', 'utf8');
+const chapterSixCompiled = ts.transpileModule(chapterSixSource, {
+  compilerOptions,
+}).outputText;
+const chapterSixExports = {};
+vm.runInNewContext(chapterSixCompiled, {
+  exports: chapterSixExports,
+  module: { exports: chapterSixExports },
+  console,
+}, { filename: 'chapter-six.js' });
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -79,6 +90,7 @@ const context = {
     if (specifier === './choice-economy') return economyExports;
     if (specifier === './chapter-four') return chapterFourExports;
     if (specifier === './chapter-five') return chapterFiveExports;
+    if (specifier === './chapter-six') return chapterSixExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -116,6 +128,11 @@ const chapterFiveArtAssets = {
   vaor: 'public/art/vaor-memory-grave.png',
   ember: 'public/art/ember-bearer-vision.png',
 };
+const chapterSixArtAssets = {
+  kharad: 'public/art/kharad-vey-wheel-city.png',
+  storm: 'public/art/ancestor-storm-attack.png',
+  moot: 'public/art/red-moot-ilyra.png',
+};
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
 for (const [id, node] of Object.entries(nodes)) {
@@ -132,6 +149,23 @@ for (const [art, asset] of Object.entries(chapterFourArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Four artwork is missing: ${asset}`);
+  }
+}
+const chapterSixArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c6-')) continue;
+  if (!node.art) failures.push(`Chapter Six node has no explicit art: ${id}`);
+  if (earlierChapterArt.has(node.art) || chapterFourArtAssets[node.art] || chapterFiveArtAssets[node.art]) {
+    failures.push(`Chapter Six node reuses earlier chapter art: ${id} uses ${node.art}`);
+  }
+  if (node.art) chapterSixArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterSixArtAssets)) {
+  if (!chapterSixArtUsed.has(art)) failures.push(`Chapter Six never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Missing Chapter Six art asset: ${asset}`);
   }
 }
 const earlierThanFiveArt = new Set([...earlierChapterArt, ...Object.keys(chapterFourArtAssets)]);
@@ -371,6 +405,31 @@ const chapterFiveBase = {
     wayfire: 9,
   },
 };
+const chapterSixKnownTerms = Object.keys(statLabels);
+const chapterSixKnownStoryTerms = [
+  ...chapterFiveKnownStoryTerms,
+  'cold fire',
+  'Vaor',
+  'Orivane',
+  'Kharad Vey',
+];
+const chapterSixBase = {
+  ...initialState,
+  nodeId: 'c6-steppe-road',
+  chapter: 6,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5],
+  flags: ['c5-freed-vaor'],
+  stats: {
+    ...initialState.stats,
+    health: 7,
+    resolve: 7,
+    command: 5,
+    oathfire: 5,
+    medicine: 0,
+    wayfire: 11,
+  },
+};
 const storyTermRules = {
   Oathwarden: {
     use: /\bOathwarden\b/i,
@@ -420,11 +479,45 @@ const storyTermRules = {
     use: /\bOrivane\b/i,
     introduction: /Orivane (?:gave|gives) her living heart to create the Concord/i,
   },
+  'Kharad Vey': {
+    use: /\bKharad Vey\b/i,
+    introduction: /Kharad Vey, the moving orc town|Kharad Vey rises.*town is built across twelve wooden platforms|Kharad Vey moves across the red steppe.*travelling orc town/i,
+  },
+  'Ember Steppe': {
+    use: /\bEmber Steppe\b/i,
+    introduction: /This is the Ember Steppe/i,
+  },
+  'ancestor storm': {
+    use: /\bancestor storm\b/i,
+    introduction: /Ancestor storm.*honoured dead/i,
+  },
+  'Black Gate': {
+    use: /\bBlack Gate\b/i,
+    introduction: /map names it plainly: the Black Gate|black stone you saw is the Black Gate/i,
+  },
+  'Red Moot': {
+    use: /\bRed Moot\b/i,
+    introduction: /Red Moot meets at sunset/i,
+  },
+  'Ilyra Fen': {
+    use: /\bIlyra Fen\b/i,
+    introduction: /Ilyra Fen steps onto the deck/i,
+  },
+  Threadread: {
+    use: /\bThreadread\b/i,
+    introduction: /Threadread shows connection|see emotional and magical connections/i,
+  },
+  Unsea: {
+    use: /\bUnsea\b/i,
+    introduction: /Unsea is a realm beneath ordinary reality/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c5-')
-    ? chapterFiveBase
-    : id.startsWith('c4-')
+  const sampleState = id.startsWith('c6-')
+    ? chapterSixBase
+    : id.startsWith('c5-')
+      ? chapterFiveBase
+      : id.startsWith('c4-')
       ? chapterFourBase
       : id.startsWith('c3-')
         ? chapterThreeBase
@@ -477,9 +570,9 @@ for (const [id, node] of Object.entries(nodes)) {
 }
 
 const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3, 4, 5]) {
+for (const chapter of [1, 2, 3, 4, 5, 6]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
-    ? !/^c[2345]-/.test(id)
+    ? !/^c[23456]-/.test(id)
     : id.startsWith(`c${chapter}-`));
   const sampleState = chapter === 1
     ? initialState
@@ -489,7 +582,9 @@ for (const chapter of [1, 2, 3, 4, 5]) {
         ? chapterThreeBase
         : chapter === 4
           ? chapterFourBase
-          : chapterFiveBase;
+          : chapter === 5
+            ? chapterFiveBase
+            : chapterSixBase;
   const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
   if (closeNodes.length / chapterNodes.length < 0.6) {
     failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
@@ -1331,6 +1426,69 @@ for (const endingId of ['c5-ending-free', 'c5-ending-force', 'c5-ending-pact']) 
     failures.push(`${endingId} does not define Kharad Vey simply before withholding the Gate’s proper name`);
   }
 }
+for (const endingId of ['c5-ending-free', 'c5-ending-force', 'c5-ending-pact']) {
+  if (nodes[endingId].nextChapter !== 'c6-steppe-road') {
+    failures.push(`${endingId} does not continue into Chapter Six`);
+  }
+}
+const chapterSixArrivalGiven = renderedBody('c6-steppe-road', {
+  ...chapterSixBase,
+  flags: ['c5-freed-vaor'],
+});
+const chapterSixArrivalTaken = renderedBody('c6-steppe-road', {
+  ...chapterSixBase,
+  flags: ['c5-took-ember-by-force'],
+});
+const chapterSixArrivalPact = renderedBody('c6-steppe-road', {
+  ...chapterSixBase,
+  flags: ['c5-vaor-pact'],
+});
+if (!/promised to meet you here, not to obey/i.test(chapterSixArrivalGiven)
+  || !/ember you tore from Vaor/i.test(chapterSixArrivalTaken)
+  || !/Vaor moves inside your thoughts/i.test(chapterSixArrivalPact)) {
+  failures.push('Chapter Six does not preserve all three Vaor outcomes at arrival');
+}
+const ilyraInterestChoice = nodes['c6-ilyra-entry'].choices.find(
+  (choice) => choice.id === 'c6-accept-ilyra-interest',
+);
+const openMaraChapterSix = {
+  ...chapterSixBase,
+  relationships: {
+    ...chapterSixBase.relationships,
+    mara: { ...chapterSixBase.relationships.mara, intent: 'committed' },
+  },
+};
+const unattachedChapterSix = {
+  ...chapterSixBase,
+  relationships: {
+    ...chapterSixBase.relationships,
+    mara: { ...chapterSixBase.relationships.mara, intent: 'platonic' },
+    lysara: { ...chapterSixBase.relationships.lysara, intent: 'platonic' },
+  },
+};
+if (canChoose(ilyraInterestChoice, openMaraChapterSix)
+  || !canChoose(ilyraInterestChoice, unattachedChapterSix)) {
+  failures.push('Ilyra attraction does not respect Caelan’s existing relationship commitments');
+}
+const ilyraInterestState = nextRelationships(
+  unattachedChapterSix.relationships,
+  ilyraInterestChoice,
+);
+if (ilyraInterestState.ilyra.intent !== 'interested'
+  || ilyraInterestState.ilyra.attraction <= unattachedChapterSix.relationships.ilyra.attraction) {
+  failures.push('Chapter Six does not record the player’s explicit interest in Ilyra');
+}
+const chapterSixEndingFlags = {
+  'c6-ending-war': 'c6-red-moot-war',
+  'c6-ending-alliance': 'c6-red-moot-alliance',
+  'c6-ending-neutral': 'c6-red-moot-neutral',
+};
+for (const [endingId, flag] of Object.entries(chapterSixEndingFlags)) {
+  const finalChoice = nodes['c6-final-alliance'].choices.find((choice) => choice.next === endingId);
+  if (!finalChoice?.addFlags?.includes(flag) || finalChoice.changes?.wayfire !== 2) {
+    failures.push(`${endingId} does not record its Moot outcome with equal Wayfire`);
+  }
+}
 const stack = [
   { state: initialState, knownTerms: [], knownStoryTerms: [] },
   {
@@ -1425,6 +1583,7 @@ const stack = [
       relationships: {
         mara: { trust: 2, attraction: 1 },
         lysara: { trust: 6, attraction: 5 },
+        ilyra: { ...initialState.relationships.ilyra },
       },
     },
     knownTerms: chapterFiveKnownTerms,
@@ -1445,6 +1604,26 @@ const stack = [
     knownTerms: chapterFiveKnownTerms,
     knownStoryTerms: chapterFiveKnownStoryTerms,
   },
+  ...['c5-freed-vaor', 'c5-took-ember-by-force', 'c5-vaor-pact'].map((flag) => ({
+    state: { ...chapterSixBase, flags: [flag] },
+    knownTerms: chapterSixKnownTerms,
+    knownStoryTerms: chapterSixKnownStoryTerms,
+  })),
+  {
+    state: {
+      ...chapterSixBase,
+      flags: ['c5-vaor-pact'],
+      stats: {
+        ...chapterSixBase.stats,
+        health: 2,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+      },
+    },
+    knownTerms: chapterSixKnownTerms,
+    knownStoryTerms: chapterSixKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -1454,6 +1633,7 @@ const chapterTwoEndings = new Set();
 const chapterThreeEndings = new Set();
 const chapterFourEndings = new Set();
 const chapterFiveEndings = new Set();
+const chapterSixEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -1527,7 +1707,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c5-')) chapterFiveEndings.add(node.id);
+    if (node.id.startsWith('c6-')) chapterSixEndings.add(node.id);
+    else if (node.id.startsWith('c5-')) chapterFiveEndings.add(node.id);
     else if (node.id.startsWith('c4-')) chapterFourEndings.add(node.id);
     else if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
@@ -1564,7 +1745,8 @@ if (chapterTwoEndings.size !== 3) failures.push(`Expected 3 Chapter Two endings,
 if (chapterThreeEndings.size !== 3) failures.push(`Expected 3 Chapter Three endings, found ${chapterThreeEndings.size}`);
 if (chapterFourEndings.size !== 3) failures.push(`Expected 3 Chapter Four endings, found ${chapterFourEndings.size}`);
 if (chapterFiveEndings.size !== 3) failures.push(`Expected 3 Chapter Five endings, found ${chapterFiveEndings.size}`);
-for (const chapter of [1, 2, 3, 4, 5]) {
+if (chapterSixEndings.size !== 3) failures.push(`Expected 3 Chapter Six endings, found ${chapterSixEndings.size}`);
+for (const chapter of [1, 2, 3, 4, 5, 6]) {
   if (!deathChapters.has(chapter)) failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
 
@@ -1577,5 +1759,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

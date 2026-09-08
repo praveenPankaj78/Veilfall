@@ -254,6 +254,53 @@ export function knownTruths(game: GameState) {
     return truths;
   }
 
+  if (game.chapter === 6) {
+    truths.push('The old rulers hid that creating the Concord cut living people and histories away from Edrath.');
+    if (game.flags.includes('c5-freed-vaor')) {
+      truths.push('I carry an ember Vaor gave willingly. The freed dragon remains an independent ally.');
+    } else if (game.flags.includes('c5-took-ember-by-force')) {
+      truths.push('I took Vaor’s ember by force. It obeys me, and the freed dragon follows as an enemy.');
+    } else if (game.flags.includes('c5-vaor-pact')) {
+      truths.push('I carry Vaor’s ember and voice through a pact with a clear shared end condition.');
+    }
+    truths.push('Kharad Vey is a moving orc town whose seasonal leaders answer to living clan decisions, not inherited Crown rule.');
+
+    if (game.nodeId !== 'c6-steppe-road'
+      && game.nodeId !== 'c6-running-gate'
+      && game.nodeId !== 'c6-broken-axle'
+      && game.nodeId !== 'c6-first-duty'
+      && !['c6-herd-duty', 'c6-forge-duty', 'c6-shrine-duty'].includes(game.nodeId)) {
+      truths.push('An ancestor storm is using honoured dead voices to accuse me and issue commands to the living.');
+    }
+    if (game.nodeId === 'c6-korran-terms'
+      || game.nodeId === 'c6-ilyra-entry'
+      || game.nodeId === 'c6-storm-trace'
+      || game.nodeId === 'c6-impossible-memory'
+      || game.nodeId === 'c6-red-moot'
+      || game.nodeId === 'c6-service-case'
+      || game.nodeId === 'c6-trial-case'
+      || game.nodeId === 'c6-oath-case'
+      || game.nodeId === 'c6-ancestor-coup'
+      || game.nodeId === 'c6-final-alliance'
+      || game.nodeId.startsWith('c6-ending-')) {
+      truths.push('The Black Gate is opening beyond the steppe, while its nearest watch forts have gone dark.');
+    }
+    if (game.nodeId === 'c6-impossible-memory'
+      || game.nodeId === 'c6-red-moot'
+      || game.nodeId === 'c6-service-case'
+      || game.nodeId === 'c6-trial-case'
+      || game.nodeId === 'c6-oath-case'
+      || game.nodeId === 'c6-ancestor-coup'
+      || game.nodeId === 'c6-final-alliance'
+      || game.nodeId.startsWith('c6-ending-')) {
+      truths.push('The ancestor voices arrive through the Unsea. Some are memories or imitations, but at least one learns and feels fear.');
+    }
+    if (game.nodeId === 'c6-final-alliance' || game.nodeId.startsWith('c6-ending-')) {
+      truths.push('The storm tried to replace the living Moot with one command. We broke that command without silencing every ancestor voice.');
+    }
+    return truths;
+  }
+
   truths.push('The sealed route page did not match Caelan’s memory, and the attackers prepared for every route before he chose one.');
 
   if (game.chapter >= 3) {
@@ -389,5 +436,19 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c5-freed-vaor')) consequences.push('Because you freed Vaor, an ancient dragon travels as a willing but independent ally.');
   if (game.flags.includes('c5-took-ember-by-force')) consequences.push('Because you took the ember by force, its power obeys you while Vaor follows as an enemy.');
   if (game.flags.includes('c5-vaor-pact')) consequences.push('Because you made a pact with Vaor, his voice, grief, and fire now travel inside you.');
+  if (game.flags.includes('c6-saved-lift-siblings')) consequences.push('Because you saved the western lift handlers, Kharad Vey judged your actions before your Crown badge.');
+  if (game.flags.includes('c6-herd-service-complete')) consequences.push('Because you served beside the herders, their clan carried your actions into the Red Moot.');
+  if (game.flags.includes('c6-forge-service-complete')) consequences.push('Because you served in the brake forge, the wheelwrights saw whether you listened before using power.');
+  if (game.flags.includes('c6-shrine-service-complete')) consequences.push('Because you protected the shrine children, the town saw you place living choice above a beloved dead voice.');
+  if (game.flags.includes('c6-admitted-concord-crime')) consequences.push('Because you admitted the Concord’s hidden victims publicly, the storm could not use that truth as its private weapon.');
+  if (game.flags.includes('c6-named-ilyra-manipulation')) consequences.push('Because you named Ilyra’s unstated pressure, she now negotiates with you more openly.');
+  if (game.flags.includes('c6-ilyra-interest-acknowledged')) consequences.push('Because you separated honest attraction from political need, mutual interest with Ilyra has begun without becoming a promise.');
+  if (game.flags.includes('c6-oath-investigate-unsea')) consequences.push('Because you swore to investigate the ancestor voices, the steppe’s lost families now travel inside your duty.');
+  if (game.flags.includes('c6-oath-recognised-red-moot')) consequences.push('Because your Oath recognises the Red Moot, future command cannot quietly turn its alliance into obedience.');
+  if (game.flags.includes('c6-oath-crown-restitution')) consequences.push('Because you promised Crown restitution, returning to Greyhaven may place your Oath against the throne.');
+  if (game.flags.includes('c6-preserved-ancestor-voices')) consequences.push('Because you broke the controlling command without silencing every voice, the town may still learn which ancestors are truly conscious.');
+  if (game.flags.includes('c6-red-moot-war')) consequences.push('Because you asked Kharad Vey for war, the entire wheel town is moving toward the Black Gate.');
+  if (game.flags.includes('c6-red-moot-alliance')) consequences.push('Because you asked for a guarded alliance, Korran leads volunteer riders beside your cause under the Moot’s authority.');
+  if (game.flags.includes('c6-red-moot-neutral')) consequences.push('Because you accepted neutrality, Kharad Vey remains protected while its guides and witnesses support your road.');
   return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }

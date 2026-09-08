@@ -1213,6 +1213,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'ember',
     final: true,
+    nextChapter: 'c6-steppe-road',
+    introducesStoryTerms: ['Kharad Vey'],
     body: () => [
       'Vaor breaks through the mountain roof. Cold blue fire reaches for him and recoils from the warm ember now burning inside your chest.',
       'You are an ember bearer now: a living carrier for part of the fire Nail. The power warms your blood. When your attention slips, that warmth curls toward hunger.',
@@ -1231,6 +1233,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'ember',
     final: true,
+    nextChapter: 'c6-steppe-road',
+    introducesStoryTerms: ['Kharad Vey'],
     body: () => [
       'Warm fire seals the worst of the grave behind you, but it cannot restore the Health the cold flame took. Every wound reminds you how the ember entered your body.',
       'You are an ember bearer now: a living carrier for part of the fire Nail. The flame moves the instant you command it. Vaor’s answering roar follows from inside the mountain.',
@@ -1249,6 +1253,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Rising',
     art: 'ember',
     final: true,
+    nextChapter: 'c6-steppe-road',
+    introducesStoryTerms: ['Kharad Vey'],
     body: (state) => [
       'You leave the grave with a second heartbeat beneath your armour. Vaor’s body rests by choice inside the protective glass shell. He is no longer chained, and he can break free when he is ready to face the sky.',
       'You are an ember bearer now: a living carrier for part of the fire Nail. Warm flame answers your breath. So does Vaor’s grief, vast enough to make the eastern sky look painfully small.',

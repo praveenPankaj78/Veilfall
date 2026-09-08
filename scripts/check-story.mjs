@@ -93,6 +93,9 @@ if (/Trust \{game\.relationships|Attraction \{game\.relationships|Future intimat
 if (!pageSource.includes('relationshipSummary(game.relationships[person])')) {
   failures.push('app/page.tsx: relationships are not presented as qualitative states');
 }
+if (!pageSource.includes("return ilyraKnown ? ['mara', 'lysara', 'ilyra'] : ['mara', 'lysara'];")) {
+  failures.push('app/page.tsx: Ilyra relationship state is visible before the player meets her');
+}
 const lessonPosition = pageSource.indexOf('{node.lesson && (');
 const prosePosition = pageSource.indexOf('<div className="prose">');
 if (lessonPosition === -1 || prosePosition === -1 || lessonPosition > prosePosition) {

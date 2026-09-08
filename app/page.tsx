@@ -57,8 +57,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v10.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v11.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v10.save',
   'veilfall.saga.v9.save',
   'veilfall.saga.v8.save',
   'veilfall.saga.v7.save',
@@ -68,7 +69,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6;
 
 const sceneArtwork = {
   departure: {
@@ -111,6 +112,18 @@ const sceneArtwork = {
     src: '/art/ember-bearer-vision.png',
     alt: 'Caelan carries Vaor’s ember while a vision of the Black Gate opens above him',
   },
+  kharad: {
+    src: '/art/kharad-vey-wheel-city.png',
+    alt: 'Caelan and his companions approach Kharad Vey as the wheel town crosses the Ember Steppe',
+  },
+  storm: {
+    src: '/art/ancestor-storm-attack.png',
+    alt: 'Caelan and Korran defend the moving town from an ancestor storm',
+  },
+  moot: {
+    src: '/art/red-moot-ilyra.png',
+    alt: 'Caelan and Ilyra stand before the Red Moot while ancestor voices gather outside',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
@@ -118,6 +131,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   3: 'veilfall.chapter-three.v1.start',
   4: 'veilfall.chapter-four.v1.start',
   5: 'veilfall.chapter-five.v1.start',
+  6: 'veilfall.chapter-six.v1.start',
 };
 
 const chapterLibrary = [
@@ -145,6 +159,11 @@ const chapterLibrary = [
     number: 5 as const,
     title: 'The Dragon’s Cold Grave',
     summary: 'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
+  },
+  {
+    number: 6 as const,
+    title: 'The City on Wheels',
+    summary: 'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
   },
 ];
 
@@ -190,11 +209,13 @@ function migrateRelationships(value: Partial<GameState>) {
       if (flags.has('c5-admitted-future-with-mara')) return 'committed' as const;
       if (flags.has('c5-kissed-mara') || flags.has('c4-kissed-mara') || flags.has('c2-kissed-mara')) return 'exploring' as const;
       if (flags.has('flirted-mara') || flags.has('shared-unease')) return 'interested' as const;
-    } else {
+    } else if (person === 'lysara') {
       if (flags.has('c5-lysara-friendship') || flags.has('c4-platonic-lysara')) return 'platonic' as const;
       if (flags.has('c5-admitted-future-with-lysara')) return 'committed' as const;
       if (flags.has('c5-kissed-lysara')) return 'exploring' as const;
       if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara')) return 'interested' as const;
+    } else {
+      if (flags.has('c6-ilyra-interest-acknowledged')) return 'interested' as const;
     }
     return 'unresolved' as const;
   };
@@ -210,6 +231,11 @@ function migrateRelationships(value: Partial<GameState>) {
         ...initialState.relationships.lysara,
         ...value.relationships.lysara,
         intent: value.relationships.lysara?.intent ?? inferredIntent('lysara'),
+      },
+      ilyra: {
+        ...initialState.relationships.ilyra,
+        ...value.relationships.ilyra,
+        intent: value.relationships.ilyra?.intent ?? inferredIntent('ilyra'),
       },
     };
   }
@@ -247,14 +273,23 @@ function migrateRelationships(value: Partial<GameState>) {
       friction: flags.has('revealed-seed') ? 1 : 0,
       intent: inferredIntent('lysara'),
     },
+    ilyra: {
+      trust: count(['c6-named-ilyra-manipulation', 'c6-ilyra-professional-alliance', 'c6-ilyra-evidence-alliance']),
+      attraction: flags.has('c6-ilyra-interest-acknowledged') ? 2 : 0,
+      respect: count(['c6-named-ilyra-manipulation', 'c6-ilyra-professional-alliance', 'c6-ilyra-leads-evidence']),
+      friction: flags.has('c6-refused-ilyra-pressure') ? 1 : 0,
+      intent: inferredIntent('ilyra'),
+    },
   };
 }
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c5-')
-    ? 5
-    : nodeId.startsWith('c4-')
+  const chapter = nodeId.startsWith('c6-')
+    ? 6
+    : nodeId.startsWith('c5-')
+      ? 5
+      : nodeId.startsWith('c4-')
       ? 4
       : nodeId.startsWith('c3-')
         ? 3
@@ -302,6 +337,7 @@ function defeatForChoice(chapter: ChapterNumber, choice: Choice, state: GameStat
       : state.flags.includes('c5-chose-sorin-care')
         ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while your companions call your name and Vaor roars beneath the mountain.'
         : 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
+    6: 'You complete the action, but the moving city and the red storm take the last of your strength. The deck rolls beneath you while Korran calls the living crews together and the ember fades behind your ribs.',
   };
   return {
     title: 'Caelan has fallen',
@@ -384,8 +420,32 @@ function activePromises(game: GameState) {
   if (game.flags.includes('c4-oath-honest-with-mara')) promises.push('Do not hide behind duty when speaking with Mara.');
   if (game.flags.includes('c5-oath-carry-vaor-grief')) promises.push('Hear Vaor’s grief without turning away.');
   if (game.flags.includes('c5-vaor-pact')) promises.push('Carry Vaor’s voice and ember until both of you agree the duty is complete.');
+  if (game.flags.includes('c6-oath-investigate-unsea')) promises.push('Discover which ancestor voices are truly conscious.');
+  if (game.flags.includes('c6-oath-recognised-red-moot')) promises.push('Recognise the Red Moot’s living authority in every alliance you lead.');
+  if (game.flags.includes('c6-oath-crown-restitution')) promises.push('Bring the Concord’s hidden victims before the Queen or oppose the throne that buries them.');
+  if (game.flags.includes('c6-oath-defends-refusal')) promises.push('Defend the clans’ right to refuse future Crown control.');
+  if (game.flags.includes('c6-oath-honest-limit')) promises.push('Bind only your own command, testimony, and defence of the Red Moot.');
   if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
   return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
+}
+
+const beforeIlyraNodes = new Set([
+  'c6-steppe-road',
+  'c6-running-gate',
+  'c6-broken-axle',
+  'c6-first-duty',
+  'c6-herd-duty',
+  'c6-forge-duty',
+  'c6-shrine-duty',
+  'c6-ancestor-warning',
+  'c6-storm-breach',
+  'c6-korran-terms',
+]);
+
+function visibleRelationshipKeys(game: GameState): RelationshipKey[] {
+  const ilyraKnown = game.completedChapters.includes(6)
+    || (game.nodeId.startsWith('c6-') && !beforeIlyraNodes.has(game.nodeId));
+  return ilyraKnown ? ['mara', 'lysara', 'ilyra'] : ['mara', 'lysara'];
 }
 
 export default function Home() {
@@ -531,6 +591,7 @@ export default function Home() {
   const truths = useMemo(() => knownTruths(game), [game]);
   const promises = useMemo(() => activePromises(game), [game]);
   const consequences = useMemo(() => majorConsequences(game), [game]);
+  const visibleRelationships = visibleRelationshipKeys(game);
   const chapterProgress = node.final
     ? 100
     : Math.min(96, Math.round((game.chapterChoices / 15) * 100));
@@ -596,7 +657,7 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4, 5] as ChapterNumber[]).filter((number) => number > chapter)) {
+    for (const later of ([2, 3, 4, 5, 6] as ChapterNumber[]).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -689,6 +750,25 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterSix() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c6-steppe-road',
+      chapter: 6,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 5])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 2),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        command: Math.min(6, game.stats.command + 1),
+      },
+      history: [...game.history, 'You leave Dragonspine for Kharad Vey with every earlier consequence.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[6]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return <main className="min-h-screen bg-[#07090b]" aria-label="Loading Veilfall" />;
   }
@@ -733,7 +813,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {game.chapter === 5 ? 'V' : game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
+          Caelan {game.chapter === 6 ? 'VI' : game.chapter === 5 ? 'V' : game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
         </div>
         <div className="top-actions">
           <Button
@@ -992,7 +1072,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 4 ? (
                     <>
                       <h2>Chapter Five is ready</h2>
                       <p>
@@ -1012,16 +1092,36 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Six is ready</h2>
+                      <p>
+                        Continue into The City on Wheels with every surviving consequence.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterSix}
+                      >
+                        Continue to Chapter Six
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter Five
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Six</h2>
+                    <h2>Caelan will return in Chapter Seven</h2>
                     <p>
-                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire.
-                      Kharad Vey moves across the Ember Steppe while the Black Gate begins to open.
+                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire toward the Black Gate.
+                      A Crown army follows beneath a storm of dead commanders.
                     </p>
                     <Button className="begin-button" size="lg" onClick={restart}>
-                      Replay Chapter Five
+                      Replay Chapter Six
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>
@@ -1090,7 +1190,7 @@ export default function Home() {
 
           <div className="relationships-panel">
             <p className="panel-title">Relationships</p>
-            {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
+            {visibleRelationships.map((person) => (
               <div className="relationship-row" key={person}>
                 <strong>{relationshipLabels[person]}</strong>
                 <span>{relationshipSummary(game.relationships[person])}</span>
@@ -1133,7 +1233,7 @@ export default function Home() {
             <section>
               <span>People</span>
               <div className="journal-people">
-                {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
+                {visibleRelationships.map((person) => (
                   <p key={person}>
                     <strong>{relationshipLabels[person]}</strong>
                     {relationshipSummary(game.relationships[person])}
@@ -1180,7 +1280,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mobile-sheet-relationships">
-            {(Object.keys(game.relationships) as RelationshipKey[]).map((person) => (
+            {visibleRelationships.map((person) => (
               <p key={person}>
                 <strong>{relationshipLabels[person]}</strong>
                 {relationshipSummary(game.relationships[person])}

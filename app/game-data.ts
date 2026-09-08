@@ -1,6 +1,7 @@
 import { adventureChoiceUpdates, adventureNodeUpdates } from './adventure-revision';
 import { chapterFourNodes } from './chapter-four';
 import { chapterFiveNodes } from './chapter-five';
+import { chapterSixNodes } from './chapter-six';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -13,7 +14,7 @@ export type StatKey =
 
 export type GameStats = Record<StatKey, number>;
 
-export type RelationshipKey = 'mara' | 'lysara';
+export type RelationshipKey = 'mara' | 'lysara' | 'ilyra';
 
 export type RelationshipIntent =
   | 'unresolved'
@@ -35,7 +36,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -91,7 +92,10 @@ export type StoryNode = {
     | 'nails'
     | 'dragonspine'
     | 'vaor'
-    | 'ember';
+    | 'ember'
+    | 'kharad'
+    | 'storm'
+    | 'moot';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
@@ -110,7 +114,15 @@ export type StoryTermKey =
   | 'Regent Malrec'
   | 'cold fire'
   | 'Vaor'
-  | 'Orivane';
+  | 'Orivane'
+  | 'Kharad Vey'
+  | 'Ember Steppe'
+  | 'ancestor storm'
+  | 'Black Gate'
+  | 'Red Moot'
+  | 'Ilyra Fen'
+  | 'Threadread'
+  | 'Unsea';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -128,6 +140,7 @@ export const initialState: GameState = {
   relationships: {
     mara: { trust: 2, attraction: 1, respect: 2, friction: 0, intent: 'unresolved' },
     lysara: { trust: 0, attraction: 0, respect: 1, friction: 0, intent: 'unresolved' },
+    ilyra: { trust: 0, attraction: 0, respect: 0, friction: 0, intent: 'unresolved' },
   },
   contentPreference: {
     intimacy: 'fade',
@@ -150,6 +163,7 @@ export const statLabels: Record<StatKey, string> = {
 export const relationshipLabels: Record<RelationshipKey, string> = {
   mara: 'Mara',
   lysara: 'Lysara',
+  ilyra: 'Ilyra',
 };
 
 type RelationshipEffects = Partial<Record<RelationshipKey, Partial<RelationshipScore>>>;
@@ -221,6 +235,16 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
     mara: { trust: 1, respect: 1, intent: 'platonic' },
     lysara: { trust: 1, respect: 1, intent: 'platonic' },
   },
+  'c6-name-ilyra-test': { ilyra: { trust: 1, respect: 2 } },
+  'c6-accept-ilyra-interest': {
+    ilyra: { trust: 1, attraction: 2, respect: 1, intent: 'interested' },
+  },
+  'c6-refuse-ilyra-pressure': { ilyra: { respect: 1, friction: 1 } },
+  'c6-keep-ilyra-professional': { ilyra: { trust: 1, respect: 1 } },
+  'c6-let-ilyra-thread-ember': { ilyra: { trust: 1, respect: 1 } },
+  'c6-state-what-is-known': { ilyra: { trust: 1, respect: 1 } },
+  'c6-ask-ilyra-publicly-lead-proof': { ilyra: { trust: 2, respect: 2 } },
+  'c6-let-ilyra-turn-command': { ilyra: { trust: 2, respect: 1 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -231,6 +255,7 @@ export function nextRelationships(current: Relationships, choice: Choice): Relat
   const next = {
     mara: { ...current.mara },
     lysara: { ...current.lysara },
+    ilyra: { ...current.ilyra },
   };
   const effects = relationshipChanges(choice);
   for (const [person, changes] of Object.entries(effects)) {
@@ -3240,6 +3265,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...originalNodes,
   ...chapterFourNodes,
   ...chapterFiveNodes,
+  ...chapterSixNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -3368,6 +3394,28 @@ export const nodeOrder = [
   'c5-ending-free',
   'c5-ending-force',
   'c5-ending-pact',
+  'c6-steppe-road',
+  'c6-running-gate',
+  'c6-broken-axle',
+  'c6-first-duty',
+  'c6-herd-duty',
+  'c6-forge-duty',
+  'c6-shrine-duty',
+  'c6-ancestor-warning',
+  'c6-storm-breach',
+  'c6-korran-terms',
+  'c6-ilyra-entry',
+  'c6-storm-trace',
+  'c6-impossible-memory',
+  'c6-red-moot',
+  'c6-service-case',
+  'c6-trial-case',
+  'c6-oath-case',
+  'c6-ancestor-coup',
+  'c6-final-alliance',
+  'c6-ending-war',
+  'c6-ending-alliance',
+  'c6-ending-neutral',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

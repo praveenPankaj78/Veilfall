@@ -2,7 +2,7 @@
 
 ## Canon status
 
-This document defines the redesigned canon. The first four playable chapters now form its canonical opening act.
+This document defines the redesigned canon. The first six playable chapters now carry Caelan from the altered road to the Red Moot of Kharad Vey.
 
 ## The promise
 

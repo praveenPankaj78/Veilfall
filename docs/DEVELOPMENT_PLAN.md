@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the first five canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
+The project contains a functioning choice engine and the first six canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -36,7 +36,7 @@ Required work:
 
 - add protagonist specific resource schemas;
 - add world Nail and regional state;
-- maintain Trust, Attraction, Respect, Friction, and explicit relationship intent for Mara and Lysara while showing only qualitative summaries to players;
+- maintain Trust, Attraction, Respect, Friction, and explicit relationship intent for Mara, Lysara, and Ilyra while showing only qualitative summaries to players;
 - add travel and companion state;
 - add imported finale summaries;
 - add content preference for detailed intimacy or fade, now implemented with an adult confirmation gate;
@@ -133,4 +133,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first five canonical chapters are implemented. The next production gate is to test all three Dragonspine routes and all three ember endings, confirm that cold fire is understood before the first dangerous choice, and confirm that Orivane's sacrifice is clear without making the possible lives concept feel abstract or confusing.
+The foundation and the first six canonical chapters are implemented. The next production gate is to playtest the three Kharad Vey service routes and all three Red Moot endings, confirm that the moving city remains easy to picture, and confirm that the Unsea discovery creates curiosity without asking the player to decide too early whether every ancestor voice is real.
