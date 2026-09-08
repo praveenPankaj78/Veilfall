@@ -14,12 +14,14 @@ The next hook is direct: Caelan carries a living ember toward Kharad Vey while t
 
 - Arresting Rook makes his continued presence an irritating legal compromise. He escaped the cuff but did not abandon the road.
 - Bargaining with Rook makes him the agreed guide and preserves his promise of one honest warning each day.
-- Trusting Rook lets him approach independently and help because he owes Caelan rather than because he was ordered.
+- Trusting Rook lets him leave after the bridge. He deliberately rejoins during the three day climb because his buyer is also in Dragonspine, then helps because he owes Caelan rather than because he was ordered.
 - Capturing Ordan leaves him in Harrowfen custody as a living witness.
 - Losing Ordan on the lower road still preserves the dispatch that leads north.
 - The snow, storm, and brass routes alter Caelan's first reaction to Dragonspine.
 - Mara remembers earlier honesty, attraction, promises, and kisses.
 - Lysara's living seed may enter the chapter intact or already strained by earlier use.
+
+Rook is therefore present at Sorin's shelter on every route, but for a different reason. The shelter repeats his current status before the player can send him to scout the royal camp.
 
 ## Fifteen decision structure
 

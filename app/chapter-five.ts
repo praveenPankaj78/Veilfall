@@ -11,7 +11,17 @@ function rookArrival(state: GameState) {
   if (has(state, 'c4-rook-bargain')) {
     return 'Rook keeps the bargain he made on the bridge. He guides you north, names each hidden turn, and supplies exactly one honest warning per day. You have started to dread the honest ones.';
   }
-  return 'You trusted Rook to choose his own road. He vanished for most of the climb, then appeared above the path with dry boots and a stolen Crown map. “I led you by removing several bad guides,” he says.';
+  return 'You trusted Rook to choose his own road. He left after the bridge, then deliberately rejoined your group during the three day climb because his buyer is also somewhere in Dragonspine. He appeared above the path with dry boots and a stolen Crown map. “I led you by removing several bad guides,” he says.';
+}
+
+function rookAtShelter(state: GameState) {
+  if (has(state, 'c4-rook-arrested')) {
+    return 'Rook waits beside the refuge door, still travelling north under your arrest even though the empty cuff now hangs from his wrist like jewellery.';
+  }
+  if (has(state, 'c4-rook-bargain')) {
+    return 'Rook waits beside the refuge door. Your bargain keeps him with the group until you find the buyer who sent him north.';
+  }
+  return 'Rook is still with you after rejoining the group on the climb. You gave him freedom, and he is using it to follow his buyer toward the abandoned royal camp.';
 }
 
 function ordanCustody(state: GameState) {
@@ -200,6 +210,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       has(state, 'c5-lost-winter-supplies')
         ? 'The sacrificed ration pack saved Sorin. It also leaves one blanket for every two people. Mara sits close enough that the heat of her thigh reaches yours through wet cloth, a practical kindness that neither of you mistakes for only that.'
         : 'Mara sits beside you beneath one blanket. Her shoulder presses against yours while she studies the pale burn around your glove.',
+      rookAtShelter(state),
       'Sorin sketches three paths to the upper grave. Before you choose one, you have time to learn one useful thing. “What do you need first?” he asks.',
     ],
     choices: [

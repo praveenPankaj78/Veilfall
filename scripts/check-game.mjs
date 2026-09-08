@@ -956,11 +956,20 @@ if (!/cuff now hangs from his own wrist like a bracelet/i.test(arrestEnding)
 const chapterFiveRookImports = [
   ['c4-rook-arrested', /empty iron cuff worn as a bracelet/i],
   ['c4-rook-bargain', /one honest warning per day/i],
-  ['c4-rook-trusted', /I led you by removing several bad guides/i],
+  ['c4-rook-trusted', /deliberately rejoined your group.*buyer is also somewhere in Dragonspine/i],
 ];
 for (const [flag, expected] of chapterFiveRookImports) {
   const arrival = renderedBody('c5-north-road', { ...chapterFiveBase, flags: [flag] });
   if (!expected.test(arrival)) failures.push(`Chapter Five forgets Rook import ${flag}`);
+}
+const chapterFiveShelterRookImports = [
+  ['c4-rook-arrested', /still travelling north under your arrest/i],
+  ['c4-rook-bargain', /bargain keeps him with the group/i],
+  ['c4-rook-trusted', /still with you after rejoining the group/i],
+];
+for (const [flag, expected] of chapterFiveShelterRookImports) {
+  const shelter = renderedBody('c5-glass-shelter', { ...chapterFiveBase, flags: [flag] });
+  if (!expected.test(shelter)) failures.push(`The Chapter Five shelter does not establish Rook’s presence for ${flag}`);
 }
 const capturedOrdanArrival = renderedBody('c5-north-road', {
   ...chapterFiveBase,
