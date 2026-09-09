@@ -70,9 +70,9 @@ Mechanic: Reputation earned through local service.
 
 ## 7. The Red Wind Hunt
 
-Active question: Who is controlling the pursuing army?
+Active question: Why is Asterra's own army hunting Caelan instead of defending the Black Gate?
 
-Answer: Malrec deliberately emptied the Black Gate's defence.
+Answer: Malrec legally moved the Crown March away from the Gate before framing Caelan. A separate hidden power uses a dead marshal's signals to keep the army fighting in the west.
 
 Next hook: What is he preparing to release?
 

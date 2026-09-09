@@ -4,24 +4,24 @@ function has(state: GameState, flag: string) {
   return state.flags.includes(flag);
 }
 
-function rookArrival(state: GameState) {
+function bridgeParting(state: GameState) {
   if (has(state, 'c4-rook-arrested')) {
-    return 'Rook walks twenty steps ahead with the empty iron cuff worn as a bracelet. You arrested him on the bridge. He escaped without leaving. Each flash of iron at his wrist tightens your jaw.';
+    return 'Rook escaped your cuff at the final arch and took the lower road toward the Underways. He left a mirrored coin scratched with one safe northern turn. The empty chain at your belt still tightens your jaw.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Rook keeps the bargain he made on the bridge. He guides you north, names each hidden turn, and supplies exactly one honest warning per day. Whenever his smile disappears, your hand finds your sword.';
+    return 'Rook took the Underways to follow the money that paid Ordan. He kept the first term of your bargain by leaving a mirrored coin scratched with one safe northern turn and one warning: the Regent expects you to obey.';
   }
-  return 'You trusted Rook to choose his own road. He left after the bridge, then deliberately rejoined your group during the three day climb because his buyer is also somewhere in Dragonspine. He appeared above the path with dry boots and a stolen Crown map. “I led you by removing several bad guides,” he says.';
+  return 'You trusted Rook to choose his own road. He chose the Underways, following the buyer while you turned north. The silver knot he threw back has opened one hidden turn during the three day climb. Trust did not make him obedient. It made his absence useful.';
 }
 
-function rookAtShelter(state: GameState) {
+function partingTool(state: GameState) {
   if (has(state, 'c4-rook-arrested')) {
-    return 'Rook waits beside the refuge door, still travelling north under your arrest even though the empty cuff now hangs from his wrist like jewellery.';
+    return 'Mara sets the mirrored coin Rook abandoned beside Sorin’s charcoal map. Its scratched line points toward a narrow fold hidden inside the royal camp.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Rook waits beside the refuge door. Your bargain keeps him with the group until you find the buyer who sent him north.';
+    return 'Mara sets Rook’s warning coin beside Sorin’s charcoal map. Under cold glass, writing appears along its edge: the buyer’s camp mark and a patrol time.';
   }
-  return 'Rook is still with you after rejoining the group on the climb. You gave him freedom, and he is using it to follow his buyer toward the abandoned royal camp.';
+  return 'Mara unties the silver knot Rook left at the bridge. A sliver of black map wax sits inside it, carrying the outline of a hidden entrance to the royal camp.';
 }
 
 function relationshipInterlude(state: GameState) {
@@ -87,7 +87,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The last Mileless stone turns under your boot and becomes Dragonspine’s lower road before dusk. That first night, no one dares light a fire. Mara shares her blanket without asking, and every boot against the glass sounds like someone following. By the third day, the mountains have swallowed the last green tree and any help that could arrive in time.',
       ordanCustody(state),
-      rookArrival(state),
+      bridgeParting(state),
       'Now blue flame rises from cracks on both sides of the path. It bends against the wind and reaches toward your lantern.',
       routeMemory(state),
       'Mara covers the lantern. The blue fire ignores the darkness and bends toward your exposed hand. You press your palm to the black glass. It steals enough heat to make the nearest flame turn away. Old strips of keeper cloth lie frozen against the wall, cold enough to hide a body’s warmth for a few minutes.',
@@ -213,7 +213,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       has(state, 'c5-lost-winter-supplies')
         ? 'The sacrificed ration pack saved Sorin. It also leaves one blanket for every two people. Mara sits close enough that the heat of her thigh reaches yours through wet cloth, a practical kindness that neither of you mistakes for only that.'
         : 'Mara sits beside you beneath one blanket. Her shoulder presses against yours while she studies the pale burn around your glove.',
-      rookAtShelter(state),
+      partingTool(state),
       'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon buried alive beside the fire Nail. A royal survey force opened his grave two nights ago. Several soldiers died when their commander tested the drill, and the survivors carried the machine higher.',
       'Sorin sketches three paths to the upper grave, then plants the charcoal point in the centre of the map. “We have time for one question,” he says. “Make it count.”',
     ],
@@ -248,12 +248,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-royal-camp',
       },
       {
-        id: 'c5-send-rook-scouting',
-        label: 'Let Rook scout the abandoned royal camp.',
-        detail: 'Let Sorin handle the burn while Rook scouts Crown property. This keeps the later interlude professional.',
-        advantage: 'He returns with the patrol schedule and one item he refuses to name yet.',
-        addFlags: ['c5-rook-scouted-camp', 'c5-chose-sorin-care'],
-        result: 'Rook leaves through the only doorway you were watching and returns through the solid wall. He gives you a patrol schedule. The square shape inside his coat is apparently none of your business.',
+        id: 'c5-decode-parting-clue',
+        label: 'Decode the clue left inside the thief’s parting tool.',
+        detail: 'Let Sorin handle the burn while you work out what the coin or wax is trying to show.',
+        advantage: 'The clue reveals the patrol schedule and the location of the commander’s seal press.',
+        addFlags: ['c5-decoded-parting-clue', 'c5-chose-sorin-care'],
+        result: 'Cold makes the hidden marks visible. They show a patrol schedule and a square inside the commander’s tent. The thief is far below the world, but one final trick has reached Dragonspine before you.',
         next: 'c5-royal-camp',
       },
     ],
@@ -270,11 +270,11 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The royal camp stands inside a ring of blue ash. Bedrolls are frozen to the ground. Three soldiers lie beside an iron drilling frame, their skin untouched and their bodies emptied of warmth.',
       'Asterra’s crowned shield marks every coat. Your colours. Your kingdom. Your stomach tightens. But each dead soldier also wears Malrec’s split mountain seal, and the orders beside them name the Regent’s private command while the Queen lies ill.',
-      'Sorin recognises the split mountain seal stamped into the drill. Commander Hale led this expedition. Rook checks the same mark against the secret code used by his buyer. The buyer was connected to this camp, but is not among the dead and has already moved east.',
+      'Sorin recognises the split mountain seal stamped into the drill. Commander Hale led this expedition. The same mark appears in the buyer’s code hidden on the parting clue. Whoever paid for the Mileless theft was connected to this camp, but has already moved east.',
       'A diagram beside the drill names its target: a living ember, a piece of Vaor’s own fire. The ember is not the fire Nail. Hale means to cut it out of the dragon and use it to control the damaged Nail.',
       'A surviving patrol is climbing back toward camp. You hear boots on glass and estimate four minutes before they see you.',
-      has(state, 'c5-rook-scouted-camp')
-        ? 'Rook quietly produces the square object from his coat. It is the commander’s seal press. “I was going to return it,” he says. “To someone surprised.”'
+      has(state, 'c5-decoded-parting-clue')
+        ? 'The hidden mark leads Mara to the commander’s seal press beneath a false floorboard. The thief could not steal it from the Underways, but he showed you exactly where to look.'
         : 'The commander’s tent is locked, the dead may carry clues, and the drill still points toward the upper grave.',
     ],
     choices: [
@@ -301,12 +301,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-three-climbs',
       },
       {
-        id: 'c5-use-rook-seal-prank',
-        label: 'Let Rook leave new orders for the returning patrol.',
-        detail: 'Use his stolen seal to turn the patrol away, but let him choose the wording.',
+        id: 'c5-use-command-seal',
+        label: 'Use the commander’s seal to turn the patrol downhill.',
+        detail: 'Issue a false warning about a cold fire breach near the lower stores.',
         advantage: 'The patrol marches toward a false emergency and cannot follow the next climb.',
-        addFlags: ['c5-rook-diverted-patrol'],
-        result: 'Rook seals an order warning that the camp latrine has become a strategic fire hazard. The patrol reads it twice and runs downhill carrying buckets. You look at the frozen soldiers until Rook’s smile fades. He follows without another joke.',
+        addFlags: ['c5-diverted-patrol-with-seal'],
+        result: 'You seal a warning that cold fire has reached the lower stores. The patrol reads the correct command mark, gathers suppression cloth, and runs downhill. The lie buys time, but using Hale’s seal creates evidence he may later turn against you.',
         next: 'c5-three-climbs',
       },
       {
@@ -378,7 +378,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: () => [
       'The stair climbs through open air. Each step is transparent. Looking down shows the lower valley far beneath your boots.',
       'Six royal archers fire from a stone lip. The arrows are ordinary. The blue fire spreading across the steps behind you is not. Standing still will let it reach the wounded first.',
-      'Rook shifts one boot. Six clear reflections shift with him while the glass gives everyone else only one. Your eyes move from the copies to his mirrored coat buttons. His answering grin is far too pleased.',
+      'Lysara lifts her green thread between two glass posts. The stair repeats its reflection six times. Six empty paths now appear to climb toward the archers, but the living seed darkens wherever an arrow strikes.',
     ],
     choices: [
       {
@@ -404,12 +404,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-grave-mouth',
       },
       {
-        id: 'c5-stair-rook-reflections',
-        label: 'Let Rook send his reflections up first.',
-        detail: 'Trust a trick that exposes Rook’s position to anyone who understands his kit.',
+        id: 'c5-stair-thread-reflections',
+        label: 'Send Lysara’s reflected thread paths up first.',
+        detail: 'Risk part of the living seed to make the archers fire at six empty climbs.',
         advantage: 'The archers waste every ready arrow on six convincing thieves.',
-        addFlags: ['c5-rook-burned-mirror-trick'],
-        result: 'Six Rooks sprint up six reflections. The real one stays beside you and waves politely while the archers empty their quivers into glass.',
+        addFlags: ['c5-stair-scorched-thread'],
+        result: 'Six green paths race up the glass. The archers empty their ready quivers into reflections while your group climbs the one dark route between them. Three strands of the living seed burn away.',
         next: 'c5-grave-mouth',
       },
     ],
@@ -473,8 +473,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'dragonspine',
     body: () => [
       'The ash tunnel climbs beneath the royal drill. Each iron strike sends black dust from the ceiling. Warm air moves through cracks, but the next blow closes half the passage behind you.',
-      'A support beam splits. Sorin strikes four sharp notes against it, the old keeper signal for a collapse, then says the tunnel will hold for perhaps one minute. Rook watches his hand and listens to the rhythm.',
-      'Six blows travel through the rock. A pause. Six more. Muffled voices count above you, unaware that every strike drops stone onto the people below. Rook raises one finger before the next count begins.',
+      'A support beam splits. Sorin strikes four sharp notes against it, the old keeper signal for a collapse, then says the tunnel will hold for perhaps one minute.',
+      'Six blows travel through the rock. A pause. Six more. Muffled voices count above you, unaware that every strike drops stone onto the people below. Sorin cups his hands around his mouth. If he gives the keeper warning, the drill crew will know a living guide brought you here.',
     ],
     choices: [
       {
@@ -500,12 +500,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-grave-mouth',
       },
       {
-        id: 'c5-tunnel-rook-knock',
-        label: 'Let Rook answer the drill through the wall.',
-        detail: 'Trust him to imitate the mountain keeper’s collapse signal.',
-        advantage: 'The crew stops drilling, but Rook spends the voice reed that copied Sorin.',
-        addFlags: ['c5-rook-spent-sorin-reed'],
-        result: 'Rook taps four notes on the wall, then shouts in Sorin’s exact voice. Above you, the crew panics and hauls the drill backward. Sorin looks at Rook. “Never do that again.” Rook nods with no sincerity at all.',
+        id: 'c5-tunnel-keeper-warning',
+        label: 'Let Sorin give the keeper’s collapse warning.',
+        detail: 'Stop the drill without spending a stat, but reveal that a mountain keeper still lives.',
+        advantage: 'The crew withdraws the drill before the tunnel falls on your party.',
+        addFlags: ['c5-sorin-revealed-to-crown'],
+        result: 'Sorin strikes four notes and calls the warning through the stone. The crew panics and hauls the drill backward. A royal voice above shouts Sorin’s name. The tunnel survives, but Hale now knows who guided you.',
         next: 'c5-grave-mouth',
       },
     ],
@@ -785,7 +785,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     body: () => [
       'Sorin sits you at a keeper’s bench and works powdered glass into warm resin. Mara holds the lamp. Lysara steadies the fragment in a loop of green thread. Nobody turns the treatment into a question about whom you desire.',
       'The resin bites when Sorin presses it over the burn. Your hand begins to feel like your own again. “Pain means the cold has not taken it,” he says. “Useful news. Not pleasant news.”',
-      'Rook lays four stolen spoons in a neat row and claims this is medical support. Mara moves one toward him without looking. He pockets all four.',
+      'Sorin lays four matching spoons in a neat row and insists each has a different medical purpose. Mara studies them. “All four are for stirring resin.” Sorin hides the fourth behind his wrist. “That one is for morale.”',
       'For once, the quiet belongs to you. Sorin ties the final knot. “Your minute, captain,” he says. “Use it.”',
     ],
     choices: [
@@ -795,7 +795,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         detail: 'Choose a full platonic path without leaving either relationship silently pending.',
         advantage: 'Both women receive an honest place in your life that does not depend on romance.',
         addFlags: ['c5-mara-friendship', 'c5-lysara-friendship'],
-        result: 'You say it plainly. Mara hooks an arm around your shoulders. Lysara leans against the other side with careful dignity until Rook calls it a treaty formation and all three of you tell him to be quiet.',
+        result: 'You say it plainly. Mara hooks an arm around your shoulders. Lysara leans against the other side with careful dignity. Sorin calls it a stable treatment formation, and all three of you tell him to finish the bandage.',
         next: 'c5-memory-wall',
       },
       {
@@ -817,12 +817,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-memory-wall',
       },
       {
-        id: 'c5-let-rook-distract-pain',
-        label: 'Ask Rook why a thief carries four matching spoons.',
+        id: 'c5-ask-sorin-about-spoons',
+        label: 'Ask Sorin why a keeper needs four matching spoons.',
         detail: 'Choose ordinary laughter before entering the oldest grief in the mountain.',
         advantage: 'The group may reach Vaor less frightened and more human.',
-        addFlags: ['c5-rook-spoon-story'],
-        result: 'Rook gives four incompatible answers. By the third, Sorin is laughing too hard to tie the bandage. The danger has not changed, but your breathing has.',
+        addFlags: ['c5-sorin-spoon-story'],
+        result: 'Sorin gives four incompatible medical answers. By the third, Mara is smiling and Lysara has invented a fifth use with a perfectly straight face. The danger has not changed, but your breathing has.',
         next: 'c5-memory-wall',
       },
     ],
@@ -841,7 +841,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       vaorResponse(state),
       'Lysara studies the iron cage fixed beneath Vaor’s breastbone. “That broken cage is the fire Nail,” she says. “The warm light inside Vaor is his living ember. They are not the same thing.”',
       'The fragment in your hand belongs to the Nail of Distance, but all nine Nails were forged with the same outer lock. The fragment can open the fire Nail without being part of it. Removing Vaor’s ember would restore heat to the valleys for a time, but doing it by force could kill him.',
-      'Rook looks from the dragon to the narrow lock beside Vaor’s claw. “I have stolen from kings, graves, and one very possessive goose,” he says. “This is the first lock that can eat me.”',
+      'A narrow lock beside Vaor’s claw opens and closes like iron teeth. The mirrored coin left at the bridge warms in Mara’s pocket. Its scratched edge matches the width of the lock, as if the thief expected you to face one impossible mechanism without him.',
       'Vaor flexes the claw pinned beneath the nearest plate. A crack runs toward your boot. “Captain,” he says. “Will your first answer be a weapon?”',
     ],
     choices: [
@@ -864,12 +864,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-vaor-test',
       },
       {
-        id: 'c5-let-rook-test-lock',
-        label: 'Let Rook inspect the lock beside Vaor’s claw.',
-        detail: 'Give the thief freedom to surprise both dragon and captain.',
-        advantage: 'Rook finds the Crown’s control spike without touching the Nail.',
-        addFlags: ['c5-rook-found-control-spike'],
-        result: 'Rook kneels, studies the lock, then slides one of his established mirrored coins beneath its teeth. The lock bites the reflection instead of his hand. A hidden iron spike springs out of the floor. Vaor stares. “The goose was angrier,” Rook explains.',
+        id: 'c5-test-lock-with-mirror',
+        label: 'Test the lock with the thief’s mirrored coin.',
+        detail: 'Consume the parting tool to trigger the mechanism without risking a hand.',
+        advantage: 'The reflection reveals the Crown’s hidden control spike before Hale can use it.',
+        addFlags: ['c5-found-control-spike', 'c5-spent-parting-coin'],
+        result: 'You slide the mirrored coin beneath the teeth. The lock bites its own reflection, snaps the coin in half, and throws a hidden control spike from the floor. Vaor looks at the broken metal. “Your absent thief has irritating instincts,” he says.',
         next: 'c5-vaor-test',
       },
       {
@@ -931,7 +931,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c5-shared-dragon-witness'],
-        result: 'Mara, Lysara, Sorin, and Rook each place a hand on the glass. Vaor’s memory enters four different minds and leaves four different voices able to tell it.',
+        result: 'Mara, Lysara, Sorin, and you each place a hand on the glass. Vaor’s memory enters four different minds and leaves four different voices able to tell it.',
         next: 'c5-crown-assault',
       },
       {
@@ -991,14 +991,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-heart-memory',
       },
       {
-        id: 'c5-trust-rook-false-extraction',
-        label: 'Help Rook stage the theft of a false ember.',
-        detail: 'Spend 1 Resolve trusting his mirrored decoy while the real fragment remains in your hand.',
+        id: 'c5-stage-reflected-ember',
+        label: 'Turn the broken mirrored coin into a false ember.',
+        detail: 'Spend 1 Resolve trusting Lysara’s light and the grave’s reflections while the real fragment remains in your hand.',
         advantage: 'The false ember may draw Hale’s strongest soldiers away and leave the drill exposed.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c5-rook-staged-ember-theft'],
-        result: 'Lysara lights one of Rook’s mirrored coins. He appears to pluck a red ember from Vaor’s chest, bows, and runs. Hale sends eight soldiers after him. Mara cuts the exposed drive belt while they chase the decoy, stopping the drill and forcing Hale behind the control platform.',
+        addFlags: ['c5-staged-reflected-ember'],
+        result: 'Lysara lights the broken mirrored coin and sends its red reflection racing through the glass passages. Hale sends eight soldiers after the moving light. Mara cuts the exposed drive belt while they chase it, stopping the drill and forcing Hale behind the control platform.',
         next: 'c5-heart-memory',
       },
       {
@@ -1029,7 +1029,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'Orivane gives her living heart to create the Concord. Nobody forces her. Her fire separates the colliding realms and gives Edrath one stable shape.',
       'Then the hidden cost becomes painfully simple. The memory shows one village existing in two forming histories. In both, families are already awake and children are eating breakfast. When the Concord settles, one village remains. The other turns transparent in the middle of an ordinary morning and is cut away from Edrath while its people are still reaching for one another.',
       'The rulers knew that some forming histories already held living people. They told Orivane only that unstable possibilities would be closed. She sees the village during her final breath and demands that future generations judge the Concord again. The memory does not show where the cut away people went.',
-      'Lysara’s voice shakes beside you. “Her choice was willing. Their silence still stole part of that choice.” At the edge of the memory, Rook stretches painted theatre cloth between two cracked shelves and anchors it with wire. Hale is still hidden behind the platform, and Rook is preparing for his return.',
+      'Lysara’s voice shakes beside you. “Her choice was willing. Their silence still stole part of that choice.” At the edge of the memory, Sorin points out a gallery release built to drop damaged shelves away from Vaor. Hale is still hidden behind the platform, close to that release.',
       'The rulers seal the evidence inside Vaor’s grave. The final image holds on Orivane’s open eye. Vaor’s voice enters the memory beside you. “What will you remember when the mountain falls?”',
     ],
     choices: [
@@ -1065,12 +1065,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-grave-collapse',
       },
       {
-        id: 'c5-let-rook-copy-proof',
-        label: 'Let Rook copy the memory into black wax.',
-        detail: 'Create portable proof while accepting that a thief will own another copy.',
+        id: 'c5-copy-proof-into-map-wax',
+        label: 'Copy the memory into the blank side of the map wax.',
+        detail: 'Turn the thief’s parting clue into portable proof, destroying the hidden route written on its other side.',
         advantage: 'The truth can survive the collapse even if every glass plate breaks.',
-        addFlags: ['c5-rook-copied-first-memory'],
-        result: 'Rook presses black wax to the glass. When he lifts it, Orivane’s final fire moves inside. For once, he has no joke ready.',
+        addFlags: ['c5-memory-copied-to-map-wax', 'c5-lost-parting-route'],
+        result: 'You press the black wax to the glass. Orivane’s final fire moves inside it when you lift it. The route on the other side is gone, traded for proof that may outlive the mountain.',
         next: 'c5-grave-collapse',
       },
     ],
@@ -1086,9 +1086,9 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'vaor',
     body: (state) => [
       'Hale rises from behind the control platform beside the narrow seam he kept watching. He drives its hidden spike down. The grave answers by pulling every glass plate toward Vaor at once. He intends to bury the dragon, the witnesses, and himself before the truth leaves the mountain.',
-      has(state, 'c5-rook-found-control-spike')
-        ? 'Rook saw the spike earlier. His silver wire is already looped around its release, but someone must give him time to pull it.'
-        : 'Rook sees the release only after the spike moves. His silver wire can reach it, but falling glass fills the space between.',
+      has(state, 'c5-found-control-spike')
+        ? 'You saw the spike earlier. Sorin has already shown Mara which gallery release can bury its mechanism without touching Vaor.'
+        : 'Sorin sees the gallery release only after the spike moves. Reaching it now means crossing beneath falling glass.',
       has(state, 'c5-chose-lysara-care')
         ? 'Lysara disappears beneath the edge of one collapsing shelf. Mara catches the fragment against her shield while Sorin hugs the oldest memory plate to his chest.'
         : has(state, 'c5-chose-mara-care')
@@ -1135,12 +1135,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         next: 'c5-ember-choice',
       },
       {
-        id: 'c5-rook-drop-false-ceiling',
-        label: 'Let Rook collapse the false gallery around Hale.',
-        detail: 'Use his prepared wire and sacrifice part of the Crown evidence to stop the control spike.',
+        id: 'c5-drop-damaged-gallery',
+        label: 'Drop the damaged gallery around Hale.',
+        detail: 'Use Sorin’s emergency release and sacrifice part of the Crown evidence to stop the control spike.',
         advantage: 'Everyone reaches Vaor, and Hale is trapped away from the Nail without spending a stat.',
-        addFlags: ['c5-rook-trapped-hale', 'c5-lost-royal-camp-proof'],
-        result: 'Rook pulls the wire you saw him anchor during the memory. Painted theatre cloth and loose glass fall around Hale like a collapsing ceiling, driving him away from the spike. Once everyone reaches Vaor, Rook starts to call it architecture. Your look makes him save the joke for later.',
+        addFlags: ['c5-trapped-hale-with-gallery', 'c5-lost-royal-camp-proof'],
+        result: 'You strike the emergency release Sorin showed you. Loose glass falls around Hale and drives him away from the spike. Everyone reaches Vaor, but the collapse shatters the royal orders stored beside the platform.',
         next: 'c5-ember-choice',
       },
     ],

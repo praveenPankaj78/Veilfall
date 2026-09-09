@@ -119,15 +119,15 @@ Lysara's route is political and personal rather than a copy of Mara's physical s
 
 ### Arrest
 
-Caelan applies the law and takes Rook toward Dragonspine as a prisoner. Rook slips free, wears the unopened cuff on his own wrist, and remains on Caelan's north road under investigation. Caelan keeps the fragment.
+Caelan applies the law before the roads divide. Rook slips free, wears the unopened cuff on his own wrist, and enters the Underways as a named fugitive. Caelan keeps the fragment and turns north.
 
 ### Bargain
 
-Rook names the buyer's meeting arrangement and agrees to guide Caelan north. Their cooperation has explicit terms. Caelan keeps the fragment.
+Rook names the buyer's payment trail and agrees to follow it through the Underways while sending Caelan one honest warning. Their cooperation has explicit terms across separate roads. Caelan keeps the fragment and turns north.
 
 ### Trust
 
-Caelan places the survivors in Rook's hands and lets him choose his own road. Rook reveals a safe exit and accepts a personal debt. Caelan keeps the fragment.
+Caelan places the survivors in Rook's hands and lets him choose his own road. Rook reveals a safe exit, accepts a personal debt, and chooses the Underways. Caelan keeps the fragment and turns north.
 
 All three endings award the same Wayfire. The choice expresses duty and relationship instead of rewarding one answer with a stronger total gain.
 
@@ -139,7 +139,7 @@ All three endings award the same Wayfire. The choice expresses duty and relation
 - Sacrificing gear at the anchor removes part of the documentary case against the Crown.
 - Allowing a full wax copy gives Rook more accurate knowledge and creates a debt.
 - Mara remembers Caelan's stated rule about law, any honesty Oath, and any kiss.
-- Chapter Five must explain how the group reaches Dragonspine and why cold blue fire matters before offering choices that use it.
+- Chapter Five must explain how Caelan's group reaches Dragonspine without Rook and why cold blue fire matters before offering choices that use it.
 
 ## Automated protection
 

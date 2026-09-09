@@ -2,7 +2,7 @@
 
 ## Canon status
 
-This document defines the redesigned canon. The first six playable chapters now carry Caelan from the altered road to the Red Moot of Kharad Vey.
+This document defines the redesigned canon. The first seven playable chapters now carry Caelan from the altered road through the Red Wind Hunt and toward the empty forts of the Black Gate.
 
 ## The promise
 

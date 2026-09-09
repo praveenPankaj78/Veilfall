@@ -1,6 +1,13 @@
 import { access, readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
+import {
+  documentedSeriesRoutes,
+  firstMeetingContracts,
+  implementedChapterContracts,
+  playableHeroes,
+  protectedPlotTransitions,
+} from './continuity-contract.mjs';
 
 const compilerOptions = {
   module: ts.ModuleKind.CommonJS,
@@ -62,6 +69,17 @@ vm.runInNewContext(chapterSixCompiled, {
   console,
 }, { filename: 'chapter-six.js' });
 
+const chapterSevenSource = await readFile('app/chapter-seven.ts', 'utf8');
+const chapterSevenCompiled = ts.transpileModule(chapterSevenSource, {
+  compilerOptions,
+}).outputText;
+const chapterSevenExports = {};
+vm.runInNewContext(chapterSevenCompiled, {
+  exports: chapterSevenExports,
+  module: { exports: chapterSevenExports },
+  console,
+}, { filename: 'chapter-seven.js' });
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -91,6 +109,7 @@ const context = {
     if (specifier === './chapter-four') return chapterFourExports;
     if (specifier === './chapter-five') return chapterFiveExports;
     if (specifier === './chapter-six') return chapterSixExports;
+    if (specifier === './chapter-seven') return chapterSevenExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -114,6 +133,24 @@ const {
 } = adventureExports;
 
 const failures = [];
+
+const postBridgeSources = [chapterFiveSource, chapterSixSource, chapterSevenSource];
+const activeRookAction = /\bRook (?:walks|waits|follows|looks|points|returns|offers|asks|says|carries|pulls|uses|takes|finds|helps|stands|runs|rides|scouts)\b/i;
+for (const [index, chapterSource] of postBridgeSources.entries()) {
+  if (activeRookAction.test(chapterSource)) {
+    failures.push(`Chapter ${index + 5} places Rook physically on Caelan’s route after the Mileless Bridge exit`);
+  }
+}
+if (/\bRook\b/i.test(chapterSevenSource)) {
+  failures.push('Chapter Seven places Rook and Ilyra together before their planned Serekh meeting');
+}
+for (const node of Object.values(nodes)) {
+  for (const choice of node.choices) {
+    if (/^c[567].*rook/i.test(choice.id)) {
+      failures.push(`Post bridge Caelan choice still assigns an active action to Rook: ${choice.id}`);
+    }
+  }
+}
 const nodeIds = Object.keys(nodes);
 const ordered = new Set(nodeOrder);
 const reviewedUnchangedChoices = new Set(reviewedUnchangedChoiceIds);
@@ -132,6 +169,11 @@ const chapterSixArtAssets = {
   kharad: 'public/art/kharad-vey-wheel-city.png',
   storm: 'public/art/ancestor-storm-attack.png',
   moot: 'public/art/red-moot-ilyra.png',
+};
+const chapterSevenArtAssets = {
+  redwind: 'public/art/red-wind-pursuit.png',
+  saltbattle: 'public/art/salt-basin-battle.png',
+  marshal: 'public/art/marshal-field-confrontation.png',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -184,6 +226,29 @@ for (const [art, asset] of Object.entries(chapterFiveArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Five artwork is missing: ${asset}`);
+  }
+}
+const earlierThanSevenArt = new Set([
+  ...earlierChapterArt,
+  ...Object.keys(chapterFourArtAssets),
+  ...Object.keys(chapterFiveArtAssets),
+  ...Object.keys(chapterSixArtAssets),
+]);
+const chapterSevenArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c7-')) continue;
+  if (!node.art) failures.push(`Chapter Seven node has no explicit art: ${id}`);
+  if (earlierThanSevenArt.has(node.art)) {
+    failures.push(`Chapter Seven node reuses earlier chapter art: ${id} uses ${node.art}`);
+  }
+  if (node.art) chapterSevenArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterSevenArtAssets)) {
+  if (!chapterSevenArtUsed.has(art)) failures.push(`Chapter Seven never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Seven artwork is missing: ${asset}`);
   }
 }
 
@@ -302,6 +367,12 @@ function stateKey(state) {
     'c5-chose-mara-care',
     'c5-chose-lysara-care',
     'c5-chose-sorin-care',
+    'c6-red-moot-war',
+    'c6-red-moot-alliance',
+    'c6-red-moot-neutral',
+    'c7-lio-alive',
+    'c7-copied-gate-diversion',
+    'c7-teren-saw-gate-order',
   ]);
   const requirementCaps = {
     health: 2,
@@ -430,6 +501,142 @@ const chapterSixBase = {
     wayfire: 11,
   },
 };
+const chapterSevenKnownTerms = Object.keys(statLabels);
+const chapterSevenKnownStoryTerms = [
+  ...chapterSixKnownStoryTerms,
+  'Ember Steppe',
+  'ancestor storm',
+  'Black Gate',
+  'Red Moot',
+  'Ilyra Fen',
+  'Threadread',
+  'Unsea',
+];
+const chapterSevenBase = {
+  ...initialState,
+  nodeId: 'c7-red-horizon',
+  chapter: 7,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5, 6],
+  flags: ['c5-freed-vaor', 'c6-red-moot-alliance'],
+  stats: {
+    ...initialState.stats,
+    health: 7,
+    resolve: 7,
+    command: 5,
+    oathfire: 5,
+    medicine: 0,
+    wayfire: 13,
+  },
+};
+
+const chapterBaseStates = {
+  1: initialState,
+  2: chapterTwoBase,
+  3: chapterThreeBase,
+  4: chapterFourBase,
+  5: chapterFiveBase,
+  6: chapterSixBase,
+  7: chapterSevenBase,
+};
+
+function nodeIsInChapter(nodeId, chapter) {
+  if (chapter === 1) return !/^c[2-7]-/.test(nodeId);
+  return nodeId.startsWith(`c${chapter}-`);
+}
+
+function visibleNodeText(node, state) {
+  const body = typeof node.body === 'function' ? node.body(state) : node.body;
+  return [
+    node.kicker,
+    node.title,
+    node.location,
+    node.objective,
+    node.lesson?.title,
+    node.lesson?.body,
+    ...body,
+    ...node.choices.flatMap((choice) => [choice.label, choice.detail, choice.advantage, choice.result]),
+  ].filter(Boolean).join(' ');
+}
+
+const allStoryFlags = [...new Set(Object.values(nodes)
+  .flatMap((node) => node.choices)
+  .flatMap((choice) => choice.addFlags ?? []))];
+
+for (const contract of implementedChapterContracts) {
+  if (!nodes[contract.entryNode]) {
+    failures.push(`Continuity contract has a missing Chapter ${contract.chapter} entry: ${contract.entryNode}`);
+  }
+  for (const endingId of contract.endingNodes) {
+    const ending = nodes[endingId];
+    if (!ending?.final) failures.push(`Continuity contract ending is missing or not final: ${endingId}`);
+    if (contract.nextNode !== null && ending?.nextChapter !== contract.nextNode) {
+      failures.push(`${endingId} no longer reaches the protected next plot node ${contract.nextNode}`);
+    }
+  }
+
+  const baseState = chapterBaseStates[contract.chapter];
+  const chapterNodes = nodeOrder.filter((nodeId) => nodeIsInChapter(nodeId, contract.chapter));
+  const sampleStates = [
+    baseState,
+    ...allStoryFlags.map((flag) => ({ ...baseState, flags: [...baseState.flags, flag] })),
+  ];
+  const permitted = new Set([contract.series, ...contract.activeGuests, ...contract.legacyOnlyHeroes]);
+
+  for (const nodeId of chapterNodes) {
+    const node = nodes[nodeId];
+    for (const state of sampleStates) {
+      const text = visibleNodeText(node, state);
+      for (const [hero, displayName] of Object.entries(playableHeroes)) {
+        if (!permitted.has(hero) && new RegExp(`\\b${displayName}\\b`, 'i').test(text)) {
+          failures.push(`${nodeId} introduces ${displayName} outside an approved crossover or legacy window`);
+          break;
+        }
+      }
+    }
+  }
+
+  for (const [hero, introductionNode] of Object.entries(contract.introductions ?? {})) {
+    const introductionIndex = nodeOrder.indexOf(introductionNode);
+    const displayName = playableHeroes[hero];
+    for (const nodeId of chapterNodes) {
+      if (nodeOrder.indexOf(nodeId) >= introductionIndex) continue;
+      if (new RegExp(`\\b${displayName}\\b`, 'i').test(visibleNodeText(nodes[nodeId], baseState))) {
+        failures.push(`${displayName} is named in ${nodeId} before the protected introduction at ${introductionNode}`);
+      }
+    }
+  }
+}
+
+for (const transition of protectedPlotTransitions) {
+  for (const endingId of transition.endingNodes) {
+    const chapter = implementedChapterContracts.find((contract) => contract.endingNodes.includes(endingId))?.chapter ?? 1;
+    const endingText = visibleNodeText(nodes[endingId], chapterBaseStates[chapter]);
+    for (const term of transition.requiredTerms) {
+      if (!endingText.toLocaleLowerCase().includes(term.toLocaleLowerCase())) {
+        failures.push(`${endingId} dropped protected plot term ${term} from ${transition.id}`);
+      }
+    }
+  }
+}
+
+const worldMapSource = await readFile('docs/WORLD_MAP.md', 'utf8');
+for (const [hero, route] of Object.entries(documentedSeriesRoutes)) {
+  const writtenRoute = route.join(' to ');
+  if (!worldMapSource.includes(writtenRoute)) {
+    failures.push(`WORLD_MAP.md no longer contains the protected ${hero} route: ${writtenRoute}`);
+  }
+}
+
+const seriesBibleSource = await readFile('docs/CHARACTER_SERIES_BIBLE.md', 'utf8');
+for (const meeting of firstMeetingContracts) {
+  const heroNames = meeting.heroes.map((hero) => playableHeroes[hero]);
+  if (!seriesBibleSource.includes(heroNames[0])
+    || !seriesBibleSource.includes(heroNames[1])
+    || !seriesBibleSource.includes(meeting.place)) {
+    failures.push(`The documented first meeting for ${heroNames.join(' and ')} is missing its protected location ${meeting.place}`);
+  }
+}
 const storyTermRules = {
   Oathwarden: {
     use: /\bOathwarden\b/i,
@@ -511,11 +718,25 @@ const storyTermRules = {
     use: /\bUnsea\b/i,
     introduction: /Unsea is a realm beneath ordinary reality/i,
   },
+  'Crown March': {
+    use: /\bCrown March\b/i,
+    introduction: /Crown March is an army of Asterra/i,
+  },
+  'dead command': {
+    use: /\bdead command\b/i,
+    introduction: /Dead command means a voice inside the ancestor storm/i,
+  },
+  'Marshal Teren Voss': {
+    use: /\bMarshal Teren Voss\b/i,
+    introduction: /Marshal Teren Voss rides beneath a white truce cloth/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c6-')
-    ? chapterSixBase
-    : id.startsWith('c5-')
+  const sampleState = id.startsWith('c7-')
+    ? chapterSevenBase
+    : id.startsWith('c6-')
+      ? chapterSixBase
+      : id.startsWith('c5-')
       ? chapterFiveBase
       : id.startsWith('c4-')
       ? chapterFourBase
@@ -570,9 +791,9 @@ for (const [id, node] of Object.entries(nodes)) {
 }
 
 const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3, 4, 5, 6]) {
+for (const chapter of [1, 2, 3, 4, 5, 6, 7]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
-    ? !/^c[23456]-/.test(id)
+    ? !/^c[234567]-/.test(id)
     : id.startsWith(`c${chapter}-`));
   const sampleState = chapter === 1
     ? initialState
@@ -584,7 +805,9 @@ for (const chapter of [1, 2, 3, 4, 5, 6]) {
           ? chapterFourBase
           : chapter === 5
             ? chapterFiveBase
-            : chapterSixBase;
+            : chapter === 6
+              ? chapterSixBase
+              : chapterSevenBase;
   const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
   if (closeNodes.length / chapterNodes.length < 0.6) {
     failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
@@ -1192,28 +1415,28 @@ const arrestEnding = renderedBody('c4-ending-arrest', {
   flags: ['c4-rook-full-copy'],
 });
 if (!/cuff now hangs from his own wrist like a bracelet/i.test(arrestEnding)
-  || !/twenty steps ahead/i.test(arrestEnding)
+  || !/Underways/i.test(arrestEnding)
   || /around your wrist/i.test(arrestEnding)) {
   failures.push('The Chapter Four arrest ending places the cuff incorrectly or erases the arrest choice');
 }
 
 const chapterFiveRookImports = [
-  ['c4-rook-arrested', /empty iron cuff worn as a bracelet/i],
-  ['c4-rook-bargain', /one honest warning per day/i],
-  ['c4-rook-trusted', /deliberately rejoined your group.*buyer is also somewhere in Dragonspine/i],
+  ['c4-rook-arrested', /escaped your cuff.*Underways.*mirrored coin/i],
+  ['c4-rook-bargain', /Underways.*mirrored coin.*warning/i],
+  ['c4-rook-trusted', /chose the Underways.*silver knot/i],
 ];
 for (const [flag, expected] of chapterFiveRookImports) {
   const arrival = renderedBody('c5-north-road', { ...chapterFiveBase, flags: [flag] });
   if (!expected.test(arrival)) failures.push(`Chapter Five forgets Rook import ${flag}`);
 }
 const chapterFiveShelterRookImports = [
-  ['c4-rook-arrested', /still travelling north under your arrest/i],
-  ['c4-rook-bargain', /bargain keeps him with the group/i],
-  ['c4-rook-trusted', /still with you after rejoining the group/i],
+  ['c4-rook-arrested', /mirrored coin Rook abandoned/i],
+  ['c4-rook-bargain', /Rook’s warning coin/i],
+  ['c4-rook-trusted', /silver knot Rook left/i],
 ];
 for (const [flag, expected] of chapterFiveShelterRookImports) {
   const shelter = renderedBody('c5-glass-shelter', { ...chapterFiveBase, flags: [flag] });
-  if (!expected.test(shelter)) failures.push(`The Chapter Five shelter does not establish Rook’s presence for ${flag}`);
+  if (!expected.test(shelter)) failures.push(`The Chapter Five shelter does not preserve Rook’s parting legacy for ${flag}`);
 }
 const capturedOrdanArrival = renderedBody('c5-north-road', {
   ...chapterFiveBase,
@@ -1289,12 +1512,12 @@ if (/Vaor|survey force|soldiers died|survivors carried/i.test(sorinRescue)
 }
 const royalCamp = renderedBody('c5-royal-camp', chapterFiveBase);
 if (!/living ember, a piece of Vaor’s own fire/i.test(royalCamp)
-  || !/buyer was connected to this camp.*already moved east/i.test(royalCamp)) {
-  failures.push('The royal camp does not introduce the ember plainly or continue Rook’s buyer thread');
+  || !/paid for the Mileless theft was connected to this camp.*already moved east/i.test(royalCamp)) {
+  failures.push('The royal camp does not introduce the ember plainly or continue the buyer thread');
 }
 const ashTunnel = renderedBody('c5-ash-tunnel', chapterFiveBase);
 if (!/four sharp notes.*old keeper signal for a collapse/i.test(ashTunnel)) {
-  failures.push('Rook’s copied collapse signal is not demonstrated before the ash tunnel choice');
+  failures.push('Sorin’s keeper collapse signal is not demonstrated before the ash tunnel choice');
 }
 const vaorMeeting = renderedBody('c5-vaor-wakes', chapterFiveBase);
 if (!/broken cage is the fire Nail/i.test(vaorMeeting)
@@ -1304,10 +1527,11 @@ if (!/broken cage is the fire Nail/i.test(vaorMeeting)
   || /belongs to its outer ring/i.test(vaorMeeting)) {
   failures.push('Vaor’s meeting does not distinguish the Distance fragment, fire Nail, and living ember');
 }
-const rookLockChoice = nodes['c5-vaor-wakes'].choices.find((choice) => choice.id === 'c5-let-rook-test-lock');
-if (!/established mirrored coins?/i.test(rookLockChoice?.result ?? '')
+const mirrorLockChoice = nodes['c5-vaor-wakes'].choices.find((choice) => choice.id === 'c5-test-lock-with-mirror');
+if (!/mirrored coin/i.test(mirrorLockChoice?.result ?? '')
+  || !/snaps the coin in half/i.test(mirrorLockChoice?.result ?? '')
   || /missing boot/i.test(chapterFiveSource)) {
-  failures.push('Rook still uses an unestablished object to test Vaor’s lock');
+  failures.push('The parting mirror does not visibly reveal the lock and get consumed');
 }
 const vaorQuestion = renderedBody('c5-vaor-test', chapterFiveBase);
 if (!/people of those who chained me/i.test(vaorQuestion)
@@ -1320,16 +1544,16 @@ if (!/world to survive long enough to condemn me/i.test(haleAssault)
   failures.push('Commander Hale still lacks a distinct motive or a direct response from Caelan');
 }
 const haleOrderChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-turn-hale-soldiers');
-const falseEmberChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-trust-rook-false-extraction');
+const falseEmberChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-stage-reflected-ember');
 if (/read what he ordered/i.test(haleOrderChoice?.label ?? '')
   || !/written order, the abandoned dead, or the killing drill/i.test(haleOrderChoice?.detail ?? '')
   || !/false ember/i.test(falseEmberChoice?.label ?? '')) {
-  failures.push('The Hale assault choices still assume evidence the player may not have or hide Rook’s decoy');
+  failures.push('The Hale assault choices still assume evidence the player may not have or hide the reflected decoy');
 }
 const assaultResolutions = [
   ['c5-break-royal-drill', /drill tears itself apart.*Hale retreats/i],
   ['c5-turn-hale-soldiers', /drill stops.*Hale retreats/i],
-  ['c5-trust-rook-false-extraction', /stopping the drill.*forcing Hale behind/i],
+  ['c5-stage-reflected-ember', /stopping the drill.*forcing Hale behind/i],
   ['c5-free-claw-against-crown', /crushes the drill.*Hale throws himself behind/i],
 ];
 for (const [choiceId, expected] of assaultResolutions) {
@@ -1346,8 +1570,8 @@ if (!/drill stopped and Hale forced behind/i.test(heartMemory)
   || /Children who might have been born|Towns that might have grown/i.test(heartMemory)) {
   failures.push('Orivane’s memory remains abstract or begins before the assault is contained');
 }
-if (!/Rook stretches painted theatre cloth.*anchors it with wire/i.test(heartMemory)) {
-  failures.push('Rook’s false gallery is not visibly prepared before the collapse');
+if (!/Sorin points out a gallery release/i.test(heartMemory)) {
+  failures.push('Sorin does not visibly establish the emergency gallery release before the collapse');
 }
 const maraAfterBridgeKiss = renderedBody('c5-mara-burns', {
   ...chapterFiveBase,
@@ -1489,6 +1713,22 @@ for (const [endingId, flag] of Object.entries(chapterSixEndingFlags)) {
     failures.push(`${endingId} does not record its Moot outcome with equal Wayfire`);
   }
 }
+for (const endingId of Object.keys(chapterSixEndingFlags)) {
+  if (nodes[endingId].nextChapter !== 'c7-red-horizon') {
+    failures.push(`${endingId} does not continue into Chapter Seven`);
+  }
+}
+const chapterSevenEndingFlags = {
+  'c7-ending-army': 'c7-gained-full-army',
+  'c7-ending-company': 'c7-gained-chosen-company',
+  'c7-ending-outlaw': 'c7-gained-dangerous-reputation',
+};
+for (const [endingId, flag] of Object.entries(chapterSevenEndingFlags)) {
+  const finalChoice = nodes['c7-army-future'].choices.find((choice) => choice.next === endingId);
+  if (!finalChoice?.addFlags?.includes(flag) || finalChoice.changes?.wayfire !== 2) {
+    failures.push(`${endingId} does not record its army outcome with equal Wayfire`);
+  }
+}
 const stack = [
   { state: initialState, knownTerms: [], knownStoryTerms: [] },
   {
@@ -1624,6 +1864,60 @@ const stack = [
     knownTerms: chapterSixKnownTerms,
     knownStoryTerms: chapterSixKnownStoryTerms,
   },
+  ...['c6-red-moot-war', 'c6-red-moot-alliance', 'c6-red-moot-neutral'].map((flag) => ({
+    state: { ...chapterSevenBase, flags: ['c5-freed-vaor', flag] },
+    knownTerms: chapterSevenKnownTerms,
+    knownStoryTerms: chapterSevenKnownStoryTerms,
+  })),
+  {
+    state: {
+      ...chapterSevenBase,
+      relationships: {
+        ...chapterSevenBase.relationships,
+        mara: { ...chapterSevenBase.relationships.mara, intent: 'committed' },
+      },
+    },
+    knownTerms: chapterSevenKnownTerms,
+    knownStoryTerms: chapterSevenKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterSevenBase,
+      relationships: {
+        ...chapterSevenBase.relationships,
+        mara: { ...chapterSevenBase.relationships.mara, intent: 'platonic' },
+        lysara: { ...chapterSevenBase.relationships.lysara, intent: 'committed' },
+      },
+    },
+    knownTerms: chapterSevenKnownTerms,
+    knownStoryTerms: chapterSevenKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterSevenBase,
+      relationships: {
+        mara: { ...chapterSevenBase.relationships.mara, intent: 'platonic' },
+        lysara: { ...chapterSevenBase.relationships.lysara, intent: 'platonic' },
+        ilyra: { trust: 2, attraction: 2, respect: 2, friction: 0, intent: 'interested' },
+      },
+    },
+    knownTerms: chapterSevenKnownTerms,
+    knownStoryTerms: chapterSevenKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterSevenBase,
+      stats: {
+        ...chapterSevenBase.stats,
+        health: 1,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+      },
+    },
+    knownTerms: chapterSevenKnownTerms,
+    knownStoryTerms: chapterSevenKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -1634,6 +1928,7 @@ const chapterThreeEndings = new Set();
 const chapterFourEndings = new Set();
 const chapterFiveEndings = new Set();
 const chapterSixEndings = new Set();
+const chapterSevenEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -1707,7 +2002,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c6-')) chapterSixEndings.add(node.id);
+    if (node.id.startsWith('c7-')) chapterSevenEndings.add(node.id);
+    else if (node.id.startsWith('c6-')) chapterSixEndings.add(node.id);
     else if (node.id.startsWith('c5-')) chapterFiveEndings.add(node.id);
     else if (node.id.startsWith('c4-')) chapterFourEndings.add(node.id);
     else if (node.id.startsWith('c3-')) chapterThreeEndings.add(node.id);
@@ -1746,7 +2042,8 @@ if (chapterThreeEndings.size !== 3) failures.push(`Expected 3 Chapter Three endi
 if (chapterFourEndings.size !== 3) failures.push(`Expected 3 Chapter Four endings, found ${chapterFourEndings.size}`);
 if (chapterFiveEndings.size !== 3) failures.push(`Expected 3 Chapter Five endings, found ${chapterFiveEndings.size}`);
 if (chapterSixEndings.size !== 3) failures.push(`Expected 3 Chapter Six endings, found ${chapterSixEndings.size}`);
-for (const chapter of [1, 2, 3, 4, 5, 6]) {
+if (chapterSevenEndings.size !== 3) failures.push(`Expected 3 Chapter Seven endings, found ${chapterSevenEndings.size}`);
+for (const chapter of [1, 2, 3, 4, 5, 6, 7]) {
   if (!deathChapters.has(chapter)) failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
 
@@ -1759,5 +2056,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

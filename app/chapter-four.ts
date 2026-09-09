@@ -9,7 +9,7 @@ function pursuitOpening(state: GameState) {
     return 'Your boots strike the first arch behind Ordan. He reaches for the fragment at his belt, but the dark coated thief drops between you and takes it first.';
   }
   if (has(state, 'c3-target-thief')) {
-    return 'The mirrored coin Rook left in your hand flashes as you follow him out of Harrowfen. Ahead, its twin turns between his fingers while Ordan closes from the opposite arch.';
+    return 'The mirrored coin the thief left in your hand flashes as you follow him out of Harrowfen. Ahead, its twin turns between his fingers while Ordan closes from the opposite arch.';
   }
   return 'Lysara’s guide rope snaps tight behind you as Mara, Brann, and three town guards cross from Harrowfen. The last careful knot holds, but Ordan is already several arches ahead.';
 }
@@ -123,7 +123,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: () => [
       'A crossbow bolt cuts toward the thief’s back. He bends to examine his boot at exactly the right moment, and the bolt strikes Ordan’s shoulder plate instead.',
       '“Terrible manners,” the thief calls up to the soldiers. “He was standing behind me.”',
-      'A laugh escapes before the next string clicks. Rook’s boot slips at the edge, the fragment swings over open sky, and Ordan reaches for both.',
+      'A laugh escapes before the next string clicks. The thief’s boot slips at the edge, the fragment swings over open sky, and Ordan reaches for both.',
     ],
     choices: [
       {
@@ -947,15 +947,16 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       has(state, 'c4-rook-full-copy')
         ? 'Rook has the complete nine mark map you allowed him to make. He waits beside an opening road, his promised debt sitting uneasily behind his smile.'
         : 'Rook flicks a thin wax scrap into his palm. It shows only the northern mark and two blurred roads. Refusing the full copy has limited what he can sell or follow.',
-      '“I want the buyer who knew your sealed route,” Rook says. “Keep me alive until I reach them, and give me my freedom afterward. In return, I get you through roads your Wardens cannot see.” For once, the offer arrives without a joke.',
+      'Rook studies two roads as they pull apart. The northern arch leads toward Dragonspine. A lower arch sinks beneath the bridge and carries the mark of the Underways, where his buyer moved the money that paid Ordan.',
+      '“You take the real iron north,” Rook says. “I follow the payment below. If we both survive, we meet again with different answers.” For once, the offer arrives without a joke.',
       'The opening road narrows behind Rook. He extends both hands, wrists together, and waits to learn whether they will hold a cuff, a bargain, or your trust.',
     ],
     choices: [
       {
         id: 'c4-arrest-rook',
-        label: 'Arrest Rook and take him toward Dragonspine.',
+        label: 'Arrest Rook before he takes the Underways.',
         detail: 'Keep the law visible, even if a thief will treat chains as a suggestion.',
-        advantage: 'Rook becomes a named prisoner and your claim to his map copy is lawful.',
+        advantage: 'Rook becomes a named fugitive if he escapes, and the Underways trail becomes part of your case.',
         changes: { wayfire: 2 },
         addFlags: ['c4-rook-arrested'],
         result: 'You close an iron cuff around Rook’s wrist. He thanks you for choosing the lock he practised on in Harrowfen.',
@@ -965,7 +966,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         id: 'c4-bargain-with-rook',
         label: 'Bargain for his buyer’s name and roadcraft.',
         detail: 'Let him travel unchained under terms both of you understand.',
-        advantage: 'Rook agrees to guide you to Dragonspine and expose the buyer at the meeting.',
+        advantage: 'Rook agrees to follow the buyer through the Underways and send you one honest warning.',
         changes: { wayfire: 2 },
         addFlags: ['c4-rook-bargain'],
         result: 'You offer protection until the buyer is exposed. Rook offers directions, one honest warning per day, and no promise about your pockets.',
@@ -995,10 +996,10 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     final: true,
     nextChapter: 'c5-north-road',
     body: (state) => [
-      'Rook leads you through two false walls and a road hidden behind falling water. By the final turn, he has slipped his hand free. The unopened cuff now hangs from his own wrist like a bracelet, but he remains on your north road, twenty steps ahead.',
-      '“Escaped custody,” he says. “Not the investigation.”',
-      `He holds ${rookMapCopy(state)} to the light. “We can argue about the arrest in the mountains.”`,
-      'You keep the real fragment. Mara keeps Rook’s mirrored coin. Ahead, blue fire burns above Dragonspine, and the Regent’s order feels heavier than the iron in your hand.',
+      'Rook leads you through two false walls and a road hidden behind falling water. At the final stable arch, you reach for the chain and find an empty cuff still locked around it.',
+      `Across the widening gap, Rook holds ${rookMapCopy(state)} to the light. The cuff now hangs from his own wrist like a bracelet. “Escaped custody,” he calls. “Not the investigation.”`,
+      'Then he drops through the lower arch toward the Underways. He leaves his mirrored coin at your feet, scratched with the first safe turn toward Dragonspine.',
+      'You keep the real fragment. Mara takes the marked coin. Ahead, blue fire burns above the northern mountains, and the Regent’s order feels heavier than the iron in your hand.',
     ],
     choices: [],
   },
@@ -1007,8 +1008,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     id: 'c4-ending-bargain',
     kicker: 'Chapter Four complete',
     title: 'A Thief’s Honest Warning',
-    location: 'The North Road',
-    objective: 'Reach Dragonspine before Rook’s buyer claims the next World Nail.',
+    location: 'The Dividing Roads',
+    objective: 'Reach Dragonspine while Rook follows the buyer through the Underways.',
     threat: 'Rising',
     art: 'nails',
     final: true,
@@ -1017,7 +1018,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'Rook guides every survivor through the hidden exit, then gives you the buyer’s meeting phrase and the first honest warning required by your bargain.',
       'Rook begins with a joke, stops, and looks at the road instead of you. The missing smile holds your attention.',
       '“The person paying me knew your sealed route before Ordan did,” he says. “They also expect you to obey the Regent and carry the fragment north.”',
-      `He steps onto a road running beside yours, close enough to follow and far enough to escape. You keep the real fragment. Rook keeps ${rookMapCopy(state)}, which points toward Dragonspine, where cold blue fire waits above the mountains.`,
+      `He gives Mara a mirrored coin scratched with the first safe turn north. Then he steps onto the lower road toward the Underways with ${rookMapCopy(state)} hidden inside his coat.`,
+      'You keep the real fragment and turn toward Dragonspine. Rook follows the money below the world. Your bargain now binds two separate journeys to the same unknown enemy.',
     ],
     choices: [],
   },
@@ -1026,7 +1028,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     id: 'c4-ending-trust',
     kicker: 'Chapter Four complete',
     title: 'The Road Rook Leaves Behind',
-    location: 'The North Road',
+    location: 'The Dividing Roads',
     objective: 'Take the fragment to Dragonspine and decide whether the royal order is a trap.',
     threat: 'Rising',
     art: 'nails',
@@ -1036,7 +1038,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'Rook finds a safe road for the wounded, the prisoner, and every surviving guard. Only when the last person reaches firm ground does he step onto a separate arch.',
       'Your shoulders loosen when the last wounded guard reaches stone. Rook notices, gives no joke, and steps onto a separate arch before your hand can find the cuff at your belt.',
       `He tosses you a silver wire tied into a small knot. “Pull that when the sensible options become fatal.” Then he hides ${rookMapCopy(state)} in his coat. Your trust has not made him obedient, but it has clearly unsettled him.`,
-      'You keep the real fragment. Mara joins you on the north road as Dragonspine rises beyond the clouds, crowned in cold blue fire. Somewhere ahead, Rook is taking a less sensible route to the same answer.',
+      'The lower arch closes behind Rook and carries him toward the Underways. You keep the real fragment. Mara joins you on the north road as Dragonspine rises beyond the clouds, crowned in cold blue fire.',
     ],
     choices: [],
   },

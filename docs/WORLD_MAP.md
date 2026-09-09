@@ -65,6 +65,8 @@ Greyhaven to Mileless Bridge to Underways to Brassreach to Serekh to Unsea to Lu
 
 The route moves from enclosed criminal spaces into places where hiding becomes conceptually impossible.
 
+The Mileless Bridge is a crossing, not a route merger. After the shared event, Caelan turns north toward Dragonspine and Rook descends into the Underways. A guest appearance never changes a protagonist's established route unless the series outline records that change first.
+
 ### Ilyra's route
 
 Shard Coast to Thornweald to Ember Steppe to Dragonspine to Serekh to Unsea to Worldroot.
@@ -79,6 +81,8 @@ The route follows memory from personal loss through cultural history and finally
 4. Injuries, supplies, and companions affect route options.
 5. Outer realm time differences are recorded in the save state.
 6. Every major return visit shows at least one consequence from the player's earlier decisions.
+7. Every crossover has a written entry point, exit point, and next destination for each hero.
+8. A hero may leave a clue, debt, injury, tool, or promise on another route. That legacy does not mean the hero remains physically present.
 7. New regions are added only if they perform a function the current map cannot.
 
 ## Art direction

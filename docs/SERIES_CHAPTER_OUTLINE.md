@@ -220,7 +220,7 @@ Personal ending: Caelan may return to the road, rule the fortress ring, remain w
 
 World impact: Devils become sealed enemies, recognised neighbours, invading powers, or voices within Caelan. The shock cracks the Luminous Court's control of dawn.
 
-Bridge to Rook: On the first changed sunrise, every locked door in Greyhaven opens for one breath. Rook uses that breath to steal the Crown's hidden atlas.
+Bridge to Rook: The changed sunrise reaches Rook later on his own journey. Depending on Caelan's final choice, it opens, seals, or renames one route into the Luminous Court. It does not begin Rook's series or move him onto Caelan's road.
 
 # Series Two: A Thief of Dawn
 
@@ -236,7 +236,7 @@ Play contract: Rook's normal visible states are Health, Focus, and Heat. Setup i
 
 Location: Greyhaven's river roofs and sealed royal archive.
 
-Main event: During the strange sunrise caused by Caelan's finale, every lock opens. Rook has seconds to enter the archive and steal the prison record of his missing sister Senna.
+Main event: On the morning Caelan's sealed route is altered, a pulse from the damaged Nail of Distance makes every lock in the river archive open for one breath. Rook has seconds to enter and steal the prison record of his missing sister Senna.
 
 Defining choice: Take Senna's file, the valuable Crown ledger, or a living map that calls him by an abandoned name.
 
@@ -280,7 +280,7 @@ Romance movement: Sen sees whether Rook's concern for her survives when she is n
 
 Revelation: Caelan is carrying the matching half of the world map.
 
-End state: Rook leaves with a copied route to the goblin Underways and a relationship of debt, rivalry, or respect with Caelan.
+End state: Rook leaves with a copied route to the goblin Underways and a relationship of debt, rivalry, or respect with Caelan. Caelan turns north toward Dragonspine. Rook goes below the world. They do not travel together after this chapter.
 
 ### Chapter Four: The City Under Foot
 

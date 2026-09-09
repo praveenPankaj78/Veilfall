@@ -2,6 +2,7 @@ import { adventureChoiceUpdates, adventureNodeUpdates } from './adventure-revisi
 import { chapterFourNodes } from './chapter-four';
 import { chapterFiveNodes } from './chapter-five';
 import { chapterSixNodes } from './chapter-six';
+import { chapterSevenNodes } from './chapter-seven';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -36,7 +37,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -95,7 +96,10 @@ export type StoryNode = {
     | 'ember'
     | 'kharad'
     | 'storm'
-    | 'moot';
+    | 'moot'
+    | 'redwind'
+    | 'saltbattle'
+    | 'marshal';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
@@ -122,7 +126,10 @@ export type StoryTermKey =
   | 'Red Moot'
   | 'Ilyra Fen'
   | 'Threadread'
-  | 'Unsea';
+  | 'Unsea'
+  | 'Crown March'
+  | 'dead command'
+  | 'Marshal Teren Voss';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -245,6 +252,18 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   'c6-state-what-is-known': { ilyra: { trust: 1, respect: 1 } },
   'c6-ask-ilyra-publicly-lead-proof': { ilyra: { trust: 2, respect: 2 } },
   'c6-let-ilyra-turn-command': { ilyra: { trust: 2, respect: 1 } },
+  'c7-mara-commit-equal': { mara: { trust: 2, attraction: 1, intent: 'committed' } },
+  'c7-mara-duty-first': { mara: { trust: 1, friction: 1, intent: 'exploring' } },
+  'c7-mara-end-romance': { mara: { respect: 1, intent: 'ended' } },
+  'c7-mara-choose-friendship': { mara: { trust: 1, respect: 1, intent: 'platonic' } },
+  'c7-lysara-commit-equal': { lysara: { trust: 2, attraction: 1, intent: 'committed' } },
+  'c7-lysara-mission-first': { lysara: { trust: 1, intent: 'exploring' } },
+  'c7-lysara-end-romance': { lysara: { respect: 1, intent: 'ended' } },
+  'c7-lysara-choose-friendship': { lysara: { trust: 1, respect: 1, intent: 'platonic' } },
+  'c7-ilyra-deepen-bond': { ilyra: { trust: 2, attraction: 2, respect: 1, intent: 'exploring' } },
+  'c7-ilyra-slow-interest': { ilyra: { trust: 1, attraction: 1, intent: 'interested' } },
+  'c7-ilyra-platonic-alliance': { ilyra: { trust: 1, respect: 1, intent: 'platonic' } },
+  'c7-ilyra-refuse-manipulation': { ilyra: { respect: 1, intent: 'ended' } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -3266,6 +3285,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...chapterFourNodes,
   ...chapterFiveNodes,
   ...chapterSixNodes,
+  ...chapterSevenNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -3416,6 +3436,29 @@ export const nodeOrder = [
   'c6-ending-war',
   'c6-ending-alliance',
   'c6-ending-neutral',
+  'c7-red-horizon',
+  'c7-break-town-line',
+  'c7-first-riders',
+  'c7-captured-soldier',
+  'c7-sealed-orders',
+  'c7-dead-horn',
+  'c7-ilyra-command-thread',
+  'c7-mara-future',
+  'c7-lysara-future',
+  'c7-ilyra-future',
+  'c7-quiet-watch',
+  'c7-marshal-parley',
+  'c7-dead-marshal-rises',
+  'c7-battlefield-setup',
+  'c7-defining-choice',
+  'c7-salt-trap',
+  'c7-order-exposure',
+  'c7-steppe-duel',
+  'c7-many-or-one',
+  'c7-army-future',
+  'c7-ending-army',
+  'c7-ending-company',
+  'c7-ending-outlaw',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

@@ -12,16 +12,16 @@ The next hook is direct: Caelan carries a living ember toward Kharad Vey while t
 
 ## Imported Chapter Four state
 
-- Arresting Rook makes his continued presence an irritating legal compromise. He escaped the cuff but did not abandon the road.
-- Bargaining with Rook makes him the agreed guide and preserves his promise of one honest warning each day.
-- Trusting Rook lets him leave after the bridge. He deliberately rejoins during the three day climb because his buyer is also in Dragonspine, then helps because he owes Caelan rather than because he was ordered.
+- Arresting Rook sends him into the Underways as a named fugitive after he escapes the cuff. He leaves one marked mirrored coin behind.
+- Bargaining with Rook sends him into the Underways after the buyer's payment trail. His first honest warning remains hidden on a parting coin.
+- Trusting Rook lets him choose the Underways freely. His silver knot carries one useful northern clue before it is spent.
 - Capturing Ordan leaves him in Harrowfen custody as a living witness.
 - Losing Ordan on the lower road still preserves the dispatch that leads north.
 - The snow, storm, and brass routes alter Caelan's first reaction to Dragonspine.
 - Mara remembers earlier honesty, attraction, promises, and kisses.
 - Lysara's living seed may enter the chapter intact or already strained by earlier use.
 
-Rook is therefore present at Sorin's shelter on every route, but for a different reason. The shelter repeats his current status before the player can send him to scout the royal camp.
+Rook is not physically present in Dragonspine. Sorin's shelter remembers the exact bridge outcome through a limited clue Rook left behind. The player may decode it while Sorin treats Caelan.
 
 ## Fifteen decision structure
 
@@ -65,7 +65,7 @@ The story demonstrates each part through visible movement. It does not require t
 
 ### Glass stair
 
-The shortest route exposes the party to royal archers and a deadly fall. Command, physical courage, or Rook's prepared reflection trick can break the line.
+The shortest route exposes the party to royal archers and a deadly fall. Command, physical courage, or Lysara's reflected living thread can break the line.
 
 ### Frozen river
 
@@ -73,26 +73,25 @@ The party moves under clear ice while cold fire follows overhead. Oathfire, Reso
 
 ### Ash tunnel
 
-The hidden route runs below the royal drill. Health, Command, or Rook's stolen voice can prevent a collapse.
+The hidden route runs below the royal drill. Health, Command, or Sorin's keeper warning can prevent a collapse. Using the warning reveals that Sorin still lives.
 
 The routes rejoin at the grave entrance after one route specific decision. They provide different memories and consequence flags without creating three unrelated plots.
 
-## Rook personality contract
+## Rook legacy contract
 
-Rook remains a guest in Caelan's chapter, but never becomes a passive follower. His actions use objects or observations shown first:
+Rook's bridge choice matters without moving him onto Caelan's route:
 
-- a stolen command seal becomes a ridiculous false emergency;
-- glass reflections become six visible thieves;
-- Sorin demonstrates the keeper's four note collapse warning before Rook copies it to stop a drill crew;
-- an established mirrored coin tests Vaor's lock without risking a person;
-- a mirrored coin becomes a false ember during the assault;
-- silver wire and painted theatre cloth, visibly placed during the deep memory, trap Commander Hale.
+- the exact arrest, bargain, or trust state changes the parting clue;
+- decoding the clue reveals a patrol time and seal location;
+- the mirrored coin can test Vaor's lock, but it breaks when used;
+- the blank side of map wax can preserve Orivane's memory, but doing so destroys its route;
+- no new Rook action, dialogue, or physical presence occurs in Dragonspine.
 
-Caelan decides whether to trust each setup. Rook controls the surprising execution.
+Caelan and his current companions execute every Dragonspine plan. A past crossover supplies at most one limited advantage at a time.
 
 ## Relationship movement
 
-The player chooses the caregiver visibly in Sorin's refuge. Hidden scores never select the partner. Caelan may ask Mara to own the burn check, ask Lysara to trace the Nail through it, or choose Sorin's professional care. Sending Rook to scout also leaves the later care with Sorin.
+The player chooses the caregiver visibly in Sorin's refuge. Hidden scores never select the partner. Caelan may ask Mara to own the burn check, ask Lysara to trace the Nail through it, or choose Sorin's professional care. Decoding the parting clue also leaves the later care with Sorin.
 
 On Mara's route, the player can:
 
@@ -106,7 +105,7 @@ The kiss depends on established Trust and Attraction. It follows an honest admis
 
 Lysara's route happens while she guides Caelan through moving memory glass. It centres on whether political trust and attraction can survive disagreement and evidence that may condemn both their governments. The player can choose desire, commitment, respectful alliance, explicit friendship, or an honest delay.
 
-Sorin's route is a complete professional scene with ordinary humour and no disappointed romantic partner. It can establish friendship with both women, centre Caelan on the people depending on him, learn who Vaor was before imprisonment, or let Rook distract the group from fear.
+Sorin's route is a complete professional scene with ordinary humour and no disappointed romantic partner. It can establish friendship with both women, centre Caelan on the people depending on him, learn who Vaor was before imprisonment, or let Sorin's questionable medical spoons distract the group from fear.
 
 Later Chapter Five crisis and pact text follow the caregiver the player named. A romance already being explored with one woman blocks commitment to the other until that bond has been honestly resolved.
 
@@ -134,7 +133,7 @@ Every ending grants equal Wayfire. The difference is power, consent, alliance, a
 - Mara and Lysara each remember every relevant admission, refusal, and kiss.
 - Lysara's seed remains scorched if it diverted the frozen river fire.
 - Royal witnesses exist only if Hale's soldiers turned.
-- Orivane's proof survives outside the grave only through preserved plates, shared witnesses, Caelan's memory, or Rook's wax copy.
+- Orivane's proof survives outside the grave only through preserved plates, shared witnesses, Caelan's memory, or the copy Caelan makes in the map wax.
 - The endings define Kharad Vey as the moving orc town before showing one unnamed black stone gate beginning to open. Chapter Six can introduce the Gate's proper name after the mountain truth has landed.
 
 ## Chapter artwork

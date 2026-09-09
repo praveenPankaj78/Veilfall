@@ -14,14 +14,14 @@ function emberArrival(state: GameState) {
   return 'Vaor moves inside your thoughts when the red grass appears. “A city that refuses to stop,” he says. The ember answers his voice with a second beat beneath your ribs.';
 }
 
-function rookArrival(state: GameState) {
+function underwaysParting(state: GameState) {
   if (has(state, 'c4-rook-arrested')) {
-    return 'Rook walks under your arrest in every legal sense except the useful ones. The empty cuff still circles his wrist. He has added a tiny painted lock to it.';
+    return 'Rook is not among the travellers who leave Dragonspine. He escaped your arrest at the Mileless Bridge and entered the Underways. The empty cuff remains part of your case against him, not part of this company.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Rook has kept his bridge bargain this far. He watches the moving city with the careful delight of a thief discovering that an entire town can run away with the evidence.';
+    return 'Rook is following the buyer’s payments through the Underways while you follow the Nail north and east. The bargain remains alive across the distance, but he is not part of your company.';
   }
-  return 'Rook follows by choice, which means he is usually ahead, above, or somewhere you specifically asked him not to stand. He studies the moving city and says, “At last, a sensible building. It leaves before the rent is due.”';
+  return 'Rook chose the Underways when you chose Dragonspine. The useful silver knot he left is spent now. Whatever he finds below the world belongs to another road until your paths cross again.';
 }
 
 function chosenBond(state: GameState) {
@@ -69,8 +69,8 @@ function proofCarried(state: GameState) {
   if (has(state, 'c5-royal-witnesses-turned')) {
     return 'Two royal witnesses survived Dragonspine. Their testimony can wound Malrec, but no borrowed voice can earn a place in this town for you.';
   }
-  if (has(state, 'c5-rook-copied-first-memory')) {
-    return 'Rook carries black wax impressed with Orivane’s buried truth. It can prove the old rulers lied. It cannot decide what living people should do now.';
+  if (has(state, 'c5-memory-copied-to-map-wax') || has(state, 'c5-rook-copied-first-memory')) {
+    return 'You carry black wax impressed with Orivane’s buried truth. It can prove the old rulers lied. It cannot decide what living people should do now.';
   }
   return 'The truth of Orivane’s sacrifice survives mainly in your memory. You will have to earn belief before you can ask anyone to act on it.';
 }
@@ -93,7 +93,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'Dragonspine ends without warning. Black glass gives way to red grass, hot wind, and a sky wide enough to make you feel exposed. This is the Ember Steppe. Six days of open country lie between the mountain and the black stone from your vision. Your map names it plainly: the Black Gate. The Crown road leading there is empty.',
       emberArrival(state),
       chosenBond(state),
-      rookArrival(state),
+      underwaysParting(state),
       'Then Kharad Vey rises over the grass. The town is built across twelve wooden platforms, each riding on wheels taller than a gatehouse. Homes, forges, animal pens, and watchtowers move together while thousands of feet and turning axles make the earth tremble.',
       'A wounded orc rider races past and points at the red cloud. “Ancestor storm,” he shouts. “It wears our honoured dead and calls the living into danger.” The city will cross a split in the ground within minutes. If you miss its western lift, you will be trapped outside with those voices.',
       'Mara looks from the racing town to your tired party. “We can reach it. Getting invited aboard may be the difficult part.”',
@@ -131,12 +131,12 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         next: 'c6-running-gate',
       },
       {
-        id: 'c6-let-rook-steal-a-ride',
-        label: 'Let Rook attach a line to the passing livestock crane.',
-        detail: 'Trust his prepared hook and accept an undignified entrance.',
+        id: 'c6-hook-livestock-crane',
+        label: 'Have Mara hook the passing livestock crane.',
+        detail: 'Sacrifice the best climbing line and accept an undignified entrance.',
         advantage: 'The crane should pull the weakest travellers to the city without spending a stat.',
-        addFlags: ['c6-rook-crane-entry'],
-        result: 'Rook fires a padded hook through the crane rope. The livestock basket swings down, collects six startled travellers, and rises beside a deeply offended goat. “Local transport,” Rook says. “The goat has priority.”',
+        addFlags: ['c6-spent-climbing-line-entry'],
+        result: 'Mara loops the best climbing line through the crane rope. The livestock basket swings down, collects six startled travellers, and rises beside a deeply offended goat. Mara gives the goat the safer corner. “It was here first.”',
         next: 'c6-running-gate',
       },
     ],
@@ -565,7 +565,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       has(state, 'c6-learned-wheel-signals')
         ? 'You know the deck signals now. The living crews are waiting for one command they can share.'
         : 'You do not know every wheel signal, but you know what fear does to a line when orders conflict.',
-      'Korran reaches the main steering rope. Mara runs for the swinging platform. Lysara drives her scorched seed into the deck to keep the boards from splitting. Rook looks up at the false faces and, for once, does not joke. Korran shouts, “Which line do I hold?”',
+      'Korran reaches the main steering rope. Mara runs for the swinging platform. Lysara drives her scorched seed into the deck to keep the boards from splitting. Korran looks up at the false faces and shouts, “Which line do I hold?”',
     ],
     choices: [
       {
@@ -602,12 +602,12 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         next: 'c6-korran-terms',
       },
       {
-        id: 'c6-rook-steal-storm-signal',
-        label: 'Let Rook replace the dead command with Korran’s horn call.',
-        detail: 'Use Rook’s prepared speaking reeds while you hold the main rope beside Korran.',
-        advantage: 'Rook makes one impossible opening, but Caelan and Korran must still steer the city through it.',
-        addFlags: ['c6-rook-stole-storm-voice', 'c6-korran-shared-steering'],
-        result: 'Rook snaps four reeds into the banner ropes. The next gust speaks with Korran’s horn instead of the dead. “I have stolen a weather condition,” he says. You and Korran haul the main rope before the storm notices.',
+        id: 'c6-carry-living-horn',
+        label: 'Carry Korran’s living horn call across the banner ropes.',
+        detail: 'Let Lysara spread one true signal while you hold the main rope beside Korran.',
+        advantage: 'The living crews hear their commander above the dead, but the effort scorches more of Lysara’s seed.',
+        addFlags: ['c6-living-horn-crossed-storm', 'c6-korran-shared-steering', 'c6-seed-scorched-by-horn'],
+        result: 'Lysara runs green thread through the banner ropes. Korran sounds one long call, and every deck hears it above the dead voices. You and Korran haul the main rope while green strands burn in the wind.',
         next: 'c6-korran-terms',
       },
     ],
@@ -1119,7 +1119,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         changes: { command: -2 },
         requires: { command: 2 },
         addFlags: ['c6-living-vote-broke-storm', 'c6-preserved-ancestor-voices'],
-        result: 'Names rise from every gallery. Korran. Ugra. Dema. Asha. The living choices cross the hall in waves until the dead command has no silence left to occupy.',
+        result: 'Names rise from every gallery. Korran. Ugra. Dema. Asha. The living choices cross the hall in waves until the old command has no silence left to occupy.',
         next: 'c6-final-alliance',
       },
       {
@@ -1162,7 +1162,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
           ? 'Varka stands beside your marker with fresh blood drying at her brow or respect earned without it. The martial clans are ready to hear a dangerous request.'
           : 'The people from your chosen duty stand in the galleries. Their presence turns your argument from a speech into memory.',
       'Korran asks the final question. “Do you ask Kharad Vey for war, alliance, or only a road?”',
-      'You feel the ember answer the red pulse. Rook quietly pockets the map pin marking the Crown army behind you, then puts it back when Mara looks at him. “I was checking whether our next problem is portable,” he says.',
+      'You feel the ember answer the red pulse. A western lookout moves the map pin marking the Crown army one day closer. The next problem is already marching toward the town.',
     ],
     choices: [
       {
@@ -1207,13 +1207,14 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'storm',
     final: true,
+    nextChapter: 'c7-red-horizon',
     body: (state) => [
       'War horns sound from all twelve platforms. Herds enter protected lanes. Forge decks lock their tools. Kharad Vey does not become your army. It becomes a nation moving beside your cause.',
       'Korran rides at the front under a banner chosen by the Moot. Ilyra remains long enough to mark the Unsea current beneath the ancestor storm. Before leaving the council deck, she tells you, “Do not make me regret proving you can hear an unstated term.”',
       has(state, 'c6-ilyra-interest-acknowledged')
         ? 'Her fingers brush yours when she passes the storm map back. The contact is brief, intentional, and private despite the army forming around you.'
         : 'Her attention stays on you one moment longer than the map requires. Whatever she decides about you next will serve her work as well as her curiosity.',
-      'Rook returns the Crown army pin to the map. It is now one day behind. Dead commanders are speaking inside its storm, and the soldiers are moving faster than living orders allow.',
+      'A western scout returns the Crown army pin to the map. It is now one day behind. Dead commanders are speaking inside its storm, and the soldiers are moving faster than living orders allow.',
       'You won the help you came for. Your next battle will decide whether that help survives the road.',
     ],
     choices: [],
@@ -1228,6 +1229,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'moot',
     final: true,
+    nextChapter: 'c7-red-horizon',
     body: (state) => [
       'Kharad Vey continues on its own eastern line. Forty riders, six wind callers, and two moving shield engines leave under Korran’s command. They travel beside you, never behind.',
       'Ilyra ties a glass charm around the storm map. “This will show which voice learns something new,” she says. She keeps hold of the cord until you meet her eyes and accept the responsibility with it.',
@@ -1236,7 +1238,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         : has(state, 'c6-ilyra-interest-acknowledged')
           ? 'The warmth between you does not ask for a promise yet. It asks whether the next honest disagreement will make either of you step closer.'
           : 'She leaves the distance between you professional and exact. Respect remains, which may be more useful than charm on the road ahead.',
-      'Rook finds the Crown army on the western horizon. Its banners move beneath an ancestor storm, and dead officers are calling commands the living soldiers obey.',
+      'Korran’s western scouts find the Crown army on the horizon. Its banners move beneath an ancestor storm, and dead officers are calling commands the living soldiers obey.',
       'The Red Moot gave you an alliance. Now you must keep a pursuing army from turning it into a battlefield.',
     ],
     choices: [],
@@ -1251,6 +1253,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'kharad',
     final: true,
+    nextChapter: 'c7-red-horizon',
     body: (state) => [
       'The Moot refuses war and keeps every wheel away from the Gate’s direct road. It still gives you water, fresh armour straps, three guides, and witnesses willing to speak against Malrec. Help offered within a boundary feels different from obedience.',
       'Korran grips your forearm. “You asked for what we could give without pretending fear made us yours. That is why you may return.”',
@@ -1259,7 +1262,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         : has(state, 'c6-ilyra-interest-acknowledged')
           ? 'Ilyra steps close enough that her wine red coat brushes your hand. “Interest survives disagreement,” she says. “Let us see whether it survives a pursuing army.”'
           : 'Ilyra joins the road because the storm question remains open. She makes it clear that your cause and hers overlap. Neither belongs to the other.',
-      'Rook points west. Crown banners have appeared beneath the red storm. The army is only one day away, and its soldiers are marching to commands spoken by their dead.',
+      'Mara points west. Crown banners have appeared beneath the red storm. The army is only one day away, and its soldiers are marching to commands spoken by their dead.',
       'Kharad Vey chose neutrality. Protecting that choice may require your largest battle yet.',
     ],
     choices: [],

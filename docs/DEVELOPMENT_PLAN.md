@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the first six canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
+The project contains a functioning choice engine and the first seven canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -71,7 +71,7 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 
 ## Phase Five: complete Caelan season, in progress
 
-Chapters Four and Five are implemented. Produce Chapters Six through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four through Seven are implemented. Produce Chapters Eight through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -86,6 +86,8 @@ Prototype Health, Focus, Heat, Setup, Glimmer, and Echo mechanics in Rook Chapte
 Begin Ilyra after Rook's four Dawn law outputs are stable. Prototype Health, Mana, Strain, and named person specific Leverage before the main season draft. Her series has the highest continuity load, so build a consequence matrix before drafting Chapters Nine through Twelve. The matrix must distinguish attraction from trust and record when manipulation succeeds, fails, creates exposure, or becomes genuine attachment.
 
 Every crossover receives a personality audit. The active lead keeps the decisive action, and visiting leads retain their own objective and method. Reject any scene where Caelan, Rook, or Ilyra could exchange dialogue or actions without changing the scene.
+
+The route and chronology authority is `CROSSOVER_CONTINUITY_LEDGER.md`, backed by `scripts/continuity-contract.mjs`. Update both before drafting any new crossover. Every chapter map must name the active route, physical guest roster, imported legacies, and exit destination. The game checker must reject guest choice identifiers outside an approved window, premature named introductions, broken chapter handoffs, and missing protected plot milestones. A remembered tool or debt may affect a later chapter, but prose must not turn that legacy into an off route hero's physical action.
 
 Memory Shards must change actual narration, knowledge, and relationships. They cannot function as renamed mana potions.
 
@@ -133,4 +135,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first six canonical chapters are implemented. The next production gate is to playtest the three Kharad Vey service routes and all three Red Moot endings, confirm that the moving city remains easy to picture, and confirm that the Unsea discovery creates curiosity without asking the player to decide too early whether every ancestor voice is real.
+The foundation and the first seven canonical chapters are implemented. The next production gate is to playtest the salt trap, order exposure, and steppe duel routes, confirm that Asterra's living authority remains distinct from the dead command, and confirm that the full army, chosen company, and dangerous reputation endings create meaningfully different Chapter Eight openings.

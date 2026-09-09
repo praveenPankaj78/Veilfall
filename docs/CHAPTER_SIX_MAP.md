@@ -14,7 +14,7 @@ The next hook is concrete: a Crown army is one day behind Kharad Vey, and its so
 - If Vaor gave the ember, the dragon is a free and independent ally who may refuse a request.
 - If Caelan took the ember, it obeys him while Vaor follows as an enemy.
 - If they made a pact, Vaor advises Caelan from inside his thoughts and shares grief with him.
-- Rook remains present under arrest, through a bargain, or by free choice. His tricks create openings but never replace Caelan's decisive work.
+- Rook departed through the Underways at the end of Chapter Four. The arrest, bargain, or trust outcome remains as future relationship state, not physical presence on Caelan's route.
 - Mara and Lysara remember the romantic, committed, or platonic direction the player chose.
 - Ilyra may acknowledge attraction only if neither earlier relationship remains open.
 - Surviving proof from Dragonspine affects what Caelan can show, but proof does not replace service among the clans.

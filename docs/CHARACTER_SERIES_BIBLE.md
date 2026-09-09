@@ -246,6 +246,7 @@ Ilyra begins by believing enough knowledge and careful pressure can produce the 
 - Caelan and Rook first cross in Chapter Four of Caelan's series and Chapter Three of Rook's series.
 - Ilyra meets Caelan on the Ember Steppe after his road has become a public cause.
 - Rook and Ilyra cross in Serekh and again in the Unsea.
+- The Mileless Bridge crossover ends when Caelan turns toward Dragonspine and Rook enters the Underways. Rook is not physically present in Caelan's Chapters Five through Seven.
 - No intersection repeats the same scenes or objective from both viewpoints.
 - Imported decisions appear as changed circumstances, not a long summary of another series.
 - The protagonist whose series is being played retains the decisive action in every crossover.
@@ -256,3 +257,4 @@ Ilyra begins by believing enough knowledge and careful pressure can produce the 
 - A hero cannot easily defeat another hero inside that hero's specialty. Caelan can corner Rook but not outsteal him. Rook can expose Ilyra's setup but not read its full emotional cost. Ilyra can move Caelan but cannot make his Oath for him.
 - Imported relationship choices alter trust, attraction, resentment, and willingness to cooperate. They never erase a lead's core personality.
 - Every crossover draft receives a personality pass. Remove any line or action that could be reassigned to another lead without changing it.
+- Every crossover also receives a route exit check. A visiting hero leaves at the recorded exit unless a later intersection is already listed in the series outline.

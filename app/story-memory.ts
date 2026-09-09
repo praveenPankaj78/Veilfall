@@ -301,6 +301,34 @@ export function knownTruths(game: GameState) {
     return truths;
   }
 
+  if (game.chapter === 7) {
+    truths.push('The Crown March belongs to Asterra. Its soldiers serve the Queen, but Regent Malrec has lawful command while she is ill. Most believe his charges against me are true.');
+    truths.push('The Red Wind Hunt follows commands spoken in the voice of Marshal Evren, an Asterra officer who died nineteen years ago.');
+
+    if (game.flags.includes('c7-copied-gate-diversion')
+      || game.flags.includes('c7-copied-false-charges')
+      || game.flags.includes('c7-taught-dead-command-test')
+      || game.flags.includes('c7-lio-carries-orders')
+      || game.flags.includes('c7-rook-has-orders')
+      || !['c7-red-horizon', 'c7-break-town-line', 'c7-first-riders', 'c7-captured-soldier'].includes(game.nodeId)) {
+      truths.push('Malrec moved the Crown March away from four Black Gate forts three weeks before I took Vaor’s ember. His promised replacements never arrived.');
+      truths.push('Malrec’s written order moved the living army. A separate dead command is keeping it in the west. The two powers are cooperating, but they are not the same enemy.');
+    }
+    if (game.flags.includes('c7-traced-hidden-sender')) {
+      truths.push('Ilyra traced the dead command to a hidden will beyond the Black Gate. It now knows more about us because of the method I chose.');
+    }
+    if (game.flags.includes('c7-gained-full-army')) {
+      truths.push('I turned the Crown March east under my command. A full army now follows me toward eight empty forts.');
+    }
+    if (game.flags.includes('c7-gained-chosen-company')) {
+      truths.push('I took only the Crown soldiers who volunteered with open eyes. Teren kept the rest under living command.');
+    }
+    if (game.flags.includes('c7-gained-dangerous-reputation')) {
+      truths.push('I refused formal command. The army carries the truth home while my existing companions ride for the Gate.');
+    }
+    return truths;
+  }
+
   truths.push('The sealed route page did not match Caelan’s memory, and the attackers prepared for every route before he chose one.');
 
   if (game.chapter >= 3) {
@@ -417,11 +445,11 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c4-lysara-private-truth')) consequences.push('Because you gave Lysara the quiet minute, she revealed that her own family may share the buried guilt.');
   if (game.flags.includes('c4-platonic-mara') && game.flags.includes('c4-platonic-lysara')) consequences.push('Because you chose friendship with Mara and Lysara, neither woman is left waiting for a romance you do not want.');
   if (game.flags.includes('c4-lost-gear-and-proof')) consequences.push('Because you sacrificed gear and documents at the final anchor, everyone escaped but some proof against the Crown was lost.');
-  if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he travels north as a named fugitive even after escaping the cuff.');
-  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he will guide you toward his buyer in Dragonspine.');
-  if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook with the survivors, he showed you a safe road and accepted a personal debt.');
+  if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he entered the Underways as a named fugitive after escaping the cuff.');
+  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he is following the buyer’s payments through the Underways while you travel north.');
+  if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook with the survivors, he showed you a safe northern turn before taking his own road into the Underways.');
   if (game.flags.includes('c5-has-extraction-order')) consequences.push('Because you recovered the Regent’s extraction order, you can prove the Crown intended to cut an ember from a living dragon.');
-  if (game.flags.includes('c5-rook-diverted-patrol')) consequences.push('Because you trusted Rook with a stolen seal, the returning royal patrol chased an embarrassing false emergency.');
+  if (game.flags.includes('c5-diverted-patrol-with-seal') || game.flags.includes('c5-rook-diverted-patrol')) consequences.push('Because you used Hale’s seal, the returning royal patrol followed a false cold fire warning and lost your trail.');
   if (game.flags.includes('c5-seed-scorched-river')) consequences.push('Because Lysara used her living seed to divert the cold fire, her treaty magic is weakened.');
   if (game.flags.includes('c5-admitted-future-with-mara')) consequences.push('Because you told Mara you want a life that includes her, your future together is no longer hidden behind duty.');
   if (game.flags.includes('c5-kissed-mara')) consequences.push('Because you and Mara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
@@ -432,7 +460,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c5-protected-lysara-choice')) consequences.push('Because you protected Lysara’s right to choose, she knows neither treaty nor attraction gives you a claim over her.');
   if (game.flags.includes('c5-oath-carry-vaor-grief')) consequences.push('Because you promised to hear Vaor’s grief, part of the dragon’s pain now travels through your Oathfire.');
   if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, royal witnesses carry the truth away from Dragonspine.');
-  if (game.flags.includes('c5-rook-copied-first-memory')) consequences.push('Because Rook copied Orivane’s memory, the buried proof can survive even if the mountain glass is destroyed.');
+  if (game.flags.includes('c5-memory-copied-to-map-wax') || game.flags.includes('c5-rook-copied-first-memory')) consequences.push('Because you copied Orivane’s memory into map wax, the buried proof can survive even if the mountain glass is destroyed.');
   if (game.flags.includes('c5-freed-vaor')) consequences.push('Because you freed Vaor, an ancient dragon travels as a willing but independent ally.');
   if (game.flags.includes('c5-took-ember-by-force')) consequences.push('Because you took the ember by force, its power obeys you while Vaor follows as an enemy.');
   if (game.flags.includes('c5-vaor-pact')) consequences.push('Because you made a pact with Vaor, his voice, grief, and fire now travel inside you.');
@@ -450,5 +478,24 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c6-red-moot-war')) consequences.push('Because you asked Kharad Vey for war, the entire wheel town is moving toward the Black Gate.');
   if (game.flags.includes('c6-red-moot-alliance')) consequences.push('Because you asked for a guarded alliance, Korran leads volunteer riders beside your cause under the Moot’s authority.');
   if (game.flags.includes('c6-red-moot-neutral')) consequences.push('Because you accepted neutrality, Kharad Vey remains protected while its guides and witnesses support your road.');
+  if (game.flags.includes('c7-lio-joined')) consequences.push('Because you let Lio choose openly, a Crown lieutenant stood beside you against the dead command.');
+  if (game.flags.includes('c7-copied-gate-diversion')) consequences.push('Because you preserved Malrec’s Gate order, the army saw that he emptied the forts before accusing you.');
+  if (game.flags.includes('c7-traced-hidden-sender')) consequences.push('Because you traced the dead command, you know a separate power beyond the Black Gate is helping keep Asterra’s army west.');
+  if (game.flags.includes('c7-mara-chosen-future')) consequences.push('Because you promised Mara a shared future as an equal, danger no longer leaves her waiting outside your plans.');
+  if (game.flags.includes('c7-mara-romance-ended')) consequences.push('Because you ended the romance honestly, Mara remains your Warden without carrying a false promise.');
+  if (game.flags.includes('c7-lysara-chosen-future')) consequences.push('Because you chose partnership with Lysara, your bond now allows two loyalties and honest disagreement.');
+  if (game.flags.includes('c7-lysara-romance-ended')) consequences.push('Because you ended the romance honestly, Lysara remains your ally without an unspoken personal claim.');
+  if (game.flags.includes('c7-ilyra-bond-deepened')) consequences.push('Because you and Ilyra chose desire without ownership or leverage, your attraction has become an openly explored bond.');
+  if (game.flags.includes('c7-ilyra-friendship-chosen')) consequences.push('Because you set a clear boundary with Ilyra, your alliance continues without romantic expectation.');
+  if (game.flags.includes('c7-chose-salt-trap')) consequences.push('Because you chose the Salt Basin trap, the Crown March remembers your restraint and its own defeat.');
+  if (game.flags.includes('c7-chose-order-exposure')) consequences.push('Because you exposed Malrec’s orders rank by rank, soldiers turned through their own judgment.');
+  if (game.flags.includes('c7-chose-steppe-duel')) consequences.push('Because you accepted steppe law, one public duel ended a battle between two armies.');
+  if (game.flags.includes('c7-saved-many')) consequences.push('Because you used Command to save the broken company, your trapped companion survived with a lasting injury.');
+  if (game.flags.includes('c7-saved-one')) consequences.push('Because you personally saved one companion, the broken company suffered losses in the final red storm.');
+  if (game.flags.includes('c7-saved-both-burned-proof')) consequences.push('Because you burned Malrec’s original orders to shelter everyone, lives were saved but the strongest legal proof became ash.');
+  if (game.flags.includes('c7-saved-many-with-lio')) consequences.push('Because Lio crossed the falling signal frame, both groups survived while he became a named deserter behind enemy lines.');
+  if (game.flags.includes('c7-gained-full-army')) consequences.push('Because you accepted the Crown March, a full divided army now follows you toward the Black Gate.');
+  if (game.flags.includes('c7-gained-chosen-company')) consequences.push('Because you asked for volunteers, a smaller company follows by choice rather than inherited rank.');
+  if (game.flags.includes('c7-gained-dangerous-reputation')) consequences.push('Because you refused formal allies, your reputation now travels ahead of your small company.');
   return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }

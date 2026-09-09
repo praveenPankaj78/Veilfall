@@ -658,7 +658,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'Asterra’s crowned shields fill the opening. Ordan points past Harrowfen toward a second arch showing a foreign border fort. “First rank forward,” he orders. You strike his arm while Lysara tears the iron pieces apart with living thread. The road closes before the first crowned shield reaches Harrowfen.',
       'The dark coated thief drops from the arch above. Ordan turns toward the sound, giving the stranger the one clear moment he needs.',
       'The thief pulls the wire you saw him plant in the market. The fragment leaps from Ordan’s belt into his sleeve. “Good news,” he says. “Your road works. Bad news, I need it.”',
-      'Ordan draws his sword. Rook runs toward the broken centre with the fragment. Behind you, Harrowfen’s guide rope slips another handspan through its knot.',
+      'Ordan draws his sword. The thief runs toward the broken centre with the fragment. Behind you, Harrowfen’s guide rope slips another handspan through its knot.',
     ],
   },
   'c3-ending-courier': {
@@ -666,7 +666,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'The Mileless Bridge',
     objective: 'Catch Ordan before he reaches his hidden soldiers.',
     body: (state) => [
-      'You cross the first arch and close on Ordan. His eyes flick once toward the fragment vanishing with Rook, then return to your blade. Your hand tightens around the rain slick hilt.',
+      'You cross the first arch and close on Ordan. His eyes flick once toward the fragment vanishing with the thief, then return to your blade. Your hand tightens around the rain slick hilt.',
       state.flags.includes('c3-pursuit-mara')
         ? 'Mara lands beside you with her blade ready. “He is yours,” she says. “I will keep his soldiers off your back.”'
         : 'Lysara’s green rope holds behind you, thin but visible across the mist.',
@@ -679,7 +679,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Stop the unknown thief escaping with the World Nail fragment.',
     body: (state) => [
       'You leave Ordan’s path and race across a narrow arch above a red desert. The thief glances back, surprised that you can keep up.',
-      'Ordan’s shouted orders fade behind you. The iron flashes beneath Rook’s coat ahead, each stride carrying it closer to the broken centre.',
+      'Ordan’s shouted orders fade behind you. The iron flashes beneath the thief’s coat ahead, each stride carrying it closer to the broken centre.',
       state.flags.includes('c3-bridge-warning')
         ? 'Renn’s warning returns to you: this thief opposes Ordan, but wants the iron for a reason of his own.'
         : '“Captain,” the thief calls, “I stole it from the villain. That usually earns applause.”',

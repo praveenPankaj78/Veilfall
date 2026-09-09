@@ -57,8 +57,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v11.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v12.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v11.save',
   'veilfall.saga.v10.save',
   'veilfall.saga.v9.save',
   'veilfall.saga.v8.save',
@@ -69,7 +70,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
 const sceneArtwork = {
   departure: {
@@ -124,6 +125,18 @@ const sceneArtwork = {
     src: '/art/red-moot-ilyra.png',
     alt: 'Caelan and Ilyra stand before the Red Moot while ancestor voices gather outside',
   },
+  redwind: {
+    src: '/art/red-wind-pursuit.png',
+    alt: 'Caelan and the moving Kharad town flee Asterra Crown soldiers beneath a red ancestor storm',
+  },
+  saltbattle: {
+    src: '/art/salt-basin-battle.png',
+    alt: 'Caelan, Ilyra, and Rook face the divided Crown March in the Salt Basin',
+  },
+  marshal: {
+    src: '/art/marshal-field-confrontation.png',
+    alt: 'Caelan confronts Marshal Teren Voss while a dead commander forms in the red storm',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
@@ -132,6 +145,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   4: 'veilfall.chapter-four.v1.start',
   5: 'veilfall.chapter-five.v1.start',
   6: 'veilfall.chapter-six.v1.start',
+  7: 'veilfall.chapter-seven.v1.start',
 };
 
 const chapterLibrary = [
@@ -164,6 +178,11 @@ const chapterLibrary = [
     number: 6 as const,
     title: 'The City on Wheels',
     summary: 'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
+  },
+  {
+    number: 7 as const,
+    title: 'The Red Wind Hunt',
+    summary: 'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
   },
 ];
 
@@ -205,16 +224,28 @@ function migrateRelationships(value: Partial<GameState>) {
   const flags = new Set(value.flags ?? []);
   const inferredIntent = (person: RelationshipKey) => {
     if (person === 'mara') {
+      if (flags.has('c7-mara-romance-ended')) return 'ended' as const;
+      if (flags.has('c7-mara-friendship-chosen')) return 'platonic' as const;
+      if (flags.has('c7-mara-chosen-future')) return 'committed' as const;
+      if (flags.has('c7-mara-duty-before-future')) return 'exploring' as const;
       if (flags.has('c5-mara-friendship') || flags.has('c4-platonic-mara') || flags.has('c2-mara-friendship')) return 'platonic' as const;
       if (flags.has('c5-admitted-future-with-mara')) return 'committed' as const;
       if (flags.has('c5-kissed-mara') || flags.has('c4-kissed-mara') || flags.has('c2-kissed-mara')) return 'exploring' as const;
       if (flags.has('flirted-mara') || flags.has('shared-unease')) return 'interested' as const;
     } else if (person === 'lysara') {
+      if (flags.has('c7-lysara-romance-ended')) return 'ended' as const;
+      if (flags.has('c7-lysara-friendship-chosen')) return 'platonic' as const;
+      if (flags.has('c7-lysara-chosen-future')) return 'committed' as const;
+      if (flags.has('c7-lysara-duty-before-future')) return 'exploring' as const;
       if (flags.has('c5-lysara-friendship') || flags.has('c4-platonic-lysara')) return 'platonic' as const;
       if (flags.has('c5-admitted-future-with-lysara')) return 'committed' as const;
       if (flags.has('c5-kissed-lysara')) return 'exploring' as const;
       if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara')) return 'interested' as const;
     } else {
+      if (flags.has('c7-ilyra-leverage-refused')) return 'ended' as const;
+      if (flags.has('c7-ilyra-friendship-chosen')) return 'platonic' as const;
+      if (flags.has('c7-ilyra-bond-deepened')) return 'exploring' as const;
+      if (flags.has('c7-ilyra-interest-kept')) return 'interested' as const;
       if (flags.has('c6-ilyra-interest-acknowledged')) return 'interested' as const;
     }
     return 'unresolved' as const;
@@ -285,9 +316,11 @@ function migrateRelationships(value: Partial<GameState>) {
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c6-')
-    ? 6
-    : nodeId.startsWith('c5-')
+  const chapter = nodeId.startsWith('c7-')
+    ? 7
+    : nodeId.startsWith('c6-')
+      ? 6
+      : nodeId.startsWith('c5-')
       ? 5
       : nodeId.startsWith('c4-')
       ? 4
@@ -338,6 +371,7 @@ function defeatForChoice(chapter: ChapterNumber, choice: Choice, state: GameStat
         ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while your companions call your name and Vaor roars beneath the mountain.'
         : 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
     6: 'You complete the action, but the moving city and the red storm take the last of your strength. The deck rolls beneath you while Korran calls the living crews together and the ember fades behind your ribs.',
+    7: 'You complete the action, but the Red Wind Hunt takes the last of your strength. Salt and red sky blur together while your companions fight to keep the living army from obeying its dead.',
   };
   return {
     title: 'Caelan has fallen',
@@ -425,6 +459,8 @@ function activePromises(game: GameState) {
   if (game.flags.includes('c6-oath-crown-restitution')) promises.push('Bring the Concord’s hidden victims before the Queen or oppose the throne that buries them.');
   if (game.flags.includes('c6-oath-defends-refusal')) promises.push('Defend the clans’ right to refuse future Crown control.');
   if (game.flags.includes('c6-oath-honest-limit')) promises.push('Bind only your own command, testimony, and defence of the Red Moot.');
+  if (game.flags.includes('c7-oath-living-command')) promises.push('No dead officer holds lawful rank over a living soldier.');
+  if (game.flags.includes('c7-oath-surrender-road')) promises.push('Give safe ground to every soldier who lowers a weapon.');
   if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
   return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
 }
@@ -444,6 +480,7 @@ const beforeIlyraNodes = new Set([
 
 function visibleRelationshipKeys(game: GameState): RelationshipKey[] {
   const ilyraKnown = game.completedChapters.includes(6)
+    || game.nodeId.startsWith('c7-')
     || (game.nodeId.startsWith('c6-') && !beforeIlyraNodes.has(game.nodeId));
   return ilyraKnown ? ['mara', 'lysara', 'ilyra'] : ['mara', 'lysara'];
 }
@@ -657,7 +694,7 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4, 5, 6] as ChapterNumber[]).filter((number) => number > chapter)) {
+    for (const later of ([2, 3, 4, 5, 6, 7] as ChapterNumber[]).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -769,6 +806,25 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterSeven() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c7-red-horizon',
+      chapter: 7,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 6])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 2),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        command: Math.min(6, game.stats.command + 1),
+      },
+      history: [...game.history, 'You leave Kharad Vey beneath the Red Wind Hunt with every earlier consequence.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[7]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return <main className="min-h-screen bg-[#07090b]" aria-label="Loading Veilfall" />;
   }
@@ -813,7 +869,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {game.chapter === 6 ? 'VI' : game.chapter === 5 ? 'V' : game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
+          Caelan {game.chapter === 7 ? 'VII' : game.chapter === 6 ? 'VI' : game.chapter === 5 ? 'V' : game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
         </div>
         <div className="top-actions">
           <Button
@@ -1092,7 +1148,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 5 ? (
                     <>
                       <h2>Chapter Six is ready</h2>
                       <p>
@@ -1112,16 +1168,36 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Seven is ready</h2>
+                      <p>
+                        Continue into The Red Wind Hunt with every surviving consequence.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterSeven}
+                      >
+                        Continue to Chapter Seven
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter Six
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Seven</h2>
+                    <h2>Caelan will return in Chapter Eight</h2>
                     <p>
-                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire toward the Black Gate.
-                      A Crown army follows beneath a storm of dead commanders.
+                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire toward eight empty forts.
+                      Something has begun knocking from beyond the Black Gate.
                     </p>
                     <Button className="begin-button" size="lg" onClick={restart}>
-                      Replay Chapter Six
+                      Replay Chapter Seven
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>
