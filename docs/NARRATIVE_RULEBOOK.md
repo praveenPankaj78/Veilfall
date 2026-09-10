@@ -289,6 +289,10 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 - Teach one layer of the world at a time. Show the place and danger first, let a local character name its law, and introduce distant lore only when the player needs it.
 - If dialogue already shows the political or moral problem, do not add a narrator sentence that tells the player what the exchange means.
 - A journal fact becomes confirmed only after the player has read or acted through the scene that proves it. The active reveal node must not answer itself in the journal.
+- Keep tutorials aligned with the live interface. Do not teach hidden numerical relationships when the player sees qualitative states, and do not assign progression duties to a currency that does not perform them.
+- An aftermath may report a lasting injury only after the crisis or consequence shows its physical cause. A later chapter must not depend on an injury first introduced in a summary.
+- If a branch places known people in immediate danger, every visible choice must state what happens to them. Do not replace a known person with an unnamed cry or a vague group.
+- A recap may claim only what the playable action and result established. Finding sabotage is not preventing sabotage unless the scene shows the repair, removal, or warning that stopped it.
 
 ## Revision checklist
 

@@ -38,6 +38,8 @@ const opaqueHazardRules = [
   { pattern: /\bVeyr may call\b/i, label: 'established homeland Thornweald is replaced by an unexplained name' },
   { pattern: /\bservant of the eraser\b/i, label: 'a direct human loss is hidden behind an unexplained enemy label' },
   { pattern: /\bspace between two closing hands\b/i, label: 'physical danger is replaced by an abstract travel metaphor' },
+  { pattern: /\bthe two distances refuse to wait for each other\b/i, label: 'a direct rescue conflict is hidden behind an abstract distance metaphor' },
+  { pattern: /\bwood splits and someone cries your name\b/i, label: 'an endangered person’s fate is hidden behind an unnamed cry' },
 ];
 const forbidden = [
   { value: String.fromCharCode(45, 45), label: 'two adjacent hyphens' },

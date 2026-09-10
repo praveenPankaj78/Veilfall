@@ -372,13 +372,13 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Low',
     lesson: {
       title: 'Your strengths',
-      body: 'Health shows how much injury and exhaustion you can survive. Resolve helps you face fear, pain, and doubt. Command shows how ready your guards are to follow difficult orders. Mara and Lysara each have separate Trust and Attraction scores. A choice always shows a known cost before you select it. Reaching zero Health means death.',
+      body: 'Health shows how much injury and exhaustion you can survive. Resolve helps you face fear, pain, and doubt. Command shows how ready your guards are to follow difficult orders. Every choice shows its known cost before you select it. If Health reaches zero, Caelan dies.',
     },
     introduces: ['health', 'resolve', 'command'],
     art: 'departure',
     body: () => [
       'Rain has soaked the departure ledger before you finish the first name. You brace it against the green treaty wagon and write one duty at the top: bring everyone to Bellweather alive.',
-      'Beneath it, you list Brann, Joren, Nilo, Mara, and an ambassador you have not yet met.',
+      'Beneath it, you write the names of Wardens, drivers, and wheelwrights. One line remains empty for an ambassador you have not met.',
       'The last time you signed a list like this, two names came home beneath canvas. Your pen pauses above the final line until Sergeant Brann clears his throat.',
       '“Captain Vey, gate opens in half an hour.” Twenty Road Wardens wait behind him, boots deep in water and every face turned toward you. The job is yours: carry a peace treaty east before the low road floods.',
       'Beyond the raised iron gate, the King’s Road bends through wet hills and disappears under dark storm clouds. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
@@ -401,7 +401,7 @@ const originalNodes: Record<string, StoryNode> = {
         next: 'mara-returns',
         changes: { health: -1, resolve: 1 },
         addFlags: ['checked-horses'],
-        result: 'You find a loose front harness strap and the sharp smell of strange oil on the lead mare’s bit.',
+        result: 'You replace a loose front harness strap and clean strange oil from the lead mare’s bit. The smell is too sharp to be harness grease.',
       },
       {
         id: 'check-route',
@@ -434,7 +434,7 @@ const originalNodes: Record<string, StoryNode> = {
     art: 'departure',
     body: (state) => [
       state.flags.includes('checked-horses')
-        ? 'The lead mare keeps working her tongue against the strange oil. Before you can trace the smell, a grey horse trots through the gate from the eastern road.'
+        ? 'The lead mare still works her tongue after you cleaned the strange oil from her bit. Before you can trace its source, a grey horse enters from the eastern road.'
         : 'A grey horse trots through the gate from the eastern road, mist lifting from its flanks.',
       'Mara Renn swings down before the animal stops. Rain has darkened her hair and drawn her green riding coat close across her shoulders. She carries her bow, a stolen pear, and the annoyed look that usually means she has found trouble.',
       'Mara throws you the pear without looking. You catch it the same way you caught every warning she tossed across your father’s forge when both of you were small enough to hide beneath his workbench.',
@@ -681,7 +681,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'Tivik’s new pin holds when the left wheel drops into a hidden rut.'
         : 'The rear wheel strikes the rut. The old pin bends with a sharp metallic screech.',
       'A farmer and two children stand on a stranded hay cart fifty paces from the road. Behind them, the river has broken through the willow bank. Reaching them will cost time you may not have.',
-      'Your boots turn toward the children. Then the wagon wheel drops again, and the water reaches the farmer’s knees. The two distances refuse to wait for each other.',
+      'Your boots turn toward the children. Then the wagon wheel drops again, and the water reaches the farmer’s knees. If you stop, the wagon may fail. If you drive on, the river may take them.',
       'Mara looks at the water, then the empty ridge above. “No birds,” she says. “Someone frightened them off before we arrived.”',
     ],
     choices: [
@@ -1022,10 +1022,11 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('steady-axle')
         ? 'The treaty wagon’s repaired wheel holds at the edge of the gap. The blast throws Joren against the broken rail, where he hangs above the flood.'
         : 'The scored rear pin snaps. The wagon turns sideways, trapping young Joren beneath the axle.',
+      'A broken rail cuts Joren’s side. The blast throws Nilo against a harness hook, cutting his lower leg. Three guards fall hard, and one horse breaks a hind leg.',
       state.flags.includes('saved-family')
         ? 'Across the broken span, an attacker lowers his bow and runs with a dispatch case. Mara has a clear shot, but the two children you rescued are sliding toward the water.'
         : state.flags.includes('steady-axle')
-          ? 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren and the wagon driver are hanging above the flood.'
+          ? 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren and a second guard are hanging above the flood.'
           : 'Across the broken span, an attacker runs with a dispatch case. Mara has a clear shot, but Joren is trapped and a second guard is being pulled toward the gap.',
       'Your eyes find Joren first. Training drags them to the chest, the runner, and the rising water before your body can move.',
       'Lysara braces the treaty chest with both hands. “Captain. Choose.”',
@@ -1037,8 +1038,20 @@ const originalNodes: Record<string, StoryNode> = {
         detail: 'Protect lives while treaty pages and the attacker may escape.',
         next: 'aftermath',
         changes: { health: -1 },
+        hideIfAnyFlags: ['saved-family'],
         addFlags: ['saved-wounded', 'treaty-damaged', 'attacker-escaped'],
-        result: 'You drag Joren and every trapped traveller onto solid stone while pale treaty pages scatter into brown water.',
+        result: 'You drag Joren and the second guard onto solid stone while pale treaty pages scatter into brown water.',
+      },
+      {
+        id: 'save-people-low-family',
+        label: 'Leave the chest and pull everyone clear of the flood.',
+        detail: 'Protect Joren and both children while treaty pages and the attacker may escape.',
+        advantage: 'Your rescue should bring Joren and both children onto solid stone.',
+        next: 'aftermath',
+        changes: { health: -1 },
+        showIfAnyFlags: ['saved-family'],
+        addFlags: ['saved-wounded', 'treaty-damaged', 'attacker-escaped'],
+        result: 'You drag Joren and both children onto solid stone while pale treaty pages scatter into brown water.',
       },
       {
         id: 'save-treaty-low',
@@ -1047,18 +1060,45 @@ const originalNodes: Record<string, StoryNode> = {
         next: 'aftermath',
         changes: { health: -2, command: 1 },
         requires: { health: 2 },
+        hideIfAnyFlags: ['saved-family'],
         addFlags: ['treaty-safe', 'saved-wounded', 'guard-wounded', 'attacker-escaped'],
-        result: 'Your boots slide to the bridge edge. Brann pulls Joren and the others clear before your strength gives out.',
+        result: 'Your boots slide to the bridge edge. Brann pulls Joren and the second guard clear before your strength gives out.',
+      },
+      {
+        id: 'save-treaty-low-family',
+        label: 'Hold the wagon while Brann clears the broken span.',
+        detail: 'Spend 2 Health. Protect the treaty while trusting Brann to pull Joren and both children clear.',
+        advantage: 'Brann should save Joren and both children while you keep the treaty intact.',
+        next: 'aftermath',
+        changes: { health: -2, command: 1 },
+        requires: { health: 2 },
+        showIfAnyFlags: ['saved-family'],
+        addFlags: ['treaty-safe', 'saved-wounded', 'guard-wounded', 'attacker-escaped'],
+        result: 'Your boots slide to the bridge edge. Brann pulls Joren and both children clear before your strength gives out.',
       },
       {
         id: 'capture-low',
         label: 'Order Mara to take the runner alive.',
-        detail: 'Spend 1 Command. Accept damage behind you for a living answer.',
+        detail: 'Spend 1 Command. Spend 1 Resolve. Mara pursues the runner while Brann pulls Joren and the second guard clear.',
+        advantage: 'The divided order should capture an attacker without abandoning the people beside the broken span.',
         next: 'aftermath',
         changes: { command: -1, resolve: -1 },
         requires: { command: 1 },
+        hideIfAnyFlags: ['saved-family'],
         addFlags: ['captured-attacker', 'treaty-damaged', 'guard-wounded'],
-        result: 'Mara crosses the flooded rail and brings the runner down. Behind you, wood splits and someone cries your name.',
+        result: 'Mara brings the runner down. Brann pulls Joren and the second guard clear, but the guard’s leg breaks beneath the wagon. The treaty chest strikes stone and cracks.',
+      },
+      {
+        id: 'capture-low-family',
+        label: 'Order Mara to take the runner alive.',
+        detail: 'Spend 1 Command. Spend 1 Resolve. Mara pursues the runner while Brann pulls Joren and both children clear.',
+        advantage: 'The divided order should capture an attacker without abandoning the rescued children beside the broken span.',
+        next: 'aftermath',
+        changes: { command: -1, resolve: -1 },
+        requires: { command: 1 },
+        showIfAnyFlags: ['saved-family'],
+        addFlags: ['captured-attacker', 'treaty-damaged', 'guard-wounded'],
+        result: 'Mara brings the runner down. Brann pulls Joren and both children clear, but a guard’s leg breaks beneath the wagon. The treaty chest strikes stone and cracks.',
       },
     ],
   },
@@ -1079,7 +1119,8 @@ const originalNodes: Record<string, StoryNode> = {
           ? 'The valley group moves early, fooled by your answer, but the rockfall still catches the rear wagon.'
           : state.flags.includes('tight-column')
             ? 'The shields above the tight column turn falling stone and splintered timber away from the treaty chest.'
-          : 'The rockfall strikes both ends of the formation at once.',
+            : 'The rockfall strikes both ends of the formation at once.',
+      'Falling timber cuts Joren’s side. Nilo cuts his lower leg while pulling Tivik from the wagon. Three guards are struck, and one horse falls with a broken foreleg.',
       'Mara hangs from a wet root below the ledge with a wounded guard gripping her wrist. The treaty wagon rolls backward toward them. Above, the signaler turns to flee with a dispatch case under one arm.',
       'Your first step is toward Mara. The wagon wheel reaches the ledge, the signaler clears the first fence, and the wet root slides another inch through her hand.',
       'Brann shouts your name from behind the rolling wagon.',
@@ -1130,8 +1171,9 @@ const originalNodes: Record<string, StoryNode> = {
       state.flags.includes('ready-for-riders')
         ? 'Your line meets them square. The first rider falls before his sword clears leather.'
         : state.flags.includes('rough-formation')
-          ? 'Brann’s hurried line bends. One rider reaches the rear wagon and drives a blade into Joren’s side.'
+          ? 'Brann’s hurried line bends. One rider reaches the rear wagon before Mara turns him away.'
           : 'The repaired brakes hold when the lead horses panic, saving the wagon from crushing its own guards.',
+      'A rider cuts Joren’s side. A broken harness hook cuts Nilo’s lower leg as he pulls Tivik clear. Three guards fall, and one horse takes a blade through its foreleg.',
       'Mara points out a broad rider carrying the twin of your sealed dispatch case. Lysara draws the glass seed from her coat, making herself the brighter target.',
       'Your eyes lock on the copied case. The enemy did not merely find your escort. They studied how you carry orders and brought a second version of your authority.',
       'The broad rider turns toward the treaty. Two others see Lysara’s seed. A fourth lowers his blade toward Joren. Mara draws beside you. “Name the target.”',
@@ -1199,8 +1241,8 @@ const originalNodes: Record<string, StoryNode> = {
       state.stats.health <= 2
         ? 'When you straighten, pain closes around your ribs and your vision narrows. Mara catches your arm. “One more fight like that will kill you,” she says. The fear in her voice is quieter than the rain.'
         : 'Your muscles ache, but your breathing settles as the survivors form around the wagons.',
-      'Joren is alive. Three guards cannot ride. One horse must be put down. Brann says the attackers who escaped went east, not back toward Greyhaven.',
-      'Nilo sits beside the rear wheel, pressing both hands over a cut in his leg. He insists he can walk. Tivik quietly moves him onto the wagon before the boy can prove it.',
+      'Joren is alive. The three injured guards cannot ride. The horse with the broken leg must be put down. Brann says the attackers who escaped went east, not toward Greyhaven.',
+      'Nilo sits beside the rear wheel, pressing both hands over the harness cut in his leg. He insists he can walk. Tivik quietly moves him onto the wagon before he can try.',
       state.flags.includes('oath-safe-arrival')
         ? 'Your promise remains warm inside you. Shelter is no longer the mission written by a court. It is a debt carried in your own blood.'
         : 'The woods have gone quiet again. Every guard turns when a branch sheds water.',
@@ -1348,7 +1390,7 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     lesson: {
       title: 'Chapter rewards',
-      body: 'Wayfire is the currency earned when you finish chapters and make major choices. It will unlock later chapters and some optional scenes. Gaining Wayfire does not make one story choice morally better than another.',
+      body: 'Wayfire is earned when you finish chapters and make major choices. Finishing a chapter unlocks the next one. Wayfire remains available for future optional paths and scenes. Gaining Wayfire does not make one choice morally better than another.',
     },
     introduces: ['wayfire'],
     art: 'folded',

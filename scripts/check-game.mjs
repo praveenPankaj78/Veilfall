@@ -1209,7 +1209,7 @@ const lowRoadCases = [
   },
   {
     flags: ['steady-axle'],
-    expected: [/wagon driver/i, /hangs above the flood/i],
+    expected: [/second guard/i, /hangs above the flood/i],
     forbidden: [/children you rescued/i, /trapping young Joren beneath the axle/i],
   },
   {
@@ -1226,6 +1226,81 @@ for (const testCase of lowRoadCases) {
   for (const forbidden of testCase.forbidden) {
     if (forbidden.test(body)) failures.push(`Low road continuity incorrectly includes ${forbidden} for ${testCase.flags.join(',') || 'no flags'}`);
   }
+}
+const openingLessonText = nodes['gate-yard'].lesson?.body ?? '';
+for (const requiredTerm of [/Health/i, /Resolve/i, /Command/i, /Health.*zero.*dies/i]) {
+  if (!requiredTerm.test(openingLessonText)) {
+    failures.push(`The Chapter One opening lesson does not plainly teach ${requiredTerm}`);
+  }
+}
+if (/Mara|Lysara|Trust|Attraction|score/i.test(openingLessonText)) {
+  failures.push('The Chapter One opening lesson exposes relationship people or numbers before their introductions');
+}
+const openingBodyText = renderedBody('gate-yard', initialState);
+if (/Brann, Joren, Nilo, Mara/i.test(openingBodyText)) {
+  failures.push('The Chapter One opening restores the retired list of character names');
+}
+const horseCheck = nodes['gate-yard'].choices.find((choice) => choice.id === 'check-horses');
+const horseCheckResult = horseCheck?.result ?? '';
+if (!/replace.*strap/i.test(horseCheckResult) || !/clean.*oil/i.test(horseCheckResult)) {
+  failures.push('The horse check must visibly prevent the harness failure credited in the recap');
+}
+const horseCheckCallback = renderedBody('mara-returns', {
+  ...initialState,
+  flags: ['checked-horses'],
+});
+if (!/cleaned the strange oil/i.test(horseCheckCallback)) {
+  failures.push('The scene after the horse check forgets that Caelan cleaned the mare’s bit');
+}
+const horseCheckConsequences = majorConsequences({
+  ...initialState,
+  flags: ['checked-horses'],
+});
+if (!horseCheckConsequences.some((consequence) => /avoided a planned equipment failure/i.test(consequence))) {
+  failures.push('The horse check recap no longer records the prevention shown in the playable result');
+}
+const familyBridgeChoices = nodes['low-crisis'].choices.filter((choice) => isChoiceVisible(choice, {
+  ...initialState,
+  flags: ['saved-family'],
+}));
+if (familyBridgeChoices.length !== 3) {
+  failures.push(`The rescued family bridge branch exposes ${familyBridgeChoices.length} choices instead of three`);
+}
+for (const choice of familyBridgeChoices) {
+  const choiceText = `${choice.detail} ${choice.result}`;
+  if (!/both children/i.test(choiceText)) {
+    failures.push(`Bridge choice ${choice.id} hides the rescued children’s fate`);
+  }
+  if (/someone cries your name/i.test(choiceText)) {
+    failures.push(`Bridge choice ${choice.id} replaces the rescued children with an unnamed cry`);
+  }
+}
+const noFamilyBridgeChoices = nodes['low-crisis'].choices.filter((choice) => isChoiceVisible(choice, {
+  ...initialState,
+  flags: [],
+}));
+if (noFamilyBridgeChoices.length !== 3) {
+  failures.push(`The bridge branch without the rescued family exposes ${noFamilyBridgeChoices.length} choices instead of three`);
+}
+for (const choice of noFamilyBridgeChoices) {
+  if (!/Joren/i.test(`${choice.detail} ${choice.result}`) || !/second guard/i.test(choice.result)) {
+    failures.push(`Bridge choice ${choice.id} does not resolve Joren and the second guard`);
+  }
+}
+for (const nodeId of ['low-crisis', 'ridge-crisis', 'inspection-crisis']) {
+  const crisisText = renderedBody(nodeId, initialState);
+  if (!/Joren.*side/i.test(crisisText)
+    || !/Nilo.*lower leg/i.test(crisisText)
+    || !/three guards/i.test(crisisText)
+    || !/horse.*leg/i.test(crisisText)) {
+    failures.push(`Chapter One crisis ${nodeId} does not establish every injury reported in the aftermath`);
+  }
+}
+const wayfireLessonText = nodes['folded-road'].lesson?.body ?? '';
+if (!/Finishing a chapter unlocks the next one/i.test(wayfireLessonText)
+  || !/optional paths and scenes/i.test(wayfireLessonText)
+  || /Wayfire.*unlock later chapters/i.test(wayfireLessonText)) {
+  failures.push('The Chapter One Wayfire lesson contradicts current chapter progression');
 }
 const sealedCaseTruths = knownTruths({
   ...initialState,
