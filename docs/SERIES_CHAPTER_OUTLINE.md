@@ -156,7 +156,7 @@ Romance movement: Mara returns from the western signal line when her romance is 
 
 Revelation: The Black Gate has been opening briefly for years, and the Crown hid each incident.
 
-End state: The first devil embassy requests an open crossing. Caelan may receive it publicly, hear Vexa Ash at the threshold, or let the harmed wardens speak first. Every route reveals a contract bearing Caelan's name and an unwritten price.
+End state: The first devil embassy requests an open crossing. Caelan may receive it publicly, keep it outside when no entry was promised, honour Compact entry inside an isolated fort, or let the harmed wardens speak first. Every route reveals an unfinished claim bearing Caelan's name. Its price and his agreement remain blank, so it owns nothing yet.
 
 ### Chapter Nine: The Price of a Name
 

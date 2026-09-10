@@ -362,7 +362,7 @@ export function knownTruths(game: GameState) {
       truths.push('I sacrificed First Fort so its foundation and stored fire could strengthen the other seven.');
     }
     if (game.nodeId === 'c8-embassy-terms' || game.nodeId.startsWith('c8-ending-')) {
-      truths.push('Vexa Ash leads the first open devil embassy and claims that someone beyond the Gate has been buying my future since before my first Oath.');
+      truths.push('Vexa Ash leads the first open devil embassy and carries an unfinished claim prepared against my future before my first Oath. It has no price or agreement and owns nothing yet.');
     }
     return truths;
   }
@@ -546,6 +546,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c7-gained-chosen-company')) consequences.push('Because you asked for volunteers, a smaller company follows by choice rather than inherited rank.');
   if (game.flags.includes('c7-gained-dangerous-reputation')) consequences.push('Because you refused formal allies, your reputation now travels ahead of your small group.');
   if (game.flags.includes('c8-pell-survived')) consequences.push('Because you saved Pell, the escaped Warden identified the safe people and locks inside Fourth Fort.');
+  if (game.flags.includes('c8-oath-pell-sees-opening-contained')) consequences.push('Because you promised Pell would see the invasion stopped, the fulfilled Oath returned when the hostile opening was contained.');
   if (game.flags.includes('c8-pell-died-for-map')) consequences.push('Because you preserved your resources, Pell spent his last breath drawing the complete safe lock route.');
   if (game.flags.includes('c8-deployed-all-forts') || game.flags.includes('c8-deployed-full-march')) consequences.push('Because you spread your force across all eight forts, the whole ring is watched but its smaller posts may be overwhelmed alone.');
   if (game.flags.includes('c8-deployed-strongpoints') || game.flags.includes('c8-deployed-volunteers')) consequences.push('Because you concentrated defenders at the strongest forts, those positions can support one another while several walls remain empty.');
@@ -555,6 +556,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c8-many-witnessed-openings')) consequences.push('Because you called divided witnesses into the record room, no single stolen document can erase the hidden openings again.');
   if (game.flags.includes('c8-mara-knows-home-desire')) consequences.push('Because you told Mara what home means to you without making an Oath, she knows what future the Gate may threaten.');
   if (game.flags.includes('c8-lysara-knows-road-desire')) consequences.push('Because you named a road with Lysara beyond both kingdoms, she knows what future the Gate may threaten.');
+  if (game.flags.includes('c8-living-seed-spent')) consequences.push('Because Lysara’s weakened seed saved Pell and then lifted the buried chain, its treaty magic is now dormant.');
   if (game.flags.includes('c8-united-wardens')) consequences.push('Because you united the wardens, the Black Gate remains under mortal control without a new contract or permanent gap.');
   if (game.flags.includes('c8-accepted-ash-compact')) consequences.push('Because you accepted the Ash Compact, white fire held every weak link and a peaceful embassy gained safe passage.');
   if (game.flags.includes('c8-sacrificed-first-fort')) consequences.push('Because you sacrificed First Fort, the other seven held while the fortress ring gained a permanent gap.');
@@ -569,7 +571,9 @@ export function majorConsequences(game: GameState) {
     consequences.push('Because a willing companion shared your burden, every promise survived while the Gate gained a mark it may find again.');
   }
   if (game.flags.includes('c8-vexa-entered-publicly')) consequences.push('Because you received Vexa publicly, the first devil embassy entered under the eyes of every force.');
+  if (game.flags.includes('c8-vexa-received-outer-fort')) consequences.push('Because you honoured the Compact inside an isolated outer fort, the embassy entered as promised without reaching the wounded or lock rooms.');
   if (game.flags.includes('c8-vexa-held-at-threshold')) consequences.push('Because you held Vexa at the threshold, diplomacy began with one visible step between the two worlds.');
-  if (game.flags.includes('c8-ansel-spoke-first')) consequences.push('Because Ansel asked the first question, the first embassy had to answer the Futureless before addressing rulers.');
+  if (game.flags.includes('c8-ansel-spoke-first-after-entry')) consequences.push('Because you honoured the Compact before Ansel spoke, the embassy entered and then answered the Futureless before rulers.');
+  else if (game.flags.includes('c8-ansel-spoke-first')) consequences.push('Because Ansel asked the first question, Vexa remained outside while the embassy answered the Futureless before rulers.');
   return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }

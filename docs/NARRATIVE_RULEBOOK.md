@@ -121,6 +121,8 @@ A resource cost must buy a visible advantage. Do not ask the player to spend Hea
 
 When two choices reach the same next scene, compare them from a player who can see the numbers. A costly option needs a distinct person saved, threat reduced, proof secured, relationship changed, resource preserved, or later route opened. If a free option provides the same or greater practical result, revise the consequences or remove the cost.
 
+A free expert solution is an earned payoff only when an earlier choice established the trust, knowledge, tool, or preparation it uses. Gate that option with the exact earlier flag. If it remains available to everyone, give it a visible risk or loss that prevents it from dominating costly class actions.
+
 ## Consequence horizons
 
 Every important choice should create at least two consequences from different horizons:
@@ -142,6 +144,11 @@ Treat every route choice as a physical fact, not only a flag.
 - Teach a rule before a later option depends on it. A clever contract limit, spell exception, signal code, or local law must first appear through action or dialogue.
 - Name the person who accepts an injury, mark, debt, spell, or transferred promise in the option and result. Do not hide a known identity behind companion, ally, or hand.
 - An inherited outcome is not a new decision. Show what arrived from the previous chapter, then offer at least two genuinely available ways to use it.
+- An inherited force, injury, weakened power, or political agreement must change a later complication, cost, available option, or result. Different opening paragraphs are not enough.
+- Place route-specific people, evidence, and supplies before a later scene asks the player to save or use them.
+- An accepted agreement constrains later choices. Hide contradictory actions, replace them with an agreement-safe version, or make deliberate betrayal an explicit choice with consequences.
+- Phrase promises against an ending state the story can actually reach. When the condition resolves, show fulfilment or failure before opening the next plot question.
+- Distinguish contract states in plain language: a prepared claim owns nothing, an offer awaits agreement, an accepted bargain binds its stated terms, and an owned promise has already been paid for.
 - Shared scenes must branch when a character refers to something the player accepted, refused, destroyed, or never learned. Do not write one sentence that lists every possible route.
 
 During Immediate or Critical danger, replace legal or technical shorthand with the action it means. Say permission to enter and leave instead of safe conduct, guarantee instead of surety, and another payment instead of second price.

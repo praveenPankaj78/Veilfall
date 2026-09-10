@@ -65,6 +65,42 @@ function deploymentResult(state: GameState) {
   return 'Small teams place lamps and warning cords instead of pretending they can hold every wall. You will hear an attack early, but stopping it will depend on speed.';
 }
 
+function inheritedForcePressure(state: GameState) {
+  if (has(state, 'c7-gained-full-army')) {
+    return 'The numbers solve one problem and create another. Teren catches two soldiers carrying Malrec’s private orders toward separate lock rooms. He arrests them, then warns that another loyalist may still be inside the ring. Every fort can be manned, but every keeper must be watched.';
+  }
+  if (has(state, 'c7-gained-chosen-company')) {
+    return 'Your volunteers can safely hold three fires. A mortal defence of all eight would require Ansel to split the Futureless across the remaining posts, leaving Fourth Fort with almost no reserve.';
+  }
+  return 'Your small force can safely hold two fires. A mortal defence of all eight would put wounded wardens, furnace workers, and riders on the other six. They may choose the risk, but some will be burned.';
+}
+
+function deploymentPressure(state: GameState) {
+  if (has(state, 'c8-deployed-all-forts') || has(state, 'c8-deployed-full-march')) {
+    return 'Because you spread the force, the first real attack may trap isolated pairs before help crosses the ring.';
+  }
+  if (has(state, 'c8-deployed-strongpoints') || has(state, 'c8-deployed-volunteers')) {
+    return 'Because you held the strong forts, five empty walls now depend on warning lines and mounted reserves. A red fault may move faster than a horse.';
+  }
+  return 'Because you kept the force mobile, it can strike together. Most signal fires remain empty until the first alarm, leaving little time to place their keepers.';
+}
+
+function forceChoiceAtOpening(state: GameState) {
+  if (has(state, 'c7-gained-full-army')) {
+    return 'Teren can place soldiers at every fire, but his lock teams must watch for Malrec’s remaining loyalist while they face the Gate.';
+  }
+  if (has(state, 'c7-gained-chosen-company')) {
+    return 'Your volunteers can hold three fires. A fully mortal ring means sending the Futureless from Fourth Fort to hold the other five without reserves.';
+  }
+  return 'Your small force can hold two fires. A fully mortal ring means asking wounded wardens, furnace workers, and riders to face the opening heat at the other six.';
+}
+
+function pellOathOutcome(state: GameState) {
+  if (!has(state, 'c8-oath-pell-sees-opening-contained')
+    && !has(state, 'c8-oath-pell-sees-gate-close')) return [];
+  return ['From Fourth Fort, Pell watches the last hostile hand withdraw and the opening shrink until no army can cross. Gold light leaves his chest and returns to yours. You promised containment, not silence, and the Oath knows the difference.'];
+}
+
 function personalWatch(state: GameState) {
   if (state.relationships.mara.intent === 'committed'
     || state.relationships.mara.intent === 'exploring') return 'c8-mara-watch';
@@ -83,10 +119,16 @@ function endangeredCompanion(state: GameState) {
 
 function routeOutcome(state: GameState) {
   if (has(state, 'c8-united-wardens')) {
-    return 'Seven signal fires answer the eighth. The defence belongs to mortal hands, and no hidden contract stands inside it.';
+    if (has(state, 'c7-gained-full-army')) {
+      return 'Eight mortal fires hold. Teren spends the hour moving between them, exposing the last saboteur before a lock can be reversed. Your army supplied enough hands, and its divided loyalty nearly supplied the enemy with one.';
+    }
+    if (has(state, 'c7-gained-chosen-company')) {
+      return 'Volunteers hold three fires while the Futureless divide across the other five. The ring remains mortal, but Fourth Fort has no reserve and six wardens leave the locks with burned hands.';
+    }
+    return 'Your companions hold two fires. Wounded wardens, furnace workers, and steppe riders choose the other six. The ring remains mortal, but the infirmary fills with burns before the hour ends.';
   }
   if (has(state, 'c8-accepted-ash-compact')) {
-    return 'White fire joins the forts in a clean circle. It holds because you granted one devil faction an open road for a peaceful embassy.';
+    return 'White fire joins the forts in a clean circle. It holds because you granted one peaceful embassy permission to enter and leave under public rules.';
   }
   return 'First Fort falls inward exactly as planned. Its stone and stored fire run through buried channels into the other seven. The ring survives with a permanent gap.';
 }
@@ -109,6 +151,39 @@ function vexaGreeting(state: GameState) {
     return '“Vexa Ash,” she says. “Voice of the Ash Compact. You refused our fire and held the Gate with mortal hands. You promised us no entry. We ask only to speak from this threshold unless you choose otherwise.”';
   }
   return '“Vexa Ash,” she says. “Voice of the Ash Compact. You refused our fire and broke one of your own forts to close the Gate. You promised us no entry. We ask only to speak from this threshold unless you choose otherwise.”';
+}
+
+function firstFortStaging(state: GameState) {
+  if (has(state, 'c8-deployed-all-forts') || has(state, 'c8-deployed-full-march')) {
+    return 'Before you leave the western road, Mara turns empty First Fort into an aid station for the wounded travelling between posts. Its dry lower room becomes the safest place for Pell’s sealed packet and the furnace fuel.';
+  }
+  if (has(state, 'c8-deployed-strongpoints') || has(state, 'c8-deployed-volunteers')) {
+    return 'Before you leave the western road, Mara marks empty First Fort as the reserve aid station between the strong positions. Pell’s sealed packet and the furnace fuel go into its dry lower room.';
+  }
+  return 'Before you leave the western road, Mara makes empty First Fort a temporary aid station while your mobile force remains outside. Pell’s sealed packet and the furnace fuel go into its dry lower room.';
+}
+
+function seedCondition(state: GameState) {
+  if (has(state, 'c8-seed-weakened-saving-pell')) {
+    return 'Lysara opens her hand. The living seed saved Pell, and its light is now a thin green pulse. It can still lift the chain once, but doing so will spend what remains and leave her treaty magic dormant.';
+  }
+  return 'Lysara opens her hand. The living seed still carries enough strength to wake the dead roots beneath the chain, though the work will weaken its future treaty magic.';
+}
+
+function vexaMeetingStatus(state: GameState) {
+  if (has(state, 'c8-vexa-received-outer-fort')) {
+    return 'You honour the Compact before asking for more trust. Vexa and two sealed envoys cross into the empty Second Fort yard, where two gates and every witness remain between them and the wounded.';
+  }
+  if (has(state, 'c8-vexa-held-at-threshold')) {
+    return 'Vexa remains beyond the threshold. She has permission to speak and return safely, but none to enter tonight.';
+  }
+  if (has(state, 'c8-ansel-spoke-first-after-entry')) {
+    return 'The Compact embassy crosses under its public agreement, then stops inside the outer yard. Ansel stands before rulers and asks its first question.';
+  }
+  if (has(state, 'c8-ansel-spoke-first')) {
+    return 'Vexa remains on the far side while Ansel asks the first question across the threshold. No decision about entry has been made.';
+  }
+  return 'Vexa and the sealed embassy cross under the eyes of every witness.';
 }
 
 function oathCost(state: GameState) {
@@ -156,7 +231,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       emberState(state),
       'Ilyra left before dawn to follow the hidden command along another road. No message from her has reached the fort ring yet.',
       'The Gate knocks again. The sound passes through your boots and closes around your heart. Every Oath you carry answers with a separate line of heat. Beneath your armour, the key to your father’s roadside inn strikes softly against your old Warden whistle.',
-      'A small figure runs from Fourth Fort. Halfway across the open ground, the snow behind him erupts in a straight red line. He is a boy in a Warden coat, and something beneath the ice is following his footsteps toward you.',
+      'A small figure runs from Fourth Fort with one hand pressed to a bleeding cut below his ribs. Halfway across the open ground, the snow behind him erupts in a straight red line. He is a boy in a Warden coat, and something beneath the ice is following his footsteps toward you.',
     ],
     choices: [
       {
@@ -196,14 +271,14 @@ export const chapterEightNodes: Record<string, StoryNode> = {
   'c8-first-knock': {
     id: 'c8-first-knock',
     kicker: 'A warning that bleeds',
-    title: 'The Boy Who Cannot Promise',
+    title: 'The Runner’s Last Warning',
     location: 'The Ground Between Forts',
     objective: 'Keep the runner alive long enough to understand his warning.',
     threat: 'Immediate',
     art: 'blackgate',
     introducesStoryTerms: ['Futureless'],
     body: () => [
-      'The boy is older than he looked from the ridge, perhaps seventeen. A brass plate on his coat names him Pell. He grips your wrist and tries to speak.',
+      'The boy is older than he looked from the ridge, perhaps seventeen. A brass plate on his coat names him Pell. Beneath it, a flat oilskin packet bears Fourth Fort’s seal and the words First Fort copy. He grips your wrist and tries to speak.',
       '“Fourth Fort still has eighty soldiers. Captain Ansel sent me because the others cannot leave. They made bargains during the old openings.”',
       'He swallows blood. “They are not possessed. They know their names. They can choose most things. But each of them sold one promise they would make in the future.”',
       'Pell forces another breath. “One father sold the promise he meant to make when his daughter returned from war. He can love her. He can protect her. But when she asks whether he will stay, the words will not come. The bargain already owns them.”',
@@ -224,11 +299,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c8-oath-hold-pell',
-        label: 'Promise that Pell will see the Gate close tonight.',
-        detail: 'Gain 2 Oathfire by accepting a new duty that fails if Pell dies or the Gate stays open.',
+        label: 'Promise that Pell will see the invasion stopped tonight.',
+        detail: 'Gain 2 Oathfire by accepting a duty that fails if Pell dies or the opening becomes an army road.',
         advantage: 'The Oath steadies his failing heart and gives you power for the defence.',
         changes: { oathfire: 2 },
-        addFlags: ['c8-oath-pell-sees-gate-close', 'c8-pell-survived'],
+        addFlags: ['c8-oath-pell-sees-opening-contained', 'c8-pell-survived'],
         result: 'Gold light passes from your hand into his chest. Pell gasps. The promise holds him, and its new weight settles beside every older duty.',
         next: 'c8-force-deployment',
       },
@@ -308,6 +383,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     art: 'futureless',
     body: (state) => [
       deploymentResult(state),
+      firstFortStaging(state),
       'Fourth Fort opens one narrow viewing slot. Captain Ansel Greve looks through it. He is grey haired, unshaven, and holding a crossbow against his own gate lever.',
       '“Do not order us to open,” he says. “Some of us sold the future promise that we would obey the next true Warden who came from the west. If you command it, the bargain may decide what obedience means.”',
       'The warning strikes close. Your authority got people here. At this door, using it carelessly could give the enemy a key.',
@@ -363,10 +439,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Eighty soldiers stand in the common hall. Nothing marks them as monsters. They are tired people with clean weapons and untouched letters from home.',
       'Ansel lays three contracts on a table. They are written in plain mortal language. During earlier Gate openings, each soldier received food, heat, or one rescued life. In payment, a devil claimed a promise that soldier would make later.',
       'The bargain cannot force them to love, hate, march, or kill. It owns only the named promise. The cruelty lies in choosing the moment that promise will matter most.',
+      'Changing the sentence will not free them. The contract owns the act and meaning of that one promise, no matter which words they try to use.',
       'Ansel taps the final line of each contract. “One named promise. Nothing more. The buyer cannot demand another payment because it dislikes the first.”',
       'Ansel sold the words he meant to speak when his daughter came home: I will never leave you again. Another soldier sold the promise to guard the western signal basket if every other post fell. He still wants to guard it tonight, but the bargain owns the words he would use to accept that duty.',
       'You feel anger arrive before judgment. These people did not trade the kingdom for comfort. They were abandoned during secret openings and paid whatever kept someone alive.',
-      'A black mark moves across one contract. It is counting down to sunset.',
+      'A signal clock shows a little over two hours until sunset. A black mark moves across one contract, counting down with it.',
     ],
     choices: [
       {
@@ -375,7 +452,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         detail: 'Spend precious time building an exact list of what the bargains can and cannot touch.',
         advantage: 'No later command will accidentally depend on a promise already owned.',
         addFlags: ['c8-complete-futureless-ledger'],
-        result: 'You listen to all eighty accounts. The list is painful, specific, and useful. Fear becomes a set of known limits instead of a shadow over every face.',
+        result: 'Six clerks question small groups while you and Ansel check every line. In forty minutes, all eighty accounts become one painful, useful list. Fear becomes a set of known limits instead of a shadow over every face.',
         next: 'c8-hidden-record',
       },
       {
@@ -415,6 +492,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Each report reached the Crown. Each reply ordered the wardens to call it a furnace fault, pay the dead families, and replace anyone who spoke publicly. Malrec’s seal appears on the newest orders, but the concealment began before he held power.',
       'For seventeen years, the Crown removed witnesses, delayed supplies, and quietly closed three failing garrisons. The remaining wardens became desperate enough to bargain for food, heat, and rescued lives.',
       'Then, three weeks ago, Malrec pulled the field army away from four more forts and sent no replacements. Years of neglect weakened the ring. His final order left only Fourth Fort occupied tonight.',
+      'Ansel points to the empty cord beneath Pell’s brass plate. The sealed packet you sent to First Fort is his complete copy of these reports. He made it before sending Pell for help because heat was already staining these walls.',
       'Heat stains the far wall red. You remember every official who called these people unreliable. In less than a minute, the ledgers will burn from the inside.',
     ],
     choices: [
@@ -452,14 +530,16 @@ export const chapterEightNodes: Record<string, StoryNode> = {
 
   'c8-breach': {
     id: 'c8-breach',
-    kicker: 'The yearly opening begins early',
+    kicker: 'The Gate’s first breath',
     title: 'When the Wall Breathes',
     location: 'Fourth Fort Inner Yard',
     objective: 'Save the yard before the first opening breath reaches the powder room.',
     threat: 'Critical',
     art: 'futureless',
-    body: () => [
-      'The Gate inhales.',
+    body: (state) => [
+      inheritedForcePressure(state),
+      deploymentPressure(state),
+      'More than an hour before the yearly opening, the Gate inhales.',
       'Air tears from the yard toward the black wall. Carts roll backward. Two soldiers lose their footing. A furnace red crack appears down the Gate’s centre, thin as a sword blade and bright enough to leave an afterimage.',
       'The opening is not a doorway yet. It is a wound drawing heat, air, and every active promise toward itself. The powder room door breaks from its hinges and begins sliding across the stones.',
       'Mara catches one falling soldier. Ansel reaches the other. A wagon carrying three wounded wardens rolls toward the crack while sparks race for the exposed powder barrels.',
@@ -502,8 +582,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       {
         id: 'c8-trust-futureless-yard',
         label: 'Let Ansel’s soldiers choose the rescues without your command.',
-        detail: 'Risk both dangers on people the Crown called compromised.',
+        detail: 'Use the refusal test you witnessed and risk both dangers on people the Crown called compromised.',
         advantage: 'The Futureless prove they can protect the fort without promises or borrowed authority.',
+        showIfAllFlags: ['c8-futureless-choice-proven'],
         addFlags: ['c8-futureless-saved-yard'],
         result: 'Ansel shouts no oath and asks for no vow. His soldiers move anyway. They stop the wagon and bury the sparks because they choose to, not because anyone owns the words.',
         next: 'c8-ash-offer',
@@ -529,7 +610,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       '“The hand pushing your Gate does not belong to the Ash Compact. We prefer a door with witnesses to a wound with armies.”',
       'The speaker offers enough white fire to join the eight fort locks for one night. In return, the Compact wants permission for one peaceful embassy to enter and leave again after the Gate is stable. No hidden travellers. No weapons raised first. Every term spoken in public.',
       'Ansel keeps his crossbow trained on the ember. Two soldiers with black contract marks step closer to hear it. The others move back. Nobody lowers a weapon.',
-      'The voice asks to be heard, not trusted. The ember waits, then asks one question. “Will Caelan Vey hear our terms before deciding whether our existence is a crime?”',
+      'The voice asks to be heard, not trusted. The ember waits, then asks one question. “Will Caelan Vey hear the terms before he decides?”',
     ],
     choices: [
       {
@@ -573,6 +654,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'blackgate',
     body: () => [
+      'The early pressure eases. One hour remains before sunset, and every repair team knows its post. You take one minute while the next horn is quiet.',
       'Mara returns from the western signal line with snow in her hair and another soldier’s blood on one sleeve. She closes the tower door, checks that the latch holds, and lets her forehead rest against yours.',
       'For a moment, your body remembers warmth without armour between it and danger. Her hand settles at your waist, familiar and careful around the newest wound.',
       '“That Gate steals promises people have not made yet,” she says. “So tell me something without turning it into an Oath. What do you want when nobody needs Captain Vey?”',
@@ -618,6 +700,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'blackgate',
     body: () => [
+      'The early pressure eases. One hour remains before sunset, and every repair team knows its post. You take one minute while the next horn is quiet.',
       'Lysara meets you above the ruined ledgers. Red light touches the brown skin at her throat and turns the green seed in her palm almost black.',
       'She takes your hand first. Her thumb moves across the scar where Oathfire has burned you since Bellweather.',
       '“A treaty survives because everyone knows what it promises,” she says. “We have been less precise with ourselves. What do you want that is not useful to Asterra, my court, or this Gate?”',
@@ -663,6 +746,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'blackgate',
     body: () => [
+      'The early pressure eases. One hour remains before sunset, and every repair team knows its post. You take one minute while the next horn is quiet.',
       'You take one minute alone above the fortress ring. Mara commands the western wall. Lysara prepares the living lock. Korran checks the riders below. Their work continues without needing you at its centre.',
       'The sight should feel like relief. Instead, it exposes a question duty has hidden for years. If the world survives, what do you want your life to contain besides the next person who needs saving?',
       'The Gate knocks softly. Every Oath answers. Your fear circles one silent question: what do you want for yourself? The private wants beneath the duties may be the only things that still belong entirely to you.',
@@ -706,10 +790,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     objective: 'Restore the physical link between the forts before deciding who will power it.',
     threat: 'Critical',
     art: 'futureless',
-    body: () => [
+    body: (state) => [
       'The fort map shows one simple defence. Each signal basket feeds heat into a buried iron chain. When all eight links glow, the ring holds the Black Gate shut.',
       'Seven baskets are cold. Two fuel stores are flooded. One chain section lies beneath open ground already splitting with red heat.',
-      'Lysara can wake dead roots beneath the chain. Ansel knows the old furnace route. Mara can lead a repair line across exposed snow. You can protect only one method from the Gate’s next breath.',
+      seedCondition(state),
+      'Ansel knows the old furnace route. Mara can lead a repair line across exposed snow. You can protect only one method from the Gate’s next breath.',
       'Your attention keeps returning to the exposed chain section. The opening horn sounds. Sunset touches the top of the black wall.',
     ],
     choices: [
@@ -718,8 +803,19 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         label: 'Use Lysara’s living seed to lift the broken chain from below.',
         detail: 'Weaken the seed’s future treaty magic to repair the safest underground route.',
         advantage: 'Restore the chain without exposing soldiers on the open ground.',
+        hideIfAnyFlags: ['c8-seed-weakened-saving-pell'],
         addFlags: ['c8-chain-lifted-by-seed'],
         result: 'Green roots rise beneath the iron and carry it across the flooded gap. The seed dims, but the chain closes link by link.',
+        next: 'c8-opening',
+      },
+      {
+        id: 'c8-spend-weakened-seed-on-chain',
+        label: 'Spend the living seed’s remaining strength to lift the chain.',
+        detail: 'The seed already saved Pell. This second use will leave its treaty magic dormant.',
+        advantage: 'Restore the chain without exposing soldiers on the open ground.',
+        showIfAllFlags: ['c8-seed-weakened-saving-pell'],
+        addFlags: ['c8-chain-lifted-by-seed', 'c8-living-seed-spent'],
+        result: 'The weakened seed trembles in Lysara’s palm. Roots lift the iron into place, then every green thread goes dark. Pell breathes because of it, but the seed has no magic left for the next treaty.',
         next: 'c8-opening',
       },
       {
@@ -747,10 +843,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       {
         id: 'c8-use-ansel-furnace-route',
         label: 'Trust Ansel to reopen the old furnace route his soldiers maintained alone.',
-        detail: 'Place the central repair in Futureless hands without an Oath or royal command.',
+        detail: 'Use the trust established when Ansel chose your safe entrance. One hidden furnace may still fail.',
         advantage: 'Preserve every magical resource and restore the wardens’ ownership of their fort.',
-        addFlags: ['c8-ansel-restored-chain'],
-        result: 'Ansel takes twenty soldiers into the smoke passage. They return black with soot and carrying the missing chain pin between them. They needed tools, not redemption.',
+        showIfAllFlags: ['c8-ansel-chose-entry'],
+        addFlags: ['c8-ansel-restored-chain', 'c8-lost-furnace-reserve'],
+        result: 'Ansel takes twenty soldiers into the smoke passage. They return black with soot and carrying the missing chain pin. A buried furnace collapses behind them, destroying the reserve fuel, but they needed tools, not redemption.',
         next: 'c8-opening',
       },
     ],
@@ -764,10 +861,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     objective: 'Keep the yearly opening from becoming an invasion road.',
     threat: 'Critical',
     art: 'blackgate',
-    body: () => [
+    body: (state) => [
       'The Gate opens at sunset.',
       'First comes a red line. Then the two halves move apart by the width of one hand. Through the gap, you see a city of black towers beneath an orange sky. A hot wind carries voices speaking in several languages.',
       'The yearly opening lasts one hour. It has happened seventeen times. Every earlier year, the gap widened. Tonight someone beneath the Gate is pulling on the stolen future promises to force it farther.',
+      forceChoiceAtOpening(state),
       'The eight signal fires answer, but the defence lacks one thing: people or power at every link. You can unite the remaining wardens, accept the Ash Compact’s white fire, or destroy one fort so its stored strength feeds the other seven.',
       'Mortal keepers may fail if one frightened group breaks. White fire would strengthen every weak link, but the Compact would earn the embassy it requested. Breaking First Fort would give the chain enough heat and leave a permanent hole in Asterra’s defence.',
     ],
@@ -852,8 +950,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       {
         id: 'c8-let-ansel-name-keepers',
         label: 'Let Ansel name the keepers and accept the risk of following him.',
-        detail: 'Place the defence in the hands of the captain who survived all seventeen openings.',
+        detail: 'Use the ledger or refusal test to place the defence in the hands of the captain who survived all seventeen openings.',
         advantage: 'Use local knowledge no outside commander possesses and restore Ansel’s public honour.',
+        showIfAnyFlags: ['c8-complete-futureless-ledger', 'c8-futureless-choice-proven'],
         addFlags: ['c8-ansel-named-keepers'],
         result: 'Ansel names people by the promises they still own. The pattern makes sense only after he speaks it. Every selected keeper steps forward without being ordered.',
         next: 'c8-collector-crossing',
@@ -916,7 +1015,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'futureless',
     body: () => [
-      'First Fort holds wounded soldiers, furnace fuel, and the only complete set of Crown opening reports copied before Ansel hid his own. The foundation can carry people or records before it falls, not both without help.',
+      'Mara’s temporary aid station still holds wounded soldiers in First Fort. Its dry lower room holds furnace fuel and the complete copy Ansel sent out with Pell’s warning. The narrow evacuation bridge can carry people or records before the foundation falls, not both without help.',
       'The Gate widens another finger. Red light enters the fort windows. Every heartbeat spent here gives the other side more road.',
       'You feel the lost fort through the stones before it falls. You chose the sacrifice. You still decide what the sacrifice means.',
     ],
@@ -1018,8 +1117,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       {
         id: 'c8-let-ansel-refuse-collection',
         label: 'Let Ansel refuse the collector’s demand for another payment.',
-        detail: 'Use the plain limit Ansel showed you in the hall while the collector is close enough to kill him.',
+        detail: 'Use the complete ledger or refusal test to prove the limit while the collector is close enough to kill him.',
         advantage: 'Repel the claim without spending your strength and prove the Futureless never owed more than the named promise.',
+        showIfAnyFlags: ['c8-complete-futureless-ledger', 'c8-futureless-choice-proven'],
         addFlags: ['c8-ansel-refused-second-price'],
         result: 'Ansel steps between the hand and the papers. “One named promise. Nothing more.” The brass rings crack. The collector jerks backward, beaten by the limit it wrote itself.',
         next: 'c8-oath-ledger',
@@ -1040,8 +1140,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       body: 'The Gate is pulling every active Oath at once. Four physical choices can break that pull: the key to Caelan’s old home, his Crown badge, his Warden whistle, or the hand of the companion who steps forward. Each saves the defence by placing a different future at risk.',
     },
     body: (state) => [
-      routeOutcome(state),
-      'The red gap stops widening. Then the Gate changes its attack.',
+      'The eight fires hold the gap at one person wide. Then the Gate changes its attack.',
       'Every Oath inside you pulls in a different direction. Greyhaven drags west. Vaor’s ember burns north. The steppe alliance holds behind you. Pell’s life, if you bound it, beats from Fourth Fort. The people at the threshold need you here.',
       'The trap becomes physical inside you. The Gate does not need to break your promises. It can make each one demand you at the same moment until choice becomes impossible.',
       'Your father’s old inn key hangs beneath your armour. It represents the hope that you can return and become the man who left. Your cracked Crown badge carries the Oath of service you swore to Asterra.',
@@ -1126,13 +1225,13 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     art: 'embassy',
     introducesStoryTerms: ['Vexa Ash'],
     body: (state) => [
-      routeOutcome(state),
-      oathCost(state),
-      'The hour ends. The Gate should close. Instead, it remains open by the width of one person.',
+      'The hostile opening is contained. No army crossed, and the gap has narrowed to the width of one person.',
+      ...pellOathOutcome(state),
+      'A white ember holds that final space long enough for one envoy to request the promised meeting. It cannot widen the Gate again.',
       'A woman steps to the far side carrying a white ember lantern. Swept black horns rise through dark hair. Her armour is deep red, cut for ceremony rather than battle, and every weapon behind her has been sealed inside a brass case.',
       vexaGreeting(state),
-      'Ansel’s soldiers raise bows. Your own ranks wait for an order. Vexa looks past every crown, ambassador, dragon, and captain until her gaze finds you.',
-      '“I came to speak with Caelan Vey. Someone in my world has been buying his future since before he wrote his first Oath.”',
+      'Ansel’s soldiers raise bows. Your own ranks wait for an order. Vexa’s gaze passes over the bows and banners until it finds you.',
+      '“I came to speak with Caelan Vey. Someone in my world prepared a claim on his future before he wrote his first Oath. It owns nothing yet. They intend to change that.”',
     ],
     choices: [
       {
@@ -1150,19 +1249,43 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         label: 'Keep the embassy beyond the Gate and hear Vexa at the threshold.',
         detail: 'Grant speech and safe return, but no entry into the mortal fortress ring tonight.',
         advantage: 'Learn the warning while preserving a clear physical boundary until trust is tested.',
+        hideIfAnyFlags: ['c8-accepted-ash-compact'],
         changes: { wayfire: 2 },
         addFlags: ['c8-vexa-held-at-threshold'],
         result: 'You approach alone until one step separates snow from ash. Vexa accepts the boundary and opens a sealed case filled with contracts bearing your name.',
         next: 'c8-ending-threshold',
       },
       {
+        id: 'c8-receive-vexa-outer-fort',
+        label: 'Honour the agreement inside an isolated outer fort.',
+        detail: 'Allow the peaceful embassy to enter and leave, but receive it away from the wounded and the lock rooms.',
+        advantage: 'Keep your exact promise while limiting what the envoys can reach or study.',
+        showIfAllFlags: ['c8-accepted-ash-compact'],
+        changes: { wayfire: 2 },
+        addFlags: ['c8-vexa-received-outer-fort'],
+        result: 'You open a controlled road to empty Second Fort. Vexa and two sealed envoys cross beneath raised bows, then enter the isolated yard without protest.',
+        next: 'c8-ending-threshold',
+      },
+      {
         id: 'c8-give-ansel-first-question',
         label: 'Let Ansel ask the first question on behalf of the Futureless.',
-        detail: 'Delay your own answer and place the harmed wardens at the centre of the meeting.',
+        detail: 'Keep Vexa outside for now and place the harmed wardens at the centre of the meeting.',
         advantage: 'The embassy must face the people already used by devil bargains before negotiating with rulers.',
+        hideIfAnyFlags: ['c8-accepted-ash-compact'],
         changes: { wayfire: 2 },
         addFlags: ['c8-ansel-spoke-first'],
-        result: 'Ansel lowers his crossbow and asks which house bought his daughter’s future promise. Vexa’s expression changes. “The same house that bought Captain Vey’s,” she says.',
+        result: 'Ansel lowers his crossbow and asks which house bought his daughter’s future promise. Vexa remains beyond the threshold. “The same house has prepared a claim for Captain Vey,” she says. “His is not complete yet.”',
+        next: 'c8-ending-witness',
+      },
+      {
+        id: 'c8-give-ansel-first-question-after-entry',
+        label: 'Honour the entry agreement, then let Ansel ask the first question.',
+        detail: 'Bring the sealed embassy into the outer yard and place the harmed wardens at the centre of the meeting.',
+        advantage: 'Keep your exact promise while making the embassy answer the Futureless before negotiating with rulers.',
+        showIfAllFlags: ['c8-accepted-ash-compact'],
+        changes: { wayfire: 2 },
+        addFlags: ['c8-ansel-spoke-first', 'c8-ansel-spoke-first-after-entry'],
+        result: 'Vexa and two sealed envoys cross into the outer yard. Ansel asks which house bought his daughter’s future promise. “The same house has prepared a claim for Captain Vey,” Vexa says. “His is not complete yet.”',
         next: 'c8-ending-witness',
       },
     ],
@@ -1173,7 +1296,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Eight complete',
     title: 'The Door Kept Open',
     location: 'Fourth Fort Embassy Hall',
-    objective: 'Learn who bought Caelan’s unwritten future.',
+    objective: 'Learn who prepared a claim on Caelan’s future.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
@@ -1183,8 +1306,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       routeOutcome(state),
       oathCost(state),
       'Vexa places seventeen contracts beside the Crown ledgers. The seals belong to different rulers, different devil houses, and one hand that appears on both sides of the Gate.',
-      'She turns the final page toward you. The contract is older than your first command and carries your full name.',
-      'The line naming its price is still blank.',
+      'She turns the final page toward you. It is a prepared claim, older than your first command, carrying your full name but not your agreement.',
+      'The price is blank. The page owns nothing yet. Someone has been studying your choices so they can offer the one bargain you may accept.',
     ],
     choices: [],
   },
@@ -1192,19 +1315,21 @@ export const chapterEightNodes: Record<string, StoryNode> = {
   'c8-ending-threshold': {
     id: 'c8-ending-threshold',
     kicker: 'Chapter Eight complete',
-    title: 'One Step Between Worlds',
-    location: 'The Black Gate Threshold',
-    objective: 'Learn who bought Caelan’s unwritten future.',
+    title: 'The Boundary You Chose',
+    location: 'The Black Gate Outer Ring',
+    objective: 'Learn who prepared a claim on Caelan’s future.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
     body: (state) => [
-      'Snow gathers behind your boots. Warm ash gathers beyond Vexa’s. The boundary between worlds remains one step wide because you chose to keep it visible.',
+      vexaMeetingStatus(state),
       'Your attention stays on her sealed cases. A peaceful object can still carry a dangerous truth.',
       routeOutcome(state),
       oathCost(state),
-      'Vexa opens the first brass case without crossing. Inside are copies of bargains made during seventeen hidden Gate openings and one contract prepared long before them.',
-      'Your name is written at its top. No promise appears beneath it yet.',
+      has(state, 'c8-vexa-received-outer-fort')
+        ? 'Inside the isolated fort yard, Vexa opens the first brass case. It holds copies of bargains made during seventeen hidden Gate openings and one unfinished contract claim prepared long before them.'
+        : 'Without crossing, Vexa opens the first brass case. It holds copies of bargains made during seventeen hidden Gate openings and one unfinished contract claim prepared long before them.',
+      'Your name is written at its top, but no price or agreement appears beneath it. The claim owns nothing yet.',
       '“That is why they changed your road,” Vexa says. “They needed to learn what you would choose before they chose what to take.”',
     ],
     choices: [],
@@ -1215,17 +1340,18 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Eight complete',
     title: 'The Promise Not Yet Sold',
     location: 'Fourth Fort Gate Yard',
-    objective: 'Learn who bought Caelan’s unwritten future.',
+    objective: 'Learn who prepared a claim on Caelan’s future.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
     body: (state) => [
+      vexaMeetingStatus(state),
       'Ansel stands between two worlds and asks the question rulers avoided for seventeen years. Vexa answers him before she answers you. The house that bought the wardens’ future promises also paid mortal officials to hide every opening.',
       'You watch his shoulders settle as the answer gives his anger a name.',
       routeOutcome(state),
       oathCost(state),
-      'Only after the Futureless have heard the truth does Vexa place a separate contract in your hands.',
-      'It carries your full name, written before you became an Oathwarden. The price remains blank.',
+      'Only after the Futureless have heard the truth does Vexa place a separate contract draft in your hands.',
+      'It carries your full name, written before you became an Oathwarden. The price and your agreement remain blank. It is a trap being prepared, not a bargain already made.',
       'Somewhere beyond the Gate, something is still waiting to learn which future will hurt you most to lose.',
     ],
     choices: [],

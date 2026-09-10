@@ -2353,10 +2353,26 @@ for (const [flags, expected] of deploymentPayoffs) {
     failures.push(`Chapter Eight deployment does not remember force and plan for ${flags.join(', ')}`);
   }
 }
+const forcePressureCases = [
+  [['c7-gained-full-army'], /Teren can place soldiers at every fire.*remaining loyalist/is, /last saboteur/is],
+  [['c7-gained-chosen-company'], /volunteers can hold three fires.*Futureless.*other five/is, /six wardens.*burned hands/is],
+  [['c7-gained-dangerous-reputation'], /small force can hold two fires.*wounded wardens.*other six/is, /infirmary fills with burns/is],
+];
+for (const [flags, openingExpected, mortalOutcomeExpected] of forcePressureCases) {
+  const state = { ...chapterEightBase, flags };
+  if (!openingExpected.test(renderedBody('c8-opening', state))
+    || !mortalOutcomeExpected.test(renderedBody('c8-collector-crossing', {
+      ...state,
+      flags: [...flags, 'c8-united-wardens'],
+    }))) {
+    failures.push(`Chapter Eight does not carry the Chapter Seven force cost into the defence for ${flags[0]}`);
+  }
+}
 const hiddenRecord = renderedBody('c8-hidden-record', chapterEightBase);
 if (!/seventeen years.*closed three failing garrisons/is.test(hiddenRecord)
   || !/three weeks ago.*Malrec pulled the field army away from four more forts/is.test(hiddenRecord)
-  || !/only Fourth Fort occupied tonight/i.test(hiddenRecord)) {
+  || !/only Fourth Fort occupied tonight/i.test(hiddenRecord)
+  || !/sealed packet.*First Fort.*complete copy/is.test(hiddenRecord)) {
   failures.push('Chapter Eight does not join the seventeen-year cover-up to Malrec’s recent withdrawal');
 }
 const defenceRouteCases = [
@@ -2379,8 +2395,54 @@ const anselContractChoice = nodes['c8-collector-crossing'].choices.find(
   (choice) => choice.id === 'c8-let-ansel-refuse-collection',
 );
 if (!/One named promise\. Nothing more/i.test(contractHall)
+  || !/act and meaning.*no matter which words/is.test(contractHall)
   || !/One named promise\. Nothing more/i.test(anselContractChoice?.result ?? '')) {
   failures.push('Ansel uses the one-payment contract limit before the player learns it');
+}
+const choiceById = (nodeId, choiceId) => nodes[nodeId].choices.find((choice) => choice.id === choiceId);
+const earnedAnselChoices = [
+  ['c8-breach', 'c8-trust-futureless-yard', ['c8-futureless-choice-proven']],
+  ['c8-chain-plan', 'c8-use-ansel-furnace-route', ['c8-ansel-chose-entry']],
+  ['c8-wardens-route', 'c8-let-ansel-name-keepers', ['c8-complete-futureless-ledger']],
+  ['c8-collector-crossing', 'c8-let-ansel-refuse-collection', ['c8-futureless-choice-proven']],
+];
+for (const [nodeId, choiceId, earnedFlags] of earnedAnselChoices) {
+  const choice = choiceById(nodeId, choiceId);
+  if (!choice
+    || isChoiceVisible(choice, chapterEightBase)
+    || !isChoiceVisible(choice, { ...chapterEightBase, flags: earnedFlags })) {
+    failures.push(`Chapter Eight exposes the free Ansel payoff ${String(choiceId)} without earning it`);
+  }
+}
+const firstFortSetup = `${renderedBody('c8-occupied-fort', {
+  ...chapterEightBase,
+  flags: ['c8-deployed-mobile-force'],
+})} ${renderedBody('c8-hidden-record', chapterEightBase)}`;
+const firstFortCrisis = renderedBody('c8-sacrifice-route', chapterEightBase);
+if (!/First Fort.*aid station/is.test(firstFortSetup)
+  || !/dry lower room/is.test(firstFortSetup)
+  || !/temporary aid station.*complete copy/is.test(firstFortCrisis)) {
+  failures.push('Chapter Eight uses First Fort people or evidence before placing them there');
+}
+const pellOath = choiceById('c8-first-knock', 'c8-oath-hold-pell');
+const pellOathEnding = renderedBody('c8-embassy-terms', {
+  ...chapterEightBase,
+  flags: ['c8-oath-pell-sees-opening-contained'],
+});
+if (!/invasion stopped/i.test(pellOath?.label ?? '')
+  || /Gate close tonight/i.test(`${pellOath?.label} ${pellOath?.detail}`)
+  || !/Pell watches.*hostile hand withdraw.*Oath/is.test(pellOathEnding)) {
+  failures.push('Chapter Eight gives Pell an impossible promise or fails to resolve it');
+}
+const normalSeedChoice = choiceById('c8-chain-plan', 'c8-root-lift-chain');
+const weakenedSeedChoice = choiceById('c8-chain-plan', 'c8-spend-weakened-seed-on-chain');
+const weakenedSeedState = { ...chapterEightBase, flags: ['c8-seed-weakened-saving-pell'] };
+if (!normalSeedChoice
+  || !weakenedSeedChoice
+  || isChoiceVisible(normalSeedChoice, weakenedSeedState)
+  || !isChoiceVisible(weakenedSeedChoice, weakenedSeedState)
+  || !/dormant/i.test(`${weakenedSeedChoice.detail} ${weakenedSeedChoice.result}`)) {
+  failures.push('Chapter Eight forgets that saving Pell weakens Lysara’s living seed');
 }
 const relationshipState = (person, intent) => ({
   ...chapterEightBase,
@@ -2434,6 +2496,47 @@ if (/\|\s*(?:The next knock|Do not pretend|Keep the defence|Final choice|Path re
   || /\b(?:surety|collateral|safe conduct|unspoken clause|second price)\b/i.test(chapterEightReaderText)
   || /each path can hold the Gate tonight/i.test(chapterEightReaderText)) {
   failures.push('Chapter Eight still exposes stage directions, contract jargon, or narrator scoring');
+}
+if (!/more than an hour before the yearly opening/i.test(renderedBody('c8-breach', chapterEightBase))
+  || !/Gate opens at sunset/i.test(renderedBody('c8-opening', chapterEightBase))) {
+  failures.push('Chapter Eight does not distinguish the early pressure breath from the sunset opening');
+}
+if (/buying his future|bought Captain Vey|learn who bought Caelan/i.test(chapterEightReaderText)
+  || !/owns nothing yet/i.test(renderedBody('c8-embassy-terms', chapterEightBase))) {
+  failures.push('Chapter Eight confuses the prepared claim on Caelan with a completed bargain');
+}
+const compactEmbassyState = { ...chapterEightBase, flags: ['c8-accepted-ash-compact'] };
+const nonCompactEmbassyState = { ...chapterEightBase, flags: ['c8-united-wardens'] };
+const visibleEmbassyChoices = (state) => nodes['c8-embassy-terms'].choices
+  .filter((choice) => isChoiceVisible(choice, state))
+  .map((choice) => choice.id);
+const compactEmbassyChoices = visibleEmbassyChoices(compactEmbassyState);
+const nonCompactEmbassyChoices = visibleEmbassyChoices(nonCompactEmbassyState);
+if (compactEmbassyChoices.includes('c8-hear-vexa-at-threshold')
+  || compactEmbassyChoices.includes('c8-give-ansel-first-question')
+  || !compactEmbassyChoices.includes('c8-receive-vexa-outer-fort')
+  || !compactEmbassyChoices.includes('c8-give-ansel-first-question-after-entry')
+  || nonCompactEmbassyChoices.includes('c8-receive-vexa-outer-fort')
+  || nonCompactEmbassyChoices.includes('c8-give-ansel-first-question-after-entry')
+  || !nonCompactEmbassyChoices.includes('c8-hear-vexa-at-threshold')) {
+  failures.push('Chapter Eight allows the player to violate or invent the Ash Compact entry agreement');
+}
+const outerFortEnding = renderedBody('c8-ending-threshold', {
+  ...compactEmbassyState,
+  flags: [...compactEmbassyState.flags, 'c8-vexa-received-outer-fort'],
+});
+const outsideWitnessEnding = renderedBody('c8-ending-witness', {
+  ...nonCompactEmbassyState,
+  flags: [...nonCompactEmbassyState.flags, 'c8-ansel-spoke-first'],
+});
+const enteredWitnessEnding = renderedBody('c8-ending-witness', {
+  ...compactEmbassyState,
+  flags: [...compactEmbassyState.flags, 'c8-ansel-spoke-first', 'c8-ansel-spoke-first-after-entry'],
+});
+if (!/cross into the empty Second Fort yard/i.test(outerFortEnding)
+  || !/remains on the far side/i.test(outsideWitnessEnding)
+  || !/embassy crosses under its public agreement/i.test(enteredWitnessEnding)) {
+  failures.push('Chapter Eight endings do not state whether Vexa entered or remained outside');
 }
 for (const [endingId, flag] of Object.entries(chapterEightEndingFlags)) {
   const finalChoice = nodes['c8-embassy-terms'].choices.find((choice) => choice.next === endingId);

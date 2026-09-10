@@ -16,7 +16,7 @@ Chapter question: Why were the forts abandoned?
 
 Chapter answer: the Crown hid seventeen yearly openings, removed witnesses and supplies, and quietly closed three failing garrisons. Malrec then pulled the field army away from four more forts three weeks ago and sent no replacements. The long neglect weakened the ring, and his final order left only Fourth Fort occupied.
 
-Next hook: Why was a contract bearing Caelan's name prepared before his first Oath, and what future does its buyer intend to take?
+Next hook: Why was an unfinished claim bearing Caelan's name prepared before his first Oath, and what future does its author intend to tempt him into selling?
 
 ## Route continuity
 
@@ -39,15 +39,15 @@ No decision in this chapter changes either absent hero's main plot.
 ## Player knowledge order
 
 1. The opening image teaches the ring: eight forts, eight signal fires, one buried chain.
-2. Pell explains a sold future promise with one family example before the story uses the name Futureless.
+2. The runner's wound is visible before Pell coughs blood. Pell then explains a sold future promise with one family example before the story uses the name Futureless.
 3. Ansel proves that the Futureless still think, choose, refuse, and protect people.
 4. The hidden ledgers prove seventeen yearly openings and the Crown concealment.
-5. The first red crack demonstrates the opening before the player plans around it.
+5. The Gate's first pressure breath begins more than an hour early. The physical opening still begins at sunset.
 6. The Ash Compact is introduced as one devil faction with a bounded public offer.
 7. The player sees all three defence prices before choosing a route.
 8. The Oath ledger lists the promises being tested before the player chooses a personal cost.
 9. Vexa Ash is named only when the first embassy is ready to cross.
-10. The contract bearing Caelan's name becomes the single ending hook.
+10. Vexa distinguishes a prepared claim from a completed bargain. The claim has no price, no consent, and owns nothing yet.
 
 The story does not assume that the player understands contract magic, devil politics, or the fortress system before these scenes.
 
@@ -55,7 +55,7 @@ The story does not assume that the player understands contract magic, devil poli
 
 1. The fortress ring: save Pell while learning the physical danger of the Gate knock.
 2. Pell's warning: choose how his knowledge and life are preserved.
-3. Force deployment: choose between covering all eight forts, holding several strong positions, or keeping the available force mobile. The Chapter Seven army outcome changes the risk and result of each plan.
+3. Force deployment: choose between covering all eight forts, holding several strong positions, or keeping the available force mobile. The Chapter Seven army outcome changes the risk, staffing problem, and final human cost of the defence.
 4. Fourth Fort: enter without letting Warden authority activate an old bargain.
 5. Futureless hall: learn the limits of sold future promises.
 6. Hidden record room: preserve proof of seventeen concealed openings.
@@ -67,7 +67,7 @@ The story does not assume that the player understands contract magic, devil poli
 12. Route execution: complete the warden, Compact, or sacrificed fort plan.
 13. Collector crossing: repel the rival house trying to collect the contracts.
 14. Oath ledger: keep, release, burn, or share the duties pulling Caelan apart.
-15. Embassy terms: receive Vexa publicly, hear her at the threshold, or give Ansel the first question.
+15. Embassy terms: receive Vexa publicly, keep a non-Compact envoy at the threshold, honour Compact entry inside an isolated outer fort, or give Ansel the first question in a way that respects the agreement already made.
 
 Every complete route contains exactly fifteen player decisions.
 
@@ -78,6 +78,8 @@ Every complete route contains exactly fifteen player decisions.
 Benefit: mortal control, no new devil contract, no destroyed fort.
 
 Risk: frightened independent groups must hold all eight weak points together.
+
+The Chapter Seven force state changes the price. A full army faces sabotage from divided loyalists. A chosen company empties Fourth Fort to cover five posts. A small force needs wounded wardens and furnace workers, causing visible injuries.
 
 Caelan remains essential through coordination, personal action, Oathfire, or the deliberate transfer of local authority to Ansel.
 
@@ -112,11 +114,11 @@ Keeping all Oaths is powerful, but it is not free. Spending Resolve or Oathfire 
 
 `c8-ending-embassy`: Vexa crosses publicly and places the contracts before all forces.
 
-`c8-ending-threshold`: Vexa remains one step beyond the Gate and reveals the altered road's purpose.
+`c8-ending-threshold`: Vexa remains outside when no entry was promised, or enters an isolated outer fort when the Compact agreement already granted safe passage.
 
-`c8-ending-witness`: Ansel speaks first, forcing the embassy to answer the Futureless before rulers.
+`c8-ending-witness`: Ansel speaks first, forcing the embassy to answer the Futureless before rulers. On the Compact route, the envoys enter before he asks. On other routes, Vexa remains outside.
 
-All endings preserve the Chapter Nine premise: Vexa has evidence of a contract bearing Caelan's name with its price still blank.
+All endings preserve the Chapter Nine premise: Vexa has an unfinished claim bearing Caelan's name. Its price and Caelan's agreement are blank, so it owns nothing yet.
 
 ## Art plan
 
@@ -142,3 +144,11 @@ No art from Chapters One through Seven is reused.
 10. Vexa must address the defence actually chosen and must not claim that Caelan promised entry when he did not.
 11. Any transferred Oath must name its willing bearer in the option, immediate result, ending recap, and journal.
 12. Player-facing objectives contain one job and no stage directions.
+13. A route may not offer an action that breaks a contract the player already accepted. Later options must honour the exact granted permission or show and resolve the breach as a deliberate consequence.
+14. A promise must be achievable in the chapter's canonical ending state. If the wording changes, its fulfilment or failure must be acknowledged on every affected route.
+15. Free expert solutions must be earned through an earlier trust, knowledge, or preparation flag. They cannot silently dominate costly Health, Command, Resolve, or Oathfire choices.
+16. Imported force size must change a later complication or human cost, not only arrival prose.
+17. Any people, evidence, or supplies used in a route-specific crisis must be placed there in an earlier scene.
+18. A weakened item or power must produce a weaker later option, a new cost, or an unavailable action.
+19. Contract prose must distinguish an owned promise, a prepared claim, an offered bargain, and an accepted agreement.
+20. An ending must state whether a visitor entered, remained outside, or crossed under an earlier agreement.

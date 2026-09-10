@@ -82,9 +82,9 @@ Mechanic: Command at large scale and mutually exclusive protection.
 
 Active question: Why were the forts abandoned?
 
-Answer: Soldiers sold future promises to devils during hidden Gate openings.
+Answer: The Crown hid seventeen yearly openings and slowly emptied the ring. The abandoned wardens sold specific future promises for food, heat, and rescued lives. Malrec's final withdrawal left only Fourth Fort occupied.
 
-Next hook: What do the devils want from Caelan now?
+Next hook: Who prepared an unfinished claim on Caelan's future, and what choice are they waiting for him to make?
 
 Mechanic: Several active Oaths tested in one visible ledger.
 
