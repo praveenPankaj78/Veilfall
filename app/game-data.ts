@@ -70,6 +70,7 @@ export type Choice = {
   requiresFlags?: string[];
   showIfAnyFlags?: string[];
   showIfAllFlags?: string[];
+  hideIfAnyFlags?: string[];
   result: string;
 };
 
@@ -3528,7 +3529,9 @@ export function isChoiceVisible(choice: Choice, state: GameState) {
     || choice.showIfAnyFlags.some((flag) => state.flags.includes(flag));
   const matchesAll = !choice.showIfAllFlags
     || choice.showIfAllFlags.every((flag) => state.flags.includes(flag));
-  return matchesAny && matchesAll;
+  const avoidsHiddenFlags = !choice.hideIfAnyFlags
+    || !choice.hideIfAnyFlags.some((flag) => state.flags.includes(flag));
+  return matchesAny && matchesAll && avoidsHiddenFlags;
 }
 
 export function resolveNext(choice: Choice, state: GameState) {

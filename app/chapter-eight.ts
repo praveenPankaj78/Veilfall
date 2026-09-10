@@ -9,9 +9,19 @@ function arrivingForce(state: GameState) {
     return 'The Crown March fills the eastern road behind you. Thousands answered your last order, but many still wear Regent Malrec’s badge beneath their cloaks. You have enough soldiers to fill every fort. You do not yet know whether you have enough trust.';
   }
   if (has(state, 'c7-gained-chosen-company')) {
-    return 'Your chosen company reaches the ridge in a narrow column. Every soldier volunteered, which gives you trust but not numbers. Eight forts wait below, and your company could barely fill two.';
+    return 'Your chosen company reaches the ridge in a narrow column. Every soldier volunteered, which gives you trust but not numbers. Teren’s remaining army follows on a separate road and will not arrive before the next knock. Eight forts wait below, and your company could barely fill two.';
   }
-  return 'Only your old companions, the steppe guides, and a few stubborn survivors reach the ridge with you. No banner follows. Your name arrived first, but a reputation cannot man eight walls.';
+  return 'Only your old companions, the steppe guides, and a few stubborn survivors reach the ridge with you. Teren’s army is still a day behind on its own road. No banner follows your line, and a reputation cannot man eight walls.';
+}
+
+function terenCondition(state: GameState) {
+  if (has(state, 'c7-gained-full-army')) {
+    return 'Teren rides in the leading rank with his injured shoulder bound against his chest. Three officers now share his signals, so pain cannot silence the whole army. The arrangement is slower, but harder for one false voice to seize.';
+  }
+  if (has(state, 'c7-gained-chosen-company')) {
+    return 'Teren’s injured shoulder has slowed the separate army behind you. Three officers share his signals now, so the Crown March can keep moving even when pain steals his voice.';
+  }
+  return 'Teren’s injured shoulder is one reason his army remains a day behind. He divided its signals among three officers before you rode ahead, making the march slower and harder for one false voice to control.';
 }
 
 function emberState(state: GameState) {
@@ -90,6 +100,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'The Black Gate is not a door in a wall. It is a wall shaped like a door, taller than any tower in Greyhaven and carved from stone that swallows the morning light.',
       'Eight forts stand around it in a broad circle. You count seven cold signal baskets. Smoke rises only from Fourth Fort, where an Asterra banner hangs upside down.',
       arrivingForce(state),
+      ...(has(state, 'c7-teren-lasting-injury')
+        ? [terenCondition(state)]
+        : []),
       emberState(state),
       'The Gate knocks again. The sound passes through your boots and closes around your heart. Every Oath you carry answers with a separate line of heat.',
       'A small figure runs from Fourth Fort. Halfway across the open ground, the snow behind him erupts in a straight red line. He is a boy in a Warden coat, and something beneath the ice is following his footsteps toward you.',

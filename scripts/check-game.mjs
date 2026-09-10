@@ -2110,6 +2110,192 @@ for (const endingId of Object.keys(chapterSixEndingFlags)) {
     failures.push(`${endingId} does not continue into Chapter Seven`);
   }
 }
+const chapterSevenWarState = {
+  ...chapterSevenBase,
+  flags: ['c5-freed-vaor', 'c6-red-moot-war', 'c6-learned-wheel-signals'],
+};
+const chapterSevenAllianceState = {
+  ...chapterSevenBase,
+  flags: ['c5-freed-vaor', 'c6-red-moot-alliance'],
+};
+const chapterSevenNeutralState = {
+  ...chapterSevenBase,
+  flags: ['c5-freed-vaor', 'c6-red-moot-neutral'],
+};
+const supportArrivalCases = [
+  [chapterSevenWarState, /whole wheel town is on this road/i, /inner decks/i],
+  [chapterSevenAllianceState, /wheel town is several miles south/i, /shield engines/i],
+  [chapterSevenNeutralState, /wheel town turns south/i, /split Black Ridge/i],
+];
+for (const [state, expectedBody, expectedChoice] of supportArrivalCases) {
+  const body = renderedBody('c7-red-horizon', state);
+  const visibleLabels = nodes['c7-red-horizon'].choices
+    .filter((choice) => isChoiceVisible(choice, state))
+    .map((choice) => choice.label)
+    .join(' ');
+  if (!expectedBody.test(body) || !expectedChoice.test(visibleLabels)) {
+    failures.push('Chapter Seven does not preserve the physical battlefield created by a Chapter Six support outcome');
+  }
+}
+const wheelFeint = nodes['c7-break-town-line'].choices.find(
+  (choice) => choice.id === 'c7-command-wheel-feint',
+);
+const shieldFeint = nodes['c7-break-town-line'].choices.find(
+  (choice) => choice.id === 'c7-command-shield-engine-feint',
+);
+const ridgeFeint = nodes['c7-break-town-line'].choices.find(
+  (choice) => choice.id === 'c7-command-ridge-feint',
+);
+if (!isChoiceVisible(wheelFeint, chapterSevenWarState)
+  || isChoiceVisible(wheelFeint, chapterSevenAllianceState)
+  || !isChoiceVisible(shieldFeint, chapterSevenAllianceState)
+  || isChoiceVisible(shieldFeint, chapterSevenNeutralState)
+  || !isChoiceVisible(ridgeFeint, chapterSevenNeutralState)) {
+  failures.push('Chapter Seven offers wheel town actions on routes where Kharad Vey is absent');
+}
+const lioStates = {
+  prisoner: { ...chapterSevenBase, flags: ['c7-lio-prisoner', 'c7-lio-alive'] },
+  returned: { ...chapterSevenBase, flags: ['c7-lio-returned', 'c7-lio-alive'] },
+  joined: { ...chapterSevenBase, flags: ['c7-lio-joined', 'c7-lio-alive'] },
+  guarded: { ...chapterSevenBase, flags: ['c7-lio-under-guard', 'c7-lio-consented-threadread', 'c7-lio-alive'] },
+};
+const orderStatusCases = [
+  [lioStates.prisoner, /hands bound.*has not joined/is],
+  [lioStates.returned, /before riding back.*absence costs you a witness/is],
+  [lioStates.joined, /turned coat.*named a deserter/is],
+  [lioStates.guarded, /under guard.*evidence, not allegiance/is],
+];
+for (const [state, expected] of orderStatusCases) {
+  if (!expected.test(renderedBody('c7-captured-soldier', state))) {
+    failures.push('Chapter Seven loses Lio’s chosen status at the order case');
+  }
+}
+const funeralChoiceIds = new Set([
+  'c7-lio-calls-ghost-funeral',
+  'c7-mara-calls-evren-funeral',
+  'c7-signal-lio-inside-army',
+]);
+const expectedFuneralChoice = {
+  prisoner: 'c7-mara-calls-evren-funeral',
+  returned: 'c7-signal-lio-inside-army',
+  joined: 'c7-lio-calls-ghost-funeral',
+  guarded: 'c7-mara-calls-evren-funeral',
+};
+for (const [status, state] of Object.entries(lioStates)) {
+  const visible = nodes['c7-dead-horn'].choices.filter(
+    (choice) => funeralChoiceIds.has(choice.id) && isChoiceVisible(choice, state),
+  );
+  if (visible.length !== 1 || visible[0].id !== expectedFuneralChoice[status]) {
+    failures.push(`Chapter Seven gives ${status} Lio an impossible funeral action`);
+  }
+}
+const lioRescueChoice = nodes['c7-many-or-one'].choices.find(
+  (choice) => choice.id === 'c7-lio-crosses-for-one',
+);
+const terenRescueChoice = nodes['c7-many-or-one'].choices.find(
+  (choice) => choice.id === 'c7-teren-sends-engineers',
+);
+if (!isChoiceVisible(lioRescueChoice, lioStates.joined)
+  || isChoiceVisible(lioRescueChoice, lioStates.prisoner)
+  || isChoiceVisible(lioRescueChoice, lioStates.returned)
+  || isChoiceVisible(lioRescueChoice, lioStates.guarded)) {
+  failures.push('Lio can cross the final signal frame without joining Caelan');
+}
+if (isChoiceVisible(terenRescueChoice, lioStates.joined)
+  || !isChoiceVisible(terenRescueChoice, lioStates.prisoner)
+  || !isChoiceVisible(terenRescueChoice, lioStates.returned)
+  || !isChoiceVisible(terenRescueChoice, lioStates.guarded)) {
+  failures.push('Teren’s rescue does not remain an honest fallback for routes where Lio did not join');
+}
+const woundedRidgeMaraState = {
+  ...chapterSevenBase,
+  flags: ['c7-wounded-on-ridge'],
+  relationships: {
+    ...chapterSevenBase.relationships,
+    mara: { ...chapterSevenBase.relationships.mara, intent: 'committed' },
+  },
+};
+const ridgeFinalCrisis = renderedBody('c7-many-or-one', woundedRidgeMaraState);
+if (!/Mara and the wounded remain safe on the ridge/i.test(ridgeFinalCrisis)
+  || /Mara is trapped beneath/i.test(ridgeFinalCrisis)) {
+  failures.push('Chapter Seven places Mara back in the basin after the player sent her to the wounded ridge');
+}
+const preparedSignalChoice = nodes['c7-salt-trap'].choices.find(
+  (choice) => choice.id === 'c7-living-signal-block',
+);
+const unpreparedSignalFallback = nodes['c7-salt-trap'].choices.find(
+  (choice) => choice.id === 'c7-sacrifice-supply-wagon-block',
+);
+if (isChoiceVisible(preparedSignalChoice, chapterSevenBase)
+  || !isChoiceVisible(preparedSignalChoice, { ...chapterSevenBase, flags: ['c7-living-signal-post-ready'] })
+  || !isChoiceVisible(unpreparedSignalFallback, chapterSevenBase)
+  || isChoiceVisible(unpreparedSignalFallback, { ...chapterSevenBase, flags: ['c7-living-signal-post-ready'] })) {
+  failures.push('The Chapter Seven signal post preparation does not unlock its later payoff');
+}
+const evrenAttack = renderedBody('c7-dead-marshal-rises', chapterSevenBase);
+if (!/Caelan Vey means to open the eastern Gate.*loyal replacements secure the forts/is.test(evrenAttack)
+  || /until the eastern gate opens/i.test(evrenAttack)) {
+  failures.push('Evren openly reveals the hidden plan instead of giving soldiers a plausible false order');
+}
+const chapterSevenEvidence = renderedBody('c7-captured-soldier', chapterSevenBase);
+if (!/do not prove what happened to Hale or how you gained the ember/i.test(chapterSevenEvidence)
+  || !/strongly suggests the pursuit/i.test(chapterSevenEvidence)) {
+  failures.push('Chapter Seven claims Malrec’s earlier diversion order proves every charge against Caelan false');
+}
+const chapterSevenParley = renderedBody('c7-marshal-parley', chapterSevenBase);
+const chapterSevenDuel = renderedBody('c7-steppe-duel', chapterSevenBase);
+if (!/Captain Vey/i.test(chapterSevenParley)
+  || /Captain Vale/i.test(chapterSevenParley)
+  || !/accept that law while we stand on this ground/i.test(chapterSevenParley)
+  || !/No magic forces obedience/i.test(chapterSevenDuel)) {
+  failures.push('The Chapter Seven parley misnames Caelan or fails to establish the duel rule and its limit');
+}
+for (const endingId of ['c7-ending-army', 'c7-ending-company', 'c7-ending-outlaw']) {
+  const ending = renderedBody(endingId, chapterSevenBase);
+  if (!/Four forts were emptied by Malrec.*Three more signal fires.*smoke rises from Fourth Fort/is.test(ending)
+    || /next seven signal fires|eight cold signal fires/i.test(ending)) {
+    failures.push(`${endingId} contradicts Chapter Eight’s occupied Fourth Fort`);
+  }
+}
+if (!/remaining army east under his own command/i.test(
+  nodes['c7-army-future'].choices.find((choice) => choice.id === 'c7-take-chosen-company')?.result ?? '',
+) || !/Teren chooses the Gate himself.*army turns east/is.test(
+  nodes['c7-army-future'].choices.find((choice) => choice.id === 'c7-take-no-formal-allies')?.result ?? '',
+)) {
+  failures.push('The smaller Chapter Seven force outcomes still leave the Black Gate undefended');
+}
+const injuredTerenArrivals = [
+  [
+    ['c7-gained-full-army', 'c7-teren-lasting-injury'],
+    /Teren rides in the leading rank with his injured shoulder/i,
+  ],
+  [
+    ['c7-gained-chosen-company', 'c7-teren-lasting-injury'],
+    /Teren’s injured shoulder has slowed the separate army behind you/i,
+  ],
+  [
+    ['c7-gained-dangerous-reputation', 'c7-teren-lasting-injury'],
+    /Teren’s injured shoulder is one reason his army remains a day behind/i,
+  ],
+];
+for (const [flags, expected] of injuredTerenArrivals) {
+  const arrival = renderedBody('c8-gate-ring', { ...chapterEightBase, flags });
+  if (!expected.test(arrival)) {
+    failures.push(`Chapter Eight loses Teren’s position or injury after ${flags[0]}`);
+  }
+}
+const chapterSevenReaderText = Object.entries(nodes)
+  .filter(([id]) => id.startsWith('c7-'))
+  .flatMap(([, node]) => [
+    node.objective,
+    ...node.body(chapterSevenBase),
+    ...node.choices.flatMap((choice) => [choice.label, choice.detail, choice.advantage ?? '', choice.result]),
+  ])
+  .join(' ');
+if (/\|\s*(?:One quiet minute|The decisive choice|Execute the chosen plan|Path recorded|Final choice)/i.test(chapterSevenReaderText)
+  || /\b(?:countersign|watchword|private answer|field packet|noncombatants|manoeuvre|Crown glass)\b/i.test(chapterSevenReaderText)) {
+  failures.push('Chapter Seven still exposes stage directions or inconsistent military terms');
+}
 const chapterSevenEndingFlags = {
   'c7-ending-army': 'c7-gained-full-army',
   'c7-ending-company': 'c7-gained-chosen-company',

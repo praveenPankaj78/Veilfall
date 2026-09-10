@@ -1356,7 +1356,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     nextChapter: 'c7-red-horizon',
     body: (state) => [
       'The Moot refuses war and keeps every wheel away from the Gate’s direct road. It still gives you water, fresh armour straps, three guides, and witnesses willing to speak against Malrec. Help offered within a boundary feels different from obedience.',
-      'Korran grips your forearm. “You asked for what we could give without pretending fear made us yours. That is why you may return.”',
+      'Korran names himself as one of the three guides, then grips your forearm. “You asked for what we could give without pretending fear made us yours. That is why you may return.”',
       has(state, 'c6-refused-ilyra-pressure')
         ? 'Ilyra joins the guides at the edge of the platform. “You refused me and accepted their refusal,” she says. “Annoyingly consistent.” Respect warms the words more than affection does.'
         : has(state, 'c6-ilyra-interest-acknowledged')

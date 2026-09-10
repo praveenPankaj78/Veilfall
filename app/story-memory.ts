@@ -293,7 +293,7 @@ export function knownTruths(game: GameState) {
       || game.nodeId === 'c6-ancestor-coup'
       || game.nodeId === 'c6-final-alliance'
       || game.nodeId.startsWith('c6-ending-')) {
-      truths.push('The ancestor voices arrive through the Unsea. Some are memories or imitations, but at least one learns and feels fear.');
+      truths.push('The ancestor storm receives knowledge after the people it resembles have died. The Unsea may be its source, but the test did not prove that every voice is conscious or genuine.');
     }
     if (game.nodeId === 'c6-final-alliance' || game.nodeId.startsWith('c6-ending-')) {
       truths.push('The storm tried to replace the living Moot with one command. We broke that command without silencing every ancestor voice.');
@@ -318,13 +318,13 @@ export function knownTruths(game: GameState) {
       truths.push('Ilyra traced the dead command to a hidden will beyond the Black Gate. It now knows more about us because of the method I chose.');
     }
     if (game.flags.includes('c7-gained-full-army')) {
-      truths.push('I turned the Crown March east under my command. A full army now follows me toward eight empty forts.');
+      truths.push('I turned the Crown March east under my command. A full army now follows me toward the Black Gate fort ring.');
     }
     if (game.flags.includes('c7-gained-chosen-company')) {
-      truths.push('I took only the Crown soldiers who volunteered with open eyes. Teren kept the rest under living command.');
+      truths.push('I took only the Crown soldiers who volunteered with open eyes. Teren leads the rest toward the Gate under his own command.');
     }
     if (game.flags.includes('c7-gained-dangerous-reputation')) {
-      truths.push('I refused formal command. The army carries the truth home while my existing companions ride for the Gate.');
+      truths.push('I refused formal command. Teren leads the army toward the Gate on a separate road while my existing companions ride ahead.');
     }
     return truths;
   }
@@ -523,6 +523,9 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c6-red-moot-alliance')) consequences.push('Because you asked for a guarded alliance, Korran leads volunteer riders beside your cause under the Moot’s authority.');
   if (game.flags.includes('c6-red-moot-neutral')) consequences.push('Because you accepted neutrality, Kharad Vey remains protected while its guides and witnesses support your road.');
   if (game.flags.includes('c7-lio-joined')) consequences.push('Because you let Lio choose openly, a Crown lieutenant stood beside you against the dead command.');
+  if (game.flags.includes('c7-lio-prisoner')) consequences.push('Because you kept Lio as a lawful prisoner, his testimony remains evidence rather than forced allegiance.');
+  if (game.flags.includes('c7-lio-returned')) consequences.push('Because you released Lio, doubt travelled through the Crown ranks from inside the army.');
+  if (game.flags.includes('c7-lio-under-guard')) consequences.push('Because Lio offered evidence without joining you, he remains a protected witness under guard.');
   if (game.flags.includes('c7-copied-gate-diversion')) consequences.push('Because you preserved Malrec’s Gate order, the army saw that he emptied the forts before accusing you.');
   if (game.flags.includes('c7-traced-hidden-sender')) consequences.push('Because you traced the dead command, you know a separate power beyond the Black Gate is helping keep Asterra’s army west.');
   if (game.flags.includes('c7-mara-chosen-future')) consequences.push('Because you promised Mara a shared future as an equal, danger no longer leaves her waiting outside your plans.');
@@ -538,9 +541,10 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c7-saved-one')) consequences.push('Because you personally saved one companion, the broken company suffered losses in the final red storm.');
   if (game.flags.includes('c7-saved-both-burned-proof')) consequences.push('Because you burned Malrec’s original orders to shelter everyone, lives were saved but the strongest legal proof became ash.');
   if (game.flags.includes('c7-saved-many-with-lio')) consequences.push('Because Lio crossed the falling signal frame, both groups survived while he became a named deserter behind enemy lines.');
+  if (game.flags.includes('c7-saved-many-with-teren')) consequences.push('Because Teren crossed the falling signal frame, both groups survived while his injured shoulder forced the army to share command.');
   if (game.flags.includes('c7-gained-full-army')) consequences.push('Because you accepted the Crown March, a full divided army now follows you toward the Black Gate.');
   if (game.flags.includes('c7-gained-chosen-company')) consequences.push('Because you asked for volunteers, a smaller company follows by choice rather than inherited rank.');
-  if (game.flags.includes('c7-gained-dangerous-reputation')) consequences.push('Because you refused formal allies, your reputation now travels ahead of your small company.');
+  if (game.flags.includes('c7-gained-dangerous-reputation')) consequences.push('Because you refused formal allies, your reputation now travels ahead of your small group.');
   if (game.flags.includes('c8-pell-survived')) consequences.push('Because you saved Pell, the escaped Warden identified the safe people and locks inside Fourth Fort.');
   if (game.flags.includes('c8-pell-died-for-map')) consequences.push('Because you preserved your resources, Pell spent his last breath drawing the complete safe lock route.');
   if (game.flags.includes('c8-preserved-original-ledgers')) consequences.push('Because you carried the opening ledgers through falling stone, seventeen years of original Crown proof survived.');
