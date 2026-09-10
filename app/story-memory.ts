@@ -336,7 +336,7 @@ export function knownTruths(game: GameState) {
       truths.push('Fourth Fort holds the only remaining old garrison. Its soldiers are called the Futureless because each sold one specific promise they would make later. They can still think, choose, refuse, and protect people.');
     }
     if (!['c8-gate-ring', 'c8-first-knock', 'c8-force-deployment', 'c8-occupied-fort', 'c8-futureless-reveal'].includes(game.nodeId)) {
-      truths.push('The Black Gate opened for one hour on the same winter night for seventeen years. The Crown hid every opening and slowly removed the witnesses and supplies from the forts.');
+      truths.push('The Crown hid seventeen yearly Gate openings and slowly removed witnesses, supplies, and three failing garrisons. Three weeks ago, Malrec pulled the field army from four more forts and sent no replacements, leaving only Fourth Fort occupied.');
     }
     if (game.nodeId === 'c8-ash-offer'
       || game.nodeId === 'c8-mara-watch'
@@ -547,6 +547,9 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c7-gained-dangerous-reputation')) consequences.push('Because you refused formal allies, your reputation now travels ahead of your small group.');
   if (game.flags.includes('c8-pell-survived')) consequences.push('Because you saved Pell, the escaped Warden identified the safe people and locks inside Fourth Fort.');
   if (game.flags.includes('c8-pell-died-for-map')) consequences.push('Because you preserved your resources, Pell spent his last breath drawing the complete safe lock route.');
+  if (game.flags.includes('c8-deployed-all-forts') || game.flags.includes('c8-deployed-full-march')) consequences.push('Because you spread your force across all eight forts, the whole ring is watched but its smaller posts may be overwhelmed alone.');
+  if (game.flags.includes('c8-deployed-strongpoints') || game.flags.includes('c8-deployed-volunteers')) consequences.push('Because you concentrated defenders at the strongest forts, those positions can support one another while several walls remain empty.');
+  if (game.flags.includes('c8-deployed-mobile-force') || game.flags.includes('c8-deployed-mobile-teams')) consequences.push('Because you kept the main force mobile, it can answer one breaking wall together while most forts begin empty.');
   if (game.flags.includes('c8-preserved-original-ledgers')) consequences.push('Because you carried the opening ledgers through falling stone, seventeen years of original Crown proof survived.');
   if (game.flags.includes('c8-living-copy-of-openings')) consequences.push('Because Lysara copied the hidden opening dates, foreign courts can test the truth even though the Crown paper burned.');
   if (game.flags.includes('c8-many-witnessed-openings')) consequences.push('Because you called divided witnesses into the record room, no single stolen document can erase the hidden openings again.');
@@ -557,8 +560,14 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c8-sacrificed-first-fort')) consequences.push('Because you sacrificed First Fort, the other seven held while the fortress ring gained a permanent gap.');
   if (game.flags.includes('c8-surrendered-homecoming')) consequences.push('Because you surrendered the hope of returning unchanged, every active Oath survived the Gate’s test.');
   if (game.flags.includes('c8-released-crown-oath')) consequences.push('Because you released your Crown Oath, Asterra can no longer use that promise to command you.');
-  if (game.flags.includes('c8-burned-lesser-oath')) consequences.push('Because you burned a lesser promise, your greater duties and personal future survived the Gate’s test.');
-  if (game.flags.includes('c8-shared-oath-burden')) consequences.push('Because a willing companion shared your burden, every promise survived while the Gate gained a mark it may find again.');
+  if (game.flags.includes('c8-burned-lesser-oath')) consequences.push('Because you burned the promise tied to your Warden whistle, you may still answer calls by choice but no magic can drag you toward every call at once.');
+  if (game.flags.includes('c8-shared-oath-mara')) consequences.push('Because Mara freely shared your Oath burden, every promise survived while the Gate gained a mark it may use to find her.');
+  if (game.flags.includes('c8-shared-oath-lysara')) consequences.push('Because Lysara freely shared your Oath burden, every promise survived while the Gate gained a mark it may use to find her.');
+  if (game.flags.includes('c8-shared-oath-korran')) consequences.push('Because Korran freely shared your Oath burden, every promise survived while the Gate gained a mark it may use to find him.');
+  if (game.flags.includes('c8-shared-oath-burden')
+    && !game.flags.some((flag) => ['c8-shared-oath-mara', 'c8-shared-oath-lysara', 'c8-shared-oath-korran'].includes(flag))) {
+    consequences.push('Because a willing companion shared your burden, every promise survived while the Gate gained a mark it may find again.');
+  }
   if (game.flags.includes('c8-vexa-entered-publicly')) consequences.push('Because you received Vexa publicly, the first devil embassy entered under the eyes of every force.');
   if (game.flags.includes('c8-vexa-held-at-threshold')) consequences.push('Because you held Vexa at the threshold, diplomacy began with one visible step between the two worlds.');
   if (game.flags.includes('c8-ansel-spoke-first')) consequences.push('Because Ansel asked the first question, the first embassy had to answer the Futureless before addressing rulers.');

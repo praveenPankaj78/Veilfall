@@ -35,11 +35,32 @@ function emberState(state: GameState) {
 }
 
 function deploymentResult(state: GameState) {
-  if (has(state, 'c8-deployed-full-march')) {
-    return 'The Crown March occupies all eight outer yards. The forts are no longer empty, but divided officers now stand close to every lock.';
+  const fullArmy = has(state, 'c7-gained-full-army');
+  const volunteers = has(state, 'c7-gained-chosen-company');
+
+  if (has(state, 'c8-deployed-all-forts') || has(state, 'c8-deployed-full-march')) {
+    if (fullArmy) {
+      return 'The Crown March occupies all eight outer yards under paired officers. Every fort has defenders, but divided loyalties now stand close to every lock.';
+    }
+    if (volunteers) {
+      return 'Your volunteers hold all eight outer yards in thin groups. Every fort has eyes on it, but none can survive a long attack alone.';
+    }
+    return 'Your small force watches all eight forts in pairs. The entire ring is visible, but a serious attack at any wall could overwhelm its two defenders.';
   }
-  if (has(state, 'c8-deployed-volunteers')) {
-    return 'Volunteers hold the three strongest approaches while empty towers remain between them. Every defender chose a post, and every gap is visible.';
+  if (has(state, 'c8-deployed-strongpoints') || has(state, 'c8-deployed-volunteers')) {
+    if (fullArmy) {
+      return 'Most of the Crown March holds three strong forts while mounted reserves wait between them. Five forts remain lightly guarded, but every threatened wall can receive help.';
+    }
+    if (volunteers) {
+      return 'Volunteers hold the three strongest approaches while empty towers remain between them. Every defender chose a post, and every gap is visible.';
+    }
+    return 'Your small force holds two strong forts and Fourth Fort’s road. Five walls remain empty, but the defenders can reach one another before a second horn.';
+  }
+  if (fullArmy) {
+    return 'The Crown March waits in four mobile columns between the forts. Most walls begin empty, but thousands can answer whichever alarm sounds first.';
+  }
+  if (volunteers) {
+    return 'Your chosen company stays together beneath the western wall. Lamps and warning cords cover the empty forts, and every fighter can answer the first alarm.';
   }
   return 'Small teams place lamps and warning cords instead of pretending they can hold every wall. You will hear an attack early, but stopping it will depend on speed.';
 }
@@ -70,15 +91,44 @@ function routeOutcome(state: GameState) {
   return 'First Fort falls inward exactly as planned. Its stone and stored fire run through buried channels into the other seven. The ring survives with a permanent gap.';
 }
 
+function collectorBarrier(state: GameState) {
+  if (has(state, 'c8-united-wardens')) {
+    return 'Heat from eight mortal signal fires narrows the gap. Every keeper must remain at a separate post, so none can leave the chain to strike the reaching arm. This part is yours to finish.';
+  }
+  if (has(state, 'c8-accepted-ash-compact')) {
+    return 'The Ash Compact’s white fire holds the gap. Its public agreement allows it to support the locks, not attack a rival house. This part is yours to finish.';
+  }
+  return 'Heat stored beneath the fallen First Fort holds the gap. The broken stone can feed the chain, but it cannot stop a hand already through. This part is yours to finish.';
+}
+
+function vexaGreeting(state: GameState) {
+  if (has(state, 'c8-accepted-ash-compact')) {
+    return '“Vexa Ash,” she says. “Voice of the Ash Compact. You granted one peaceful embassy permission to enter and leave again. We will cross only under the words spoken before your witnesses.”';
+  }
+  if (has(state, 'c8-united-wardens')) {
+    return '“Vexa Ash,” she says. “Voice of the Ash Compact. You refused our fire and held the Gate with mortal hands. You promised us no entry. We ask only to speak from this threshold unless you choose otherwise.”';
+  }
+  return '“Vexa Ash,” she says. “Voice of the Ash Compact. You refused our fire and broke one of your own forts to close the Gate. You promised us no entry. We ask only to speak from this threshold unless you choose otherwise.”';
+}
+
 function oathCost(state: GameState) {
   if (has(state, 'c8-surrendered-homecoming')) {
-    return 'You kept every active Oath by giving up the private hope that life could return to what it was before the changed order. Home may exist ahead of you. It no longer exists behind you.';
+    return 'Your father’s old inn key is gone. You kept every active Oath by giving up the hope that life could return to what it was before the changed order. Home may exist ahead of you. It no longer exists behind you.';
   }
   if (has(state, 'c8-released-crown-oath')) {
     return 'You released your oldest promise of service to Asterra. The backlash still shakes your hands, but Malrec and the throne can no longer claim that Oath as a chain.';
   }
   if (has(state, 'c8-burned-lesser-oath')) {
-    return 'One lesser promise is ash inside Vaor’s ember. The greater Oaths survived, and something beyond the Gate now knows that your duties can burn.';
+    return 'The promise tied to your old Warden whistle is ash inside Vaor’s ember. You may still answer a call for help, but no magic can drag you toward every whistle at once.';
+  }
+  if (has(state, 'c8-shared-oath-mara')) {
+    return 'Mara carries one strand of your Oath through a fresh black mark on her palm. You kept every promise, but the Gate can now find her through the burden you share.';
+  }
+  if (has(state, 'c8-shared-oath-lysara')) {
+    return 'Lysara carries one strand of your Oath through a fresh black mark on her palm. You kept every promise, but the Gate can now find her through the burden you share.';
+  }
+  if (has(state, 'c8-shared-oath-korran')) {
+    return 'Korran carries one strand of your Oath through a fresh black mark on his palm. You kept every promise, but the Gate can now find him through the burden you share.';
   }
   return `${endangeredCompanion(state)} carries one strand of your Oath through a fresh black mark on the palm. You kept your future, but the Gate can now feel someone you love or trust.`;
 }
@@ -89,7 +139,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Eight',
     title: 'Eight Empty Forts',
     location: 'The Black Gate Fortress Ring',
-    objective: 'Reach the only occupied fort before the Gate opens. | Learn why the other seven were abandoned',
+    objective: 'Reach the only occupied fort before the Gate opens.',
     threat: 'Critical',
     art: 'blackgate',
     lesson: {
@@ -104,7 +154,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         ? [terenCondition(state)]
         : []),
       emberState(state),
-      'The Gate knocks again. The sound passes through your boots and closes around your heart. Every Oath you carry answers with a separate line of heat.',
+      'Ilyra left before dawn to follow the hidden command along another road. No message from her has reached the fort ring yet.',
+      'The Gate knocks again. The sound passes through your boots and closes around your heart. Every Oath you carry answers with a separate line of heat. Beneath your armour, the key to your father’s roadside inn strikes softly against your old Warden whistle.',
       'A small figure runs from Fourth Fort. Halfway across the open ground, the snow behind him erupts in a straight red line. He is a boy in a Warden coat, and something beneath the ice is following his footsteps toward you.',
     ],
     choices: [
@@ -147,7 +198,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'A warning that bleeds',
     title: 'The Boy Who Cannot Promise',
     location: 'The Ground Between Forts',
-    objective: 'Keep the runner alive long enough to understand his warning. | The next knock is close',
+    objective: 'Keep the runner alive long enough to understand his warning.',
     threat: 'Immediate',
     art: 'blackgate',
     introducesStoryTerms: ['Futureless'],
@@ -155,7 +206,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'The boy is older than he looked from the ridge, perhaps seventeen. A brass plate on his coat names him Pell. He grips your wrist and tries to speak.',
       '“Fourth Fort still has eighty soldiers. Captain Ansel sent me because the others cannot leave. They made bargains during the old openings.”',
       'He swallows blood. “They are not possessed. They know their names. They can choose most things. But each of them sold one promise they would make in the future.”',
-      'Pell gives an example because your face demands one. A father sold the promise he would make when his daughter returned from war. He can love her. He can protect her. But when she asks whether he will stay, the words will not come. The bargain owns that future promise before he can speak it.',
+      'Pell forces another breath. “One father sold the promise he meant to make when his daughter returned from war. He can love her. He can protect her. But when she asks whether he will stay, the words will not come. The bargain already owns them.”',
       '“We call them the Futureless,” Pell says. “Tonight the buyers are coming to collect something else.”',
       'A third knock bends every signal basket toward the Gate. Pell stops breathing after one last whisper. “Close it.”',
     ],
@@ -207,7 +258,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Power brought from the west',
     title: 'Who Holds the Empty Walls',
     location: 'The Western Signal Road',
-    objective: 'Place your available force before entering Fourth Fort. | Do not pretend you have soldiers you lack',
+    objective: 'Choose how your available force will guard the fort ring.',
     threat: 'Rising',
     art: 'blackgate',
     body: (state) => [
@@ -218,33 +269,30 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     ],
     choices: [
       {
-        id: 'c8-deploy-crown-march',
-        label: 'Place the Crown March across all eight forts under paired officers.',
-        detail: 'Use the numbers you accepted and pair every royal officer with a volunteer witness.',
-        advantage: 'Every fort is staffed, while divided authority makes a hidden takeover harder.',
-        requiresFlags: ['c7-gained-full-army'],
-        addFlags: ['c8-deployed-full-march'],
-        result: 'The army divides into eight columns. No officer receives a lock alone. It slows the deployment, but every command now has a second pair of eyes.',
+        id: 'c8-deploy-all-forts',
+        label: 'Spread your available force across all eight forts in paired teams.',
+        detail: 'Cover every wall, even if a smaller force leaves each position dangerously thin.',
+        advantage: 'No part of the ring will be unwatched when the opening begins.',
+        addFlags: ['c8-deployed-all-forts'],
+        result: 'Your available fighters divide into eight columns. Nobody receives a lock alone, and nobody pretends the smaller groups can hold without help.',
         next: 'c8-occupied-fort',
       },
       {
-        id: 'c8-deploy-chosen-company',
-        label: 'Concentrate the chosen company in three forts and leave clear warning lines between them.',
-        detail: 'Accept five empty forts instead of stretching volunteers until every post becomes weak.',
-        advantage: 'Three strong positions can rescue each other and no defender stands alone.',
-        requiresFlags: ['c7-gained-chosen-company'],
-        addFlags: ['c8-deployed-volunteers'],
-        result: 'Your company takes the western, northern, and southern approaches. Lamps and bell wire mark the empty ground between them.',
+        id: 'c8-deploy-strongpoints',
+        label: 'Concentrate defenders at the strongest forts and leave clear warning lines between them.',
+        detail: 'Accept empty walls so the occupied positions can rescue one another.',
+        advantage: 'The strongest approaches may hold longer without leaving isolated defenders behind.',
+        addFlags: ['c8-deployed-strongpoints'],
+        result: 'Defenders take the strongest approaches. Lamps and bell wire mark the empty ground, and mounted reserves wait where the roads meet.',
         next: 'c8-occupied-fort',
       },
       {
-        id: 'c8-deploy-small-teams',
-        label: 'Build warning posts and keep your small force mobile.',
-        detail: 'You cannot hold the ring, so you prepare to reach whichever wall breaks first.',
-        advantage: 'Your few fighters stay together and can answer one crisis with full strength.',
-        requiresFlags: ['c7-gained-dangerous-reputation'],
-        addFlags: ['c8-deployed-mobile-teams'],
-        result: 'You leave no false garrisons. Bells, lamps, and marked snow will tell you where the danger begins. Every fighter stays within one hard ride.',
+        id: 'c8-deploy-mobile-force',
+        label: 'Build warning posts and keep most of your force mobile.',
+        detail: 'Leave most walls empty so one strong group can answer the first serious attack.',
+        advantage: 'Your fighters may reach one breaking wall together instead of being defeated in isolated groups.',
+        addFlags: ['c8-deployed-mobile-force'],
+        result: 'You leave no false garrisons. Bells, lamps, and marked snow will reveal where the danger begins. The main force waits within one hard ride of every approach.',
         next: 'c8-occupied-fort',
       },
     ],
@@ -315,7 +363,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Eighty soldiers stand in the common hall. Nothing marks them as monsters. They are tired people with clean weapons and untouched letters from home.',
       'Ansel lays three contracts on a table. They are written in plain mortal language. During earlier Gate openings, each soldier received food, heat, or one rescued life. In payment, a devil claimed a promise that soldier would make later.',
       'The bargain cannot force them to love, hate, march, or kill. It owns only the named promise. The cruelty lies in choosing the moment that promise will matter most.',
-      'Ansel sold the words he meant to speak when his daughter came home: I will never leave you again. Another soldier sold the promise to guard this fort if every other post fell. That missing promise is why seven forts stand empty.',
+      'Ansel taps the final line of each contract. “One named promise. Nothing more. The buyer cannot demand another payment because it dislikes the first.”',
+      'Ansel sold the words he meant to speak when his daughter came home: I will never leave you again. Another soldier sold the promise to guard the western signal basket if every other post fell. He still wants to guard it tonight, but the bargain owns the words he would use to accept that duty.',
       'You feel anger arrive before judgment. These people did not trade the kingdom for comfort. They were abandoned during secret openings and paid whatever kept someone alive.',
       'A black mark moves across one contract. It is counting down to sunset.',
     ],
@@ -364,7 +413,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Ansel removes a brick behind the old duty board. Seventeen thin ledgers wait inside, one for each year he has commanded Fourth Fort.',
       'The Black Gate opened for one hour on the same winter night every year. At first it opened no wider than a finger. Last year, a person could have walked through sideways.',
       'Each report reached the Crown. Each reply ordered the wardens to call it a furnace fault, pay the dead families, and replace anyone who spoke publicly. Malrec’s seal appears on the newest orders, but the concealment began before he held power.',
-      'That is why the forts are empty. The Crown did not lose them in one attack. It slowly removed witnesses, delayed supplies, and left the remaining wardens desperate enough to bargain for survival.',
+      'For seventeen years, the Crown removed witnesses, delayed supplies, and quietly closed three failing garrisons. The remaining wardens became desperate enough to bargain for food, heat, and rescued lives.',
+      'Then, three weeks ago, Malrec pulled the field army away from four more forts and sent no replacements. Years of neglect weakened the ring. His final order left only Fourth Fort occupied tonight.',
       'Heat stains the far wall red. You remember every official who called these people unreliable. In less than a minute, the ledgers will burn from the inside.',
     ],
     choices: [
@@ -472,14 +522,14 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     introducesStoryTerms: ['Ash Compact'],
     lesson: {
       title: 'A faction, not a species',
-      body: 'The beings beyond the Black Gate are commonly called devils. They have rival houses, laws, and political factions. The Ash Compact is one faction that opposes a forced invasion because tearing the Gate open would damage both worlds. Their help is contractual, never free, and their exact words matter.',
+      body: 'The Ash Compact is one organised group of devils, not everyone beyond the Gate. It says a rival group is forcing the opening. It offers white fire in return for permission to send one peaceful embassy. Its bargains follow the exact words spoken, so witnesses matter.',
     },
     body: () => [
       'A white ember appears on the far side of the red crack. It gives no heat. A woman’s voice speaks through it in careful Asterra trade speech.',
       '“The hand pushing your Gate does not belong to the Ash Compact. We prefer a door with witnesses to a wound with armies.”',
-      'The speaker offers enough white fire to join the eight fort locks for one night. In return, the Compact wants safe passage for a peaceful embassy after the Gate is stable. No hidden travellers. No weapons raised first. Every term spoken in public.',
-      'Ansel stares at the ember. Some of his soldiers bargained with other devil houses because no mortal help came. Their fear is not foolish. Neither is the chance before you.',
-      'You notice that the voice asks to be heard, not trusted. The ember waits, then asks one question. “Will Caelan Vey hear our terms before deciding whether our existence is a crime?”',
+      'The speaker offers enough white fire to join the eight fort locks for one night. In return, the Compact wants permission for one peaceful embassy to enter and leave again after the Gate is stable. No hidden travellers. No weapons raised first. Every term spoken in public.',
+      'Ansel keeps his crossbow trained on the ember. Two soldiers with black contract marks step closer to hear it. The others move back. Nobody lowers a weapon.',
+      'The voice asks to be heard, not trusted. The ember waits, then asks one question. “Will Caelan Vey hear our terms before deciding whether our existence is a crime?”',
     ],
     choices: [
       {
@@ -495,11 +545,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         id: 'c8-test-ash-terms-oathfire',
         label: 'Pass the offer through Oathfire before answering.',
         detail: 'Spend 1 Oathfire testing whether the spoken price hides another duty.',
-        advantage: 'Prove that the Compact’s offer contains no unspoken clause, while revealing one of your Oaths to them.',
+        advantage: 'Prove that the wording hides no extra duty, while revealing one of your Oaths to them.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
         addFlags: ['c8-tested-ash-terms'],
-        result: 'Gold fire closes around the white ember. No hidden clause appears. The voice beyond the Gate learns the shape of one promise you carry and thanks you for the introduction.',
+        result: 'Gold fire closes around the white ember. No extra duty appears. The voice beyond the Gate learns the shape of one promise you carry and thanks you for the introduction.',
         next: personalWatch,
       },
       {
@@ -719,7 +769,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'First comes a red line. Then the two halves move apart by the width of one hand. Through the gap, you see a city of black towers beneath an orange sky. A hot wind carries voices speaking in several languages.',
       'The yearly opening lasts one hour. It has happened seventeen times. Every earlier year, the gap widened. Tonight someone beneath the Gate is pulling on the stolen future promises to force it farther.',
       'The eight signal fires answer, but the defence lacks one thing: people or power at every link. You can unite the remaining wardens, accept the Ash Compact’s white fire, or destroy one fort so its stored strength feeds the other seven.',
-      'You know each path can hold the Gate tonight. The choice decides what is spent and who owns the defence afterward.',
+      'Mortal keepers may fail if one frightened group breaks. White fire would strengthen every weak link, but the Compact would earn the embassy it requested. Breaking First Fort would give the chain enough heat and leave a permanent hole in Asterra’s defence.',
     ],
     choices: [
       {
@@ -820,9 +870,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'futureless',
     body: () => [
-      'Eight white embers wait beyond the crack. The Compact repeats its price: one peaceful embassy may cross after the Gate is stable, speak under safe conduct, and return unharmed if it keeps the same terms.',
-      'It asks whether mortal names may be written into the contract. Names would make enforcement easier. They would also give the Compact a lasting hold on everyone listed.',
-      'You can keep the agreement public and broad, spend your strength cutting every mortal name from it, or place Vaor’s ember as temporary collateral until the embassy returns. The voice asks, “What may stand as surety?”',
+      'Eight white embers wait beyond the crack. The Compact repeats its price: one peaceful embassy may enter after the Gate is stable, speak before witnesses, and leave unharmed if it keeps the same rules.',
+      'It asks whether mortal names may be written into the agreement. Names make it easier to punish anyone who breaks the rules. They also give the Compact a lasting hold on every person listed.',
+      'You can rely on public witnesses, spend your strength cutting every mortal name from the agreement, or let the Compact hold the outer flame of Vaor’s ember until the embassy leaves. The voice asks, “What guarantee do you offer?”',
     ],
     choices: [
       {
@@ -838,7 +888,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         id: 'c8-cut-names-with-resolve',
         label: 'Hold the contract in your mind and cut out every mortal name.',
         detail: 'Spend 2 Resolve resisting a document that rewrites itself while you read.',
-        advantage: 'Create a precise enforceable agreement that binds offices and actions, never individual souls.',
+        advantage: 'Create a clear agreement that can punish broken actions, never claim individual souls.',
         changes: { resolve: -2 },
         requires: { resolve: 2 },
         addFlags: ['c8-compact-binds-actions'],
@@ -847,8 +897,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c8-ember-collateral',
-        label: 'Offer Vaor’s ember as collateral until the embassy returns.',
-        detail: 'Risk the dragon’s anger and let the Compact touch the ember’s outer flame.',
+        label: 'Let the Compact hold Vaor’s outer flame until the embassy leaves.',
+        detail: 'Risk the dragon’s anger and use part of his ember as the agreement’s guarantee.',
         advantage: 'Keep every mortal outside the contract while making betrayal costly to both sides.',
         addFlags: ['c8-ember-held-as-collateral'],
         result: 'The white fire circles Vaor’s ember without taking it. The dragon’s fury fills your bones, but the contract cannot reach any mortal defender.',
@@ -921,7 +971,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'The bargain comes to collect',
     title: 'One Arm Through the Gate',
     location: 'The Black Gate Inner Ring',
-    objective: 'Stop a rival devil house from taking the Futureless contracts. | Keep the defence intact',
+    objective: 'Stop a rival devil house from taking the Futureless contracts.',
     threat: 'Critical',
     art: 'futureless',
     body: (state) => [
@@ -929,7 +979,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'A long arm enters through the gap. It wears six brass rings and a black glove stitched with the names of Fourth Fort’s soldiers. No army follows. The collector needs only to touch the contracts and pull every sold promise into the Gate at once.',
       'Ansel tries to burn the papers. The black ink crawls away from the flame and toward the reaching fingers.',
       'You feel the collector searching through every promise around you. It pauses at your Oaths as if recognising a scent. Then it changes direction and reaches for your chest.',
-      'The Ash Compact’s white fire holds the gap but cannot strike without breaking its public terms. This defence is still yours to finish.',
+      collectorBarrier(state),
     ],
     choices: [
       {
@@ -967,11 +1017,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c8-let-ansel-refuse-collection',
-        label: 'Let Ansel use the one right written into every contract: refusal of a second price.',
-        detail: 'Trust a narrow legal protection while the collector is close enough to kill him.',
+        label: 'Let Ansel refuse the collector’s demand for another payment.',
+        detail: 'Use the plain limit Ansel showed you in the hall while the collector is close enough to kill him.',
         advantage: 'Repel the claim without spending your strength and prove the Futureless never owed more than the named promise.',
         addFlags: ['c8-ansel-refused-second-price'],
-        result: 'Ansel steps between the hand and the papers. “One promise. No second price.” The brass rings crack. The collector jerks backward, beaten by words it wrote itself.',
+        result: 'Ansel steps between the hand and the papers. “One named promise. Nothing more.” The brass rings crack. The collector jerks backward, beaten by the limit it wrote itself.',
         next: 'c8-oath-ledger',
       },
     ],
@@ -987,29 +1037,31 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     art: 'embassy',
     lesson: {
       title: 'The visible Oath ledger',
-      body: 'The Gate is pulling on every binding promise Caelan still carries: protect the escort, expose the Crown plot, honour any pact with Vaor, defend the steppe alliance, and keep Pell alive if that Oath was made. He cannot keep all of them in their old form without surrendering something personal, releasing one duty, burning a lesser promise, or sharing one burden with a willing companion.',
+      body: 'The Gate is pulling every active Oath at once. Four physical choices can break that pull: the key to Caelan’s old home, his Crown badge, his Warden whistle, or the hand of the companion who steps forward. Each saves the defence by placing a different future at risk.',
     },
     body: (state) => [
       routeOutcome(state),
       'The red gap stops widening. Then the Gate changes its attack.',
       'Every Oath inside you pulls in a different direction. Greyhaven drags west. Vaor’s ember burns north. The steppe alliance holds behind you. Pell’s life, if you bound it, beats from Fourth Fort. The people at the threshold need you here.',
       'The trap becomes physical inside you. The Gate does not need to break your promises. It can make each one demand you at the same moment until choice becomes impossible.',
-      'To keep every major duty alive, you must give up the hope that your old life will return unchanged. Or you can release one old duty, burn a lesser promise, or let a willing companion carry part of the danger.',
+      'Your father’s old inn key hangs beneath your armour. It represents the hope that you can return and become the man who left. Your cracked Crown badge carries the Oath of service you swore to Asterra.',
+      'Beside the badge hangs your Warden whistle. When you became captain, you promised to answer any Warden who sounded it. The promise once made you reliable. Here, the Gate can make every call sound at once.',
+      `${endangeredCompanion(state)} steps close enough to share the burden if you ask. The choice now has a key, a badge, a whistle, and a person attached to it.`,
     ],
     choices: [
       {
         id: 'c8-surrender-homecoming',
-        label: 'Keep every Oath and surrender the hope of returning to your former life.',
-        detail: 'Give up the private future in which this ends and everything becomes as it was.',
-        advantage: 'All active duties remain intact and the Gate loses the contradiction it was pulling apart.',
+        label: 'Place your father’s inn key in the Gate and surrender your old homecoming.',
+        detail: 'Give up the private future in which this ends and your former life returns unchanged.',
+        advantage: 'All active duties remain intact and the Gate can no longer pull them in opposite directions.',
         addFlags: ['c8-surrendered-homecoming'],
-        result: 'You let the old picture of home burn: the same rooms, the same uniform, the same person you were before the road changed. The grief is real. So is the freedom that follows it.',
+        result: 'You press the worn key into the red gap. It melts without heat. The old picture of home goes with it: the same rooms, the same uniform, the same person you were before the road changed. The grief is real. So is the freedom that follows it.',
         next: 'c8-embassy-terms',
       },
       {
         id: 'c8-release-crown-oath',
         label: 'Release your oldest Oath of service to Asterra.',
-        detail: 'Spend 2 Resolve surviving the backlash and become oath broken in the eyes of Crown law.',
+        detail: 'Spend 2 Resolve surviving the backlash. Crown law will call you an oathbreaker.',
         advantage: 'Keep your chosen future and every promise made freely during this journey.',
         changes: { resolve: -2 },
         requires: { resolve: 2 },
@@ -1019,22 +1071,46 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c8-burn-lesser-oath',
-        label: 'Burn one lesser promise inside Vaor’s ember.',
-        detail: 'Spend 2 Oathfire destroying a duty that once mattered but no longer decides the world.',
+        label: 'Burn the Warden promise tied to your old patrol whistle.',
+        detail: 'Spend 2 Oathfire ending the duty to answer every Warden call, no matter who sounds it.',
         advantage: 'Preserve your personal future and the great Oaths protecting people now.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c8-burned-lesser-oath'],
-        result: 'You choose one promise that has already done its work and feed it to the ember. The fire takes it. The Gate closes one finger width, satisfied by a loss it did not choose.',
+        result: 'You place the brass whistle inside Vaor’s ember. It burns without sound. You may still answer any call you choose, but no magic can drag you toward all of them. The Gate closes one finger width around the freedom it failed to take.',
         next: 'c8-embassy-terms',
       },
       {
-        id: 'c8-share-oath-burden',
-        label: 'Let a willing companion carry one Oath beside you.',
-        detail: 'A willing companion takes part of the burden and receives a mark the Gate may find again.',
-        advantage: 'Keep every promise and the personal future you named, at the cost of exposing someone you trust.',
-        addFlags: ['c8-shared-oath-burden'],
-        result: 'A hand closes around yours. One strand of gold fire crosses into another palm. The Gate releases you, but a black mark remains where the promise entered.',
+        id: 'c8-share-oath-mara',
+        label: 'Ask Mara to carry one Oath beside you.',
+        detail: 'Mara freely takes part of the burden and receives a mark the Gate may find again.',
+        advantage: 'Keep every promise and your personal future at the cost of exposing Mara to the Gate.',
+        showIfRelationshipIntents: { mara: ['exploring', 'committed'] },
+        addFlags: ['c8-shared-oath-burden', 'c8-shared-oath-mara'],
+        result: 'You ask Mara by name. She says yes before taking your hand. One strand of gold fire crosses into her palm, where a black mark remains. The Gate releases you and learns how to find her.',
+        next: 'c8-embassy-terms',
+      },
+      {
+        id: 'c8-share-oath-lysara',
+        label: 'Ask Lysara to carry one Oath beside you.',
+        detail: 'Lysara freely takes part of the burden and receives a mark the Gate may find again.',
+        advantage: 'Keep every promise and your personal future at the cost of exposing Lysara to the Gate.',
+        showIfRelationshipIntents: { lysara: ['exploring', 'committed'] },
+        addFlags: ['c8-shared-oath-burden', 'c8-shared-oath-lysara'],
+        result: 'You ask Lysara by name. She weighs the danger, then says yes and takes your hand. One strand of gold fire crosses into her palm, where a black mark remains. The Gate releases you and learns how to find her.',
+        next: 'c8-embassy-terms',
+      },
+      {
+        id: 'c8-share-oath-korran',
+        label: 'Ask Korran to carry one Oath beside you.',
+        detail: 'Korran freely takes part of the burden and receives a mark the Gate may find again.',
+        advantage: 'Keep every promise and your personal future at the cost of exposing Korran to the Gate.',
+        showIfRelationshipIntents: {
+          mara: ['unresolved', 'interested', 'platonic', 'ended'],
+          lysara: ['unresolved', 'interested', 'platonic', 'ended'],
+        },
+        addFlags: ['c8-shared-oath-burden', 'c8-shared-oath-korran'],
+        result: 'You ask Korran by name. He studies the Gate, then grips your hand by choice. One strand of gold fire crosses into his palm, where a black mark remains. The Gate releases you and learns how to find him.',
         next: 'c8-embassy-terms',
       },
     ],
@@ -1045,7 +1121,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'The first open crossing',
     title: 'Vexa Ash',
     location: 'The Black Gate Threshold',
-    objective: 'Decide how the first public devil embassy enters Edrath. | Final choice',
+    objective: 'Decide whether the first public devil embassy enters Edrath.',
     threat: 'Immediate',
     art: 'embassy',
     introducesStoryTerms: ['Vexa Ash'],
@@ -1054,7 +1130,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       oathCost(state),
       'The hour ends. The Gate should close. Instead, it remains open by the width of one person.',
       'A woman steps to the far side carrying a white ember lantern. Swept black horns rise through dark hair. Her armour is deep red, cut for ceremony rather than battle, and every weapon behind her has been sealed inside a brass case.',
-      '“Vexa Ash,” she says. “Voice of the Ash Compact. We request the safe conduct offered, refused, or made possible by your defence. We will cross only under terms spoken here.”',
+      vexaGreeting(state),
       'Ansel’s soldiers raise bows. Your own ranks wait for an order. Vexa looks past every crown, ambassador, dragon, and captain until her gaze finds you.',
       '“I came to speak with Caelan Vey. Someone in my world has been buying his future since before he wrote his first Oath.”',
     ],
@@ -1062,7 +1138,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       {
         id: 'c8-receive-vexa-publicly',
         label: 'Receive Vexa and her embassy before every witness.',
-        detail: 'Allow the crossing under visible safe conduct with both armies watching.',
+        detail: 'Allow the crossing under a public agreement, with both armies watching and every weapon sealed.',
         advantage: 'Begin diplomacy without secrecy and force Vexa’s warning into the public record.',
         changes: { wayfire: 2 },
         addFlags: ['c8-vexa-entered-publicly'],
@@ -1097,12 +1173,12 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Eight complete',
     title: 'The Door Kept Open',
     location: 'Fourth Fort Embassy Hall',
-    objective: 'Learn who bought Caelan’s unwritten future. | Path recorded',
+    objective: 'Learn who bought Caelan’s unwritten future.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
     body: (state) => [
-      'For the first time in Asterra’s recorded history, a devil embassy sits at a mortal table under open safe conduct. Soldiers keep their weapons. The envoys keep theirs sealed. Nobody mistakes peace for trust.',
+      'For the first time in Asterra’s recorded history, a devil embassy sits at a mortal table under a public agreement. Soldiers keep their weapons. The envoys keep theirs sealed. Nobody mistakes peace for trust.',
       'You feel the room waiting for you to mistake survival for safety. You do not.',
       routeOutcome(state),
       oathCost(state),
@@ -1118,7 +1194,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Eight complete',
     title: 'One Step Between Worlds',
     location: 'The Black Gate Threshold',
-    objective: 'Learn who bought Caelan’s unwritten future. | Path recorded',
+    objective: 'Learn who bought Caelan’s unwritten future.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
@@ -1139,7 +1215,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Eight complete',
     title: 'The Promise Not Yet Sold',
     location: 'Fourth Fort Gate Yard',
-    objective: 'Learn who bought Caelan’s unwritten future. | Path recorded',
+    objective: 'Learn who bought Caelan’s unwritten future.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,

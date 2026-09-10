@@ -25,9 +25,10 @@ This ledger is the canonical route check for every playable chapter. Update it b
 1. A crossover changes relationships and world state, but does not merge routes by default.
 2. Every visiting hero needs a visible arrival, personal objective, exit, and next destination.
 3. A debt, clue, tool, wound, or promise may remain after a hero leaves. Later prose must describe it as a legacy, not as physical presence.
-4. The active protagonist keeps the decisive action in the chapter.
-5. Two playable heroes cannot meet before the first meeting recorded here.
-6. If a new plot requires an extra meeting, update this ledger, the world map, and both series outlines before writing the scene.
+4. The next chapter may include one short reminder of the road an absent hero took. After that reminder, the absent hero cannot speak, move, or perform a new action from off route.
+5. The active protagonist keeps the decisive action in the chapter.
+6. Two playable heroes cannot meet before the first meeting recorded here.
+7. If a new plot requires an extra meeting, update this ledger, the world map, and both series outlines before writing the scene.
 
 ## Protected protagonist plot lines
 

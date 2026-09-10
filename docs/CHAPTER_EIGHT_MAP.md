@@ -14,7 +14,7 @@ Immediate objective: restore the fortress chain before the yearly opening become
 
 Chapter question: Why were the forts abandoned?
 
-Chapter answer: the Crown hid seventeen yearly openings, removed witnesses and supplies, and left the remaining wardens desperate enough to sell specific future promises for survival.
+Chapter answer: the Crown hid seventeen yearly openings, removed witnesses and supplies, and quietly closed three failing garrisons. Malrec then pulled the field army away from four more forts three weeks ago and sent no replacements. The long neglect weakened the ring, and his final order left only Fourth Fort occupied.
 
 Next hook: Why was a contract bearing Caelan's name prepared before his first Oath, and what future does its buyer intend to take?
 
@@ -30,7 +30,7 @@ Vaor's freedom, forced ember, or pact remains active. Chapter Eight does not cha
 
 Mara and Lysara remain on Caelan's route. The established romantic state selects one private watch scene. A platonic or unattached route receives a personal reflection scene instead.
 
-Ilyra is not physically present. She left after tracing the hidden command from another route.
+Ilyra is not physically present. The opening reminds the player that she left to trace the hidden command along another route and has not yet sent word.
 
 Rook is not physically present. His route continues through the Underways toward Brassreach and Serekh.
 
@@ -55,7 +55,7 @@ The story does not assume that the player understands contract magic, devil poli
 
 1. The fortress ring: save Pell while learning the physical danger of the Gate knock.
 2. Pell's warning: choose how his knowledge and life are preserved.
-3. Force deployment: make the Chapter Seven army outcome visibly alter the opening.
+3. Force deployment: choose between covering all eight forts, holding several strong positions, or keeping the available force mobile. The Chapter Seven army outcome changes the risk and result of each plan.
 4. Fourth Fort: enter without letting Warden authority activate an old bargain.
 5. Futureless hall: learn the limits of sold future promises.
 6. Hidden record room: preserve proof of seventeen concealed openings.
@@ -85,7 +85,7 @@ Caelan remains essential through coordination, personal action, Oathfire, or the
 
 Benefit: white fire fills every weak link without sacrificing people or stone.
 
-Risk: one peaceful embassy gains safe conduct, and exact contract limits become a lasting political issue.
+Risk: one peaceful embassy gains permission to enter and leave again, and the exact limits of that agreement become a lasting political issue.
 
 The Compact is not treated as secretly benevolent. Its public terms can be trusted only as far as the player defines them.
 
@@ -103,8 +103,8 @@ The Gate attacks Caelan by making every active duty demand him at once. The choi
 
 1. Surrender the hope of returning to the unchanged life he once knew.
 2. Release his oldest Crown Oath and accept the legal and physical backlash.
-3. Burn a lesser completed promise inside Vaor's ember.
-4. Share one strand with a willing companion, placing a visible Gate mark on that person.
+3. Burn the Warden promise tied to Caelan's old patrol whistle. He may still answer calls by choice, but no magic can drag him toward every call at once.
+4. Ask Mara, Lysara, or Korran by name to share one strand, placing a visible Gate mark on that person.
 
 Keeping all Oaths is powerful, but it is not free. Spending Resolve or Oathfire preserves a different future. Sharing the burden protects Caelan while creating danger for someone he trusts.
 
@@ -130,11 +130,15 @@ No art from Chapters One through Seven is reused.
 
 ## Acceptance guardrails
 
-1. Rook and Ilyra cannot appear physically or receive active choices.
-2. The three Chapter Seven force outcomes must create different deployment prose and options.
+1. Rook and Ilyra cannot appear physically or receive active choices. One short reminder may explain the separate road an absent hero took.
+2. The three Chapter Seven force outcomes must alter deployment risk and result, while Chapter Eight still offers a real deployment decision.
 3. Futureless must be explained before the player is asked to reason about their contracts.
 4. Vexa cannot be named before the embassy scene.
 5. Every negative stat change must state an expected advantage and store a consequence.
 6. Every route must remain lethal when Health is low and completable when a costly option is unavailable.
 7. All three endings must take fifteen decisions and award equal Wayfire.
 8. Chapter Nine must inherit the defence route, Oath price, evidence state, and Vexa entry state.
+9. The collector barrier must match the chosen defence: mortal fires, Compact white fire, or First Fort's stored heat.
+10. Vexa must address the defence actually chosen and must not claim that Caelan promised entry when he did not.
+11. Any transferred Oath must name its willing bearer in the option, immediate result, ending recap, and journal.
+12. Player-facing objectives contain one job and no stage directions.

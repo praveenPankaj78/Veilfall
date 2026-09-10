@@ -132,6 +132,20 @@ Every important choice should create at least two consequences from different ho
 
 The story should surface consequences naturally. Do not explain an invisible score when a changed greeting, closed road, scar, or new ally can show it.
 
+## Branch continuity before callbacks
+
+Treat every route choice as a physical fact, not only a flag.
+
+- Record who is present, absent, bound, injured, carrying an object, or travelling on another road.
+- Record which source powers a later effect. Mortal fire, borrowed magic, and destroyed stone cannot become interchangeable in shared prose.
+- When two events caused the same condition at different times, state their order in one plain sentence. A long decline and a recent betrayal may both be true, but the player should never have to reconcile them alone.
+- Teach a rule before a later option depends on it. A clever contract limit, spell exception, signal code, or local law must first appear through action or dialogue.
+- Name the person who accepts an injury, mark, debt, spell, or transferred promise in the option and result. Do not hide a known identity behind companion, ally, or hand.
+- An inherited outcome is not a new decision. Show what arrived from the previous chapter, then offer at least two genuinely available ways to use it.
+- Shared scenes must branch when a character refers to something the player accepted, refused, destroyed, or never learned. Do not write one sentence that lists every possible route.
+
+During Immediate or Critical danger, replace legal or technical shorthand with the action it means. Say permission to enter and leave instead of safe conduct, guarantee instead of surety, and another payment instead of second price.
+
 ## Mystery discipline
 
 Keep one primary unresolved question in the player's mind. Secondary questions may exist, but the prose should make the next useful action clear.

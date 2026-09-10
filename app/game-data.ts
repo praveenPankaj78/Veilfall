@@ -71,6 +71,7 @@ export type Choice = {
   showIfAnyFlags?: string[];
   showIfAllFlags?: string[];
   hideIfAnyFlags?: string[];
+  showIfRelationshipIntents?: Partial<Record<RelationshipKey, RelationshipIntent[]>>;
   result: string;
 };
 
@@ -3531,7 +3532,11 @@ export function isChoiceVisible(choice: Choice, state: GameState) {
     || choice.showIfAllFlags.every((flag) => state.flags.includes(flag));
   const avoidsHiddenFlags = !choice.hideIfAnyFlags
     || !choice.hideIfAnyFlags.some((flag) => state.flags.includes(flag));
-  return matchesAny && matchesAll && avoidsHiddenFlags;
+  const matchesRelationshipIntents = !choice.showIfRelationshipIntents
+    || Object.entries(choice.showIfRelationshipIntents).every(([person, intents]) => (
+      intents?.includes(state.relationships[person as RelationshipKey].intent)
+    ));
+  return matchesAny && matchesAll && avoidsHiddenFlags && matchesRelationshipIntents;
 }
 
 export function resolveNext(choice: Choice, state: GameState) {

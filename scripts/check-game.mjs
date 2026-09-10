@@ -157,8 +157,13 @@ for (const [index, chapterSource] of postBridgeSources.entries()) {
 if (/\bRook\b/i.test(chapterSevenSource)) {
   failures.push('Chapter Seven places Rook and Ilyra together before their planned Serekh meeting');
 }
-if (/\b(?:Rook|Ilyra)\b/i.test(chapterEightSource)) {
-  failures.push('Chapter Eight places an off route playable hero at the Black Gate');
+if (/\bRook\b/i.test(chapterEightSource)) {
+  failures.push('Chapter Eight places Rook on Caelan’s route after his Underways exit');
+}
+const activeIlyraAction = /\bIlyra (?:arrives|appears|stands|walks|waits|follows|speaks|points|returns|offers|asks|says|carries|pulls|uses|takes|helps|rides)\b/i;
+if (activeIlyraAction.test(chapterEightSource)
+  || !/Ilyra left before dawn.*another road/is.test(chapterEightSource)) {
+  failures.push('Chapter Eight does not explain Ilyra’s separate route without placing her physically at the Gate');
 }
 for (const node of Object.values(nodes)) {
   for (const choice of node.choices) {
@@ -803,7 +808,7 @@ const storyTermRules = {
   },
   'Ash Compact': {
     use: /\bAsh Compact\b/i,
-    introduction: /Ash Compact is one faction/i,
+    introduction: /Ash Compact is one organised group/i,
   },
   'Vexa Ash': {
     use: /\bVexa Ash\b/i,
@@ -2317,6 +2322,119 @@ const chapterEightEndingFlags = {
   'c8-ending-threshold': 'c8-vexa-held-at-threshold',
   'c8-ending-witness': 'c8-ansel-spoke-first',
 };
+const chapterEightForceStates = [
+  { ...chapterEightBase, flags: ['c7-gained-full-army'] },
+  { ...chapterEightBase, flags: ['c7-gained-chosen-company'] },
+  { ...chapterEightBase, flags: ['c7-gained-dangerous-reputation'] },
+];
+const deploymentChoiceIds = new Set([
+  'c8-deploy-all-forts',
+  'c8-deploy-strongpoints',
+  'c8-deploy-mobile-force',
+]);
+for (const state of chapterEightForceStates) {
+  const visibleDeployments = nodes['c8-force-deployment'].choices.filter(
+    (choice) => deploymentChoiceIds.has(choice.id) && isChoiceVisible(choice, state),
+  );
+  if (visibleDeployments.length !== 3 || visibleDeployments.some((choice) => !canChoose(choice, state))) {
+    failures.push('Chapter Eight turns the inherited army size into a one-option deployment screen');
+  }
+}
+const deploymentPayoffs = [
+  [['c7-gained-full-army', 'c8-deployed-all-forts'], /Crown March occupies all eight outer yards/i],
+  [['c7-gained-chosen-company', 'c8-deployed-all-forts'], /volunteers hold all eight outer yards in thin groups/i],
+  [['c7-gained-dangerous-reputation', 'c8-deployed-all-forts'], /small force watches all eight forts in pairs/i],
+  [['c7-gained-full-army', 'c8-deployed-strongpoints'], /Crown March holds three strong forts/i],
+  [['c7-gained-chosen-company', 'c8-deployed-strongpoints'], /Volunteers hold the three strongest approaches/i],
+  [['c7-gained-dangerous-reputation', 'c8-deployed-strongpoints'], /small force holds two strong forts/i],
+];
+for (const [flags, expected] of deploymentPayoffs) {
+  if (!expected.test(renderedBody('c8-occupied-fort', { ...chapterEightBase, flags }))) {
+    failures.push(`Chapter Eight deployment does not remember force and plan for ${flags.join(', ')}`);
+  }
+}
+const hiddenRecord = renderedBody('c8-hidden-record', chapterEightBase);
+if (!/seventeen years.*closed three failing garrisons/is.test(hiddenRecord)
+  || !/three weeks ago.*Malrec pulled the field army away from four more forts/is.test(hiddenRecord)
+  || !/only Fourth Fort occupied tonight/i.test(hiddenRecord)) {
+  failures.push('Chapter Eight does not join the seventeen-year cover-up to Malrec’s recent withdrawal');
+}
+const defenceRouteCases = [
+  ['c8-united-wardens', /eight mortal signal fires/i, /refused our fire and held the Gate with mortal hands/i, /Ash Compact’s white fire holds the gap/i],
+  ['c8-accepted-ash-compact', /Ash Compact’s white fire holds the gap/i, /granted one peaceful embassy permission/i, /stored beneath the fallen First Fort/i],
+  ['c8-sacrificed-first-fort', /stored beneath the fallen First Fort/i, /broke one of your own forts/i, /Ash Compact’s white fire holds the gap/i],
+];
+for (const [flag, collectorExpected, greetingExpected, collectorForbidden] of defenceRouteCases) {
+  const state = { ...chapterEightBase, flags: [flag] };
+  const collector = renderedBody('c8-collector-crossing', state);
+  const greeting = renderedBody('c8-embassy-terms', state);
+  if (!collectorExpected.test(collector)
+    || collectorForbidden.test(collector)
+    || !greetingExpected.test(greeting)) {
+    failures.push(`Chapter Eight forgets the chosen defence route for ${flag}`);
+  }
+}
+const contractHall = renderedBody('c8-futureless-reveal', chapterEightBase);
+const anselContractChoice = nodes['c8-collector-crossing'].choices.find(
+  (choice) => choice.id === 'c8-let-ansel-refuse-collection',
+);
+if (!/One named promise\. Nothing more/i.test(contractHall)
+  || !/One named promise\. Nothing more/i.test(anselContractChoice?.result ?? '')) {
+  failures.push('Ansel uses the one-payment contract limit before the player learns it');
+}
+const relationshipState = (person, intent) => ({
+  ...chapterEightBase,
+  relationships: {
+    ...chapterEightBase.relationships,
+    [person]: { ...chapterEightBase.relationships[person], intent },
+  },
+});
+const oathShareChoiceIds = new Set([
+  'c8-share-oath-mara',
+  'c8-share-oath-lysara',
+  'c8-share-oath-korran',
+]);
+const oathShareCases = [
+  [relationshipState('mara', 'committed'), 'c8-share-oath-mara'],
+  [relationshipState('lysara', 'exploring'), 'c8-share-oath-lysara'],
+  [chapterEightBase, 'c8-share-oath-korran'],
+];
+for (const [state, expectedId] of oathShareCases) {
+  const visible = nodes['c8-oath-ledger'].choices.filter(
+    (choice) => oathShareChoiceIds.has(choice.id) && isChoiceVisible(choice, state),
+  );
+  if (visible.length !== 1
+    || visible[0].id !== expectedId
+    || !new RegExp(expectedId.split('-').at(-1), 'i').test(`${visible[0].label} ${visible[0].result}`)) {
+    failures.push(`Chapter Eight does not name the willing Oath bearer for ${expectedId}`);
+  }
+}
+const oathLedgerText = [
+  nodes['c8-oath-ledger'].lesson?.body ?? '',
+  ...nodes['c8-oath-ledger'].body(chapterEightBase),
+  ...nodes['c8-oath-ledger'].choices.flatMap((choice) => [choice.label, choice.detail, choice.result]),
+].join(' ');
+const chapterEightOpening = renderedBody('c8-gate-ring', chapterEightBase);
+if (!/key to your father’s roadside inn.*old Warden whistle/is.test(chapterEightOpening)
+  || !/father’s old inn key/i.test(oathLedgerText)
+  || !/cracked Crown badge/i.test(oathLedgerText)
+  || !/Warden whistle/i.test(oathLedgerText)) {
+  failures.push('The Chapter Eight Oath prices are not attached to visible, previously introduced objects');
+}
+const chapterEightReaderText = Object.entries(nodes)
+  .filter(([id]) => id.startsWith('c8-'))
+  .flatMap(([, node]) => [
+    node.objective,
+    node.lesson?.body ?? '',
+    ...node.body(chapterEightBase),
+    ...node.choices.flatMap((choice) => [choice.label, choice.detail, choice.advantage ?? '', choice.result]),
+  ])
+  .join(' ');
+if (/\|\s*(?:The next knock|Do not pretend|Keep the defence|Final choice|Path recorded)/i.test(chapterEightReaderText)
+  || /\b(?:surety|collateral|safe conduct|unspoken clause|second price)\b/i.test(chapterEightReaderText)
+  || /each path can hold the Gate tonight/i.test(chapterEightReaderText)) {
+  failures.push('Chapter Eight still exposes stage directions, contract jargon, or narrator scoring');
+}
 for (const [endingId, flag] of Object.entries(chapterEightEndingFlags)) {
   const finalChoice = nodes['c8-embassy-terms'].choices.find((choice) => choice.next === endingId);
   if (!finalChoice?.addFlags?.includes(flag) || finalChoice.changes?.wayfire !== 2) {

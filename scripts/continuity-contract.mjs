@@ -77,7 +77,7 @@ export const implementedChapterContracts = [
     endingNodes: ['c8-ending-embassy', 'c8-ending-threshold', 'c8-ending-witness'],
     nextNode: null,
     activeGuests: [],
-    legacyOnlyHeroes: [],
+    legacyOnlyHeroes: ['ilyra'],
   },
 ];
 
