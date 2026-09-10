@@ -40,6 +40,7 @@ import {
 } from '@/components/ui/sheet';
 import {
   canChoose,
+  isChoiceVisible,
   initialState,
   nextRelationships,
   nodes,
@@ -70,7 +71,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 const sceneArtwork = {
   departure: {
@@ -131,11 +132,23 @@ const sceneArtwork = {
   },
   saltbattle: {
     src: '/art/salt-basin-battle.png',
-    alt: 'Caelan, Ilyra, and Rook face the divided Crown March in the Salt Basin',
+    alt: 'Caelan and Ilyra face the divided Crown March in the Salt Basin',
   },
   marshal: {
     src: '/art/marshal-field-confrontation.png',
     alt: 'Caelan confronts Marshal Teren Voss while a dead commander forms in the red storm',
+  },
+  blackgate: {
+    src: '/art/black-gate-fortress-ring.png',
+    alt: 'Caelan approaches the eight cold forts surrounding the colossal Black Gate',
+  },
+  futureless: {
+    src: '/art/futureless-fort-breach.png',
+    alt: 'Caelan and the defenders of Fourth Fort fight to save its wounded during the Gate breach',
+  },
+  embassy: {
+    src: '/art/first-devil-embassy.png',
+    alt: 'Vexa Ash leads the first devil embassy across the Black Gate under open safe conduct',
   },
 } as const;
 
@@ -146,6 +159,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   5: 'veilfall.chapter-five.v1.start',
   6: 'veilfall.chapter-six.v1.start',
   7: 'veilfall.chapter-seven.v1.start',
+  8: 'veilfall.chapter-eight.v1.start',
 };
 
 const chapterLibrary = [
@@ -183,6 +197,11 @@ const chapterLibrary = [
     number: 7 as const,
     title: 'The Red Wind Hunt',
     summary: 'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
+  },
+  {
+    number: 8 as const,
+    title: 'Eight Empty Forts',
+    summary: 'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
   },
 ];
 
@@ -372,6 +391,7 @@ function defeatForChoice(chapter: ChapterNumber, choice: Choice, state: GameStat
         : 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
     6: 'You complete the action, but the moving city and the red storm take the last of your strength. The deck rolls beneath you while Korran calls the living crews together and the ember fades behind your ribs.',
     7: 'You complete the action, but the Red Wind Hunt takes the last of your strength. Salt and red sky blur together while your companions fight to keep the living army from obeying its dead.',
+    8: 'You complete the action, but the Black Gate takes the last of your strength. Snow and furnace light blur together while the defenders struggle to keep the opening from becoming an invasion road.',
   };
   return {
     title: 'Caelan has fallen',
@@ -694,7 +714,7 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4, 5, 6, 7] as ChapterNumber[]).filter((number) => number > chapter)) {
+    for (const later of ([2, 3, 4, 5, 6, 7, 8] as ChapterNumber[]).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -822,6 +842,26 @@ export default function Home() {
       history: [...game.history, 'You leave Kharad Vey beneath the Red Wind Hunt with every earlier consequence.'],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[7]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
+  function startChapterEight() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c8-gate-ring',
+      chapter: 8,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 7])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 2),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        command: Math.min(6, game.stats.command + 1),
+        medicine: Math.max(1, game.stats.medicine),
+      },
+      history: [...game.history, 'You reach the eight forts surrounding the Black Gate with every earlier consequence.'],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[8]!, JSON.stringify(next));
     loadChapterState(next);
   }
 
@@ -1023,7 +1063,7 @@ export default function Home() {
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">
-                {node.choices.map((choice, index) => {
+                {node.choices.filter((choice) => isChoiceVisible(choice, game)).map((choice, index) => {
                   const available = canChoose(choice, game);
                   const changes = changeSummary(choice, game);
                   const lethal = wouldBeFatal(choice, game);
@@ -1168,7 +1208,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 6 ? (
                     <>
                       <h2>Chapter Seven is ready</h2>
                       <p>
@@ -1188,16 +1228,36 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Eight is ready</h2>
+                      <p>
+                        Continue into Eight Empty Forts with every surviving consequence.
+                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterEight}
+                      >
+                        Continue to Chapter Eight
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                        Replay Chapter Seven
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Eight</h2>
+                    <h2>Caelan will return in Chapter Nine</h2>
                     <p>
-                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire toward eight empty forts.
-                      Something has begun knocking from beyond the Black Gate.
+                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire into the first open embassy.
+                      Vexa Ash has brought a contract bearing your name and an unwritten price.
                     </p>
                     <Button className="begin-button" size="lg" onClick={restart}>
-                      Replay Chapter Seven
+                      Replay Chapter Eight
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>

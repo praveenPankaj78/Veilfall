@@ -3,6 +3,7 @@ import { chapterFourNodes } from './chapter-four';
 import { chapterFiveNodes } from './chapter-five';
 import { chapterSixNodes } from './chapter-six';
 import { chapterSevenNodes } from './chapter-seven';
+import { chapterEightNodes } from './chapter-eight';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -37,7 +38,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -67,6 +68,8 @@ export type Choice = {
   requiresRelationships?: Partial<Record<RelationshipKey, Partial<RelationshipScore>>>;
   forbidsRelationshipIntents?: Partial<Record<RelationshipKey, RelationshipIntent[]>>;
   requiresFlags?: string[];
+  showIfAnyFlags?: string[];
+  showIfAllFlags?: string[];
   result: string;
 };
 
@@ -99,7 +102,10 @@ export type StoryNode = {
     | 'moot'
     | 'redwind'
     | 'saltbattle'
-    | 'marshal';
+    | 'marshal'
+    | 'blackgate'
+    | 'futureless'
+    | 'embassy';
   body: (state: GameState) => string[];
   choices: Choice[];
   final?: boolean;
@@ -129,7 +135,10 @@ export type StoryTermKey =
   | 'Unsea'
   | 'Crown March'
   | 'dead command'
-  | 'Marshal Teren Voss';
+  | 'Marshal Teren Voss'
+  | 'Futureless'
+  | 'Ash Compact'
+  | 'Vexa Ash';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -222,7 +231,8 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   'c4-tell-mara-law-bends': { mara: { trust: 1, respect: 1 } },
   'c4-promise-mara-truth': { mara: { trust: 2, respect: 1 } },
   'c4-kiss-mara-bridge': { mara: { trust: 1, attraction: 2, intent: 'exploring' } },
-  'c4-hear-lysara-private-risk': { lysara: { trust: 2, respect: 1, attraction: 1, intent: 'interested' } },
+  'c4-hear-lysara-private-risk': { lysara: { trust: 2, respect: 1 } },
+  'c4-name-lysara-personal': { lysara: { trust: 1, attraction: 2, respect: 1, intent: 'exploring' } },
   'c4-keep-quiet-arch-platonic': {
     mara: { trust: 1, respect: 1, intent: 'platonic' },
     lysara: { respect: 1, intent: 'platonic' },
@@ -264,6 +274,12 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   'c7-ilyra-slow-interest': { ilyra: { trust: 1, attraction: 1, intent: 'interested' } },
   'c7-ilyra-platonic-alliance': { ilyra: { trust: 1, respect: 1, intent: 'platonic' } },
   'c7-ilyra-refuse-manipulation': { ilyra: { respect: 1, intent: 'ended' } },
+  'c8-mara-name-home': { mara: { trust: 2, attraction: 1, respect: 1 } },
+  'c8-mara-share-command': { mara: { trust: 2, respect: 2 } },
+  'c8-mara-admit-fear-of-wanting': { mara: { trust: 2, respect: 1 } },
+  'c8-lysara-name-shared-road': { lysara: { trust: 2, attraction: 1, respect: 1 } },
+  'c8-lysara-share-lock-authority': { lysara: { trust: 2, respect: 2 } },
+  'c8-lysara-admit-two-loyalties': { lysara: { trust: 2, respect: 1 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -3286,6 +3302,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...chapterFiveNodes,
   ...chapterSixNodes,
   ...chapterSevenNodes,
+  ...chapterEightNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -3459,6 +3476,28 @@ export const nodeOrder = [
   'c7-ending-army',
   'c7-ending-company',
   'c7-ending-outlaw',
+  'c8-gate-ring',
+  'c8-first-knock',
+  'c8-force-deployment',
+  'c8-occupied-fort',
+  'c8-futureless-reveal',
+  'c8-hidden-record',
+  'c8-breach',
+  'c8-ash-offer',
+  'c8-mara-watch',
+  'c8-lysara-watch',
+  'c8-quiet-watch',
+  'c8-chain-plan',
+  'c8-opening',
+  'c8-wardens-route',
+  'c8-compact-route',
+  'c8-sacrifice-route',
+  'c8-collector-crossing',
+  'c8-oath-ledger',
+  'c8-embassy-terms',
+  'c8-ending-embassy',
+  'c8-ending-threshold',
+  'c8-ending-witness',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {
@@ -3476,11 +3515,20 @@ export function canChoose(choice: Choice, state: GameState) {
   const hasFlags = !choice.requiresFlags || choice.requiresFlags.every(
     (flag) => state.flags.includes(flag),
   );
+  const isVisible = isChoiceVisible(choice, state);
   const avoidsForbiddenIntent = !choice.forbidsRelationshipIntents
     || Object.entries(choice.forbidsRelationshipIntents).every(([person, intents]) => (
       !intents?.includes(state.relationships[person as RelationshipKey].intent)
     ));
-  return hasStats && hasRelationships && hasFlags && avoidsForbiddenIntent;
+  return isVisible && hasStats && hasRelationships && hasFlags && avoidsForbiddenIntent;
+}
+
+export function isChoiceVisible(choice: Choice, state: GameState) {
+  const matchesAny = !choice.showIfAnyFlags
+    || choice.showIfAnyFlags.some((flag) => state.flags.includes(flag));
+  const matchesAll = !choice.showIfAllFlags
+    || choice.showIfAllFlags.every((flag) => state.flags.includes(flag));
+  return matchesAny && matchesAll;
 }
 
 export function resolveNext(choice: Choice, state: GameState) {

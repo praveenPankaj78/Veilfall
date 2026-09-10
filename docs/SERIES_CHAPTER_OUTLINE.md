@@ -152,11 +152,11 @@ Defining choice: Unite the remaining wardens, accept aid from a devil faction, o
 
 Class pressure: Every active Oath is tested at once. Keeping all of them is possible only by surrendering a personal desire.
 
-Romance movement: Mara returns if earlier trust survived. Separation can become reconciliation, friendship, or final closure.
+Romance movement: Mara returns from the western signal line when her romance is active, while Lysara receives an equivalent private scene on her committed route. Existing commitment, separation, friendship, or closure remains intact rather than being reset for a new chapter.
 
 Revelation: The Black Gate has been opening briefly for years, and the Crown hid each incident.
 
-End state: The first devil embassy crosses openly. Vexa Ash asks to speak only with Caelan.
+End state: The first devil embassy requests an open crossing. Caelan may receive it publicly, hear Vexa Ash at the threshold, or let the harmed wardens speak first. Every route reveals a contract bearing Caelan's name and an unwritten price.
 
 ### Chapter Nine: The Price of a Name
 
@@ -618,7 +618,7 @@ Final image: Far from any capital, a child finds a small door in an old tree. It
 
 1. Caelan Chapter Four and Rook Chapter Three share the Mileless Bridge. Caelan anchors the path and chooses his duty. Rook stages the theft and chooses what he refuses to surrender.
 2. Caelan Chapter Six introduces Ilyra on the Ember Steppe. She reads the clans and tests Caelan's position rather than waiting for an assignment. Ilyra Chapter Five later returns there and owns the deeper memory conflict.
-3. Caelan Chapter Twelve changes the Black Gate and destabilises dawn, creating Rook Chapter One.
+3. Caelan Chapter Twelve changes the Black Gate and destabilises dawn. That changed sunrise reaches Rook later and alters his approach to the Luminous Court. Rook Chapter One already began on the morning Caelan's sealed route was altered.
 4. Rook Chapter Seven introduces Ilyra in Serekh from his suspicious viewpoint. He replaces evidence she intended to use, while she turns his personal goal into Leverage. Ilyra Chapter Seven later returns to the city with her own objective and the consequences of Rook's actions.
 5. Rook Chapter Eight and Ilyra Chapter Eight enter different islands in the Unsea. Imported choices may let them cross. Rook controls the route through an audacious theft, while Ilyra controls which memories may be shared. Neither chapter repeats the other's main event.
 6. Rook Chapter Eleven changes one world law. The immediate effect creates Ilyra Chapter One and worsens again in Ilyra Chapter Nine.

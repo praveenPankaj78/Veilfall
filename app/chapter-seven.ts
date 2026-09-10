@@ -1297,6 +1297,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'redwind',
     final: true,
+    nextChapter: 'c8-gate-ring',
     body: (state) => [
       'The Crown March turns east beneath Caelan Vey’s command. Kharad scouts ride ahead. Asterra engineers follow. People who began the day as enemies now share water and watch the same red horizon.',
       emberPressure(state),
@@ -1317,6 +1318,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'redwind',
     final: true,
+    nextChapter: 'c8-gate-ring',
     body: (state) => [
       'Your chosen company rides east without a royal banner. Every soldier stepped forward freely. That does not make them fearless. It makes their fear honest.',
       emberPressure(state),
@@ -1338,6 +1340,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'redwind',
     final: true,
+    nextChapter: 'c8-gate-ring',
     body: (state) => [
       'You ride east with the people who already chose you. No new banners follow. Behind you, thousands of Crown soldiers carry the same story home: Caelan Vey defeated the Regent’s hunt, spared its army, and refused its command.',
       emberPressure(state),

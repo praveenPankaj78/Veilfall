@@ -71,7 +71,7 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 
 ## Phase Five: complete Caelan season, in progress
 
-Chapters Four through Seven are implemented. Produce Chapters Eight through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four through Eight are implemented. Produce Chapters Nine through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -135,4 +135,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first seven canonical chapters are implemented. The next production gate is to playtest the salt trap, order exposure, and steppe duel routes, confirm that Asterra's living authority remains distinct from the dead command, and confirm that the full army, chosen company, and dangerous reputation endings create meaningfully different Chapter Eight openings.
+The foundation and the first eight canonical chapters are implemented. The next production gate is to playtest the three Black Gate defence routes, confirm that the full army, chosen company, and dangerous reputation openings remain distinct, and confirm that each Vexa entry state creates a meaningfully different Chapter Nine negotiation.

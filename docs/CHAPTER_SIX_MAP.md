@@ -4,7 +4,9 @@
 
 The chapter answers one main question: will the clans of Kharad Vey help carry Caelan's ember toward the Black Gate?
 
-The answer is conditional. They will help only if Caelan treats their living authority as part of the future he is protecting. A Crown title, an old treaty, and fear of the Gate are not enough.
+The answer is conditional. They help only if Caelan treats their right to choose as part of the future he is protecting. A Crown title, an old treaty, and fear of the Gate are not enough.
+
+The amount of support is also earned. Honest disclosure about Vaor's ember and Korran's personal respect allow the player to request war. Mixed trust allows a guarded alliance or a safe road. If Caelan stole the ember and refuses to admit it, the Moot offers only the road.
 
 The next hook is concrete: a Crown army is one day behind Kharad Vey, and its soldiers are obeying commands spoken by dead officers inside an ancestor storm.
 
@@ -68,14 +70,14 @@ Threadread reveals connections, including attraction, but never exact thoughts o
 
 #### The Unsea discovery
 
-The test reveals dark water beneath ordinary reality and shows that the ancestor storm draws voices through it. The chapter does not claim that every voice is a true dead person.
+Ilyra names the hidden current beneath erased roads as the Unsea. It is her strongest explanation for the storm, not a fully proved answer. The chapter does not claim that every voice is a true dead person.
 
 The player knows only:
 
-- the voices acquire knowledge after the people they resemble died;
-- at least one anticipates pain and therefore appears to feel fear;
-- some may be memories or imitations;
-- the Unsea contains impressions of histories cut away from Edrath.
+- the storm acquires knowledge after the people it resembles died;
+- the selected test proves one additional fact about source, private memory, fear, or active copying;
+- some voices may be memories or imitations;
+- old accounts describe the Unsea as a place where erased lives leave impressions.
 
 This keeps the mystery curious rather than confusing. Chapter Six proves that the question is real. Later chapters answer which voices are conscious and who is using them.
 
@@ -97,11 +99,11 @@ Caelan must bind his own conduct rather than promise obedience from the Queen or
 
 ### War
 
-All twelve platforms turn toward the Black Gate. Kharad Vey enters the campaign as a nation beside Caelan, not as his army. This provides the largest force and exposes the largest civilian population.
+This request is available only after Caelan gives an honest public account of the ember and earns Korran's personal respect. All twelve platforms turn toward the Black Gate. Kharad Vey enters the campaign as a nation beside Caelan, not as his army. This provides the largest force and exposes the largest civilian population.
 
 ### Guarded alliance
 
-Korran leads volunteer riders, wind callers, and shield engines under the Red Moot's authority. This gives Caelan a meaningful fighting force while preserving the town's independent road.
+This remains available under mixed trust, but not when a stolen ember is concealed. Korran leads volunteer riders, wind callers, and shield engines under the Red Moot's authority. This gives Caelan a meaningful fighting force while preserving the town's independent road.
 
 ### Neutral road
 
@@ -136,5 +138,8 @@ The game check verifies:
 - every chapter has a reachable lethal choice;
 - Chapter Six uses only its own art;
 - all three Vaor outcomes alter the arrival;
+- the ember accusation has a distinct visible answer for gift, theft, and pact;
 - Ilyra's attraction option respects existing commitments;
+- the Unsea test does not grant facts the selected method failed to prove;
+- war and alliance requests respect the trust earned before the vote;
 - each Moot ending records its distinct consequence and grants equal Wayfire.

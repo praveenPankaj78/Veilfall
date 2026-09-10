@@ -31,6 +31,8 @@ Future critical settlements should be added to the story atlas when their route 
 - South: Serekh follows the hidden desert river.
 - Southeast: the Black Gate stands in dead volcanic land.
 
+The Black Gate is surrounded by a simple eight fort ring. Each fort lights the next through a buried chain. Fourth Fort is the only old garrison still occupied when Caelan arrives. First Fort may become a permanent gap if Caelan sacrifices it to strengthen the remaining seven. These forts are one connected location rather than eight separate map destinations.
+
 ## Outer realms
 
 - Cinder Deep connects most reliably through the Black Gate and through willingly sworn contracts.

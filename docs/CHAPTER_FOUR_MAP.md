@@ -49,8 +49,8 @@ These openings change advantage and feeling without changing the clear immediate
 7. Cross the chosen environment and carry its route advantage into the later Crown fight.
 8. Use or limit Rook's false Crown officer performance.
 9. Decide whether Ordan is worth saving as a witness.
-10. Open the fragment and discover the map of nine Nails.
-11. Share a private decision with Mara about law, duty, honesty, and attraction.
+10. Recover the real fragment from Rook, then open it and discover the map of nine Nails.
+11. Spend one honest minute with Mara, Lysara, or alone before returning to the fight.
 12. Break the Crown force surrounding the Map Arch.
 13. Turn Rook's travelling theatre into a believable escape.
 14. Hold the final road until every survivor crosses.
@@ -81,10 +81,10 @@ Rook's large tricks use objects shown before the result:
 - silver wire;
 - mirrored coins;
 - flash salt;
-- voice changing reeds;
+- one voice changing reed;
 - a compact travelling theatre curtain.
 
-His first large surprise impersonates Ordan, but Caelan must supply the correct Crown signal. His second uses the Mileless Bridge's repeating reflections to turn one disguised figure into false officers on nearby spans. Caelan must cover any weakness caused by tools Rook spent during earlier rescues.
+His first large surprise impersonates Ordan, but Caelan must supply the correct Crown signal. His second stages one simple lie behind a small mirrored curtain. One wire moves it, one reed gives it a voice, and the Mileless Bridge repeats that same reflection on three nearby spans. Caelan chooses the lie and covers any weakness caused by tools Rook spent during earlier rescues.
 
 Rook's help always has a limit. The banner rescue destroys his strongest wire. Treating Brann damages his disguise coat. His environmental shortcuts preserve stats but leave pursuing soldiers in the later fight. Rook creates impossible openings; Caelan is still the person who turns them into survival.
 
@@ -110,20 +110,21 @@ The quiet arch after the map reveal is no longer a mandatory Mara interlude. The
 - bind himself to honest answers without treating the Oath as romantic commitment;
 - let Mara initiate a kiss when their existing bond supports it;
 - ask Lysara about the founder seal that frightens her and hear a truth about her family;
+- tell Lysara that his concern for her is personal when their existing trust and attraction support it;
 - define both relationships as platonic;
 - or take the minute alone without emotional punishment.
 
-Lysara's route is political and personal rather than a copy of Mara's physical shorthand. Tactical agreement elsewhere in the chapter builds Trust or Respect, not automatic Attraction.
+Lysara's route is political and personal rather than a copy of Mara's physical shorthand. Hearing her private fear builds Trust and Respect. Attraction changes only when the player explicitly names personal interest.
 
 ## Endings
 
 ### Arrest
 
-Caelan applies the law before the roads divide. Rook slips free, wears the unopened cuff on his own wrist, and enters the Underways as a named fugitive. Caelan keeps the fragment and turns north.
+Caelan applies the law before the roads divide. Rook slips free and leaves the locked cuff hanging from a bridge chain before entering the Underways as a named fugitive. Caelan keeps the fragment and turns north.
 
 ### Bargain
 
-Rook names the buyer's payment trail and agrees to follow it through the Underways while sending Caelan one honest warning. Their cooperation has explicit terms across separate roads. Caelan keeps the fragment and turns north.
+Rook agrees to follow his buyer's trail through the Underways and gives Caelan the one honest warning in their bargain. Their cooperation has explicit terms across separate roads. Caelan keeps the fragment and turns north.
 
 ### Trust
 
@@ -135,7 +136,10 @@ All three endings award the same Wayfire. The choice expresses duty and relation
 
 - Rook leaves with a complete nine mark copy only when Caelan permits it. Otherwise he has a thin scrap showing the northern mark and two blurred roads.
 - Caelan always keeps the real World Nail fragment.
+- The Map Arch must show Rook physically returning the real fragment before any choice can open, copy, sense, or memorise its map.
 - Ordan's survival and custody depend on the bridge choice.
+- Mara and Brann remain absent between the wounded causeway and the quiet arch if Mara escorts him to Harrowfen. Neither may appear on those intervening routes.
+- Ordan's satchel is recovered on every wounded route, but only Rook's splint route lets Caelan read the dispatch early.
 - Sacrificing gear at the anchor removes part of the documentary case against the Crown.
 - Allowing a full wax copy gives Rook more accurate knowledge and creates a debt.
 - Mara remembers Caelan's stated rule about law, any honesty Oath, and any kiss.
@@ -155,6 +159,13 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - every Chapter Four scene names its artwork explicitly;
 - no Chapter Four scene falls back to artwork from Chapters One, Two, or Three;
 - all three Chapter Four image files exist and are used.
+- every route explicitly recovers the real fragment before the map choice;
+- every wounded route preserves Ordan's satchel while keeping the early reading advantage unique;
+- Mara and Brann stay absent from the snow, route, and first disguise scenes when sent back;
+- Ordan's presence in the Crown fight and ending follows the rescue choice;
+- Rook's bargain grants one warning rather than a repeating service;
+- relationship effects do not create attraction without an explicit player choice;
+- the final theatre uses one reed and one repeated visible scene.
 
 ## Chapter artwork
 

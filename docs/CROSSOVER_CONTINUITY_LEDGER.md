@@ -8,7 +8,7 @@ This ledger is the canonical route check for every playable chapter. Update it b
 2. Rook Chapter Two follows his flight through the King's Road night market.
 3. Caelan Chapter Four and Rook Chapter Three show the same Mileless Bridge crisis from different viewpoints.
 4. At the final stable arch, Caelan takes the real fragment north toward Dragonspine. Rook takes his copied route down into the Underways.
-5. Caelan Chapters Five through Seven continue through Dragonspine and the Ember Steppe. Rook is not physically present.
+5. Caelan Chapters Five through Eight continue through Dragonspine, the Ember Steppe, and the Black Gate. Rook is not physically present.
 6. Rook continues through the Underways, Brassreach, Serekh, the Unsea, and the Luminous Court.
 7. Rook first meets Ilyra in Serekh. They meet again in the Unsea.
 8. Caelan's changed sunrise reaches Rook later in his series and alters his approach to the Luminous Court. It does not launch Rook's story.
@@ -33,7 +33,7 @@ This ledger is the canonical route check for every playable chapter. Update it b
 
 ### Caelan
 
-Caelan keeps the real Distance fragment after the Mileless Bridge, reaches Dragonspine, becomes the bearer of Vaor's ember through freedom, force, or pact, earns or refuses steppe and Crown forces, and reaches the Black Gate. Rook's departure cannot remove any of these decisions.
+Caelan keeps the real Distance fragment after the Mileless Bridge, reaches Dragonspine, becomes the bearer of Vaor's ember through freedom, force, or pact, earns or refuses steppe and Crown forces, defends the Black Gate through one of three strategies, and controls how Vexa's embassy is first heard. Rook's departure cannot remove any of these decisions.
 
 ### Rook
 
@@ -48,7 +48,7 @@ Ilyra meets Caelan on the Ember Steppe while tracing the ancestor storm, then le
 `scripts/continuity-contract.mjs` is the machine readable version of this ledger. The full game graph check now protects:
 
 1. Every implemented chapter entry, ending, and next chapter handoff.
-2. The required plot terms carried through the Mileless split, Dragonspine, the Ember Steppe, and the Black Gate.
+2. The required plot terms carried through the Mileless split, Dragonspine, the Ember Steppe, the Black Gate, and the first embassy.
 3. Approved visiting heroes and legacy only heroes for each chapter.
 4. The first named introduction of every visiting playable hero.
 5. The three canonical world routes.

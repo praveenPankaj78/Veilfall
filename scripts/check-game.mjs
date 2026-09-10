@@ -80,6 +80,17 @@ vm.runInNewContext(chapterSevenCompiled, {
   console,
 }, { filename: 'chapter-seven.js' });
 
+const chapterEightSource = await readFile('app/chapter-eight.ts', 'utf8');
+const chapterEightCompiled = ts.transpileModule(chapterEightSource, {
+  compilerOptions,
+}).outputText;
+const chapterEightExports = {};
+vm.runInNewContext(chapterEightCompiled, {
+  exports: chapterEightExports,
+  module: { exports: chapterEightExports },
+  console,
+}, { filename: 'chapter-eight.js' });
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -110,6 +121,7 @@ const context = {
     if (specifier === './chapter-five') return chapterFiveExports;
     if (specifier === './chapter-six') return chapterSixExports;
     if (specifier === './chapter-seven') return chapterSevenExports;
+    if (specifier === './chapter-eight') return chapterEightExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -117,6 +129,7 @@ vm.runInNewContext(compiled, context, { filename: 'game-data.js' });
 
 const {
   canChoose,
+  isChoiceVisible,
   initialState,
   nodeOrder,
   nodes,
@@ -134,7 +147,7 @@ const {
 
 const failures = [];
 
-const postBridgeSources = [chapterFiveSource, chapterSixSource, chapterSevenSource];
+const postBridgeSources = [chapterFiveSource, chapterSixSource, chapterSevenSource, chapterEightSource];
 const activeRookAction = /\bRook (?:walks|waits|follows|looks|points|returns|offers|asks|says|carries|pulls|uses|takes|finds|helps|stands|runs|rides|scouts)\b/i;
 for (const [index, chapterSource] of postBridgeSources.entries()) {
   if (activeRookAction.test(chapterSource)) {
@@ -143,6 +156,9 @@ for (const [index, chapterSource] of postBridgeSources.entries()) {
 }
 if (/\bRook\b/i.test(chapterSevenSource)) {
   failures.push('Chapter Seven places Rook and Ilyra together before their planned Serekh meeting');
+}
+if (/\b(?:Rook|Ilyra)\b/i.test(chapterEightSource)) {
+  failures.push('Chapter Eight places an off route playable hero at the Black Gate');
 }
 for (const node of Object.values(nodes)) {
   for (const choice of node.choices) {
@@ -174,6 +190,11 @@ const chapterSevenArtAssets = {
   redwind: 'public/art/red-wind-pursuit.png',
   saltbattle: 'public/art/salt-basin-battle.png',
   marshal: 'public/art/marshal-field-confrontation.png',
+};
+const chapterEightArtAssets = {
+  blackgate: 'public/art/black-gate-fortress-ring.png',
+  futureless: 'public/art/futureless-fort-breach.png',
+  embassy: 'public/art/first-devil-embassy.png',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -249,6 +270,27 @@ for (const [art, asset] of Object.entries(chapterSevenArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Seven artwork is missing: ${asset}`);
+  }
+}
+const earlierThanEightArt = new Set([
+  ...earlierThanSevenArt,
+  ...Object.keys(chapterSevenArtAssets),
+]);
+const chapterEightArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c8-')) continue;
+  if (!node.art) failures.push(`Chapter Eight node has no explicit art: ${id}`);
+  if (earlierThanEightArt.has(node.art)) {
+    failures.push(`Chapter Eight node reuses earlier chapter art: ${id} uses ${node.art}`);
+  }
+  if (node.art) chapterEightArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterEightArtAssets)) {
+  if (!chapterEightArtUsed.has(art)) failures.push(`Chapter Eight never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Eight artwork is missing: ${asset}`);
   }
 }
 
@@ -529,6 +571,30 @@ const chapterSevenBase = {
     wayfire: 13,
   },
 };
+const chapterEightKnownTerms = Object.keys(statLabels);
+const chapterEightKnownStoryTerms = [
+  ...chapterSevenKnownStoryTerms,
+  'Crown March',
+  'dead command',
+  'Marshal Teren Voss',
+];
+const chapterEightBase = {
+  ...initialState,
+  nodeId: 'c8-gate-ring',
+  chapter: 8,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5, 6, 7],
+  flags: ['c5-freed-vaor', 'c6-red-moot-alliance', 'c7-gained-full-army'],
+  stats: {
+    ...initialState.stats,
+    health: 7,
+    resolve: 7,
+    command: 5,
+    oathfire: 5,
+    medicine: 1,
+    wayfire: 15,
+  },
+};
 
 const chapterBaseStates = {
   1: initialState,
@@ -538,10 +604,11 @@ const chapterBaseStates = {
   5: chapterFiveBase,
   6: chapterSixBase,
   7: chapterSevenBase,
+  8: chapterEightBase,
 };
 
 function nodeIsInChapter(nodeId, chapter) {
-  if (chapter === 1) return !/^c[2-7]-/.test(nodeId);
+  if (chapter === 1) return !/^c[2-8]-/.test(nodeId);
   return nodeId.startsWith(`c${chapter}-`);
 }
 
@@ -680,11 +747,11 @@ const storyTermRules = {
   },
   Vaor: {
     use: /\bVaor\b/i,
-    introduction: /Vaor is an ancient dragon buried alive beside the fire Nail/i,
+    introduction: /Vaor is an ancient dragon imprisoned beside the fire Nail/i,
   },
   Orivane: {
     use: /\bOrivane\b/i,
-    introduction: /Orivane (?:gave|gives) her living heart to create the Concord/i,
+    introduction: /Orivane (?:willingly )?(?:gave|gives) her living heart to create the Concord/i,
   },
   'Kharad Vey': {
     use: /\bKharad Vey\b/i,
@@ -716,7 +783,7 @@ const storyTermRules = {
   },
   Unsea: {
     use: /\bUnsea\b/i,
-    introduction: /Unsea is a realm beneath ordinary reality/i,
+    introduction: /calls the hidden current beneath erased roads the Unsea/i,
   },
   'Crown March': {
     use: /\bCrown March\b/i,
@@ -730,10 +797,24 @@ const storyTermRules = {
     use: /\bMarshal Teren Voss\b/i,
     introduction: /Marshal Teren Voss rides beneath a white truce cloth/i,
   },
+  Futureless: {
+    use: /\bFutureless\b/i,
+    introduction: /call them the Futureless/i,
+  },
+  'Ash Compact': {
+    use: /\bAsh Compact\b/i,
+    introduction: /Ash Compact is one faction/i,
+  },
+  'Vexa Ash': {
+    use: /\bVexa Ash\b/i,
+    introduction: /“Vexa Ash,” she says/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c7-')
-    ? chapterSevenBase
+  const sampleState = id.startsWith('c8-')
+    ? chapterEightBase
+    : id.startsWith('c7-')
+      ? chapterSevenBase
     : id.startsWith('c6-')
       ? chapterSixBase
       : id.startsWith('c5-')
@@ -791,9 +872,9 @@ for (const [id, node] of Object.entries(nodes)) {
 }
 
 const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3, 4, 5, 6, 7]) {
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
-    ? !/^c[234567]-/.test(id)
+    ? !/^c[2345678]-/.test(id)
     : id.startsWith(`c${chapter}-`));
   const sampleState = chapter === 1
     ? initialState
@@ -807,7 +888,9 @@ for (const chapter of [1, 2, 3, 4, 5, 6, 7]) {
             ? chapterFiveBase
             : chapter === 6
               ? chapterSixBase
-              : chapterSevenBase;
+              : chapter === 7
+                ? chapterSevenBase
+                : chapterEightBase;
   const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
   if (closeNodes.length / chapterNodes.length < 0.6) {
     failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
@@ -1048,7 +1131,7 @@ const campJournal = knownTruths({
   ...chapterFiveBase,
   nodeId: 'c5-royal-camp',
 });
-if (!campJournal.some((truth) => /Vaor is an ancient living dragon/i.test(truth))) {
+if (!campJournal.some((truth) => /Vaor was imprisoned beneath memory glass a century ago/i.test(truth))) {
   failures.push('The Chapter Five journal does not record Sorin’s Vaor reveal after the shelter');
 }
 const heartMemoryJournal = knownTruths({
@@ -1337,8 +1420,8 @@ const chapterFourNailExplanation = [
   ...nodes['c4-nine-marks'].body(chapterFourBase),
 ].join(' ');
 if (!/fragment belongs to the Nail of Distance/i.test(chapterFourNailExplanation)
-  || !/one of nine anchors/i.test(chapterFourNailExplanation)
-  || !/Bellweather and this bridge held broken pieces of it/i.test(chapterFourNailExplanation)
+  || !/There are nine World Nails/i.test(chapterFourNailExplanation)
+  || !/Bellweather and the Mileless Bridge used broken pieces/i.test(chapterFourNailExplanation)
   || !/Dragonspine guards another Nail/i.test(chapterFourNailExplanation)
   || /Bellweather was only one of nine Nails/i.test(chapterFourNailExplanation)) {
   failures.push('Chapter Four does not clearly distinguish the Nail of Distance, its broken pieces, and the other World Nails');
@@ -1346,6 +1429,42 @@ if (!/fragment belongs to the Nail of Distance/i.test(chapterFourNailExplanation
 const chapterFourCollapse = renderedBody('c4-collapse', chapterFourBase);
 if (!/ignore Ordan’s order to take everyone alive/i.test(chapterFourCollapse)) {
   failures.push('The Bell Arch collapse does not explicitly show Crown soldiers disobeying Ordan');
+}
+const openingCollapsePayoffs = [
+  ['c4-group-secured', /guide rope you secured keeps the group together/i],
+  ['c4-fast-pursuit', /early leap placed you close to the Bell Arch/i],
+  ['c4-harrowfen-held', /road you anchored to Harrowfen stays behind the group/i],
+];
+for (const [flag, expected] of openingCollapsePayoffs) {
+  const payoff = renderedBody('c4-collapse', { ...chapterFourBase, flags: [flag] });
+  if (!expected.test(payoff)) failures.push(`Chapter Four opening choice ${flag} has no later callback`);
+}
+const woundedChoices = nodes['c4-wounded'].choices;
+for (const choice of woundedChoices) {
+  if (!choice.addFlags?.includes('c4-found-dispatch')) {
+    failures.push(`Chapter Four wounded choice ${choice.id} loses Ordan’s satchel`);
+  }
+}
+const earlyDispatchChoices = woundedChoices.filter((choice) => choice.addFlags?.includes('c4-read-dispatch-early'));
+if (earlyDispatchChoices.length !== 1 || earlyDispatchChoices[0].id !== 'c4-let-rook-splint-brann') {
+  failures.push('Chapter Four no longer keeps early access to Ordan’s dispatch unique to Rook’s splint route');
+}
+const earlyDispatchOpening = renderedBody('c4-duty', { ...chapterFourBase, flags: ['c4-read-dispatch-early'] });
+if (!/reopen the royal dispatch you recovered while Rook treated Brann/i.test(earlyDispatchOpening)) {
+  failures.push('Chapter Four does not remember that Caelan read Ordan’s dispatch early');
+}
+for (const choice of nodes['c4-nine-marks'].choices) {
+  if (!choice.addFlags?.includes('c4-fragment-recovered')) {
+    failures.push(`Chapter Four map choice ${choice.id} does not record recovery of the real fragment`);
+  }
+}
+const searchedFragmentHandoff = renderedBody('c4-nine-marks', { ...chapterFourBase, flags: ['c4-searched-rook'] });
+const bargainedFragmentHandoff = renderedBody('c4-nine-marks', { ...chapterFourBase, flags: ['c4-route-bargain'] });
+const heardFragmentHandoff = renderedBody('c4-nine-marks', { ...chapterFourBase, flags: ['c4-heard-rook-out'] });
+if (!/take the iron into your own hand/i.test(searchedFragmentHandoff)
+  || !/places it on the stone/i.test(bargainedFragmentHandoff)
+  || !/Then he lets go/i.test(heardFragmentHandoff)) {
+  failures.push('Chapter Four does not explicitly return the real fragment on every Rook route');
 }
 const bridgeRoutePayoffs = [
   ['c4-snow-route', /upper squad.*last crossbow team/i],
@@ -1382,16 +1501,54 @@ if (!/disguise will work only at a distance/i.test(damagedDisguise)
   failures.push('Rook’s first performance does not remember his cost or depend on Caelan’s military knowledge');
 }
 const theatreExplanation = renderedBody('c4-theatre-plan', chapterFourBase);
-if (!/Bridge repeats reflections across neighbouring spans/i.test(theatreExplanation)
-  || !/one disguised figure/i.test(theatreExplanation)
-  || !/reflection onto three arches/i.test(theatreExplanation)) {
+if (!/one small mirrored curtain/i.test(theatreExplanation)
+  || !/single voice reed/i.test(theatreExplanation)
+  || !/stage one clear lie/i.test(theatreExplanation)
+  || !/repeat that same scene in three places/i.test(theatreExplanation)
+  || /voice reeds/i.test(theatreExplanation)) {
   failures.push('Rook’s travelling theatre still creates three captains without a visible bridge mechanism');
 }
 const quietArchChoiceIds = new Set(nodes['c4-mara'].choices.map((choice) => choice.id));
 if (!quietArchChoiceIds.has('c4-hear-lysara-private-risk')
+  || !quietArchChoiceIds.has('c4-name-lysara-personal')
   || !quietArchChoiceIds.has('c4-keep-quiet-arch-platonic')
   || !quietArchChoiceIds.has('c4-return-to-duty')) {
   failures.push('The Chapter Four quiet arch still forces a private Mara scene');
+}
+const lysaraTruthChoice = nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-hear-lysara-private-risk');
+const lysaraInterestChoice = nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-name-lysara-personal');
+const lysaraTruthEffects = relationshipChanges(lysaraTruthChoice);
+const lysaraInterestEffects = relationshipChanges(lysaraInterestChoice);
+if (!/promise not to ask her to soften the truth/i.test(lysaraTruthChoice?.label ?? '')
+  || (lysaraTruthEffects.lysara?.attraction ?? 0) !== 0
+  || lysaraTruthEffects.lysara?.intent) {
+  failures.push('Lysara’s private truth choice still grants unchosen attraction or an unselected promise');
+}
+if ((lysaraInterestEffects.lysara?.attraction ?? 0) <= 0
+  || lysaraInterestEffects.lysara?.intent !== 'exploring') {
+  failures.push('Chapter Four has no explicit player choice for personal interest in Lysara');
+}
+const maraAbsentState = { ...chapterFourBase, flags: ['c4-mara-escorted-brann', 'c4-snow-route'] };
+const maraAbsentCrossing = [
+  renderedBody('c4-three-spans', maraAbsentState),
+  renderedBody('c4-snow-span', maraAbsentState),
+  renderedBody('c4-stage-turn', maraAbsentState),
+].join(' ');
+if (/Mara sets one hand|Mara presses close|Mara stares at Rook/i.test(maraAbsentCrossing)
+  || !/Lysara tightens the green thread/i.test(maraAbsentCrossing)
+  || !/One Harrowfen guard misses the rope/i.test(maraAbsentCrossing)) {
+  failures.push('Chapter Four places Mara or Brann back on the bridge before Mara returns from Harrowfen');
+}
+const maraReturn = renderedBody('c4-mara', maraAbsentState);
+if (!/Mara returns along Lysara’s guide rope.*Brann is safe in Harrowfen/is.test(maraReturn)) {
+  failures.push('Chapter Four does not visibly return Mara after she escorts Brann to Harrowfen');
+}
+const capturedOrdanFight = renderedBody('c4-soldiers', { ...chapterFourBase, flags: ['c4-captured-ordan'] });
+const absentOrdanFight = renderedBody('c4-soldiers', { ...chapterFourBase, flags: ['c4-ordan-lower-road'] });
+if (!/bound Ordan/i.test(capturedOrdanFight)
+  || /bound Ordan/i.test(absentOrdanFight)
+  || !/every witness/i.test(absentOrdanFight)) {
+  failures.push('Chapter Four Crown fight does not remember whether Ordan is a prisoner');
 }
 const chapterFourEndIds = ['c4-ending-arrest', 'c4-ending-bargain', 'c4-ending-trust'];
 for (const endingId of chapterFourEndIds) {
@@ -1414,10 +1571,33 @@ const arrestEnding = renderedBody('c4-ending-arrest', {
   ...chapterFourBase,
   flags: ['c4-rook-full-copy'],
 });
-if (!/cuff now hangs from his own wrist like a bracelet/i.test(arrestEnding)
+if (!/cuff that held his wrist locked around a bridge chain/i.test(arrestEnding)
+  || !/His wrist is bare/i.test(arrestEnding)
   || !/Underways/i.test(arrestEnding)
-  || /around your wrist/i.test(arrestEnding)) {
+  || /around your wrist|like a bracelet/i.test(arrestEnding)) {
   failures.push('The Chapter Four arrest ending places the cuff incorrectly or erases the arrest choice');
+}
+const capturedOrdanTrustEnding = renderedBody('c4-ending-trust', {
+  ...chapterFourBase,
+  flags: ['c4-captured-ordan', 'c4-rook-trusted'],
+});
+const lostOrdanTrustEnding = renderedBody('c4-ending-trust', {
+  ...chapterFourBase,
+  flags: ['c4-ordan-lower-road', 'c4-rook-trusted'],
+});
+if (!/bound Ordan/i.test(capturedOrdanTrustEnding)
+  || /bound Ordan|the prisoner/i.test(lostOrdanTrustEnding)
+  || !/Ordan is already gone on the lower road/i.test(lostOrdanTrustEnding)) {
+  failures.push('The Chapter Four trust ending does not remember Ordan’s route');
+}
+const rookBargainChoice = nodes['c4-duty'].choices.find((choice) => choice.id === 'c4-bargain-with-rook');
+if (!/one honest warning/i.test(rookBargainChoice?.advantage ?? '')
+  || !/one honest warning/i.test(rookBargainChoice?.result ?? '')
+  || /per day|daily warning/i.test(`${rookBargainChoice?.advantage ?? ''} ${rookBargainChoice?.result ?? ''}`)) {
+  failures.push('Rook’s Chapter Four bargain still promises more than one honest warning');
+}
+if (/paid Ordan|payment below/i.test(chapterFourSource + chapterFiveSource)) {
+  failures.push('Chapter Four or Five still claims Rook’s buyer financed Ordan without evidence');
 }
 
 const chapterFiveRookImports = [
@@ -1490,8 +1670,8 @@ const memoryGlassExplanation = [
   nodes['c5-memory-wall'].lesson?.body ?? '',
   ...nodes['c5-memory-wall'].body(chapterFiveBase),
 ].join(' ');
-if (!/recordings of events he truly lived/i.test(memoryGlassExplanation)
-  || !/not other timelines or copies/i.test(memoryGlassExplanation)) {
+if (!/small scene moves without sound/i.test(memoryGlassExplanation)
+  || !/Vaor’s own memories.*bars of his prison/i.test(memoryGlassExplanation)) {
   failures.push('Chapter Five does not plainly distinguish memory glass from alternate timelines');
 }
 const chapterFiveOpening = [
@@ -1501,6 +1681,7 @@ const chapterFiveOpening = [
 const coldCrossing = nodes['c5-north-road'].choices.find((choice) => choice.id === 'c5-cross-in-shadow');
 if (/extract its ember/i.test(nodes['c5-north-road'].objective)
   || !/black glass.*steals enough heat/i.test(chapterFiveOpening)
+  || !/shallow cold burn.*not a loss of Health/i.test(chapterFiveOpening)
   || !/glass chilled cloth/i.test(coldCrossing?.label ?? '')) {
   failures.push('Chapter Five either names the ember too early or lets darkness hide body heat from cold fire');
 }
@@ -1511,8 +1692,13 @@ if (/Vaor|survey force|soldiers died|survivors carried/i.test(sorinRescue)
   failures.push('Sorin still delivers the Dragonspine history dump while trapped beneath the glass');
 }
 const royalCamp = renderedBody('c5-royal-camp', chapterFiveBase);
+const decodedRoyalCamp = renderedBody('c5-royal-camp', {
+  ...chapterFiveBase,
+  flags: ['c5-decoded-parting-clue'],
+});
 if (!/living ember, a piece of Vaor’s own fire/i.test(royalCamp)
-  || !/paid for the Mileless theft was connected to this camp.*already moved east/i.test(royalCamp)) {
+  || /buyer knew this camp/i.test(royalCamp)
+  || !/buyer knew this camp.*moved east/i.test(decodedRoyalCamp)) {
   failures.push('The royal camp does not introduce the ember plainly or continue the buyer thread');
 }
 const ashTunnel = renderedBody('c5-ash-tunnel', chapterFiveBase);
@@ -1522,8 +1708,8 @@ if (!/four sharp notes.*old keeper signal for a collapse/i.test(ashTunnel)) {
 const vaorMeeting = renderedBody('c5-vaor-wakes', chapterFiveBase);
 if (!/broken cage is the fire Nail/i.test(vaorMeeting)
   || !/warm light inside Vaor is his living ember/i.test(vaorMeeting)
-  || !/fragment.*belongs to the Nail of Distance/i.test(vaorMeeting)
-  || !/same outer lock/i.test(vaorMeeting)
+  || !/Distance fragment fits the lock on the fire Nail/i.test(vaorMeeting)
+  || !/does not make the fragment part of this Nail/i.test(vaorMeeting)
   || /belongs to its outer ring/i.test(vaorMeeting)) {
   failures.push('Vaor’s meeting does not distinguish the Distance fragment, fire Nail, and living ember');
 }
@@ -1533,15 +1719,58 @@ if (!/mirrored coin/i.test(mirrorLockChoice?.result ?? '')
   || /missing boot/i.test(chapterFiveSource)) {
   failures.push('The parting mirror does not visibly reveal the lock and get consumed');
 }
+const sealChoice = nodes['c5-royal-camp'].choices.find((choice) => choice.id === 'c5-use-command-seal');
+const falseEmberRouteChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-stage-reflected-ember');
+const mapWaxChoice = nodes['c5-heart-memory'].choices.find((choice) => choice.id === 'c5-copy-proof-into-map-wax');
+const vaorClawChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-free-claw-against-crown');
+if (isChoiceVisible(sealChoice, chapterFiveBase)
+  || !isChoiceVisible(sealChoice, { ...chapterFiveBase, flags: ['c5-decoded-parting-clue'] })) {
+  failures.push('The commander seal appears without decoding Rook’s parting clue');
+}
+if (isChoiceVisible(mirrorLockChoice, { ...chapterFiveBase, flags: ['c4-rook-trusted'] })
+  || !isChoiceVisible(mirrorLockChoice, { ...chapterFiveBase, flags: ['c4-rook-arrested'] })
+  || !isChoiceVisible(mirrorLockChoice, { ...chapterFiveBase, flags: ['c4-rook-bargain'] })) {
+  failures.push('Vaor’s lock does not preserve which Chapter Four routes carry a mirrored coin');
+}
+if (isChoiceVisible(falseEmberRouteChoice, chapterFiveBase)
+  || !isChoiceVisible(falseEmberRouteChoice, { ...chapterFiveBase, flags: ['c5-spent-parting-coin'] })) {
+  failures.push('The false ember appears before the mirrored coin breaks');
+}
+if (isChoiceVisible(mapWaxChoice, { ...chapterFiveBase, flags: ['c4-rook-bargain'] })
+  || !isChoiceVisible(mapWaxChoice, { ...chapterFiveBase, flags: ['c4-rook-trusted'] })) {
+  failures.push('The Orivane memory copy does not preserve the trust route’s map wax');
+}
+if (isChoiceVisible(vaorClawChoice, chapterFiveBase)
+  || !isChoiceVisible(vaorClawChoice, { ...chapterFiveBase, flags: ['c5-freed-vaor-claw'] })) {
+  failures.push('Vaor can strike through a claw the player did not free');
+}
+if (/Romance is not assumed|without entering a romance scene|chosen companion|six convincing thieves/i.test(chapterFiveSource)) {
+  failures.push('Chapter Five still exposes design language or a stale Rook reference to the player');
+}
 const vaorQuestion = renderedBody('c5-vaor-test', chapterFiveBase);
 if (!/people of those who chained me/i.test(vaorQuestion)
+  || !/A century ago.*Two nights ago/is.test(vaorQuestion)
   || /world that buried its price/i.test(vaorQuestion)) {
   failures.push('Vaor asks about the Concord’s hidden price before showing it');
 }
 const haleAssault = renderedBody('c5-crown-assault', chapterFiveBase);
-if (!/world to survive long enough to condemn me/i.test(haleAssault)
+if (!/cold fire leaves these mountains.*next winter kills three provinces/i.test(haleAssault)
+  || !/world survive long enough to condemn me/i.test(haleAssault)
   || !/Stopping the drill comes first/i.test(haleAssault)) {
   failures.push('Commander Hale still lacks a distinct motive or a direct response from Caelan');
+}
+const haleArrivalCases = [
+  [['c5-crown-lost-trail'], /only six enter behind him/i],
+  [['c5-crown-saw-flare'], /flare showed him exactly which grave door/i],
+  [['c5-diverted-patrol-with-seal'], /false order sent the returning patrol downhill/i],
+  [['c5-silenced-archers'], /denied Hale a warning/i],
+  [['c5-trapped-drill-crew'], /smaller cutting frame.*Ash grinds inside its gears/i],
+  [['c5-sorin-revealed-to-crown'], /keeper warning told Hale which tunnel/i],
+  [['c5-slow-shadow-crossing'], /slow first crossing gave the returning patrol time/i],
+];
+for (const [flags, expected] of haleArrivalCases) {
+  const arrival = renderedBody('c5-crown-assault', { ...chapterFiveBase, flags });
+  if (!expected.test(arrival)) failures.push(`Hale’s arrival forgets Chapter Five route ${flags.join(', ')}`);
 }
 const haleOrderChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-turn-hale-soldiers');
 const falseEmberChoice = nodes['c5-crown-assault'].choices.find((choice) => choice.id === 'c5-stage-reflected-ember');
@@ -1564,14 +1793,15 @@ for (const [choiceId, expected] of assaultResolutions) {
 }
 const heartMemory = renderedBody('c5-heart-memory', chapterFiveBase);
 if (!/drill stopped and Hale forced behind/i.test(heartMemory)
-  || !/one village existing in two forming histories/i.test(heartMemory)
-  || !/families are already awake/i.test(heartMemory)
-  || !/rulers knew that some forming histories already held living people/i.test(heartMemory)
+  || !/two living versions of the same village/i.test(heartMemory)
+  || !/families are awake/i.test(heartMemory)
+  || !/rulers knew both villages already held living people/i.test(heartMemory)
   || /Children who might have been born|Towns that might have grown/i.test(heartMemory)) {
   failures.push('Orivane’s memory remains abstract or begins before the assault is contained');
 }
-if (!/Sorin points out a gallery release/i.test(heartMemory)) {
-  failures.push('Sorin does not visibly establish the emergency gallery release before the collapse');
+const graveCollapse = renderedBody('c5-grave-collapse', chapterFiveBase);
+if (!/points to a red release beside the oldest shelf/i.test(graveCollapse)) {
+  failures.push('Sorin does not visibly establish the emergency gallery release before the collapse choice');
 }
 const maraAfterBridgeKiss = renderedBody('c5-mara-burns', {
   ...chapterFiveBase,
@@ -1581,13 +1811,43 @@ if (!/bridge returns in a flash.*her mouth on yours/i.test(maraAfterBridgeKiss))
   failures.push('Mara’s Chapter Five scene forgets the Chapter Four kiss');
 }
 const graveEntryChoice = nodes['c5-grave-mouth'].choices[0];
+const memoryChoice = nodes['c5-memory-wall'].choices[0];
 const lysaraCareState = { ...chapterFiveBase, flags: ['c5-chose-lysara-care'] };
 const maraCareState = { ...chapterFiveBase, flags: ['c5-chose-mara-care'] };
 const professionalCareState = { ...chapterFiveBase, flags: ['c5-chose-sorin-care'] };
-if (resolveNext(graveEntryChoice, lysaraCareState) !== 'c5-lysara-burns'
-  || resolveNext(graveEntryChoice, maraCareState) !== 'c5-mara-burns'
-  || resolveNext(graveEntryChoice, professionalCareState) !== 'c5-sorin-care') {
+if (resolveNext(graveEntryChoice, lysaraCareState) !== 'c5-memory-wall'
+  || resolveNext(memoryChoice, lysaraCareState) !== 'c5-lysara-burns'
+  || resolveNext(memoryChoice, maraCareState) !== 'c5-mara-burns'
+  || resolveNext(memoryChoice, professionalCareState) !== 'c5-sorin-care') {
   failures.push('Chapter Five does not honour the player’s visible choice of caregiver');
+}
+for (const choice of nodes['c5-memory-wall'].choices) {
+  const next = resolveNext(choice, maraCareState);
+  if (next !== 'c5-mara-burns') failures.push(`${choice.id} skips the caregiver selected in Sorin’s refuge`);
+}
+for (const choice of nodes['c5-mara-burns'].choices) {
+  if (resolveNext(choice, maraCareState) !== 'c5-vaor-wakes') {
+    failures.push(`${choice.id} returns to a memory gallery scene the player already crossed`);
+  }
+}
+const approachPayoffs = [
+  ['c5-stair-formation', /every rope and climbing hook intact/i],
+  ['c5-silenced-archers', /No warning horn follows from the stair/i],
+  ['c5-stair-scorched-thread', /Three burned strands hang from Lysara’s seed/i],
+  ['c5-river-oath-path', /sealed keeper door.*opens directly beside the grave/i],
+  ['c5-river-dark-crossing', /No royal scout follows/i],
+  ['c5-seed-scorched-river', /seed is scorched.*not enough to hide the whole group/i],
+  ['c5-held-ash-beam', /Every companion and evidence pack made it through/i],
+  ['c5-trapped-drill-crew', /buried drill is silent/i],
+  ['c5-sorin-revealed-to-crown', /Hale heard Sorin’s keeper warning/i],
+];
+for (const [flag, expected] of approachPayoffs) {
+  const payoff = renderedBody('c5-grave-mouth', { ...chapterFiveBase, flags: [flag] });
+  if (!expected.test(payoff)) failures.push(`Chapter Five mountain route ${flag} has no later callback`);
+}
+const fullGuidePayoff = renderedBody('c5-three-climbs', { ...chapterFiveBase, flags: ['c5-sorin-full-guide'] });
+if (!/undamaged map case shows the archers.*keeper hatch.*weak beam/i.test(fullGuidePayoff)) {
+  failures.push('Saving Sorin with his full map no longer improves the route briefing');
 }
 const chapterTwoFriendship = nodes['c2-night-watch'].choices.find((choice) => choice.id === 'c2-choose-mara-friendship');
 const friendshipState = nextRelationships(initialState.relationships, chapterTwoFriendship);
@@ -1637,8 +1897,14 @@ if (!/protective glass shell he can break/i.test(pactChoice?.result ?? '')
   failures.push('The pact ending leaves Vaor’s physical captivity unresolved');
 }
 const freedomChoice = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-free-vaor');
-if (!/promises no obedience.*may refuse future help/i.test(freedomChoice?.advantage ?? '')) {
+if (!/controls when it answers.*frightened kingdoms will know you released him/i.test(freedomChoice?.advantage ?? '')) {
   failures.push('Freeing Vaor remains a dominant ending without a clear future risk');
+}
+const savedCompanionChoice = nodes['c5-grave-collapse'].choices.find((choice) => choice.id === 'c5-guard-mara-collapse');
+if (savedCompanionChoice?.addFlags?.includes('c5-saved-mara-from-glass')
+  || !savedCompanionChoice?.addFlags?.includes('c5-saved-chosen-companion')
+  || /chosen companion/i.test(savedCompanionChoice?.label ?? '')) {
+  failures.push('The grave collapse still records Mara when another caregiver may be trapped');
 }
 const emberChoiceBody = renderedBody('c5-ember-choice', chapterFiveBase);
 if (/No option protects every claim/i.test(emberChoiceBody)) {
@@ -1648,6 +1914,10 @@ for (const endingId of ['c5-ending-free', 'c5-ending-force', 'c5-ending-pact']) 
   const ending = [nodes[endingId].objective, ...nodes[endingId].body(chapterFiveBase)].join(' ');
   if (!/moving orc town/i.test(ending) || /Black Gate/.test(ending)) {
     failures.push(`${endingId} does not define Kharad Vey simply before withholding the Gate’s proper name`);
+  }
+  if (!/separate from the damaged Nail left in the mountain/i.test(ending)
+    || /part of the fire Nail/i.test(ending)) {
+    failures.push(`${endingId} confuses Vaor’s living ember with the fire Nail`);
   }
 }
 for (const endingId of ['c5-ending-free', 'c5-ending-force', 'c5-ending-pact']) {
@@ -1671,6 +1941,80 @@ if (!/promised to meet you here, not to obey/i.test(chapterSixArrivalGiven)
   || !/ember you tore from Vaor/i.test(chapterSixArrivalTaken)
   || !/Vaor moves inside your thoughts/i.test(chapterSixArrivalPact)) {
   failures.push('Chapter Six does not preserve all three Vaor outcomes at arrival');
+}
+const maraFriendshipArrival = renderedBody('c6-steppe-road', {
+  ...chapterSixBase,
+  flags: ['c5-freed-vaor', 'c5-mara-friendship'],
+});
+const lysaraFriendshipArrival = renderedBody('c6-steppe-road', {
+  ...chapterSixBase,
+  flags: ['c5-freed-vaor', 'c5-lysara-friendship'],
+});
+if (!/Mara knows you chose friendship.*Lysara still watches/is.test(maraFriendshipArrival)
+  || /Mara and Lysara have both heard/i.test(maraFriendshipArrival)
+  || !/Lysara knows you chose friendship.*Mara still carries/is.test(lysaraFriendshipArrival)
+  || /Mara and Lysara have both heard/i.test(lysaraFriendshipArrival)) {
+  failures.push('Chapter Six merges separate Mara and Lysara friendship outcomes');
+}
+const emberOriginChoices = nodes['c6-ancestor-warning'].choices.filter(
+  (choice) => choice.addFlags?.includes('c6-declared-ember-origin'),
+);
+const emberOriginCases = [
+  ['c5-freed-vaor', 'c6-declare-given-ember', /Vaor gave the ember and kept his freedom/i],
+  ['c5-took-ember-by-force', 'c6-confess-stolen-ember', /admit the theft.*Korran does not forgive/is],
+  ['c5-vaor-pact', 'c6-declare-pact-ember', /two living wills chose the bond/i],
+];
+for (const [routeFlag, expectedId, expectedResult] of emberOriginCases) {
+  const state = { ...chapterSixBase, flags: [routeFlag] };
+  const visible = emberOriginChoices.filter((choice) => isChoiceVisible(choice, state));
+  if (visible.length !== 1
+    || visible[0].id !== expectedId
+    || !expectedResult.test(visible[0].result)) {
+    failures.push(`Chapter Six does not give ${routeFlag} a distinct public ember account`);
+  }
+}
+const stormPactArrival = renderedBody('c6-ancestor-warning', {
+  ...chapterSixBase,
+  flags: ['c5-vaor-pact'],
+});
+if (/became afraid/i.test(stormPactArrival)
+  || !/Something else is speaking with them/i.test(stormPactArrival)) {
+  failures.push('Vaor concludes that the storm feels fear before the player performs the test');
+}
+const stormTrace = renderedBody('c6-storm-trace', chapterSixBase);
+if (!/left by Dragonspine last week.*mother died two winters ago/is.test(stormTrace)) {
+  failures.push('The new scar test does not give the player an understandable chronology');
+}
+const vaorFearChoice = nodes['c6-storm-trace'].choices.find(
+  (choice) => choice.id === 'c6-ask-vaor-hear-fear',
+);
+if (isChoiceVisible(vaorFearChoice, { ...chapterSixBase, flags: ['c5-freed-vaor'] })
+  || isChoiceVisible(vaorFearChoice, { ...chapterSixBase, flags: ['c5-took-ember-by-force'] })
+  || !isChoiceVisible(vaorFearChoice, { ...chapterSixBase, flags: ['c5-vaor-pact'] })) {
+  failures.push('The direct Vaor storm test appears when Vaor is not sharing Caelan’s thoughts');
+}
+const unseaSourceFinding = renderedBody('c6-impossible-memory', {
+  ...chapterSixBase,
+  flags: ['c6-unsea-thread-found'],
+});
+const unseaMemoryFinding = renderedBody('c6-impossible-memory', {
+  ...chapterSixBase,
+  flags: ['c6-korran-memory-test'],
+});
+const unseaFearFinding = renderedBody('c6-impossible-memory', {
+  ...chapterSixBase,
+  flags: ['c6-tested-storm-fear'],
+});
+const unseaRecordFinding = renderedBody('c6-impossible-memory', {
+  ...chapterSixBase,
+  flags: ['c6-compared-living-records'],
+});
+if (!/hidden source.*does not tell you whether/is.test(unseaSourceFinding)
+  || !/perfect copy.*proves depth, not identity/is.test(unseaMemoryFinding)
+  || !/reaction looks like fear.*cannot prove/is.test(unseaFearFinding)
+  || !/feeding the storm new knowledge now/i.test(unseaRecordFinding)
+  || !/does not prove that every face/i.test(nodes['c6-impossible-memory'].lesson?.body ?? '')) {
+  failures.push('Chapter Six grants the same Unsea conclusion regardless of the selected test');
 }
 const ilyraInterestChoice = nodes['c6-ilyra-entry'].choices.find(
   (choice) => choice.id === 'c6-accept-ilyra-interest',
@@ -1702,6 +2046,54 @@ if (ilyraInterestState.ilyra.intent !== 'interested'
   || ilyraInterestState.ilyra.attraction <= unattachedChapterSix.relationships.ilyra.attraction) {
   failures.push('Chapter Six does not record the player’s explicit interest in Ilyra');
 }
+const unattachedIlyraEntry = renderedBody('c6-ilyra-entry', unattachedChapterSix);
+if (/Attraction reaches you|The interest is real|delayed permission/i.test(unattachedIlyraEntry)
+  || !/What you feel about it remains yours to decide/i.test(unattachedIlyraEntry)
+  || !/badge says duty.*people say protection.*reaction says/is.test(unattachedIlyraEntry)) {
+  failures.push('Ilyra’s entrance asserts attraction or treats Threadread as exact mind reading');
+}
+const finalWarChoice = nodes['c6-final-alliance'].choices.find(
+  (choice) => choice.id === 'c6-ask-red-war',
+);
+const finalAllianceChoice = nodes['c6-final-alliance'].choices.find(
+  (choice) => choice.id === 'c6-ask-guarded-alliance',
+);
+const strongMootState = {
+  ...chapterSixBase,
+  flags: ['c5-freed-vaor', 'c6-service-won-moot', 'c6-korran-respect', 'c6-declared-ember-origin'],
+};
+const mixedMootState = {
+  ...chapterSixBase,
+  flags: ['c5-freed-vaor', 'c6-service-won-moot'],
+};
+const concealedTheftState = {
+  ...chapterSixBase,
+  flags: ['c5-took-ember-by-force', 'c6-trial-won-moot'],
+};
+const admittedTheftState = {
+  ...chapterSixBase,
+  flags: ['c5-took-ember-by-force', 'c6-admitted-ember-theft', 'c6-declared-ember-origin', 'c6-trial-won-moot'],
+};
+if (!isChoiceVisible(finalWarChoice, strongMootState)
+  || isChoiceVisible(finalWarChoice, mixedMootState)
+  || !isChoiceVisible(finalAllianceChoice, mixedMootState)
+  || isChoiceVisible(finalAllianceChoice, concealedTheftState)
+  || !isChoiceVisible(finalAllianceChoice, admittedTheftState)) {
+  failures.push('Chapter Six support requests ignore the trust and ember honesty earned before the Moot');
+}
+const warInterestEnding = renderedBody('c6-ending-war', {
+  ...chapterSixBase,
+  flags: ['c6-ilyra-interest-acknowledged'],
+});
+const warBoundaryEnding = renderedBody('c6-ending-war', {
+  ...chapterSixBase,
+  flags: ['c6-refused-ilyra-pressure'],
+});
+if (!/kept politics and desire separate/i.test(warInterestEnding)
+  || !/Evidence without theatre/i.test(warBoundaryEnding)
+  || /curiosity/i.test(warBoundaryEnding)) {
+  failures.push('The Chapter Six war ending forgets how the player answered Ilyra');
+}
 const chapterSixEndingFlags = {
   'c6-ending-war': 'c6-red-moot-war',
   'c6-ending-alliance': 'c6-red-moot-alliance',
@@ -1727,6 +2119,22 @@ for (const [endingId, flag] of Object.entries(chapterSevenEndingFlags)) {
   const finalChoice = nodes['c7-army-future'].choices.find((choice) => choice.next === endingId);
   if (!finalChoice?.addFlags?.includes(flag) || finalChoice.changes?.wayfire !== 2) {
     failures.push(`${endingId} does not record its army outcome with equal Wayfire`);
+  }
+}
+for (const endingId of Object.keys(chapterSevenEndingFlags)) {
+  if (nodes[endingId].nextChapter !== 'c8-gate-ring') {
+    failures.push(`${endingId} does not continue into Chapter Eight`);
+  }
+}
+const chapterEightEndingFlags = {
+  'c8-ending-embassy': 'c8-vexa-entered-publicly',
+  'c8-ending-threshold': 'c8-vexa-held-at-threshold',
+  'c8-ending-witness': 'c8-ansel-spoke-first',
+};
+for (const [endingId, flag] of Object.entries(chapterEightEndingFlags)) {
+  const finalChoice = nodes['c8-embassy-terms'].choices.find((choice) => choice.next === endingId);
+  if (!finalChoice?.addFlags?.includes(flag) || finalChoice.changes?.wayfire !== 2) {
+    failures.push(`${endingId} does not record its embassy outcome with equal Wayfire`);
   }
 }
 const stack = [
@@ -1918,6 +2326,49 @@ const stack = [
     knownTerms: chapterSevenKnownTerms,
     knownStoryTerms: chapterSevenKnownStoryTerms,
   },
+  ...['c7-gained-full-army', 'c7-gained-chosen-company', 'c7-gained-dangerous-reputation'].map((flag) => ({
+    state: { ...chapterEightBase, flags: ['c5-freed-vaor', 'c6-red-moot-alliance', flag] },
+    knownTerms: chapterEightKnownTerms,
+    knownStoryTerms: chapterEightKnownStoryTerms,
+  })),
+  {
+    state: {
+      ...chapterEightBase,
+      relationships: {
+        ...chapterEightBase.relationships,
+        mara: { ...chapterEightBase.relationships.mara, intent: 'committed' },
+      },
+    },
+    knownTerms: chapterEightKnownTerms,
+    knownStoryTerms: chapterEightKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterEightBase,
+      relationships: {
+        ...chapterEightBase.relationships,
+        mara: { ...chapterEightBase.relationships.mara, intent: 'platonic' },
+        lysara: { ...chapterEightBase.relationships.lysara, intent: 'committed' },
+      },
+    },
+    knownTerms: chapterEightKnownTerms,
+    knownStoryTerms: chapterEightKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterEightBase,
+      stats: {
+        ...chapterEightBase.stats,
+        health: 1,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+        medicine: 0,
+      },
+    },
+    knownTerms: chapterEightKnownTerms,
+    knownStoryTerms: chapterEightKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -1929,6 +2380,7 @@ const chapterFourEndings = new Set();
 const chapterFiveEndings = new Set();
 const chapterSixEndings = new Set();
 const chapterSevenEndings = new Set();
+const chapterEightEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -2002,7 +2454,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c7-')) chapterSevenEndings.add(node.id);
+    if (node.id.startsWith('c8-')) chapterEightEndings.add(node.id);
+    else if (node.id.startsWith('c7-')) chapterSevenEndings.add(node.id);
     else if (node.id.startsWith('c6-')) chapterSixEndings.add(node.id);
     else if (node.id.startsWith('c5-')) chapterFiveEndings.add(node.id);
     else if (node.id.startsWith('c4-')) chapterFourEndings.add(node.id);
@@ -2010,6 +2463,9 @@ while (stack.length && visited.size < 100000) {
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
+    if (state.chapterChoices !== 15) {
+      failures.push(`${node.id} reached after ${state.chapterChoices} decisions instead of 15`);
+    }
     if (node.choices.length) failures.push(`Final node has choices: ${node.id}`);
     continue;
   }
@@ -2043,7 +2499,8 @@ if (chapterFourEndings.size !== 3) failures.push(`Expected 3 Chapter Four ending
 if (chapterFiveEndings.size !== 3) failures.push(`Expected 3 Chapter Five endings, found ${chapterFiveEndings.size}`);
 if (chapterSixEndings.size !== 3) failures.push(`Expected 3 Chapter Six endings, found ${chapterSixEndings.size}`);
 if (chapterSevenEndings.size !== 3) failures.push(`Expected 3 Chapter Seven endings, found ${chapterSevenEndings.size}`);
-for (const chapter of [1, 2, 3, 4, 5, 6, 7]) {
+if (chapterEightEndings.size !== 3) failures.push(`Expected 3 Chapter Eight endings, found ${chapterEightEndings.size}`);
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
   if (!deathChapters.has(chapter)) failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
 
@@ -2056,5 +2513,5 @@ if (failures.length) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

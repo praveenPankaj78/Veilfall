@@ -6,14 +6,14 @@ The player leaves the shifting roads and enters a physically clear mountain adve
 
 The chapter answers one main question: what waits at the active fire mark in Dragonspine?
 
-Answer: Vaor, an ancient living dragon, guards proof that Orivane willingly gave her heart to create the Concord. The rulers failed to tell her that some forming histories already contained living people who would be cut away from Edrath.
+Answer: Vaor, an ancient living dragon, guards proof that Orivane willingly gave her heart to create the Concord. The rulers failed to tell her that two versions of the same places already contained living people, and stabilising one world would cut the others away from Edrath.
 
 The next hook is direct: Caelan carries a living ember toward Kharad Vey while the Black Gate begins to open.
 
 ## Imported Chapter Four state
 
 - Arresting Rook sends him into the Underways as a named fugitive after he escapes the cuff. He leaves one marked mirrored coin behind.
-- Bargaining with Rook sends him into the Underways after the buyer's payment trail. His first honest warning remains hidden on a parting coin.
+- Bargaining with Rook sends him into the Underways after the buyer's trail. His honest warning remains hidden on a parting coin.
 - Trusting Rook lets him choose the Underways freely. His silver knot carries one useful northern clue before it is spent.
 - Capturing Ordan leaves him in Harrowfen custody as a living witness.
 - Losing Ordan on the lower road still preserves the dispatch that leads north.
@@ -32,8 +32,8 @@ Rook is not physically present in Dragonspine. Sorin's shelter remembers the exa
 5. Choose the glass stair, frozen river, or ash tunnel.
 6. Survive the chosen route through a distinct physical danger.
 7. Open the grave while cold fire closes around the party.
-8. Follow the player’s earlier choice of Mara, Lysara, or Sorin for burn care and decide how to use the quiet minute.
-9. Cross memory glass without confusing recordings with alternate realities.
+8. Enter the memory gallery and choose how to cross Vaor's recorded life.
+9. Follow the player’s earlier choice of Mara, Lysara, or Sorin for burn care and decide how to use the quiet minute.
 10. Meet Vaor and decide how to begin the negotiation.
 11. Answer why the present world deserves protection.
 12. Stop Commander Hale's attempt to extract the ember.
@@ -82,9 +82,10 @@ The routes rejoin at the grave entrance after one route specific decision. They 
 Rook's bridge choice matters without moving him onto Caelan's route:
 
 - the exact arrest, bargain, or trust state changes the parting clue;
-- decoding the clue reveals a patrol time and seal location;
-- the mirrored coin can test Vaor's lock, but it breaks when used;
-- the blank side of map wax can preserve Orivane's memory, but doing so destroys its route;
+- decoding either clue reveals a patrol time and the commander's seal location;
+- only the arrest and bargain routes leave a mirrored coin that can test Vaor's lock, and the coin breaks when used;
+- only the trust route leaves map wax that can preserve Orivane's memory, and doing so destroys its route;
+- the false ember exists only after the mirrored coin breaks in Vaor's lock;
 - no new Rook action, dialogue, or physical presence occurs in Dragonspine.
 
 Caelan and his current companions execute every Dragonspine plan. A past crossover supplies at most one limited advantage at a time.
@@ -113,7 +114,7 @@ Later Chapter Five crisis and pact text follow the caregiver the player named. A
 
 ### Freedom
 
-Caelan breaks Vaor's chains. Vaor gives an ember willingly and becomes a free, independent power. He promises no obedience, may refuse future aid, and can be treated as an invading threat by frightened kingdoms.
+Caelan breaks Vaor's chains. Vaor gives an ember willingly and becomes a free, independent power. He controls when that ember answers, promises no obedience, and may refuse future aid. His visible escape triggers royal warning horns, and frightened kingdoms can treat him as an invading threat.
 
 ### Force
 
@@ -129,6 +130,7 @@ Every ending grants equal Wayfire. The difference is power, consent, alliance, a
 
 - Caelan is always an ember bearer.
 - The ember was given, taken, or shared through a pact, and that origin must affect its behaviour.
+- Vaor's ember is living dragon fire. It is never described as a piece of the fire Nail.
 - Vaor is a free ally, a pursuing enemy, or a voice inside Caelan.
 - Mara and Lysara each remember every relevant admission, refusal, and kiss.
 - Lysara's seed remains scorched if it diverted the frozen river fire.
@@ -159,3 +161,10 @@ The game check verifies:
 - scenes do not end by repeating that the player must choose;
 - every scene explicitly selects Chapter Five artwork;
 - all three image files exist and no earlier chapter art is reused.
+- the shallow cold burn is introduced before later care scenes use it;
+- route specific tools remain hidden unless the player actually carries them;
+- the command seal requires the decoded clue, the false ember requires the broken coin, and memory wax requires Rook's trust ending;
+- Hale's arrival reflects the player's flare, trail, patrol, and mountain route choices;
+- Vaor's ancient imprisonment and Malrec's recent attempt to bind him again remain distinct;
+- every mountain route receives a later physical or tactical callback;
+- all endings keep Vaor's living ember separate from the fire Nail.

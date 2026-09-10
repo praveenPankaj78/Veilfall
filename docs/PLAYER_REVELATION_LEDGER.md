@@ -62,9 +62,9 @@ Mechanic: Oathfire and a dragon pact, demonstrated before a major vow.
 
 Active question: Will the orc clans help carry the ember?
 
-Answer: They will help only if the future order recognises their living authority.
+Answer: Their support depends on how honestly Caelan treats them. A trusted captain may ask the whole town to approach the Gate. A mixed case earns an escort. Hiding a stolen ember can reduce their help to a safe road.
 
-Next hook: Are the voices in their storms truly dead ancestors?
+Next hook: The storm receives new knowledge, but are any of its voices truly dead ancestors?
 
 Mechanic: Reputation earned through local service.
 

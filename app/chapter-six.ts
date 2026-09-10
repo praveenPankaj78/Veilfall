@@ -6,7 +6,9 @@ function has(state: GameState, flag: string) {
 
 function emberArrival(state: GameState) {
   if (has(state, 'c5-freed-vaor')) {
-    return 'The ember Vaor gave you warms at the sight of the open steppe. High above, a dark wing crosses the clouds. The dragon promised to meet you here, not to obey you, and you feel the difference like space around a drawn sword.';
+    return has(state, 'c5-kingdoms-fear-vaor')
+      ? 'The ember Vaor gave you warms at the sight of the open steppe. High above, a dark wing crosses the clouds. Riders below raise warning banners when they see him. The dragon promised to meet you here, not to obey you, and you feel the difference like space around a drawn sword.'
+      : 'The ember Vaor gave you warms at the sight of the open steppe. High above, a dark wing crosses the clouds. The dragon promised to meet you here, not to obey you, and you feel the difference like space around a drawn sword.';
   }
   if (has(state, 'c5-took-ember-by-force')) {
     return 'The ember you tore from Vaor pulls east beneath your breastplate. A roar rolls out of Dragonspine behind you. It is still far away. Your body does not believe that distance will last.';
@@ -19,7 +21,7 @@ function underwaysParting(state: GameState) {
     return 'Rook is not among the travellers who leave Dragonspine. He escaped your arrest at the Mileless Bridge and entered the Underways. The empty cuff remains part of your case against him, not part of this company.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Rook is following the buyer’s payments through the Underways while you follow the Nail north and east. The bargain remains alive across the distance, but he is not part of your company.';
+    return 'Rook is following his buyer’s trail through the Underways while you follow the Nail north and east. The bargain remains alive across the distance, but he is not part of your company.';
   }
   return 'Rook chose the Underways when you chose Dragonspine. The useful silver knot he left is spent now. Whatever he finds below the world belongs to another road until your paths cross again.';
 }
@@ -31,8 +33,14 @@ function chosenBond(state: GameState) {
   if (has(state, 'c5-admitted-future-with-mara') || has(state, 'c5-kissed-mara')) {
     return 'Mara keeps pace at your shield side. The future you named in Dragonspine has not made the road safer. It has made every danger more personal.';
   }
-  if (has(state, 'c5-mara-friendship') || has(state, 'c5-lysara-friendship')) {
+  if (has(state, 'c5-mara-friendship') && has(state, 'c5-lysara-friendship')) {
     return 'Mara and Lysara have both heard the truth of what you can offer. There is relief in travelling without an unanswered promise between you.';
+  }
+  if (has(state, 'c5-mara-friendship')) {
+    return 'Mara knows you chose friendship, and the honesty has steadied the space between you. Lysara still watches the road without asking what you could not answer in the mountain.';
+  }
+  if (has(state, 'c5-lysara-friendship')) {
+    return 'Lysara knows you chose friendship, and she no longer has to guess what each quiet moment means. Mara still carries the question you left unanswered in the mountain.';
   }
   return 'Mara checks the trail behind. Lysara watches the ember beneath your armour. Neither asks the question you left unanswered in the mountain.';
 }
@@ -44,7 +52,7 @@ function vaorAtStorm(state: GameState) {
   if (has(state, 'c5-took-ember-by-force')) {
     return 'The stolen ember leaps toward the storm. Vaor answers from somewhere behind the mountains, and the fire inside you strains toward his anger.';
   }
-  return 'Vaor hears the voices through you. They speak over one another until his grief pushes against your own. “Some are memories,” he says. “One of them just became afraid.”';
+  return 'Vaor hears the voices through you. They speak over one another until his grief pushes against your own. “Some sound like memories,” he says. “Something else is speaking with them.”';
 }
 
 function relationshipBoundary(state: GameState) {
@@ -59,7 +67,61 @@ function relationshipBoundary(state: GameState) {
   if (lysaraOpen) {
     return 'Lysara meets Ilyra’s measuring look without moving from your side. The witch notices the answer between you and adjusts her approach without insulting either of you by denying it.';
   }
-  return 'Ilyra’s attention pauses on your mouth, then returns to your eyes. The interest is real. So is the calculation behind it.';
+  return 'Ilyra lets her attention pause on your mouth before returning to your eyes. You recognise the invitation she intends you to notice. What you feel about it remains yours to decide.';
+}
+
+function dragonThiefAccusation(state: GameState) {
+  if (has(state, 'c5-freed-vaor')) {
+    return 'Dragon thief is a lie. Vaor gave you the ember and remained free, but the crowd has no reason to know that yet.';
+  }
+  if (has(state, 'c5-took-ember-by-force')) {
+    return 'Dragon thief is the one part you cannot dismiss. You tore the ember from Vaor because you believed the Gate mattered more than his refusal.';
+  }
+  return 'Dragon thief is not the truth. Vaor chose a pact and shares the burden inside you, but the storm has turned that choice into an accusation.';
+}
+
+function lysaraSeedAtStorm(state: GameState) {
+  if (has(state, 'c5-stair-scorched-thread') || has(state, 'c5-seed-scorched-river')) {
+    return 'Lysara drives her scorched seed into the deck. Its remaining green threads spread through the boards and keep them from splitting.';
+  }
+  return 'Lysara drives her glass seed into the deck. Green threads spread through the boards and keep them from splitting.';
+}
+
+function stormTestFinding(state: GameState) {
+  if (has(state, 'c6-unsea-thread-found')) {
+    return 'For one breath, Ilyra’s thread drops through dark water beneath a sky full of doors. Salt returns on the thread. The vision suggests a hidden source, but it does not tell you whether the face in the storm is truly Korran’s mother.';
+  }
+  if (has(state, 'c6-korran-memory-test')) {
+    return 'The voice knows the unfinished cradle, a memory Korran never shared. It may be his mother or a perfect copy of her memories. The answer proves depth, not identity.';
+  }
+  if (has(state, 'c6-tested-storm-fear')) {
+    return 'Vaor brings his fire close without touching the face. It recoils before the heat changes. The reaction looks like fear, though you still cannot prove what felt it.';
+  }
+  return 'Asha’s records show when every old story entered the shrine. The voice then repeats a detail you spoke only minutes ago. Something is feeding the storm new knowledge now.';
+}
+
+function mootSupport(state: GameState) {
+  const respected = has(state, 'c6-korran-respect');
+  const originDeclared = has(state, 'c6-declared-ember-origin');
+  if (respected && originDeclared) {
+    return 'Korran says your conduct has earned enough trust for the Moot to hear any request, including war. Hearing it is not the same as granting it.';
+  }
+  if (has(state, 'c5-took-ember-by-force') && !originDeclared) {
+    return 'You never answered the storm’s charge that you stole the ember. Korran says the Moot will grant a road, but it will not place fighters under a truth you kept hidden.';
+  }
+  return 'The Moot trusts you enough to offer an escort or a safe road. It will not turn the whole wheel town toward war without both a clear account of the ember and Korran’s personal support.';
+}
+
+function mootQuestion(state: GameState) {
+  const respected = has(state, 'c6-korran-respect');
+  const originDeclared = has(state, 'c6-declared-ember-origin');
+  if (respected && originDeclared) {
+    return 'Korran asks the final question. “Do you ask Kharad Vey for war, alliance, or only a road?”';
+  }
+  if (has(state, 'c5-took-ember-by-force') && !originDeclared) {
+    return 'Korran gives the Moot’s limit without hiding it. “We can grant you a road. We will not risk our fighters for a man who would not answer how he took that fire.”';
+  }
+  return 'Korran asks the final question. “Do you ask for a guarded alliance, or only a road?”';
 }
 
 function proofCarried(state: GameState) {
@@ -94,6 +156,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       emberArrival(state),
       chosenBond(state),
       underwaysParting(state),
+      'On the fourth night, the wind kills your small cooking fire. You eat cold grain beside a wheel track and take the first watch because sleep will not come. Somewhere ahead, the Gate is opening. Somewhere behind, Crown riders are still following. The empty grass between them feels less like safety than the space between two closing hands.',
       'Then Kharad Vey rises over the grass. The town is built across twelve wooden platforms, each riding on wheels taller than a gatehouse. Homes, forges, animal pens, and watchtowers move together while thousands of feet and turning axles make the earth tremble.',
       'A wounded orc rider races past and points at the red cloud. “Ancestor storm,” he shouts. “It wears our honoured dead and calls the living into danger.” The city will cross a split in the ground within minutes. If you miss its western lift, you will be trapped outside with those voices.',
       'Mara looks from the racing town to your tired party. “We can reach it. Getting invited aboard may be the difficult part.”',
@@ -153,8 +216,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     body: () => [
       'The western lift hangs three body lengths above the grass. Orc handlers lower two rope loops while the city keeps moving. Before anyone can climb, the left anchor splits. The platform tilts toward a wheel large enough to crush it whole.',
       'A young handler catches the broken rope around his forearm. It lifts him from his feet. His older sister locks both hands around his belt and begins sliding after him.',
-      'The gate captain points a hooked spear at you from above. “Save my people or save your entrance, stranger. You have time for one plan.”',
       'You look once at the rope, once at the turning wheel, and feel the ember tense beneath your armour.',
+      'The gate captain points a hooked spear at you from above. “Save my people or save your entrance, stranger. You have time for one plan.”',
     ],
     choices: [
       {
@@ -326,6 +389,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     body: () => [
       'The herd runs between the city and a crack opening across the steppe. Three young riders keep the cattle together, but the ancestor storm calls with the voices of their parents. One rider turns toward it.',
       'The danger is plain. The voice sounds loving. The ground beneath it is breaking open.',
+      'The lead herder gives three sharp whistles as you ride out. One closes the herd, one turns it left, and one calls the young riders toward the city. You repeat them until she nods.',
       'Korran rides the inside edge and waits for your choice. This is his town, but he gave you the duty. He will not steal it back because the work became frightening.',
     ],
     choices: [
@@ -342,8 +406,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c6-command-herd-funnel',
-        label: 'Use the riders’ whistle calls to funnel herd and children together.',
-        detail: 'Spend 1 Command using signals you learned from the herders.',
+        label: 'Repeat the three whistle calls the lead herder just taught you.',
+        detail: 'Spend 1 Command using the local signals to funnel herd and children together.',
         advantage: 'The whole herd should enter without leaving a rider alone with the voices.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -407,7 +471,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c6-forge-service-complete', 'c6-forge-families-safe'],
-        result: 'You use the deck signals you learned below. The homes empty in one clean line. Dema drops the damaged channel after the last child clears it and saves the brake from below.',
+        result: 'Dema calls each local signal and you carry it across the deck with a captain’s voice. The homes empty in one clean line. She drops the damaged channel after the last child clears it and saves the brake from below.',
         next: 'c6-ancestor-warning',
       },
       {
@@ -505,7 +569,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       vaorAtStorm(state),
       'A woman forms inside the red cloud. Her face is old, scarred, and familiar to half the people around you. Korran goes still. “My mother,” he says.',
       'The storm woman points at the ember in your chest. “Crown bearer. Dragon thief. Servant of the power that cut our families out of the world.”',
-      'People step away from you. You cannot blame them. In Dragonspine you learned that their accusation contains part of the truth. Old rulers did hide lives erased by the Concord. What you do not know is how this dead woman knows you carry the ember today. Korran asks, “What truth do you answer with?”',
+      dragonThiefAccusation(state),
+      'People step away from you. You cannot blame them. In Dragonspine you learned that old rulers hid lives erased by the Concord. What you do not know is how this dead woman knows you carry the ember today.',
+      'Korran keeps one hand on the steering rope. “What truth do you answer with?”',
     ],
     choices: [
       {
@@ -529,12 +595,33 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         next: 'c6-storm-breach',
       },
       {
-        id: 'c6-show-vaor-choice',
-        label: 'Explain exactly how the ember entered you.',
-        detail: 'Expose the most dangerous choice you made in Dragonspine.',
-        advantage: 'The town can judge a willing gift, a theft, or a pact instead of believing the storm’s version.',
-        addFlags: ['c6-declared-ember-origin'],
-        result: 'You tell the town whether the ember was given, taken, or shared. Whatever judgment follows will begin with what truly happened in Dragonspine.',
+        id: 'c6-declare-given-ember',
+        label: 'Tell them Vaor gave you the ember and remained free.',
+        detail: 'Let the town judge a willing gift instead of the storm’s accusation.',
+        advantage: 'Vaor’s shadow and Lysara’s witness support your account, though neither can force the crowd to trust you.',
+        showIfAnyFlags: ['c5-freed-vaor'],
+        addFlags: ['c6-declared-ember-origin', 'c6-declared-willing-ember'],
+        result: 'You name the choice exactly. Vaor gave the ember and kept his freedom. His shadow crosses the cloud as Lysara confirms what she saw. Some people lower their weapons. Others keep watching the dragon.',
+        next: 'c6-storm-breach',
+      },
+      {
+        id: 'c6-confess-stolen-ember',
+        label: 'Admit that you tore the ember from Vaor against his will.',
+        detail: 'Expose the choice that may cost the town’s trust and give Vaor a claim against you.',
+        advantage: 'Korran hears the truth from you and can judge the danger without the storm controlling the story.',
+        showIfAnyFlags: ['c5-took-ember-by-force'],
+        addFlags: ['c6-declared-ember-origin', 'c6-admitted-ember-theft'],
+        result: 'You admit the theft. Anger breaks across the deck. Korran does not forgive you, but he stops the first drawn spear. “He answered,” he says. “Now we judge the whole man, not the lie he could have told.”',
+        next: 'c6-storm-breach',
+      },
+      {
+        id: 'c6-declare-pact-ember',
+        label: 'Tell them Vaor chose a pact and now shares the burden with you.',
+        detail: 'Reveal that the second presence inside you is an ally with his own will.',
+        advantage: 'The ember’s second heartbeat and Lysara’s witness distinguish the pact from possession or theft.',
+        showIfAnyFlags: ['c5-vaor-pact'],
+        addFlags: ['c6-declared-ember-origin', 'c6-declared-pact-ember'],
+        result: 'You explain the pact. At Vaor’s consent, the ember beats once beneath your ribs and then a second time. Lysara confirms that two living wills chose the bond. The crowd remains uneasy, but the word thief loses its hold.',
         next: 'c6-storm-breach',
       },
       {
@@ -545,7 +632,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c6-disciplined-storm-defence'],
-        result: 'Your people form a tight shield ring facing the storm, not the crowd. Mara makes certain everyone notices the difference.',
+        result: '“The storm wants panic more than truth,” you tell Korran. Your people form a tight shield ring facing the cloud, not the crowd. Mara makes certain everyone notices the difference.',
         next: 'c6-storm-breach',
       },
     ],
@@ -565,7 +652,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       has(state, 'c6-learned-wheel-signals')
         ? 'You know the deck signals now. The living crews are waiting for one command they can share.'
         : 'You do not know every wheel signal, but you know what fear does to a line when orders conflict.',
-      'Korran reaches the main steering rope. Mara runs for the swinging platform. Lysara drives her scorched seed into the deck to keep the boards from splitting. Korran looks up at the false faces and shouts, “Which line do I hold?”',
+      'Korran reaches the main steering rope. Mara runs for the swinging platform.',
+      lysaraSeedAtStorm(state),
+      'Korran looks up at the false faces and shouts, “Which line do I hold?”',
     ],
     choices: [
       {
@@ -624,7 +713,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     body: (state) => [
       'Kharad Vey survives the turn. Damage crews run across the decks while the ancestor storm gathers for another strike. Korran brings you to a sheltered platform where three red cords mark the clans that will judge you.',
       '“The black stone you saw is the Black Gate,” he says. “Eight forts once guarded it. The nearest fires have gone dark. Your Crown wants our road, our riders, and now the ember in your chest.”',
-      'His eyes settle on your badge. “We may still help. Not because a dead treaty ordered us. Not because your Regent discovered fear. The Red Moot must know what place we have in the order you are trying to save.”',
+      'His eyes settle on your badge. “We may still help. Not because a dead treaty ordered us. Not because your Regent discovered fear. The Red Moot must know whether our people get a say in the world you are trying to save.”',
       has(state, 'c6-oath-living-authority')
         ? 'The promise around the steering ropes still burns. You already gave the town part of an answer: the dead may witness, but the living decide.'
         : 'You think of every command you have given since Greyhaven. Some protected choice. Some replaced it. Ordan was dangerous partly because he stopped seeing a difference.',
@@ -633,11 +722,11 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-say-crown-owes-restitution',
-        label: 'Say the Crown owes truth, land, and restitution for what its rulers hid.',
+        label: 'Say the Crown owes truth, returned land, and repayment for what its rulers hid.',
         detail: 'Take a public position your own government may call treason.',
         advantage: 'Korran hears that alliance will not require silence about the Concord’s victims.',
         addFlags: ['c6-supports-restitution', 'c6-korran-respect'],
-        result: 'You name truth, land, and restitution. The words may cost your rank if you ever return to Greyhaven. Korran hears that you understand cost is not the same as apology.',
+        result: 'You name the truth, the land taken, and the debt still unpaid. The words may cost your rank if you ever return to Greyhaven. Korran hears that an apology alone will not satisfy you.',
         next: 'c6-ilyra-entry',
       },
       {
@@ -686,17 +775,17 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     body: (state) => [
       '“A useful answer,” a woman says from the stairs. “Whichever part of it you meant.”',
       'Ilyra Fen steps onto the deck as if the moving floor belongs beneath her. She is a half elf in her middle thirties, with bronze skin, long dark auburn hair, and grey green eyes that miss nothing. Black travelling cloth fits close beneath a wine red coat. Glass charms rest against her throat and catch the storm light whenever she breathes.',
-      'Attraction reaches you before caution can object. Then you see the pale threads winding from her fingers toward Korran, the storm, and the ember in your chest. She has been studying all three while letting you study her.',
+      'She knows how the fitted coat, the steady eye contact, and one unhurried breath draw attention. Then you see pale threads winding from her fingers toward Korran, the storm, and the ember in your chest. She has been studying all three while deciding what you will notice first.',
       relationshipBoundary(state),
       'Korran says, “Ilyra is here because she knows why the dead have started shouting. Ilyra is not here because anyone invited her.”',
-      '“Invitations are often delayed permission,” she replies. Her eyes stay on you. “Captain Vey wants to protect his people, expose his Regent, and avoid admitting which of those he would sacrifice first. I need the ember to test the storm. He needs my evidence before the Moot.”',
+      '“No invitation,” she agrees. Her eyes move from your Crown badge to your wounded companions. One pale thread tightens when she names Malrec, and she watches your hand close at your side. “Your badge says duty. Your people say protection. That reaction says you no longer trust your Regent. I need the ember to test the storm. You need my evidence before the Moot.”',
       'She offers her hand. The gesture is elegant, open, and positioned so the entire deck will see whether you accept it.',
     ],
     choices: [
       {
         id: 'c6-name-ilyra-test',
         label: 'Name the pressure behind her public offer before taking her hand.',
-        detail: 'Show Ilyra that attraction and urgency will not make you miss an unstated term.',
+        detail: 'Show Ilyra that beauty and urgency will not make you miss the public pressure behind her offer.',
         advantage: 'She must negotiate openly, and Korran sees that neither of you controls the alliance alone.',
         addFlags: ['c6-named-ilyra-manipulation'],
         result: '“You want the Moot to see me choose your method before I know its cost,” you say. Ilyra’s mouth curves, not quite a smile. “Good. This may be less exhausting than I feared.” She names the test before you take her hand.',
@@ -748,11 +837,11 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'Ilyra chooses the town’s root garden because every plant there grew from seed carried by a living family. She draws a circle in the soil and asks Korran to name his mother aloud. A pale thread rises from his chest toward the storm.',
       '“Threadread shows connection,” she tells you. “Not truth. Grief can connect a man to a lie wearing the correct face.”',
       has(state, 'c6-named-ilyra-manipulation')
-        ? 'She states every step before taking it. Being challenged has made her more exact, not less submissive.'
+        ? 'She states every step before taking it. Being challenged has made her more exact, not quieter.'
         : has(state, 'c6-refused-ilyra-pressure')
           ? 'She does not touch you or the ember. The distance honours the boundary while making her concentration harder.'
           : 'She waits for your spoken permission before bringing the thread near the ember. Knowing what you want is not permission, and she makes the distinction visible.',
-      'Korran’s mother appears above the garden. She knows the lullaby he buried with her. Then she names a scar Caelan received beneath Dragonspine three days after her death.',
+      'Korran’s mother appears above the garden. She knows the lullaby he buried with her. Then she points to the pale burn beneath your breastplate, left by Dragonspine last week. Korran stares at her. “My mother died two winters ago.”',
       'Ilyra’s eyes sharpen. “That should be impossible. Choose what we test next.”',
     ],
     choices: [
@@ -781,6 +870,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         label: 'Ask Vaor whether the voice can feel fear.',
         detail: 'Use the dragon’s response if he is near or bound to the ember.',
         advantage: 'Fear would suggest a present mind rather than an empty recording.',
+        showIfAnyFlags: ['c5-vaor-pact'],
         addFlags: ['c6-tested-storm-fear'],
         result: 'You bring Vaor’s living fire close to the voice without striking it. The ancestor face recoils before the heat changes. Whatever is inside the storm can anticipate harm.',
         next: 'c6-impossible-memory',
@@ -791,7 +881,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         detail: 'Choose slower evidence without exposing anyone’s mind or the ember.',
         advantage: 'The method can separate copied history from knowledge acquired after death.',
         addFlags: ['c6-compared-living-records', 'c6-voice-knew-new-events'],
-        result: 'Asha brings the shrine rolls. The voice knows every written event, then describes a child born after Korran’s mother died. The child’s father confirms the detail in a whisper.',
+        result: 'Asha brings the shrine rolls. The voice knows every written event, then repeats a detail you spoke in the garden minutes ago. It is receiving information now, not merely reciting an old life.',
         next: 'c6-impossible-memory',
       },
     ],
@@ -808,14 +898,14 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     introducesStoryTerms: ['Unsea'],
     lesson: {
       title: 'The Unsea',
-      body: 'The Unsea is a realm beneath ordinary reality where lives and histories cut away from Edrath leave impressions. The storm appears to draw voices through it. The voices may include memories, imitations, and conscious dead people. Caelan does not yet know which is which.',
+      body: 'Ilyra calls the hidden current beneath erased roads the Unsea. Old accounts say lost lives leave impressions there. The test proves this storm receives new knowledge. It does not prove that every face is a conscious dead person or that every voice comes from the same place.',
     },
     body: (state) => [
-      'The pale thread descends beneath the root garden and returns wet with salt. For an instant you see dark water under a sky filled with doors. Each door shows a life that might once have belonged to this world.',
-      'Ilyra releases the spell before the vision can pull you farther. A line of blood reaches her upper lip. She wipes it away with one thumb and studies the red mark as if it belongs to the evidence.',
-      '“The voices are coming through the Unsea,” she says. “It holds the impressions of lives cut away when this world was fixed into one history. Some voices may be copies. Some are learning. At least one was afraid.”',
+      stormTestFinding(state),
+      'Ilyra closes her hand around the thread before the test can pull farther. A line of blood reaches her upper lip. She wipes it away with one thumb and studies the red mark as part of the cost, not proof of success.',
+      '“Old records call the hidden current the Unsea,” she says. “It may carry impressions left by lives cut away from this world. What we proved is smaller and safer: this storm can receive knowledge after the people it resembles have died.”',
       'Korran looks at the face of his mother above the garden. Hope hurts him more visibly than grief did. “Then she may be alive.”',
-      '“Perhaps,” Ilyra says. The word is gentle because it is not generous. “But even your true mother does not gain the right to rule you by surviving somewhere else.”',
+      '“Perhaps,” Ilyra says. “We have not proved it. Even if she is your mother, surviving somewhere else does not give her the right to rule you.”',
       has(state, 'c6-admitted-concord-crime')
         ? 'The crowd remembers that you admitted the old crime before understanding this proof. Their anger remains, but it has stopped looking only at you.'
         : 'The storm begins telling the crowd that you came to erase the voices again. You have one walk to the Moot to decide how much truth you will carry into it.',
@@ -839,7 +929,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         detail: 'Refuse both false comfort and easy dismissal.',
         advantage: 'Ilyra will carry the same precise account before the Red Moot.',
         addFlags: ['c6-precise-unsea-truth', 'c6-ilyra-evidence-alliance'],
-        result: 'You list the proof in plain terms. The voices gain new knowledge. At least one fears harm. Their origin is the Unsea. Nothing yet proves every voice is the person it resembles.',
+        result: 'You list what everyone witnessed. The voice knew a new burn. Your chosen test added one more fact. Nothing yet proves that every face belongs to the dead person it resembles.',
         next: 'c6-red-moot',
       },
       {
@@ -857,7 +947,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         detail: 'Give the witch credit and control over her discovery instead of using her as your expert.',
         advantage: 'The Moot hears the finding from its investigator, and Ilyra becomes responsible for defending it.',
         addFlags: ['c6-ilyra-leads-evidence', 'c6-ilyra-evidence-alliance'],
-        result: 'Ilyra studies the offer for hidden ownership and finds none. “I will present the evidence,” she says. “You may explain why anyone should follow it into danger.”',
+        result: 'Ilyra looks for a trap in the offer and finds none. “I will present the evidence,” she says. “You may explain why anyone should follow it into danger.”',
         next: 'c6-red-moot',
       },
     ],
@@ -868,7 +958,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Three clans, one moving floor',
     title: 'The Red Moot',
     location: 'Kharad Vey, Central Wheel Hall',
-    objective: 'Choose how to earn the right to ask for an alliance.',
+    objective: 'Choose how to persuade the clans before their vote on your alliance.',
     threat: 'Rising',
     art: 'moot',
     body: (state) => [
@@ -878,8 +968,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       has(state, 'c6-ilyra-leads-evidence')
         ? 'Ilyra presents the Unsea evidence in her own name. She does not soften uncertainty or let the storm claim certainty either.'
         : 'Ilyra stands at the edge of the map. When someone mistakes possibility for proof, one lifted finger is enough to stop them.',
-      'The Moot offers three lawful ways to support your request. You may place your service before the clans. You may face a trial combat against their seasonal champion. Or you may make a public Oath that binds the Crown to recognise their authority after the Gate is closed.',
-      'The storm presses faces against the open sides of the hall. You must choose before it speaks through the gathered dead again.',
+      'The Moot offers three lawful ways to support your request. You may place your service before the clans. You may face a trial combat against their seasonal champion. Or you may make a public Oath that binds your own command to respect their decisions after the Gate is closed.',
+      'The storm presses faces against the open sides of the hall. You feel the floor turn beneath your boots and know the clans are waiting for the argument you chose to make.',
     ],
     choices: [
       {
@@ -902,7 +992,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c6-choose-oath-case',
-        label: 'Offer a public Oath recognising the clans’ living authority.',
+        label: 'Offer a public Oath recognising the clans’ right to choose.',
         detail: 'Risk Oathfire and your future standing with the Crown on a promise no Regent approved.',
         advantage: 'A binding guarantee can win the broadest support if its terms protect choice rather than purchase it.',
         addFlags: ['c6-moot-oath-path'],
@@ -926,15 +1016,15 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         : has(state, 'c6-forge-route')
           ? 'Dema brings the broken ancestor casting into the hall. The plain repair still holds beneath everyone’s feet.'
           : 'Asha brings the children from the shrine. They stand with living relatives while the storm wears beloved faces outside.',
-      'Clan leader Ugra asks the question that matters. “You served because you wanted our riders. What happens when helping us no longer serves your road?”',
       'You feel every easy answer fail before it reaches your mouth. Service earns attention. Only a stated principle can make it mean more than trade.',
+      'Clan leader Ugra asks the question that matters. “You served because you wanted our riders. What happens when helping us no longer serves your road?”',
     ],
     choices: [
       {
         id: 'c6-service-living-before-road',
         label: 'Say the living people beside a road matter more than the power controlling it.',
         detail: 'Turn your service into a rule the clans can use to judge your future actions.',
-        advantage: 'The answer joins Caelan’s protection instinct to the town’s demand for living authority.',
+        advantage: 'The answer joins Caelan’s protection instinct to the town’s demand that living people stay in control.',
         addFlags: ['c6-service-won-moot', 'c6-living-authority-principle'],
         result: 'You say a road exists for the people using it, not the ruler naming it. Ugra looks toward the families you helped and accepts that your actions fit the claim.',
         next: 'c6-ancestor-coup',
@@ -952,7 +1042,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         id: 'c6-service-share-orivane-truth',
         label: 'Place Orivane’s hidden truth beside the work you completed.',
         detail: 'Reveal painful evidence that several peoples’ rulers shared responsibility.',
-        advantage: 'The clans gain reason to approach the Gate as authors of the next order, not servants of the old one.',
+        advantage: 'The clans gain reason to approach the Gate as people who will help decide what comes after.',
         addFlags: ['c6-service-won-moot', 'c6-shared-orivane-proof'],
         result: 'You describe the rulers gathered around Orivane’s sacrifice and the truth they concealed. The crime was shared. The right to repair it must be shared too.',
         next: 'c6-ancestor-coup',
@@ -1031,7 +1121,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'Gold Oathfire spreads across the floor map. It reaches every clan marker and stops there, waiting for exact words.',
       'Lysara watches with a diplomat’s stillness. Mara watches your breathing. Both know a broad promise could give you the power needed at the Gate and destroy you later if a monarch refuses its terms.',
       has(state, 'c6-broad-steppe-oath')
-        ? 'The earlier steppe promise already carries the weight of strangers. Adding the whole future order will make every violation personal.'
+        ? 'The earlier steppe promise already carries the weight of strangers. Adding every future alliance will make each broken term hurt you personally.'
         : 'You have protected roads and people before. This promise would bind a political future you do not control.',
       'Ilyra steps close enough for only you to hear. “Do not promise them obedience from someone else. Promise what you will do when obedience fails.”',
     ],
@@ -1049,7 +1139,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c6-oath-crown-restitution',
-        label: 'Promise to force the Crown to answer the Concord’s hidden victims.',
+        label: 'Promise to force the Crown to answer those harmed by the Concord.',
         detail: 'Spend 3 Oathfire making a larger promise that may turn your kingdom against you.',
         advantage: 'The broad Oath can win full support and gain power whenever you confront Crown denial.',
         changes: { oathfire: -3, resolve: 1 },
@@ -1126,7 +1216,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         id: 'c6-oath-dead-witness-only',
         label: 'Promise that the dead may witness here but never rule.',
         detail: 'Spend 2 Oathfire binding the oldest steppe law across the moving city.',
-        advantage: 'The Oath protects living authority and keeps honest ancestor counsel possible.',
+        advantage: 'The Oath keeps living people in control while honest ancestor voices remain able to advise.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c6-oath-dead-may-witness', 'c6-preserved-ancestor-voices'],
@@ -1161,8 +1251,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         : has(state, 'c6-trial-won-moot')
           ? 'Varka stands beside your marker with fresh blood drying at her brow or respect earned without it. The martial clans are ready to hear a dangerous request.'
           : 'The people from your chosen duty stand in the galleries. Their presence turns your argument from a speech into memory.',
-      'Korran asks the final question. “Do you ask Kharad Vey for war, alliance, or only a road?”',
       'You feel the ember answer the red pulse. A western lookout moves the map pin marking the Crown army one day closer. The next problem is already marching toward the town.',
+      mootSupport(state),
+      mootQuestion(state),
     ],
     choices: [
       {
@@ -1170,6 +1261,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         label: 'Ask Kharad Vey to ride for war at the Black Gate.',
         detail: 'Request riders, wheel engines, and the whole moving town against the opening Gate.',
         advantage: 'The strongest military commitment can hold the Gate, but it places thousands of civilians in the coming campaign.',
+        showIfAnyFlags: ['c6-service-won-moot', 'c6-trial-won-moot', 'c6-oath-won-moot'],
+        showIfAllFlags: ['c6-korran-respect', 'c6-declared-ember-origin'],
         changes: { wayfire: 2 },
         addFlags: ['c6-red-moot-war', 'c6-kharad-full-army'],
         result: 'You ask for war and name its danger without hiding civilians behind the word army. The three clans vote to turn every wheel toward the Black Gate.',
@@ -1180,6 +1273,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         label: 'Ask for a guarded alliance led by the Red Moot’s own commanders.',
         detail: 'Request an ember escort and volunteer riders while Kharad Vey keeps authority over its people.',
         advantage: 'The alliance provides meaningful forces without making the town an extension of Caelan’s command.',
+        showIfAnyFlags: ['c5-freed-vaor', 'c5-vaor-pact', 'c6-admitted-ember-theft'],
         changes: { wayfire: 2 },
         addFlags: ['c6-red-moot-alliance', 'c6-kharad-escort'],
         result: 'You ask the clans to choose their own commanders and the number they can risk. The vote grants an ember escort, wind callers, and riders under Korran’s seasonal authority.',
@@ -1210,10 +1304,16 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     nextChapter: 'c7-red-horizon',
     body: (state) => [
       'War horns sound from all twelve platforms. Herds enter protected lanes. Forge decks lock their tools. Kharad Vey does not become your army. It becomes a nation moving beside your cause.',
-      'Korran rides at the front under a banner chosen by the Moot. Ilyra remains long enough to mark the Unsea current beneath the ancestor storm. Before leaving the council deck, she tells you, “Do not make me regret proving you can hear an unstated term.”',
+      'Korran rides at the front under a banner chosen by the Moot. Ilyra remains long enough to mark the possible Unsea current beneath the ancestor storm.',
       has(state, 'c6-ilyra-interest-acknowledged')
-        ? 'Her fingers brush yours when she passes the storm map back. The contact is brief, intentional, and private despite the army forming around you.'
-        : 'Her attention stays on you one moment longer than the map requires. Whatever she decides about you next will serve her work as well as her curiosity.',
+        ? 'Her fingers brush yours when she passes the storm map back. “You kept politics and desire separate,” she says. “Keep doing that.” The contact is brief, intentional, and private despite the army forming around you.'
+        : has(state, 'c6-named-ilyra-manipulation')
+          ? 'When she returns the map, she says, “You saw what I was arranging and still judged the evidence fairly. I can work with that.”'
+          : has(state, 'c6-refused-ilyra-pressure')
+            ? 'She returns the map without stepping into your space. “Evidence without theatre,” she says. “As requested.” Respect, not attraction, gives the words their warmth.'
+            : has(state, 'c6-ilyra-professional-alliance')
+              ? 'She gives the finished map to Korran first, honouring the local rules you set. Only after he approves it does she place it in your hands.'
+              : 'She returns the map with formal care. You have an investigator beside your cause, not a closeness either of you chose.',
       'A western scout returns the Crown army pin to the map. It is now one day behind. Dead commanders are speaking inside its storm, and the soldiers are moving faster than living orders allow.',
       'You won the help you came for. Your next battle will decide whether that help survives the road.',
     ],

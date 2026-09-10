@@ -234,7 +234,7 @@ export function knownTruths(game: GameState) {
       truths.push('Cold fire from the damaged fire Nail steals warmth and follows living heat. My Health cannot recover while it burns nearby.');
     }
     if (vaorKnownNodes.has(game.nodeId)) {
-      truths.push('Vaor is an ancient living dragon imprisoned beneath glass near the fire Nail. Regent Malrec’s commander intends to cut out his living ember.');
+      truths.push('Vaor was imprisoned beneath memory glass a century ago. Regent Malrec’s force reopened the grave two nights ago, clamped him again, and now intends to cut out his living ember.');
     }
     if (['c5-vaor-wakes', 'c5-vaor-test', 'c5-crown-assault', 'c5-heart-memory', 'c5-grave-collapse', 'c5-ember-choice', 'c5-ending-free', 'c5-ending-force', 'c5-ending-pact'].includes(game.nodeId)) {
       truths.push('The glass plates around Vaor preserve events he truly lived. They are memories, not alternate timelines.');
@@ -325,6 +325,44 @@ export function knownTruths(game: GameState) {
     }
     if (game.flags.includes('c7-gained-dangerous-reputation')) {
       truths.push('I refused formal command. The army carries the truth home while my existing companions ride for the Gate.');
+    }
+    return truths;
+  }
+
+  if (game.chapter === 8) {
+    truths.push('Eight forts surround the Black Gate. Their signal fires feed one buried chain, and all eight normally work together to keep the Gate shut.');
+
+    if (game.nodeId !== 'c8-gate-ring') {
+      truths.push('Fourth Fort holds the only remaining old garrison. Its soldiers are called the Futureless because each sold one specific promise they would make later. They can still think, choose, refuse, and protect people.');
+    }
+    if (!['c8-gate-ring', 'c8-first-knock', 'c8-force-deployment', 'c8-occupied-fort', 'c8-futureless-reveal'].includes(game.nodeId)) {
+      truths.push('The Black Gate opened for one hour on the same winter night for seventeen years. The Crown hid every opening and slowly removed the witnesses and supplies from the forts.');
+    }
+    if (game.nodeId === 'c8-ash-offer'
+      || game.nodeId === 'c8-mara-watch'
+      || game.nodeId === 'c8-lysara-watch'
+      || game.nodeId === 'c8-quiet-watch'
+      || game.nodeId === 'c8-chain-plan'
+      || game.nodeId === 'c8-opening'
+      || game.nodeId === 'c8-wardens-route'
+      || game.nodeId === 'c8-compact-route'
+      || game.nodeId === 'c8-sacrifice-route'
+      || game.nodeId === 'c8-oath-ledger'
+      || game.nodeId === 'c8-embassy-terms'
+      || game.nodeId.startsWith('c8-ending-')) {
+      truths.push('The Ash Compact is one devil faction, not the whole realm beyond the Gate. It opposes a forced invasion and offers white fire in exchange for a public peaceful embassy.');
+    }
+    if (game.flags.includes('c8-united-wardens')) {
+      truths.push('I kept the Gate defence in mortal hands by uniting independent keepers across the eight forts.');
+    }
+    if (game.flags.includes('c8-accepted-ash-compact')) {
+      truths.push('I accepted the Ash Compact’s white fire under public terms and granted safe passage to one peaceful embassy.');
+    }
+    if (game.flags.includes('c8-sacrificed-first-fort')) {
+      truths.push('I sacrificed First Fort so its foundation and stored fire could strengthen the other seven.');
+    }
+    if (game.nodeId === 'c8-embassy-terms' || game.nodeId.startsWith('c8-ending-')) {
+      truths.push('Vexa Ash leads the first open devil embassy and claims that someone beyond the Gate has been buying my future since before my first Oath.');
     }
     return truths;
   }
@@ -440,13 +478,15 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c4-captured-ordan')) consequences.push('Because you rescued Ordan for trial, the Crown conspiracy still has a living witness.');
   if (game.flags.includes('c4-ordan-lower-road')) consequences.push('Because you dropped Ordan onto a lower road, you kept his dispatch but lost the prisoner.');
   if (game.flags.includes('c4-rook-full-copy')) consequences.push('Because you allowed Rook to copy the map, he named his buyer’s meeting place and accepted a debt to you.');
+  if (game.flags.includes('c4-fragment-recovered')) consequences.push('Because you recovered the real fragment from Rook, the Nail map and its power remain in your hands.');
   if (game.flags.includes('c4-oath-honest-with-mara')) consequences.push('Because you promised honesty to Mara, duty can no longer be your excuse for silence with her.');
   if (game.flags.includes('c4-kissed-mara')) consequences.push('Because you kissed Mara on the bridge, neither of you can call the attraction unspoken again.');
   if (game.flags.includes('c4-lysara-private-truth')) consequences.push('Because you gave Lysara the quiet minute, she revealed that her own family may share the buried guilt.');
+  if (game.flags.includes('c4-lysara-interest-named')) consequences.push('Because you named your concern for Lysara as personal, neither of you has to hide that interest behind the treaty.');
   if (game.flags.includes('c4-platonic-mara') && game.flags.includes('c4-platonic-lysara')) consequences.push('Because you chose friendship with Mara and Lysara, neither woman is left waiting for a romance you do not want.');
   if (game.flags.includes('c4-lost-gear-and-proof')) consequences.push('Because you sacrificed gear and documents at the final anchor, everyone escaped but some proof against the Crown was lost.');
   if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he entered the Underways as a named fugitive after escaping the cuff.');
-  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he is following the buyer’s payments through the Underways while you travel north.');
+  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he is following his buyer’s trail through the Underways while you travel north.');
   if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook with the survivors, he showed you a safe northern turn before taking his own road into the Underways.');
   if (game.flags.includes('c5-has-extraction-order')) consequences.push('Because you recovered the Regent’s extraction order, you can prove the Crown intended to cut an ember from a living dragon.');
   if (game.flags.includes('c5-diverted-patrol-with-seal') || game.flags.includes('c5-rook-diverted-patrol')) consequences.push('Because you used Hale’s seal, the returning royal patrol followed a false cold fire warning and lost your trail.');
@@ -462,6 +502,7 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, royal witnesses carry the truth away from Dragonspine.');
   if (game.flags.includes('c5-memory-copied-to-map-wax') || game.flags.includes('c5-rook-copied-first-memory')) consequences.push('Because you copied Orivane’s memory into map wax, the buried proof can survive even if the mountain glass is destroyed.');
   if (game.flags.includes('c5-freed-vaor')) consequences.push('Because you freed Vaor, an ancient dragon travels as a willing but independent ally.');
+  if (game.flags.includes('c5-kingdoms-fear-vaor')) consequences.push('Because Vaor escaped in full view of the royal camp, warning horns now carry your part in releasing him across the border kingdoms.');
   if (game.flags.includes('c5-took-ember-by-force')) consequences.push('Because you took the ember by force, its power obeys you while Vaor follows as an enemy.');
   if (game.flags.includes('c5-vaor-pact')) consequences.push('Because you made a pact with Vaor, his voice, grief, and fire now travel inside you.');
   if (game.flags.includes('c6-saved-lift-siblings')) consequences.push('Because you saved the western lift handlers, Kharad Vey judged your actions before your Crown badge.');
@@ -469,11 +510,14 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c6-forge-service-complete')) consequences.push('Because you served in the brake forge, the wheelwrights saw whether you listened before using power.');
   if (game.flags.includes('c6-shrine-service-complete')) consequences.push('Because you protected the shrine children, the town saw you place living choice above a beloved dead voice.');
   if (game.flags.includes('c6-admitted-concord-crime')) consequences.push('Because you admitted the Concord’s hidden victims publicly, the storm could not use that truth as its private weapon.');
-  if (game.flags.includes('c6-named-ilyra-manipulation')) consequences.push('Because you named Ilyra’s unstated pressure, she now negotiates with you more openly.');
+  if (game.flags.includes('c6-declared-willing-ember')) consequences.push('Because you told Kharad Vey that Vaor freely gave the ember, the town judged the gift instead of the storm’s accusation.');
+  if (game.flags.includes('c6-admitted-ember-theft')) consequences.push('Because you admitted taking Vaor’s ember against his will, Kharad Vey knows the truth even though it has not forgiven the act.');
+  if (game.flags.includes('c6-declared-pact-ember')) consequences.push('Because you revealed Vaor’s willing pact, the town knows the second presence inside you is an ally with his own will.');
+  if (game.flags.includes('c6-named-ilyra-manipulation')) consequences.push('Because you named Ilyra’s public pressure, she now negotiates with you more openly.');
   if (game.flags.includes('c6-ilyra-interest-acknowledged')) consequences.push('Because you separated honest attraction from political need, mutual interest with Ilyra has begun without becoming a promise.');
   if (game.flags.includes('c6-oath-investigate-unsea')) consequences.push('Because you swore to investigate the ancestor voices, the steppe’s lost families now travel inside your duty.');
   if (game.flags.includes('c6-oath-recognised-red-moot')) consequences.push('Because your Oath recognises the Red Moot, future command cannot quietly turn its alliance into obedience.');
-  if (game.flags.includes('c6-oath-crown-restitution')) consequences.push('Because you promised Crown restitution, returning to Greyhaven may place your Oath against the throne.');
+  if (game.flags.includes('c6-oath-crown-restitution')) consequences.push('Because you promised that the Crown would answer those it harmed, returning to Greyhaven may place your Oath against the throne.');
   if (game.flags.includes('c6-preserved-ancestor-voices')) consequences.push('Because you broke the controlling command without silencing every voice, the town may still learn which ancestors are truly conscious.');
   if (game.flags.includes('c6-red-moot-war')) consequences.push('Because you asked Kharad Vey for war, the entire wheel town is moving toward the Black Gate.');
   if (game.flags.includes('c6-red-moot-alliance')) consequences.push('Because you asked for a guarded alliance, Korran leads volunteer riders beside your cause under the Moot’s authority.');
@@ -497,5 +541,22 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c7-gained-full-army')) consequences.push('Because you accepted the Crown March, a full divided army now follows you toward the Black Gate.');
   if (game.flags.includes('c7-gained-chosen-company')) consequences.push('Because you asked for volunteers, a smaller company follows by choice rather than inherited rank.');
   if (game.flags.includes('c7-gained-dangerous-reputation')) consequences.push('Because you refused formal allies, your reputation now travels ahead of your small company.');
+  if (game.flags.includes('c8-pell-survived')) consequences.push('Because you saved Pell, the escaped Warden identified the safe people and locks inside Fourth Fort.');
+  if (game.flags.includes('c8-pell-died-for-map')) consequences.push('Because you preserved your resources, Pell spent his last breath drawing the complete safe lock route.');
+  if (game.flags.includes('c8-preserved-original-ledgers')) consequences.push('Because you carried the opening ledgers through falling stone, seventeen years of original Crown proof survived.');
+  if (game.flags.includes('c8-living-copy-of-openings')) consequences.push('Because Lysara copied the hidden opening dates, foreign courts can test the truth even though the Crown paper burned.');
+  if (game.flags.includes('c8-many-witnessed-openings')) consequences.push('Because you called divided witnesses into the record room, no single stolen document can erase the hidden openings again.');
+  if (game.flags.includes('c8-mara-knows-home-desire')) consequences.push('Because you told Mara what home means to you without making an Oath, she knows what future the Gate may threaten.');
+  if (game.flags.includes('c8-lysara-knows-road-desire')) consequences.push('Because you named a road with Lysara beyond both kingdoms, she knows what future the Gate may threaten.');
+  if (game.flags.includes('c8-united-wardens')) consequences.push('Because you united the wardens, the Black Gate remains under mortal control without a new contract or permanent gap.');
+  if (game.flags.includes('c8-accepted-ash-compact')) consequences.push('Because you accepted the Ash Compact, white fire held every weak link and a peaceful embassy gained safe passage.');
+  if (game.flags.includes('c8-sacrificed-first-fort')) consequences.push('Because you sacrificed First Fort, the other seven held while the fortress ring gained a permanent gap.');
+  if (game.flags.includes('c8-surrendered-homecoming')) consequences.push('Because you surrendered the hope of returning unchanged, every active Oath survived the Gate’s test.');
+  if (game.flags.includes('c8-released-crown-oath')) consequences.push('Because you released your Crown Oath, Asterra can no longer use that promise to command you.');
+  if (game.flags.includes('c8-burned-lesser-oath')) consequences.push('Because you burned a lesser promise, your greater duties and personal future survived the Gate’s test.');
+  if (game.flags.includes('c8-shared-oath-burden')) consequences.push('Because a willing companion shared your burden, every promise survived while the Gate gained a mark it may find again.');
+  if (game.flags.includes('c8-vexa-entered-publicly')) consequences.push('Because you received Vexa publicly, the first devil embassy entered under the eyes of every force.');
+  if (game.flags.includes('c8-vexa-held-at-threshold')) consequences.push('Because you held Vexa at the threshold, diplomacy began with one visible step between the two worlds.');
+  if (game.flags.includes('c8-ansel-spoke-first')) consequences.push('Because Ansel asked the first question, the first embassy had to answer the Futureless before addressing rulers.');
   return consequences.length ? consequences : ['Your first lasting consequence has not been written yet.'];
 }

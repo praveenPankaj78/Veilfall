@@ -66,8 +66,17 @@ export const implementedChapterContracts = [
     chapter: 7,
     entryNode: 'c7-red-horizon',
     endingNodes: ['c7-ending-army', 'c7-ending-company', 'c7-ending-outlaw'],
-    nextNode: null,
+    nextNode: 'c8-gate-ring',
     activeGuests: ['ilyra'],
+    legacyOnlyHeroes: [],
+  },
+  {
+    series: 'caelan',
+    chapter: 8,
+    entryNode: 'c8-gate-ring',
+    endingNodes: ['c8-ending-embassy', 'c8-ending-threshold', 'c8-ending-witness'],
+    nextNode: null,
+    activeGuests: [],
     legacyOnlyHeroes: [],
   },
 ];
@@ -92,6 +101,11 @@ export const protectedPlotTransitions = [
     id: 'crown-hunt-to-gate',
     endingNodes: ['c7-ending-army', 'c7-ending-company', 'c7-ending-outlaw'],
     requiredTerms: ['Black Gate', 'knock'],
+  },
+  {
+    id: 'gate-to-first-embassy',
+    endingNodes: ['c8-ending-embassy', 'c8-ending-threshold', 'c8-ending-witness'],
+    requiredTerms: ['Vexa', 'contract', 'name'],
   },
 ];
 
