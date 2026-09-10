@@ -639,6 +639,9 @@ for (const contract of implementedChapterContracts) {
   if (!nodes[contract.entryNode]) {
     failures.push(`Continuity contract has a missing Chapter ${contract.chapter} entry: ${contract.entryNode}`);
   }
+  if ((nodes[contract.entryNode]?.introducesStoryTerms?.length ?? 0) > 3) {
+    failures.push(`Chapter ${contract.chapter} opening introduces more than three story terms before the first decision`);
+  }
   for (const endingId of contract.endingNodes) {
     const ending = nodes[endingId];
     if (!ending?.final) failures.push(`Continuity contract ending is missing or not final: ${endingId}`);
@@ -760,11 +763,11 @@ const storyTermRules = {
   },
   'Kharad Vey': {
     use: /\bKharad Vey\b/i,
-    introduction: /Kharad Vey, the moving orc town|Kharad Vey rises.*town is built across twelve wooden platforms|Kharad Vey moves across the red steppe.*travelling orc town/i,
+    introduction: /Kharad Vey, the moving orc town|Kharad Vey rises.*(?:travelling orc town|town is built).*twelve wooden platforms|Kharad Vey moves across the red steppe.*travelling orc town/i,
   },
   'Ember Steppe': {
     use: /\bEmber Steppe\b/i,
-    introduction: /This is the Ember Steppe/i,
+    introduction: /This (?:red country )?is the Ember Steppe/i,
   },
   'ancestor storm': {
     use: /\bancestor storm\b/i,
@@ -772,7 +775,7 @@ const storyTermRules = {
   },
   'Black Gate': {
     use: /\bBlack Gate\b/i,
-    introduction: /map names it plainly: the Black Gate|black stone you saw is the Black Gate/i,
+    introduction: /black stone you saw.*call it the Black Gate|black stone you saw is the Black Gate/i,
   },
   'Red Moot': {
     use: /\bRed Moot\b/i,
@@ -780,7 +783,7 @@ const storyTermRules = {
   },
   'Ilyra Fen': {
     use: /\bIlyra Fen\b/i,
-    introduction: /Ilyra Fen steps onto the deck/i,
+    introduction: /Ilyra Fen steps onto the (?:moving )?deck/i,
   },
   Threadread: {
     use: /\bThreadread\b/i,
@@ -1972,11 +1975,52 @@ const lysaraFriendshipArrival = renderedBody('c6-steppe-road', {
   ...chapterSixBase,
   flags: ['c5-freed-vaor', 'c5-lysara-friendship'],
 });
-if (!/Mara knows you chose friendship.*Lysara still watches/is.test(maraFriendshipArrival)
-  || /Mara and Lysara have both heard/i.test(maraFriendshipArrival)
-  || !/Lysara knows you chose friendship.*Mara still carries/is.test(lysaraFriendshipArrival)
-  || /Mara and Lysara have both heard/i.test(lysaraFriendshipArrival)) {
-  failures.push('Chapter Six merges separate Mara and Lysara friendship outcomes');
+if (/friendship|unanswered promise|Underways|Rook chose|Rook is following|escaped your arrest/i.test(maraFriendshipArrival)
+  || /friendship|unanswered promise|Underways|Rook chose|Rook is following|escaped your arrest/i.test(lysaraFriendshipArrival)) {
+  failures.push('Chapter Six opening recaps absent companions or relationship history before the moving-city danger');
+}
+if (nodes['c6-steppe-road'].introducesStoryTerms?.includes('Black Gate')
+  || !nodes['c6-first-duty'].introducesStoryTerms?.includes('Black Gate')) {
+  failures.push('Chapter Six names the Black Gate before Korran explains the name');
+}
+const chapterSixOpening = renderedBody('c6-steppe-road', chapterSixBase);
+if (!/red grass.*wheel tracks/is.test(chapterSixOpening)
+  || !/twelve wooden platforms.*wheels are taller than a gatehouse/is.test(chapterSixOpening)
+  || !/Ancestor storm.*honoured dead/is.test(chapterSixOpening)
+  || /six days|fourth night|Crown riders|Black Gate/i.test(chapterSixOpening)) {
+  failures.push('Chapter Six opening does not stay focused on the steppe, the moving town, and the immediate storm');
+}
+const chapterSixMootJournal = knownTruths({
+  ...chapterSixBase,
+  nodeId: 'c6-first-duty',
+}).join(' ');
+const chapterSixDutyJournal = knownTruths({
+  ...chapterSixBase,
+  nodeId: 'c6-herd-duty',
+}).join(' ');
+const chapterSixTermsJournal = knownTruths({
+  ...chapterSixBase,
+  nodeId: 'c6-korran-terms',
+}).join(' ');
+const chapterSixAfterTermsJournal = knownTruths({
+  ...chapterSixBase,
+  nodeId: 'c6-ilyra-entry',
+}).join(' ');
+const chapterSixRevealJournal = knownTruths({
+  ...chapterSixBase,
+  nodeId: 'c6-impossible-memory',
+}).join(' ');
+const chapterSixAfterRevealJournal = knownTruths({
+  ...chapterSixBase,
+  nodeId: 'c6-red-moot',
+}).join(' ');
+if (/Black Gate|nearest watch forts/i.test(chapterSixMootJournal)
+  || !/black stone.*Black Gate/is.test(chapterSixDutyJournal)
+  || /watch forts|gone dark/i.test(chapterSixTermsJournal)
+  || !/Black Gate.*watch forts/is.test(chapterSixAfterTermsJournal)
+  || /Unsea|new knowledge/i.test(chapterSixRevealJournal)
+  || !/Unsea.*did not prove/is.test(chapterSixAfterRevealJournal)) {
+  failures.push('Chapter Six journal confirms the Gate or Unsea before the playable scene proves it');
 }
 const emberOriginChoices = nodes['c6-ancestor-warning'].choices.filter(
   (choice) => choice.addFlags?.includes('c6-declared-ember-origin'),
@@ -2409,6 +2453,18 @@ if (!/seventeen years.*closed three failing garrisons/is.test(hiddenRecord)
   || !/only Fourth Fort occupied tonight/i.test(hiddenRecord)
   || !/sealed packet.*First Fort.*complete copy/is.test(hiddenRecord)) {
   failures.push('Chapter Eight does not join the seventeen-year cover-up to Malrec’s recent withdrawal');
+}
+const firstKnockJournal = knownTruths({
+  ...chapterEightBase,
+  nodeId: 'c8-first-knock',
+}).join(' ');
+const afterFirstKnockJournal = knownTruths({
+  ...chapterEightBase,
+  nodeId: 'c8-force-deployment',
+}).join(' ');
+if (/Futureless|sold one specific promise/i.test(firstKnockJournal)
+  || !/Futureless.*sold one specific promise/is.test(afterFirstKnockJournal)) {
+  failures.push('Chapter Eight journal defines the Futureless before Pell introduces them');
 }
 const defenceRouteCases = [
   ['c8-united-wardens', /eight mortal signal fires/i, /refused our fire and held the Gate with mortal hands/i, /Ash Compact’s white fire holds the gap/i],

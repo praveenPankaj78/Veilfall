@@ -16,35 +16,6 @@ function emberArrival(state: GameState) {
   return 'Vaor moves inside your thoughts when the red grass appears. “A city that refuses to stop,” he says. The ember answers his voice with a second beat beneath your ribs.';
 }
 
-function underwaysParting(state: GameState) {
-  if (has(state, 'c4-rook-arrested')) {
-    return 'Rook is not among the travellers who leave Dragonspine. He escaped your arrest at the Mileless Bridge and entered the Underways. The empty cuff remains part of your case against him, not part of this company.';
-  }
-  if (has(state, 'c4-rook-bargain')) {
-    return 'Rook is following his buyer’s trail through the Underways while you follow the Nail north and east. The bargain remains alive across the distance, but he is not part of your company.';
-  }
-  return 'Rook chose the Underways when you chose Dragonspine. The useful silver knot he left is spent now. Whatever he finds below the world belongs to another road until your paths cross again.';
-}
-
-function chosenBond(state: GameState) {
-  if (has(state, 'c5-admitted-future-with-lysara') || has(state, 'c5-kissed-lysara')) {
-    return 'Lysara walks close enough that her sleeve touches your arm when the ground drops. She does not reach for your hand. Knowing that she wants to makes the space between you feel deliberate.';
-  }
-  if (has(state, 'c5-admitted-future-with-mara') || has(state, 'c5-kissed-mara')) {
-    return 'Mara keeps pace at your shield side. The future you named in Dragonspine has not made the road safer. It has made every danger more personal.';
-  }
-  if (has(state, 'c5-mara-friendship') && has(state, 'c5-lysara-friendship')) {
-    return 'Mara and Lysara have both heard the truth of what you can offer. There is relief in travelling without an unanswered promise between you.';
-  }
-  if (has(state, 'c5-mara-friendship')) {
-    return 'Mara knows you chose friendship, and the honesty has steadied the space between you. Lysara still watches the road without asking what you could not answer in the mountain.';
-  }
-  if (has(state, 'c5-lysara-friendship')) {
-    return 'Lysara knows you chose friendship, and she no longer has to guess what each quiet moment means. Mara still carries the question you left unanswered in the mountain.';
-  }
-  return 'Mara checks the trail behind. Lysara watches the ember beneath your armour. Neither asks the question you left unanswered in the mountain.';
-}
-
 function vaorAtStorm(state: GameState) {
   if (has(state, 'c5-freed-vaor')) {
     return 'A dragon shadow circles once above the red clouds. Vaor is here, but the storm turns every ancestor face toward him. If he descends now, panic may destroy what the wind cannot.';
@@ -146,19 +117,17 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     objective: 'Reach Kharad Vey before the moving town passes beyond the storm line.',
     threat: 'Rising',
     art: 'kharad',
-    introducesStoryTerms: ['Kharad Vey', 'Ember Steppe', 'ancestor storm', 'Black Gate'],
+    introducesStoryTerms: ['Kharad Vey', 'Ember Steppe', 'ancestor storm'],
     lesson: {
-      title: 'The ember you carry',
-      body: 'The fire inside Caelan is powerful but not a separate resource. How he gained it changes what it does. A willing ember guides, a stolen ember obeys but draws Vaor’s anger, and a pact lets Vaor advise him at the cost of sharing the dragon’s grief.',
+      title: 'What is ahead',
+      body: 'The red country is the Ember Steppe. Kharad Vey is a travelling orc town built on twelve wheeled platforms. An ancestor storm follows it, wearing the faces and voices of honoured dead.',
     },
     body: (state) => [
-      'Dragonspine ends without warning. Black glass gives way to red grass, hot wind, and a sky wide enough to make you feel exposed. This is the Ember Steppe. Six days of open country lie between the mountain and the black stone from your vision. Your map names it plainly: the Black Gate. The Crown road leading there is empty.',
+      'Black glass gives way to red grass and hot wind. Dragonspine is behind you. This red country is the Ember Steppe. Wheel tracks as wide as roads lead east.',
+      'Kharad Vey rises over the grass, a travelling orc town built on twelve wooden platforms. Its wheels are taller than a gatehouse. Homes, forges, animal pens, and watchtowers move with them.',
       emberArrival(state),
-      chosenBond(state),
-      underwaysParting(state),
-      'On the fourth night, the wind kills your small cooking fire. You eat cold grain beside a wheel track and take the first watch because sleep will not come. Somewhere ahead, the Gate is opening. Somewhere behind, Crown riders are still following. The empty grass between them feels less like safety than the space between two closing hands.',
-      'Then Kharad Vey rises over the grass. The town is built across twelve wooden platforms, each riding on wheels taller than a gatehouse. Homes, forges, animal pens, and watchtowers move together while thousands of feet and turning axles make the earth tremble.',
-      'A wounded orc rider races past and points at the red cloud. “Ancestor storm,” he shouts. “It wears our honoured dead and calls the living into danger.” The city will cross a split in the ground within minutes. If you miss its western lift, you will be trapped outside with those voices.',
+      'A red cloud follows the town. Human, orc, and elven faces form inside it, speak, and vanish. A wounded orc rider points back. “Ancestor storm. It wears our honoured dead and calls the living into danger.”',
+      'The town will cross a split in the ground within minutes. If you miss its western lift, your party will be trapped outside with the voices.',
       'Mara looks from the racing town to your tired party. “We can reach it. Getting invited aboard may be the difficult part.”',
     ],
     choices: [
@@ -335,7 +304,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     objective: 'Complete one local duty before asking the clans for an alliance.',
     threat: 'Uneasy',
     art: 'kharad',
-    introducesStoryTerms: ['Red Moot'],
+    introducesStoryTerms: ['Red Moot', 'Black Gate'],
     lesson: {
       title: 'Authority in Kharad Vey',
       body: 'Leadership here is earned for one season. A visitor may speak at the Red Moot only after serving a duty chosen by the town. Command becomes useful after Caelan learns how the people work, not before.',
@@ -344,8 +313,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'Kharad Vey’s market moves around you while the city rolls east. Bakers hook trays into swinging ovens. Children cross rope bridges without looking down. Every stall has a red cord that can pull its goods flat when the storm strikes.',
       proofCarried(state),
       'Korran washes axle grease from his forearms at a public basin. He is tall even among the other orcs, with old scars across one cheek and the patient voice of a man used to being challenged in front of everyone.',
-      '“The Red Moot meets at sunset,” he says. “Three clans decide whether our town carries your ember toward the Black Gate. You may ask them after you complete one duty. The herds need bringing inside. The forge brakes are failing. The ancestor shrine is calling children by name.”',
-      'You came here wanting soldiers. The town offers work instead. The answer feels fair enough to be uncomfortable.',
+      '“The Red Moot meets at sunset,” he says. “Three clans decide whether our town carries your ember toward the black stone you saw. We call it the Black Gate.”',
+      'Korran points across the market. “You may ask them after one duty. The herds need bringing inside. The forge brakes are failing. The ancestor shrine is calling children by name.”',
     ],
     choices: [
       {
@@ -541,7 +510,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
         addFlags: ['c6-shrine-service-complete', 'c6-heard-storm-accusation', 'c6-broad-steppe-oath'],
-        result: 'Gold fire seals the red door. The children hear silence. You hear hundreds of voices turn toward you and speak one name: servant of the eraser.',
+        result: 'Gold fire seals the red door. The children hear silence. Hundreds of voices turn toward you. “You serve the power that stopped our families from ever being born.”',
         next: 'c6-ancestor-warning',
       },
       {
@@ -559,7 +528,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
   'c6-ancestor-warning': {
     id: 'c6-ancestor-warning',
     kicker: 'The storm chooses an accusation',
-    title: 'Servant of the Eraser',
+    title: 'The Families Who Never Lived',
     location: 'Kharad Vey, Upper Spine',
     objective: 'Keep the town moving while the ancestor voices turn against you.',
     threat: 'Rising',
@@ -712,7 +681,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     art: 'storm',
     body: (state) => [
       'Kharad Vey survives the turn. Damage crews run across the decks while the ancestor storm gathers for another strike. Korran brings you to a sheltered platform where three red cords mark the clans that will judge you.',
-      '“The black stone you saw is the Black Gate,” he says. “Eight forts once guarded it. The nearest fires have gone dark. Your Crown wants our road, our riders, and now the ember in your chest.”',
+      '“Eight forts once guarded the Black Gate,” he says. “The nearest fires have gone dark. Your Crown wants our road, our riders, and now the ember in your chest.”',
       'His eyes settle on your badge. “We may still help. Not because a dead treaty ordered us. Not because your Regent discovered fear. The Red Moot must know whether our people get a say in the world you are trying to save.”',
       has(state, 'c6-oath-living-authority')
         ? 'The promise around the steering ropes still burns. You already gave the town part of an answer: the dead may witness, but the living decide.'
@@ -774,11 +743,12 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     },
     body: (state) => [
       '“A useful answer,” a woman says from the stairs. “Whichever part of it you meant.”',
-      'Ilyra Fen steps onto the deck as if the moving floor belongs beneath her. She is a half elf in her middle thirties, with bronze skin, long dark auburn hair, and grey green eyes that miss nothing. Black travelling cloth fits close beneath a wine red coat. Glass charms rest against her throat and catch the storm light whenever she breathes.',
-      'She knows how the fitted coat, the steady eye contact, and one unhurried breath draw attention. Then you see pale threads winding from her fingers toward Korran, the storm, and the ember in your chest. She has been studying all three while deciding what you will notice first.',
+      'Ilyra Fen steps onto the moving deck without reaching for a rail. She is a half elf with bronze skin and long dark auburn hair. Her wine red coat fits close, and her grey green eyes stay on you.',
+      'One pale thread runs from her open hand to the ember beneath your armour. When you look down, she smiles. She meant you to notice it.',
       relationshipBoundary(state),
       'Korran says, “Ilyra is here because she knows why the dead have started shouting. Ilyra is not here because anyone invited her.”',
-      '“No invitation,” she agrees. Her eyes move from your Crown badge to your wounded companions. One pale thread tightens when she names Malrec, and she watches your hand close at your side. “Your badge says duty. Your people say protection. That reaction says you no longer trust your Regent. I need the ember to test the storm. You need my evidence before the Moot.”',
+      '“No invitation,” she agrees. Her eyes move from your Crown badge to your wounded companions. She says Malrec’s name. The thread tightens when your hand closes at your side.',
+      '“Your badge says duty. Your people say protection. That reaction says you no longer trust your Regent. I need the ember to test the storm. You need my evidence before the Moot.”',
       'She offers her hand. The gesture is elegant, open, and positioned so the entire deck will see whether you accept it.',
     ],
     choices: [
@@ -1018,7 +988,6 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         : has(state, 'c6-forge-route')
           ? 'Dema brings the broken ancestor casting into the hall. The plain repair still holds beneath everyone’s feet.'
           : 'Asha brings the children from the shrine. They stand with living relatives while the storm wears beloved faces outside.',
-      'You feel every easy answer fail before it reaches your mouth. Service earns attention. Only a stated principle can make it mean more than trade.',
       'Clan leader Ugra asks the question that matters. “You served because you wanted our riders. What happens when helping us no longer serves your road?”',
     ],
     choices: [

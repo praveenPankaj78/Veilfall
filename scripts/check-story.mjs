@@ -23,6 +23,8 @@ const narratorShortcuts = [
   'The choice is yours, and everyone can see it',
   'no law makes the choice simple',
   'Accepting power will be easier than teaching it to question you',
+  'You came here wanting soldiers. The town offers work instead',
+  'You feel every easy answer fail',
 ];
 const opaqueHazardRules = [
   { pattern: /\bCount to \w+\.\s+On the .* beat\b/i, label: 'hazard timing does not say what is being counted' },
@@ -34,6 +36,8 @@ const opaqueHazardRules = [
   { pattern: /\bnarrow testimony protects its value\b/i, label: 'legal result is explained through an abstract judgment' },
   { pattern: /\bbinding the .* witness law\b/i, label: 'choice cost names a law instead of the physical rule being created' },
   { pattern: /\bVeyr may call\b/i, label: 'established homeland Thornweald is replaced by an unexplained name' },
+  { pattern: /\bservant of the eraser\b/i, label: 'a direct human loss is hidden behind an unexplained enemy label' },
+  { pattern: /\bspace between two closing hands\b/i, label: 'physical danger is replaced by an abstract travel metaphor' },
 ];
 const forbidden = [
   { value: String.fromCharCode(45, 45), label: 'two adjacent hyphens' },

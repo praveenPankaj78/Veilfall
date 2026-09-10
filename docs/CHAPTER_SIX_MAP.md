@@ -21,6 +21,17 @@ The next hook is concrete: a Crown army is one day behind Kharad Vey, and its so
 - Ilyra may acknowledge attraction only if neither earlier relationship remains open.
 - Surviving proof from Dragonspine affects what Caelan can show, but proof does not replace service among the clans.
 
+These facts remain in state, but the opening recalls only Vaor's ember because it changes what Caelan physically experiences on the steppe. Rook's route and earlier romance choices return only when they affect a present scene.
+
+## Explanation order
+
+1. The opening shows the Ember Steppe, Kharad Vey's twelve moving platforms, and the ancestor storm chasing them.
+2. Korran names the Red Moot and the Black Gate only after Caelan has boarded and helped the town.
+3. Ilyra demonstrates one visible Threadread connection before explaining what it can and cannot reveal.
+4. The Unsea receives a name only after the selected storm test produces evidence.
+
+The journal follows the same order. It cannot confirm a term or conclusion while the player is still on the scene that introduces it.
+
 ## Fifteen decision structure
 
 1. Cross the open steppe and reach Kharad Vey's moving western lift.
@@ -138,6 +149,8 @@ The game check verifies:
 - every chapter has a reachable lethal choice;
 - Chapter Six uses only its own art;
 - all three Vaor outcomes alter the arrival;
+- the opening does not recap Rook, romance history, Crown pursuit, or the Black Gate before the immediate moving-city danger;
+- Korran introduces the Black Gate by connecting its name to the black stone Caelan already saw;
 - the ember accusation has a distinct visible answer for gift, theft, and pact;
 - Ilyra's attraction option respects existing commitments;
 - the Unsea test does not grant facts the selected method failed to prove;

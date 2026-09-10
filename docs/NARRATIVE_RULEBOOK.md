@@ -285,6 +285,10 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 - Once a faction’s formal name is introduced, use one shorter name throughout the immediate action. Do not rotate among several names for the same force during a fight.
 - Do not tell the player that no choice is complete after the scene has already shown the competing dangers. Let the options and their visible costs carry that judgment.
 - Check every new country, city, faction, and title against the world bible. Do not introduce a second name for an established place without explaining the relationship.
+- Open a chapter with only the immediate place, the immediate danger, and an imported state that changes the current action. Recall an absent companion, romance, or later destination only when it affects a present decision.
+- Teach one layer of the world at a time. Show the place and danger first, let a local character name its law, and introduce distant lore only when the player needs it.
+- If dialogue already shows the political or moral problem, do not add a narrator sentence that tells the player what the exchange means.
+- A journal fact becomes confirmed only after the player has read or acted through the scene that proves it. The active reveal node must not answer itself in the journal.
 
 ## Revision checklist
 

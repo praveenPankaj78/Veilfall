@@ -263,17 +263,21 @@ export function knownTruths(game: GameState) {
     } else if (game.flags.includes('c5-vaor-pact')) {
       truths.push('I carry Vaor’s ember and voice through a pact with a clear shared end condition.');
     }
-    truths.push('Kharad Vey is a moving orc town whose seasonal leaders answer to living clan decisions, not inherited Crown rule.');
+    truths.push('Kharad Vey is a travelling orc town built on twelve wheeled platforms. An ancestor storm wearing dead faces follows it.');
 
-    if (game.nodeId !== 'c6-steppe-road'
-      && game.nodeId !== 'c6-running-gate'
-      && game.nodeId !== 'c6-broken-axle'
-      && game.nodeId !== 'c6-first-duty'
-      && !['c6-herd-duty', 'c6-forge-duty', 'c6-shrine-duty'].includes(game.nodeId)) {
+    if (!['c6-steppe-road', 'c6-running-gate', 'c6-broken-axle'].includes(game.nodeId)) {
+      truths.push('Kharad Vey’s seasonal leaders answer to living clan decisions, not inherited Crown rule.');
+    }
+
+    if (!['c6-steppe-road', 'c6-running-gate', 'c6-broken-axle', 'c6-first-duty', 'c6-herd-duty', 'c6-forge-duty', 'c6-shrine-duty', 'c6-ancestor-warning'].includes(game.nodeId)) {
       truths.push('An ancestor storm is using honoured dead voices to accuse me and issue commands to the living.');
     }
-    if (game.nodeId === 'c6-korran-terms'
-      || game.nodeId === 'c6-ilyra-entry'
+    if (!['c6-steppe-road', 'c6-running-gate', 'c6-broken-axle', 'c6-first-duty'].includes(game.nodeId)
+      && !['c6-ilyra-entry', 'c6-storm-trace', 'c6-impossible-memory', 'c6-red-moot', 'c6-service-case', 'c6-trial-case', 'c6-oath-case', 'c6-ancestor-coup', 'c6-final-alliance'].includes(game.nodeId)
+      && !game.nodeId.startsWith('c6-ending-')) {
+      truths.push('Korran calls the black stone from my vision the Black Gate.');
+    }
+    if (game.nodeId === 'c6-ilyra-entry'
       || game.nodeId === 'c6-storm-trace'
       || game.nodeId === 'c6-impossible-memory'
       || game.nodeId === 'c6-red-moot'
@@ -285,8 +289,7 @@ export function knownTruths(game: GameState) {
       || game.nodeId.startsWith('c6-ending-')) {
       truths.push('The Black Gate is opening beyond the steppe, while its nearest watch forts have gone dark.');
     }
-    if (game.nodeId === 'c6-impossible-memory'
-      || game.nodeId === 'c6-red-moot'
+    if (game.nodeId === 'c6-red-moot'
       || game.nodeId === 'c6-service-case'
       || game.nodeId === 'c6-trial-case'
       || game.nodeId === 'c6-oath-case'
@@ -338,7 +341,7 @@ export function knownTruths(game: GameState) {
   if (game.chapter === 8) {
     truths.push('Eight forts surround the Black Gate. Their signal fires feed one buried chain, and all eight normally work together to keep the Gate shut.');
 
-    if (game.nodeId !== 'c8-gate-ring') {
+    if (!['c8-gate-ring', 'c8-first-knock'].includes(game.nodeId)) {
       truths.push('Fourth Fort holds the only remaining old garrison. Its soldiers are called the Futureless because each sold one specific promise they would make later. They can still think, choose, refuse, and protect people.');
     }
     if (!['c8-gate-ring', 'c8-first-knock', 'c8-force-deployment', 'c8-occupied-fort', 'c8-futureless-reveal'].includes(game.nodeId)) {
