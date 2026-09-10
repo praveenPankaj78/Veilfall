@@ -154,7 +154,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('captured-attacker')
         ? 'Garran sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
         : 'The wounded man gives his name as Garran. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
-      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Garran’s company to wound the escort, drive you to Bellweather, and pull free an iron anchor called a road pin during the confusion.',
+      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Garran’s company to wound the escort and drive you to Bellweather.',
+      'While everyone fought, Ordan’s other soldiers were meant to pull free an iron anchor beneath the inn. They called it a road pin.',
       'The flour post creaks beneath your fist. Ordan wounded people under your protection because he knew you would carry them to the nearest shelter.',
       '“He needed the captain’s road seal and the living magic in the elf’s glass seed under the same roof,” Garran says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
       'A second horn answers the first. Garran looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
@@ -355,9 +356,11 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       body: 'The broken iron fragment still pulls toward a larger piece hidden near Harrowfen. That shortens this one journey. The town has not moved through time, and there is only one version of it.',
     },
     body: (state) => [
-      'Harrowfen rises after one mile. The chained fragment jerks toward its east market while your legs still ache from Bellweather, pulling this one journey shorter than the map allows.',
+      'Harrowfen rises after one mile. The chained fragment jerks toward its east market while your legs still ache from Bellweather.',
+      'Each jerk pulls your road forward. That is why you reached a town that should still be many miles away.',
       'The city rises from black canals on timber walks and stone islands. Rope bridges join tall houses painted blue, red, and gold. Market boats crowd the water below the gate.',
-      'Royal archers aim down at you. Ordan Vale stands on the wall in silver gloves. He holds the real route authority you signed in Greyhaven beside a royal warrant accusing you of using that mission to attack Bellweather and steal Crown iron.',
+      'Royal archers aim down at you. Ordan Vale stands on the wall in silver gloves. He holds the real route authority you signed in Greyhaven.',
+      'Beside it is a royal warrant. It claims you used that mission to attack Bellweather and steal Crown iron.',
       state.flags.includes('c2-chose-testimony')
         ? state.flags.includes('c2-saved-attacker')
           ? 'Garran forces himself upright in the wagon and names Ordan before the entire wall. A hidden archer fires at him. Mara knocks the bolt aside, turning his testimony into immediate danger.'
@@ -375,7 +378,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'West Gate, Harrowfen',
     objective: 'Earn limited entry without surrendering your wounded to Ordan.',
     body: (state) => [
-      'Gate Captain Elene comes through the small door with twelve guards. The route authority is genuine. You signed it. Ordan has attached witness statements claiming a captain in your red cloak robbed the archive, struck two residents, and used correct Warden commands.',
+      'Gate Captain Elene comes through the small door with twelve guards. The route authority is genuine. You signed it.',
+      'Ordan has attached witness statements. They claim a captain in your red cloak robbed the archive, struck two residents, and used correct Warden commands.',
       'Your signature sits beneath his lies in the same hard strokes you have used on a hundred lawful orders. Your thumb covers the name, but the archers do not lower their bows.',
       state.flags.includes('treaty-damaged')
         ? 'He also displays the damaged treaty pages and calls them proof that you sacrificed peace to seize the road weapon. The damage came from your attempt to save lives, but frightened citizens cannot see that choice from a piece of torn paper.'

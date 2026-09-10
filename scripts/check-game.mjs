@@ -724,7 +724,7 @@ const storyTermRules = {
   },
   'road pin': {
     use: /\broad pin\b/i,
-    introduction: /(?:words remain deep enough to read: road pin|stamped into the bracket: ROAD PIN|iron anchor called a road pin)/i,
+    introduction: /(?:words remain deep enough to read: road pin|stamped into the bracket: ROAD PIN|iron anchor beneath the inn.*called it a road pin)/is,
   },
   'Mileless Bridge': {
     use: /\bMileless Bridge\b/i,
@@ -788,7 +788,7 @@ const storyTermRules = {
   },
   Unsea: {
     use: /\bUnsea\b/i,
-    introduction: /calls the hidden current beneath erased roads the Unsea/i,
+    introduction: /calls the hidden (?:current|place) beneath erased roads the Unsea/i,
   },
   'Crown March': {
     use: /\bCrown March\b/i,
@@ -796,7 +796,7 @@ const storyTermRules = {
   },
   'dead command': {
     use: /\bdead command\b/i,
-    introduction: /Dead command means a voice inside the ancestor storm/i,
+    introduction: /(?:Dead command means a voice inside the ancestor storm|storm is also copying dead officers’ voices.*called dead command)/is,
   },
   'Marshal Teren Voss': {
     use: /\bMarshal Teren Voss\b/i,
@@ -963,7 +963,7 @@ if (!/Asterra’s Crown, your own/i.test(gatePolitics)
 const roadPinDiscoveryChecks = [
   ['c2-ledger', /words remain deep enough to read: road pin/i],
   ['c2-cellar', /stamped into the bracket: ROAD PIN/i],
-  ['c2-attacker', /iron anchor called a road pin/i],
+  ['c2-attacker', /iron anchor beneath the inn.*called it a road pin/is],
 ];
 for (const [nodeId, expected] of roadPinDiscoveryChecks) {
   if (!expected.test(renderedBody(nodeId, chapterTwoBase))) {
@@ -1480,6 +1480,22 @@ for (const [flag, expected] of bridgeRoutePayoffs) {
   const payoff = renderedBody('c4-stage-turn', { ...chapterFourBase, flags: [flag] });
   if (!expected.test(payoff)) failures.push(`Chapter Four route ${flag} has no later pursuit payoff`);
 }
+const brassMachineText = [
+  ...nodes['c4-brass-span'].body(chapterFourBase),
+  ...nodes['c4-brass-span'].choices.flatMap((choice) => [
+    choice.label,
+    choice.detail,
+    choice.advantage ?? '',
+    choice.result,
+  ]),
+].join(' ');
+if (!/gears close six times/i.test(brassMachineText)
+  || !/remain open for a few seconds/i.test(brassMachineText)
+  || !/step onto it during the pause.*get off before the teeth close/is.test(brassMachineText)
+  || !/counting each of the six closures.*safe seconds/is.test(brassMachineText)
+  || /Count to seven|missing beat|read their rhythm|make a road out of timing/i.test(brassMachineText)) {
+  failures.push('Chapter Four brass machine does not explain its danger and safe crossing in physical order');
+}
 const rookShortcutPayoff = renderedBody('c4-soldiers', {
   ...chapterFourBase,
   flags: ['c4-rook-shortcut-left-pursuit'],
@@ -1676,7 +1692,7 @@ const memoryGlassExplanation = [
   ...nodes['c5-memory-wall'].body(chapterFiveBase),
 ].join(' ');
 if (!/small scene moves without sound/i.test(memoryGlassExplanation)
-  || !/Vaor’s own memories.*bars of his prison/i.test(memoryGlassExplanation)) {
+  || !/(?:Vaor’s own memories.*bars of his prison|memories have become his cage)/i.test(memoryGlassExplanation)) {
   failures.push('Chapter Five does not plainly distinguish memory glass from alternate timelines');
 }
 const chapterFiveOpening = [
@@ -1713,8 +1729,9 @@ if (!/four sharp notes.*old keeper signal for a collapse/i.test(ashTunnel)) {
 const vaorMeeting = renderedBody('c5-vaor-wakes', chapterFiveBase);
 if (!/broken cage is the fire Nail/i.test(vaorMeeting)
   || !/warm light inside Vaor is his living ember/i.test(vaorMeeting)
-  || !/Distance fragment fits the lock on the fire Nail/i.test(vaorMeeting)
-  || !/does not make the fragment part of this Nail/i.test(vaorMeeting)
+  || !/fragment came from the Nail of Distance/i.test(vaorMeeting)
+  || !/not part of the fire Nail/i.test(vaorMeeting)
+  || !/all nine Nails use the same kind of lock/i.test(vaorMeeting)
   || /belongs to its outer ring/i.test(vaorMeeting)) {
   failures.push('Vaor’s meeting does not distinguish the Distance fragment, fire Nail, and living ember');
 }
@@ -2018,7 +2035,7 @@ if (!/hidden source.*does not tell you whether/is.test(unseaSourceFinding)
   || !/perfect copy.*proves depth, not identity/is.test(unseaMemoryFinding)
   || !/reaction looks like fear.*cannot prove/is.test(unseaFearFinding)
   || !/feeding the storm new knowledge now/i.test(unseaRecordFinding)
-  || !/does not prove that every face/i.test(nodes['c6-impossible-memory'].lesson?.body ?? '')) {
+  || !/do not know whether its faces are truly the dead or only copies/i.test(nodes['c6-impossible-memory'].lesson?.body ?? '')) {
   failures.push('Chapter Six grants the same Unsea conclusion regardless of the selected test');
 }
 const ilyraInterestChoice = nodes['c6-ilyra-entry'].choices.find(

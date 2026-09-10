@@ -375,7 +375,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     threat: 'Uneasy',
     art: 'crossroads',
     body: (state) => [
-      'The bridge divides around a stone wheel. Ordan’s blood marks all three exits because the roads keep exchanging pieces beneath him.',
+      'The bridge divides around a stone wheel. Each exit keeps moving to a different distant road, so Ordan’s blood appears on all three.',
       'One span crosses a white mountain under cold blue flame. One clings to a black sea cliff inside a thunderstorm. The last descends through huge brass wheels turning deep underground.',
       'Snow wind cuts your face from the first arch. Salt spray reaches you from the second. Beneath the third, brass teeth close hard enough to shake the junction.',
       has(state, 'c4-mara-escorted-brann')
@@ -405,7 +405,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         id: 'c4-choose-brass',
         label: 'Take the underground span.',
         detail: 'Enter a loud machine chamber with cover and unknown exits.',
-        advantage: 'The great wheels can break pursuit if you read their rhythm.',
+        advantage: 'The great wheels can cut off pursuit if you learn when the gears open.',
         addFlags: ['c4-brass-route'],
         result: 'Heat replaces rain. Brass teeth turn below the road, each one large enough to crush a wagon.',
         next: 'c4-brass-span',
@@ -522,23 +522,23 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'crossroads',
     body: (state) => [
-      'Brass wheels lift sections of road and carry them through the cavern. The noise enters your bones. A wrong step would place a body between metal teeth.',
-      'Count to seven. On the seventh beat, the teeth miss and one empty road plate passes safely between them.',
+      'Huge brass gears carry flat road platforms across the cavern. Each platform passes between two rows of metal teeth. When the teeth close, they could crush a wagon.',
+      'The gears close six times in a row. Then they remain open for a few seconds while the next platform passes between them. That platform is the safe way across. You must step onto it during the pause and get off before the teeth close again.',
       has(state, 'c4-mara-escorted-brann')
-        ? 'You count the missing beat Mara would normally call for you and force yourself to find the rhythm alone.'
-        : 'Mara places your hand against the small of her back so you can move on the same beat. Warmth, muscle, then empty air as she jumps to the next plate.',
-      'Rook watches the machine for three turns. His smile returns, which worries you more than the gears.',
+        ? 'Mara would normally call the safe moment for you. She is protecting Brann now, so you watch six hard closures and move when the teeth stay open.'
+        : 'Mara presses your hand against the small of her back. She counts each closing gear aloud. After six, she pulls you onto the open platform, and both of you jump off before the teeth meet again.',
+      'Rook watches the gears close and open three times. His smile returns, which worries you more than the gears.',
     ],
     choices: [
       {
         id: 'c4-brass-command-rhythm',
-        label: 'Call each movement like a marching drill.',
-        detail: 'Spend Command to move the whole group on one rhythm.',
-        advantage: 'A shared rhythm should keep the machine from separating anyone.',
+        label: 'Tell each person exactly when to step onto the safe platform.',
+        detail: 'Spend Command counting each of the six closures and calling the few safe seconds.',
+        advantage: 'Clear timing should move the entire group across without separating anyone.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c4-commanded-gears'],
-        result: 'You make a road out of timing. Every jump follows your count, and the last guard clears the teeth by a boot length.',
+        result: 'You count each closure aloud. When the teeth stay open, the group steps onto the moving platform in pairs. The last guard jumps clear just before the metal teeth meet.',
         next: 'c4-stage-turn',
       },
       {
@@ -967,7 +967,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-command-anchor-relay',
         label: 'Rotate every able fighter through the anchor.',
-        detail: 'Spend 2 Command sharing the strain without losing the rhythm.',
+        detail: 'Spend 2 Command changing holders before each fighter’s arms fail.',
         advantage: 'The relay should hold the road without one person bearing the full injury.',
         changes: { command: -2 },
         requires: { command: 2 },

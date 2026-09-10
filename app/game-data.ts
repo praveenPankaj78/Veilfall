@@ -377,7 +377,8 @@ const originalNodes: Record<string, StoryNode> = {
     introduces: ['health', 'resolve', 'command'],
     art: 'departure',
     body: () => [
-      'Rain has soaked the departure ledger before you finish the first name. You brace it against the green treaty wagon and write the people you must bring to Bellweather alive: Brann, Joren, Nilo, Mara, and an ambassador you have not yet met.',
+      'Rain has soaked the departure ledger before you finish the first name. You brace it against the green treaty wagon and write one duty at the top: bring everyone to Bellweather alive.',
+      'Beneath it, you list Brann, Joren, Nilo, Mara, and an ambassador you have not yet met.',
       'The last time you signed a list like this, two names came home beneath canvas. Your pen pauses above the final line until Sergeant Brann clears his throat.',
       '“Captain Vey, gate opens in half an hour.” Twenty Road Wardens wait behind him, boots deep in water and every face turned toward you. The job is yours: carry a peace treaty east before the low road floods.',
       'Beyond the raised iron gate, the King’s Road bends through wet hills and disappears under dark storm clouds. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
@@ -1930,7 +1931,9 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'You tell her about the version in Maelin’s book where Mara never reached the inn. Her usual smile does not return.'
         : 'You tell her enough about the night’s clues to make the danger clear. She listens without looking away from the yard.',
       '“I can face an arrow,” she says. “I hate this. A road can take a person, and the rest of us may remember a world where they were never beside us.”',
-      'She turns toward you. Damp hair has come loose around her face, and the open neck of her riding coat shows the warm line of skin above her collarbone. Her strength is usually in motion. Sitting this close makes you notice the quieter things: the curve of her mouth when she is worried, the steady rise of her breath, and the scar near her thumb resting on the floor between you.',
+      'She turns toward you. Damp hair has come loose around her face. The open neck of her riding coat shows warm skin above her collarbone.',
+      'Her strength is usually in motion. Sitting this close, you see the quieter things: the curve of her worried mouth and the steady rise of her breath.',
+      'The scar near her thumb rests on the floor between you.',
       'Her hand is close enough to touch. She waits for an honest answer, not an order.',
     ],
     choices: [

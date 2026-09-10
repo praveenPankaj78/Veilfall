@@ -201,7 +201,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     introducesStoryTerms: ['Crown March', 'dead command'],
     lesson: {
       title: 'Who is pursuing you',
-      body: 'The Crown March is an army of Asterra, Caelan’s own kingdom. Regent Malrec commands it in the ill Queen’s name. Most soldiers believe they are arresting a traitor and recovering a stolen weapon. Dead command means a voice inside the ancestor storm is copying a dead officer and issuing orders that trained soldiers recognise.',
+      body: 'The Crown March is an army of Asterra, Caelan’s own kingdom. Regent Malrec commands it in the ill Queen’s name. Most soldiers believe they are arresting a traitor and recovering a stolen weapon. The storm is also copying dead officers’ voices. Soldiers hear commands they were trained to obey. This is called dead command.',
     },
     body: (state) => [
       'The Crown army reaches the western horizon at dawn. Dark blue banners rise above six thousand soldiers, supply wagons, and cavalry. These are not foreign invaders. They wear the silver tree of Asterra, the kingdom you still serve.',
@@ -484,7 +484,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c7-taught-dead-command-test', 'c7-knows-malrec-emptied-gate'],
-        result: 'You reduce the test to three questions: where is the paper, where is the living messenger, and what is today’s password? Riders carry the rule across your line.',
+        result: 'You teach three questions. Where is the written order? Where is the living messenger? What is today’s password? Riders carry the rule across your line.',
         next: 'c7-sealed-orders',
       },
       {
@@ -1178,7 +1178,8 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     body: () => [
       'The Crown March forms for one final advance. They are your kingdom’s soldiers. Some are frightened. Some hate you. Most believe obedience is the only wall between Asterra and chaos.',
       'Teren can challenge the dead command, but he cannot make the army trust you. That part belongs to your actions.',
-      'You can trap the advance without slaughtering it, expose Malrec’s orders to every rank, or ask Teren to accept the duel rule he agreed to at the truce stones. Each victory will leave the soldiers with a different reason to stop.',
+      'You have three ways to stop the army. You can trap its advance without slaughtering it. You can show Malrec’s orders to every rank.',
+      'Or you can make Teren follow the duel rule he accepted at the truce stones. Each victory will give the soldiers a different reason to stop.',
       'Your instincts search for the plan that saves everyone and find no such road.',
     ],
     choices: [
@@ -1523,7 +1524,8 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
           ? 'No bodies lie beneath the last red wall. Malrec’s orders are ash, so the soldiers must decide from what they witnessed rather than what a seal can prove.'
           : 'The companion you carried from the storm remains beside you. Across the basin, empty places in the Crown ranks show the cost of that rescue.',
       'Teren removes Malrec’s badge from his cloak. He offers you the Crown March, but no law makes the choice simple. A full army could defend the eight forts around the Gate. It could also bring its obedience and suspicion with it.',
-      'You may lead every willing rank, take only a smaller company that chooses the road freely, or refuse formal followers and let your dangerous reputation reach the Gate before you do.',
+      'You may lead every willing rank. You may take only a smaller company that chooses the road freely.',
+      'Or you may refuse formal followers and let your dangerous reputation reach the Gate before you do.',
       'You feel the weight of Teren’s standard before you touch it. Accepting power will be easier than teaching it to question you.',
     ],
     choices: [

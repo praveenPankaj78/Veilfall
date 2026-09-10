@@ -288,7 +288,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'Your shoulders loosen as your breathing settles, but the pale edges of your burns do not close. Outside, blue flame keeps circling the glass. Until you leave its reach, rest will not restore the Health it has taken.',
       shelterWarmth(state),
       partingTool(state),
-      'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon imprisoned beside the fire Nail a century ago. A royal survey force broke the ancient outer seal two nights ago, woke him, and added new drill clamps when he resisted. Several soldiers died during that attempt. The survivors carried a smaller cutting frame higher.',
+      'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon imprisoned beside the fire Nail a century ago.',
+      'Two nights ago, royal soldiers broke the outer seal and woke him. When Vaor resisted, they fixed new drill clamps around his prison. Several soldiers died. The survivors carried a smaller cutting frame higher into the mountain.',
       'Sorin sketches three paths to the upper grave, then plants the charcoal point in the centre of the map. “We have time to settle one thing before we move,” he says.',
     ],
     choices: [
@@ -664,7 +665,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'vaor',
     body: (state) => [
       'The gallery walls are built from thousands of clear plates. Inside each one, a small scene moves without sound. You see a young dragon learning to fly, a village sharing its first winter fire, and a woman resting her hand against a bronze scale.',
-      'Sorin lays his palm against one moving scene. “Dragons stored important memories in mountain glass so later generations could witness them,” he says. “Someone stacked Vaor’s own memories over his living body and ran cold fire through them. They made his life into the bars of his prison.”',
+      'Sorin lays his palm against one moving scene. “Dragons stored important memories in mountain glass so later generations could witness them,” he says.',
+      '“Each plate around Vaor holds part of his past. His jailers stacked the plates over his living body and sent cold fire through them. When he struggles, the plates tighten. His own memories have become his cage.”',
       has(state, 'c5-oath-held-grave')
         ? 'The door remains whole behind you. Your Oath releases only after the last companion enters, and the closed ring delays the soldiers below.'
         : has(state, 'c5-broke-fire-channels')
@@ -926,7 +928,8 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'The descent ends above a dragon larger than Bellweather Inn. Black bronze scales show between glass plates. Blue fire runs through the plates like chains. One amber eye opens and finds you.',
       vaorResponse(state),
       'Lysara studies the iron cage fixed beneath Vaor’s breastbone. “That broken cage is the fire Nail,” she says. “The warm light inside Vaor is his living ember. They are not the same thing.”',
-      'The Nails were made as one set, so your Distance fragment fits the lock on the fire Nail. That does not make the fragment part of this Nail. Removing Vaor’s ember would restore heat to the valleys for a time, but doing it by force could kill him.',
+      'Your fragment came from the Nail of Distance. It is not part of the fire Nail, but all nine Nails use the same kind of lock. That is why the fragment fits here.',
+      'Removing Vaor’s living ember would warm the valleys for a time. Taking it by force could kill him.',
       vaorLockClue(state),
       'Vaor flexes the claw pinned beneath the nearest plate. A crack runs toward your boot. “Captain,” he says. “Will your first answer be a weapon?”',
     ],

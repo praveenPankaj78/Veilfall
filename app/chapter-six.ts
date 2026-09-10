@@ -898,12 +898,12 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     introducesStoryTerms: ['Unsea'],
     lesson: {
       title: 'The Unsea',
-      body: 'Ilyra calls the hidden current beneath erased roads the Unsea. Old accounts say lost lives leave impressions there. The test proves this storm receives new knowledge. It does not prove that every face is a conscious dead person or that every voice comes from the same place.',
+      body: 'Ilyra calls the hidden place beneath erased roads the Unsea. Old accounts say lost lives leave traces there. This storm can learn new facts. You still do not know whether its faces are truly the dead or only copies of them.',
     },
     body: (state) => [
       stormTestFinding(state),
       'Ilyra closes her hand around the thread before the test can pull farther. A line of blood reaches her upper lip. She wipes it away with one thumb and studies the red mark as part of the cost, not proof of success.',
-      '“Old records call the hidden current the Unsea,” she says. “It may carry impressions left by lives cut away from this world. What we proved is smaller and safer: this storm can receive knowledge after the people it resembles have died.”',
+      '“Old records call that hidden place the Unsea,” she says. “We do not know whether the dead truly live there. We know only this: after a person dies, this storm can still learn new things about our world.”',
       'Korran looks at the face of his mother above the garden. Hope hurts him more visibly than grief did. “Then she may be alive.”',
       '“Perhaps,” Ilyra says. “We have not proved it. Even if she is your mother, surviving somewhere else does not give her the right to rule you.”',
       has(state, 'c6-admitted-concord-crime')
@@ -968,7 +968,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       has(state, 'c6-ilyra-leads-evidence')
         ? 'Ilyra presents the Unsea evidence in her own name. She does not soften uncertainty or let the storm claim certainty either.'
         : 'Ilyra stands at the edge of the map. When someone mistakes possibility for proof, one lifted finger is enough to stop them.',
-      'The Moot offers three lawful ways to support your request. You may place your service before the clans. You may face a trial combat against their seasonal champion. Or you may make a public Oath that binds your own command to respect their decisions after the Gate is closed.',
+      'The Moot offers three lawful ways to support your request.',
+      'You may use the work you completed for the clans as proof of your character. You may fight their seasonal champion under local law.',
+      'Or you may make a public Oath to respect the clans’ decisions after the Gate is closed.',
       'The storm presses faces against the open sides of the hall. You feel the floor turn beneath your boots and know the clans are waiting for the argument you chose to make.',
     ],
     choices: [
@@ -1182,7 +1184,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     body: (state) => [
       'Before the clans can vote, every fire in the hall turns red. Ancestor faces fill the open walls. Korran’s mother, Dema’s grandfather, and a hundred honoured dead speak with one voice.',
       '“We remember the world stolen from you. Give us the ember. Turn from the Gate. Let the dead restore what the living surrendered.”',
-      'People kneel. Not all of them. Enough. The storm threads reach for the clan markers and begin dragging them across the map toward a decision nobody living made.',
+      'People kneel. Not all of them. Enough. Pale threads wrap around the clan markers and drag them toward the vote for retreat. No living leader touched them.',
       'Ilyra plants both hands on the table. Green white Threadread lines flare from her wrists. The effort shakes her composure and reveals the strain beneath it. “The voices share one command,” she says. “Break that command, and each voice must choose whether to remain.”',
       has(state, 'c6-ilyra-interest-acknowledged')
         ? 'Her eyes find yours through the light. The attraction between you is present and useless against the storm. Trust must come from what you do next.'

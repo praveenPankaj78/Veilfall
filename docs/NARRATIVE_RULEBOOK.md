@@ -72,6 +72,7 @@ The default story voice is modern spoken English. It should sound like a skilled
 - Prefer short or medium sentences. Use a long sentence only when its order of events remains obvious.
 - Name the person performing an action when two or more people are present. Avoid unclear uses of he, she, they, it, or this.
 - Describe movement in physical order. State where the danger begins, who it reaches, and what changes before asking the player to react.
+- Explain a moving hazard in four plain parts: what moves, what can hurt someone, when the safe opening appears, and what the character must do during it. Do not tell the player to find a beat, rhythm, pattern, or sequence unless the prose names exactly what is being counted and what physically changes.
 - Use comparisons only when they make an image easier to understand.
 - Keep fantasy terms, but explain each term with a familiar action or result before it matters in a choice.
 - Read difficult lines aloud and replace any wording that sounds formal merely to create a medieval mood.
@@ -275,6 +276,10 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 - Never use adjacent hyphens or an em dash in story files.
 - Do not give every scene the same four paragraph pattern of setting, interpretation, explanation, and menu summary.
 - Search each revision for repeated openings such as "You notice," "You feel," "You understand," and "You think." Keep only the phrasing that sounds like this protagonist in this exact moment.
+- Keep most sentences at thirty words or fewer. Split any longer sentence unless its meaning becomes less clear when divided.
+- Give each paragraph one main job: action, explanation, reaction, or decision. A short paragraph may combine two only when the connection is immediate.
+- Before naming a magical rule or machine, show what it does in physical terms. State what moves, what it can do to someone, and what the player must do next.
+- When a lesson explains a choice, reuse the same plain nouns in the choice labels and details. Do not make the player translate a new metaphor at the menu.
 
 ## Revision checklist
 

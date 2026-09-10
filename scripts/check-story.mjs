@@ -1,5 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
+import ts from 'typescript';
 
 const roots = ['docs', 'app'];
 const directFiles = [
@@ -17,6 +18,12 @@ const narratorShortcuts = [
   'You cannot know',
   'You hate the choice',
   'The scale settles inside you',
+];
+const opaqueHazardRules = [
+  { pattern: /\bCount to \w+\.\s+On the .* beat\b/i, label: 'hazard timing does not say what is being counted' },
+  { pattern: /\bmissing beat\b/i, label: 'hazard uses an unexplained missing beat' },
+  { pattern: /\bread (?:its|their|the) rhythm\b/i, label: 'hazard replaces physical instructions with an unexplained rhythm' },
+  { pattern: /\bmake a road out of timing\b/i, label: 'result replaces physical movement with an abstract timing metaphor' },
 ];
 const forbidden = [
   { value: String.fromCharCode(45, 45), label: 'two adjacent hyphens' },
@@ -54,6 +61,17 @@ const files = [...directFiles];
 for (const root of roots) files.push(...(await collect(root)));
 const uniqueFiles = [...new Set(files)];
 const narrationFiles = uniqueFiles.filter((file) => file.startsWith('app'));
+const storySourceFiles = [
+  'app/game-data.ts',
+  'app/adventure-revision.ts',
+  'app/chapter-four.ts',
+  'app/chapter-five.ts',
+  'app/chapter-six.ts',
+  'app/chapter-seven.ts',
+  'app/chapter-eight.ts',
+  'app/story-memory.ts',
+];
+const maximumStorySentenceWords = 30;
 
 const failures = [];
 for (const file of uniqueFiles) {
@@ -75,6 +93,28 @@ for (const file of narrationFiles) {
   for (const phrase of narratorShortcuts) {
     if (source.includes(phrase)) failures.push(`${file}: narrator interprets for the player with "${phrase}"`);
   }
+  for (const rule of opaqueHazardRules) {
+    if (rule.pattern.test(source)) failures.push(`${file}: ${rule.label}`);
+  }
+}
+
+for (const file of storySourceFiles) {
+  const source = await readFile(file, 'utf8');
+  const sourceFile = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true);
+  const visit = (node) => {
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
+      const sentences = node.text.split(/[.!?][”"']?(?:\s+|$)/);
+      for (const sentence of sentences) {
+        const words = sentence.match(/[A-Za-z]+(?:[’'][A-Za-z]+)*/g) ?? [];
+        if (words.length > maximumStorySentenceWords) {
+          const line = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile)).line + 1;
+          failures.push(`${file}:${line}: story sentence has ${words.length} words; maximum is ${maximumStorySentenceWords}`);
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
 }
 
 const pageSource = await readFile('app/page.tsx', 'utf8');

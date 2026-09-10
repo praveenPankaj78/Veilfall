@@ -866,8 +866,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'First comes a red line. Then the two halves move apart by the width of one hand. Through the gap, you see a city of black towers beneath an orange sky. A hot wind carries voices speaking in several languages.',
       'The yearly opening lasts one hour. It has happened seventeen times. Every earlier year, the gap widened. Tonight someone beneath the Gate is pulling on the stolen future promises to force it farther.',
       forceChoiceAtOpening(state),
-      'The eight signal fires answer, but the defence lacks one thing: people or power at every link. You can unite the remaining wardens, accept the Ash Compact’s white fire, or destroy one fort so its stored strength feeds the other seven.',
-      'Mortal keepers may fail if one frightened group breaks. White fire would strengthen every weak link, but the Compact would earn the embassy it requested. Breaking First Fort would give the chain enough heat and leave a permanent hole in Asterra’s defence.',
+      'The eight signal fires answer, but some links lack people or power. You have three ways to fill those gaps.',
+      'Mortal wardens can hold every fire, but one frightened group could break the chain. The Ash Compact can strengthen each weak fire, but it will earn the peaceful embassy it requested.',
+      'You can also destroy First Fort and send its stored heat to the other seven. That would leave a permanent hole in Asterra’s defence.',
     ],
     choices: [
       {
@@ -910,7 +911,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     art: 'futureless',
     body: () => [
       'The Gate listens for one grand promise. You give it none. Each fort chooses a keeper and one practical task instead.',
-      'Fourth Fort holds the weakest link. Ansel can carry it only if the Futureless are treated as wardens, not prisoners. The western officers will accept that if you place your authority behind him. The volunteers will accept it if Ansel can refuse you afterward.',
+      'Fourth Fort holds the weakest link. Ansel knows how to defend it, but Crown officers still treat the Futureless as prisoners.',
+      'If you support Ansel, the officers will obey him. If he remains free to refuse you afterward, the volunteers will trust that the choice was truly his.',
       'You feel eight groups waiting for coordination without surrendering choice. The red gap widens to the breadth of a face. A horn sounds from the city beyond.',
     ],
     choices: [
@@ -971,7 +973,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     body: () => [
       'Eight white embers wait beyond the crack. The Compact repeats its price: one peaceful embassy may enter after the Gate is stable, speak before witnesses, and leave unharmed if it keeps the same rules.',
       'It asks whether mortal names may be written into the agreement. Names make it easier to punish anyone who breaks the rules. They also give the Compact a lasting hold on every person listed.',
-      'You can rely on public witnesses, spend your strength cutting every mortal name from the agreement, or let the Compact hold the outer flame of Vaor’s ember until the embassy leaves. The voice asks, “What guarantee do you offer?”',
+      'The Compact asks what guarantee you will offer. You can rely on public witnesses. You can spend your strength cutting every mortal name from the agreement.',
+      'Or you can let the Compact hold the outer flame of Vaor’s ember until the embassy leaves.',
     ],
     choices: [
       {
@@ -1137,7 +1140,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     art: 'embassy',
     lesson: {
       title: 'The visible Oath ledger',
-      body: 'The Gate is pulling every active Oath at once. Four physical choices can break that pull: the key to Caelan’s old home, his Crown badge, his Warden whistle, or the hand of the companion who steps forward. Each saves the defence by placing a different future at risk.',
+      body: 'The Gate is pulling every active Oath at once. Four physical objects can break that pull: Caelan’s old inn key, his Crown badge, his Warden whistle, or a companion’s offered hand. Each object represents a different part of his future. Whichever one he uses will be placed at risk.',
     },
     body: (state) => [
       'The eight fires hold the gap at one person wide. Then the Gate changes its attack.',

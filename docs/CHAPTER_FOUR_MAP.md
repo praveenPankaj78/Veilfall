@@ -166,6 +166,8 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - Rook's bargain grants one warning rather than a repeating service;
 - relationship effects do not create attraction without an explicit player choice;
 - the final theatre uses one reed and one repeated visible scene.
+- the brass machine explains what closes, the six closures being counted, the short safe opening, and the required movement before presenting a choice;
+- no route uses unexplained beat or rhythm language as a substitute for physical instructions.
 
 ## Chapter artwork
 
