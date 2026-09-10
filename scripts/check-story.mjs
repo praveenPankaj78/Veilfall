@@ -40,6 +40,10 @@ const opaqueHazardRules = [
   { pattern: /\bspace between two closing hands\b/i, label: 'physical danger is replaced by an abstract travel metaphor' },
   { pattern: /\bthe two distances refuse to wait for each other\b/i, label: 'a direct rescue conflict is hidden behind an abstract distance metaphor' },
   { pattern: /\bwood splits and someone cries your name\b/i, label: 'an endangered person’s fate is hidden behind an unnamed cry' },
+  { pattern: /\bEvery lesson in field medicine gives you a different first patient\b/i, label: 'a concrete triage decision is hidden behind an abstract lesson' },
+  { pattern: /\bHis story becomes iron, rope, and soldiers pulling in front of you\b/i, label: 'a visible road mechanism is replaced by an abstract transformation' },
+  { pattern: /\bMaelin’s (?:cellar )?key\b/i, label: 'a choice assigns Maelin an item she never received' },
+  { pattern: /\broad seal\b/i, label: 'route authority is renamed after its canonical introduction' },
 ];
 const forbidden = [
   { value: String.fromCharCode(45, 45), label: 'two adjacent hyphens' },

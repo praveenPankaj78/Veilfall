@@ -457,12 +457,18 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('chose-high-ground')) consequences.push('Because you chose high ground, the survivors gained a defensible camp and a clear view of the folded road.');
   if (game.flags.includes('oath-bring-them-home')) consequences.push('Because you swore to bring everyone home, that duty now carries magical power and a binding cost.');
   if (game.flags.includes('c2-saved-nilo')) consequences.push('Because you used the medicine on Nilo, his injured leg can recover.');
-  if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand, living magic, and treaty work remain safe.');
+  if (game.flags.includes('c2-saved-lysara')) consequences.push('Because you treated Lysara, her hand and her control of the seed’s living magic remain safe.');
   if (game.flags.includes('c2-saved-attacker')) consequences.push('Because you treated Garran, he can testify publicly that Ordan hired the attackers.');
   if (game.flags.includes('c2-ledger-route')) consequences.push('Because you read Maelin’s ledger, you connected Ordan to the supplies used in the siege.');
   if (game.flags.includes('c2-cellar-route')) consequences.push('Because you inspected the cellar, you found the enemy rope and the shifted coastal road before the siege.');
   if (game.flags.includes('c2-attacker-route')) consequences.push('Because you questioned Garran, you connected the road pin to sealed Crown orders.');
-  if (game.flags.includes('c2-pin-broken')) consequences.push('Because the road pin broke, part of its power remains beneath Bellweather Inn.');
+  if (game.flags.includes('c2-wagon-axle-lost')) consequences.push('Because you used Tivik\'s locking mark, the broken wagon axle seated the pin without injuring you or damaging the treaty.');
+  if (game.flags.includes('c2-wagon-lost')) consequences.push('Because you used the unmarked wagon method, the supply wagon and some of its cargo remained at Bellweather.');
+  if (game.flags.includes('c2-pin-broken')
+    && !game.flags.includes('c2-wagon-axle-lost')
+    && !game.flags.includes('c2-wagon-lost')) {
+    consequences.push('Because you used the wagon method, the rear supply wagon remained at Bellweather after the road pin was seated.');
+  }
   if (game.flags.includes('c2-chose-testimony')) consequences.push('Because you carried testimony to Harrowfen, Garran or Jory’s papers challenged Ordan before the gate.');
   if (game.flags.includes('c2-chose-pin')) consequences.push('Because you carried the iron as your main proof, its pull exposed the danger beneath Harrowfen.');
   if (game.flags.includes('c2-oath-expose-crown')) consequences.push('Because you swore publicly against the Crown plot, Elene could test your promise at Harrowfen’s gate.');

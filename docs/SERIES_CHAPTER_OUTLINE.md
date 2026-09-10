@@ -54,7 +54,7 @@ Class pressure: Protection competes with investigation. The player chooses who r
 
 Romance movement: A quiet night watch lets Caelan and Mara name what each fears losing.
 
-Revelation: A road pin normally keeps road ends connected to the correct places. Ordan lured Caelan and Lysara there because their road authority and living treaty magic open the pin's two old locks.
+Revelation: A road pin normally keeps road ends connected to the correct places. Ordan lured Caelan and Lysara there because Caelan's route authority and the living magic in Lysara's glass seed open the pin's two old locks.
 
 End state: Caelan wins the siege and drives the road pin back into place. A broken fragment still pulls toward Harrowfen, where Ordan has gone to open a greater road.
 

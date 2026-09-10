@@ -87,6 +87,8 @@ Caelan orders the survivors to move before the attackers return. After one mile,
 
 The road has folded.
 
+When Lysara raises her glass seed toward the impossible sea, the seed cracks in her palm. A living shard cuts through her glove. This visibly establishes the hand injury and damaged seed that Chapter Two must treat.
+
 Mara asks one practical question: Which way is home now?
 
 The player makes the chapter's final choice:

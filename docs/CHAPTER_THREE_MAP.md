@@ -30,6 +30,8 @@ Ordan has arrived first with Caelan's genuine route authority, a royal warrant, 
 
 Chapter Two's closing choice changes the confrontation. Testimony lets Garran or Jory's papers challenge Ordan publicly but draws an assassin's bolt. The iron reacts to Harrowfen's hidden shard, proving the danger while frightening the guards. The public Oath pulls toward Ordan and allows Elene to test Caelan's promise.
 
+If Caelan drove the road pin home through strength, the back injury remains painful during the march and is visible in his first movements at the gate.
+
 ## Investigation routes
 
 The player chooses one concrete lead:

@@ -142,6 +142,7 @@ const { knownTruths, majorConsequences } = memoryExports;
 const {
   adventureChoiceUpdates,
   adventureNodeUpdates,
+  chapterTwoChoiceRevisionAudit,
   reviewedUnchangedChoiceIds,
 } = adventureExports;
 
@@ -319,10 +320,53 @@ for (const choiceId of reviewedUnchangedChoices) {
   if (adventureChoiceUpdates[choiceId]) failures.push(`Choice ${choiceId} is both revised and marked unchanged`);
 }
 
+const auditedChapterTwoChoiceIds = Object.values(chapterTwoChoiceRevisionAudit)
+  .flatMap((group) => group.ids);
+const duplicateChapterTwoAuditIds = auditedChapterTwoChoiceIds.filter(
+  (choiceId, index) => auditedChapterTwoChoiceIds.indexOf(choiceId) !== index,
+);
+for (const choiceId of new Set(duplicateChapterTwoAuditIds)) {
+  failures.push(`Chapter Two choice revision audit lists ${choiceId} more than once`);
+}
+const revisedChapterTwoChoiceIds = Object.keys(adventureChoiceUpdates)
+  .filter((choiceId) => choiceId.startsWith('c2-'));
+for (const choiceId of revisedChapterTwoChoiceIds) {
+  if (!auditedChapterTwoChoiceIds.includes(choiceId)) {
+    failures.push(`Chapter Two choice revision ${choiceId} has no mechanical audit classification`);
+  }
+}
+for (const choiceId of auditedChapterTwoChoiceIds) {
+  if (!adventureChoiceUpdates[choiceId]) {
+    failures.push(`Chapter Two choice audit references missing revision ${choiceId}`);
+  }
+}
+for (const group of Object.values(chapterTwoChoiceRevisionAudit)) {
+  if (!group.reason || group.reason.length < 40) {
+    failures.push('Chapter Two choice revision audit contains an unexplained classification');
+  }
+}
+for (const choiceId of chapterTwoChoiceRevisionAudit.explicitMechanics.ids) {
+  const revision = adventureChoiceUpdates[choiceId];
+  const ownsMechanicalField = [
+    'changes',
+    'requires',
+    'requiresRelationships',
+    'requiresFlags',
+    'showIfAnyFlags',
+    'showIfAllFlags',
+    'hideIfAnyFlags',
+    'addFlags',
+    'advantage',
+  ].some((field) => Object.hasOwn(revision, field));
+  if (!ownsMechanicalField || !Object.hasOwn(revision, 'result')) {
+    failures.push(`Meaning-changing Chapter Two revision ${choiceId} lacks an explicit mechanical field or result`);
+  }
+}
+
 const statKeyByLabel = Object.fromEntries(
   Object.entries(statLabels).map(([key, label]) => [label.toLowerCase(), key]),
 );
-const visibleCostPattern = /(Spend|Gain) ([0-9]+) (Health|Resolve|Command|Oathfire|Medicine|Wayfire)/gi;
+const visibleCostPattern = /(Spend(?:s)?|Gain(?:s)?) ([0-9]+) (Health|Resolve|Command|Oathfire|Medicine|Wayfire)/gi;
 for (const node of Object.values(nodes)) {
   for (const choice of node.choices) {
     const resourceCosts = Object.entries(choice.changes ?? {})
@@ -339,7 +383,7 @@ for (const node of Object.values(nodes)) {
     }
     for (const match of choice.detail.matchAll(visibleCostPattern)) {
       const stat = statKeyByLabel[match[3].toLowerCase()];
-      const direction = match[1].toLowerCase() === 'spend' ? -1 : 1;
+      const direction = match[1].toLowerCase().startsWith('spend') ? -1 : 1;
       const visibleChange = direction * Number(match[2]);
       const actualChange = choice.changes?.[stat] ?? 0;
       if (actualChange !== visibleChange) {
@@ -407,10 +451,15 @@ function stateKey(state) {
     'ridge-route',
     'inspection-route',
     'captured-attacker',
+    'c2-searched-inn',
     'c2-kept-crown-orders',
     'c2-trusted-maelin',
     'c2-has-pin-key',
     'c2-saved-attacker',
+    'c2-mara-below',
+    'c2-lysara-below',
+    'c2-maelin-below',
+    'c2-safe-removal',
     'c5-chose-mara-care',
     'c5-chose-lysara-care',
     'c5-chose-sorin-care',
@@ -727,7 +776,7 @@ const storyTermRules = {
   },
   'road pin': {
     use: /\broad pin\b/i,
-    introduction: /(?:words remain deep enough to read: road pin|stamped into the bracket: ROAD PIN|iron anchor beneath the inn.*called it a road pin)/is,
+    introduction: /(?:words remain deep enough to read: road pin|stamped into the bracket: ROAD PIN|called it a road pin.*iron anchor)/is,
   },
   'Mileless Bridge': {
     use: /\bMileless Bridge\b/i,
@@ -923,6 +972,57 @@ const damagedTreatyArrival = renderedBody('c2-arrival', {
 if (!/cracked treaty chest/i.test(damagedTreatyArrival)) {
   failures.push('Chapter Two does not preserve the damaged treaty chest');
 }
+const chapterTwoArrivalRoutes = [
+  {
+    name: 'silver road',
+    flags: ['chose-silver-road'],
+    expected: /hidden road rises from the flood/i,
+    forbidden: /Rainwatch Hill|Your Oath pulls/i,
+  },
+  {
+    name: 'high ground',
+    flags: ['chose-high-ground'],
+    expected: /path from Rainwatch Hill descends/i,
+    forbidden: /hidden road rises|Your Oath pulls/i,
+  },
+  {
+    name: 'Oath road',
+    flags: ['oath-bring-them-home'],
+    expected: /Oath pulls.*roped escort.*shallow road beneath the sea/is,
+    forbidden: /Rainwatch Hill|hidden road rises/i,
+  },
+];
+for (const route of chapterTwoArrivalRoutes) {
+  const arrival = renderedBody('c2-arrival', { ...chapterTwoBase, flags: route.flags });
+  if (!route.expected.test(arrival) || route.forbidden.test(arrival)) {
+    failures.push(`Chapter Two ${route.name} opening does not preserve its physical Chapter One ending`);
+  }
+}
+const foldedRoadSeedInjury = renderedBody('folded-road', initialState);
+const chapterTwoTriage = renderedBody('c2-triage', chapterTwoBase);
+if (!/seed cracks in her palm.*living shard cuts through her glove/is.test(foldedRoadSeedInjury)
+  || !/living magic belongs to Lysara’s glass seed/i.test(chapterTwoTriage)
+  || !/hand is how she guides the seed/i.test(chapterTwoTriage)) {
+  failures.push('Lysara’s seed injury or living magic rule lacks a visible and consistent cause');
+}
+if (!/Joren.*cleaned and stitched.*stable.*does not need the sealed medicine/is.test(chapterTwoTriage)) {
+  failures.push('Chapter Two triage does not account for Joren or explain why he is not a medicine candidate');
+}
+const lowHealthTriage = renderedBody('c2-triage', {
+  ...chapterTwoBase,
+  stats: { ...chapterTwoBase.stats, health: 2 },
+});
+const highHealthTriage = renderedBody('c2-triage', {
+  ...chapterTwoBase,
+  stats: { ...chapterTwoBase.stats, health: 8 },
+});
+if (!/cannot survive one/i.test(lowHealthTriage) || !/cuts beneath your coat.*can wait/is.test(highHealthTriage)) {
+  failures.push('Chapter Two triage does not preserve low and high Health states');
+}
+const uncapturedGarranTriage = renderedBody('c2-triage', chapterTwoBase);
+if (!/Maelin found him crawling from the cellar at dawn/i.test(uncapturedGarranTriage)) {
+  failures.push('Chapter Two does not establish where Garran came from when no attacker was captured on the road');
+}
 const knownPrisonerThreshold = renderedBody('c2-threshold', {
   ...chapterTwoBase,
   flags: ['captured-attacker'],
@@ -966,12 +1066,64 @@ if (!/Asterra’s Crown, your own/i.test(gatePolitics)
 const roadPinDiscoveryChecks = [
   ['c2-ledger', /words remain deep enough to read: road pin/i],
   ['c2-cellar', /stamped into the bracket: ROAD PIN/i],
-  ['c2-attacker', /iron anchor beneath the inn.*called it a road pin/is],
+  ['c2-attacker', /called it a road pin.*iron anchor/is],
 ];
 for (const [nodeId, expected] of roadPinDiscoveryChecks) {
   if (!expected.test(renderedBody(nodeId, chapterTwoBase))) {
     failures.push(`${nodeId} sets road pin knowledge without introducing the term`);
   }
+}
+const effectiveChapterTwoText = nodeOrder
+  .filter((nodeId) => nodeId.startsWith('c2-'))
+  .flatMap((nodeId) => {
+    const node = nodes[nodeId];
+    return [
+      node.kicker,
+      node.title,
+      node.location,
+      node.objective,
+      node.lesson?.title ?? '',
+      node.lesson?.body ?? '',
+      ...node.body(chapterTwoBase),
+      ...node.choices.flatMap((choice) => [choice.label, choice.detail, choice.result]),
+    ];
+  })
+  .join(' ');
+for (const nodeId of nodeOrder.filter((id) => id.startsWith('c2-'))) {
+  for (const choice of nodes[nodeId].choices) {
+    for (const [stat, value] of Object.entries(choice.changes ?? {}).filter(([, amount]) => (amount ?? 0) < 0)) {
+      const label = statLabels[stat];
+      const disclosedCost = new RegExp(`\\bspends? ${Math.abs(value)} ${label}\\b`, 'i');
+      if (!disclosedCost.test(choice.detail)) {
+        failures.push(`Chapter Two choice ${choice.id} does not disclose its ${Math.abs(value)} ${label} cost`);
+      }
+    }
+  }
+}
+if (/\broad seal\b/i.test(effectiveChapterTwoText)) {
+  failures.push('Chapter Two uses road seal instead of the canonical term route authority');
+}
+const routeAuthorityDefinitions = effectiveChapterTwoText.match(/route authority means your signed road order and Warden seal together/gi) ?? [];
+if (routeAuthorityDefinitions.length < 1) {
+  failures.push('Chapter Two does not plainly define the canonical term route authority');
+}
+const smallerRoadTests = renderedBody('c2-eleven-years', chapterTwoBase);
+const fullRoadUnlock = renderedBody('c2-road-pin', chapterTwoBase);
+if (!/smaller tests moved one doorway briefly.*could not hold a whole road open/is.test(smallerRoadTests)
+  || !/two stored signatures woke its locks.*drag whole road ends together/is.test(fullRoadUnlock)) {
+  failures.push('Chapter Two does not connect Ordan’s smaller tests to the later two-lock road movement');
+}
+const lysaraBelowLock = renderedBody('c2-road-pin', {
+  ...chapterTwoBase,
+  flags: ['c2-lysara-below'],
+});
+const lysaraUpstairsLock = renderedBody('c2-road-pin', {
+  ...chapterTwoBase,
+  flags: ['c2-mara-below'],
+});
+if (!/Lysara’s cracked seed beside you/i.test(lysaraBelowLock)
+  || !/Lysara is upstairs.*threshold stored her seed’s living magic/is.test(lysaraUpstairsLock)) {
+  failures.push('The road pin’s second lock does not work consistently with Lysara present or upstairs');
 }
 const roadPinCallbackChecks = [
   ['c2-ledger-route', /named in Ordan’s midnight note/i],
@@ -1081,6 +1233,154 @@ for (const nodeId of nodeOrder.filter((id) => id.startsWith('c2-'))) {
 const keyholeResult = nodes['c2-road-pin'].choices.find((choice) => choice.id === 'c2-study-keyhole')?.result ?? '';
 if (!/back into its socket/i.test(keyholeResult) || /remove|pull (?:it|the pin) out/i.test(keyholeResult)) {
   failures.push('The keyhole choice still describes removing the road pin instead of reseating it');
+}
+const cellarChoices = nodes['c2-cellar'].choices;
+const brokenBracket = cellarChoices.find((choice) => choice.id === 'c2-break-bracket');
+const latchRoute = nodes['c2-folded-cellar'].choices.find((choice) => choice.id === 'c2-use-pin-key');
+if (!/iron latch/i.test(brokenBracket?.result ?? '')
+  || !latchRoute?.requiresFlags?.includes('c2-has-pin-key')
+  || !/iron latch/i.test(`${latchRoute?.label} ${latchRoute?.result}`)
+  || /Maelin’s (?:cellar )?key/i.test(effectiveChapterTwoText)) {
+  failures.push('Chapter Two iron latch ownership or terminology is inconsistent');
+}
+const cutRopeDescent = renderedBody('c2-descend', {
+  ...chapterTwoBase,
+  flags: ['c2-cellar-route', 'c2-has-pin-key'],
+});
+if (!/rope you cut has been replaced by an enemy chain/i.test(cutRopeDescent)) {
+  failures.push('Chapter Two reuses the cellar rope after the player cuts it');
+}
+const intactRopeTunnel = renderedBody('c2-folded-cellar', {
+  ...chapterTwoBase,
+  flags: ['c2-cellar-route'],
+});
+const cutRopeTunnel = renderedBody('c2-folded-cellar', {
+  ...chapterTwoBase,
+  flags: ['c2-cellar-route', 'c2-has-pin-key'],
+});
+if (!/rope you found is knotted to a chain/i.test(intactRopeTunnel)
+  || !/replacement chain/i.test(cutRopeTunnel)) {
+  failures.push('Chapter Two does not show how the cellar rope becomes the enemy chain on both item routes');
+}
+const directRouteResult = nodes['c2-folded-cellar'].choices.find((choice) => choice.id === 'c2-use-rope-path')?.result ?? '';
+const directRouteCallback = renderedBody('c2-road-pin', { ...chapterTwoBase, flags: ['c2-rope-path'] });
+if (!/reach them before the next pull/i.test(directRouteResult)
+  || !/fastest path.*Two soldiers wait/is.test(directRouteCallback)) {
+  failures.push('The fastest Chapter Two tunnel route is called slow or hides its stated ambush risk');
+}
+const companionNavigationContracts = [
+  ['c2-mara-below', 'c2-follow-companion', /Mara.*boot edge.*arrow/is],
+  ['c2-lysara-below', 'c2-follow-lysara', /Lysara.*green thread/is],
+  ['c2-maelin-below', 'c2-follow-maelin-path', /Maelin.*support marks|Maelin.*builders’ ledge/is],
+];
+for (const [flag, expectedChoiceId, expectedCallback] of companionNavigationContracts) {
+  const state = { ...chapterTwoBase, nodeId: 'c2-folded-cellar', flags: [flag] };
+  const companionChoices = nodes['c2-folded-cellar'].choices
+    .filter((choice) => isChoiceVisible(choice, state))
+    .filter((choice) => choice.id.startsWith('c2-follow'))
+    .map((choice) => choice.id);
+  if (companionChoices.length !== 1 || companionChoices[0] !== expectedChoiceId) {
+    failures.push(`Chapter Two companion navigation is not exclusive for ${flag}`);
+  }
+  const selectedChoice = nodes['c2-folded-cellar'].choices.find((choice) => choice.id === expectedChoiceId);
+  const callbackState = selectedChoice ? applyChoice(state, selectedChoice) : state;
+  if (!expectedCallback.test(renderedBody('c2-road-pin', callbackState))) {
+    failures.push(`Chapter Two does not use ${flag} companion speciality in the pin approach`);
+  }
+}
+const safePreparationState = { ...chapterTwoBase, nodeId: 'c2-remove-pin', flags: ['c2-safe-removal'] };
+const unsafePreparationState = { ...chapterTwoBase, nodeId: 'c2-remove-pin', flags: [] };
+const safeRemovalIds = nodes['c2-remove-pin'].choices
+  .filter((choice) => isChoiceVisible(choice, safePreparationState))
+  .map((choice) => choice.id);
+const unsafeRemovalIds = nodes['c2-remove-pin'].choices
+  .filter((choice) => isChoiceVisible(choice, unsafePreparationState))
+  .map((choice) => choice.id);
+if (!safeRemovalIds.includes('c2-wagon-break') || safeRemovalIds.includes('c2-wagon-sacrifice')
+  || !unsafeRemovalIds.includes('c2-wagon-sacrifice') || unsafeRemovalIds.includes('c2-wagon-break')) {
+  failures.push('The safe-removal preparation does not produce its exact earned wagon method');
+}
+const preparedWagonChoice = nodes['c2-remove-pin'].choices.find((choice) => choice.id === 'c2-wagon-break');
+const fallbackWagonChoice = nodes['c2-remove-pin'].choices.find((choice) => choice.id === 'c2-wagon-sacrifice');
+if (preparedWagonChoice?.addFlags?.includes('treaty-damaged')
+  || preparedWagonChoice?.addFlags?.includes('c2-pin-broken')
+  || !preparedWagonChoice?.addFlags?.includes('c2-wagon-axle-lost')
+  || !fallbackWagonChoice?.addFlags?.includes('c2-wagon-lost')) {
+  failures.push('Chapter Two wagon methods inherit obsolete treaty or pin damage mechanics');
+}
+const removalChoices = nodes['c2-remove-pin'].choices;
+const removalSignatures = new Set(removalChoices.map((choice) => JSON.stringify({
+  changes: choice.changes ?? {},
+  flags: choice.addFlags ?? [],
+  visibility: {
+    required: choice.requiresFlags ?? [],
+    hidden: choice.hideIfAnyFlags ?? [],
+  },
+})));
+if (removalSignatures.size !== removalChoices.length) {
+  failures.push('A Chapter Two pin-repair choice has the same mechanical outcome as a sibling choice');
+}
+const removalClimax = renderedBody('c2-remove-pin', { ...chapterTwoBase, flags: ['c2-mara-below'] });
+const repairedAftermath = renderedBody('c2-last-testimony', chapterTwoBase);
+if (!/Mara’s arrows hold two soldiers.*mire hound/is.test(removalClimax)
+  || !/Brann reaches the chamber with two guards.*take the loose end of the enemy chain/is.test(removalClimax)
+  || !/rear supply wagon.*Maelin’s old coach ramp/is.test(removalClimax)
+  || !/beach, mountain, and distant rain pull away.*mire hound follows their blood scent/is.test(repairedAftermath)) {
+  failures.push('The Chapter Two climax does not continuously account for the defenders, chain, axle, soldiers, and mire hound');
+}
+if (!/Ordan.*tears a waxed map sheet.*eastern service passage/is.test(fullRoadUnlock)
+  || !/You saw Ordan escape.*waxed map page/i.test(repairedAftermath)) {
+  failures.push('Chapter Two claims Ordan escaped with a map page before Caelan observes both facts');
+}
+const chapterTwoEndingIds = ['c2-ending-testimony', 'c2-ending-pin', 'c2-ending-oath'];
+for (const endingId of chapterTwoEndingIds) {
+  const endingText = renderedBody(endingId, chapterTwoBase);
+  if (!/fragment/i.test(endingText) || !/pack|evidence|paper|orders|testimony/i.test(endingText)) {
+    failures.push(`${endingId} does not visibly carry the fragment and surviving evidence toward Harrowfen`);
+  }
+}
+if (!/Every piece of surviving evidence will travel to Harrowfen.*decides which proof the gate sees first/is.test(repairedAftermath)) {
+  failures.push('Chapter Two closing choice still implies that unselected evidence is abandoned');
+}
+const chapterThreeInjuryOpening = renderedBody('c3-arrival', {
+  ...chapterThreeBase,
+  flags: ['c2-caelan-injured'],
+});
+if (!/back injury from driving the pin home/i.test(chapterThreeInjuryOpening)) {
+  failures.push('Chapter Three drops Caelan’s lasting pin injury at the chapter boundary');
+}
+const chapterThreeSupplyLossOpening = renderedBody('c3-arrival', {
+  ...chapterThreeBase,
+  flags: ['c2-wagon-lost'],
+});
+const chapterThreeAxleLossOpening = renderedBody('c3-arrival', {
+  ...chapterThreeBase,
+  flags: ['c2-wagon-axle-lost'],
+});
+if (!/spare food and rope at Bellweather/i.test(chapterThreeSupplyLossOpening)
+  || !/saved its food and blankets/i.test(chapterThreeAxleLossOpening)) {
+  failures.push('Chapter Three does not distinguish the supply wagon sacrifice from the prepared axle loss');
+}
+const chapterTwoPreparationPayoffs = [
+  ['c2-organised-care', 'c2-medicine', /helpers give the clear reports you asked for/i],
+  ['c2-lysara-led-care', 'c2-medicine', /Lysara has checked each wound herself/i],
+  ['c2-demanded-answer', 'c2-eleven-years', /Jory’s warning is already in your hand/i],
+  ['c2-tested-ledger', 'c2-investigate', /ink and paper in Jory’s warning are real/i],
+  ['c2-knows-midnight-pattern', 'c2-bell', /copied ledger warned you/i],
+  ['c2-found-pantry-entry', 'c2-common-room-crisis', /pantry break you found earlier/i],
+  ['c2-united-versions', 'c2-descend', /hired blades who saw Ordan’s orders have lowered their weapons/i],
+  ['c2-maelin-secret-path', 'c2-descend', /service stair puts a stone wall/i],
+  ['c2-left-supplies', 'c2-last-testimony', /crushed the remaining bandages and lamp oil/i],
+  ['c2-proved-crown-tool', 'c2-last-testimony', /damaged point in the crown mark matches Ordan’s seal/i],
+  ['c2-offered-sable-safety', 'c2-last-testimony', /promise of protection still binds you/i],
+  ['c2-command-repair', 'c2-last-testimony', /timed pull left the pin whole/i],
+  ['c2-oath-repair-road', 'c2-last-testimony', /promise still burns through the road lines/i],
+  ['c2-caelan-injured', 'c2-last-testimony', /pain locks your back/i],
+  ['c2-chain-ambush', 'c2-last-testimony', /fastest path cost her blood|fastest path put new blood/i],
+];
+for (const [flag, nodeId, expected] of chapterTwoPreparationPayoffs) {
+  const payoff = renderedBody(nodeId, { ...chapterTwoBase, flags: [flag] });
+  if (!expected.test(payoff)) failures.push(`Material Chapter Two flag ${flag} has no later practical or narrative payoff`);
 }
 for (const chapter of [3, 4]) {
   const chapterPrefix = `c${chapter}-`;

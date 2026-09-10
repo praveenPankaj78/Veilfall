@@ -15,10 +15,12 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       state.flags.includes('chose-silver-road')
         ? 'The hidden road rises from the flood beneath your boots. Bellweather Inn stands ahead on a low hill, its windows bright through the rain.'
-        : 'The path from Rainwatch Hill ends at Bellweather Inn. A flooded ditch surrounds the yard, and warm light spills through the open door.',
+        : state.flags.includes('chose-high-ground')
+          ? 'The path from Rainwatch Hill descends to Bellweather Inn. A flooded ditch surrounds the yard, and warm light spills through the open door.'
+          : 'Your Oath pulls toward each survivor as you lead the roped escort along the shallow road beneath the sea. The stones climb from the water beside Bellweather Inn.',
       state.flags.includes('treaty-safe')
-        ? 'Mara supports Joren while Brann leads the horses. Lysara carries the sealed treaty chest. Tivik has found one dose of medicine, but the rest of your supplies are soaked.'
-        : 'Mara supports Joren while Brann leads the horses. Lysara carries the cracked treaty chest against her body. Tivik has found one dose of medicine, but the rest of your supplies are soaked.',
+        ? 'Mara supports Joren while Brann leads the horses. Lysara carries the sealed treaty chest with her injured hand bound against it. Tivik has found one dose of medicine, but the rest of your supplies are soaked.'
+        : 'Mara supports Joren while Brann leads the horses. Lysara carries the cracked treaty chest with her injured hand bound against it. Tivik has found one dose of medicine, but the rest of your supplies are soaked.',
       'Your eyes move from the open door to Joren’s dragging foot, Nilo’s wagon, and the blood running from beneath Lysara’s sleeve. Sixteen strides of flooded yard might as well be a mile.',
       'A pale beast moves through the water behind you. Its back is ridged like a crocodile, but its long front legs reach for the road stones. It smells the blood of your wounded.',
       'An older woman opens the inn door and raises a crossbow at the pale beast. “Mire hound,” she says, giving the creature a name. “Captain Vey, get them inside. The Crown men who attacked you are coming back.”',
@@ -55,16 +57,16 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       'Once the last traveller crosses the threshold, Maelin bars the door. The common room has already been cleared for the wounded. A dead Warden lies beneath a grey sheet near the stairs. This is Jory, the man who warned Maelin that you were coming.',
       state.flags.includes('captured-attacker')
-        ? 'Brann ties your wounded prisoner beside the pantry. He gives his name as Garran when he sees Jory’s body. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Garran is shaking with fever.'
-        : 'A wounded attacker is already tied beside the pantry. Maelin found him crawling from the cellar at dawn. He gives his name as Garran and carries the same kind of sealed orders as the road attackers. Nilo’s injured leg has gone cold below the knee, Lysara’s burned hand has begun to swell, and Garran is shaking with fever.',
+        ? 'Brann ties your wounded prisoner beside the pantry. He gives his name as Garran when he sees Jory’s body. Nilo’s injured leg has gone cold below the knee, Lysara’s cut hand has begun to swell, and Garran is shaking with fever.'
+        : 'A wounded attacker is already tied beside the pantry. Maelin found him crawling from the cellar at dawn. He gives his name as Garran and carries the same kind of sealed orders as the road attackers. Nilo’s injured leg has gone cold below the knee, Lysara’s cut hand has begun to swell, and Garran is shaking with fever.',
+      'Joren lies near the hearth with the cut in his side cleaned and stitched. Maelin says the wound is painful but stable. He does not need the sealed medicine.',
+      'The living magic belongs to Lysara’s glass seed. When it cracked beside the folded sea, a living shard cut her palm and carried green light into the wound. Her hand is how she guides the seed, so losing it would also cost her control of that magic.',
       state.stats.health <= 2
         ? 'Maelin sees the way you favour one side and presses two fingers against the blood beneath your coat. “You can command another fight,” she says. “You cannot survive one.”'
         : 'Maelin checks the cuts beneath your coat and decides they can wait until the three patients are stable.',
-      state.flags.includes('c2-organised-care')
-        ? 'The helpers repeat the tasks you gave them. For once, the room answers danger with clear reports instead of shouting.'
-        : 'People move between the beds without a plan until Mara begins assigning clean cloth and water.',
+      'People move between the beds without a plan until Mara begins assigning clean cloth and water.',
       'The sealed medicine can save only one of them from the worst danger. Water, clean cloth, and steady hands must help the others.',
-      'Your hand stops over each bed in turn. Every lesson in field medicine gives you a different first patient.',
+      'Your hand stops over each bed. Nilo may lose his leg, Lysara may lose her hand, and Garran may die before he can testify.',
       state.flags.includes('c2-carried-nilo')
         ? 'Because you carried Nilo directly to the fire, Maelin stopped the deepest bleeding early. He will survive without the bottle, although his leg remains in danger.'
         : 'Nilo lost more blood while the entrance was secured. He will live through the hour, but delaying treatment again may kill him.',
@@ -77,17 +79,22 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Bellweather Inn, Makeshift Ward',
     objective: 'Decide who receives the only strong medicine.',
     body: (state) => [
-      'Tivik places the small glass bottle in your palm. The liquid inside can close a deep wound, stop an infection, or save a badly burned hand. There is enough for one patient.',
+      'Tivik places the small glass bottle in your palm. The liquid inside can close a deep wound, stop an infection, or draw dangerous magic out of injured flesh. There is enough for one patient.',
       state.flags.includes('c2-carried-nilo')
         ? 'Nilo’s bleeding has slowed because you carried him straight to the fire. He will live without the dose, but Tivik may still have to take the leg.'
         : 'Nilo’s bandage darkens again. He will live if the bleeding stays controlled, but the damage may still cost him the leg.',
-      'Lysara tries to close her burned hand and cannot. Without the dose, she may lose the hand, the living magic inside it, and her ability to complete the border treaty.',
+      'Lysara tries to close her cut hand and cannot. Without the dose, she may lose the hand and her control of the living magic in the seed. That would also threaten the border treaty.',
       state.flags.includes('captured-attacker')
         ? 'Garran’s fever will kill him without the dose. His testimony may be the only proof strong enough to keep the Crown from executing you for the attack.'
         : 'Garran’s fever will kill him without the dose. He may be the only witness who can identify the person who ordered the attack.',
       state.flags.includes('c2-compressed-wound')
         ? 'Mara keeps one hand on the pressure bandage you tied together. Lysara hides her shaking fingers. Garran watches the bottle through the fever.'
-        : 'Mara presses harder on Nilo’s bandage. Lysara hides her shaking fingers. Garran watches the bottle through the fever.',
+        : state.flags.includes('c2-organised-care')
+          ? 'The helpers give the clear reports you asked for. Nilo is still bleeding, Lysara cannot close her hand, and Garran’s fever is rising.'
+          : 'Mara presses harder on Nilo’s bandage. Lysara hides her shaking fingers. Garran watches the bottle through the fever.',
+      state.flags.includes('c2-lysara-led-care')
+        ? 'Lysara has checked each wound herself. “Nilo’s leg, Garran’s life, my hand,” she says. “My title does not choose between them.”'
+        : 'Lysara rests the cracked seed on her knee. “My hand guides the treaty magic,” she says. “That is a consequence, Captain, not an order.”',
       'Tivik pulls the cork loose and waits. “Name the patient, Captain.”',
     ],
   },
@@ -99,10 +106,13 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       title: 'Distance, not time',
       body: 'Something beneath Bellweather is pulling distant road ends beside the inn. The coast, fields, and inn still exist in the present. The damaged road briefly makes faraway places touch as if they were neighbouring rooms.',
     },
-    body: () => [
-      'Maelin gives you Jory’s warning. The handwriting resembles yours, but the words do not sound like you. The order tells Maelin to shelter your party and open the cellar at midnight.',
+    body: (state) => [
+      state.flags.includes('c2-demanded-answer')
+        ? 'Jory’s warning is already in your hand. The writing resembles yours, but the words do not. It tells Maelin to shelter your party and open the cellar at midnight.'
+        : 'Maelin gives you Jory’s warning. The writing resembles yours, but the words do not. It tells her to shelter your party and open the cellar at midnight.',
       'You set your map beside Jory’s warning. His shortcut begins two days east. The moonlit coast Maelin saw through her stable door lies many days west. Neither place came from another time. The damaged road pulled both entrances beside the inn.',
-      'Maelin’s husband, Dain, vanished through that stable door during the first disturbance three weeks ago. Since then, she has lit a lamp at his place every night and watched each strange road in case one brings him home.',
+      'Three weeks ago, men in plain coats hammered iron hooks into the cellar floor. The stable door opened onto the moonlit coast for a few breaths, and Maelin’s husband stepped through before it closed. Those smaller tests moved one doorway briefly. They could not hold a whole road open.',
+      'Since Dain vanished, Maelin has lit a lamp at his place every night and watched each strange road in case one brings him home.',
       'Jory died before he could explain what lies beneath the cellar or why the forged warning demanded your arrival. His message proves only that someone prepared the inn and expected your escort before you chose a route.',
       'Your eyes keep returning to Dain’s lamp. Maelin catches you looking and turns the wick higher, as if daring the road to claim that place forever.',
       'Maelin lays Jory’s broken arrow on the table. A silver crown is stamped into its head. “Help me stop whoever is coming,” she says, looking at Dain’s lamp. “Then we learn what they wanted from you.”',
@@ -112,8 +122,11 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'Three Ways to Find the Attackers',
     location: 'Bellweather Inn',
     objective: 'Find how the enemy plans to enter before nightfall.',
-    body: () => [
+    body: (state) => [
       'Brann plants two tables against the front door. The wood jumps under the next blow, but the brace holds.',
+      state.flags.includes('c2-tested-ledger')
+        ? 'The ink and paper in Jory’s warning are real. The private Warden mark is not, giving you one forgery to compare with anything else you find.'
+        : 'Jory’s false warning remains beside Maelin’s lamp. Its handwriting copies yours, but its source is still unknown.',
       'Maelin’s guest ledger may reveal who prepared the attack. The cellar may show what the enemy changed beneath the inn. Garran may identify the officer who paid him.',
       'You begin to order three search teams. Brann looks toward the wounded and the words die before they leave your mouth.',
       'A chain scrapes beneath the cellar. Garran coughs behind the pantry door. Maelin opens the ledger and pushes it toward you. “Pick one,” she says.',
@@ -128,7 +141,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'The ledger shows six royal couriers stayed here during the last month. Five bought meals. Ordan Vale bought lamp oil, rope, butcher hooks, and every room facing the yard.',
       'A stable note says Ordan travelled with men wearing plain coats over royal armour. Your fingers flatten the page cut from the ledger; the pressure of its missing words remains on the sheet beneath it.',
       'Two words remain deep enough to read: road pin. The note calls it an iron anchor beneath the inn and lists a crew to pull it at midnight.',
-      'Mara leans close while you angle the page toward the lamp. Her damp hair brushes your cheek. “He planned for us before you chose a road,” she says. Her nail rests beneath the words road seal and green seed. “Looks as if he needed the captain and ambassador, not one exact route.”',
+      'Mara leans close while you angle the page toward the lamp. Her damp hair brushes your cheek. Her nail rests beneath the words route authority and green seed.',
+      '“Route authority means your signed road order and Warden seal together,” Mara says. “He needed the captain and ambassador, not one exact route.”',
       'Below you, the pale beast strikes the back wall hard enough to shake dust from the beams.',
     ],
   },
@@ -151,14 +165,20 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Make Garran reveal who ordered the ambush.',
     introducesStoryTerms: ['road pin'],
     body: (state) => [
-      state.flags.includes('captured-attacker')
-        ? 'Garran sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
-        : 'The wounded man gives his name as Garran. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
-      'He names Ordan Vale, a royal courier with silver gloves. Ordan paid Garran’s company to wound the escort and drive you to Bellweather.',
-      'While everyone fought, Ordan’s other soldiers were meant to pull free an iron anchor beneath the inn. They called it a road pin.',
-      'The flour post creaks beneath your fist. Ordan wounded people under your protection because he knew you would carry them to the nearest shelter.',
-      '“He needed the captain’s road seal and the living magic in the elf’s glass seed under the same roof,” Garran says. “Once both crossed the old stones, his tools could move the pin. He said the road would open a door for the Crown.”',
-      'A second horn answers the first. Garran looks toward the shutter. “When the inn bell rings twice, the front attack is cover. They will be going for the cellar.”',
+      state.flags.includes('c2-saved-attacker')
+        ? 'The medicine has broken Garran’s fever. He sits tied to a flour post and watches Jory’s arrow with clear, frightened eyes.'
+        : state.flags.includes('captured-attacker')
+          ? 'Garran sits tied to a flour post. Fever beads on his face, but fear wakes him when you place Jory’s arrow on the table.'
+          : 'The wounded man gives his name as Garran. Maelin tied him to the flour post after he crawled from the cellar. Fear wakes him when you place Jory’s arrow on the table.',
+      '“Who paid you?” you ask.',
+      '“Ordan Vale.” A cough folds Garran over the rope. “Silver gloves. Crown courier.”',
+      'Mara holds water to his mouth. He takes one swallow before you ask why the escort had to reach Bellweather.',
+      '“Not kill you. Hurt people. Make you need the nearest shelter.” Garran drags in a thin breath. “His first crews used hooks to open one doorway for seconds. They could not move the whole road.”',
+      'You feel anger press against your ribs. Ordan turned every wounded traveller outside into a tool for moving this road.',
+      'You ask what changed when your escort entered.',
+      '“Your route authority. Signed order and Warden seal. Then the living magic in the elf’s glass seed.” He looks at the floor. “Both crossed the old stones. The locks woke. His tools could move the pin.”',
+      '“He called it a road pin,” Garran adds. “Said the iron anchor keeps this mile tied to the right roads.”',
+      'A second horn answers the first. Garran flinches toward the shutter. “Two bell strokes. Front attack is cover. The real crew goes below.”',
     ],
   },
   'c2-night-watch': {
@@ -173,6 +193,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('flirted-mara')
           ? 'Her gaze travels over your torn mail with the same slow challenge she gave you at Eastwatch. This time the smile stops before it reaches her eyes.'
           : 'She pulls the final knot with her teeth, then leaves her fingers around your wrist for one heartbeat longer than the bandage requires.',
+      state.flags.includes('c2-found-cellar-note') || state.flags.includes('c2-heard-mara-version')
+        ? 'Mara taps the copied pressure marks inside your coat. “Ordan knew the cellar mattered,” she says. “We make that useful before he does.”'
+        : 'Mara asks what you found. You give her the shortest answer the evidence allows.',
       'A crossbow string snaps in the yard. Your quiet minute is ending.',
       state.relationships.mara.trust >= 5
         ? '“You keep carrying everyone as if the road will forgive you for dropping yourself,” she says. Her fingers close around your wrist. “Tell me what you are afraid of before we walk back downstairs.”'
@@ -186,10 +209,19 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       'The inn bell rings once. Maelin is nowhere near its rope. A moment later it rings again.',
       state.flags.includes('c2-attacker-route')
-        ? 'Garran’s warning becomes clear: the first ring begins the attack, and the second sends a hidden group toward the cellar.'
-        : state.flags.includes('c2-cloak-double')
-          ? 'The two strokes match the signal recorded in Ordan’s stable note.'
+        ? state.flags.includes('c2-ordan-countersign')
+          ? 'A soldier shouts Ordan’s private countersign after the second bell. Because Garran gave it to you, Brann turns two guards toward the cellar before the hidden crew arrives.'
+          : 'Garran’s warning becomes clear: the first ring begins the attack, and the second sends a hidden group toward the cellar.'
+        : state.flags.includes('c2-knows-bell-signal') || state.flags.includes('c2-cloak-double')
+          ? 'The two strokes match the signal in Ordan’s stable note. Because you found it early, Brann already has guards facing the cellar.'
+          : state.flags.includes('c2-knows-midnight-pattern')
+            ? 'The copied ledger warned you that the attack would begin at midnight. Brann already has the wounded behind the inner tables.'
           : 'Brann calls out movement at the front while Mara hears wood breaking behind the pantry. The two rings have opened two sides of the attack.',
+      state.flags.includes('c2-captain-promise')
+        ? 'Mara catches your eye across the room. “You promised we leave together,” she calls. “Give me the part you cannot carry.”'
+        : state.flags.includes('c2-shared-fear')
+          ? 'Mara moves before you can look toward every danger at once. “One person at a time,” she calls, returning your own fear as a plan.'
+          : 'Mara reaches the pantry before the second echo fades.',
       'Royal soldiers rush the front yard under dark cloaks. One cloak catches on the fence and tears open. Asterra’s crown shines beneath it, and the formation turns with the same drill you use at Eastwatch. Ordan has brought soldiers from your own kingdom.',
       'At the back wall, the pale mire hound climbs from the flooded ditch and drives its claws into the timber.',
       'A soldier in the yard shouts for the others to ignore the wounded and reach the cellar. Your attention drops from the blades at the front door to the chain scraping beneath the floor.',
@@ -207,7 +239,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'The inn shifts, but every living person remains a warm point in your awareness. You call two lost guards back before the moving hall can take them.'
           : state.flags.includes('c2-rope-line')
             ? 'The wounded remain behind a disciplined shield line. The mire hound reaches the pantry, but it cannot reach the beds.'
-            : 'The mire hound tears through the pantry wall. It is pale, long limbed, and blind except for a strip of red eyes along its neck. Lysara throws green fire across its path, but the spell cannot hold it for long.',
+            : state.flags.includes('c2-found-pantry-entry') || state.flags.includes('c2-tracked-double')
+              ? 'The mire hound strikes the pantry break you found earlier. Maelin’s braced shelves slow its long front legs, but its ridged body keeps forcing through. Its two low red eyes turn after the smell of blood.'
+              : 'The mire hound tears through the pantry wall. Its pale, ridged body follows two long front legs through the gap. Two low red eyes turn after the smell of blood. Lysara throws green fire across its path, but the spell cannot hold it for long.',
       'The cellar chain jerks hard enough to lift a floorboard. Brann loses one table at the front door while the mire hound drives its head through the pantry gap.',
       'Mara catches the rising board with her boot. “I can clear the stairs,” she calls. Brann shouts your name from the failing barricade.',
     ],
@@ -218,7 +252,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Choose one companion and reach the buried iron before the Crown soldiers.',
     body: (state) => [
       state.flags.includes('c2-cellar-route')
-        ? 'Brann can hold the common room. You must go below. The rope you found earlier is jerking through the broken arch as men in the tunnel pull at the buried iron.'
+        ? state.flags.includes('c2-has-pin-key')
+          ? 'Brann can hold the common room. You must go below. The rope you cut has been replaced by an enemy chain that jerks through the broken arch.'
+          : 'Brann can hold the common room. You must go below. The rope you found earlier is jerking through the broken arch as men in the tunnel pull at the buried iron.'
         : state.flags.includes('c2-ledger-route')
           ? 'Brann can hold the common room. You must go below. The rope listed among Ordan’s supplies now runs through the broken cellar arch and tightens around something buried in the road.'
           : 'Brann can hold the common room. You must go below. Garran’s warning leads you to the broken cellar arch, where an enemy chain is pulling at something buried in the road.',
@@ -227,6 +263,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'The shield wall remains intact behind you. Brann has enough guards to hold the wounded line until you return.'
         : state.flags.includes('c2-shielded-descent')
           ? 'You forced a path without losing anyone in the pantry. Brann seals the gap behind you and keeps the attackers above.'
+          : state.flags.includes('c2-united-versions')
+            ? 'The hired blades who saw Ordan’s orders have lowered their weapons. Brann turns them toward the Crown soldiers and gains time to protect the wounded.'
+            : state.flags.includes('c2-maelin-secret-path')
+              ? 'Maelin’s service stair puts a stone wall between your group and the pantry fight. Brann can defend the wounded without guarding your descent.'
           : state.flags.includes('c2-left-supplies')
             ? 'The barricade bought a head start, although the soldiers will reach the medical supplies when it falls.'
             : 'Fighting continues above. Every person you take below leaves Brann with one less defender.',
@@ -250,7 +290,11 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('c2-compared-memories')
           ? 'Jory’s route and your map agree on one narrow turn. You recognise it before the moonlit beach can pull you away from the true tunnel.'
           : 'The joined roads look equally solid, so each step must be tested before the group follows.',
-      'The mire hound drops into the tunnel behind you. Ahead, three soldiers drag a chain attached to a black iron spike as tall as your arm.',
+      state.flags.includes('c2-cellar-route')
+        ? state.flags.includes('c2-has-pin-key')
+          ? 'The mire hound drops into the tunnel behind you. Ahead, three soldiers drag the replacement chain attached to a black iron spike as tall as your arm.'
+          : 'The mire hound drops into the tunnel behind you. Ahead, the rope you found is knotted to a chain. Three soldiers drag it from a black iron spike as tall as your arm.'
+        : 'The mire hound drops into the tunnel behind you. Ahead, three soldiers drag a chain attached to a black iron spike as tall as your arm.',
       'The enemy chain bites into the spike and shifts it another finger width. The moonlit beach flashes white, then becomes a mountain ledge beneath your next step.',
     ],
   },
@@ -269,15 +313,31 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('c2-cellar-route')
           ? 'This is the road pin Tivik identified on the cellar bracket. Now you can see the buried anchor that bracket was meant to protect.'
           : state.flags.includes('c2-attacker-route')
-            ? 'This is the road pin Garran warned you about. His story becomes iron, rope, and soldiers pulling in front of you.'
+            ? 'This is the road pin Garran warned you about. The black iron stands in front of you while soldiers drag it loose with a chain.'
             : 'Tivik calls the iron a road pin and explains that it anchors this mile to the roads around it.',
-      state.flags.includes('c2-trusted-below')
-        ? 'Your companion’s chosen path avoided the falling western arch. You reach the chamber before the next enemy pull and keep the whole group on its feet.'
-        : 'Loose stones fall behind you. The slower approach leaves the enemy chain tight before you reach the socket.',
+      state.flags.includes('c2-rope-path')
+        ? state.flags.includes('c2-mara-below')
+          ? 'The enemy chain gave you the fastest path. Two soldiers wait behind a broken cart. Mara keeps them off you, but a blade cuts her upper arm before her arrow drives them down.'
+          : state.flags.includes('c2-lysara-below')
+            ? 'The enemy chain gave you the fastest path. Two soldiers wait behind a broken cart. Lysara blocks them with green thread, but the strain opens the cut in her palm again.'
+            : 'The enemy chain gave you the fastest path. Two soldiers wait behind a broken cart. Maelin holds them with her axe, but one blade cuts her shoulder before you reach the socket.'
+        : state.flags.includes('c2-key-found-path')
+          ? 'The iron latch opened a maintenance path around the ambush. No soldier reaches you, but the safer detour gives the enemy time for one more pull.'
+          : state.flags.includes('c2-trusted-mara-path')
+            ? 'Mara spots a boot edge behind the false wall and sends you around the ambush. Her arrow keeps the soldiers down while you reach the socket.'
+            : state.flags.includes('c2-trusted-lysara-path')
+              ? 'Lysara follows the green thread stored in her cracked seed. It bends around the false road and leads you to the socket before the mountain ledge falls.'
+              : state.flags.includes('c2-trusted-maelin-path')
+                ? 'Maelin reads the old support marks and finds the builders’ ledge. Her route keeps every foot on Bellweather stone while the false road drops away.'
+                : 'Loose stones fall behind you. The slower approach leaves the enemy chain tight before you reach the socket.',
       'Each pull on the enemy chain moves the pin another finger width. When it shifts, the beach beside you becomes a mountain pass for a breath, then returns. Distance is breaking around the chamber.',
-      'Two fresh lines glow around the socket. One answers your Warden seal. The other answers the green light in Lysara’s injured hand. Ordan needed both of you here before his tools could move the iron.',
-      'Your road seal burns against your chest. Ordan did not chase you here despite your duty. He wounded your people because he trusted that duty to bring you through Bellweather’s door.',
+      state.flags.includes('c2-lysara-below')
+        ? 'Two fresh lines glow around the socket. One answers your route authority, the signed order and Warden seal you carried inside. The other answers Lysara’s cracked seed beside you.'
+        : 'Two fresh lines glow around the socket. One answers your route authority. The other stays green although Lysara is upstairs. Tivik says the old threshold stored her seed’s living magic when she crossed it.',
+      'The first crews could tug the pin far enough to open one doorway for seconds. Once the two stored signatures woke its locks, Ordan’s chain could drag whole road ends together.',
+      'Your route authority grows warm inside your coat. Ordan wounded your people because he trusted your duty to bring them through Bellweather’s door.',
       'A crown has been scratched into the pin. Beneath it are Ordan’s initials and a fresh map line pointing east toward Harrowfen.',
+      'Across the chamber, a man in silver gloves tears a waxed map sheet from the wall. One soldier shouts, “Courier Vale, go.” Ordan disappears into the eastern service passage with the page.',
       'The enemy chain snaps tight again. Tivik wedges a hammer beneath the pin’s rim. “Questions after,” he says. “Drive it home.”',
     ],
   },
@@ -285,10 +345,19 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     title: 'Drive It Home',
     location: 'Bellweather Road Tunnel, Pin Chamber',
     objective: 'Reseat the road pin before the tunnel collapses.',
-    body: () => [
-      'The soldiers pull from the far side while you push. The iron is cold enough to numb your palms. Stone splits above your head and the mire hound charges through the falling dust.',
-      'Your palms skid on frost forming across the iron. Tivik points to the one locking tooth still inside the socket. Above, Brann’s guards pull on the chain while the wagon axle lies within reach beside the wall.',
-      'Heat gathers behind your breastplate where an Oath could take hold. The roof splits before you can draw breath, and a stone the size of your shield crashes beside the socket.',
+    body: (state) => [
+      state.flags.includes('c2-mara-below')
+        ? 'Mara’s arrows hold two soldiers behind the broken cart. When the mire hound lunges past them, she drives a burning shaft into the road before its long front legs.'
+        : state.flags.includes('c2-lysara-below')
+          ? 'Lysara stretches green thread across the arch. The mire hound follows the blood in her bandage and tangles its long front legs before it can reach you.'
+          : 'Maelin strikes a cracked support with her axe. A beam falls between the mire hound and the socket, forcing its ridged body into the narrow side of the tunnel.',
+      'Brann reaches the chamber with two guards. He left the remaining Wardens and the surrendered hired blades holding the wounded upstairs.',
+      'They take the loose end of the enemy chain from a fallen soldier and hook it around the pin. Behind them, the rear supply wagon waits on Maelin’s old coach ramp.',
+      'Tivik can knock the wagon’s axle free and use it as a hammer. If the axle breaks, the wagon and some supplies must remain at Bellweather.',
+      state.flags.includes('c2-safe-removal')
+        ? 'Because Tivik found the surviving locking tooth, he marks the eastern face. A strike there will guide the pin straight into its socket.'
+        : 'No one knows which face will guide the pin cleanly. The chain can still pull it upright, but using the axle may also wreck the wagon.',
+      'The soldiers haul from the far passage. Brann’s guards pull against them. The mire hound claws through the fallen beam as frost numbs your palms.',
     ],
   },
   'c2-last-testimony': {
@@ -297,9 +366,41 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Choose the proof you will carry into Harrowfen.',
     threat: 'Rising',
     body: (state) => [
-      'The pin slams into its socket. The beach, mountain, and distant rain vanish. Only the proper Eastmere tunnel remains.',
-      'A black sliver has sheared from the pin and lodged in the broken edge of its socket. It hums when you face east. Ordan escaped with the missing map page, but he left his orders, his crown mark, and proof that he used you and Lysara to unlock the pin.',
-      'You reach for both the iron and the papers. The straps of your soaked pack pull tight before either is secure.',
+      'The effect is instant. The beach, mountain, and distant rain pull away. Two Crown soldiers tumble back onto the distant road they used, and the mire hound follows their blood scent through the closing gap. The last soldier on Bellweather stone drops his sword.',
+      'Only the proper Eastmere tunnel remains. The main pin sits inside its socket, and a black sliver lies loose beside it. The sliver hums when you face east.',
+      state.flags.includes('c2-command-repair')
+        ? 'The timed pull left the pin whole and your people standing. Brann keeps the chain tight until Tivik confirms the socket is locked.'
+        : state.flags.includes('c2-oath-repair-road')
+          ? 'Your promise still burns through the road lines. The pin is seated, but the Oath now binds you to repair the damaged King’s Road.'
+          : state.flags.includes('c2-caelan-injured')
+            ? 'The pin is seated, but pain locks your back when you try to stand. Mara catches your arm before your knees reach the stone.'
+            : 'The pin is seated and the chamber has stopped moving.',
+      'You saw Ordan escape through the eastern passage with a waxed map page. He left his sealed orders, the crown cut into the pin, and the marks of both locks.',
+      state.flags.includes('c2-proved-crown-tool')
+        ? 'The damaged point in the crown mark matches Ordan’s seal. You wrap the marked rubbing with his orders so Harrowfen can compare them.'
+        : state.flags.includes('c2-garran-named-quartermaster')
+          ? 'Brann adds the name of the Warden quartermaster Garran exposed. The plot now reaches inside your own ranks.'
+          : state.flags.includes('c2-crown-voice')
+            ? 'Brann records Ordan’s private countersign beside Garran’s statement. A Crown court can test a detail the attackers should not know.'
+            : 'Brann records the names and orders you can prove without adding guesses.',
+      state.flags.includes('c2-offered-sable-safety')
+        ? 'Your promise of protection still binds you. Garran will travel inside the guarded wagon, whether or not his fever lets him speak again.'
+        : 'Garran travels as a guarded witness. No promise protects him beyond the law you can secure at Harrowfen.',
+      state.flags.includes('c2-chain-ambush')
+        ? state.flags.includes('c2-mara-below')
+          ? 'Mara binds the shallow cut on her upper arm. She can still draw her bow, but the fastest path cost her blood.'
+          : state.flags.includes('c2-lysara-below')
+            ? 'Lysara wraps her palm again where the cut reopened. The fastest path put new blood through the old bandage.'
+            : 'Maelin binds the shallow cut on her shoulder. The fastest path cost her blood, but her axe remains steady.'
+        : 'Your companion reaches the quiet chamber without another wound.',
+      state.flags.includes('c2-wagon-axle-lost') || state.flags.includes('c2-pin-broken')
+        ? 'The broken axle lies beside the socket. The rear supply wagon cannot leave Bellweather, so Brann moves its food and blankets into the surviving carts.'
+        : state.flags.includes('c2-wagon-lost')
+          ? 'The supply wagon lies broken on the coach ramp. Brann saves what he can carry, but food, blankets, and spare rope must remain behind.'
+          : 'The rear supply wagon remains intact on the coach ramp, ready to carry the wounded.',
+      state.flags.includes('c2-left-supplies')
+        ? 'After the last soldier surrenders, Brann tears down the table barrier. Most stores are safe, but boots crushed the remaining bandages and lamp oil.'
+        : 'The stores that survived the flood remain with the escort.',
       state.flags.includes('c2-saved-nilo')
         ? 'Nilo keeps his leg, but Lysara’s hand remains bound and Garran may not survive the road to Harrowfen.'
         : state.flags.includes('c2-saved-lysara')
@@ -307,7 +408,12 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           : 'Garran is clear enough to testify. Lysara’s hand remains bound, and Tivik warns Nilo that saving his life may still cost the injured leg.',
       state.flags.includes('c2-felt-road-lives')
         ? 'The distant lives you felt through the pin still burn at the edge of your Oath. The iron pulls toward the next danger while Garran’s breath catches behind you.'
-        : 'Maelin puts Jory’s warning in your left hand. Tivik wraps the iron for your right. The survivors gather close enough to hear any Oath you choose to make.',
+        : 'Maelin puts Jory’s warning in your left hand. Tivik wraps the iron sliver for your right. The survivors gather close enough to hear any Oath you choose to make.',
+      state.flags.includes('c2-kept-crown-orders')
+        ? 'You hand Brann the orders you kept inside your armour. He packs them with Jory’s warning while Mara adds every copied ledger page you recovered.'
+        : 'Brann takes Garran’s sealed orders from the guarded evidence pouch and packs them with Jory’s warning. Mara adds every copied ledger page you recovered.',
+      'Lysara secures the treaty chest, while Tivik ties the wrapped fragment inside your pack.',
+      'Every piece of surviving evidence will travel to Harrowfen. Your next choice decides which proof the gate sees first.',
       'Above, the surviving attackers flee. Harrowfen should be several days away, yet Maelin can see its canal lights beyond the next hill. The broken fragment is still pulling that one road close.',
       'Brann looks from the papers to the wrapped iron, then to the waiting survivors. “Which one speaks first at a Crown gate?”',
     ],
@@ -320,7 +426,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c2-saved-attacker')
         ? 'You leave Bellweather with Jory’s false warning, Ordan’s supply record, and Garran awake enough to name him. The proof is plain enough for any guard to understand.'
         : 'You leave Bellweather with Jory’s false warning and Ordan’s supply record. Garran fades in and out of fever, so Mara guards every breath he may still use to testify.',
-      'You put the papers inside your coat and keep Garran’s wagon in the centre of the column. Mara notices both choices and moves beside his exposed shoulder.',
+      'You put the papers inside your coat and keep Garran’s wagon in the centre of the column. The wrapped fragment remains tied inside your pack. Mara moves beside Garran’s exposed shoulder.',
       'Behind you, Maelin boards the broken wall while Brann protects the wounded. Ahead, Harrowfen’s towers rise beyond a field that should lead to three more days of road.',
       'Maelin leaves Dain’s lamp in the eastern window. She no longer waits beside it. She has given you his road journal and asked you to bring back an answer.',
       'The fragment in your pack pulls toward the town. At the eastern gate, royal archers turn their bows toward you. A silver gloved courier stands behind them.',
@@ -344,6 +450,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: () => [
       'You swear that the Crown officer behind the attack will answer before the people he endangered. The promise settles into your chest as a steady flame.',
       'Brann repeats the promise first. Then Mara, Maelin, and the surviving Wardens take it up: reach Harrowfen, find Ordan Vale, and show the town what he did.',
+      'Tivik ties the wrapped fragment inside your pack. Brann carries Jory’s warning and Garran’s sealed orders, while Lysara keeps the treaty chest close.',
       'Harrowfen waits only one mile east because the broken pin still pulls at its road. When the gate comes into view, Ordan is already on the wall, pointing at you and shouting the word traitor.',
     ],
   },
@@ -357,6 +464,14 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     },
     body: (state) => [
       'Harrowfen rises after one mile. The chained fragment jerks toward its east market while your legs still ache from Bellweather.',
+      state.flags.includes('c2-caelan-injured')
+        ? 'The back injury from driving the pin home pulls tight with every step. You shorten your stride before anyone can mistake pain for hesitation.'
+        : 'Your bruises have stiffened during the short march, but your balance holds when the fragment pulls again.',
+      state.flags.includes('c2-wagon-lost')
+        ? 'The wounded share the surviving blankets. Brann left spare food and rope at Bellweather when the supply wagon broke against the pin.'
+        : state.flags.includes('c2-wagon-axle-lost') || state.flags.includes('c2-pin-broken')
+          ? 'The rear wagon stayed at Bellweather, but Brann saved its food and blankets in the carts that remain.'
+          : 'The supply wagon follows with the wounded and the evidence kept under guard.',
       'Each jerk pulls your road forward. That is why you reached a town that should still be many miles away.',
       'The city rises from black canals on timber walks and stone islands. Rope bridges join tall houses painted blue, red, and gold. Market boats crowd the water below the gate.',
       'Royal archers aim down at you. Ordan Vale stands on the wall in silver gloves. He holds the real route authority you signed in Greyhaven.',
@@ -473,7 +588,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : state.flags.includes('c3-route-healer')
           ? 'Garran names Ordan as the man who paid for the Bellweather attack. The captured guard or Healer Iven confirms that Ordan watched the attempt to silence him. Ordan admits the men served under his sealed command.'
           : 'Varris holds up the brass bridge map and Ordan’s murder order. One proves Ordan bought the Mileless route. The other proves he meant to kill the seller. Ordan admits both orders came from his office.',
-      'You place your road seal beside Lysara’s damaged glass seed where the crowd can see both. “He needed these beneath Bellweather,” you say. “He paid for the wounds that drove us there, then put Renn in my cloak to make the blood mine.”',
+      'You place your signed route authority beside Lysara’s damaged glass seed where the crowd can see both. “He needed these beneath Bellweather,” you say. “He paid for the wounds that drove us there, then put Renn in my cloak to make the blood mine.”',
       'Elene hears the case against him, but Ordan’s soldiers still control the bridge winch. Smoke is already rising from the old watch house behind him.',
       '“One Crown road could reinforce every border before an invading army crosses it,” Ordan says. “You command people for their safety, Captain. You bind them with promises. I am willing to finish what men like you begin.”',
       'Your Oath scars tighten beneath your glove. You have ordered frightened people into danger and called it protection. Ordan notices the movement and smiles. He carries no matching scars.',
@@ -717,19 +832,26 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   'c2-oath-guided-entry': {
     result: 'Your Oath draws you toward Nilo beneath a wagon blanket. The wound in his leg has reopened.',
   },
+  'c2-lead-water': {
+    result: 'You keep your shield toward the water until the last horse reaches mud. Two low red eyes follow the blood running down the shield.',
+  },
   'c2-guard-rear': {
+    addFlags: [],
     result: 'The mire hound keeps its distance while it learns your scent. One claw cuts a red line into the final road stone.',
   },
   'c2-carry-first': {
     result: 'You carry Nilo directly to Maelin’s fire and hold his wound closed while Brann brings the final wagon through the doorway.',
   },
   'c2-search-threshold': {
+    changes: { command: -1 },
+    requires: { command: 1 },
+    addFlags: ['c2-searched-inn'],
     result: 'Mara clears the doorway, traces fresh scratches on the cellar door, and stops beside a grey sheet near the stairs. “One body,” she says. “Warden cloak.” Only then does she signal Brann forward.',
   },
   'c2-medicine-lysara': {
     label: 'Give the medicine to Lysara.',
-    detail: 'Spend 1 Medicine. Save her hand, living magic, and ability to complete the treaty.',
-    result: 'The green lines withdraw from Lysara’s arm. She closes her fingers around yours and says, “I know what this cost.”',
+    detail: 'Spend 1 Medicine. Save her hand and her ability to guide the seed’s living magic.',
+    result: 'The swelling leaves Lysara’s hand. Green light withdraws from the wound into the cracked seed, and she closes her fingers around yours. “I know what this cost.”',
   },
   'c2-medicine-nilo': {
     label: 'Give the medicine to Nilo.',
@@ -744,16 +866,39 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   'c2-ledger-route': {
     label: 'Read the guest ledger with Maelin.',
     detail: 'Spend 1 Resolve. Secure written evidence of who prepared the inn before the attack.',
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    addFlags: ['c2-ledger-route'],
     result: 'The ledger points to Ordan’s unusual purchases and the rooms he reserved around the yard.',
+  },
+  'c2-cellar-route': {
+    label: 'Inspect the shaking cellar with Tivik.',
+    detail: 'Spend 1 Health. Search the most dangerous part of the building without earlier preparation.',
+    changes: { health: -1 },
+    requires: { health: 1 },
+    hideIfAnyFlags: ['c2-searched-inn'],
+    addFlags: ['c2-cellar-route'],
+    result: 'A loose step rolls beneath your boot. You wrench your knee clear and spend precious strength bracing the moving stair for Tivik.',
+  },
+  'c2-cellar-route-prepared': {
+    changes: {},
+    requires: undefined,
+    requiresFlags: ['c2-searched-inn'],
+    showIfAllFlags: ['c2-searched-inn'],
+    addFlags: ['c2-cellar-route'],
+    result: 'The scratches lead to a loose step. Tivik braces it before either of you puts weight on the moving stone below.',
   },
   'c2-question-name': {
     label: 'Ask who warned Maelin about you.',
-    detail: 'Get the facts before trusting the message.',
+    detail: 'Get the facts before trusting the message. Gain 1 Resolve.',
+    changes: { resolve: 1 },
+    addFlags: ['c2-demanded-answer'],
     result: 'Maelin shows you Jory’s false warning and the royal arrow that killed him.',
   },
   'c2-believe-maelin': {
     label: 'Accept Maelin’s account and study Jory’s warning.',
     detail: 'Trust the innkeeper and focus on the forgery.',
+    addFlags: ['c2-trusted-maelin'],
     result: 'Maelin gives you the false order. Its handwriting copies yours, but its language does not.',
   },
   'c2-compare-memories': {
@@ -775,12 +920,17 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c2-ask-missing-mara': {
     label: 'Ask Mara to read the missing page marks.',
-    detail: 'Available when Mara trusts you with the risk. Work close together to recover the cut writing.',
+    detail: 'Spend 1 Resolve. Work close together to recover the cut writing before the attack.',
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    addFlags: ['c2-found-cellar-note', 'c2-found-road-pin-term'],
     result: 'Mara reads enough of the pressure marks to find Ordan’s note about the cellar entrance.',
   },
   'c2-study-cloak-version': {
     label: 'Study the stable note about plain cloaks.',
-    detail: 'Learn how royal soldiers plan to hide among travellers.',
+    detail: 'Learn how royal soldiers plan to hide among travellers. Gain 1 Resolve.',
+    changes: { resolve: 1 },
+    addFlags: ['c2-cloak-double', 'c2-knows-bell-signal', 'c2-found-road-pin-term'],
     result: 'You learn the attackers wear dark travel coats over royal armour and use the bell as their signal.',
   },
   'c2-mark-moving-stone': {
@@ -791,21 +941,32 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   'c2-break-bracket': {
     label: 'Cut the enemy rope from the iron bracket.',
     detail: 'Spend 1 Health to slow their pull on the road pin.',
+    changes: { health: -1 },
+    requires: { health: 1 },
+    addFlags: ['c2-has-pin-key', 'c2-found-road-pin-term'],
     result: 'The rope snaps. You wrench the bracket’s iron latch free with it; the latch is shaped like a heavy key. The attackers must reach the pin chamber and attach another chain.',
   },
   'c2-follow-footsteps': {
     label: 'Follow the fresh boot prints.',
-    detail: 'Learn where the attackers entered, but move closer to danger.',
+    detail: 'Spend 1 Resolve. Learn where the attackers entered while moving closer to danger.',
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    addFlags: ['c2-found-pantry-entry', 'c2-found-road-pin-term'],
     result: 'The prints lead from the shifted coastal road to a concealed break in the pantry wall.',
   },
   'c2-demand-employer': {
     label: 'Demand proof that Ordan gave the order.',
     detail: 'Spend 1 Resolve. Gain a detail only Ordan’s courier office could confirm.',
+    changes: { resolve: -1, command: 1 },
+    requires: { resolve: 1 },
+    addFlags: ['c2-crown-voice', 'c2-ordan-countersign', 'c2-found-road-pin-term'],
     result: 'Garran repeats Ordan’s private countersign and describes the silver gloves that never left his hands. Brann writes down every word.',
   },
   'c2-offer-protection': {
     label: 'Offer Garran protection for the names of Ordan’s helpers.',
     detail: 'Make a normal promise and learn how deeply the plot reaches into the Wardens.',
+    changes: {},
+    addFlags: ['c2-offered-sable-safety', 'c2-garran-named-quartermaster', 'c2-found-road-pin-term'],
     result: 'Garran studies your face before naming a Warden quartermaster who supplied the dark cloaks. “Ordan has people inside your ranks,” he says.',
   },
   'c2-take-orders': {
@@ -839,16 +1000,22 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     result: 'You drive the mire hound back with shield and fire while Brann secures the room.',
   },
   'c2-give-maelin-key': {
-    label: 'Give Maelin the cellar key and trust her plan.',
-    detail: 'Let the innkeeper use her knowledge of the building.',
+    label: 'Ask Maelin to open her hidden service stair.',
+    detail: 'Use the trust you earned and let the innkeeper choose a path through her own building.',
+    changes: {},
+    requires: undefined,
+    requiresFlags: ['c2-trusted-maelin'],
+    addFlags: ['c2-maelin-secret-path'],
     result: 'Maelin opens a narrow service stair, giving you a route below that avoids the pantry fight.',
   },
   'c2-block-versions': {
     label: 'Block the cellar stairs with tables and iron hooks.',
-    detail: 'Spend 1 Command. Delay the soldiers while you prepare to descend.',
-    changes: { command: -1 },
-    requires: { command: 1 },
-    result: 'The barrier will not hold forever, but it buys enough time to choose a companion.',
+    detail: 'Spend no stat. Delay the soldiers, but leave the medical stores on their side of the barrier.',
+    changes: {},
+    requires: undefined,
+    advantage: 'The barrier should buy enough time to choose a companion without spending a resource.',
+    addFlags: ['c2-left-supplies'],
+    result: 'The barrier buys time to choose a companion. Food, blankets, and the remaining medical stores are trapped on the soldiers’ side.',
   },
   'c2-take-maelin': {
     label: 'Take Maelin through the tunnel beneath her inn.',
@@ -857,51 +1024,116 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
   'c2-use-rope-path': {
     label: 'Follow the enemy chain toward the pin.',
-    detail: 'Take the fastest path and risk meeting their strongest fighters.',
-    result: 'The chain leads directly to the pin chamber and two soldiers waiting in ambush.',
+    detail: 'Take the fastest path. Reach the pin before the next pull, but your companion may be hurt in the waiting ambush.',
+    changes: { command: 1 },
+    requires: undefined,
+    requiresFlags: undefined,
+    addFlags: ['c2-rope-path', 'c2-chain-ambush'],
+    result: 'The chain leads directly to the pin chamber. Two soldiers wait behind a broken cart, but you reach them before the next pull.',
   },
   'c2-use-pin-key': {
-    label: 'Use Maelin’s iron cellar key on the old side gate.',
+    label: 'Use the iron latch on the old maintenance gate.',
     detail: 'Take a safer route that costs precious time.',
-    result: 'The old key opens a maintenance path around the ambush, but the pin shifts again while you cross.',
+    changes: { resolve: 1 },
+    requires: undefined,
+    requiresFlags: ['c2-has-pin-key'],
+    addFlags: ['c2-key-found-path'],
+    result: 'The latch fits the maintenance gate. You avoid the ambush, but the pin shifts again while you cross.',
   },
   'c2-follow-companion': {
-    label: 'Trust your companion to choose the path.',
-    detail: 'Give up control and gain the advantage of their speciality.',
-    result: 'You follow the hand on your forearm when your eyes insist the road turns elsewhere. The false stones drop away behind your next step, and the pin chamber opens ahead.',
+    label: 'Trust Mara to read the ambush ahead.',
+    detail: 'Spend 1 Resolve. Follow her eye for hidden movement when your own senses disagree.',
+    advantage: 'Mara’s scouting should find a path around the waiting soldiers.',
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    requiresFlags: ['c2-mara-below'],
+    showIfAllFlags: ['c2-mara-below'],
+    addFlags: ['c2-trusted-mara-path'],
+    result: 'Mara catches a boot edge behind a false wall. She draws the ambush toward her arrow while you cross on Bellweather stone.',
+  },
+  'c2-follow-lysara': {
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    requiresFlags: ['c2-lysara-below'],
+    showIfAllFlags: ['c2-lysara-below'],
+    addFlags: ['c2-trusted-lysara-path'],
+    result: 'Lysara holds the cracked seed low. Its green thread bends around a road that looks solid and marks the stones that remain beneath your feet.',
+  },
+  'c2-follow-maelin-path': {
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    requiresFlags: ['c2-maelin-below'],
+    showIfAllFlags: ['c2-maelin-below'],
+    addFlags: ['c2-trusted-maelin-path'],
+    result: 'Maelin finds old chisel marks beneath the plaster. She follows the builders’ ledge while the moonlit stones split below it.',
   },
   'c2-study-keyhole': {
+    changes: { command: 1 },
+    addFlags: ['c2-safe-removal'],
     result: 'Tivik finds one locking tooth still intact. A strike against the eastern face will guide the pin back into its socket instead of splitting the road.',
   },
   'c2-command-pull': {
     label: 'Command everyone to drive the pin down together.',
     detail: 'Spend 2 Command. Time the strike between the enemy pulls.',
-    result: 'Your order brings guards, prisoner, and innkeeper into one effort. The pin drops into its socket.',
+    changes: { command: -2 },
+    requires: { command: 2 },
+    addFlags: ['c2-command-repair'],
+    result: 'Your count reaches Brann, Tivik, the guards, and your chosen companion. They pull and strike together, and the pin drops into its socket.',
   },
   'c2-strength-pull': {
     label: 'Force the pin into place with your own strength.',
     detail: 'Spend 3 Health. Succeed now and accept a lasting injury.',
+    changes: { health: -3, resolve: 1 },
+    requires: { health: 3 },
+    addFlags: ['c2-caelan-injured'],
     result: 'You drive the iron home. Pain tears across your back, but the distant roads vanish from the tunnel.',
   },
   'c2-oath-pull': {
     label: 'Bind your Oath to the road and command it to hold.',
     detail: 'Spend 2 Resolve. Gain 3 Oathfire and bind your promise to the repaired road.',
+    changes: { resolve: -2, oathfire: 3 },
+    requires: { resolve: 3 },
+    addFlags: ['c2-oath-repair-road'],
     result: 'Oathfire runs through the carved road lines. The iron answers your promise and locks into place.',
   },
   'c2-wagon-break': {
     label: 'Use a wagon axle as a hammer.',
-    detail: 'Break valuable equipment to save your strength.',
-    result: 'The axle shatters on the final blow. The pin seats firmly, but a black piece shears from its head and breaks deeper stone beneath the socket.',
+    detail: 'Spend no stat. Break the supply wagon’s axle and leave that wagon at Bellweather.',
+    advantage: 'Tivik’s locking mark should let the axle seat the pin without risking Caelan or the treaty.',
+    changes: {},
+    requires: undefined,
+    requiresFlags: ['c2-safe-removal'],
+    showIfAllFlags: ['c2-safe-removal'],
+    addFlags: ['c2-wagon-axle-lost'],
+    result: 'You strike the eastern mark Tivik found. The axle shatters on the final blow, and the pin seats firmly inside its socket.',
+  },
+  'c2-wagon-sacrifice': {
+    changes: {},
+    requires: undefined,
+    requiresFlags: undefined,
+    hideIfAnyFlags: ['c2-safe-removal'],
+    addFlags: ['c2-wagon-lost'],
+    result: 'The supply wagon crashes down the coach ramp. Its frame drives the pin home, then breaks across the socket.',
   },
   'c2-carry-testimony': {
-    label: 'Carry Jory’s warning and the living testimony.',
-    detail: 'Choose evidence ordinary guards can understand.',
-    result: 'You leave with a clear account of Ordan’s attack and people willing to repeat it.',
+    label: 'Present Jory’s warning and Garran’s testimony first.',
+    detail: 'Lead with evidence ordinary guards can understand. All other proof still travels with you.',
+    changes: { wayfire: 7 },
+    addFlags: ['c2-chose-testimony'],
+    result: 'You place Jory’s warning above the other papers. Garran rides under guard, and the wrapped fragment remains tied inside your pack.',
   },
   'c2-carry-pin': {
-    label: 'Carry the broken iron fragment.',
-    detail: 'Choose physical proof of the road weapon.',
-    result: 'Lysara wraps the fragment. It pulls east toward Harrowfen as soon as you step outside.',
+    label: 'Present the broken iron fragment first.',
+    detail: 'Lead with physical proof of the road weapon. All testimony and papers still travel with you.',
+    changes: { wayfire: 7 },
+    addFlags: ['c2-chose-pin'],
+    result: 'Lysara checks the living cloth around the fragment. Brann packs every surviving paper beneath it, and the whole evidence bundle turns toward Harrowfen.',
+  },
+  'c2-swear-crown-truth': {
+    changes: { resolve: -2, oathfire: 3, wayfire: 8 },
+    requires: { resolve: 3 },
+    addFlags: ['c2-oath-expose-crown'],
+    result: 'The promise catches fire inside your chest. Tivik secures the fragment in your pack while Brann carries every surviving paper behind your public Oath.',
   },
   'c3-test-signature': {
     label: 'Accept responsibility for the escort, but deny Ordan’s crimes.',
@@ -1129,14 +1361,71 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   },
 };
 
+export const chapterTwoChoiceRevisionAudit = {
+  retainedMechanics: {
+    reason: 'The active wording changed, but the base destination, costs, requirements, visibility, flags, relationship effects, and advantage were checked and remain correct.',
+    ids: [
+      'c2-oath-guided-entry',
+      'c2-lead-water',
+      'c2-carry-first',
+      'c2-medicine-lysara',
+      'c2-medicine-nilo',
+      'c2-medicine-attacker',
+      'c2-test-book',
+      'c2-copy-pattern',
+      'c2-mark-moving-stone',
+      'c2-take-orders',
+      'c2-anchor-people',
+      'c2-order-no-fight',
+      'c2-show-orders',
+      'c2-protect-current-group',
+      'c2-hold-door',
+      'c2-take-maelin',
+    ],
+  },
+  explicitMechanics: {
+    reason: 'The active meaning or availability changed, so the overlay states the affected costs, requirements, visibility, flags, advantage, or result explicitly.',
+    ids: [
+      'c2-search-threshold',
+      'c2-guard-rear',
+      'c2-ledger-route',
+      'c2-cellar-route',
+      'c2-cellar-route-prepared',
+      'c2-question-name',
+      'c2-believe-maelin',
+      'c2-compare-memories',
+      'c2-ask-missing-mara',
+      'c2-study-cloak-version',
+      'c2-break-bracket',
+      'c2-follow-footsteps',
+      'c2-demand-employer',
+      'c2-offer-protection',
+      'c2-give-maelin-key',
+      'c2-block-versions',
+      'c2-use-rope-path',
+      'c2-use-pin-key',
+      'c2-follow-companion',
+      'c2-follow-lysara',
+      'c2-follow-maelin-path',
+      'c2-study-keyhole',
+      'c2-command-pull',
+      'c2-strength-pull',
+      'c2-oath-pull',
+      'c2-wagon-break',
+      'c2-wagon-sacrifice',
+      'c2-carry-testimony',
+      'c2-carry-pin',
+      'c2-swear-crown-truth',
+    ],
+  },
+} as const;
+
 export const reviewedUnchangedChoiceIds = [
   'c2-shield-arrival',
-  'c2-lead-water',
   'c2-trust-mara-entry',
   'c2-organise-care',
   'c2-work-beside-mara',
   'c2-let-lysara-lead-care',
-  'c2-cellar-route',
   'c2-attacker-route',
   'c2-name-fear',
   'c2-kiss-mara',
@@ -1148,7 +1437,6 @@ export const reviewedUnchangedChoiceIds = [
   'c2-take-lysara',
   'c2-read-crown-mark',
   'c2-feel-oath-pin',
-  'c2-swear-crown-truth',
   'c3-command-calm',
   'c3-shield-wounded',
   'c3-show-evidence',

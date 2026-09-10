@@ -300,6 +300,17 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 
 When a scene is rewritten, treat the complete playable node as one contract. Review the kicker, title, location, objective, lesson, body, every choice label, every choice result, costs, flags, journal knowledge, and the next scene callbacks together. Replacing only the body is not a complete revision.
 
+### Effective node preflight
+
+Before approving a new or revised scene:
+
+1. Render the effective node after every overlay has been merged. Never approve base prose or a partial choice update in isolation.
+2. Write down who is present, where each person stands, and what each person carries at entry and exit.
+3. Audit every inherited choice field: changes, requirements, relationship requirements, flag requirements, visibility, added flags, relationship effects, advantage, result, and destination.
+4. Record the source and scene for every fact the protagonist knows. A journal entry cannot confirm it earlier.
+5. Compare sibling choices and prove that every paid option buys a distinct visible benefit. Gate a free expert solution with the exact preparation that earned it.
+6. Read every branch aloud in its real order: previous result, current body, available options, chosen result, and next body.
+
 For every revised branch:
 
 1. List the people, objects, dangers, and facts physically present in the new scene.
