@@ -303,7 +303,13 @@ export function knownTruths(game: GameState) {
 
   if (game.chapter === 7) {
     truths.push('The Crown March belongs to Asterra. Its soldiers serve the Queen, but Regent Malrec has lawful command while she is ill. Most believe his charges against me are true.');
-    truths.push('The Red Wind Hunt follows commands spoken in the voice of Marshal Evren, an Asterra officer who died nineteen years ago.');
+    if (game.flags.includes('c7-lio-prisoner')
+      || game.flags.includes('c7-lio-returned')
+      || game.flags.includes('c7-lio-joined')
+      || game.flags.includes('c7-lio-under-guard')
+      || !['c7-red-horizon', 'c7-break-town-line', 'c7-first-riders'].includes(game.nodeId)) {
+      truths.push('The Red Wind Hunt follows commands spoken in the voice of Marshal Evren, an Asterra officer who died nineteen years ago.');
+    }
 
     if (game.flags.includes('c7-copied-gate-diversion')
       || game.flags.includes('c7-copied-false-charges')

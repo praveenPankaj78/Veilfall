@@ -280,6 +280,11 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 - Give each paragraph one main job: action, explanation, reaction, or decision. A short paragraph may combine two only when the connection is immediate.
 - Before naming a magical rule or machine, show what it does in physical terms. State what moves, what it can do to someone, and what the player must do next.
 - When a lesson explains a choice, reuse the same plain nouns in the choice labels and details. Do not make the player translate a new metaphor at the menu.
+- When two enemies affect one crisis, give each a separate source, action, and test. Do not explain both through one block of evidence or let one choice appear to prove both.
+- Separate what the protagonist personally witnessed from what another character claims. If a person’s fate is uncertain, state the last confirmed sighting before naming the uncertainty.
+- Once a faction’s formal name is introduced, use one shorter name throughout the immediate action. Do not rotate among several names for the same force during a fight.
+- Do not tell the player that no choice is complete after the scene has already shown the competing dangers. Let the options and their visible costs carry that judgment.
+- Check every new country, city, faction, and title against the world bible. Do not introduce a second name for an established place without explaining the relationship.
 
 ## Revision checklist
 

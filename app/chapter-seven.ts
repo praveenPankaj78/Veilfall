@@ -45,16 +45,6 @@ function endangeredAlly(state: GameState) {
   return 'Korran';
 }
 
-function openingDanger(state: GameState) {
-  if (has(state, 'c6-red-moot-war')) {
-    return 'The whole wheel town is on this road. Families, children, wounded people, and forge crews have nowhere to go before the charge reaches them.';
-  }
-  if (has(state, 'c6-red-moot-alliance')) {
-    return 'Korran’s volunteers brought wounded riders, wind callers, and two shield engines. The wheel town is several miles south, but the people beside you still need cover.';
-  }
-  return 'Kharad Vey is already turning south. Your wounded companions and three steppe guides remain on the ridge with you while the army follows the ember away from the town.';
-}
-
 function pursuitGround(state: GameState) {
   if (has(state, 'c6-red-moot-war')) {
     return 'Crown outriders race beside Kharad Vey’s western decks. Houses shake above the wheels while archers reach for the steering ropes.';
@@ -198,15 +188,14 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     objective: 'Keep the Crown March away from Kharad Vey long enough to learn why it left the Black Gate.',
     threat: 'Critical',
     art: 'redwind',
-    introducesStoryTerms: ['Crown March', 'dead command'],
+    introducesStoryTerms: ['Crown March'],
     lesson: {
       title: 'Who is pursuing you',
-      body: 'The Crown March is an army of Asterra, Caelan’s own kingdom. Regent Malrec commands it in the ill Queen’s name. Most soldiers believe they are arresting a traitor and recovering a stolen weapon. The storm is also copying dead officers’ voices. Soldiers hear commands they were trained to obey. This is called dead command.',
+      body: 'The force ahead is the Crown March, Asterra’s main field army. It belongs to Caelan’s own kingdom. Regent Malrec commands it while the Queen is ill. Most soldiers believe they are arresting a traitor and recovering a stolen weapon.',
     },
     body: (state) => [
-      'The Crown army reaches the western horizon at dawn. Dark blue banners rise above six thousand soldiers, supply wagons, and cavalry. These are not foreign invaders. They wear the silver tree of Asterra, the kingdom you still serve.',
+      'The army reaches the western horizon at dawn. Dark blue banners rise above six thousand soldiers, supply wagons, and cavalry. They wear the silver tree of Asterra, the kingdom you still serve.',
       supportOpening(state),
-      openingDanger(state),
       emberPressure(state),
       'You recognise the spacing of the cavalry lines from years of Crown drills. Knowing exactly how the charge will arrive does nothing to slow your pulse.',
       'A red storm moves over the army. Pale officers appear inside it, each wearing an older version of the Crown uniform. When one dead voice raises its hand, the living front line changes direction without waiting for a horn.',
@@ -263,7 +252,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c7-oath-shielded-town'],
-        result: 'Gold light spreads around every person placed in your care. The first arrows curve toward your shield instead of the fleeing line. Their combined weight enters your promise.',
+        result: 'Gold light spreads around every person placed in your care. The first arrows curve toward your shield instead of the fleeing line. Each protected life adds another pull against your chest.',
         next: 'c7-break-town-line',
       },
       {
@@ -291,7 +280,8 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     body: (state) => [
       pursuitGround(state),
       'Their captain shouts that Caelan Vey is accused of murdering Commander Hale, stealing a royal weapon, and forcing Kharad Vey into rebellion.',
-      'The accusations are built from real pieces. Hale died or vanished in Dragonspine. You carry the ember. The Red Moot chose its own road after you arrived. A frightened soldier can believe the shape without knowing who arranged it.',
+      'Your memory returns to Hale alive behind the control platform as Dragonspine began to collapse. You never found his body, and you do not know whether he escaped.',
+      'The army was told you murdered him. You do carry Vaor’s ember, and the Red Moot did choose its own road after you arrived. Those true pieces make the false charge believable.',
       redMootForces(state),
       localWarning(state),
     ],
@@ -386,9 +376,11 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     objective: 'Question someone who can explain the army’s orders before the next wave arrives.',
     threat: 'Immediate',
     art: 'redwind',
+    introducesStoryTerms: ['dead command'],
     body: () => [
       'A young Crown lieutenant remains among halted and riderless horses. He lowers his sword when Mara calls his academy name. “Lio Var,” she says. “You trained three years below me.”',
       'Lio looks from her to the dead officer in the storm. “Marshal Evren ordered us to take the wheel town alive. Marshal Evren has been dead for nineteen years. The signal pattern is his. I checked it twice.”',
+      'He points toward Evren’s face. “We call that a dead command. It uses a dead officer’s voice to give orders without a living messenger.”',
       'The living army marshal, Teren Voss, is half a mile behind. Lio says Voss obeys Regent Malrec’s sealed orders, but the dead voice changes their timing whenever the storm thickens.',
       'Lio explains the army’s simplest safety rule. Written orders need paper and a living messenger. Spoken commands must include today’s password, changed every dawn. A dead memory may know yesterday’s word. It cannot know today’s.',
       'Your memory returns to the first sealed order you obeyed despite your doubts. The fear in Lio’s face is painfully familiar.',
@@ -446,16 +438,17 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     art: 'marshal',
     body: (state) => [
       orderCaseStatus(state),
-      'Lio’s order case contains two sealed orders. The first carries the Regent’s genuine black wax and the authority he uses while the Queen is ill. It says Caelan murdered Hale and stole a royal ember. Most soldiers have no reason to doubt either charge.',
-      'The second order is older. It moved the Crown March away from four Black Gate forts three weeks ago for a false invasion exercise. Marshal Teren was told another army would replace them. No replacement is named.',
+      'Lio’s order case contains two official papers. The newer one bears the Regent’s genuine black wax. It orders your arrest for murdering Hale and stealing a royal ember.',
+      'Your memory is exact: Hale was alive when the Dragonspine grave began to collapse. You never found a body. The army received a claim of murder, not proof of one.',
+      'The older paper moved the Crown army away from four Black Gate forts three weeks ago for a false invasion exercise. Teren was promised replacement soldiers. None arrived.',
       has(state, 'c5-has-extraction-order')
         ? 'The extraction order you carried from Dragonspine completes the sequence. Malrec planned to cut out Vaor’s ember while the same soldiers who should guard the Gate marched west.'
         : has(state, 'c5-royal-witnesses-turned')
           ? 'The royal witnesses from Dragonspine can confirm that Malrec’s private force was already cutting into Vaor while the Gate forts lost their army.'
           : 'You lack Malrec’s extraction paper. The dates prove he emptied the Gate before the alleged crimes. They do not prove what happened to Hale or how you gained the ember.',
-      'The storm commands are different. They copy Marshal Evren’s signal pattern but bring no wax, paper, or living messenger. They always push the army farther from the Gate.',
-      'The timing proves Malrec created the danger at the Gate before he named you as its cause. It strongly suggests the pursuit is keeping the army west. Clearing Hale’s death and the ember charge still depends on what survived Dragonspine.',
-      'Lysara places both orders side by side. “Malrec moved the army. Something in the storm is making sure it stays here. Which truth do we carry into the fight first?”',
+      'The date answers Malrec’s lie. He moved the army away from the Gate before the crimes named in your arrest order.',
+      'Evren’s commands need a different test. They arrive without paper, a living messenger, or today’s password. Teren can answer that password. A dead memory cannot.',
+      'Lysara places both papers side by side. “Use the date against Malrec. Use the password against Evren. Which proof do we prepare, and who carries it?”',
     ],
     choices: [
       {
@@ -469,11 +462,11 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c7-copy-false-charges',
-        label: 'Copy the charges against you and mark every unanswered question.',
-        detail: 'Show that Malrec prepared the pursuit before the alleged crimes without claiming this alone proves your innocence.',
-        advantage: 'The suspicious timing may make soldiers examine the Hale and ember accusations instead of accepting them together.',
+        label: 'Record what you actually saw happen to Hale.',
+        detail: 'State that Hale was alive when the grave began to collapse and separate that fact from the army’s murder claim.',
+        advantage: 'Soldiers who care about Hale may question the charge without being asked to trust your whole defence.',
         addFlags: ['c7-copied-false-charges', 'c7-knows-malrec-emptied-gate'],
-        result: 'Mara places the Dragonspine dates beside Malrec’s accusation. The older order does not clear your name, but it proves the Regent prepared this hunt before the crime he uses to justify it.',
+        result: 'Mara writes only what you witnessed. Hale was alive when the collapse began. You do not claim he survived. The careful account exposes how much Malrec added afterward.',
         next: 'c7-sealed-orders',
       },
       {
@@ -504,7 +497,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         advantage: 'His lawful prisoner status gives cautious officers a reason to examine the papers.',
         showIfAnyFlags: ['c7-lio-prisoner'],
         addFlags: ['c7-lio-prisoner-testimony', 'c7-knows-malrec-emptied-gate'],
-        result: 'Lio signs only what he witnessed: the orders were in his case, the seals are genuine, and Evren’s storm voice carried no paper. The narrow testimony protects its value.',
+        result: 'Lio signs only what he witnessed. The papers came from his case, their seals are genuine, and Evren’s voice brought no written order. He makes no claim about events he did not see.',
         next: 'c7-sealed-orders',
       },
       {
@@ -540,13 +533,13 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     art: 'redwind',
     lesson: {
       title: 'What is now confirmed',
-      body: 'Regent Malrec deliberately moved this army away from four Black Gate forts three weeks before Caelan took the ember. The soldiers are Asterra’s forces, acting under the Regent’s legal authority while the Queen is ill. Most were falsely told replacement troops protected the Gate. The ancestor storm is now using dead officers to keep them chasing westward targets.',
+      body: 'Malrec’s dated paper sent the army away from four Black Gate forts before Caelan took the ember. Evren’s voice has no paper, living messenger, or current password. Malrec moved the army. The dead voice is keeping it west.',
     },
     body: () => [
       'The army’s first siege horns roll across the steppe. Infantry spreads between the ridges while cavalry races for every path east. Teren Voss is no longer trying to arrest one man. He is closing the road around everyone who can carry the proof.',
       'A black arrow strikes the field map table. Red dust climbs its shaft and shapes Marshal Evren’s dead face above the road. “Burn the stolen orders,” the voice commands. Crown archers turn toward the paper without receiving a living signal.',
       'Ilyra catches the red thread tied to the voice. It leads east, not west toward the army. Whatever speaks as Evren is connected to the opening Gate.',
-      'You know enough to resist both commands without confusing the frightened soldiers for the people using them.',
+      'Your fingers fold Malrec’s dated paper into your coat as you repeat today’s password once. One exposes the Regent’s lie. The other exposes Evren’s dead voice.',
       'Korran points toward a wagon caught between the running lines. Wounded people and two messengers are trapped inside. The proof is in your coat. The wagon will overturn in seconds. “Which reaches safety first?”',
     ],
     choices: [
@@ -605,7 +598,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     art: 'redwind',
     body: (state) => [
       signalGround(state),
-      'Marshal Evren has pushed his storm voice through the brass throat.',
+      'The red storm speaks through the empty horn in Marshal Evren’s voice.',
       signalDanger(state),
       has(state, 'c7-taught-dead-command-test')
         ? 'Your messengers shout the three questions. No paper. No living messenger. No password for today. Several Crown companies slow, but the horn is louder.'
@@ -640,7 +633,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       {
         id: 'c7-oath-dead-command-silent',
         label: 'Promise that no dead command will move a living soldier through this horn.',
-        detail: 'Spend 2 Oathfire binding the steppe’s witness law to the battlefield.',
+        detail: 'Spend 2 Oathfire making the horn accept only breath from living lungs.',
         advantage: 'The horn remains usable by living officers while every storm voice loses it.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
@@ -820,7 +813,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     art: 'redwind',
     body: () => [
       'Lysara joins you beneath the ridge with the living treaty wrapped around her injured hand. The red wind presses her travelling coat against the clean lines of her body, then releases it. Her calm expression does not hide how carefully she is watching you.',
-      '“Asterra may call you traitor,” she says. “Veyr may call me compromised. Attraction is easy while both kingdoms are trying to kill us. Partnership begins when they stop.”',
+      '“Asterra may call you traitor,” she says. “Thornweald may call me compromised. Attraction is easy while both kingdoms are trying to kill us. Partnership begins when they stop.”',
       'The attraction between you remains, alongside your respect for the difficult purpose that existed before you met. Asking her to abandon it would change the person you care about.',
       'She offers her good hand. “What are we building, Caelan?”',
     ],
@@ -1180,7 +1173,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       'Teren can challenge the dead command, but he cannot make the army trust you. That part belongs to your actions.',
       'You have three ways to stop the army. You can trap its advance without slaughtering it. You can show Malrec’s orders to every rank.',
       'Or you can make Teren follow the duel rule he accepted at the truce stones. Each victory will give the soldiers a different reason to stop.',
-      'Your instincts search for the plan that saves everyone and find no such road.',
+      'Your hand moves from the salt map to Malrec’s papers and then to your sword. Each plan uses a different part of your training.',
     ],
     choices: [
       {
@@ -1226,7 +1219,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       has(state, 'c7-safe-salt-lanes-marked')
         ? 'Your red reeds show exactly where the ground will hold. The safe lanes are narrow, but they exist.'
         : 'Korran points toward darker salt where the crust may hold. You must trust his eye while hundreds of horses close behind you.',
-      'The easy victory would be to break everything. The victory you can live with requires opening the brine in a curve, trapping the army while leaving one honest road back.',
+      'Breaking the whole crust would stop the army and drown the riders caught above the brine. A curved break would trap the army while leaving one firm road back.',
       'You feel every pursuing hoof through the crust. One early strike would turn restraint into slaughter.',
     ],
     choices: [
@@ -1448,7 +1441,6 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
           ? `Then Evren spends everything left in the storm. Mara and the wounded remain safe on the ridge you prepared. A wall of red wind crosses the basin below. One broken company stands in its path. ${ally} is trapped beneath a fallen signal frame on the opposite side.`
           : `Then Evren spends everything left in the storm. A wall of red wind crosses the basin. One broken company stands in its path. ${ally} is trapped beneath a fallen signal frame on the opposite side.`,
         'Command can move hundreds before the wall strikes. Your own hands can reach one person in time. Oathfire might protect both, but only by burning the original Gate orders that anchor the truth.',
-        'You cannot preserve every life, every proof, and every promise. The choice is yours, and everyone can see it.',
       ];
     },
     choices: [
@@ -1523,10 +1515,10 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         : has(state, 'c7-saved-both-burned-proof')
           ? 'No bodies lie beneath the last red wall. Malrec’s orders are ash, so the soldiers must decide from what they witnessed rather than what a seal can prove.'
           : 'The companion you carried from the storm remains beside you. Across the basin, empty places in the Crown ranks show the cost of that rescue.',
-      'Teren removes Malrec’s badge from his cloak. He offers you the Crown March, but no law makes the choice simple. A full army could defend the eight forts around the Gate. It could also bring its obedience and suspicion with it.',
+      'Teren removes Malrec’s badge from his cloak and holds out the field standard. A full army could defend all eight forts. It would also bring divided loyalties into every fort.',
       'You may lead every willing rank. You may take only a smaller company that chooses the road freely.',
       'Or you may refuse formal followers and let your dangerous reputation reach the Gate before you do.',
-      'You feel the weight of Teren’s standard before you touch it. Accepting power will be easier than teaching it to question you.',
+      'Behind Teren, the soldiers wait to see whether you take the standard, ask for volunteers, or leave command in his hands.',
     ],
     choices: [
       {

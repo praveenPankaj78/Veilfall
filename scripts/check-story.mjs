@@ -18,12 +18,22 @@ const narratorShortcuts = [
   'You cannot know',
   'You hate the choice',
   'The scale settles inside you',
+  'Your instincts search for the plan that saves everyone',
+  'You cannot preserve every life, every proof, and every promise',
+  'The choice is yours, and everyone can see it',
+  'no law makes the choice simple',
+  'Accepting power will be easier than teaching it to question you',
 ];
 const opaqueHazardRules = [
   { pattern: /\bCount to \w+\.\s+On the .* beat\b/i, label: 'hazard timing does not say what is being counted' },
   { pattern: /\bmissing beat\b/i, label: 'hazard uses an unexplained missing beat' },
   { pattern: /\bread (?:its|their|the) rhythm\b/i, label: 'hazard replaces physical instructions with an unexplained rhythm' },
   { pattern: /\bmake a road out of timing\b/i, label: 'result replaces physical movement with an abstract timing metaphor' },
+  { pattern: /\bdied or vanished\b/i, label: 'uncertain fate replaces the protagonist’s last confirmed sighting' },
+  { pattern: /\bbrass throat\b/i, label: 'ordinary horn is described with an unexplained metaphor' },
+  { pattern: /\bnarrow testimony protects its value\b/i, label: 'legal result is explained through an abstract judgment' },
+  { pattern: /\bbinding the .* witness law\b/i, label: 'choice cost names a law instead of the physical rule being created' },
+  { pattern: /\bVeyr may call\b/i, label: 'established homeland Thornweald is replaced by an unexplained name' },
 ];
 const forbidden = [
   { value: String.fromCharCode(45, 45), label: 'two adjacent hyphens' },

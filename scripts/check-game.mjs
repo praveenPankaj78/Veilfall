@@ -792,11 +792,11 @@ const storyTermRules = {
   },
   'Crown March': {
     use: /\bCrown March\b/i,
-    introduction: /Crown March is an army of Asterra/i,
+    introduction: /(?:Crown March is an army of Asterra|force ahead is the Crown March, Asterra’s main field army)/i,
   },
   'dead command': {
     use: /\bdead command\b/i,
-    introduction: /(?:Dead command means a voice inside the ancestor storm|storm is also copying dead officers’ voices.*called dead command)/is,
+    introduction: /(?:Dead command means a voice inside the ancestor storm|storm is also copying dead officers’ voices.*called dead command|call that a dead command.*dead officer’s voice.*without a living messenger)/is,
   },
   'Marshal Teren Voss': {
     use: /\bMarshal Teren Voss\b/i,
@@ -2145,8 +2145,8 @@ const chapterSevenNeutralState = {
   flags: ['c5-freed-vaor', 'c6-red-moot-neutral'],
 };
 const supportArrivalCases = [
-  [chapterSevenWarState, /whole wheel town is on this road/i, /inner decks/i],
-  [chapterSevenAllianceState, /wheel town is several miles south/i, /shield engines/i],
+  [chapterSevenWarState, /All twelve platforms of Kharad Vey are turning east/i, /inner decks/i],
+  [chapterSevenAllianceState, /Kharad Vey moves on a safer southern line/i, /shield engines/i],
   [chapterSevenNeutralState, /wheel town turns south/i, /split Black Ridge/i],
 ];
 for (const [state, expectedBody, expectedChoice] of supportArrivalCases) {
@@ -2260,9 +2260,27 @@ if (!/Caelan Vey means to open the eastern Gate.*loyal replacements secure the f
   failures.push('Evren openly reveals the hidden plan instead of giving soldiers a plausible false order');
 }
 const chapterSevenEvidence = renderedBody('c7-captured-soldier', chapterSevenBase);
-if (!/do not prove what happened to Hale or how you gained the ember/i.test(chapterSevenEvidence)
-  || !/strongly suggests the pursuit/i.test(chapterSevenEvidence)) {
-  failures.push('Chapter Seven claims Malrec’s earlier diversion order proves every charge against Caelan false');
+if (!/Hale was alive.*never found a body/is.test(chapterSevenEvidence)
+  || !/claim of murder, not proof/i.test(chapterSevenEvidence)
+  || !/date answers Malrec’s lie/i.test(chapterSevenEvidence)
+  || !/Evren’s commands need a different test/i.test(chapterSevenEvidence)
+  || !/Teren can answer that password.*dead memory cannot/is.test(chapterSevenEvidence)) {
+  failures.push('Chapter Seven does not separate Hale’s uncertain fate, Malrec’s dated order, and Evren’s password test');
+}
+const chapterSevenOpening = [
+  nodes['c7-red-horizon'].lesson?.body ?? '',
+  ...nodes['c7-red-horizon'].body(chapterSevenBase),
+].join(' ');
+const chapterSevenLioIntroduction = renderedBody('c7-first-riders', chapterSevenBase);
+if (/Marshal Evren|Marshal Teren/i.test(chapterSevenOpening)
+  || !/Marshal Evren has been dead for nineteen years/i.test(chapterSevenLioIntroduction)
+  || !/living army marshal, Teren Voss/i.test(chapterSevenLioIntroduction)
+  || !/call that a dead command/i.test(chapterSevenLioIntroduction)) {
+  failures.push('Chapter Seven introduces its army leaders before Lio can explain them in plain language');
+}
+const chapterSevenOpeningJournal = knownTruths(chapterSevenBase).join(' ');
+if (/Marshal Evren|Teren Voss|dead command/i.test(chapterSevenOpeningJournal)) {
+  failures.push('The Chapter Seven journal names army leaders or dead command before Lio introduces them');
 }
 const chapterSevenParley = renderedBody('c7-marshal-parley', chapterSevenBase);
 const chapterSevenDuel = renderedBody('c7-steppe-duel', chapterSevenBase);

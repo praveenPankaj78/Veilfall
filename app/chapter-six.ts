@@ -1217,7 +1217,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-oath-dead-witness-only',
         label: 'Promise that the dead may witness here but never rule.',
-        detail: 'Spend 2 Oathfire binding the oldest steppe law across the moving city.',
+        detail: 'Spend 2 Oathfire making one rule hold at every shrine: the dead may advise, but only the living may vote.',
         advantage: 'The Oath keeps living people in control while honest ancestor voices remain able to advise.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },

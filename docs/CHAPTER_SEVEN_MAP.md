@@ -47,7 +47,7 @@ The Crown March is an Asterra field army. The soldiers are serving their own kin
 The player is given reasons not to slaughter them:
 
 - most have never met Caelan or seen Dragonspine;
-- Hale's disappearance and Caelan's ember make the accusation believable;
+- the army claims Caelan murdered Hale, although Caelan last saw Hale alive as the Dragonspine grave began to collapse;
 - their living marshal, Teren, values the Crown above the Regent personally;
 - soldiers can change sides only after evidence, law, or witnessed restraint gives them a defensible choice.
 
@@ -62,6 +62,10 @@ The chapter never requires the player to understand how the Unsea works. The use
 1. Where is the paper?
 2. Where is the living messenger?
 3. What is today's password?
+
+The explanation order is fixed. The opening names the Crown March and the people in danger. Lio then names Evren, Teren, and dead command. The field map gives Malrec one test, the date on his paper, and Evren another test, today's password. Hale's fate is always described from Caelan's last confirmed sighting before the Crown's murder claim is repeated.
+
+During active battle prose, Crown army is the default short name. Crown March remains the formal name used in objectives, political decisions, and ending states.
 
 ## Personal scene routing
 
