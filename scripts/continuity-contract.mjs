@@ -121,6 +121,23 @@ export const firstMeetingContracts = [
   { heroes: ['rook', 'ilyra'], hostChapter: null, introductionNode: null, place: 'Serekh' },
 ];
 
+export const chapterFiveContinuityContract = {
+  vaorOutcomes: ['c5-freed-vaor', 'c5-took-ember-by-force', 'c5-vaor-pact'],
+  evidenceHandoffs: [
+    'c5-has-extraction-order',
+    'c5-royal-witnesses-turned',
+    'c5-memory-copied-to-map-wax',
+    'c5-saved-memory-witnesses',
+    'c5-oath-held-memory-grave',
+    'c5-lost-royal-camp-proof',
+  ],
+  lysaraTreatmentFlag: 'c2-saved-lysara',
+  vaorMemoryViolationFlag: 'c5-broke-memory-slab',
+  vaorRepairDutyFlag: 'c5-repair-vaor-memory-duty',
+  pactDuties: ['protect living people', 'expose what the Concord erased'],
+  pactEndTerms: ['gate is safe', 'both', 'duty is complete'],
+};
+
 export const terminalHistoryFlagReasons = {
   'c4-shielded-rook': 'Preserves Caelan taking a bolt for Rook for the later Rook perspective version of the bridge meeting.',
   'c4-watched-both': 'Preserves Caelan refusing both men control of his attention for the later crossover perspective.',

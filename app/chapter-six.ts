@@ -52,10 +52,29 @@ function dragonThiefAccusation(state: GameState) {
 }
 
 function lysaraSeedAtStorm(state: GameState) {
-  if (has(state, 'c5-stair-scorched-thread') || has(state, 'c5-seed-scorched-river')) {
+  if (has(state, 'c5-stair-scorched-thread')
+    || has(state, 'c5-seed-scorched-river')
+    || has(state, 'c5-seed-strained-memory')
+    || has(state, 'c5-lysara-reading-strain')) {
     return 'Lysara drives her scorched seed into the deck. Its remaining green threads spread through the boards and keep them from splitting.';
   }
   return 'Lysara drives her glass seed into the deck. Green threads spread through the boards and keep them from splitting.';
+}
+
+function dragonspineHandoff(state: GameState) {
+  const records: string[] = [];
+  if (has(state, 'c5-has-extraction-order')) records.push('Malrec’s extraction order');
+  if (has(state, 'c5-memory-copied-to-map-wax')) records.push('Orivane’s memory in black wax');
+  if (has(state, 'c5-saved-memory-witnesses')) records.push('three memory plates');
+  if (has(state, 'c5-oath-held-memory-grave')) records.push('six memory plates');
+  if (has(state, 'c5-royal-witnesses-turned')) records.push('two royal witnesses');
+  const proof = records.length
+    ? `${records.join(', ')} came out with you.`
+    : 'The buried truth came out mainly in the memories of the four survivors.';
+  const lost = has(state, 'c5-lost-royal-camp-proof')
+    ? ' Hale’s loose drill logs and copied camp records were lost, but carried items survived.'
+    : '';
+  return `Mara, Lysara, and Sorin escaped Dragonspine beside you. ${proof}${lost}`;
 }
 
 function stormTestFinding(state: GameState) {
@@ -96,16 +115,18 @@ function mootQuestion(state: GameState) {
 }
 
 function proofCarried(state: GameState) {
-  if (has(state, 'c5-has-extraction-order')) {
-    return 'The Regent’s extraction order rests inside your coat. It proves his soldiers meant to carve power from a living dragon, but it says nothing about what the Crown owes the steppe.';
+  const proof: string[] = [];
+  if (has(state, 'c5-has-extraction-order')) proof.push('Malrec’s extraction order proves his private force meant to cut power from a living dragon');
+  if (has(state, 'c5-royal-witnesses-turned')) proof.push('two royal soldiers can testify about Hale’s drill and the order behind it');
+  if (has(state, 'c5-memory-copied-to-map-wax') || has(state, 'c5-rook-copied-first-memory')) proof.push('black wax carries Orivane’s buried memory');
+  if (has(state, 'c5-saved-memory-witnesses')) proof.push('Sorin protects three memory plates');
+  if (has(state, 'c5-oath-held-memory-grave')) proof.push('Sorin protects six memory plates');
+  if (has(state, 'c5-knows-orivane-renewal-wish')) proof.push('you can repeat Orivane’s final demand that living people judge the Concord again');
+  if (has(state, 'c5-memorised-founder-seals')) proof.push('you can identify the human, elven, orc, goblin, and other seals used to bury the truth');
+  if (!proof.length) {
+    return 'The truth of Orivane’s sacrifice survives mainly in your memory. You will have to earn belief before you can ask anyone to act on it.';
   }
-  if (has(state, 'c5-royal-witnesses-turned')) {
-    return 'Two royal witnesses survived Dragonspine. Their testimony can wound Malrec, but no borrowed voice can earn a place in this town for you.';
-  }
-  if (has(state, 'c5-memory-copied-to-map-wax') || has(state, 'c5-rook-copied-first-memory')) {
-    return 'You carry black wax impressed with Orivane’s buried truth. It can prove the old rulers lied. It cannot decide what living people should do now.';
-  }
-  return 'The truth of Orivane’s sacrifice survives mainly in your memory. You will have to earn belief before you can ask anyone to act on it.';
+  return `${proof.join('. ')}. The evidence can challenge Malrec and the old rulers. It cannot decide what the living clans should do now.`;
 }
 
 export const chapterSixNodes: Record<string, StoryNode> = {
@@ -126,6 +147,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'Black glass gives way to red grass and hot wind. Dragonspine is behind you. This red country is the Ember Steppe. Wheel tracks as wide as roads lead east.',
       'Kharad Vey rises over the grass, a travelling orc town built on twelve wooden platforms. Its wheels are taller than a gatehouse. Homes, forges, animal pens, and watchtowers move with them.',
       emberArrival(state),
+      dragonspineHandoff(state),
       'A red cloud follows the town. Human, orc, and elven faces form inside it, speak, and vanish. A wounded orc rider points back. “Ancestor storm. It wears our honoured dead and calls the living into danger.”',
       'The town will cross a split in the ground within minutes. If you miss its western lift, your party will be trapped outside with the voices.',
       'Mara looks from the racing town to your tired party. “We can reach it. Getting invited aboard may be the difficult part.”',
@@ -590,7 +612,7 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         advantage: 'The ember’s second heartbeat and Lysara’s witness distinguish the pact from possession or theft.',
         showIfAnyFlags: ['c5-vaor-pact'],
         addFlags: ['c6-declared-ember-origin', 'c6-declared-pact-ember'],
-        result: 'You explain the pact. At Vaor’s consent, the ember beats once beneath your ribs and then a second time. Lysara confirms that two living wills chose the bond. The crowd remains uneasy, but the word thief loses its hold.',
+        result: 'You state the pact in full. You and Vaor carry the ember to the black stone gate, protect living people, and expose what the Concord erased. Either of you may refuse its use. The bond ends only when the gate is safe and both of you call the duty complete. Lysara confirms that two living wills chose the bond. At Vaor’s consent, the ember beats twice. The word thief loses its hold.',
         next: 'c6-storm-breach',
       },
       {

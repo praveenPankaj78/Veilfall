@@ -16,10 +16,11 @@ The next hook is concrete: a Crown army is one day behind Kharad Vey, and its so
 - If Vaor gave the ember, the dragon is a free and independent ally who may refuse a request.
 - If Caelan took the ember, it obeys him while Vaor follows as an enemy.
 - If they made a pact, Vaor advises Caelan from inside his thoughts and shares grief with him.
+- The pact lets either bearer refuse a use of the ember. It ends only when the black stone gate is safe and both Vaor and Caelan declare their shared duty complete.
 - Rook departed through the Underways at the end of Chapter Four. The arrest, bargain, or trust outcome remains as future relationship state, not physical presence on Caelan's route.
 - Mara and Lysara remember the romantic, committed, or platonic direction the player chose.
 - Ilyra may acknowledge attraction only if neither earlier relationship remains open.
-- Surviving proof from Dragonspine affects what Caelan can show, but proof does not replace service among the clans.
+- Mara, Lysara, and Sorin all escape Dragonspine. The opening identifies any extraction order, map wax, memory plates, or two travelling royal witnesses that escaped with them. Surviving proof affects what Caelan can show, but proof does not replace service among the clans.
 
 These facts remain in state, but the opening recalls only Vaor's ember because it changes what Caelan physically experiences on the steppe. Rook's route and earlier romance choices return only when they affect a present scene.
 

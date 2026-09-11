@@ -359,4 +359,8 @@ Before a scene is approved, confirm:
 - A consequential flag needs a later mechanical, choice, journal, or complication consumer. A flag kept only for a future perspective or series must be listed as terminal history with a specific reason.
 - A relationship scene follows established commitment and attraction. It must not silently replace a developed path with the author's preferred partner.
 - Explicit relationship intent outranks a numerical attraction score. Friendship and ended romance states cannot display romantic availability or romantic narration unless the player first makes a new, clearly offered choice.
+- A friendship choice cannot silently end an exploring or committed romance. Hide it during an active bond, or write a deliberate relationship change that names what is ending.
+- A pact must state its shared duty, each participant's control, its ending condition, and how either person leaves the bond before the player accepts it. Journals and later dialogue repeat those terms without widening them.
+- When one authority sends a force and another officer commands it, keep both roles separate in prose, evidence, journals, and accusations.
+- Exact counts create continuity debt. If six people surrender and only two travel onward, show where the other four remain before the next chapter.
 - End a chapter with one named destination or mystery. Additional threats may be shown physically and named in the next chapter.

@@ -19,7 +19,7 @@ The next hook is direct: Caelan carries a living ember toward Kharad Vey while t
 - Losing Ordan on the lower road still preserves the dispatch that leads north.
 - The snow, storm, and brass routes alter Caelan's first reaction to Dragonspine.
 - Mara remembers earlier honesty, attraction, promises, and kisses.
-- Lysara's living seed may enter the chapter intact or already strained by earlier use.
+- Lysara's hand is steady if she received the Bellweather medicine. Without it, Sorin and Caelan support her injured wrist during precision work. The living seed may also enter intact or already strained by earlier use.
 
 Rook is not physically present in Dragonspine. Sorin's shelter remembers the exact bridge outcome through a limited clue Rook left behind. The player may decode it while Sorin treats Caelan.
 
@@ -69,7 +69,7 @@ The shortest route exposes the party to royal archers and a deadly fall. Command
 
 ### Frozen river
 
-The party moves under clear ice while cold fire follows overhead. Oathfire, Resolve, or Lysara's living thread can prevent the flame from entering the river.
+The party moves under clear ice while cold fire follows overhead. Oathfire can draw it away. Resolve supports a slow crossing with cold wraps and controlled breath. Darkness hides the party from royal scouts, not from the flame. Lysara's living thread can carry warmth away at a lasting cost to the seed.
 
 ### Ash tunnel
 
@@ -115,7 +115,7 @@ Later Chapter Five crisis and pact text follow the caregiver the player named. A
 
 ### Freedom
 
-Caelan breaks Vaor's chains. Vaor gives an ember willingly and becomes a free, independent power. He controls when that ember answers, promises no obedience, and may refuse future aid. His visible escape triggers royal warning horns, and frightened kingdoms can treat him as an invading threat.
+Caelan breaks Vaor's chains. Vaor gives an ember willingly and becomes a free, independent power. He controls when that ember answers, promises no obedience, and may refuse future aid. His visible escape triggers royal warning horns, and frightened kingdoms can treat him as an invading threat. If Caelan destroyed a memory plate, Vaor requires an explicit repair duty before the gift can remain willing.
 
 ### Force
 
@@ -123,7 +123,7 @@ Caelan cuts out the ember. He gains direct power, but Vaor survives as an enemy 
 
 ### Pact
 
-Caelan and Vaor agree to carry the ember together. The remaining chains release Vaor's wounds and become a protective shell he can break when ready. His body rests safely by choice while his voice, knowledge, and grief remain inside Caelan until both accept that the duty is complete.
+Caelan and Vaor agree to carry the ember to the black stone gate, protect living people, and expose what the Concord erased. Either bearer may refuse a use of the ember. The pact ends only when the gate is safe and both say their shared duty is complete. Vaor may then withdraw his voice and ember at his word. The remaining chains release Vaor's wounds and become a protective shell he can break when ready. If Caelan destroyed a memory plate, preserving the surviving memories and admitting the loss becomes an additional duty.
 
 Every ending grants equal Wayfire. The difference is power, consent, alliance, and the burden Caelan carries into Chapter Six.
 
@@ -136,7 +136,10 @@ Every ending grants equal Wayfire. The difference is power, consent, alliance, a
 - Mara and Lysara each remember every relevant admission, refusal, and kiss.
 - Lysara's seed remains scorched if it diverted the frozen river fire.
 - Royal witnesses exist only if Hale's soldiers turned.
+- When Hale's soldiers turn, six lower their crossbows. Four stay to help wounded soldiers and guard Hale. Two travel east as witnesses.
 - Orivane's proof survives outside the grave only through preserved plates, shared witnesses, Caelan's memory, or the copy Caelan makes in the map wax.
+- Malrec authorises and sends the private force. Hale commands it in Dragonspine.
+- The extraction order remains in Caelan's coat once recovered. Dropping the damaged gallery can destroy loose drill logs and copied camp records, but it cannot erase the carried order.
 - The endings define Kharad Vey as the moving orc town before showing one unnamed black stone gate beginning to open. Chapter Six can introduce the Gate's proper name after the mountain truth has landed.
 
 ## Chapter artwork

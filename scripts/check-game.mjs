@@ -2,6 +2,7 @@ import { access, readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import ts from 'typescript';
 import {
+  chapterFiveContinuityContract,
   documentedSeriesRoutes,
   firstMeetingContracts,
   implementedChapterContracts,
@@ -1157,6 +1158,9 @@ for (const node of Object.values(nodes)) {
       flagChangesLaterPlay(flag, node.id, chapterBaseStates[chapter])
     ));
     paidSiblingContracts.push({ choiceId: choice.id, materialFlags, distinct: choiceHasDistinctConsequence(choice, freeSiblings) });
+    if (chapter === 5 && !materialFlags.length) {
+      failures.push(`Paid sibling choice ${choice.id} has no flag that changes later playable state`);
+    }
     if (!choiceHasDistinctConsequence(choice, freeSiblings)) {
       failures.push(`Paid sibling choice ${choice.id} does not record a distinct consequence from its free sibling`);
     }
@@ -1185,19 +1189,20 @@ const exactFlagSources = [
   memorySource,
   await readFile('app/page.tsx', 'utf8'),
 ];
-const chapterFourAddedFlags = [...new Set(Object.values(nodes)
-  .filter((node) => node.id.startsWith('c4-'))
+const lifecycleAuditedChapters = [4, 5];
+const lifecycleAuditedFlags = [...new Set(Object.values(nodes)
+  .filter((node) => lifecycleAuditedChapters.some((chapter) => node.id.startsWith(`c${chapter}-`)))
   .flatMap((node) => node.choices)
   .flatMap((choice) => choice.addFlags ?? []))];
-for (const flag of chapterFourAddedFlags) {
+for (const flag of lifecycleAuditedFlags) {
   const literal = `'${flag}'`;
   const occurrences = exactFlagSources.reduce((count, text) => count + text.split(literal).length - 1, 0);
   if (occurrences < 2 && !terminalHistoryFlagReasons[flag]) {
-    failures.push(`Chapter Four flag ${flag} has no exact consumer or terminal history classification`);
+    failures.push(`Lifecycle audited flag ${flag} has no exact consumer or terminal history classification`);
   }
 }
 for (const [flag, reason] of Object.entries(terminalHistoryFlagReasons)) {
-  if (!chapterFourAddedFlags.includes(flag)) failures.push(`Terminal history classification references unused flag ${flag}`);
+  if (!lifecycleAuditedFlags.includes(flag)) failures.push(`Terminal history classification references unused flag ${flag}`);
   if (reason.length < 40) failures.push(`Terminal history flag ${flag} lacks a useful reason`);
 }
 
@@ -3091,6 +3096,11 @@ for (const choiceId of ['c3-stand-with-mara', 'c3-stand-with-lysara']) {
   }
 }
 const lysaraKissChoice = nodes['c5-lysara-burns'].choices.find((choice) => choice.id === 'c5-kiss-lysara-after-truth');
+const maraCommitChoice = nodes['c5-mara-burns'].choices.find((choice) => choice.id === 'c5-admit-future-with-mara');
+const maraFriendChoice = nodes['c5-mara-burns'].choices.find((choice) => choice.id === 'c5-choose-mara-friendship');
+const lysaraCommitChoice = nodes['c5-lysara-burns'].choices.find((choice) => choice.id === 'c5-admit-future-with-lysara');
+const lysaraFriendChoice = nodes['c5-lysara-burns'].choices.find((choice) => choice.id === 'c5-choose-lysara-friendship');
+const bothFriendChoice = nodes['c5-sorin-care'].choices.find((choice) => choice.id === 'c5-choose-both-friendship');
 const openMaraBondState = {
   ...chapterFiveBase,
   relationships: {
@@ -3108,6 +3118,47 @@ const resolvedMaraBondState = {
 if (canChoose(lysaraKissChoice, openMaraBondState) || !canChoose(lysaraKissChoice, resolvedMaraBondState)) {
   failures.push('Chapter Five allows a new commitment before an existing romance is honestly resolved');
 }
+for (const intent of ['platonic', 'ended']) {
+  const maraResolved = {
+    ...highResourceState(chapterFiveBase),
+    relationships: {
+      ...highResourceState(chapterFiveBase).relationships,
+      mara: { ...highResourceState(chapterFiveBase).relationships.mara, intent },
+    },
+  };
+  const lysaraResolved = {
+    ...highResourceState(chapterFiveBase),
+    relationships: {
+      ...highResourceState(chapterFiveBase).relationships,
+      lysara: { ...highResourceState(chapterFiveBase).relationships.lysara, intent },
+    },
+  };
+  if (isChoiceVisible(maraCommitChoice, maraResolved) || isChoiceVisible(lysaraCommitChoice, lysaraResolved)) {
+    failures.push(`Chapter Five reopens an ordinary romance after ${intent} intent`);
+  }
+}
+for (const intent of ['exploring', 'committed']) {
+  const maraActive = {
+    ...highResourceState(chapterFiveBase),
+    relationships: {
+      ...highResourceState(chapterFiveBase).relationships,
+      mara: { ...highResourceState(chapterFiveBase).relationships.mara, intent },
+    },
+  };
+  const lysaraActive = {
+    ...highResourceState(chapterFiveBase),
+    relationships: {
+      ...highResourceState(chapterFiveBase).relationships,
+      lysara: { ...highResourceState(chapterFiveBase).relationships.lysara, intent },
+    },
+  };
+  if (isChoiceVisible(maraFriendChoice, maraActive)
+    || isChoiceVisible(lysaraFriendChoice, lysaraActive)
+    || isChoiceVisible(bothFriendChoice, maraActive)
+    || isChoiceVisible(bothFriendChoice, lysaraActive)) {
+    failures.push(`Chapter Five silently converts an ${intent} romance into friendship`);
+  }
+}
 const lysaraCollapse = renderedBody('c5-grave-collapse', lysaraCareState);
 const sorinCollapse = renderedBody('c5-grave-collapse', professionalCareState);
 const lysaraPactEnding = renderedBody('c5-ending-pact', {
@@ -3120,8 +3171,12 @@ if (!/first step is toward Lysara/i.test(lysaraCollapse)
   failures.push('Chapter Five returns the emotional camera to Mara after another caregiver was chosen');
 }
 const pactChoice = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-pact-with-vaor');
+const repairedPactChoice = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-pact-with-vaor-after-repair');
 const pactEnding = renderedBody('c5-ending-pact', chapterFiveBase);
-if (!/protective glass shell he can break/i.test(pactChoice?.result ?? '')
+const pactContractPattern = /protect living people.*expose what the Concord erased.*Either of us may refuse.*ends when the gate is safe.*both of us say.*duty is complete/is;
+if (!pactContractPattern.test(pactChoice?.result ?? '')
+  || !pactContractPattern.test(repairedPactChoice?.result ?? '')
+  || !/protective glass shell he can break/i.test(pactChoice?.result ?? '')
   || !/no longer chained.*break free when he is ready/i.test(pactEnding)) {
   failures.push('The pact ending leaves Vaor’s physical captivity unresolved');
 }
@@ -3138,6 +3193,54 @@ if (savedCompanionChoice?.addFlags?.includes('c5-saved-mara-from-glass')
 const emberChoiceBody = renderedBody('c5-ember-choice', chapterFiveBase);
 if (/No option protects every claim/i.test(emberChoiceBody)) {
   failures.push('The ember choice still tells the player how to judge its balance');
+}
+const respectfulVaorFinal = renderedBody('c5-ember-choice', {
+  ...chapterFiveBase,
+  flags: ['c5-asked-memory-permission', 'c5-vaor-heard-first', 'c5-defended-living-world'],
+});
+const abusiveVaorFinal = renderedBody('c5-ember-choice', {
+  ...chapterFiveBase,
+  flags: ['c5-broke-memory-slab'],
+});
+const repairedVaorFinal = renderedBody('c5-ember-choice', {
+  ...chapterFiveBase,
+  flags: ['c5-broke-memory-slab', 'c5-vaor-trusted-memory', 'c5-knows-orivane-renewal-wish'],
+});
+const normalFreedom = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-free-vaor');
+const repairedFreedom = nodes['c5-ember-choice'].choices.find((choice) => choice.id === 'c5-free-vaor-after-repair');
+if (respectfulVaorFinal === abusiveVaorFinal
+  || abusiveVaorFinal === repairedVaorFinal
+  || !/asked before entering.*lowered steel/is.test(respectfulVaorFinal)
+  || !/willing answer now requires repair/i.test(abusiveVaorFinal)
+  || !/does not restore the day.*ask forgiveness/is.test(repairedVaorFinal)
+  || !isChoiceVisible(normalFreedom, { ...chapterFiveBase, flags: [] })
+  || isChoiceVisible(normalFreedom, { ...chapterFiveBase, flags: ['c5-broke-memory-slab'] })
+  || !isChoiceVisible(repairedFreedom, { ...chapterFiveBase, flags: ['c5-broke-memory-slab'] })) {
+  failures.push('Vaor does not distinguish respectful, abusive, and reparative histories at the final choice');
+}
+const riverResolveChoice = nodes['c5-frozen-river'].choices.find((choice) => choice.id === 'c5-river-hold-panic');
+if (!/cold cloth|cloth cooled/i.test(`${riverResolveChoice?.detail} ${riverResolveChoice?.result}`)
+  || !/breath/i.test(`${riverResolveChoice?.detail} ${riverResolveChoice?.result}`)
+  || !/darkness hides.*royal scouts/i.test(riverResolveChoice?.advantage ?? '')) {
+  failures.push('The frozen river still treats darkness as protection from heat seeking cold fire');
+}
+const treatedLysaraCare = nodes['c5-glass-shelter'].choices.filter((choice) => (
+  choice.id.startsWith('c5-ask-lysara-read-nail') && isChoiceVisible(choice, { ...chapterFiveBase, flags: ['c2-saved-lysara'] })
+));
+const untreatedLysaraCare = nodes['c5-glass-shelter'].choices.filter((choice) => (
+  choice.id.startsWith('c5-ask-lysara-read-nail') && isChoiceVisible(choice, { ...chapterFiveBase, flags: [] })
+));
+if (treatedLysaraCare.length !== 1
+  || treatedLysaraCare[0].id !== 'c5-ask-lysara-read-nail'
+  || untreatedLysaraCare.length !== 1
+  || untreatedLysaraCare[0].id !== 'c5-ask-lysara-read-nail-strained'
+  || !/injured hand never fully recovered.*binds her wrist/is.test(renderedBody('c5-memory-wall', chapterFiveBase))) {
+  failures.push('Chapter Five precision seed work does not honour Lysara’s Bellweather treatment state');
+}
+for (const flag of ['c5-knows-orivane-renewal-wish', 'c5-memorised-founder-seals']) {
+  const withoutFlag = renderedBody('c6-first-duty', chapterSixBase);
+  const withFlag = renderedBody('c6-first-duty', { ...chapterSixBase, flags: [flag] });
+  if (withoutFlag === withFlag) failures.push(`Paid Orivane choice ${flag} has no Chapter Six proof callback`);
 }
 for (const endingId of ['c5-ending-free', 'c5-ending-force', 'c5-ending-pact']) {
   const ending = [nodes[endingId].objective, ...nodes[endingId].body(chapterFiveBase)].join(' ');
@@ -3170,6 +3273,40 @@ if (!/promised to meet you here, not to obey/i.test(chapterSixArrivalGiven)
   || !/ember you tore from Vaor/i.test(chapterSixArrivalTaken)
   || !/Vaor moves inside your thoughts/i.test(chapterSixArrivalPact)) {
   failures.push('Chapter Six does not preserve all three Vaor outcomes at arrival');
+}
+for (const endingFlag of chapterFiveContinuityContract.vaorOutcomes) {
+  for (const evidenceFlag of chapterFiveContinuityContract.evidenceHandoffs) {
+    const arrival = renderedBody('c6-steppe-road', {
+      ...chapterSixBase,
+      flags: [endingFlag, evidenceFlag],
+    });
+    if (!/Mara, Lysara, and Sorin escaped Dragonspine beside you/i.test(arrival)) {
+      failures.push(`${endingFlag} does not place the full Dragonspine party at the Chapter Six opening`);
+    }
+    const evidencePatterns = {
+      'c5-has-extraction-order': /Malrec’s extraction order.*came out with you/i,
+      'c5-royal-witnesses-turned': /two royal witnesses.*came out with you/i,
+      'c5-memory-copied-to-map-wax': /Orivane’s memory in black wax.*came out with you/i,
+      'c5-saved-memory-witnesses': /three memory plates.*came out with you/i,
+      'c5-oath-held-memory-grave': /six memory plates.*came out with you/i,
+      'c5-lost-royal-camp-proof': /loose drill logs and copied camp records were lost.*carried items survived/i,
+    };
+    if (!evidencePatterns[evidenceFlag].test(arrival)) {
+      failures.push(`Chapter Six opening forgets ${evidenceFlag} after ${endingFlag}`);
+    }
+  }
+}
+const witnessCollapse = renderedBody('c5-ember-choice', {
+  ...chapterFiveBase,
+  flags: ['c5-royal-witnesses-turned', 'c5-saved-memory-witnesses'],
+});
+const witnessChapterSix = renderedBody('c6-steppe-road', {
+  ...chapterSixBase,
+  flags: ['c5-freed-vaor', 'c5-royal-witnesses-turned'],
+});
+if (!/Six soldiers lowered.*Four stay.*Two leave/is.test(witnessCollapse)
+  || !/two royal witnesses.*came out with you/i.test(witnessChapterSix)) {
+  failures.push('The six soldiers who lowered crossbows are not reconciled with the two travelling witnesses');
 }
 const maraFriendshipArrival = renderedBody('c6-steppe-road', {
   ...chapterSixBase,

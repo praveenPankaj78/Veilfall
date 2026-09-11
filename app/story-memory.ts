@@ -289,7 +289,7 @@ export function knownTruths(game: GameState) {
       truths.push('I took Vaor’s ember by force. Its power obeys me, and the freed dragon follows as my enemy.');
     }
     if (game.flags.includes('c5-vaor-pact')) {
-      truths.push('I carry Vaor’s ember and voice through a pact with a clear shared end condition.');
+      truths.push('Vaor and I carry the ember to the black stone gate to protect living people and expose what the Concord erased. Either of us may refuse its use. The pact ends only when the gate is safe and we both say the duty is complete.');
     }
     return truths;
   }
@@ -301,7 +301,7 @@ export function knownTruths(game: GameState) {
     } else if (game.flags.includes('c5-took-ember-by-force')) {
       truths.push('I took Vaor’s ember by force. It obeys me, and the freed dragon follows as an enemy.');
     } else if (game.flags.includes('c5-vaor-pact')) {
-      truths.push('I carry Vaor’s ember and voice through a pact with a clear shared end condition.');
+      truths.push('Vaor and I share the ember under agreed terms. Either of us may refuse its use, and the bond ends only when the gate is safe and both of us call the duty complete.');
     }
     truths.push('Kharad Vey is a travelling orc town built on twelve wheeled platforms. An ancestor storm wearing dead faces follows it.');
 
@@ -480,7 +480,7 @@ export function knownTruths(game: GameState) {
     truths.push('Caelan took Vaor’s ember by force and left the freed dragon as an enemy.');
   }
   if (game.flags.includes('c5-vaor-pact')) {
-    truths.push('Caelan carries Vaor’s ember and voice through a pact with a clear shared end condition.');
+    truths.push('Caelan and Vaor share the ember until the black stone gate is safe and both declare their duty complete. Either bearer may refuse a use of the ember.');
   }
   return truths;
 }
@@ -566,17 +566,29 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c5-admitted-future-with-mara')) consequences.push('Because you told Mara you want a life that includes her, your future together is no longer hidden behind duty.');
   if (game.flags.includes('c5-kissed-mara')) consequences.push('Because you and Mara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
   if (game.flags.includes('c5-mara-friendship')) consequences.push('Because you chose friendship with Mara, your oldest bond has a clear future without romantic expectation.');
+  if (game.flags.includes('c5-postponed-mara-answer')) consequences.push('Because you delayed answering Mara until the crisis passes, the relationship remains open without becoming a promise.');
   if (game.flags.includes('c5-admitted-future-with-lysara')) consequences.push('Because you chose to know Lysara beyond the treaty, your attraction is no longer hidden behind diplomatic duty.');
   if (game.flags.includes('c5-kissed-lysara')) consequences.push('Because you and Lysara named what you wanted before kissing, the mountain changed your relationship by mutual choice.');
   if (game.flags.includes('c5-lysara-friendship')) consequences.push('Because you chose friendship with Lysara, political trust can deepen without romantic expectation.');
+  if (game.flags.includes('c5-postponed-lysara-answer')) consequences.push('Because you delayed answering Lysara until the crisis passes, the relationship remains open without becoming a promise.');
   if (game.flags.includes('c5-protected-lysara-choice')) consequences.push('Because you protected Lysara’s right to choose, she knows neither treaty nor attraction gives you a claim over her.');
   if (game.flags.includes('c5-oath-carry-vaor-grief')) consequences.push('Because you promised to hear Vaor’s grief, part of the dragon’s pain now travels through your Oathfire.');
-  if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, royal witnesses carry the truth away from Dragonspine.');
+  if (game.flags.includes('c5-destroyed-royal-drill')) consequences.push('Because you destroyed Hale’s extraction drill, the Crown cannot use that machine for another attempt.');
+  if (game.flags.includes('c5-royal-witnesses-turned')) consequences.push('Because you turned Hale’s soldiers with evidence, four stayed to help the wounded and guard Hale while two carried testimony out of Dragonspine.');
   if (game.flags.includes('c5-memory-copied-to-map-wax') || game.flags.includes('c5-rook-copied-first-memory')) consequences.push('Because you copied Orivane’s memory into map wax, the buried proof can survive even if the mountain glass is destroyed.');
+  if (game.flags.includes('c5-knows-orivane-renewal-wish')) consequences.push('Because you stayed through Orivane’s final words, you can prove she wanted living people to judge the Concord again.');
+  if (game.flags.includes('c5-memorised-founder-seals')) consequences.push('Because you memorised the founder seals, you can show that rulers from several peoples buried the Concord’s cost together.');
+  if (game.flags.includes('c5-saved-chosen-companion')) consequences.push('Because you took the falling shelf, the person who treated your burn escaped unhurt and Sorin preserved the oldest memory plate.');
+  if (game.flags.includes('c5-saved-memory-witnesses')) consequences.push('Because you led a moving shelter through the collapse, everyone escaped with three memory plates.');
+  if (game.flags.includes('c5-oath-held-memory-grave')) consequences.push('Because your Oath held the gallery, everyone escaped and Sorin carried six memory plates out of the grave.');
+  if (game.flags.includes('c5-lost-royal-camp-proof') && game.flags.includes('c5-has-extraction-order')) consequences.push('Because you dropped the damaged gallery around Hale, his loose drill logs and copied camp records were lost. The extraction order already inside your coat survived.');
+  else if (game.flags.includes('c5-lost-royal-camp-proof')) consequences.push('Because you dropped the damaged gallery around Hale, his loose drill logs and copied camp records were lost. Proof already inside a coat or pack survived.');
+  if (game.flags.includes('c5-seed-strained-memory') || game.flags.includes('c5-lysara-reading-strain')) consequences.push('Because Lysara used precision magic through strain, a crack remains in the glass seed and reduces its safe living thread.');
+  if (game.flags.includes('c5-repair-vaor-memory-duty')) consequences.push('Because you destroyed one of Vaor’s memories, willing cooperation required a duty to preserve the memories that survived and tell the truth about the loss.');
   if (game.flags.includes('c5-freed-vaor')) consequences.push('Because you freed Vaor, an ancient dragon travels as a willing but independent ally.');
   if (game.flags.includes('c5-kingdoms-fear-vaor')) consequences.push('Because Vaor escaped in full view of the royal camp, warning horns now carry your part in releasing him across the border kingdoms.');
   if (game.flags.includes('c5-took-ember-by-force')) consequences.push('Because you took the ember by force, its power obeys you while Vaor follows as an enemy.');
-  if (game.flags.includes('c5-vaor-pact')) consequences.push('Because you made a pact with Vaor, his voice, grief, and fire now travel inside you.');
+  if (game.flags.includes('c5-vaor-pact')) consequences.push('Because you made a pact with Vaor, either bearer may refuse the ember’s use until the black stone gate is safe and both declare the shared duty complete.');
   if (game.flags.includes('c6-saved-lift-siblings')) consequences.push('Because you saved the western lift handlers, Kharad Vey judged your actions before your Crown badge.');
   if (game.flags.includes('c6-herd-service-complete')) consequences.push('Because you served beside the herders, their clan carried your actions into the Red Moot.');
   if (game.flags.includes('c6-forge-service-complete')) consequences.push('Because you served in the brake forge, the wheelwrights saw whether you listened before using power.');
