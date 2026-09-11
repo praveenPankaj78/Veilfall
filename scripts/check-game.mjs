@@ -3,6 +3,7 @@ import vm from 'node:vm';
 import ts from 'typescript';
 import {
   chapterFiveContinuityContract,
+  chapterSixContinuityContract,
   documentedSeriesRoutes,
   firstMeetingContracts,
   implementedChapterContracts,
@@ -599,6 +600,12 @@ function stateKey(state) {
     'c7-copied-gate-diversion',
     'c7-teren-saw-gate-order',
   ]);
+  const currentNode = nodes[state.nodeId];
+  for (const choice of currentNode?.choices ?? []) {
+    for (const field of ['requiresFlags', 'showIfAnyFlags', 'showIfAllFlags', 'hideIfAnyFlags']) {
+      for (const flag of choice[field] ?? []) navigationFlags.add(flag);
+    }
+  }
   const requirementCaps = {
     health: 2,
     resolve: 4,
@@ -611,10 +618,51 @@ function stateKey(state) {
     .map(([key, value]) => `${key}:${Math.min(value, requirementCaps[key] ?? value)}`)
     .join('|');
   const flags = state.flags.filter((flag) => navigationFlags.has(flag)).sort().join('|');
+  const continuityDimensions = [];
+  if (state.chapter >= 6) {
+    const vaorOutcome = state.flags.includes('c5-freed-vaor')
+      ? 'gift'
+      : state.flags.includes('c5-took-ember-by-force')
+        ? 'theft'
+        : state.flags.includes('c5-vaor-pact')
+          ? 'pact'
+          : 'unknown';
+    const serviceMerit = [
+      'c6-whole-herd-saved', 'c6-saved-all-herders', 'c6-forge-service-complete',
+      'c6-shrine-service-complete', 'c6-trial-won-moot', 'c6-oath-recognised-red-moot',
+      'c6-oath-crown-restitution', 'c6-oath-defends-refusal',
+    ].some((flag) => state.flags.includes(flag));
+    continuityDimensions.push(
+      `vaor:${vaorOutcome}`,
+      `merit:${serviceMerit}`,
+      `respect:${state.flags.includes('c6-korran-respect')}`,
+      `origin:${state.flags.includes('c6-declared-ember-origin')}`,
+      `pending:${state.flags.includes('c6-ember-disclosure-pending')}`,
+      `refused:${state.flags.includes('c6-refused-ember-disclosure')}`,
+      `concealed:${state.flags.includes('c6-concealed-ember-theft')}`,
+      `limited:${state.flags.includes('c6-oath-honest-limit')}`,
+    );
+  }
+  if (state.chapter >= 7) {
+    const activeSteppeOath = [
+      'c6-oath-recognised-red-moot', 'c6-oath-crown-restitution',
+      'c6-oath-defends-refusal', 'c6-oath-honest-limit', 'c6-oath-investigate-unsea',
+    ].find((flag) => state.flags.includes(flag)) ?? 'none';
+    continuityDimensions.push(`steppe-oath:${activeSteppeOath}`);
+  }
+  if (state.chapter >= 8) {
+    const damagedSeed = [
+      'c5-stair-scorched-thread', 'c5-seed-scorched-river',
+      'c5-seed-strained-memory', 'c5-lysara-reading-strain',
+      'c6-seed-critically-weakened', 'c6-seed-scorched-by-horn',
+      'c6-lysara-hand-strained-by-horn', 'c8-seed-weakened-saving-pell',
+    ].some((flag) => state.flags.includes(flag));
+    continuityDimensions.push(`seed-damaged:${damagedSeed}`);
+  }
   const relationships = Object.entries(state.relationships)
     .map(([person, score]) => `${person}:${Math.min(score.trust, 6)}:${Math.min(score.attraction, 4)}:${Math.min(score.respect ?? 0, 4)}:${Math.min(score.friction ?? 0, 3)}:${score.intent ?? 'unresolved'}`)
     .join('|');
-  return `${state.nodeId}|${stats}|${relationships}|${flags}`;
+  return `${state.nodeId}|${stats}|${relationships}|${flags}|${continuityDimensions.join('|')}`;
 }
 
 const chapterTwoKnownTerms = Object.keys(statLabels).filter((term) => term !== 'medicine');
@@ -1158,7 +1206,7 @@ for (const node of Object.values(nodes)) {
       flagChangesLaterPlay(flag, node.id, chapterBaseStates[chapter])
     ));
     paidSiblingContracts.push({ choiceId: choice.id, materialFlags, distinct: choiceHasDistinctConsequence(choice, freeSiblings) });
-    if (chapter === 5 && !materialFlags.length) {
+    if (!materialFlags.length) {
       failures.push(`Paid sibling choice ${choice.id} has no flag that changes later playable state`);
     }
     if (!choiceHasDistinctConsequence(choice, freeSiblings)) {
@@ -1189,7 +1237,7 @@ const exactFlagSources = [
   memorySource,
   await readFile('app/page.tsx', 'utf8'),
 ];
-const lifecycleAuditedChapters = [4, 5];
+const lifecycleAuditedChapters = implementedChapterContracts.map((contract) => contract.chapter);
 const lifecycleAuditedFlags = [...new Set(Object.values(nodes)
   .filter((node) => lifecycleAuditedChapters.some((chapter) => node.id.startsWith(`c${chapter}-`)))
   .flatMap((node) => node.choices)
@@ -3467,15 +3515,15 @@ const finalAllianceChoice = nodes['c6-final-alliance'].choices.find(
 );
 const strongMootState = {
   ...chapterSixBase,
-  flags: ['c5-freed-vaor', 'c6-service-won-moot', 'c6-korran-respect', 'c6-declared-ember-origin'],
+  flags: ['c5-freed-vaor', 'c6-whole-herd-saved', 'c6-service-won-moot', 'c6-korran-respect', 'c6-declared-ember-origin'],
 };
 const mixedMootState = {
   ...chapterSixBase,
-  flags: ['c5-freed-vaor', 'c6-service-won-moot'],
+  flags: ['c5-freed-vaor', 'c6-service-won-moot', 'c6-declared-ember-origin'],
 };
 const concealedTheftState = {
   ...chapterSixBase,
-  flags: ['c5-took-ember-by-force', 'c6-trial-won-moot'],
+  flags: ['c5-took-ember-by-force', 'c6-trial-won-moot', 'c6-refused-ember-disclosure', 'c6-concealed-ember-theft'],
 };
 const admittedTheftState = {
   ...chapterSixBase,
@@ -3517,6 +3565,156 @@ for (const endingId of Object.keys(chapterSixEndingFlags)) {
     failures.push(`${endingId} does not continue into Chapter Seven`);
   }
 }
+
+const urgentAncestorResponses = [
+  'c6-admit-rulers-lied',
+  'c6-demand-storm-name-source',
+  'c6-order-party-defensive-ring',
+];
+const delayedDisclosureByVaor = {
+  'c5-freed-vaor': ['c6-disclose-gift-after-crisis', 'c6-refuse-ember-account'],
+  'c5-took-ember-by-force': ['c6-disclose-theft-after-crisis', 'c6-conceal-ember-theft'],
+  'c5-vaor-pact': ['c6-disclose-pact-after-crisis', 'c6-refuse-ember-account'],
+};
+for (const [vaorFlag, expectedChoiceIds] of Object.entries(delayedDisclosureByVaor)) {
+  for (const responseId of urgentAncestorResponses) {
+    const response = nodes['c6-ancestor-warning'].choices.find((choice) => choice.id === responseId);
+    const pendingFlags = [...(response?.addFlags ?? []), vaorFlag];
+    const pendingState = { ...chapterSixBase, flags: pendingFlags };
+    for (const expectedChoiceId of expectedChoiceIds) {
+      const expectedChoice = nodes['c6-korran-terms'].choices.find((choice) => choice.id === expectedChoiceId);
+      if (!response?.addFlags?.includes('c6-ember-disclosure-pending') || !isChoiceVisible(expectedChoice, pendingState)) {
+        failures.push(`${responseId} does not preserve the later ${vaorFlag} disclosure decision`);
+      }
+    }
+  }
+}
+for (const [vaorFlag, directChoiceId] of [
+  ['c5-freed-vaor', 'c6-declare-given-ember'],
+  ['c5-took-ember-by-force', 'c6-confess-stolen-ember'],
+  ['c5-vaor-pact', 'c6-declare-pact-ember'],
+]) {
+  const choice = nodes['c6-ancestor-warning'].choices.find((candidate) => candidate.id === directChoiceId);
+  if (!isChoiceVisible(choice, { ...chapterSixBase, flags: [vaorFlag] })
+    || !choice.addFlags?.includes(chapterSixContinuityContract.disclosureStates.voluntary)) {
+    failures.push(`${directChoiceId} does not record a voluntary ember disclosure`);
+  }
+}
+
+const vaorUseFixtures = [
+  ['c6-running-gate', ['c6-ember-burn-anchor', 'c6-force-stolen-ember-anchor', 'c6-share-pact-ember-anchor']],
+  ['c6-herd-duty', ['c6-ember-wall-herd', 'c6-force-stolen-ember-herd', 'c6-share-pact-ember-herd']],
+  ['c6-forge-duty', ['c6-feed-ember-to-brake', 'c6-force-stolen-ember-brake', 'c6-share-pact-ember-brake']],
+  ['c6-storm-trace', ['c6-let-ilyra-thread-ember', 'c6-force-stolen-ember-thread', 'c6-share-pact-ember-thread']],
+  ['c6-ancestor-coup', ['c6-cut-command-with-ember', 'c6-force-stolen-ember-command', 'c6-share-pact-ember-command']],
+  ['c7-ilyra-command-thread', ['c7-open-vaor-ember-thread', 'c7-force-stolen-ember-thread', 'c7-share-pact-ember-thread']],
+  ['c8-chain-plan', ['c8-burn-vaor-ember-chain', 'c8-force-stolen-ember-chain', 'c8-share-pact-ember-chain']],
+  ['c8-compact-route', ['c8-ember-collateral', 'c8-force-stolen-ember-collateral', 'c8-share-pact-ember-collateral']],
+];
+for (const [nodeId, choiceIds] of vaorUseFixtures) {
+  chapterSixContinuityContract.vaorOutcomes.forEach((vaorFlag, outcomeIndex) => {
+    const state = {
+      ...(nodeId.startsWith('c6-') ? chapterSixBase : nodeId.startsWith('c7-') ? chapterSevenBase : chapterEightBase),
+      flags: [vaorFlag],
+    };
+    choiceIds.forEach((choiceId, choiceIndex) => {
+      const choice = nodes[nodeId].choices.find((candidate) => candidate.id === choiceId);
+      if (isChoiceVisible(choice, state) !== (outcomeIndex === choiceIndex)) {
+        failures.push(`${String(nodeId)} does not distinguish Vaor gift, theft, and pact permission`);
+      }
+    });
+  });
+}
+
+for (const oathFlag of chapterSixContinuityContract.exactOaths) {
+  const oathStateSeven = { ...chapterSevenBase, flags: ['c5-freed-vaor', 'c6-red-moot-alliance', oathFlag] };
+  const oathStateEight = { ...chapterEightBase, flags: ['c5-freed-vaor', 'c6-red-moot-alliance', oathFlag] };
+  if (renderedBody('c7-red-horizon', oathStateSeven) === renderedBody('c7-red-horizon', { ...chapterSevenBase, flags: ['c5-freed-vaor', 'c6-red-moot-alliance'] })
+    || renderedBody('c8-oath-ledger', oathStateEight) === renderedBody('c8-oath-ledger', chapterEightBase)) {
+    failures.push(`${oathFlag} does not remain visible in Chapters Seven and Eight`);
+  }
+}
+const fullArmyChoice = nodes['c7-army-future'].choices.find((choice) => choice.id === 'c7-take-full-army');
+if (isChoiceVisible(fullArmyChoice, { ...chapterSevenBase, flags: ['c6-oath-honest-limit'] })) {
+  failures.push('The limited personal steppe Oath does not constrain Chapter Seven command');
+}
+const restitutionChoice = nodes['c7-marshal-parley'].choices.find((choice) => choice.id === 'c7-invoke-crown-restitution-oath');
+if (!isChoiceVisible(restitutionChoice, { ...chapterSevenBase, flags: ['c6-oath-crown-restitution'] })) {
+  failures.push('The Crown restitution Oath receives no public judgment option in Chapter Seven');
+}
+
+for (const proofFlag of [
+  ...chapterFiveContinuityContract.evidenceHandoffs,
+  'c5-knows-orivane-renewal-wish',
+  'c5-memorised-founder-seals',
+]) {
+  const withoutProof = renderedBody('c6-red-moot', chapterSixBase);
+  const withProof = renderedBody('c6-red-moot', { ...chapterSixBase, flags: [proofFlag] });
+  if (withoutProof === withProof && proofFlag !== 'c5-lost-royal-camp-proof') {
+    failures.push(`${proofFlag} does not change the evidence available at the Red Moot`);
+  }
+}
+
+for (const seedFlag of chapterSixContinuityContract.seedDamage.slice(0, 4)) {
+  const damagedStateSix = { ...chapterSixBase, flags: [seedFlag] };
+  const damagedHorn = nodes['c6-storm-breach'].choices.find((choice) => choice.id === 'c6-carry-living-horn-damaged');
+  const healthyHorn = nodes['c6-storm-breach'].choices.find((choice) => choice.id === 'c6-carry-living-horn');
+  const damagedStateEight = { ...chapterEightBase, flags: [seedFlag] };
+  const damagedPell = nodes['c8-first-knock'].choices.find((choice) => choice.id === 'c8-help-damaged-seed-save-pell');
+  const healthyPell = nodes['c8-first-knock'].choices.find((choice) => choice.id === 'c8-let-lysara-seed-pell');
+  if (!/scorched seed|damaged seed|green threads/i.test(renderedBody('c6-storm-breach', damagedStateSix))
+    || !isChoiceVisible(damagedHorn, damagedStateSix)
+    || isChoiceVisible(healthyHorn, damagedStateSix)
+    || !isChoiceVisible(damagedPell, damagedStateEight)
+    || isChoiceVisible(healthyPell, damagedStateEight)) {
+    failures.push(`${seedFlag} does not persist through both later seed uses`);
+  }
+}
+
+const craneFour = renderedBody('c6-running-gate', { ...chapterSixBase, flags: ['c6-spent-climbing-line-entry'] });
+const craneSix = renderedBody('c6-running-gate', { ...chapterSixBase, flags: ['c6-spent-climbing-line-entry', 'c5-royal-witnesses-turned'] });
+if (!/four travellers: you, Mara, Lysara, and Sorin/i.test(craneFour)
+  || !/six travellers: you, Mara, Lysara, Sorin, and the two royal witnesses/i.test(craneSix)) {
+  failures.push('The Chapter Six crane does not preserve the four or six person party count');
+}
+
+for (const ancestorFlag of chapterSixContinuityContract.ancestorCommandOutcomes) {
+  const ancestorState = { ...chapterSixBase, flags: [ancestorFlag] };
+  if (renderedBody('c6-final-alliance', ancestorState) === renderedBody('c6-final-alliance', chapterSixBase)
+    || !knownTruths({ ...ancestorState, nodeId: 'c6-final-alliance' }).length) {
+    failures.push(`${ancestorFlag} does not produce a distinct ending and journal state`);
+  }
+}
+
+const ilyraBoundaryPatterns = {
+  'c6-named-ilyra-manipulation': /named her public pressure|named Ilyra’s public pressure/i,
+  'c6-ilyra-interest-acknowledged': /attraction.*acknowledged|politics and desire separate/is,
+  'c6-refused-ilyra-pressure': /distance you (?:asked for|requested)|without flirtation used as pressure/i,
+  'c6-ilyra-professional-alliance': /professional and under local authority/i,
+};
+for (const boundaryFlag of chapterSixContinuityContract.relationshipBoundaries) {
+  for (const endingId of Object.keys(chapterSixEndingFlags)) {
+    const ending = renderedBody(endingId, { ...chapterSixBase, flags: [boundaryFlag] });
+    const arrival = renderedBody('c7-red-horizon', { ...chapterSevenBase, flags: ['c6-red-moot-alliance', boundaryFlag] });
+    if (!/Ilyra travels/i.test(ending)
+      || !/Ilyra rides/i.test(arrival)
+      || !ilyraBoundaryPatterns[boundaryFlag].test(`${ending} ${arrival}`)) {
+      failures.push(`${boundaryFlag} does not preserve Ilyra's presence across ${endingId}`);
+    }
+  }
+}
+for (const [endingId, authorityPattern] of [
+  ['c6-ending-war', /Korran keeps seasonal command.*Dema holds the western steering rope/is],
+  ['c6-ending-alliance', /Red Moot gives Dema the seasonal steering cords.*commands the town/is],
+  ['c6-ending-neutral', /Red Moot gives Dema the seasonal steering cords.*commands the town/is],
+]) {
+  if (!authorityPattern.test(renderedBody(endingId, chapterSixBase))) {
+    failures.push(`${endingId} does not establish Kharad Vey's lawful command handoff`);
+  }
+}
+if (/refus(?:e|ed) war/i.test(renderedBody('c6-ending-neutral', chapterSixBase))) {
+  failures.push('The voluntary neutral request is described as a rejected war request');
+}
 const chapterSevenWarState = {
   ...chapterSevenBase,
   flags: ['c5-freed-vaor', 'c6-red-moot-war', 'c6-learned-wheel-signals'],
@@ -3532,7 +3730,7 @@ const chapterSevenNeutralState = {
 const supportArrivalCases = [
   [chapterSevenWarState, /All twelve platforms of Kharad Vey are turning east/i, /inner decks/i],
   [chapterSevenAllianceState, /Kharad Vey moves on a safer southern line/i, /shield engines/i],
-  [chapterSevenNeutralState, /wheel town turns south/i, /split Black Ridge/i],
+  [chapterSevenNeutralState, /keeps the neutral road you requested/i, /split Black Ridge/i],
 ];
 for (const [state, expectedBody, expectedChoice] of supportArrivalCases) {
   const body = renderedBody('c7-red-horizon', state);
@@ -4406,6 +4604,37 @@ if (process.argv.includes('--print-chapter-four-routes')) {
     chapterFive: nodes['c5-north-road'].body({ ...chapterFiveBase, flags: [flag, 'c4-captured-ordan', 'c4-denied-rook-copy'] }),
   }));
   console.log(JSON.stringify({ environmentPrints, ordanPrints, relationshipPrints, endingPrints }, null, 2));
+}
+
+if (process.argv.includes('--print-chapter-six-routes')) {
+  const dutyPrints = [
+    ['herd', 'c6-herd-duty', ['c6-herd-route', 'c6-whole-herd-saved']],
+    ['forge', 'c6-forge-duty', ['c6-forge-route', 'c6-forge-service-complete', 'c6-forge-families-safe']],
+    ['shrine', 'c6-shrine-duty', ['c6-shrine-route', 'c6-shrine-service-complete', 'c6-children-chose-living']],
+  ].map(([name, nodeId, flags]) => ({
+    duty: name,
+    scene: nodes[nodeId].body({ ...chapterSixBase, flags }),
+    mootRecord: nodes['c6-final-alliance'].body({ ...chapterSixBase, flags: [...(Array.isArray(flags) ? flags : []), 'c6-korran-respect', 'c6-declared-ember-origin', 'c6-living-vote-broke-storm'] }),
+  }));
+  const disclosurePrints = Object.entries(delayedDisclosureByVaor).map(([vaorFlag, choiceIds]) => ({
+    vaorOutcome: vaorFlag,
+    terms: nodes['c6-korran-terms'].body({ ...chapterSixBase, flags: [vaorFlag, 'c6-ember-disclosure-pending'] }),
+    visibleChoices: choiceIds.filter((choiceId) => isChoiceVisible(
+      nodes['c6-korran-terms'].choices.find((choice) => choice.id === choiceId),
+      { ...chapterSixBase, flags: [vaorFlag, 'c6-ember-disclosure-pending'] },
+    )),
+  }));
+  const endingPrints = Object.entries(chapterSixEndingFlags).map(([endingId, flag]) => ({
+    ending: endingId,
+    chapterSix: nodes[endingId].body({ ...chapterSixBase, flags: [flag, 'c6-ilyra-professional-alliance', 'c6-living-vote-broke-storm'] }),
+    chapterSevenOpening: nodes['c7-red-horizon'].body({ ...chapterSevenBase, flags: [flag, 'c6-ilyra-professional-alliance', 'c6-living-vote-broke-storm', 'c5-vaor-pact'] }),
+  }));
+  const oathPrints = chapterSixContinuityContract.exactOaths.map((flag) => ({
+    oath: flag,
+    chapterSeven: nodes['c7-red-horizon'].body({ ...chapterSevenBase, flags: ['c6-red-moot-alliance', 'c5-vaor-pact', flag] }),
+    chapterEight: nodes['c8-oath-ledger'].body({ ...chapterEightBase, flags: ['c6-red-moot-alliance', 'c5-vaor-pact', flag] }),
+  }));
+  console.log(JSON.stringify({ dutyPrints, disclosurePrints, endingPrints, oathPrints }, null, 2));
 }
 
 const shortest = Math.min(...endingDepths);

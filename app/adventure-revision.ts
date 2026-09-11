@@ -551,6 +551,13 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     objective: 'Earn limited entry without surrendering your wounded to Ordan.',
     body: (state) => [
       'Gate Captain Elene comes through the small door with twelve guards. The route authority is genuine. You signed it.',
+      state.flags.includes('c3-calm-entry')
+        ? 'Your Wardens keep their blades sheathed. Elene can question you without first stopping a fight.'
+        : state.flags.includes('c3-shielded-wounded')
+          ? 'You remain between the archers and the wounded. Mara names the people behind you, and two bows lower before Elene speaks.'
+          : state.flags.includes('c3-showed-iron')
+            ? 'The Crown marked iron still points through the gate. Elene orders her guards not to touch it until she hears your account.'
+            : 'Your escort holds position while Elene studies the warrant.',
       'Ordan has attached witness statements. They claim a captain in your red cloak robbed the archive, struck two residents, and used correct Warden commands.',
       'Your signature sits beneath his lies in the same hard strokes you have used on a hundred lawful orders. Your thumb covers the name, but the archers do not lower their bows.',
       state.flags.includes('treaty-damaged')
@@ -653,7 +660,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'Elene’s guards seize the bridge winch after hearing the threat inside Ordan’s promise of safety. He escapes by boat, but loses control of the crossing.'
         : state.flags.includes('c3-centred-harrowfen-victims')
           ? 'Harrowfen’s residents block the royal soldiers from following Ordan. The people he dismissed as a necessary cost now buy you a clear path to the fire.'
-          : 'Elene repeats Ordan’s confession and strips him of authority in Harrowfen. His own escort hesitates, forcing him to flee without the town guard.',
+          : state.flags.includes('c3-stripped-ordan-command')
+            ? 'Elene repeats Ordan’s confession and strips him of authority in Harrowfen. His own escort hesitates, forcing him to flee without the town guard.'
+            : 'Elene orders the town guard to follow her law instead of Ordan’s retreat. He flees with only his private escort.',
       'Smoke rolls from the watch house roof. Ordan’s men have set the building on fire and barred the lower door to destroy the records behind his argument.',
       'The courier boy falls against your knee, his satchel trapped beneath him. Above, fists strike a barred window. Across the roofline, Ordan clears the first gap.',
       'Your eyes move from the bleeding boy to the trapped residents and then to Ordan. The fire will punish whichever duty you leave for someone else.',
@@ -754,7 +763,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'Renn meets your challenge between the market stalls. His copied stance is accurate, but he watches your sword instead of the civilians behind you. Elene notices the difference.'
         : state.flags.includes('c3-mara-flanked-double')
           ? 'Mara cuts open the cloak lining and holds up the armourer’s mark from your missing spare. Elene sees that Renn is wearing stolen proof, but he still has a sword and Ordan’s soldiers around him.'
-          : 'Your public Oath burns across your armour. Renn cannot answer it with a promise of his own. He draws his sword before the town guards can close around him.',
+          : state.flags.includes('c3-saw-false-oath')
+            ? 'Your public Oath burns across your armour. Renn cannot answer it with a promise of his own. The town guards see the difference, but he draws his sword before they can close around him.'
+            : 'Renn draws his sword before the town guards can close around him.',
       'Renn steps across the road to the well. Behind him, Ordan slips between two market boats while Harrowfen’s guards wait for one captain to lower his blade.',
       'Renn’s courage shakes, but his blade stays raised. “Ordan promised the Wardens would command every road in the kingdom,” he says.',
     ],

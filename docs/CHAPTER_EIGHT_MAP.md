@@ -26,7 +26,11 @@ Caelan arrives from Chapter Seven with exactly one force state:
 2. The chosen company can hold three strong positions, but cannot cover the whole ring.
 3. The dangerous reputation route keeps a small mobile force together and uses alarms across the empty walls.
 
-Vaor's freedom, forced ember, or pact remains active. Chapter Eight does not change how Caelan acquired the ember.
+Vaor's freedom, forced ember, or pact remains active. Chapter Eight does not change how Caelan acquired the ember. A freely given ember requires Vaor's permission. A stolen ember obeys while Vaor resists. The pact requires Caelan to name the purpose, and either bearer may refuse.
+
+Lysara's hand treatment and every later strain to the glass seed remain active. Earlier damage changes the cost and method of using the seed to save Pell or restore the buried chain.
+
+Every exact promise made at the Red Moot remains active: recognition of Moot authority, Crown repayment and public judgment, defence of each clan's right to refuse, Caelan's limited personal duty, and investigation of the Unsea. The Oath ledger names the promises that exist on the current route.
 
 Mara and Lysara remain on Caelan's route. The established romantic state selects one private watch scene. A platonic or unattached route receives a personal reflection scene instead.
 
@@ -101,7 +105,7 @@ The route still lets the player decide whether evidence, wounded people, or both
 
 ## Oath pressure
 
-The Gate attacks Caelan by making every active duty demand him at once. The choice offers four distinct prices:
+The Gate attacks Caelan by making every active duty demand him at once. This pressure includes the exact promises Caelan made at the Red Moot. The choice offers four distinct prices:
 
 1. Surrender the hope of returning to the unchanged life he once knew.
 2. Release his oldest Crown Oath and accept the legal and physical backlash.
@@ -152,3 +156,6 @@ No art from Chapters One through Seven is reused.
 18. A weakened item or power must produce a weaker later option, a new cost, or an unavailable action.
 19. Contract prose must distinguish an owned promise, a prepared claim, an offered bargain, and an accepted agreement.
 20. An ending must state whether a visitor entered, remained outside, or crossed under an earlier agreement.
+21. Every use of Vaor's ember must preserve the gift, theft, or pact permission established in Chapter Five.
+22. Every exact Red Moot Oath must appear in the Chapter Eight ledger and constrain any action that touches its terms.
+23. Earlier damage to Lysara or the glass seed must alter later precision magic instead of disappearing between chapters.

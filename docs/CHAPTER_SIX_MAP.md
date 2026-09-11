@@ -6,7 +6,7 @@ The chapter answers one main question: will the clans of Kharad Vey help carry C
 
 The answer is conditional. They help only if Caelan treats their right to choose as part of the future he is protecting. A Crown title, an old treaty, and fear of the Gate are not enough.
 
-The amount of support is also earned. Honest disclosure about Vaor's ember and Korran's personal respect allow the player to request war. Mixed trust allows a guarded alliance or a safe road. If Caelan stole the ember and refuses to admit it, the Moot offers only the road.
+The amount of support is earned from the whole visit. Honest disclosure and Korran's respect are necessary for war, but they are not enough alone. The Moot also considers conduct at the lift, the exact local duty, damage to people or property, the chosen Moot method, treatment of the ancestor voices, and any public Oath. A disclosed ember keeps the guarded alliance open. Refusal or concealed theft limits Caelan to the safe road.
 
 The next hook is concrete: a Crown army is one day behind Kharad Vey, and its soldiers are obeying commands spoken by dead officers inside an ancestor storm.
 
@@ -22,7 +22,7 @@ The next hook is concrete: a Crown army is one day behind Kharad Vey, and its so
 - Ilyra may acknowledge attraction only if neither earlier relationship remains open.
 - Mara, Lysara, and Sorin all escape Dragonspine. The opening identifies any extraction order, map wax, memory plates, or two travelling royal witnesses that escaped with them. Surviving proof affects what Caelan can show, but proof does not replace service among the clans.
 
-These facts remain in state, but the opening recalls only Vaor's ember because it changes what Caelan physically experiences on the steppe. Rook's route and earlier romance choices return only when they affect a present scene.
+The opening accounts for the full travelling party and any evidence carried out of Dragonspine. It keeps those reminders short so the moving city and ancestor storm remain the immediate focus. Rook's route and earlier romance choices return only when they affect a present scene.
 
 ## Explanation order
 
@@ -40,9 +40,9 @@ The journal follows the same order. It cannot confirm a term or conclusion while
 3. Prevent the damaged western axle from destroying the homes above it.
 4. Choose one local duty before asking to speak at the Red Moot.
 5. Complete the herd, forge, or shrine duty.
-6. Answer the ancestor storm when it accuses Caelan of serving the power that erased lost families.
+6. Answer the ancestor storm when it accuses Caelan of serving the power that erased lost families. An urgent answer is not treated as concealment.
 7. Keep the dead voices from steering Kharad Vey into broken ground.
-8. Tell Korran what place living clan authority has in the future Caelan wants to protect.
+8. If needed, tell Korran how the ember was obtained. Then state what place living clan authority has in the future Caelan wants to protect. Delayed honesty, explicit refusal, and concealed theft remain different states.
 9. Meet Ilyra Fen and decide how to answer her calculated public offer.
 10. Help Ilyra trace one ancestor voice without surrendering control of the ember.
 11. Decide how much can honestly be promised after discovering the Unsea connection.
@@ -105,13 +105,22 @@ Caelan faces Varka on two moving platforms. The strongest outcomes come from res
 
 ### Public Oath
 
-Caelan must bind his own conduct rather than promise obedience from the Queen or the clans. Broader promises produce greater political power and greater future danger.
+Caelan must bind his own conduct rather than promise obedience from the Queen or the clans. Broader promises produce greater political power and greater future danger. The later chapters preserve the exact term: Red Moot command, Crown repayment and judgment, the clans' right to refuse, investigation of the Unsea, or Caelan's narrow personal limit.
+
+## Ancestor command outcomes
+
+- Ember fire breaks the shared command and preserves the separate voices, but reveals the ember to the hidden sender.
+- The living vote breaks the command and preserves every separate voice, but exposes the leaders who opposed it.
+- The Oath preserves the voices as witnesses and extends protection to the steppe shrines.
+- Ilyra turns the command east, dismissing voices still tied to it while marking the sender's direction.
+
+The journal and Chapter Seven use the selected result rather than claiming every method preserved the same voices.
 
 ## End states
 
 ### War
 
-This request is available only after Caelan gives an honest public account of the ember and earns Korran's personal respect. All twelve platforms turn toward the Black Gate. Kharad Vey enters the campaign as a nation beside Caelan, not as his army. This provides the largest force and exposes the largest civilian population.
+This request is available only after Caelan gives an honest public account of the ember, earns Korran's respect, and establishes a strong service, trial, or Oath record. All twelve platforms turn toward the Black Gate. Dema controls the steering decks under Moot law while Korran keeps seasonal authority. Kharad Vey enters the campaign as a nation beside Caelan, not as his army.
 
 ### Guarded alliance
 
@@ -119,7 +128,7 @@ This remains available under mixed trust, but not when a stolen ember is conceal
 
 ### Neutral road
 
-The town refuses war but grants supplies, guides, witnesses, and the right to return. Caelan must protect that freely chosen neutrality when the Crown army catches the town.
+Caelan asks only for a road. The Moot accepts that limited request and remains neutral, granting supplies, guides, witnesses, and the right to return. The ending never describes this voluntary limit as a rejected war request.
 
 Every ending grants equal Wayfire. The difference is military strength, civilian exposure, political authority, and the meaning of consent between allies.
 
@@ -130,6 +139,7 @@ Every ending grants equal Wayfire. The difference is military strength, civilian
 - Caelan's service route remains known to the relevant clan.
 - Any public steppe Oath remains active and must constrain later command choices.
 - Ilyra remembers whether Caelan named her manipulation, acknowledged attraction, refused pressure, or kept the alliance professional.
+- Ilyra travels into Chapter Seven on every ending under the boundary the player established.
 - The ancestor command was broken through ember, public command, Oathfire, or Ilyra's Turn.
 - Preserved voices remain available for later investigation.
 - The pursuing Crown army is one day behind and hears dead commanders.
@@ -156,4 +166,11 @@ The game check verifies:
 - Ilyra's attraction option respects existing commitments;
 - the Unsea test does not grant facts the selected method failed to prove;
 - war and alliance requests respect the trust earned before the vote;
+- every urgent ancestor response still receives a later ember disclosure choice;
+- delayed honesty, explicit refusal, and concealed theft remain mechanically distinct;
+- Vaor's gift, theft, and pact rules govern every ember use;
+- damaged seed states alter both Chapter Six horn magic and Chapter Eight seed options;
+- all four ancestor command methods produce distinct consequences;
+- all Chapter Six flags have a later consumer or a documented terminal history reason;
+- every paid Chapter Six option has a later practical consequence;
 - each Moot ending records its distinct consequence and grants equal Wayfire.

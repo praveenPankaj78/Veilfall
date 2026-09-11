@@ -18,6 +18,9 @@ The immediate adventure remains physical: keep the Crown March away from Kharad 
 - Most Crown soldiers believe Caelan murdered Hale, stole a royal weapon, and forced Kharad Vey into rebellion.
 - Regent Malrec has real legal authority while the Queen is ill. The army is not foreign and is not knowingly fighting the Queen.
 - Mara, Lysara, and Ilyra retain their individual relationship intent.
+- Ilyra is physically present at the opening on every Chapter Six ending. Named pressure, acknowledged attraction, refusal, and professional authority remain distinct.
+- Every exact steppe Oath remains active. Kharad fighters stay under Moot commanders, the clans retain any promised right to leave, and a limited personal Oath blocks Caelan from taking command the Moot never granted.
+- Vaor's gift, theft, or pact controls whether Caelan asks, forces, or shares each ember use.
 - Rook is travelling through the Underways and never meets Ilyra in this chapter. Lio provides living Crown knowledge, while Korran owns the steppe signals.
 
 ## Fifteen decision structure
@@ -125,7 +128,7 @@ There is no option that preserves every person, proof, resource, and future adva
 
 ### Full Crown March
 
-Caelan gains the largest force and can attempt to defend all eight forts. He also inherits divided loyalty and thousands of soldiers trained to obey before questioning.
+Caelan gains the largest force and can attempt to defend all eight forts. He also inherits divided loyalty and thousands of soldiers trained to obey before questioning. This option is hidden if his Red Moot Oath limited him to authority the Moot personally granted.
 
 ### Chosen company
 
@@ -149,6 +152,9 @@ Every ending grants equal Wayfire. The difference is force size, loyalty, speed,
 - One companion may carry a lasting injury, a Crown company may have suffered losses, or Lio may have lost his Crown status during the rescue.
 - Caelan arrives with a full army, a chosen company, or only his established allies and reputation.
 - Ilyra leaves to follow the hidden thread by another route while retaining her relationship state.
+- The active Red Moot Oath appears in the Chapter Eight Oath ledger with its exact term.
+- A Crown repayment Oath gains a public judgment step during Teren's parley.
+- Vaor's consent or resistance remains visible during every battle and Gate use of the ember.
 - The chapter ends when something knocks from the other side of the Black Gate.
 
 ## Chapter artwork

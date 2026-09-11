@@ -4,14 +4,43 @@ function has(state: GameState, flag: string) {
   return state.flags.includes(flag);
 }
 
+function hasAny(state: GameState, flags: string[]) {
+  return flags.some((flag) => has(state, flag));
+}
+
 function supportOpening(state: GameState) {
   if (has(state, 'c6-red-moot-war')) {
-    return 'All twelve platforms of Kharad Vey are turning east with you. Forge decks carry weapons, but homes, herds, and children move on the same wheels. Winning an army at the Red Moot also placed a city inside the battle.';
+    return 'All twelve platforms of Kharad Vey are turning east with you. Korran keeps seasonal command, and Dema controls the steering decks under Moot law. Homes, herds, and children move on the same wheels as the weapons.';
   }
   if (has(state, 'c6-red-moot-alliance')) {
-    return 'Kharad Vey moves on a safer southern line. Korran rides beside you with forty volunteers, six wind callers, and two moving shield engines chosen by the Red Moot. Crown scouts are cutting south toward the town, so your smaller force turns back at Black Ridge to block them.';
+    return 'Kharad Vey moves on a safer southern line under Dema’s seasonal command. Korran rides beside you with forty volunteers, six wind callers, and two shield engines chosen by the Red Moot. Crown scouts are cutting south, so your smaller force turns back at Black Ridge.';
   }
-  return 'Kharad Vey keeps the neutral road you accepted. Korran serves as one of your three guides while the wheel town turns south. Crown scouts follow its enormous tracks, so you double back with the ember and draw the main pursuit toward Black Ridge.';
+  return 'Kharad Vey keeps the neutral road you requested and turns south under Dema’s seasonal command. Korran serves as one of your three guides. Crown scouts follow the wheel tracks, so you double back with the ember and draw the pursuit toward Black Ridge.';
+}
+
+function steppePromises(state: GameState) {
+  const promises: string[] = [];
+  if (has(state, 'c6-oath-recognised-red-moot')) promises.push('Kharad forces remain under commanders chosen by the Red Moot');
+  if (has(state, 'c6-oath-crown-restitution')) promises.push('you must bring the hidden Crown crime into public judgment');
+  if (has(state, 'c6-oath-defends-refusal')) promises.push('you must defend the clans’ right to leave after the Gate is safe');
+  if (has(state, 'c6-oath-honest-limit')) promises.push('you may claim only the command the Moot granted you');
+  if (has(state, 'c6-oath-investigate-unsea')) promises.push('you must keep investigating the ancestor voices without calling uncertain copies real people');
+  if (has(state, 'c6-broad-steppe-oath') && !promises.length) promises.push('an earlier promise still binds you to protect Kharad Vey and its living choices');
+  if (!promises.length) return 'No public steppe Oath directs this battle, but the Red Moot’s chosen support still sets the limits of your command.';
+  return `Your active steppe duties are plain: ${promises.join('; ')}. Breaking one must be a visible choice, not an accidental order.`;
+}
+
+function ilyraArrival(state: GameState) {
+  if (has(state, 'c6-named-ilyra-manipulation')) return 'Ilyra rides with the storm map and states each Threadread test before she begins. She remembers that you named her public pressure.';
+  if (has(state, 'c6-ilyra-interest-acknowledged')) return 'Ilyra rides with the storm map. The attraction between you remains acknowledged and gives neither of you permission or command.';
+  if (has(state, 'c6-refused-ilyra-pressure')) return 'Ilyra rides with the storm map and keeps the distance you requested. Her evidence arrives without flirtation used as pressure.';
+  return 'Ilyra rides under the Red Moot’s rules with the storm map. The work remains professional and under local authority.';
+}
+
+function vaorBattleUse(state: GameState) {
+  if (has(state, 'c5-freed-vaor')) return 'Vaor’s ember is a gift, not an order. When you call for fire, the dragon may answer or refuse.';
+  if (has(state, 'c5-took-ember-by-force')) return 'The stolen ember obeys, but Vaor pulls against every use from beyond the storm.';
+  return 'The pact lets either bearer refuse the ember. Vaor will answer uses that protect living people, not choices made only for speed or control.';
 }
 
 function emberPressure(state: GameState) {
@@ -176,7 +205,101 @@ function relationshipRoad(state: GameState) {
   if (has(state, 'c7-ilyra-friendship-chosen') || has(state, 'c7-ilyra-leverage-refused')) {
     return 'Ilyra follows the hidden thread by another route. She respects the boundary between alliance and desire and promises to send what she learns.';
   }
+  if (has(state, 'c6-named-ilyra-manipulation')) {
+    return 'Ilyra leaves to trace the hidden command after stating the route and risk in public. She remembers that you named her pressure.';
+  }
+  if (has(state, 'c6-refused-ilyra-pressure')) {
+    return 'Ilyra leaves to trace the hidden command at the distance you requested. The work continues without flirtation used as leverage.';
+  }
+  if (has(state, 'c6-ilyra-professional-alliance')) {
+    return 'Ilyra leaves under the Red Moot’s authority and sends her evidence through Korran. The alliance remains professional.';
+  }
   return 'Your companions take their places without pretending victory erased what the battle cost. Ilyra leaves to trace the hidden command from another road.';
+}
+
+function chapterSevenBattleRecord(state: GameState) {
+  const record: string[] = [];
+  if (has(state, 'c7-families-inside-wheels')) record.push('Families survive beneath the inner decks, but damaged axles must be repaired before Kharad Vey can travel safely again.');
+  if (has(state, 'c7-alliance-shields-protected-wounded')) record.push('The alliance shield engines protected the wounded, leaving them damaged and unavailable for the first Gate assault.');
+  if (has(state, 'c7-neutral-wounded-in-ridge')) record.push('The wounded remain safe in Black Ridge with two guides. A runner has gone back to bring them east after the army passes.');
+  if (has(state, 'c7-families-sent-south')) record.push('The southern civilian column escapes the battlefield and carries living witnesses toward the next moving town.');
+  if (has(state, 'c7-oath-shielded-town')) record.push('The broad shield Oath kept every protected traveller alive. Its weight remains among the duties the Black Gate can pull.');
+  if (has(state, 'c7-drew-pursuit-from-town')) record.push('Drawing the pursuit away gave Kharad Vey enough distance to avoid the final storm wall.');
+  if (hasAny(state, ['c7-spared-first-cavalry', 'c7-trapped-first-cavalry', 'c7-alliance-shield-feint', 'c7-neutral-ridge-feint', 'c7-scattered-first-cavalry', 'c7-korran-spent-signal-trust', 'c7-spent-supplies-on-decoys'])) {
+    if (has(state, 'c7-spared-first-cavalry')) record.push('The first cavalry line remembers that you broke weapons instead of bodies. Those survivors speak against Malrec’s murder charge.');
+    if (has(state, 'c7-trapped-first-cavalry')) record.push('The first cavalry group surrendered inside a closed lane and now travels east without weapons.');
+    if (has(state, 'c7-alliance-shield-feint') || has(state, 'c7-neutral-ridge-feint')) record.push('The first cavalry surrendered inside a trap shaped by Kharad crews rather than your authority alone.');
+    if (has(state, 'c7-scattered-first-cavalry')) record.push('Vaor’s harmless light scattered the first charge without burning a rider.');
+    if (has(state, 'c7-korran-spent-signal-trust')) record.push('The false axle warning saved lives, but Korran must restore his signal’s credibility with the other moving towns.');
+    if (has(state, 'c7-spent-supplies-on-decoys')) record.push('The decoys divided the cavalry. Your smaller force reaches the Gate with fewer spare packs and shields.');
+  }
+  if (hasAny(state, ['c7-lio-consented-threadread', 'c7-lio-prisoner-testimony', 'c7-lio-spreads-orders-inside-army', 'c7-lio-guarded-witness'])) {
+    if (has(state, 'c7-lio-consented-threadread')) record.push('Lio chose Threadread and remains a willing witness to the command inside the army.');
+    if (has(state, 'c7-lio-prisoner-testimony')) record.push('Lio’s testimony remains limited by the guard placed over him. It proves procedure, not loyalty to you.');
+    if (has(state, 'c7-lio-spreads-orders-inside-army')) record.push('Lio carried the false orders back into the Crown ranks, where officers copied them before the storm fell.');
+    if (has(state, 'c7-lio-guarded-witness')) record.push('Lio travels east under guard as a protected witness rather than a volunteer.');
+  }
+  if (hasAny(state, ['c7-proof-rider-relay', 'c7-oath-orders-reach-army', 'c7-signal-tube-paper-rain', 'c7-proof-public-early', 'c7-saved-family-wagon', 'c7-original-orders-safe'])) {
+    if (has(state, 'c7-proof-rider-relay')) record.push('The rider relay carried copies through the army before the roads closed.');
+    if (has(state, 'c7-oath-orders-reach-army')) record.push('Your Oath delivered the orders to every rank and remains bound to their public truth.');
+    if (has(state, 'c7-signal-tube-paper-rain')) record.push('The signal tubes scattered proof across the field, but the original supply wagon was lost.');
+    if (has(state, 'c7-proof-public-early')) record.push('Publishing the proof early made Malrec’s sealed dates common knowledge before the final fight.');
+    if (has(state, 'c7-saved-family-wagon')) record.push('The trapped family and messengers survived the proof wagon attack.');
+    if (has(state, 'c7-original-orders-safe')) record.push('The original Gate orders remain in your coat for public judgment.');
+  }
+  if (hasAny(state, ['c7-broke-dead-horn', 'c7-living-horns-won', 'c7-oath-silenced-dead-horn', 'c7-lio-called-funeral', 'c7-lio-named-deserter', 'c7-mara-called-evren-funeral', 'c7-lio-called-funeral-inside-army'])) {
+    if (has(state, 'c7-broke-dead-horn')) record.push('You destroyed one dead command horn by hand, leaving its tower unable to repeat Evren’s order.');
+    if (has(state, 'c7-living-horns-won')) record.push('Living horn calls drowned out the copied order and now guide the march east.');
+    if (has(state, 'c7-oath-silenced-dead-horn')) record.push('Your Oath silenced the dead horn and taught nearby soldiers how to resist its rank.');
+    if (has(state, 'c7-lio-called-funeral') || has(state, 'c7-mara-called-evren-funeral') || has(state, 'c7-lio-called-funeral-inside-army')) record.push('Evren’s funeral call broke the ancestor storm’s claim to speak as a living marshal.');
+    if (has(state, 'c7-lio-named-deserter')) record.push('Lio’s public refusal saved soldiers and made him a named deserter under Malrec’s law.');
+  }
+  if (hasAny(state, ['c7-shared-obedience-memory', 'c7-forced-vaor-battle-use', 'c7-vaor-approved-battle-use', 'c7-lio-refused-dead-command', 'c7-lio-refused-inside-army', 'c7-command-demanded-proof'])) {
+    if (has(state, 'c7-shared-obedience-memory')) record.push('The hidden sender learned one private failure when you used it to trace the command.');
+    if (has(state, 'c7-forced-vaor-battle-use')) record.push('The trace was won by forcing Vaor’s stolen ember. His resistance remains with the fire.');
+    if (has(state, 'c7-vaor-approved-battle-use')) record.push('Vaor approved the trace because it protected living people, keeping the pact intact.');
+    if (has(state, 'c7-lio-refused-dead-command') || has(state, 'c7-lio-refused-inside-army')) record.push('Lio’s willing refusal exposed the eastern command route without giving the sender a magical weapon.');
+    if (has(state, 'c7-command-demanded-proof')) record.push('You refused to let Ilyra spend another person’s risk. Her proof now includes the limits of her method.');
+  }
+  if (hasAny(state, ['c7-mara-can-stop-caelan', 'c7-three-fact-warning', 'c7-knows-private-command-test'])) {
+    if (has(state, 'c7-mara-can-stop-caelan')) record.push('Mara still holds your permission to stop you if the dead command enters your voice.');
+    if (has(state, 'c7-three-fact-warning')) record.push('Every scout carries Lysara’s three plain tests for a dead command.');
+    if (has(state, 'c7-knows-private-command-test')) record.push('Every scout knows today’s password, so copied officers cannot quietly retake command.');
+  }
+  if (hasAny(state, ['c7-crown-restitution-oath-advanced', 'c7-teren-saw-gate-order', 'c7-invoked-queen-border-law', 'c7-teren-tested-dead-command', 'c7-offered-teren-custody'])) {
+    if (has(state, 'c7-crown-restitution-oath-advanced')) record.push('Royal witnesses carry the Crown crime toward public judgment, advancing your Red Moot Oath.');
+    if (has(state, 'c7-teren-saw-gate-order')) record.push('Teren carries a copy of the genuine order that emptied the Gate forts.');
+    if (has(state, 'c7-invoked-queen-border-law')) record.push('Crown officers heard their own border law used against Malrec’s withdrawal.');
+    if (has(state, 'c7-teren-tested-dead-command')) record.push('Teren heard the dead marshal fail today’s password in front of his guards.');
+    if (has(state, 'c7-offered-teren-custody')) record.push('Your offer of custody remains on the royal record, tied to Teren returning soldiers to the Gate.');
+  }
+  if (hasAny(state, ['c7-mixed-shield-ring', 'c7-saved-teren-at-parley', 'c7-lio-used-private-answer', 'c7-caelan-used-password-test', 'c7-oath-living-command'])) {
+    if (has(state, 'c7-mixed-shield-ring')) record.push('The mixed shield ring proved Crown and Kharad soldiers could protect one another before trusting one another.');
+    if (has(state, 'c7-saved-teren-at-parley')) record.push('Teren survives because you took the arrow line, and his living counterorders reach the Gate.');
+    if (has(state, 'c7-lio-used-private-answer') || has(state, 'c7-caelan-used-password-test')) record.push('Today’s password gave every surviving company a simple test for living command.');
+    if (has(state, 'c7-oath-living-command')) record.push('The living rank Oath still protects every soldier who freely chose it from Evren’s copied authority.');
+  }
+  if (hasAny(state, ['c7-salt-trap-merciful', 'c7-saved-crown-cavalry', 'c7-living-signal-spent', 'c7-lost-gate-supplies', 'c7-oath-surrender-road'])) {
+    if (has(state, 'c7-salt-trap-merciful')) record.push('The salt trap took horses and weapons rather than lives. The spared companies now help move the wounded east.');
+    if (has(state, 'c7-saved-crown-cavalry')) record.push('The riders you pulled from the brine join the Gate road as witnesses to your restraint.');
+    if (has(state, 'c7-living-signal-spent')) record.push('The living signal post saved both forces and was lost in the collapse.');
+    if (has(state, 'c7-lost-gate-supplies')) record.push('The safe retreat held, but part of the Gate supply train sank beneath the salt.');
+    if (has(state, 'c7-oath-surrender-road')) record.push('The surrender road remains visible to every soldier who lowers a weapon, keeping the retreat open without forced obedience.');
+  }
+  if (hasAny(state, ['c7-orders-reached-every-rank', 'c7-lio-carried-orders', 'c7-seals-proved-sequence', 'c7-lio-delivered-orders', 'c7-lio-exposed-orders-inside-army', 'c7-lio-testimony-reached-ranks'])) {
+    if (has(state, 'c7-orders-reached-every-rank')) record.push('Every Crown rank received the dated orders, so no single officer can bury the sequence again.');
+    if (has(state, 'c7-lio-carried-orders') || has(state, 'c7-lio-delivered-orders') || has(state, 'c7-lio-exposed-orders-inside-army')) record.push('Lio carried the evidence through the Crown ranks and now shares responsibility for its survival.');
+    if (has(state, 'c7-seals-proved-sequence')) record.push('Your public Oath fixed the order of Malrec’s seals where both armies could witness it.');
+    if (has(state, 'c7-lio-testimony-reached-ranks')) record.push('Lio’s narrow testimony reached the ranks without falsely presenting him as your ally.');
+  }
+  if (hasAny(state, ['c7-defeated-teren-mercifully', 'c7-won-by-terens-lesson', 'c7-duel-on-equal-ground', 'c7-teren-yielded-for-gate', 'c7-lio-stranded-after-rescue'])) {
+    if (has(state, 'c7-defeated-teren-mercifully')) record.push('Teren’s public, merciful defeat gives the army a lawful reason to follow his new order.');
+    if (has(state, 'c7-won-by-terens-lesson')) record.push('The officers saw you win through Crown training rather than hidden magic.');
+    if (has(state, 'c7-duel-on-equal-ground')) record.push('The equal ground Oath kept Malrec and the dead marshal outside the duel.');
+    if (has(state, 'c7-teren-yielded-for-gate')) record.push('Teren yielded to his duty at the Gate instead of to force.');
+    if (has(state, 'c7-lio-stranded-after-rescue')) record.push('Lio saved your trapped companion and remains under uncertain Crown guard until Teren can reach him.');
+  }
+  return record;
 }
 
 export const chapterSevenNodes: Record<string, StoryNode> = {
@@ -196,6 +319,8 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The army reaches the western horizon at dawn. Dark blue banners rise above six thousand soldiers, supply wagons, and cavalry. They wear the silver tree of Asterra, the kingdom you still serve.',
       supportOpening(state),
+      ilyraArrival(state),
+      steppePromises(state),
       emberPressure(state),
       'You recognise the spacing of the cavalry lines from years of Crown drills. Knowing exactly how the charge will arrive does nothing to slow your pulse.',
       'A red storm moves over the army. Pale officers appear inside it, each wearing an older version of the Crown uniform. When one dead voice raises its hand, the living front line changes direction without waiting for a horn.',
@@ -263,7 +388,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c7-drew-pursuit-from-town'],
-        result: 'You open the ember just enough to make every royal tracking compass point toward you. The cavalry turns. Everyone behind your line gains distance while you become the centre of the hunt.',
+        result: 'You ask Vaor to help draw the hunt. The ember answers, and every royal tracking compass points toward you. The cavalry turns. Everyone behind your line gains distance while you become the centre of the hunt.',
         next: 'c7-break-town-line',
       },
     ],
@@ -284,6 +409,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       'The army was told you murdered him. You do carry Vaor’s ember, and the Red Moot did choose its own road after you arrived. Those true pieces make the false charge believable.',
       redMootForces(state),
       localWarning(state),
+      vaorBattleUse(state),
     ],
     choices: [
       {
@@ -299,7 +425,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c7-command-wheel-feint',
-        label: 'Signal a false city turn and close the lane behind the cavalry.',
+        label: 'Ask Korran to signal a false city turn and close the lane behind the cavalry.',
         detail: 'Spend 1 Command using the wheel signals learned in Kharad Vey.',
         advantage: 'The city traps the outriders without crushing them or exposing the inner decks.',
         showIfAnyFlags: ['c6-red-moot-war'],
@@ -307,7 +433,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c7-trapped-first-cavalry'],
-        result: 'The outer wheels turn apart, invite the riders through, then close the lane with hanging shields. Forty cavalry surrender inside a wooden corridor.',
+        result: 'You give Korran the timing. He approves it and raises the signal. The outer wheels invite the riders through, then close the lane with hanging shields. Forty cavalry surrender inside a wooden corridor.',
         next: 'c7-first-riders',
       },
       {
@@ -319,7 +445,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c7-trapped-first-cavalry', 'c7-alliance-shield-feint'],
-        result: 'The engines roll apart on your count. Twenty riders enter the gap, and Korran closes the moving walls behind them. They surrender inside a corridor of hide and timber.',
+        result: 'Korran accepts your count and passes it to the volunteer crews. Twenty riders enter the gap before he closes the moving walls behind them. They surrender inside a corridor of hide and timber.',
         next: 'c7-first-riders',
       },
       {
@@ -331,7 +457,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c7-trapped-first-cavalry', 'c7-neutral-ridge-feint'],
-        result: 'Your guides vanish behind opposite ridges, then roll loose stone across the road together. The lead riders halt inside the narrow pass while the rest of the charge breaks around them.',
+        result: 'You ask the three guides to shape the trap. They choose opposite ridges, then roll loose stone across the road together. The lead riders halt inside the narrow pass while the rest of the charge breaks around them.',
         next: 'c7-first-riders',
       },
       {
@@ -342,17 +468,17 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c7-scattered-first-cavalry'],
-        result: 'Red gold light rises without heat. The horses refuse it and wheel away. Their riders fight for control instead of reaching the city.',
+        result: 'You call for a harmless wall. The ember answers. Red gold light rises without heat, and the horses wheel away. Their riders fight for control instead of reaching the city.',
         next: 'c7-first-riders',
       },
       {
         id: 'c7-raise-false-axle-warning',
-        label: 'Raise Kharad Vey’s loose axle warning.',
+        label: 'Ask Korran to spend Kharad Vey’s loose axle warning.',
         detail: 'Use steppe safety law to stop the charge, at the cost of Korran’s credibility with other moving towns.',
         advantage: 'Even enemy cavalry must halt before a marked axle danger.',
         showIfAnyFlags: ['c6-red-moot-war'],
         addFlags: ['c7-korran-spent-signal-trust'],
-        result: 'The red flag rises. Every trained rider hauls back before an axle danger that does not exist. The charge tangles safely outside the steering ropes. Korran lowers the flag with a hard look. “Useful lie,” he says. “Expensive one.”',
+        result: 'Korran studies the riders, then raises the red flag himself. Every trained rider hauls back before an axle danger that does not exist. The charge tangles safely outside the ropes. “Useful lie,” he says as he lowers it. “Expensive one.”',
         next: 'c7-first-riders',
       },
       {
@@ -689,6 +815,8 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         ? 'The mark she placed during the Red Moot appears inside the eastern thread. It is the same hidden listener that answered when she turned the ancestor command away from Kharad Vey.'
         : 'The eastern thread carries a mark she has never seen. It feels like a hand holding the Gate open from the other side.',
       'To trace it farther, Ilyra needs a living memory of obedience, Vaor’s ember, or one order spoken back through the thread. Each route exposes someone to the hidden sender.',
+      steppePromises(state),
+      vaorBattleUse(state),
       'Your mind sorts the risks by habit, then stops. These are not pieces on a map. Each method exposes a person.',
       'She looks at you rather than choosing for you. “Whose risk do I spend?”',
     ],
@@ -706,11 +834,34 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c7-open-vaor-ember-thread',
-        label: 'Open Vaor’s ember to the eastern thread for one breath.',
-        detail: 'Risk revealing the ember’s exact bearer to the power beyond the Gate.',
+        label: 'Ask Vaor to open his ember to the eastern thread for one breath.',
+        detail: 'Vaor may refuse the gift. If he agrees, the hidden power will learn who carries it.',
         advantage: 'Dragonfire can illuminate the full route used by the dead commands.',
+        showIfAnyFlags: ['c5-freed-vaor'],
         addFlags: ['c7-sender-knows-ember-bearer', 'c7-traced-hidden-sender'],
-        result: 'The ember touches the thread. A red map burns beneath the steppe, linking the abandoned forts to something alive beyond the Gate. The hidden sender now knows your name and heartbeat.',
+        result: 'You ask. Vaor waits long enough to make the choice clear, then opens one breath of flame. A red map burns beneath the steppe. The hidden sender now knows your name and heartbeat.',
+        next: (state) => personalNode(state),
+      },
+      {
+        id: 'c7-force-stolen-ember-thread',
+        label: 'Force the stolen ember into the eastern thread.',
+        detail: 'Spend 1 Resolve controlling Vaor’s resistance while exposing your exact location.',
+        advantage: 'The stolen fire reveals the full route even though Vaor refuses to help.',
+        showIfAnyFlags: ['c5-took-ember-by-force'],
+        changes: { resolve: -1 },
+        requires: { resolve: 1 },
+        addFlags: ['c7-sender-knows-ember-bearer', 'c7-traced-hidden-sender', 'c7-forced-vaor-battle-use'],
+        result: 'Vaor pulls against you. You force the ember into the thread until a red map burns beneath the steppe. The route is clear, but the dragon now knows you used his stolen fire again.',
+        next: (state) => personalNode(state),
+      },
+      {
+        id: 'c7-share-pact-ember-thread',
+        label: 'Ask Vaor to share the risk of opening the pact ember.',
+        detail: 'Either bearer may refuse. Agreement reveals the route and both bearers to the hidden power.',
+        advantage: 'The pact traces the full command road without breaking its terms.',
+        showIfAnyFlags: ['c5-vaor-pact'],
+        addFlags: ['c7-sender-knows-ember-bearer', 'c7-traced-hidden-sender', 'c7-vaor-approved-battle-use'],
+        result: 'You name the risk. Vaor agrees because the hidden command threatens living people. The pact opens for one breath, and a red map burns beneath the steppe. The power beyond the Gate learns both your names.',
         next: (state) => personalNode(state),
       },
       {
@@ -926,7 +1077,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     body: () => [
       'There is no room in your mind for romance tonight, but there is still room for people. Mara checks your bandage without asking. Lysara redraws the eastern thread in dust. Korran stands watch while pretending not to listen.',
       'Korran offers you a cup that smells like boiled boot leather. “Steppe tea,” he says. “The steppe denies involvement.”',
-      'You almost laugh. The sound feels strange in your chest, then useful. The army is close. Fear is closer. You can still decide what your companions carry into the fight.',
+      'A short laugh escapes before you can stop it. The army is close. Fear is closer. You can still decide what your companions carry into the fight.',
       'Mara tightens your bandage and asks, “What do you need from us?”',
     ],
     choices: [
@@ -989,8 +1140,21 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       'Korran plants a black spear beside the truce stone. He explains the open ground rule in one sentence: if both leaders later accept a duel, each may stake one order before the witnesses. Teren touches the spear and says, “I accept that law while we stand on this ground.”',
       'The certainty in his face hurts more than contempt would. He believes Malrec’s charges because every official seal tells him to.',
       '“Captain Vey,” Teren says. “Yield the ember and submit to royal judgment. I will protect your wounded. Resist, and I end this before the red storm kills more of my soldiers.”',
+      has(state, 'c6-oath-crown-restitution')
+        ? 'The Oath you made at the Red Moot heats beneath your armour. You promised to bring the hidden Crown crime into public judgment. Teren and twelve royal witnesses are close enough to hear it.'
+        : 'Teren has brought twelve royal witnesses. If you can make them question Malrec, the truth may travel farther than this battlefield.',
     ],
     choices: [
+      {
+        id: 'c7-invoke-crown-restitution-oath',
+        label: 'Fulfil your Red Moot promise by placing Malrec’s crime before royal witnesses.',
+        detail: 'Use the exact Oath you made to seek public judgment for the hidden Crown crime.',
+        advantage: 'Teren must answer evidence supported by both Crown law and the Red Moot’s public record.',
+        requiresFlags: ['c6-oath-crown-restitution'],
+        addFlags: ['c7-crown-restitution-oath-advanced'],
+        result: 'You name the private force, the extraction order, and the witnesses Malrec tried to silence. Korran confirms the Oath made before the Moot. Teren orders two guards to copy the charge for royal judgment.',
+        next: 'c7-dead-marshal-rises',
+      },
       {
         id: 'c7-show-gate-diversion',
         label: 'Show Teren the sealed order that emptied the Black Gate forts.',
@@ -1518,6 +1682,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
       'Teren removes Malrec’s badge from his cloak and holds out the field standard. A full army could defend all eight forts. It would also bring divided loyalties into every fort.',
       'You may lead every willing rank. You may take only a smaller company that chooses the road freely.',
       'Or you may refuse formal followers and let your dangerous reputation reach the Gate before you do.',
+      steppePromises(state),
       'Behind Teren, the soldiers wait to see whether you take the standard, ask for volunteers, or leave command in his hands.',
     ],
     choices: [
@@ -1527,6 +1692,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         detail: 'Gain the strength to defend every fort, along with thousands trained to obey before questioning.',
         advantage: 'Caelan reaches the Black Gate with a full army and Teren’s authority.',
         changes: { wayfire: 2 },
+        hideIfAnyFlags: ['c6-oath-honest-limit'],
         addFlags: ['c7-gained-full-army'],
         result: 'You accept Teren’s field standard and order the entire Crown March east. The answer rolls through the basin like thunder. It is enough power to save a kingdom or frighten one into war.',
         next: 'c7-ending-army',
@@ -1538,7 +1704,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         advantage: 'Caelan gains a disciplined company without inheriting the whole army’s divided loyalty.',
         changes: { wayfire: 2 },
         addFlags: ['c7-gained-chosen-company'],
-        result: 'You ask once and make no speech. Soldiers step forward by tens, then hundreds. Your smaller company rides ahead because each person decided to go. Teren turns the remaining army east under his own command, far enough behind that neither force can quietly control the other.',
+        result: 'You ask once and make no speech. Soldiers step forward by tens, then hundreds. Kharad riders remain under their Moot commanders, and any clan may leave after the Gate is safe. Teren turns the remaining army east under his own command.',
         next: 'c7-ending-company',
       },
       {
@@ -1566,9 +1732,11 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     nextChapter: 'c8-gate-ring',
     body: (state) => [
       'The Crown March turns east beneath Caelan Vey’s command. Kharad scouts ride ahead. Asterra engineers follow. People who began the day as enemies now share water and watch the same red horizon.',
+      steppePromises(state),
       emberPressure(state),
       relationshipRoad(state),
       finalBattleCost(state),
+      ...chapterSevenBattleRecord(state),
       fortHorizon(),
       'Then the Gate knocks from the other side.',
     ],
@@ -1587,9 +1755,11 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     nextChapter: 'c8-gate-ring',
     body: (state) => [
       'Your chosen company rides east without a royal banner. Every soldier stepped forward freely. That does not make them fearless. It makes their fear honest.',
+      steppePromises(state),
       emberPressure(state),
       relationshipRoad(state),
       finalBattleCost(state),
+      ...chapterSevenBattleRecord(state),
       'Teren follows on a separate eastern road with the remaining army under his own command. Your volunteers will reach the forts first. His force will arrive later without belonging to you.',
       fortHorizon(),
       'Then something vast knocks from the other side.',
@@ -1609,9 +1779,11 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
     nextChapter: 'c8-gate-ring',
     body: (state) => [
       'You ride east with the people who already chose you. No new banner follows your line. Behind and south, Teren leads the Crown March toward the Gate under his own command. Its soldiers carry the same story: Caelan Vey defeated the Regent’s hunt, spared its army, and refused to own it.',
+      steppePromises(state),
       emberPressure(state),
       relationshipRoad(state),
       finalBattleCost(state),
+      ...chapterSevenBattleRecord(state),
       'Teren sends copies of Malrec’s orders toward Greyhaven while his living officers continue east. Your faster road reaches the fort ring first.',
       fortHorizon(),
       'Then the entire eastern wall shudders beneath one slow knock from the other side.',

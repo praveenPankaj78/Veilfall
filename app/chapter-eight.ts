@@ -4,6 +4,10 @@ function has(state: GameState, flag: string) {
   return state.flags.includes(flag);
 }
 
+function hasAny(state: GameState, flags: string[]) {
+  return flags.some((flag) => has(state, flag));
+}
+
 function arrivingForce(state: GameState) {
   if (has(state, 'c7-gained-full-army')) {
     return 'The Crown March fills the eastern road behind you. Thousands answered your last order, but many still wear Regent Malrec’s badge beneath their cloaks. You have enough soldiers to fill every fort. You do not yet know whether you have enough trust.';
@@ -32,6 +36,37 @@ function emberState(state: GameState) {
     return 'The stolen ember pulls against your ribs. Vaor is somewhere behind the storm, angry enough to answer if you use it and proud enough to make you regret the call.';
   }
   return 'Vaor’s pact ember beats once beneath your breastbone. Through it, the dragon whispers, “That door is listening to every promise you carry.”';
+}
+
+const inheritedSeedDamageFlags = [
+  'c5-stair-scorched-thread',
+  'c5-seed-scorched-river',
+  'c5-seed-strained-memory',
+  'c5-lysara-reading-strain',
+  'c6-seed-scorched-by-horn',
+  'c6-seed-critically-weakened',
+  'c6-lysara-hand-strained-by-horn',
+];
+
+function seedWasDamaged(state: GameState) {
+  return inheritedSeedDamageFlags.some((flag) => has(state, flag));
+}
+
+function steppeOathLedger(state: GameState) {
+  const terms: string[] = [];
+  if (has(state, 'c6-oath-recognised-red-moot')) terms.push('Kharad fighters answer commanders chosen by the Red Moot');
+  if (has(state, 'c6-oath-crown-restitution')) terms.push('Malrec’s hidden crime must face public judgment');
+  if (has(state, 'c6-oath-defends-refusal')) terms.push('the clans may leave after the Gate is safe');
+  if (has(state, 'c6-oath-honest-limit')) terms.push('you may claim only the command the Moot granted');
+  if (has(state, 'c6-oath-investigate-unsea')) terms.push('you must investigate the ancestor voices without calling uncertain copies real people');
+  if (!terms.length) return 'The Red Moot gave support without placing a magical steppe promise on you.';
+  return `The steppe Oaths remain exact: ${terms.join('; ')}.`;
+}
+
+function vaorGateUse(state: GameState) {
+  if (has(state, 'c5-freed-vaor')) return 'Vaor gave the ember freely. You must ask before using his fire, and he may refuse.';
+  if (has(state, 'c5-took-ember-by-force')) return 'The stolen ember will obey, but Vaor resists every use and remembers who forced it.';
+  return 'The pact gives both bearers the right to refuse. You must name the purpose before Vaor can agree.';
 }
 
 function deploymentResult(state: GameState) {
@@ -167,6 +202,9 @@ function seedCondition(state: GameState) {
   if (has(state, 'c8-seed-weakened-saving-pell')) {
     return 'Lysara opens her hand. The living seed saved Pell, and its light is now a thin green pulse. It can still lift the chain once, but doing so will spend what remains and leave her treaty magic dormant.';
   }
+  if (seedWasDamaged(state)) {
+    return 'Lysara opens her injured hand. Earlier work scorched the seed and reduced its reach. It can lift the chain once with help, but the effort will leave its treaty magic dormant.';
+  }
   return 'Lysara opens her hand. The living seed still carries enough strength to wake the dead roots beneath the chain, though the work will weaken its future treaty magic.';
 }
 
@@ -208,6 +246,76 @@ function oathCost(state: GameState) {
   return `${endangeredCompanion(state)} carries one strand of your Oath through a fresh black mark on the palm. You kept your future, but the Gate can now feel someone you love or trust.`;
 }
 
+function gateDefenceRecord(state: GameState) {
+  const record: string[] = [];
+  if (hasAny(state, ['c8-saved-runner-personally', 'c8-guided-runner', 'c8-korran-saved-runner'])) {
+    if (has(state, 'c8-saved-runner-personally')) record.push('The burn from Pell’s rescue still marks your leg, and the young Warden can testify that you crossed the fault yourself.');
+    if (has(state, 'c8-guided-runner')) record.push('Pell survived by following your route across the fault. The marked drainage stones remain the safest path between forts.');
+    if (has(state, 'c8-korran-saved-runner')) record.push('Korran’s rescue gave the Gate wardens their first proof that the steppe came to help rather than claim command.');
+  }
+  if (has(state, 'c8-seed-critically-weakened')) record.push('Saving Pell spent nearly all of the already damaged living seed. Lysara carries one weak pulse toward the next treaty.');
+  if (has(state, 'c8-complete-lock-map')) record.push('Pell’s complete lock map survives among the records, but the boy who drew it did not.');
+  if (hasAny(state, ['c8-broke-fourth-grate', 'c8-free-command-zone', 'c8-found-contract-source'])) {
+    if (has(state, 'c8-broke-fourth-grate')) record.push('The broken side grate remains an escape route for Fourth Fort, though the breach will need guards until repaired.');
+    if (has(state, 'c8-free-command-zone')) record.push('The free command zone still protects the yard from any order spoken by the Gate.');
+    if (has(state, 'c8-found-contract-source')) record.push('The tested contract line identifies which hidden house sent the first collection command.');
+  }
+  if (hasAny(state, ['c8-saved-wounded-wagon', 'c8-yard-moved-as-one', 'c8-oath-anchored-yard', 'c8-futureless-saved-yard'])) {
+    if (has(state, 'c8-saved-wounded-wagon')) record.push('The wounded wagon survived the yard collapse, preserving its patients and medicines.');
+    if (has(state, 'c8-yard-moved-as-one')) record.push('Your two rescue lines cleared the yard together, leaving no trapped group behind.');
+    if (has(state, 'c8-oath-anchored-yard')) record.push('The yard Oath held every named person through the collapse and remains among the promises the Gate can test.');
+    if (has(state, 'c8-futureless-saved-yard')) record.push('The Futureless saved the yard by choice, giving Ansel living witnesses to their freedom.');
+  }
+  if (hasAny(state, ['c8-heard-public-ash-terms', 'c8-tested-ash-terms', 'c8-delayed-ash-answer'])) {
+    if (has(state, 'c8-heard-public-ash-terms')) record.push('The Ash Compact’s first terms were heard in public, so no private retelling can quietly widen them.');
+    if (has(state, 'c8-tested-ash-terms')) record.push('Your Oath test exposed the edge of the Compact’s offer before anyone accepted it.');
+    if (has(state, 'c8-delayed-ash-answer')) record.push('You delayed the Ash answer until the defence was understood. The Compact cannot call that delay consent.');
+  }
+  if (hasAny(state, ['c8-mara-western-commander', 'c8-mara-knows-fear', 'c8-lysara-equal-lockkeeper', 'c8-lysara-knows-loyalty-fear'])) {
+    if (has(state, 'c8-mara-western-commander')) record.push('Mara keeps command of the western defence because you trusted her judgment in public.');
+    if (has(state, 'c8-mara-knows-fear')) record.push('Mara knows the fear you named and watches the choices most likely to feed it.');
+    if (has(state, 'c8-lysara-equal-lockkeeper')) record.push('Lysara stands as an equal lockkeeper rather than a treaty tool.');
+    if (has(state, 'c8-lysara-knows-loyalty-fear')) record.push('Lysara knows you fear becoming loyal to a lie and checks every official order beside you.');
+  }
+  if (hasAny(state, ['c8-named-home-desire', 'c8-named-chosen-duty', 'c8-named-truth-desire'])) {
+    if (has(state, 'c8-named-home-desire')) record.push('You named home as a future you want, not a reward someone may use to buy you.');
+    if (has(state, 'c8-named-chosen-duty')) record.push('You named chosen duty as the future worth protecting from every contract.');
+    if (has(state, 'c8-named-truth-desire')) record.push('You named the Concord’s truth as a desire no kingdom ordered into you.');
+  }
+  if (hasAny(state, ['c8-chain-repaired-by-hand', 'c8-chain-lit-by-ember', 'c8-forced-vaor-gate-use', 'c8-vaor-approved-gate-use', 'c8-ansel-restored-chain', 'c8-lost-furnace-reserve'])) {
+    if (has(state, 'c8-chain-repaired-by-hand')) record.push('The buried chain holds because you and Mara repaired its exposed link by hand.');
+    if (has(state, 'c8-chain-lit-by-ember')) record.push('Dragonfire relit every flooded furnace and preserved the remaining mortal fuel for the night.');
+    if (has(state, 'c8-forced-vaor-gate-use')) record.push('The furnaces burn with stolen dragonfire, and every witness heard Vaor refuse the use.');
+    if (has(state, 'c8-vaor-approved-gate-use')) record.push('Vaor agreed to light the furnaces, preserving the pact while the chain holds.');
+    if (has(state, 'c8-ansel-restored-chain')) record.push('Ansel restored the old furnace route and reclaimed the wardens’ part in the defence.');
+    if (has(state, 'c8-lost-furnace-reserve')) record.push('The hidden furnace collapsed during repair, leaving no reserve fuel for another opening.');
+  }
+  if (hasAny(state, ['c8-eight-local-captains', 'c8-ansel-borrowed-oathfire', 'c8-carried-final-signal', 'c8-ansel-named-keepers'])) {
+    if (has(state, 'c8-eight-local-captains')) record.push('Eight local captains keep authority over their own fires, so no single command can surrender the ring.');
+    if (has(state, 'c8-ansel-borrowed-oathfire')) record.push('Ansel still carries borrowed Oathfire due back at dawn, never a promise taken from him.');
+    if (has(state, 'c8-carried-final-signal')) record.push('The burns on your hands show where you carried the final signal through open heat.');
+    if (has(state, 'c8-ansel-named-keepers')) record.push('Ansel chose keepers by the promises they still own, restoring his public authority among the Futureless.');
+  }
+  if (hasAny(state, ['c8-compact-public-only', 'c8-compact-binds-actions', 'c8-forced-vaor-contract-use', 'c8-vaor-approved-contract-use'])) {
+    if (has(state, 'c8-compact-public-only')) record.push('The Compact agreement relies on public witnesses and contains no mortal name.');
+    if (has(state, 'c8-compact-binds-actions')) record.push('The rewritten agreement can punish broken actions but cannot claim a person.');
+    if (has(state, 'c8-forced-vaor-contract-use')) record.push('The contract records that Vaor refused its claim on the stolen ember.');
+    if (has(state, 'c8-vaor-approved-contract-use')) record.push('Vaor approved the pact collateral, which must be released when the embassy leaves under the agreed rules.');
+  }
+  if (hasAny(state, ['c8-first-fort-fully-evacuated', 'c8-saved-first-fort-wounded', 'c8-first-fort-became-witness', 'c8-first-fort-people-first'])) {
+    if (has(state, 'c8-first-fort-fully-evacuated')) record.push('Command cleared every person and record from First Fort before its foundation fell.');
+    if (has(state, 'c8-saved-first-fort-wounded')) record.push('You carried the wounded out of First Fort, while its fuel and sealed records fell with the wall.');
+    if (has(state, 'c8-first-fort-became-witness')) record.push('The Oath preserved the fort’s memory as public testimony after the stone was lost.');
+    if (has(state, 'c8-first-fort-people-first')) record.push('The evacuation put people first and left the lost records as a known cost.');
+  }
+  if (hasAny(state, ['c8-severed-collector-hand', 'c8-captured-collector-glove', 'c8-freed-futureless-names', 'c8-ansel-refused-second-price'])) {
+    if (has(state, 'c8-severed-collector-hand') || has(state, 'c8-captured-collector-glove')) record.push('The collector’s severed glove remains sealed as proof of what crossed the Gate.');
+    if (has(state, 'c8-freed-futureless-names')) record.push('The public Oath freed the names the collector tried to claim and now protects ownership of every living name.');
+    if (has(state, 'c8-ansel-refused-second-price')) record.push('Ansel defeated the second collection by stating the original limit himself.');
+  }
+  return record;
+}
+
 export const chapterEightNodes: Record<string, StoryNode> = {
   'c8-gate-ring': {
     id: 'c8-gate-ring',
@@ -229,6 +337,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         ? [terenCondition(state)]
         : []),
       emberState(state),
+      steppeOathLedger(state),
       'Ilyra left before dawn to follow the hidden command along another road. No message from her has reached the fort ring yet.',
       'The Gate knocks again. The sound passes through your boots and closes around your heart. Every Oath you carry answers with a separate line of heat. Beneath your armour, the key to your father’s roadside inn strikes softly against your old Warden whistle.',
       'A small figure runs from Fourth Fort with one hand pressed to a bleeding cut below his ribs. Halfway across the open ground, the snow behind him erupts in a straight red line. He is a boy in a Warden coat, and something beneath the ice is following his footsteps toward you.',
@@ -312,8 +421,21 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         label: 'Ask Lysara to use the living seed on Pell’s lungs.',
         detail: 'The seed saves him but loses strength needed to read the Gate later.',
         advantage: 'Pell survives without using your limited Medicine or adding another Oath.',
+        hideIfAnyFlags: inheritedSeedDamageFlags,
         addFlags: ['c8-pell-survived', 'c8-seed-weakened-saving-pell'],
         result: 'Green threads spread beneath Pell’s skin and draw the blood from his lungs. Lysara closes her fist around a seed that now shines more weakly.',
+        next: 'c8-force-deployment',
+      },
+      {
+        id: 'c8-help-damaged-seed-save-pell',
+        label: 'Help Lysara use the damaged seed on Pell’s lungs.',
+        detail: 'Spend 1 Resolve holding the weak threads steady. The seed will have almost no strength left for the Gate.',
+        advantage: 'Pell survives without Medicine, but later seed magic will need a final sacrifice.',
+        showIfAnyFlags: inheritedSeedDamageFlags,
+        changes: { resolve: -1 },
+        requires: { resolve: 1 },
+        addFlags: ['c8-pell-survived', 'c8-seed-weakened-saving-pell', 'c8-seed-critically-weakened'],
+        result: 'Sorin braces Lysara’s injured hand while you hold the green threads steady. Blood clears from Pell’s lungs. The seed saves him, then fades to one weak pulse.',
         next: 'c8-force-deployment',
       },
       {
@@ -442,7 +564,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Changing the sentence will not free them. The contract owns the act and meaning of that one promise, no matter which words they try to use.',
       'Ansel taps the final line of each contract. “One named promise. Nothing more. The buyer cannot demand another payment because it dislikes the first.”',
       'Ansel sold the words he meant to speak when his daughter came home: I will never leave you again. Another soldier sold the promise to guard the western signal basket if every other post fell. He still wants to guard it tonight, but the bargain owns the words he would use to accept that duty.',
-      'You feel anger arrive before judgment. These people did not trade the kingdom for comfort. They were abandoned during secret openings and paid whatever kept someone alive.',
+      'Your jaw tightens as the ledgers pass from hand to hand. The entries show people abandoned during secret openings and paying whatever kept someone alive.',
       'A signal clock shows a little over two hours until sunset. A black mark moves across one contract, counting down with it.',
     ],
     choices: [
@@ -794,6 +916,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'The fort map shows one simple defence. Each signal basket feeds heat into a buried iron chain. When all eight links glow, the ring holds the Black Gate shut.',
       'Seven baskets are cold. Two fuel stores are flooded. One chain section lies beneath open ground already splitting with red heat.',
       seedCondition(state),
+      vaorGateUse(state),
       'Ansel knows the old furnace route. Mara can lead a repair line across exposed snow. You can protect only one method from the Gate’s next breath.',
       'Your attention keeps returning to the exposed chain section. The opening horn sounds. Sunset touches the top of the black wall.',
     ],
@@ -803,7 +926,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         label: 'Use Lysara’s living seed to lift the broken chain from below.',
         detail: 'Weaken the seed’s future treaty magic to repair the safest underground route.',
         advantage: 'Restore the chain without exposing soldiers on the open ground.',
-        hideIfAnyFlags: ['c8-seed-weakened-saving-pell'],
+        hideIfAnyFlags: ['c8-seed-weakened-saving-pell', ...inheritedSeedDamageFlags],
         addFlags: ['c8-chain-lifted-by-seed'],
         result: 'Green roots rise beneath the iron and carry it across the flooded gap. The seed dims, but the chain closes link by link.',
         next: 'c8-opening',
@@ -811,11 +934,11 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       {
         id: 'c8-spend-weakened-seed-on-chain',
         label: 'Spend the living seed’s remaining strength to lift the chain.',
-        detail: 'The seed already saved Pell. This second use will leave its treaty magic dormant.',
+        detail: 'Earlier magic weakened the seed. This final use will leave its treaty magic dormant.',
         advantage: 'Restore the chain without exposing soldiers on the open ground.',
-        showIfAllFlags: ['c8-seed-weakened-saving-pell'],
+        showIfAnyFlags: ['c8-seed-weakened-saving-pell', ...inheritedSeedDamageFlags],
         addFlags: ['c8-chain-lifted-by-seed', 'c8-living-seed-spent'],
-        result: 'The weakened seed trembles in Lysara’s palm. Roots lift the iron into place, then every green thread goes dark. Pell breathes because of it, but the seed has no magic left for the next treaty.',
+        result: 'Sorin braces Lysara’s wrist while the weakened seed trembles in her palm. Roots lift the iron into place, then every green thread goes dark. The seed has no magic left for the next treaty.',
         next: 'c8-opening',
       },
       {
@@ -831,13 +954,38 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c8-burn-vaor-ember-chain',
-        label: 'Feed a breath of Vaor’s ember into the flooded furnaces.',
-        detail: 'Spend 2 Resolve holding dragon fire inside a lock built to steal it.',
+        label: 'Ask Vaor to feed one breath of his ember into the flooded furnaces.',
+        detail: 'Spend 2 Resolve holding the fire after Vaor chooses to answer.',
         advantage: 'Relight every furnace at once and preserve mortal fuel for the night.',
+        showIfAnyFlags: ['c5-freed-vaor'],
         changes: { resolve: -2 },
         requires: { resolve: 2 },
         addFlags: ['c8-chain-lit-by-ember'],
-        result: 'You open the ember for one breath. Fire runs through the flooded channels without going out. Vaor roars inside you as all eight baskets wake.',
+        result: 'You name the danger to the forts. Vaor agrees and opens one breath of fire. You hold it inside the flooded channels until all eight baskets wake.',
+        next: 'c8-opening',
+      },
+      {
+        id: 'c8-force-stolen-ember-chain',
+        label: 'Force the stolen ember into the flooded furnaces.',
+        detail: 'Spend 3 Resolve controlling dragon fire while Vaor resists.',
+        advantage: 'Relight every furnace at once, but deepen Vaor’s anger and expose the theft to every witness.',
+        showIfAnyFlags: ['c5-took-ember-by-force'],
+        changes: { resolve: -3 },
+        requires: { resolve: 3 },
+        addFlags: ['c8-chain-lit-by-ember', 'c8-forced-vaor-gate-use'],
+        result: 'Vaor refuses. You force the ember open anyway. Fire runs through the flooded channels while his resistance tears at your breath. All eight baskets wake, and every witness hears the dragon’s anger.',
+        next: 'c8-opening',
+      },
+      {
+        id: 'c8-share-pact-ember-chain',
+        label: 'Ask Vaor to share the furnace risk through the pact.',
+        detail: 'Spend 2 Resolve after both bearers agree to protect the fort ring.',
+        advantage: 'Relight every furnace without breaking either bearer’s right to refuse.',
+        showIfAnyFlags: ['c5-vaor-pact'],
+        changes: { resolve: -2 },
+        requires: { resolve: 2 },
+        addFlags: ['c8-chain-lit-by-ember', 'c8-vaor-approved-gate-use'],
+        result: 'You name the purpose and the risk. Vaor agrees. The pact opens, and fire runs through the flooded channels until all eight baskets wake.',
         next: 'c8-opening',
       },
       {
@@ -913,7 +1061,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'The Gate listens for one grand promise. You give it none. Each fort chooses a keeper and one practical task instead.',
       'Fourth Fort holds the weakest link. Ansel knows how to defend it, but Crown officers still treat the Futureless as prisoners.',
       'If you support Ansel, the officers will obey him. If he remains free to refuse you afterward, the volunteers will trust that the choice was truly his.',
-      'You feel eight groups waiting for coordination without surrendering choice. The red gap widens to the breadth of a face. A horn sounds from the city beyond.',
+      'Eight groups watch your signal while keeping their own captains. The red gap widens to the breadth of a face. A horn sounds from the city beyond.',
     ],
     choices: [
       {
@@ -970,11 +1118,12 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     objective: 'Set the limit of the Compact’s aid before accepting its fire.',
     threat: 'Critical',
     art: 'futureless',
-    body: () => [
+    body: (state) => [
       'Eight white embers wait beyond the crack. The Compact repeats its price: one peaceful embassy may enter after the Gate is stable, speak before witnesses, and leave unharmed if it keeps the same rules.',
       'It asks whether mortal names may be written into the agreement. Names make it easier to punish anyone who breaks the rules. They also give the Compact a lasting hold on every person listed.',
       'The Compact asks what guarantee you will offer. You can rely on public witnesses. You can spend your strength cutting every mortal name from the agreement.',
       'Or you can let the Compact hold the outer flame of Vaor’s ember until the embassy leaves.',
+      vaorGateUse(state),
     ],
     choices: [
       {
@@ -999,11 +1148,34 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c8-ember-collateral',
-        label: 'Let the Compact hold Vaor’s outer flame until the embassy leaves.',
-        detail: 'Risk the dragon’s anger and use part of his ember as the agreement’s guarantee.',
+        label: 'Ask Vaor to let the Compact hold his outer flame until the embassy leaves.',
+        detail: 'Vaor may refuse. Agreement puts part of his gift inside a foreign contract.',
         advantage: 'Keep every mortal outside the contract while making betrayal costly to both sides.',
+        showIfAnyFlags: ['c5-freed-vaor'],
         addFlags: ['c8-ember-held-as-collateral'],
-        result: 'The white fire circles Vaor’s ember without taking it. The dragon’s fury fills your bones, but the contract cannot reach any mortal defender.',
+        result: 'Vaor demands the release hour twice, then agrees. White fire circles his outer flame without taking it. The contract cannot reach any mortal defender.',
+        next: 'c8-collector-crossing',
+      },
+      {
+        id: 'c8-force-stolen-ember-collateral',
+        label: 'Force the stolen ember into the Compact’s keeping.',
+        detail: 'Spend 2 Resolve against Vaor’s resistance. The contract will record that the flame was not freely given.',
+        advantage: 'Keep every mortal outside the contract, but create a claim Vaor may later challenge.',
+        showIfAnyFlags: ['c5-took-ember-by-force'],
+        changes: { resolve: -2 },
+        requires: { resolve: 2 },
+        addFlags: ['c8-ember-held-as-collateral', 'c8-forced-vaor-contract-use'],
+        result: 'Vaor fights the transfer. You force his outer flame beneath the white ring. The contract cannot reach a mortal defender, but it records the dragon’s refusal beside your name.',
+        next: 'c8-collector-crossing',
+      },
+      {
+        id: 'c8-share-pact-ember-collateral',
+        label: 'Ask Vaor to place the pact’s outer flame under the public contract.',
+        detail: 'Either bearer may refuse. Agreement ends when the embassy leaves under the same rules.',
+        advantage: 'Keep every mortal outside the contract while preserving the pact’s consent.',
+        showIfAnyFlags: ['c5-vaor-pact'],
+        addFlags: ['c8-ember-held-as-collateral', 'c8-vaor-approved-contract-use'],
+        result: 'You state the release condition. Vaor agrees, and white fire circles the pact’s outer flame. The contract cannot reach any mortal defender and must release the flame when the embassy leaves.',
         next: 'c8-collector-crossing',
       },
     ],
@@ -1145,6 +1317,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The eight fires hold the gap at one person wide. Then the Gate changes its attack.',
       'Every Oath inside you pulls in a different direction. Greyhaven drags west. Vaor’s ember burns north. The steppe alliance holds behind you. Pell’s life, if you bound it, beats from Fourth Fort. The people at the threshold need you here.',
+      steppeOathLedger(state),
       'The trap becomes physical inside you. The Gate does not need to break your promises. It can make each one demand you at the same moment until choice becomes impossible.',
       'Your father’s old inn key hangs beneath your armour. It represents the hope that you can return and become the man who left. Your cracked Crown badge carries the Oath of service you swore to Asterra.',
       'Beside the badge hangs your Warden whistle. When you became captain, you promised to answer any Warden who sounded it. The promise once made you reliable. Here, the Gate can make every call sound at once.',
@@ -1305,9 +1478,10 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     final: true,
     body: (state) => [
       'For the first time in Asterra’s recorded history, a devil embassy sits at a mortal table under a public agreement. Soldiers keep their weapons. The envoys keep theirs sealed. Nobody mistakes peace for trust.',
-      'You feel the room waiting for you to mistake survival for safety. You do not.',
+      'Every chair remains angled toward the sealed weapons. Survival has created a meeting, not safety.',
       routeOutcome(state),
       oathCost(state),
+      ...gateDefenceRecord(state),
       'Vexa places seventeen contracts beside the Crown ledgers. The seals belong to different rulers, different devil houses, and one hand that appears on both sides of the Gate.',
       'She turns the final page toward you. It is a prepared claim, older than your first command, carrying your full name but not your agreement.',
       'The price is blank. The page owns nothing yet. Someone has been studying your choices so they can offer the one bargain you may accept.',
@@ -1329,6 +1503,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Your attention stays on her sealed cases. A peaceful object can still carry a dangerous truth.',
       routeOutcome(state),
       oathCost(state),
+      ...gateDefenceRecord(state),
       has(state, 'c8-vexa-received-outer-fort')
         ? 'Inside the isolated fort yard, Vexa opens the first brass case. It holds copies of bargains made during seventeen hidden Gate openings and one unfinished contract claim prepared long before them.'
         : 'Without crossing, Vexa opens the first brass case. It holds copies of bargains made during seventeen hidden Gate openings and one unfinished contract claim prepared long before them.',
@@ -1353,6 +1528,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'You watch his shoulders settle as the answer gives his anger a name.',
       routeOutcome(state),
       oathCost(state),
+      ...gateDefenceRecord(state),
       'Only after the Futureless have heard the truth does Vexa place a separate contract draft in your hands.',
       'It carries your full name, written before you became an Oathwarden. The price and your agreement remain blank. It is a trap being prepared, not a bargain already made.',
       'Somewhere beyond the Gate, something is still waiting to learn which future will hurt you most to lose.',

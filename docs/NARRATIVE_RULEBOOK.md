@@ -364,3 +364,8 @@ Before a scene is approved, confirm:
 - When one authority sends a force and another officer commands it, keep both roles separate in prose, evidence, journals, and accusations.
 - Exact counts create continuity debt. If six people surrender and only two travel onward, show where the other four remain before the next chapter.
 - End a chapter with one named destination or mystery. Additional threats may be shown physically and named in the next chapter.
+- Mutually exclusive urgent answers are not lies by omission. If one answer prevents the player from addressing a second question, provide a later chance to answer it before assigning honesty or concealment consequences.
+- Political outcome gates use the complete relevant history and state their limits before the final request. Do not let one unadvertised dialogue flag silently control an army, alliance, or refusal.
+- A paid Oath keeps its exact wording in later chapters. Later commands must honour that term, offer a visible choice to risk breaking it, or remain unavailable.
+- A freely given power, a stolen power, and a shared pact are different permissions on every use. Show the donor's consent, resistance, or shared right to refuse each time the difference matters.
+- When a leader leaves a sovereign community, name the lawful person who keeps local authority. A travelling ally does not silently take a town's government with them.

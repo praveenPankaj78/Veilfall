@@ -339,7 +339,44 @@ export function knownTruths(game: GameState) {
       truths.push('The ancestor storm receives knowledge after the people it resembles have died. The Unsea may be its source, but the test did not prove that every voice is conscious or genuine.');
     }
     if (game.nodeId === 'c6-final-alliance' || game.nodeId.startsWith('c6-ending-')) {
-      truths.push('The storm tried to replace the living Moot with one command. We broke that command without silencing every ancestor voice.');
+      if (game.flags.includes('c6-broke-storm-command')) {
+        truths.push('Vaor’s ember burned the shared command. Separate ancestor voices survived, and the hidden sender learned the feel of the ember.');
+      } else if (game.flags.includes('c6-living-vote-broke-storm')) {
+        truths.push('Kharad Vey’s living vote drowned out the shared command. Separate voices survived, and the hidden sender heard the chosen leaders’ names.');
+      } else if (game.flags.includes('c6-oath-dead-may-witness')) {
+        truths.push('My Oath removed ancestor voices from the vote while preserving their right to speak as witnesses at the shrines.');
+      } else if (game.flags.includes('c6-ilyra-turned-storm-command')) {
+        truths.push('Ilyra turned the shared command toward its hidden sender. Voices still tied to that order vanished, while the independent voices remained.');
+      }
+    }
+    if (game.flags.includes('c6-voluntary-ember-disclosure')) {
+      truths.push('I answered for the ember when the storm first accused me.');
+    } else if (game.flags.includes('c6-delayed-ember-disclosure')) {
+      truths.push('I answered another urgent danger first, then gave Korran the full account of the ember before the Moot.');
+    } else if (game.flags.includes('c6-concealed-ember-theft')) {
+      truths.push('I deliberately refused to tell Korran that I took Vaor’s ember by force. The Moot will not grant fighters under that concealment.');
+    } else if (game.flags.includes('c6-refused-ember-disclosure')) {
+      truths.push('I explicitly refused to explain the ember’s origin. Kharad Vey may grant a road, but not military support.');
+    }
+    if (game.flags.includes('c6-oath-recognised-red-moot')) {
+      truths.push('I swore that Kharad forces in any alliance I lead will remain under the Red Moot’s commanders.');
+    }
+    if (game.flags.includes('c6-oath-crown-restitution')) {
+      truths.push('I swore to bring the Concord’s hidden victims before the Queen or oppose a throne that buries them again.');
+    }
+    if (game.flags.includes('c6-oath-defends-refusal')) {
+      truths.push('I swore to defend the clans’ right to leave my cause after the Black Gate is safe.');
+    }
+    if (game.flags.includes('c6-oath-honest-limit')) {
+      truths.push('My Moot Oath binds only my conduct: I must state my orders and claim no command the Moot did not grant.');
+    }
+    if (game.flags.includes('c6-oath-investigate-unsea')) {
+      truths.push('I swore to investigate which ancestor voices are conscious without promising that every face is truly the dead.');
+    }
+    if (game.flags.includes('c6-seed-scorched-by-horn')) {
+      truths.push(game.flags.includes('c6-seed-critically-weakened')
+        ? 'Lysara spent the scorched seed’s last wide signal. Only a short living thread remains.'
+        : 'Lysara’s seed carried Korran’s horn through the storm and lost more of its living thread.');
     }
     return truths;
   }
@@ -596,12 +633,22 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c6-admitted-concord-crime')) consequences.push('Because you admitted the Concord’s hidden victims publicly, the storm could not use that truth as its private weapon.');
   if (game.flags.includes('c6-declared-willing-ember')) consequences.push('Because you told Kharad Vey that Vaor freely gave the ember, the town judged the gift instead of the storm’s accusation.');
   if (game.flags.includes('c6-admitted-ember-theft')) consequences.push('Because you admitted taking Vaor’s ember against his will, Kharad Vey knows the truth even though it has not forgiven the act.');
+  if (game.flags.includes('c6-delayed-ember-disclosure')) consequences.push('Because you answered the immediate danger first and disclosed the ember later, Korran records a delay rather than a lie.');
+  if (game.flags.includes('c6-refused-ember-disclosure')) consequences.push('Because you explicitly withheld the ember’s origin, the Red Moot will offer a road but no fighters.');
+  if (game.flags.includes('c6-concealed-ember-theft')) consequences.push('Because you concealed Vaor’s refusal, Kharad Vey will not place lives under the stolen fire.');
   if (game.flags.includes('c6-declared-pact-ember')) consequences.push('Because you revealed Vaor’s willing pact, the town knows the second presence inside you is an ally with his own will.');
   if (game.flags.includes('c6-named-ilyra-manipulation')) consequences.push('Because you named Ilyra’s public pressure, she now negotiates with you more openly.');
   if (game.flags.includes('c6-ilyra-interest-acknowledged')) consequences.push('Because you separated honest attraction from political need, mutual interest with Ilyra has begun without becoming a promise.');
+  if (game.flags.includes('c6-refused-ilyra-pressure')) consequences.push('Because you refused Ilyra’s public pressure, she keeps the investigation useful without using flirtation to force agreement.');
+  if (game.flags.includes('c6-ilyra-professional-alliance')) consequences.push('Because you placed Ilyra’s first test under local authority, the alliance remains professional and answerable to the Red Moot.');
   if (game.flags.includes('c6-oath-investigate-unsea')) consequences.push('Because you swore to investigate the ancestor voices, the steppe’s lost families now travel inside your duty.');
   if (game.flags.includes('c6-oath-recognised-red-moot')) consequences.push('Because your Oath recognises the Red Moot, future command cannot quietly turn its alliance into obedience.');
   if (game.flags.includes('c6-oath-crown-restitution')) consequences.push('Because you promised that the Crown would answer those it harmed, returning to Greyhaven may place your Oath against the throne.');
+  if (game.flags.includes('c6-oath-defends-refusal')) consequences.push('Because you promised to defend the clans’ right to refuse, later command cannot trap them in your cause after the Gate is safe.');
+  if (game.flags.includes('c6-oath-honest-limit')) consequences.push('Because you limited the Moot Oath to your own conduct, the promise is safer but cannot earn the whole town’s march.');
+  if (game.flags.includes('c6-seed-scorched-by-horn')) consequences.push(game.flags.includes('c6-seed-critically-weakened')
+    ? 'Because Lysara carried Korran’s horn through an already damaged seed, only a short living thread remains for later magic.'
+    : 'Because Lysara carried Korran’s horn through the storm, her living seed lost more of its future reach.');
   if (game.flags.includes('c6-preserved-ancestor-voices')) consequences.push('Because you broke the controlling command without silencing every voice, the town may still learn which ancestors are truly conscious.');
   if (game.flags.includes('c6-red-moot-war')) consequences.push('Because you asked Kharad Vey for war, the entire wheel town is moving toward the Black Gate.');
   if (game.flags.includes('c6-red-moot-alliance')) consequences.push('Because you asked for a guarded alliance, Korran leads volunteer riders beside your cause under the Moot’s authority.');
