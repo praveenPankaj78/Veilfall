@@ -1,6 +1,63 @@
-import type { Choice, StoryNode } from './game-data';
+import type { Choice, GameState, StoryNode } from './game-data';
 
 type NodeUpdate = Omit<Partial<StoryNode>, 'id' | 'choices'>;
+
+function chapterThreeLanternArrival(state: GameState) {
+  if (state.flags.includes('c3-route-archive')) {
+    if (state.flags.includes('c3-caught-clerk')) {
+      return 'You reach Lantern Bridge with Ordan’s signed route request, the last payment page, and the masked soldier who tried to burn them. As Elene chains the prisoner, the dark coated thief cuts a brass bridge key from his belt and vanishes into the crowd.';
+    }
+    if (state.flags.includes('c3-bridge-record')) {
+      return 'You reach Lantern Bridge with Lysara’s copy of Ordan’s route request and its royal payment line. The masked soldier escaped. On the bridge, the dark coated thief slips behind one of Ordan’s guards and steals a brass key from his belt.';
+    }
+    return 'You reach Lantern Bridge with the signed request and payment figures that Lysara lifted from the burned page. The masked soldier escaped. On the bridge, the dark coated thief steals a brass key from one of Ordan’s guards.';
+  }
+
+  if (state.flags.includes('c3-route-healer')) {
+    const treated = state.flags.includes('c2-saved-attacker');
+    if (state.flags.includes('c3-sable-identified-guard')) {
+      return treated
+        ? 'You reach Lantern Bridge with one guard in chains. Garran identified both attackers before Mara captured this one. The other escaped. A dark coated stranger diverts a final bolt, then steals a brass key from the prisoner.'
+        : 'You reach Lantern Bridge with one guard in chains. Garran used his last clear breath to identify the prisoner, but the second attacker escaped unnamed. A dark coated stranger diverts a final bolt, then steals a brass key from the prisoner.';
+    }
+    if (state.flags.includes('c3-secured-healer')) {
+      return treated
+        ? 'You reach Lantern Bridge with every patient safe. The locked door kept both attackers outside, and Garran identified them before they fled. A dark coated stranger stole a brass key from one retreating guard. Iven also saw Ordan watching from across the canal.'
+        : 'You reach Lantern Bridge with every patient safe. Garran identified one attacker before both men fled the blocked door. A dark coated stranger stole a brass key from one retreating guard. Iven also saw Ordan watching from across the canal.';
+    }
+    return treated
+      ? 'You reach Lantern Bridge with one guard in chains. Brann trapped him between the two guard lines, and Garran identified both attackers. A dark coated stranger steals the prisoner’s brass key while the other man escapes.'
+      : 'You reach Lantern Bridge with one guard in chains. Brann trapped him between the two guard lines, and Garran identified him before fever took his voice. A dark coated stranger steals the prisoner’s brass key while the second attacker escapes unnamed.';
+  }
+
+  if (state.flags.includes('c3-unmasked-varris')) {
+    return 'You reach Lantern Bridge with Varris, Ordan’s written murder order, and the killer you disarmed. The prisoner carries one of the brass bridge keys Ordan bought.';
+  }
+  if (state.flags.includes('c3-tested-door')) {
+    return 'You reach Lantern Bridge with Varris and the true brass map he revealed. The map shows where Ordan plans to enter the Mileless Bridge. His hidden killer escaped when Elene’s watch entered the shop.';
+  }
+  return 'You reach Lantern Bridge with Varris, the bridge opening word, and the signed threat his attacker dropped. Tivik stopped the first knife stroke, but the attacker escaped. The dark coated thief who stole Ordan’s other key is somewhere ahead.';
+}
+
+function chapterThreeLanternProof(state: GameState) {
+  if (state.flags.includes('c3-route-archive')) {
+    return 'Lysara reads Ordan’s signed route request and royal payment figures aloud. Both dates come before your escort left Greyhaven. Ordan cannot dismiss his own signature, so he admits that he bought the routes and paid the attackers.';
+  }
+  if (state.flags.includes('c3-route-healer')) {
+    const witness = state.flags.includes('c3-sable-identified-guard')
+      || state.flags.includes('c3-canal-defence');
+    return witness
+      ? 'Garran names Ordan as the man who paid for Bellweather. The captured guard carries Ordan’s silver, and Iven saw Ordan watching the attack. Ordan admits the men served under his sealed command.'
+      : 'Garran names Ordan as the man who paid for Bellweather. Iven saw Ordan watch his guards attack the healing house. Ordan admits the men served under his sealed command.';
+  }
+  if (state.flags.includes('c3-tested-door')) {
+    return 'Varris holds up the true brass map and names the price Ordan paid for it. The marked route ends at the Mileless Bridge. Ordan admits that his office bought the map and its opening word.';
+  }
+  if (state.flags.includes('c3-unmasked-varris')) {
+    return 'Varris reads Ordan’s murder order while the captured killer stands beside Elene. The order bears Ordan’s office mark. Ordan admits that his office bought the route and sent the killer.';
+  }
+  return 'Varris repeats the bridge opening word and shows the signed threat dropped in his shop. One proves Ordan bought access. The other proves he meant to silence the seller. Ordan admits that both came from his office.';
+}
 
 export const adventureNodeUpdates: Record<string, NodeUpdate> = {
   'c2-arrival': {
@@ -514,9 +571,14 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       body: 'The archive can provide written proof. The healing house holds a living witness. Varris knows Ordan’s escape route. Every lead can move the hunt forward, but each gives you a different advantage.',
     },
     introducesStoryTerms: ['Mileless Bridge'],
-    body: () => [
+    body: (state) => [
       'Elene opens the service gate for the wounded wagons and six armed escorts. The remaining Wardens form a shield line outside. As the last wagon passes, she drops the iron gate between them and Ordan’s charging riders. The riders stop rather than attack a royal town gate, then spread along the outer canal to watch your people.',
-      'Elene sends the wounded to a healing house under guard. Your weapons remain watched, your name remains accused, and Ordan leaves the wall before you can reach him. The closing gate shakes rain from your cloak. Your fingers find the cut seam where he planted his proof.',
+      state.flags.includes('c3-tested-signature')
+        ? 'Elene keeps both signatures as evidence. Their difference has not cleared you, but it gives her a reason to question Ordan’s warrant while the wounded enter.'
+        : state.flags.includes('c3-proved-command')
+          ? 'Your Wardens obey Elene inside the gate. She posts her own guards around the wounded and keeps Ordan’s riders outside the town wall.'
+          : 'Mara gives Elene your weapons, then finds the practice forgery inside your cloak. Elene keeps both under guard while the wounded enter.',
+      'Your name remains accused, and Ordan leaves the wall before you can reach him. The closing gate shakes rain from your cloak.',
       'The town archive holds the orders he filed. The healing house shelters Garran, the witness his soldiers may try to kill. Elene explains the third lead: one of her watchmen saw Ordan pay Varris, a road broker, for a route to the hidden Mileless Bridge.',
       'Elene points to three canal lanes. “Choose your door. I will hold the other two as long as I can.”',
     ],
@@ -543,7 +605,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c2-saved-attacker')
         ? 'The medicine kept his mind clear enough to name both intruders as Ordan’s personal guards.'
         : 'His fever is worsening. He can identify one intruder before his strength fails, which makes the next few breaths important.',
-      'Healer Iven shouts for you to protect the children in the next room. Garran points at the other door and names Ordan’s personal guard. The attackers strike both doors together.',
+      state.flags.includes('c2-saved-attacker')
+        ? 'Healer Iven shouts for you to protect the children in the next room. Garran points at the other door and repeats both guards’ names. The attackers strike both doors together.'
+        : 'Healer Iven shouts for you to protect the children in the next room. Garran points at the other door and forces out one guard’s name. The attackers strike both doors together.',
       'For one heartbeat, wet timber becomes the two doors of the patrol you reached too late. Your sword hand locks. A child screams, and the healing house returns around you.',
       'Across the canal, a silver gloved figure watches from a blue balcony. Ordan wants to see whether his witness dies.',
     ],
@@ -567,32 +631,15 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Harrowfen, Lantern Bridge',
     objective: 'Make Ordan answer for Bellweather in front of Harrowfen.',
     body: (state) => [
-      state.flags.includes('c3-route-archive')
-        ? state.flags.includes('c3-caught-clerk')
-          ? 'You reach Lantern Bridge with Ordan’s signed request, the last payment page, and the captured soldier who tried to burn them. A dark coated stranger has already cut one brass key from the evidence chain, but left the papers untouched.'
-          : 'You reach Lantern Bridge with Ordan’s signed requests and royal payment record. A dark coated stranger has already cut one brass key from the evidence chain, but left the papers untouched.'
-        : state.flags.includes('c3-route-healer')
-          ? state.flags.includes('c3-sable-identified-guard')
-            ? 'You reach Lantern Bridge with Garran’s identification and one of Ordan’s guards in chains. A dark coated stranger diverted the last crossbow bolt, then stole a brass key from the prisoner.'
-            : state.flags.includes('c3-secured-healer')
-              ? 'You reach Lantern Bridge with every patient alive. Garran cannot name the guard who escaped, but Healer Iven testifies that Ordan watched the attack from across the canal.'
-              : 'You reach Lantern Bridge after Brann’s divided guard line trapped one intruder inside the healing house. The prisoner carries Ordan’s silver and a brass bridge key, though Garran was too weak to identify him.'
-          : state.flags.includes('c3-unmasked-varris')
-            ? 'You reach Lantern Bridge with Varris, Ordan’s written murder order, and the killer you disarmed. The evidence makes the broker willing to accuse Ordan in public.'
-            : state.flags.includes('c3-tested-door')
-              ? 'You reach Lantern Bridge with Varris and the true brass map you forced him to reveal. The map proves where Ordan intends to escape.'
-              : 'You reach Lantern Bridge with Varris, the true bridge map, and proof that Ordan ordered the broker killed. The dark coated thief who took Ordan’s missing key is somewhere ahead.',
+      chapterThreeLanternArrival(state),
       'Ordan waits on the raised centre span with town guards and civilians watching from both banks. He argues that independent roads let smugglers, foreign armies, and border lords avoid Asterra’s defences.',
-      state.flags.includes('c3-route-archive')
-        ? 'Lysara reads Ordan’s signed route requests and royal payments aloud. The dates begin before your escort left Greyhaven. Ordan cannot dismiss his own signature, so he admits the papers and payments are his.'
-        : state.flags.includes('c3-route-healer')
-          ? 'Garran names Ordan as the man who paid for the Bellweather attack. The captured guard or Healer Iven confirms that Ordan watched the attempt to silence him. Ordan admits the men served under his sealed command.'
-          : 'Varris holds up the brass bridge map and Ordan’s murder order. One proves Ordan bought the Mileless route. The other proves he meant to kill the seller. Ordan admits both orders came from his office.',
-      'You place your signed route authority beside Lysara’s damaged glass seed where the crowd can see both. “He needed these beneath Bellweather,” you say. “He paid for the wounds that drove us there, then put Renn in my cloak to make the blood mine.”',
+      'You recognise the shape of his argument. He calls control protection, then leaves other people to pay for it.',
+      chapterThreeLanternProof(state),
+      'You place your signed route authority beside Lysara’s damaged glass seed where the crowd can see both. “He needed these beneath Bellweather,” you say. “He paid for the wounds that drove us there, then sent a Warden in my cloak to make the blood mine.”',
       'Elene hears the case against him, but Ordan’s soldiers still control the bridge winch. Smoke is already rising from the old watch house behind him.',
       '“One Crown road could reinforce every border before an invading army crosses it,” Ordan says. “You command people for their safety, Captain. You bind them with promises. I am willing to finish what men like you begin.”',
       'Your Oath scars tighten beneath your glove. You have ordered frightened people into danger and called it protection. Ordan notices the movement and smiles. He carries no matching scars.',
-      'Only one part remains outside the evidence. Ordan forged the later papers, but he did not change the first order inside your sealed case. For the first time, his certainty slips. “That order came from above my office,” he says.',
+      '“I forged the Harrowfen papers,” Ordan says. “Not the first order inside your sealed case. That came from above my office.” His certainty slips on the final sentence.',
     ],
   },
   'c3-evidence': {
@@ -609,6 +656,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           : 'Elene repeats Ordan’s confession and strips him of authority in Harrowfen. His own escort hesitates, forcing him to flee without the town guard.',
       'Smoke rolls from the watch house roof. Ordan’s men have set the building on fire and barred the lower door to destroy the records behind his argument.',
       'The courier boy falls against your knee, his satchel trapped beneath him. Above, fists strike a barred window. Across the roofline, Ordan clears the first gap.',
+      'Your eyes move from the bleeding boy to the trapped residents and then to Ordan. The fire will punish whichever duty you leave for someone else.',
       'A burning beam drops between the boy and the stairs. Mara reaches for one end and shouts, “Caelan!”',
     ],
   },
@@ -617,7 +665,14 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Harrowfen, Burning Watch House',
     objective: 'Recover Ordan’s plan and escape the fire.',
     body: (state) => [
-      'The safe room is real wood, real smoke, and real danger. Inside, hooks, chains, and route maps cover a table. Ordan planned to steal your fragment, seize Harrowfen’s east gate, and open the Mileless Bridge for hidden Crown soldiers.',
+      state.flags.includes('c3-reached-house-first')
+        ? 'You vault the falling beam and climb through the upper window behind Ordan. Mara stays below with Elene’s guards to free the courier boy and the trapped residents. You force open the safe room after Ordan escapes across the roof.'
+        : state.flags.includes('c3-closed-roads')
+          ? 'You stay until Elene’s horns answer from every gate. Her guards drag the courier boy clear while Mara lifts the beam away from the trapped residents. Mara then leads you through a side window and up to the safe room.'
+          : state.flags.includes('c3-saved-courier-boy') || state.flags.includes('c3-kept-name-board')
+            ? 'You pull the courier boy and his satchel clear. He points out a narrow records stair before Elene takes him to safety. Mara and the town guards lift the burning beam, free the trapped residents, and follow you inside.'
+            : 'Elene’s guards pull the courier boy clear while Mara lifts the beam from the stairs. You follow them through a side window and reach the safe room after Ordan escapes.',
+      'The safe room holds real wood, real smoke, and records that can burn. Hooks, chains, and route maps cover a table. Ordan planned to steal your fragment, seize Harrowfen’s east gate, and open the Mileless Bridge for hidden Crown soldiers.',
       state.flags.includes('c3-reached-house-first')
         ? 'You arrived before the last route order burned. It names the east arch and orders six bridge guards to wait for Renn’s signal.'
         : state.flags.includes('c3-closed-roads')
@@ -633,15 +688,19 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     location: 'Harrowfen, Bathhouse Roof',
     objective: 'Choose how your group will protect the town and continue the hunt.',
     body: (state) => [
-      'For a few minutes, the bathhouse roof gives you distance from the smoke. Below, Mara watches the wounded streets. Lysara studies Ordan’s route map.',
+      'For a few minutes, the bathhouse roof gives you distance from the smoke. Below, Mara watches the wounded streets. Lysara watches the east market where Ordan fled.',
       state.relationships.mara.attraction >= 4
+        && state.relationships.mara.intent !== 'platonic'
+        && state.relationships.mara.intent !== 'ended'
         ? 'Mara steps close enough that her hip touches yours. Smoke has darkened her cheek, and her breath is still quick from the fire. Her eyes stay on your face. “When this is over,” she says, “I want one night where neither of us has to listen for a horn.”'
-        : 'Mara rests her shoulder against yours. Lysara keeps her eyes on the map. Both wait for you to choose which danger comes first.',
+        : state.relationships.mara.intent === 'platonic'
+          ? 'Mara rests her shoulder against yours with the ease of an old friend. “You chose what this is,” she says quietly. “I have not forgotten.” Lysara watches the east market while both women wait for your plan.'
+          : 'Mara rests her shoulder against yours. Lysara watches the east market. Both wait for you to choose which danger comes first.',
       state.stats.health <= 2
         ? 'Mara’s hand closes around your wrist when your balance shifts. Lysara looks from the blood on your sleeve to the burning market. Neither woman says retreat. Both understand that another direct charge may be your last.'
         : 'Smoke stings your lungs, but the brief pause steadies your legs before the market fight.',
       'Mara marks the healing house with one bloody finger. Lysara moves the same finger east along Ordan’s route. There are not enough guards to cover both marks without splitting the exhausted line.',
-      'Mara looks down at the streets. “Garran will not survive another attack.” Lysara’s hand stays on the map. “If Ordan reaches that marker, this healing house could become the entrance to an army road.”',
+      'Mara looks down at the streets. “Garran will not survive another attack.” Lysara points east. “If Ordan reaches that marker, this healing house could become the entrance to an army road.”',
     ],
   },
   'c3-market-memory': {
@@ -676,7 +735,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         ? 'The main crowd is already clear, and Renn’s disguised soldiers stand exposed in royal armour.'
         : state.flags.includes('c3-saved-market-children')
           ? 'The children’s mother opens a narrow boat passage beside the well. Mara uses it to move your group behind Renn’s line.'
-          : 'Civilians remain between the two captains, giving Renn cover and making every attack dangerous.',
+          : state.flags.includes('c3-stilled-fragment')
+            ? 'Tivik keeps the fragment covered and the market street stays solid. Civilians still stand between the two captains, giving Renn cover.'
+            : 'Civilians remain between the two captains, giving Renn cover and making every attack dangerous.',
       'Renn’s sword point shakes inside the guard position you were taught together. He is no monster, only a frightened Warden wearing ambition over fear.',
       'You have seen that same tremor before good soldiers made terrible choices. Renn sees recognition in your face and raises the blade higher.',
       'Behind him, Ordan circles toward the well. Mara’s eyes drop to the hidden mark inside Renn’s cloak while heat gathers beneath your Oath scars.',
@@ -709,7 +770,9 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
           ? 'You put Renn on the stones before he can signal. Elene’s guards bind him and turn on the royal soldiers still following Ordan.'
           : 'Renn gives up Ordan’s bridge plan under pressure. Elene’s guards pull him away from the road before he can recover his command.',
       'Only after Renn is defeated do Harrowfen’s bells declare Ordan’s warrant false. Elene reopens the west service gate for your remaining Wardens and wagons. Ordan’s riders either surrender their weapons or withdraw along the canal. Your name is not clean everywhere, but this town has seen which captain protected it.',
-      'Ordan holds the fragment in one silver glove and a small bridge key in the other. He is lean, clean shaven, and calm enough to look harmless until he smiles.',
+      'Your hand closes around the edge of Mara’s shield as Ordan reaches the old marker. The fragment is still trapped beneath it.',
+      'Ordan drives a brass key into the old marker beside the well. The wrapped fragment jerks beneath Mara’s shield and drags the steel toward a child. Mara releases it rather than crush him. The iron tears free and flies into Ordan’s silver glove.',
+      'He clips the fragment to his belt. The fine wire planted beneath its leather strap goes with it. Ordan looks harmless until he smiles.',
       'A burned rope drops beside Ordan and crushes a fleeing soldier. His eyes measure the blocked path before they touch the body. The calm smile never moves.',
       state.flags.includes('c3-double-disarmed')
         ? 'Renn never sent his warning. Only two bridge guards reach Ordan before Harrowfen’s soldiers close the market behind them.'
@@ -771,8 +834,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       'Lysara names the iron at last. “World Nail,” she says. “Old stories say it fixed distance in place when the world was young. These road pins are broken pieces of it.”',
       state.flags.includes('c3-oath-trail')
-        ? 'Your Oath leads the group across the correct spans without delay. You reach Ordan before the hidden soldiers can finish forming ranks.'
-        : 'The moving spans cost precious time. The first rank of hidden soldiers is already crossing when you reach Ordan.',
+        ? 'Your Oath marks the correct spans in red. Mara, Lysara, Brann, and three town guards follow without delay. You reach Ordan before the hidden soldiers can form a rank.'
+        : state.flags.includes('c3-pursuit-mara')
+          ? 'You and Mara force a fast path across the turning spans. Lysara, Brann, and three town guards follow one arch behind. You reach Ordan before the hidden soldiers can form a rank, but no guide rope marks a safe return.'
+          : 'Lysara’s guide rope brings Mara, Brann, and three town guards across safely. Tying it cost time. The first rank of hidden soldiers is already moving when you reach Ordan.',
       'Ordan presses your fragment against a larger shard set into the bridge. An arch opens onto ranks of Asterra’s royal soldiers waiting on a hidden road. They belong to your kingdom, but you do not know how many understand what Ordan intends to do with them.',
       'Asterra’s crowned shields fill the opening. Ordan points past Harrowfen toward a second arch showing a foreign border fort. “First rank forward,” he orders. You strike his arm while Lysara tears the iron pieces apart with living thread. The road closes before the first crowned shield reaches Harrowfen.',
       'The dark coated thief drops from the arch above. Ordan turns toward the sound, giving the stranger the one clear moment he needs.',
@@ -788,8 +853,10 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       'You cross the first arch and close on Ordan. His eyes flick once toward the fragment vanishing with the thief, then return to your blade. Your hand tightens around the rain slick hilt.',
       state.flags.includes('c3-pursuit-mara')
         ? 'Mara lands beside you with her blade ready. “He is yours,” she says. “I will keep his soldiers off your back.”'
-        : 'Lysara’s green rope holds behind you, thin but visible across the mist.',
-      'The thief disappears around the broken centre of the bridge. Ordan draws a royal blade and gives one final order. Soldiers step from an arch beneath a desert sun and surround you.',
+        : state.flags.includes('c3-pursuit-lysara')
+          ? 'Lysara’s green rope holds behind you, thin but visible across the mist.'
+          : 'Your red Oath trail burns across the span behind you. Lysara, Mara, and Brann follow it through the mist.',
+      'The thief disappears around the broken centre of the bridge. Ordan draws a royal blade and gives one final order. Soldiers step from an arch beneath a desert sun and surround you. Mara, Lysara, and Brann hold the first span behind you.',
     ],
   },
   'c3-ending-thief': {
@@ -802,7 +869,12 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c3-bridge-warning')
         ? 'Renn’s warning returns to you: this thief opposes Ordan, but wants the iron for a reason of his own.'
         : '“Captain,” the thief calls, “I stole it from the villain. That usually earns applause.”',
-      'Ordan orders his soldiers to fire. The thief throws the fragment over the gap. You dive and catch it, then feel a smooth mirrored coin in your palm. The real iron flashes between his fingers. “That was the rehearsal,” he says as the stone breaks beneath both of you.',
+      'Ordan orders his soldiers to fire. The thief throws the fragment over the gap. You dive and catch it, then feel a smooth mirrored coin in your palm. The real iron flashes between his fingers. “That was the rehearsal,” he says as the stone breaks beneath both of you. His silver wire catches a bronze brace below. The other end closes around your forearm, and both of you swing toward the next arch.',
+      state.flags.includes('c3-pursuit-mara')
+        ? 'Mara reaches the arch behind you. Lysara, Brann, and three town guards follow the same exposed span before Harrowfen turns away.'
+        : state.flags.includes('c3-pursuit-lysara')
+          ? 'Mara reaches the arch behind you. Lysara, Brann, and three town guards follow the green guide rope onto the bridge.'
+          : 'Mara, Lysara, Brann, and three town guards follow your red Oath trail onto the bridge.',
     ],
   },
   'c3-ending-return': {
@@ -814,10 +886,24 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
       state.flags.includes('c3-oath-hold-town')
         ? 'Your Oath burns with steady heat. The town is safe from the army road for now, and your promise gives every guard behind you courage.'
         : 'Mara tests the knot and nods. Lysara marks the arch so Elene’s guards can follow.',
-      'Ahead, the dark coated thief already carries the fragment he pulled from Ordan with the wire you saw in the market. He runs toward the broken centre while Ordan and his soldiers chase him. The guide rope holds behind your hand, but the next arch is already turning away.',
+      'Mara, Lysara, Brann, and three town guards cross before you tighten the guide rope. Ahead, the dark coated thief already carries the fragment he pulled from Ordan. He runs toward the broken centre while Ordan and his soldiers chase him.',
     ],
   },
 };
+
+const clearInheritedChoiceMechanics = {
+  changes: {},
+  requires: undefined,
+  requiresRelationships: undefined,
+  forbidsRelationshipIntents: undefined,
+  requiresFlags: undefined,
+  showIfAnyFlags: undefined,
+  showIfAllFlags: undefined,
+  hideIfAnyFlags: undefined,
+  showIfRelationshipIntents: undefined,
+  addFlags: [],
+  advantage: undefined,
+} satisfies Partial<Choice>;
 
 export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
   'question-prisoner': {
@@ -1136,227 +1222,395 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     result: 'The promise catches fire inside your chest. Tivik secures the fragment in your pack while Brann carries every surviving paper behind your public Oath.',
   },
   'c3-test-signature': {
+    ...clearInheritedChoiceMechanics,
     label: 'Accept responsibility for the escort, but deny Ordan’s crimes.',
     detail: 'Risk your reputation by separating your real decisions from the acts done in your cloak.',
+    next: 'c3-triage',
+    changes: { resolve: 1 },
+    addFlags: ['c3-tested-signature'],
     result: 'You name every casualty and every order you gave. Elene hears a captain accepting cost without confessing to Ordan’s crimes.',
   },
   'c3-give-command-word': {
+    ...clearInheritedChoiceMechanics,
     label: 'Submit to Elene’s command while she shelters the wounded.',
-    detail: 'Requires 2 Command and spends 1. Give up authority now to protect your people.',
+    detail: 'Requires 2 Command. Spend 1 Command. Give up authority now to protect your people.',
+    next: 'c3-triage',
+    changes: { command: -1 },
+    requires: { command: 2 },
+    addFlags: ['c3-proved-command'],
     result: 'You order your Wardens to obey Elene inside Harrowfen. She opens the small gate because surrendering command is harder to fake than claiming it.',
   },
   'c3-let-mara-search-you': {
+    ...clearInheritedChoiceMechanics,
     label: 'Let Mara search you for planted evidence.',
     detail: 'Available with deep Mara trust. Risk embarrassment to prove the trap.',
+    next: 'c3-triage',
     requiresRelationships: { mara: { trust: 5 } },
+    addFlags: ['c3-entered-unarmed'],
     result: 'Mara finds a practice forgery sewn into your cloak lining. Ordan planted his own proof.',
   },
   'c3-focus-archive': {
+    ...clearInheritedChoiceMechanics,
     detail: 'Recover Ordan’s written route requests and proof of royal payment.',
+    next: 'c3-archive',
+    changes: { resolve: 1 },
+    addFlags: ['c3-route-archive', 'c3-backed-lysara'],
     result: 'You leave Mara with the wounded and follow Lysara along the canal to Harrowfen’s archive.',
   },
   'c3-focus-road': {
+    ...clearInheritedChoiceMechanics,
     label: 'Question Varris about Ordan’s escape route.',
     detail: 'Find the hidden Mileless Bridge without surrendering the iron.',
+    next: 'c3-broker',
+    changes: { command: 1 },
+    addFlags: ['c3-route-broker'],
     result: 'Tivik keeps the fragment wrapped while Varris leads you into a shop with six painted doors and no windows.',
   },
   'c3-catch-archive-spy': {
+    ...clearInheritedChoiceMechanics,
     label: 'Catch the masked soldier before he reaches the stove.',
     detail: 'Spend 1 Health. Preserve a witness and the last page.',
-    result: 'You drag the soldier away from the fire and save Ordan’s signed request.',
+    next: 'c3-bill',
+    changes: { health: -1 },
+    requires: { health: 1 },
+    addFlags: ['c3-caught-clerk'],
+    result: 'You drag the soldier away from the fire. Ordan’s signed request and the last payment page survive, and a brass bridge key hangs from the prisoner’s belt.',
   },
   'c3-copy-bridge-entry': {
+    ...clearInheritedChoiceMechanics,
     label: 'Copy the Mileless Bridge route.',
     detail: 'Let the soldier escape while securing the pursuit map.',
-    result: 'You lose the masked man, but Lysara copies the route through the east market.',
+    next: 'c3-bill',
+    changes: { resolve: 1 },
+    addFlags: ['c3-bridge-record'],
+    result: 'You lose the masked man, but Lysara copies Ordan’s route request and the royal payment line beneath it.',
   },
   'c3-ask-lysara-what-she-sees': {
+    ...clearInheritedChoiceMechanics,
     label: 'Ask Lysara to preserve the burned page.',
     detail: 'Available with established Lysara trust. Use her living magic to save the proof.',
-    result: 'Green threads lift the scorched writing before it crumbles. Ordan’s name remains readable.',
+    next: 'c3-bill',
+    requiresRelationships: { lysara: { trust: 3 } },
+    addFlags: ['c3-lysara-read-ink'],
+    result: 'Green threads lift the scorched writing before it crumbles. Ordan’s signature and the royal payment figures remain readable.',
   },
   'c3-show-nilo-memory': {
+    ...clearInheritedChoiceMechanics,
     label: 'Put yourself between Garran and the crossbow.',
     detail: 'Spend 1 Resolve. Keep the witness alive while Mara fights the intruders.',
+    next: 'c3-bill',
     changes: { resolve: -1 },
     requires: { resolve: 1 },
     addFlags: ['c3-sable-identified-guard'],
-    result: 'The next bolt strikes your shield. Garran sees Ordan’s guard clearly and gives you his name.',
+    result: 'The next bolt strikes your shield. Mara traps one attacker while the other escapes. Garran sees the prisoner clearly and gives you his name.',
   },
   'c3-hold-healer-door': {
+    ...clearInheritedChoiceMechanics,
     label: 'Hold the back door while Iven moves the children.',
     detail: 'Spend 1 Health. Keep both rooms safe and gain 1 Command.',
-    result: 'You brace the door against two soldiers while Iven moves the children behind a stone counter and Mara shields Garran. Every patient survives.',
+    next: 'c3-bill',
+    changes: { health: -1, command: 1 },
+    requires: { health: 1 },
+    addFlags: ['c3-secured-healer'],
+    result: 'You brace the door against two soldiers while Iven moves the children and Mara shields Garran. Both attackers retreat outside, and every patient survives.',
   },
   'c3-command-canal-line': {
+    ...clearInheritedChoiceMechanics,
     label: 'Split the guards between the back door and the children’s room.',
     detail: 'Spend 1 Command. Protect both rooms and trap one of Ordan’s intruders.',
-    result: 'Brann seals the back door while two guards cover the children. One intruder escapes, but the other is trapped between the two lines.',
-  },
-  'c3-mark-false-door': {
-    label: 'Demand the real bridge map.',
-    detail: 'Spend 1 Command. Refuse Varris’s tricks and make him choose a side.',
+    next: 'c3-bill',
     changes: { command: -1 },
     requires: { command: 1 },
+    addFlags: ['c3-canal-defence'],
+    result: 'Brann seals the back door while two guards cover the children. One intruder escapes, but the other is trapped between the guard lines.',
+  },
+  'c3-mark-false-door': {
+    ...clearInheritedChoiceMechanics,
+    label: 'Demand the real bridge map.',
+    detail: 'Spend 1 Command. Refuse Varris’s tricks and make him choose a side.',
+    next: 'c3-bill',
+    changes: { command: -1 },
+    requires: { command: 1 },
+    addFlags: ['c3-tested-door'],
     result: 'Varris removes a painted panel and reveals the true brass map of the Mileless Bridge.',
   },
   'c3-offer-the-wrapping': {
+    ...clearInheritedChoiceMechanics,
     label: 'Offer a look at the fragment’s wrapping.',
     detail: 'Trade information without surrendering the iron.',
-    result: 'Varris recognises the road dust and admits Ordan bought the bridge opening word.',
+    next: 'c3-bill',
+    changes: { resolve: 1 },
+    addFlags: ['c3-varris-map'],
+    result: 'Varris recognises the road dust and admits Ordan bought the bridge opening word. A hidden attacker strikes, but Tivik blocks the knife. The man escapes and drops Ordan’s signed threat.',
   },
   'c3-seize-mask': {
+    ...clearInheritedChoiceMechanics,
     label: 'Seize the killer behind the curtain.',
     detail: 'Spend 1 Health. Protect Varris and take Ordan’s written threat.',
+    next: 'c3-bill',
     changes: { health: -1, command: 1 },
     requires: { health: 1 },
-    result: 'You disarm Ordan’s man and recover a note ordering Varris killed after the sale.',
+    addFlags: ['c3-unmasked-varris'],
+    result: 'You disarm Ordan’s man, take his brass bridge key, and recover a note ordering Varris killed after the sale.',
   },
   'c3-anchor-bill': {
+    ...clearInheritedChoiceMechanics,
     label: 'Challenge Ordan’s idea of protection.',
     detail: 'Ask who can refuse a safe road when the Crown owns every exit.',
+    next: 'c3-evidence',
+    changes: { resolve: 1 },
     addFlags: ['c3-challenged-crown-control'],
     result: 'Ordan calls choice a luxury of peaceful times. Several town guards hear the threat hidden inside his answer.',
   },
   'c3-ask-town-memory': {
+    ...clearInheritedChoiceMechanics,
     label: 'Make Ordan answer to the people he endangered.',
     detail: 'Gain 1 Command by putting Harrowfen’s voices before a debate between officers.',
+    next: 'c3-evidence',
+    changes: { command: 1 },
     addFlags: ['c3-centred-harrowfen-victims'],
     result: 'Maelin’s journal and Harrowfen’s wounded are read aloud. Ordan defends the future while the crowd sees who paid for his plan today.',
   },
   'c3-let-iron-point': {
+    ...clearInheritedChoiceMechanics,
     label: 'Use Ordan’s confession to strip him of command.',
     detail: 'Ask Elene whether a man who admits attacking Harrowfen still speaks for its Crown guard.',
+    next: 'c3-evidence',
     addFlags: ['c3-stripped-ordan-command'],
     result: 'Elene orders the town guard to leave Ordan’s command. He signals the watch house fire before they can seize him.',
   },
   'c3-save-grave-record': {
+    ...clearInheritedChoiceMechanics,
     label: 'Save the courier boy and his satchel.',
     detail: 'Protect a witness and the written orders while Ordan gains distance.',
-    result: 'You pull the boy clear and recover a list of soldiers hidden inside Harrowfen.',
+    next: 'c3-watch-house',
+    addFlags: ['c3-saved-courier-boy'],
+    result: 'You pull the boy and his satchel clear. Mara and Elene’s guards take the burning beam while the boy points out a narrow records stair.',
   },
   'c3-take-courier-list': {
+    ...clearInheritedChoiceMechanics,
     label: 'Take the list of Ordan’s soldiers.',
     detail: 'Choose evidence that can clear your name and expose the attack.',
+    next: 'c3-divided-loyalty',
+    addFlags: ['c3-kept-courier-list'],
     result: 'The list names every royal soldier placed in Harrowfen and the money paid to Captain Renn.',
   },
   'c3-free-future-cloak': {
+    ...clearInheritedChoiceMechanics,
     label: 'Free the bound town scout.',
-    detail: 'Save a guide who knows the east market rooftops.',
+    detail: 'Spend 1 Resolve. Stay in the fire long enough to save a guide who knows the east market rooftops.',
+    next: 'c3-divided-loyalty',
+    changes: { resolve: -1 },
+    requires: { resolve: 1 },
+    addFlags: ['c3-took-future-cloak'],
     result: 'The scout leads you through a window and points out Ordan’s fastest route.',
   },
   'c3-destroy-future-room': {
+    ...clearInheritedChoiceMechanics,
     label: 'Burn the bridge opening word.',
     detail: 'Spend 1 Resolve to deny Ordan an easy escape before leaving the room.',
+    next: 'c3-divided-loyalty',
     changes: { resolve: -1, command: 1 },
     requires: { resolve: 1 },
+    addFlags: ['c3-burned-future-room'],
     result: 'You destroy the written word. Ordan will need Varris or another key to open the bridge.',
   },
   'c3-stand-with-lysara': {
+    ...clearInheritedChoiceMechanics,
     detail: 'Accept the wider duty and earn respect without turning policy agreement into romance.',
+    next: 'c3-market-memory',
+    addFlags: ['c3-priority-cause'],
+    result: 'Lysara studies you, then gives a small, warm smile. “Good. I was afraid your courage had made you simple.”',
   },
   'c3-command-market': {
+    ...clearInheritedChoiceMechanics,
     label: 'Take command of the town guards.',
     detail: 'Spend 2 Command. Separate civilians from Ordan’s disguised soldiers.',
+    next: 'c3-pin-test',
+    changes: { command: -2 },
+    requires: { command: 2 },
+    addFlags: ['c3-saved-market-crowd'],
     result: 'Your orders clear the market centre and force Renn’s men to reveal their royal armour.',
   },
   'c3-carry-children': {
+    ...clearInheritedChoiceMechanics,
     label: 'Carry trapped children across the broken bridge.',
     detail: 'Spend 2 Health. Save lives while Ordan reaches the well.',
+    next: 'c3-pin-test',
+    changes: { health: -2 },
+    requires: { health: 2 },
+    addFlags: ['c3-saved-market-children'],
     result: 'You carry two children through smoke and falling rope. Their mother opens a boat passage that reaches the well behind Renn’s line.',
   },
   'c3-rush-burning-house': {
+    ...clearInheritedChoiceMechanics,
     label: 'Run for the watch house before the last order burns.',
     detail: 'Spend 2 Health. Recover Ordan’s bridge order before the fire takes it.',
-    result: 'You cross before the first beam falls and tear an east bridge order from the burning desk. It names six guards waiting for Renn’s signal.',
+    next: 'c3-watch-house',
+    changes: { health: -2 },
+    requires: { health: 2 },
+    addFlags: ['c3-reached-house-first'],
+    result: 'You vault the beam before it falls. Mara stays with Elene’s guards to free the courier boy and the trapped residents while you follow Ordan through an upper window.',
+  },
+  'c3-order-streets-closed': {
+    ...clearInheritedChoiceMechanics,
+    label: 'Have Elene close every ordinary road out of town.',
+    detail: 'Spend 1 Command. Trap Ordan inside Harrowfen while the town guard handles the rescue.',
+    next: 'c3-watch-house',
+    changes: { command: -1 },
+    requires: { command: 1 },
+    addFlags: ['c3-closed-roads'],
+    result: 'Horns close every gate. Elene’s guards drag the courier boy clear while Mara lifts the beam away from the trapped residents. Ordan can now escape only through the Mileless Bridge.',
   },
   'c3-follow-tiviks-rule': {
+    ...clearInheritedChoiceMechanics,
     label: 'Cover the fragment and move away from the shifted street.',
     detail: 'Use Tivik’s simple rule: hide the iron, then trust the road under your feet.',
+    next: 'c3-pin-test',
+    changes: { resolve: 1 },
+    addFlags: ['c3-stilled-fragment'],
     result: 'The mountain street disappears when the fragment is covered. The true market stays beneath you.',
   },
   'c3-approach-double-alone': {
+    ...clearInheritedChoiceMechanics,
     label: 'Confront the false captain alone.',
     detail: 'Risk the duel to keep everyone else focused on Ordan.',
+    next: 'c3-duplicate',
+    changes: { resolve: 1 },
+    addFlags: ['c3-faced-double-alone'],
     result: 'Renn accepts your challenge. His copied stance reveals where his training falls short.',
   },
   'c3-send-real-mara': {
+    ...clearInheritedChoiceMechanics,
     label: 'Let Mara expose the cloak’s hidden mark.',
     detail: 'Available with deep Mara trust. Trust her knowledge of your equipment.',
+    next: 'c3-duplicate',
+    requiresRelationships: { mara: { trust: 5 } },
+    addFlags: ['c3-mara-flanked-double'],
     result: 'Mara cuts the cloak lining open and shows Elene the armourer’s mark from your missing spare.',
   },
   'c3-use-oath-sight': {
+    ...clearInheritedChoiceMechanics,
     label: 'Speak an Oath only the real captain will keep.',
     detail: 'Spend 1 Oathfire. Bind yourself publicly to protect Harrowfen.',
+    next: 'c3-duplicate',
+    changes: { oathfire: -1 },
+    requires: { oathfire: 1 },
+    addFlags: ['c3-saw-false-oath'],
     result: 'Your Oath burns where everyone can see it. Renn cannot answer with anything but a drawn sword.',
   },
   'c3-talk-double-down': {
+    ...clearInheritedChoiceMechanics,
     label: 'Offer Renn a chance to surrender.',
     detail: 'Use honest insight to break Ordan’s hold on him.',
+    next: 'c3-courier',
     changes: {},
-    requires: {},
+    addFlags: ['c3-double-yielded'],
     result: 'Renn lowers his blade and warns that the thief on the bridge is Ordan’s rival, not his ally.',
   },
   'c3-disarm-double': {
+    ...clearInheritedChoiceMechanics,
     label: 'Disarm Renn before he can give another order.',
     detail: 'Spend 2 Health. End the false command quickly.',
+    next: 'c3-courier',
     changes: { health: -2 },
     requires: { health: 2 },
+    addFlags: ['c3-double-disarmed'],
     result: 'You break Renn’s copied guard and put him on the stones before he can warn Ordan’s bridge guards.',
   },
   'c3-ask-future-warning': {
+    ...clearInheritedChoiceMechanics,
     label: 'Demand Ordan’s final plan.',
     detail: 'Spend 1 Command. Force Renn to choose between truth and prison.',
+    next: 'c3-courier',
     changes: { command: -1 },
     requires: { command: 1 },
     addFlags: ['c3-routed-ordan-plan'],
     result: 'Renn reveals that Ordan plans to join the fragment with a larger shard on the Mileless Bridge.',
   },
   'c3-cut-glove': {
+    ...clearInheritedChoiceMechanics,
     label: 'Cut the fragment from Ordan’s silver glove.',
     detail: 'Spend 2 Health. Risk a close fight before he reaches the arch.',
+    next: 'c3-collapse',
+    changes: { health: -2 },
+    requires: { health: 2 },
+    addFlags: ['c3-cut-silver-glove'],
     result: 'Your blade tears the silver control threads inside Ordan’s glove. He keeps the fragment, but he can no longer close a road behind him.',
   },
   'c3-order-volley': {
+    ...clearInheritedChoiceMechanics,
     label: 'Order Elene’s archers to cut off his route.',
     detail: 'Spend 2 Command. Force Ordan toward a narrower bridge.',
+    next: 'c3-collapse',
+    changes: { command: -2 },
+    requires: { command: 2 },
+    addFlags: ['c3-broke-escape-road'],
     result: 'Arrows drive Ordan away from the rooftops and onto the exposed east canal crossing.',
   },
   'c3-mark-ordan': {
+    ...clearInheritedChoiceMechanics,
     label: 'Throw market dye across Ordan’s coat.',
     detail: 'Save your strength and make him easy to track through smoke.',
+    next: 'c3-collapse',
+    addFlags: ['c3-marked-ordan'],
     result: 'Bright blue dye bursts across Ordan’s back. Every guard in the market can see where he runs.',
   },
   'c3-save-healing-house': {
+    ...clearInheritedChoiceMechanics,
     label: 'Stop and rescue the healing house patients.',
-    detail: 'Lose ground in the chase so trapped people survive.',
+    detail: 'Spend 2 Health. Hold the broken balcony while the trapped patients escape. Ordan gains distance.',
+    next: 'c3-pursuit',
+    changes: { health: -2 },
+    requires: { health: 2 },
+    addFlags: ['c3-saved-healing-house'],
     result: 'You hold the broken balcony while patients cross. Ordan reaches the east arch first.',
   },
   'c3-keep-courier-in-sight': {
+    ...clearInheritedChoiceMechanics,
     label: 'Keep Ordan in sight through the burning market.',
     detail: 'Spend 1 Health. Leave the rescue to Elene’s guards.',
+    next: 'c3-pursuit',
     changes: { health: -1 },
     requires: { health: 1 },
+    addFlags: ['c3-kept-close'],
     result: 'You stay close enough to see Ordan use the bridge key at the east arch.',
   },
   'c3-oath-hold-harrowfen': {
+    ...clearInheritedChoiceMechanics,
     label: 'Swear that Harrowfen will not fall for your pursuit.',
     detail: 'Spend 2 Resolve. Gain 3 Oathfire and accept a binding duty to Harrowfen.',
+    next: 'c3-pursuit',
+    changes: { resolve: -2, oathfire: 3 },
+    requires: { resolve: 2 },
+    addFlags: ['c3-oath-hold-town'],
     result: 'Oathfire binds the bridge ropes long enough for the wounded to escape and for you to continue.',
   },
   'c3-prepare-fast-pursuit': {
+    ...clearInheritedChoiceMechanics,
     label: 'Take Mara and pursue Ordan at once.',
     detail: 'Choose speed and close combat over a safer return path.',
-    result: 'Mara ties back her hair and follows you onto the first arch without hesitation.',
+    next: 'c3-world-nail',
+    addFlags: ['c3-pursuit-mara'],
+    result: 'You and Mara take the first moving span at once. Lysara, Brann, and three town guards follow one arch behind, but nobody has time to secure a guide rope.',
   },
   'c3-prepare-safe-pursuit': {
+    ...clearInheritedChoiceMechanics,
     label: 'Let Lysara secure a guide rope before you cross.',
     detail: 'Choose a safer route and give Ordan more time.',
-    result: 'Lysara anchors green rope to Harrowfen, creating a path your allies can follow home.',
+    next: 'c3-world-nail',
+    changes: { resolve: 1 },
+    addFlags: ['c3-pursuit-lysara'],
+    result: 'Lysara anchors green rope to Harrowfen. Mara, Brann, and three town guards cross behind you with a marked path home, but Ordan gains time.',
   },
   'c3-use-oath-trail': {
+    ...clearInheritedChoiceMechanics,
     label: 'Use your Oath to follow the danger you promised to end.',
     detail: 'Spend 1 Oathfire. Find Ordan’s path without slowing for a map.',
+    next: 'c3-world-nail',
+    changes: { oathfire: -1, command: 1 },
+    requires: { oathfire: 1 },
+    addFlags: ['c3-oath-trail'],
     result: 'Your Oath pulls toward the fragment like a compass needle toward north.',
   },
 };
@@ -1420,6 +1674,67 @@ export const chapterTwoChoiceRevisionAudit = {
   },
 } as const;
 
+export const chapterThreeChoiceRevisionAudit = {
+  reason: 'Every Chapter Three overlay clears inherited mechanics before restating its destination, costs, gates, flags, and result. Relationship effects remain keyed by stable choice IDs and are checked separately.',
+  ids: [
+    'c3-test-signature',
+    'c3-give-command-word',
+    'c3-let-mara-search-you',
+    'c3-focus-archive',
+    'c3-focus-road',
+    'c3-catch-archive-spy',
+    'c3-copy-bridge-entry',
+    'c3-ask-lysara-what-she-sees',
+    'c3-show-nilo-memory',
+    'c3-hold-healer-door',
+    'c3-command-canal-line',
+    'c3-mark-false-door',
+    'c3-offer-the-wrapping',
+    'c3-seize-mask',
+    'c3-anchor-bill',
+    'c3-ask-town-memory',
+    'c3-let-iron-point',
+    'c3-save-grave-record',
+    'c3-rush-burning-house',
+    'c3-order-streets-closed',
+    'c3-take-courier-list',
+    'c3-free-future-cloak',
+    'c3-destroy-future-room',
+    'c3-stand-with-lysara',
+    'c3-command-market',
+    'c3-carry-children',
+    'c3-follow-tiviks-rule',
+    'c3-approach-double-alone',
+    'c3-send-real-mara',
+    'c3-use-oath-sight',
+    'c3-talk-double-down',
+    'c3-disarm-double',
+    'c3-ask-future-warning',
+    'c3-cut-glove',
+    'c3-order-volley',
+    'c3-mark-ordan',
+    'c3-save-healing-house',
+    'c3-keep-courier-in-sight',
+    'c3-oath-hold-harrowfen',
+    'c3-prepare-fast-pursuit',
+    'c3-prepare-safe-pursuit',
+    'c3-use-oath-trail',
+  ],
+  relationshipEffectIds: [
+    'c3-shield-wounded',
+    'c3-let-mara-search-you',
+    'c3-focus-archive',
+    'c3-focus-wounded',
+    'c3-ask-lysara-what-she-sees',
+    'c3-stand-with-mara',
+    'c3-stand-with-lysara',
+    'c3-name-the-real-plan',
+    'c3-send-real-mara',
+    'c3-prepare-fast-pursuit',
+    'c3-prepare-safe-pursuit',
+  ],
+} as const;
+
 export const reviewedUnchangedChoiceIds = [
   'c2-shield-arrival',
   'c2-trust-mara-entry',
@@ -1441,7 +1756,6 @@ export const reviewedUnchangedChoiceIds = [
   'c3-shield-wounded',
   'c3-show-evidence',
   'c3-focus-wounded',
-  'c3-order-streets-closed',
   'c3-stand-with-mara',
   'c3-name-the-real-plan',
   'c3-end-catch-courier',

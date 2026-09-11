@@ -120,3 +120,11 @@ export const firstMeetingContracts = [
   { heroes: ['caelan', 'ilyra'], hostChapter: 6, introductionNode: 'c6-ilyra-entry', place: 'Ember Steppe' },
   { heroes: ['rook', 'ilyra'], hostChapter: null, introductionNode: null, place: 'Serekh' },
 ];
+
+export const terminalHistoryFlagReasons = {
+  'c4-shielded-rook': 'Preserves Caelan taking a bolt for Rook for the later Rook perspective version of the bridge meeting.',
+  'c4-watched-both': 'Preserves Caelan refusing both men control of his attention for the later crossover perspective.',
+  'c4-law-first': 'Preserves Caelan beginning the relationship with Rook through an explicit arrest and search.',
+  'c4-rook-kept-hidden-tool': 'Preserves the tool Rook concealed during his first explanation for his own playable bridge chapter.',
+  'c4-rook-owes-caelan': 'Carries Rook’s personal debt into his independent Underways series after the implemented Caelan chapters end.',
+};

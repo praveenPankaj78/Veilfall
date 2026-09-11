@@ -44,15 +44,19 @@ All routes converge at Lantern Bridge, where Ordan must defend his actions befor
 
 The healing house choices respond directly to its two threatened rooms: Caelan can hold the back door while Iven moves the children, shield Garran long enough to identify a guard, or divide his guards between both dangers. Each outcome changes the evidence brought to Lantern Bridge.
 
+Garran’s medicine state remains active during all three choices. If treated, he can identify both attackers. Without the medicine, he can identify only one before fever takes his voice. Holding the door drives both attackers away. Shielding Garran lets Mara capture one. Dividing the guard line also traps one. Lantern Bridge names a prisoner only on the two capture outcomes.
+
+Each archive and broker subchoice also carries only what it visibly earned. The archive can produce a captured burner and original pages, a copied request and payment line, or writing preserved by Lysara’s living thread. Varris can provide the true brass map, the opening word and a dropped threat, or a captured killer carrying the murder order and a bridge key.
+
 Ordan argues that independent roads let smugglers, armies, and local rulers evade the Crown. He claims that one Crown road could reinforce every border before an invading army crosses it. The selected investigation route forces the public case against him. Archive records prove his requests and payments. Garran and the healing house connect his personal guard to Bellweather. Varris proves Ordan bought the bridge route and ordered the broker killed. Caelan joins that evidence to what Bellweather already proved about his authority and Lysara's living seed. Ordan admits only the missing fact: he forged the later evidence, but the original sealed order came from someone above his office.
 
 After that admission, the player challenges Crown control, centres the people Ordan harmed, or uses his confession to strip him of command. No option asks him to repeat information he has already given.
 
 ## Watch house and relationship movement
 
-The watch house is a physical fire rescue. Its orders reveal that Captain Renn, a corrupt Warden, has Caelan's spare cloak and plans to commit crimes in his name.
+The watch house is a physical fire rescue. Every route accounts for the courier boy, his satchel, the trapped residents, Mara, the fallen beam, and Caelan’s entrance into the safe room. Its orders reveal that Captain Renn, a corrupt Warden, has Caelan's spare cloak and plans to commit crimes in his name. Neither Caelan nor the journal names Renn before this order is read. The journal records the name only after the player leaves the safe room.
 
-On a bathhouse roof, Mara and Lysara disagree about saving people versus stopping the wider attack. The decision changes tactical Trust or Respect rather than awarding Attraction for agreeing with one woman’s policy.
+On a bathhouse roof, Mara and Lysara disagree about saving people versus stopping the wider attack. The decision changes tactical Trust or Respect rather than awarding Attraction for agreeing with one woman’s policy. A previous friendship decision with Mara overrides a high Attraction score and keeps the scene clearly platonic.
 
 ## Market battle
 
@@ -64,13 +68,19 @@ The event demonstrates the threat before it is named: a joined fragment could gi
 
 ## Pursuit and answer
 
-Caelan's first confrontation exposes why Renn cannot be the lawful captain, but the town does not clear Caelan yet. The player must then make Renn surrender, disarm him, or reveal Ordan's plan. Only after that decision does Elene arrest Renn, reject Ordan's warrant, reopen the gate for the remaining Wardens, and turn against Ordan's covert soldiers. Ordan takes the fragment and burns the canal bridges during his escape. The player chooses between rescue, a faster pursuit, or accepting a new binding Oath to do both.
+Caelan's first confrontation exposes why Renn cannot be the lawful captain, but the town does not clear Caelan yet. The player must then make Renn surrender, disarm him, or reveal Ordan's plan. Only after that decision does Elene arrest Renn, reject Ordan's warrant, reopen the gate for the remaining Wardens, and turn against Ordan's covert soldiers.
+
+The fragment remains pinned beneath Mara’s shield until Ordan drives a brass key into the old marker beside the well. The pull drags the shield toward a child, so Mara releases it rather than crush him. The wrapped iron flies into Ordan’s silver glove with Rook’s hidden wire still beneath its strap.
+
+The player then chooses between rescue, pursuit, or accepting a new binding Oath. The later companion choice has distinct consequences. Mara’s route reaches Ordan before his soldiers form ranks but leaves no marked return. Lysara’s guide rope gives the group a safe path home but costs enough time for the first rank to move. The Oath route spends Oathfire to gain both direction and speed.
 
 At the east arch, Lysara explains the World Nail in plain language. It is a greater ancient anchor that keeps distant places apart. Road pins are pieces of it.
 
 ## Closing movement
 
-Caelan and Lysara stop Ordan from placing Asterra's hidden royal force on the Mileless Bridge. This is not a foreign army entering Harrowfen. Ordan intends to use the bridge as a staging road from which Asterra's troops could reach foreign borders. Closing the road gives the player a clear victory before Rook pulls the planted wire and steals the loose fragment from Ordan. If Caelan follows him, Rook throws a mirrored coin disguised as the fragment and reveals the switch only after Caelan catches it. The trick is surprising but uses preparation the player already saw. Caelan then chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Each ending begins Chapter Four from a distinct position without introducing another mystery before the current one is answered.
+Caelan and Lysara stop Ordan from placing Asterra's hidden royal force on the Mileless Bridge. This is not a foreign army entering Harrowfen. Ordan intends to use the bridge as a staging road from which Asterra's troops could reach foreign borders. Closing the road gives the player a clear victory before Rook pulls the planted wire and steals the loose fragment from Ordan. The theft occurs once.
+
+If Caelan follows Rook, the thief throws a mirrored coin disguised as the fragment and reveals the switch only after Caelan catches it. Caelan then chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Mara, Lysara, and Brann visibly reach the bridge on every ending before Chapter Four begins.
 
 ## Art
 

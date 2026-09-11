@@ -7,6 +7,7 @@ import {
   implementedChapterContracts,
   playableHeroes,
   protectedPlotTransitions,
+  terminalHistoryFlagReasons,
 } from './continuity-contract.mjs';
 
 const compilerOptions = {
@@ -142,6 +143,7 @@ const { knownTruths, majorConsequences } = memoryExports;
 const {
   adventureChoiceUpdates,
   adventureNodeUpdates,
+  chapterThreeChoiceRevisionAudit,
   chapterTwoChoiceRevisionAudit,
   reviewedUnchangedChoiceIds,
 } = adventureExports;
@@ -363,10 +365,110 @@ for (const choiceId of chapterTwoChoiceRevisionAudit.explicitMechanics.ids) {
   }
 }
 
+const revisedChapterThreeChoiceIds = Object.keys(adventureChoiceUpdates)
+  .filter((choiceId) => choiceId.startsWith('c3-'));
+const auditedChapterThreeChoiceIds = [...chapterThreeChoiceRevisionAudit.ids];
+for (const choiceId of revisedChapterThreeChoiceIds) {
+  if (!auditedChapterThreeChoiceIds.includes(choiceId)) {
+    failures.push(`Chapter Three choice revision ${choiceId} has no full mechanical audit`);
+  }
+}
+for (const choiceId of auditedChapterThreeChoiceIds) {
+  const revision = adventureChoiceUpdates[choiceId];
+  if (!revision) {
+    failures.push(`Chapter Three choice audit references missing revision ${choiceId}`);
+    continue;
+  }
+  const requiredRevisionFields = [
+    'next',
+    'changes',
+    'requires',
+    'requiresRelationships',
+    'forbidsRelationshipIntents',
+    'requiresFlags',
+    'showIfAnyFlags',
+    'showIfAllFlags',
+    'hideIfAnyFlags',
+    'showIfRelationshipIntents',
+    'addFlags',
+    'advantage',
+    'result',
+  ];
+  for (const field of requiredRevisionFields) {
+    if (!Object.hasOwn(revision, field)) {
+      failures.push(`Chapter Three choice revision ${choiceId} did not explicitly audit ${field}`);
+    }
+  }
+}
+if (new Set(auditedChapterThreeChoiceIds).size !== auditedChapterThreeChoiceIds.length) {
+  failures.push('Chapter Three choice revision audit contains a duplicate choice ID');
+}
+if (!chapterThreeChoiceRevisionAudit.reason.includes('clears inherited mechanics')) {
+  failures.push('Chapter Three choice revision audit does not explain how partial overrides are prevented');
+}
+
+const expectedChapterThreeRelationshipEffects = {
+  'c3-shield-wounded': { mara: { trust: 1, attraction: 0 } },
+  'c3-let-mara-search-you': { mara: { trust: 1, attraction: 1 } },
+  'c3-focus-archive': { lysara: { trust: 1, attraction: 0 } },
+  'c3-focus-wounded': { mara: { trust: 1, attraction: 0 } },
+  'c3-ask-lysara-what-she-sees': { lysara: { trust: 1, attraction: 1 } },
+  'c3-stand-with-mara': { mara: { trust: 1, respect: 1 } },
+  'c3-stand-with-lysara': { lysara: { trust: 1, respect: 1 } },
+  'c3-name-the-real-plan': {
+    mara: { trust: 1, attraction: 0 },
+    lysara: { trust: 1, attraction: 0 },
+  },
+  'c3-send-real-mara': { mara: { trust: 1, attraction: 0 } },
+  'c3-prepare-fast-pursuit': { mara: { trust: 1, respect: 1 } },
+  'c3-prepare-safe-pursuit': { lysara: { trust: 1, respect: 1 } },
+};
+for (const choiceId of chapterThreeChoiceRevisionAudit.relationshipEffectIds) {
+  const owner = Object.values(nodes).find((node) => node.choices.some((choice) => choice.id === choiceId));
+  const choice = owner?.choices.find((candidate) => candidate.id === choiceId);
+  if (!choice) {
+    failures.push(`Chapter Three relationship audit references missing choice ${choiceId}`);
+    continue;
+  }
+  const actual = JSON.stringify(relationshipChanges(choice));
+  const expected = JSON.stringify(expectedChapterThreeRelationshipEffects[choiceId]);
+  if (actual !== expected) {
+    failures.push(`Chapter Three relationship effect changed without an audit update: ${choiceId}`);
+  }
+}
+
 const statKeyByLabel = Object.fromEntries(
   Object.entries(statLabels).map(([key, label]) => [label.toLowerCase(), key]),
 );
-const visibleCostPattern = /(Spend(?:s)?|Gain(?:s)?) ([0-9]+) (Health|Resolve|Command|Oathfire|Medicine|Wayfire)/gi;
+const visibleCostPattern = /(Spend(?:s)?|Lose(?:s)?|Gain(?:s)?) ([0-9]+) (Health|Resolve|Command|Oathfire|Medicine|Wayfire)/gi;
+
+function choiceContractProblems(choice) {
+  const problems = [];
+  const disclosedChanges = {};
+  for (const match of choice.detail.matchAll(visibleCostPattern)) {
+    const stat = statKeyByLabel[match[3].toLowerCase()];
+    const verb = match[1].toLowerCase();
+    const direction = verb.startsWith('spend') || verb.startsWith('lose') ? -1 : 1;
+    disclosedChanges[stat] = (disclosedChanges[stat] ?? 0) + direction * Number(match[2]);
+  }
+  for (const [stat, value] of Object.entries(choice.changes ?? {})) {
+    if ((value ?? 0) < 0 && disclosedChanges[stat] !== value) {
+      problems.push(`hides ${Math.abs(value)} ${stat}`);
+    }
+  }
+
+  const trustClaim = choice.detail.match(/Available with (?:deep|established) (Mara|Lysara|Ilyra) trust/i);
+  if (trustClaim) {
+    const person = trustClaim[1].toLowerCase();
+    const relationshipGate = choice.requiresRelationships?.[person]?.trust;
+    const flagGate = choice.requiresFlags?.some((flag) => (
+      flag.toLowerCase().includes(person) && flag.toLowerCase().includes('trust')
+    ));
+    if (!relationshipGate && !flagGate) problems.push(`claims ${person} trust without a gate`);
+  }
+  return problems;
+}
+
 for (const node of Object.values(nodes)) {
   for (const choice of node.choices) {
     const resourceCosts = Object.entries(choice.changes ?? {})
@@ -383,7 +485,8 @@ for (const node of Object.values(nodes)) {
     }
     for (const match of choice.detail.matchAll(visibleCostPattern)) {
       const stat = statKeyByLabel[match[3].toLowerCase()];
-      const direction = match[1].toLowerCase().startsWith('spend') ? -1 : 1;
+      const verb = match[1].toLowerCase();
+      const direction = verb.startsWith('spend') || verb.startsWith('lose') ? -1 : 1;
       const visibleChange = direction * Number(match[2]);
       const actualChange = choice.changes?.[stat] ?? 0;
       if (actualChange !== visibleChange) {
@@ -392,7 +495,32 @@ for (const node of Object.values(nodes)) {
         );
       }
     }
+    for (const problem of choiceContractProblems(choice)) {
+      failures.push(`Choice ${choice.id} ${problem}`);
+    }
   }
+}
+
+const deliberateHiddenCost = choiceContractProblems({
+  id: 'fixture-hidden-cost',
+  label: 'Run through the fire.',
+  detail: 'Reach the door first.',
+  next: 'fixture-next',
+  changes: { health: -1 },
+  result: 'You reach it.',
+});
+if (!deliberateHiddenCost.some((problem) => problem.includes('hides 1 health'))) {
+  failures.push('Choice contract validator does not reject a deliberate hidden cost');
+}
+const deliberateFalseTrustGate = choiceContractProblems({
+  id: 'fixture-false-trust',
+  label: 'Ask Mara to take the shot.',
+  detail: 'Available with deep Mara trust.',
+  next: 'fixture-next',
+  result: 'Mara acts.',
+});
+if (!deliberateFalseTrustGate.some((problem) => problem.includes('trust without a gate'))) {
+  failures.push('Choice contract validator does not reject a deliberate false trust gate');
 }
 
 for (const [id, node] of Object.entries(nodes)) {
@@ -483,7 +611,7 @@ function stateKey(state) {
     .join('|');
   const flags = state.flags.filter((flag) => navigationFlags.has(flag)).sort().join('|');
   const relationships = Object.entries(state.relationships)
-    .map(([person, score]) => `${person}:${Math.min(score.trust, 4)}:${Math.min(score.attraction, 3)}:${Math.min(score.respect ?? 0, 4)}:${Math.min(score.friction ?? 0, 3)}:${score.intent ?? 'unresolved'}`)
+    .map(([person, score]) => `${person}:${Math.min(score.trust, 6)}:${Math.min(score.attraction, 4)}:${Math.min(score.respect ?? 0, 4)}:${Math.min(score.friction ?? 0, 3)}:${score.intent ?? 'unresolved'}`)
     .join('|');
   return `${state.nodeId}|${stats}|${relationships}|${flags}`;
 }
@@ -950,12 +1078,127 @@ for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
                 : chapterEightBase;
   const closeNodes = chapterNodes.filter((id) => closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')));
   if (closeNodes.length / chapterNodes.length < 0.6) {
-    failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes)`);
+    failures.push(`Chapter ${chapter} close point of view coverage fell below 60 percent (${closeNodes.length} of ${chapterNodes.length} scenes: ${closeNodes.join(', ')})`);
   }
 }
 
 function renderedBody(nodeId, state) {
   return nodes[nodeId].body(state).join(' ');
+}
+
+function highResourceState(baseState, flags = baseState.flags) {
+  return {
+    ...baseState,
+    flags: [...flags],
+    stats: Object.fromEntries(Object.keys(baseState.stats).map((key) => [key, 20])),
+    relationships: Object.fromEntries(Object.entries(baseState.relationships).map(([person, score]) => [
+      person,
+      { ...score, trust: 20, attraction: 20, respect: 20, friction: 0, intent: 'unresolved' },
+    ])),
+  };
+}
+
+function playableNodeSnapshot(nodeId, state) {
+  const node = nodes[nodeId];
+  return JSON.stringify({
+    body: node.body(state),
+    journal: knownTruths({ ...state, nodeId }),
+    consequences: majorConsequences({ ...state, nodeId }),
+    choices: node.choices.map((choice) => ({
+      id: choice.id,
+      visible: isChoiceVisible(choice, state),
+      available: canChoose(choice, state),
+      next: resolveNext(choice, state),
+    })),
+  });
+}
+
+function flagChangesLaterPlay(flag, ownerNodeId, baseState) {
+  const ownerIndex = nodeOrder.indexOf(ownerNodeId);
+  const baseFlags = baseState.flags.filter((candidate) => candidate !== flag);
+  const withoutFlag = highResourceState(baseState, baseFlags);
+  const withFlag = highResourceState(baseState, [...baseFlags, flag]);
+  return nodeOrder.slice(ownerIndex + 1).some((nodeId) => (
+    playableNodeSnapshot(nodeId, withoutFlag) !== playableNodeSnapshot(nodeId, withFlag)
+  ));
+}
+
+function normalisedConsequence(choice) {
+  return JSON.stringify({
+    advantage: choice.advantage?.replace(/\s+/g, ' ').trim().toLowerCase() ?? '',
+    result: choice.result.replace(/\s+/g, ' ').trim().toLowerCase(),
+    flags: [...(choice.addFlags ?? [])].sort((left, right) => left.localeCompare(right)),
+  });
+}
+
+function choiceHasDistinctConsequence(choice, freeSiblings) {
+  const signature = normalisedConsequence(choice);
+  return Boolean(choice.advantage?.trim())
+    && Boolean(choice.result.trim())
+    && Boolean(choice.addFlags?.length)
+    && freeSiblings.every((sibling) => normalisedConsequence(sibling) !== signature);
+}
+
+const paidSiblingContracts = [];
+for (const node of Object.values(nodes)) {
+  const chapter = implementedChapterContracts.find((contract) => nodeIsInChapter(node.id, contract.chapter))?.chapter ?? 1;
+  const baseState = highResourceState(chapterBaseStates[chapter]);
+  for (const choice of node.choices) {
+    const hasResourceCost = Object.values(choice.changes ?? {}).some((value) => (value ?? 0) < 0);
+    if (!hasResourceCost) continue;
+    const destination = resolveNext(choice, baseState);
+    const freeSiblings = node.choices.filter((sibling) => (
+      sibling.id !== choice.id
+      && resolveNext(sibling, baseState) === destination
+      && !Object.values(sibling.changes ?? {}).some((value) => (value ?? 0) < 0)
+    ));
+    if (!freeSiblings.length) continue;
+    const materialFlags = (choice.addFlags ?? []).filter((flag) => (
+      flagChangesLaterPlay(flag, node.id, chapterBaseStates[chapter])
+    ));
+    paidSiblingContracts.push({ choiceId: choice.id, materialFlags, distinct: choiceHasDistinctConsequence(choice, freeSiblings) });
+    if (!choiceHasDistinctConsequence(choice, freeSiblings)) {
+      failures.push(`Paid sibling choice ${choice.id} does not record a distinct consequence from its free sibling`);
+    }
+  }
+}
+
+const deliberateDominatedChoice = {
+  id: 'fixture-dominated-paid-choice',
+  advantage: 'Reach the same door.',
+  result: 'You reach the same door.',
+  addFlags: ['fixture-same-result'],
+};
+const deliberateFreeSibling = { ...deliberateDominatedChoice, id: 'fixture-free-choice' };
+if (choiceHasDistinctConsequence(deliberateDominatedChoice, [deliberateFreeSibling])) {
+  failures.push('Generic paid sibling audit does not reject a deliberately dominated choice');
+}
+
+const exactFlagSources = [
+  source,
+  adventureSource,
+  chapterFourSource,
+  chapterFiveSource,
+  chapterSixSource,
+  chapterSevenSource,
+  chapterEightSource,
+  memorySource,
+  await readFile('app/page.tsx', 'utf8'),
+];
+const chapterFourAddedFlags = [...new Set(Object.values(nodes)
+  .filter((node) => node.id.startsWith('c4-'))
+  .flatMap((node) => node.choices)
+  .flatMap((choice) => choice.addFlags ?? []))];
+for (const flag of chapterFourAddedFlags) {
+  const literal = `'${flag}'`;
+  const occurrences = exactFlagSources.reduce((count, text) => count + text.split(literal).length - 1, 0);
+  if (occurrences < 2 && !terminalHistoryFlagReasons[flag]) {
+    failures.push(`Chapter Four flag ${flag} has no exact consumer or terminal history classification`);
+  }
+}
+for (const [flag, reason] of Object.entries(terminalHistoryFlagReasons)) {
+  if (!chapterFourAddedFlags.includes(flag)) failures.push(`Terminal history classification references unused flag ${flag}`);
+  if (reason.length < 40) failures.push(`Terminal history flag ${flag} lacks a useful reason`);
 }
 
 const safeTreatyArrival = renderedBody('c2-arrival', {
@@ -1663,6 +1906,62 @@ for (const [flag, expected] of routeProofChecks) {
   });
   if (!expected.test(entrance)) failures.push(`Harrowfen entrance does not pay off ${flag}`);
 }
+const chapterThreeImportedProofs = [
+  { flag: 'c2-chose-testimony', expected: /Garran|Jory’s warning/i },
+  { flag: 'c2-chose-pin', expected: /unwrap the iron fragment/i },
+  { flag: 'c2-oath-expose-crown', expected: /repeat your Bellweather Oath/i },
+];
+const chapterThreeImportedTreaties = [
+  { flag: 'treaty-safe', expected: /treaty chest remains sealed/i },
+  { flag: 'treaty-damaged', expected: /damaged treaty pages/i },
+];
+for (const proof of chapterThreeImportedProofs) {
+  for (const treaty of chapterThreeImportedTreaties) {
+    for (const treated of [false, true]) {
+      for (const resources of ['low', 'high']) {
+        const flags = [proof.flag, treaty.flag];
+        if (treated) flags.push('c2-saved-attacker');
+        const stats = resources === 'low'
+          ? { ...chapterThreeBase.stats, health: 1, resolve: 0, command: 0, oathfire: 0 }
+          : { ...chapterThreeBase.stats, health: 9, resolve: 9, command: 9, oathfire: 9 };
+        const state = { ...chapterThreeBase, flags, stats };
+        const arrival = renderedBody('c3-arrival', state);
+        const gate = renderedBody('c3-gate', state);
+        if (!proof.expected.test(arrival)) failures.push(`Chapter Three import loses ${proof.flag}`);
+        if (!treaty.expected.test(gate)) failures.push(`Chapter Three import loses ${treaty.flag}`);
+        if (!nodes['c3-arrival'].choices.some((choice) => canChoose(choice, state))) {
+          failures.push(`Chapter Three arrival has no option for ${resources} resources`);
+        }
+      }
+    }
+  }
+}
+const lowTrustState = {
+  ...chapterThreeBase,
+  relationships: {
+    ...chapterThreeBase.relationships,
+    mara: { ...chapterThreeBase.relationships.mara, trust: 0 },
+    lysara: { ...chapterThreeBase.relationships.lysara, trust: 0 },
+  },
+};
+const highTrustState = {
+  ...chapterThreeBase,
+  relationships: {
+    ...chapterThreeBase.relationships,
+    mara: { ...chapterThreeBase.relationships.mara, trust: 7 },
+    lysara: { ...chapterThreeBase.relationships.lysara, trust: 7 },
+  },
+};
+for (const [nodeId, choiceId] of [
+  ['c3-gate', 'c3-let-mara-search-you'],
+  ['c3-archive', 'c3-ask-lysara-what-she-sees'],
+  ['c3-pin-test', 'c3-send-real-mara'],
+]) {
+  const choice = nodes[nodeId].choices.find((candidate) => candidate.id === choiceId);
+  if (!choice || canChoose(choice, lowTrustState) || !canChoose(choice, highTrustState)) {
+    failures.push(`${choiceId} does not enforce the trust availability stated to the player`);
+  }
+}
 const healerChoiceText = nodes['c3-healer'].choices
   .flatMap((choice) => [choice.label, choice.detail, choice.result])
   .join(' ');
@@ -1677,17 +1976,31 @@ if (!/back door.*children’s room/i.test(healerSceneChoices.get('c3-command-can
   failures.push('The healing house Command choice does not defend both threatened rooms');
 }
 const healerRoutePayoffs = [
-  ['c3-sable-identified-guard', /Garran’s identification/i],
-  ['c3-secured-healer', /every patient alive/i],
-  ['c3-canal-defence', /divided guard line trapped one intruder/i],
+  {
+    flag: 'c3-sable-identified-guard',
+    treated: /identified both attackers.*other escaped/i,
+    untreated: /identify the prisoner.*second attacker escaped unnamed/i,
+  },
+  {
+    flag: 'c3-secured-healer',
+    treated: /every patient safe.*identified them.*before they fled/i,
+    untreated: /every patient safe.*identified one attacker.*both men fled/i,
+  },
+  {
+    flag: 'c3-canal-defence',
+    treated: /one guard in chains.*identified both attackers/i,
+    untreated: /one guard in chains.*identified him.*second attacker escap(?:es|ed) unnamed/i,
+  },
 ];
-for (const [flag, expected] of healerRoutePayoffs) {
-  const bridgeArrival = renderedBody('c3-bill', {
-    ...chapterThreeBase,
-    flags: ['c3-route-healer', flag],
-  });
-  if (!expected.test(bridgeArrival)) {
-    failures.push(`The healing house choice ${flag} has no accurate Lantern Bridge payoff`);
+for (const fixture of healerRoutePayoffs) {
+  for (const treated of [false, true]) {
+    const flags = ['c3-route-healer', fixture.flag];
+    if (treated) flags.push('c2-saved-attacker');
+    const bridgeArrival = renderedBody('c3-bill', { ...chapterThreeBase, flags });
+    const expected = treated ? fixture.treated : fixture.untreated;
+    if (!expected.test(bridgeArrival)) {
+      failures.push(`Healing house payoff ${fixture.flag} is wrong when Garran is ${treated ? 'treated' : 'untreated'}`);
+    }
   }
 }
 const investigationMenuText = [
@@ -1701,16 +2014,195 @@ if (/false escort|safe road out|old watch house/i.test(investigationMenuText)) {
 }
 const confessionChoice = nodes['c3-bill'].choices.find((choice) => choice.id === 'c3-let-iron-point');
 const lanternRouteProofs = [
-  ['c3-route-archive', /signed route requests and royal payments aloud/i],
+  ['c3-route-archive', 'c3-caught-clerk', /reads Ordan’s signed route request and royal payment figures aloud/i],
   ['c3-route-healer', /Garran names Ordan as the man who paid/i],
-  ['c3-route-broker', /Varris holds up the brass bridge map and Ordan’s murder order/i],
+  ['c3-route-broker', 'c3-varris-map', /repeats the bridge opening word and shows the signed threat/i],
 ];
-for (const [flag, expected] of lanternRouteProofs) {
-  const routeBody = renderedBody('c3-bill', { ...chapterThreeBase, flags: [flag] });
+for (const [flag, subchoiceOrExpected, possibleExpected] of lanternRouteProofs) {
+  const subchoice = typeof subchoiceOrExpected === 'string' ? subchoiceOrExpected : null;
+  const expected = possibleExpected ?? subchoiceOrExpected;
+  const routeFlags = [flag];
+  if (subchoice) routeFlags.push(subchoice);
+  if (flag === 'c3-route-healer') routeFlags.push('c3-secured-healer');
+  const routeBody = renderedBody('c3-bill', { ...chapterThreeBase, flags: routeFlags });
   if (!expected.test(routeBody)) failures.push(`Lantern Bridge does not use the evidence earned on ${flag}`);
-  if (!/Only one part remains outside the evidence/i.test(routeBody)
+  if (!/I forged the Harrowfen papers/i.test(routeBody)
     || !/came from above my office/i.test(routeBody)) {
     failures.push(`Lantern Bridge does not isolate Ordan’s one new admission on ${flag}`);
+  }
+}
+
+const chapterThreeInvestigationFixtures = [
+  {
+    name: 'archive capture',
+    flags: ['c3-route-archive', 'c3-caught-clerk'],
+    required: [/signed route request/i, /payment page/i, /masked soldier/i, /brass bridge key/i],
+    forbidden: [/true brass map/i, /murder order/i],
+  },
+  {
+    name: 'archive copy',
+    flags: ['c3-route-archive', 'c3-bridge-record'],
+    required: [/Lysara’s copy/i, /royal payment line/i, /soldier escaped/i],
+    forbidden: [/prisoner/i, /murder order/i],
+  },
+  {
+    name: 'archive living ink',
+    flags: ['c3-route-archive', 'c3-lysara-read-ink'],
+    required: [/signed request/i, /payment figures/i, /soldier escaped/i],
+    forbidden: [/prisoner/i, /true brass map/i],
+  },
+  {
+    name: 'healer shield',
+    flags: ['c3-route-healer', 'c3-sable-identified-guard'],
+    required: [/one guard in chains/i, /Garran/i, /second attacker escaped unnamed/i],
+    forbidden: [/true brass map/i, /murder order/i],
+  },
+  {
+    name: 'healer doorway',
+    flags: ['c3-route-healer', 'c3-secured-healer'],
+    required: [/every patient safe/i, /Iven/i, /both men fled/i],
+    forbidden: [/prisoner/i, /true brass map/i],
+  },
+  {
+    name: 'healer divided line',
+    flags: ['c3-route-healer', 'c3-canal-defence'],
+    required: [/one guard in chains/i, /second attacker escap(?:es|ed) unnamed/i],
+    forbidden: [/true brass map/i, /murder order/i],
+  },
+  {
+    name: 'broker map',
+    flags: ['c3-route-broker', 'c3-tested-door'],
+    required: [/true brass map/i, /plans to enter the Mileless Bridge/i],
+    forbidden: [/murder order/i, /prisoner/i],
+  },
+  {
+    name: 'broker exchange',
+    flags: ['c3-route-broker', 'c3-varris-map'],
+    required: [/bridge opening word/i, /signed threat/i, /attacker escaped/i],
+    forbidden: [/true brass map/i, /prisoner/i],
+  },
+  {
+    name: 'broker capture',
+    flags: ['c3-route-broker', 'c3-unmasked-varris'],
+    required: [/written murder order/i, /killer you disarmed/i, /brass bridge key/i],
+    forbidden: [/true brass map/i],
+  },
+];
+for (const fixture of chapterThreeInvestigationFixtures) {
+  const text = renderedBody('c3-bill', { ...chapterThreeBase, flags: fixture.flags });
+  for (const expected of fixture.required) {
+    if (!expected.test(text)) failures.push(`Chapter Three ${fixture.name} loses evidence it earned`);
+  }
+  for (const forbiddenClaim of fixture.forbidden) {
+    if (forbiddenClaim.test(text)) failures.push(`Chapter Three ${fixture.name} invents unearned evidence`);
+  }
+}
+
+const watchHouseTransitionFixtures = [
+  {
+    choiceId: 'c3-save-grave-record',
+    flag: 'c3-saved-courier-boy',
+    result: [/boy and his satchel/i, /burning beam/i],
+    next: [/narrow records stair/i, /free the trapped residents/i],
+  },
+  {
+    choiceId: 'c3-rush-burning-house',
+    flag: 'c3-reached-house-first',
+    result: [/vault the beam/i, /courier boy and the trapped residents/i, /upper window/i],
+    next: [/upper window/i, /Mara stays below/i, /courier boy and the trapped residents/i],
+  },
+  {
+    choiceId: 'c3-order-streets-closed',
+    flag: 'c3-closed-roads',
+    result: [/courier boy/i, /Mara lifts the beam/i, /Mileless Bridge/i],
+    next: [/guards drag the courier boy clear/i, /Mara lifts the beam/i, /side window/i],
+  },
+];
+for (const fixture of watchHouseTransitionFixtures) {
+  const choice = nodes['c3-evidence'].choices.find((candidate) => candidate.id === fixture.choiceId);
+  const body = renderedBody('c3-watch-house', { ...chapterThreeBase, flags: [fixture.flag] });
+  for (const expected of fixture.result) {
+    if (!expected.test(choice?.result ?? '')) failures.push(`${fixture.choiceId} leaves the fire rescue unresolved`);
+  }
+  for (const expected of fixture.next) {
+    if (!expected.test(body)) failures.push(`${fixture.choiceId} does not connect physically to Ordan’s safe room`);
+  }
+}
+
+function prematureKnowledgeProblems(truths, forbiddenNames) {
+  return forbiddenNames.filter((name) => truths.some((truth) => new RegExp(`\\b${name}\\b`, 'i').test(truth)));
+}
+const deliberatePrematureKnowledge = prematureKnowledgeProblems(
+  ['Captain Renn paid for the attack.'],
+  ['Renn'],
+);
+if (!deliberatePrematureKnowledge.includes('Renn')) {
+  failures.push('Knowledge timing validator does not reject a deliberate premature name');
+}
+for (const nodeId of ['c3-arrival', 'c3-gate', 'c3-triage', 'c3-archive', 'c3-healer', 'c3-broker', 'c3-bill', 'c3-evidence']) {
+  const text = visibleNodeText(nodes[nodeId], chapterThreeBase);
+  if (/Captain Renn|\bRenn\b/.test(text)) failures.push(`Chapter Three names Renn before his safe room order is discovered in ${nodeId}`);
+  const truths = knownTruths({ ...chapterThreeBase, nodeId });
+  if (prematureKnowledgeProblems(truths, ['Renn']).length) {
+    failures.push(`Chapter Three journal names Renn too early in ${nodeId}`);
+  }
+}
+const activeRennRevealTruths = knownTruths({ ...chapterThreeBase, nodeId: 'c3-watch-house' });
+if (activeRennRevealTruths.some((truth) => /Captain Renn|\bRenn\b/.test(truth))) {
+  failures.push('The journal answers the Renn reveal while the safe room scene is still active');
+}
+const postRennRevealTruths = knownTruths({ ...chapterThreeBase, nodeId: 'c3-divided-loyalty' });
+if (!postRennRevealTruths.some((truth) => /Captain Renn/i.test(truth))) {
+  failures.push('The journal does not record Renn after the safe room reveal is complete');
+}
+const paidRennTruths = knownTruths({
+  ...chapterThreeBase,
+  nodeId: 'c3-divided-loyalty',
+  flags: ['c3-kept-courier-list'],
+});
+if (!paidRennTruths.some((truth) => /payment to him/i.test(truth))) {
+  failures.push('The journal does not reserve Renn’s payment detail for the recovered soldier list');
+}
+
+const platonicMaraState = {
+  ...chapterThreeBase,
+  relationships: {
+    ...chapterThreeBase.relationships,
+    mara: { ...chapterThreeBase.relationships.mara, attraction: 9, intent: 'platonic' },
+  },
+};
+const platonicRoof = renderedBody('c3-divided-loyalty', platonicMaraState);
+if (!/old friend|You chose what this is/i.test(platonicRoof)
+  || /one night where neither of us/i.test(platonicRoof)) {
+  failures.push('Chapter Three ignores Mara’s explicit friendship intent when attraction remains high');
+}
+
+const fragmentTransferText = renderedBody('c3-courier', chapterThreeBase);
+if (!/beneath Mara’s shield/i.test(fragmentTransferText)
+  || !/releases it rather than crush him/i.test(fragmentTransferText)
+  || !/flies into Ordan’s silver glove/i.test(fragmentTransferText)
+  || !/fine wire.*goes with it/i.test(fragmentTransferText)) {
+  failures.push('Chapter Three does not show how Ordan takes the secured fragment or preserve Rook’s planted wire');
+}
+
+const pursuitTimingFixtures = [
+  {
+    flag: 'c3-pursuit-mara',
+    expected: [/before the hidden soldiers can form a rank/i, /no guide rope marks a safe return/i],
+  },
+  {
+    flag: 'c3-pursuit-lysara',
+    expected: [/brings Mara, Brann, and three town guards across safely/i, /first rank.*already moving/i],
+  },
+  {
+    flag: 'c3-oath-trail',
+    expected: [/follow without delay/i, /before the hidden soldiers can form a rank/i],
+  },
+];
+for (const fixture of pursuitTimingFixtures) {
+  const text = renderedBody('c3-world-nail', { ...chapterThreeBase, flags: [fixture.flag] });
+  for (const expected of fixture.expected) {
+    if (!expected.test(text)) failures.push(`Chapter Three pursuit payoff is inaccurate for ${fixture.flag}`);
   }
 }
 if (/why Ordan needed you and Lysara/i.test(confessionChoice?.label ?? '')
@@ -1760,6 +2252,48 @@ const returnEnding = renderedBody('c3-ending-return', chapterThreeBase);
 if (/did not see him plant/i.test(returnEnding)
   || !/already carries the fragment/i.test(returnEnding)) {
   failures.push('The return ending repeats or forgets Rook’s visible theft');
+}
+const chapterThreeHandoffFixtures = [
+  { endingId: 'c3-ending-courier', flags: ['c3-target-ordan', 'c3-pursuit-mara'] },
+  { endingId: 'c3-ending-thief', flags: ['c3-target-thief', 'c3-pursuit-lysara'] },
+  { endingId: 'c3-ending-return', flags: ['c3-secured-return', 'c3-oath-trail'] },
+];
+for (const fixture of chapterThreeHandoffFixtures) {
+  const ending = renderedBody(fixture.endingId, { ...chapterThreeBase, flags: fixture.flags });
+  const opening = renderedBody('c4-bridge-start', { ...chapterFourBase, flags: fixture.flags });
+  const joined = `${ending} ${opening}`;
+  for (const companion of ['Mara', 'Lysara', 'Brann']) {
+    if (!new RegExp(`\\b${companion}\\b`).test(ending)) {
+      failures.push(`${fixture.endingId} does not place ${companion} on the Mileless Bridge before Chapter Four`);
+    }
+    if (!new RegExp(`\\b${companion}\\b`).test(opening)) {
+      failures.push(`Chapter Four opening loses ${companion} after ${fixture.endingId}`);
+    }
+  }
+  if (!/thief.*(?:has|carries|with) the fragment|fragment.*(?:beneath|between) his/i.test(joined)) {
+    failures.push(`${fixture.endingId} does not hand the fragment to Rook continuously`);
+  }
+  if (fixture.flags.includes('c3-target-ordan')
+    && /drops between you and takes it first/i.test(opening)) {
+    failures.push('Chapter Four repeats Rook’s theft after the courier ending');
+  }
+}
+
+function handoffStateProblems(endingState, openingState) {
+  const problems = [];
+  if (endingState.fragmentHolder !== openingState.fragmentHolder) problems.push('fragment holder changed');
+  for (const person of endingState.present) {
+    if (!openingState.present.includes(person)) problems.push(`${person} disappeared`);
+  }
+  if (endingState.theftComplete && openingState.replaysTheft) problems.push('completed theft replayed');
+  return problems;
+}
+const deliberateBrokenHandoff = handoffStateProblems(
+  { fragmentHolder: 'Rook', present: ['Mara', 'Lysara', 'Brann'], theftComplete: true },
+  { fragmentHolder: 'Ordan', present: ['Mara'], replaysTheft: true },
+);
+if (deliberateBrokenHandoff.length < 3) {
+  failures.push('Chapter handoff validator does not reject a deliberately contradictory transition');
 }
 const debatePayoffs = [
   ['c3-challenged-crown-control', /seize the bridge winch/i],
@@ -1815,13 +2349,74 @@ if (!/ignore Ordan’s order to take everyone alive/i.test(chapterFourCollapse))
 }
 const openingCollapsePayoffs = [
   ['c4-group-secured', /guide rope you secured keeps the group together/i],
-  ['c4-fast-pursuit', /early leap placed you close to the Bell Arch/i],
+  ['c4-fast-pursuit', /early leap placed you beside the final anchor rope/i],
   ['c4-harrowfen-held', /road you anchored to Harrowfen stays behind the group/i],
 ];
 for (const [flag, expected] of openingCollapsePayoffs) {
   const payoff = renderedBody('c4-collapse', { ...chapterFourBase, flags: [flag] });
   if (!expected.test(payoff)) failures.push(`Chapter Four opening choice ${flag} has no later callback`);
 }
+
+function unresolvedDanger(result, people) {
+  return people.filter((pattern) => !pattern.test(result));
+}
+const deliberateUnresolvedDanger = unresolvedDanger('Brann reaches stone.', [/\bBrann\b/i, /\bMara\b/i, /guards?/i]);
+if (deliberateUnresolvedDanger.length !== 2) {
+  failures.push('Danger outcome validator does not reject a result that abandons known people');
+}
+const collapseChoiceIds = [
+  'c4-save-brann',
+  'c4-save-brann-fast',
+  'c4-save-guards',
+  'c4-hold-collapse',
+  'c4-use-hanging-banner',
+];
+for (const choiceId of collapseChoiceIds) {
+  const choice = nodes['c4-collapse'].choices.find((candidate) => candidate.id === choiceId);
+  if (!choice || unresolvedDanger(choice.result, [/\bBrann\b/i, /\bMara\b/i, /guards?/i]).length) {
+    failures.push(`${choiceId} does not state the outcome for Brann, Mara, and both Harrowfen guards`);
+  }
+}
+const fastCollapseState = { ...chapterFourBase, flags: ['c4-fast-pursuit'] };
+const normalSaveBrann = nodes['c4-collapse'].choices.find((choice) => choice.id === 'c4-save-brann');
+const fastSaveBrann = nodes['c4-collapse'].choices.find((choice) => choice.id === 'c4-save-brann-fast');
+if (isChoiceVisible(normalSaveBrann, fastCollapseState)
+  || !isChoiceVisible(fastSaveBrann, fastCollapseState)
+  || fastSaveBrann?.changes?.health !== -1) {
+  failures.push('The early leap does not reduce the Bell Arch rescue cost as promised');
+}
+for (const flag of ['c4-group-secured', 'c4-harrowfen-held']) {
+  const collapse = renderedBody('c4-collapse', { ...chapterFourBase, flags: [flag] });
+  if (!/both Harrowfen guards.*(?:before they reach the edge|stable stone)/i.test(collapse)) {
+    failures.push(`${flag} does not materially protect both guards during the Bell Arch collapse`);
+  }
+}
+
+const chapterFourMaterialPayoffs = [
+  ['c4-saw-mirror-trick', 'c4-chase'],
+  ['c4-carried-brann', 'c4-wounded'],
+  ['c4-mara-absence-cost', 'c4-wounded'],
+  ['c4-broke-snow-line', 'c4-snow-span'],
+  ['c4-warmed-blue-fire', 'c4-snow-span'],
+  ['c4-anchored-storm-crossing', 'c4-storm-span'],
+  ['c4-storm-rope-held', 'c4-storm-span'],
+  ['c4-commanded-gears', 'c4-brass-span'],
+  ['c4-jammed-gears', 'c4-brass-span'],
+  ['c4-backed-rook-performance', 'c4-stage-turn'],
+  ['c4-broke-crown-line', 'c4-soldiers'],
+  ['c4-pinned-crown-lines', 'c4-soldiers'],
+  ['c4-staged-arrest', 'c4-theatre-plan'],
+  ['c4-staged-ordan', 'c4-theatre-plan'],
+  ['c4-oath-held-final-road', 'c4-anchor'],
+  ['c4-held-anchor-by-strength', 'c4-anchor'],
+  ['c4-shared-anchor', 'c4-anchor'],
+];
+for (const [flag, owner] of chapterFourMaterialPayoffs) {
+  if (!flagChangesLaterPlay(flag, owner, chapterFourBase)) {
+    failures.push(`Chapter Four paid preparation ${flag} has no material later payoff`);
+  }
+}
+
 const woundedChoices = nodes['c4-wounded'].choices;
 for (const choice of woundedChoices) {
   if (!choice.addFlags?.includes('c4-found-dispatch')) {
@@ -1833,8 +2428,18 @@ if (earlyDispatchChoices.length !== 1 || earlyDispatchChoices[0].id !== 'c4-let-
   failures.push('Chapter Four no longer keeps early access to Ordan’s dispatch unique to Rook’s splint route');
 }
 const earlyDispatchOpening = renderedBody('c4-duty', { ...chapterFourBase, flags: ['c4-read-dispatch-early'] });
-if (!/reopen the royal dispatch you recovered while Rook treated Brann/i.test(earlyDispatchOpening)) {
+if (!/began reading while Rook treated Brann.*carry the Distance fragment north to a mountain stronghold/is.test(earlyDispatchOpening)) {
   failures.push('Chapter Four does not remember that Caelan read Ordan’s dispatch early');
+}
+for (const choice of nodes['c4-ordan'].choices) {
+  if (choice.addFlags?.includes('c4-found-dispatch')
+    || !/satchel (?:is already|remains)/i.test(choice.result)) {
+    failures.push(`${choice.id} recovers Ordan’s satchel a second time or loses its established location`);
+  }
+}
+const earlyReadChoice = woundedChoices.find((choice) => choice.id === 'c4-let-rook-splint-brann');
+if (!/first line orders the Distance fragment carried north to a mountain stronghold/i.test(earlyReadChoice?.result ?? '')) {
+  failures.push('The early dispatch flag does not provide concrete information when it is earned');
 }
 for (const choice of nodes['c4-nine-marks'].choices) {
   if (!choice.addFlags?.includes('c4-fragment-recovered')) {
@@ -1850,9 +2455,12 @@ if (!/take the iron into your own hand/i.test(searchedFragmentHandoff)
   failures.push('Chapter Four does not explicitly return the real fragment on every Rook route');
 }
 const bridgeRoutePayoffs = [
-  ['c4-snow-route', /upper squad.*last crossbow team/i],
-  ['c4-storm-route', /soaked the Crown crossbows.*strings will need time/i],
-  ['c4-brass-route', /brass wheels close behind.*find another way around/i],
+  ['c4-broke-snow-line', /upper squad.*last crossbow team/i],
+  ['c4-warmed-blue-fire', /kept frost from the wounded.*soldiers behind.*bright path/i],
+  ['c4-anchored-storm-crossing', /group reaches the Crown Span before the cliff squad/i],
+  ['c4-storm-rope-held', /soaked the Crown crossbows.*strings will need time/i],
+  ['c4-commanded-gears', /brass wheels close behind.*find another way around/i],
+  ['c4-jammed-gears', /brass wheels close behind.*find another way around/i],
 ];
 for (const [flag, expected] of bridgeRoutePayoffs) {
   const payoff = renderedBody('c4-stage-turn', { ...chapterFourBase, flags: [flag] });
@@ -1870,7 +2478,7 @@ const brassMachineText = [
 if (!/gears close six times/i.test(brassMachineText)
   || !/remain open for a few seconds/i.test(brassMachineText)
   || !/step onto it during the pause.*get off before the teeth close/is.test(brassMachineText)
-  || !/counting each of the six closures.*safe seconds/is.test(brassMachineText)
+  || !/count(?:ing)? (?:each of|all) (?:the )?six closures.*safe seconds/is.test(brassMachineText)
   || /Count to seven|missing beat|read their rhythm|make a road out of timing/i.test(brassMachineText)) {
   failures.push('Chapter Four brass machine does not explain its danger and safe crossing in physical order');
 }
@@ -1907,6 +2515,25 @@ if (!/one small mirrored curtain/i.test(theatreExplanation)
   || /voice reeds/i.test(theatreExplanation)) {
   failures.push('Rook’s travelling theatre still creates three captains without a visible bridge mechanism');
 }
+const retreatRisk = `${nodes['c4-stage-turn'].choices.find((choice) => choice.id === 'c4-use-signal-bell')?.result} ${renderedBody('c4-theatre-plan', { ...chapterFourBase, flags: ['c4-rook-rang-retreat'] })} ${renderedBody('c4-soldiers', { ...chapterFourBase, flags: ['c4-crown-orders-confused'] })}`;
+if (!/officers no longer trust voices or bells/i.test(retreatRisk)
+  || !/wounds a Harrowfen guard/i.test(retreatRisk)) {
+  failures.push('Rook’s free retreat does not create its promised later risk');
+}
+const falseFragmentChoice = nodes['c4-soldiers'].choices.find((choice) => choice.id === 'c4-feign-surrender');
+const falseFragmentRisk = renderedBody('c4-theatre-plan', { ...chapterFourBase, flags: ['c4-false-fragment-alerted-anchor'] });
+if (!/warning whistle.*alerting the final anchor guard/i.test(falseFragmentChoice?.result ?? '')
+  || !/crossbowman waits above it/i.test(falseFragmentRisk)) {
+  failures.push('Rook’s free false fragment tactic does not alert the final anchor as promised');
+}
+const flashChoice = nodes['c4-theatre-plan'].choices.find((choice) => choice.id === 'c4-flash-salt-curtain');
+const flashState = { ...chapterFourBase, flags: ['c4-flash-blinded-guards'] };
+const relayChoice = nodes['c4-anchor'].choices.find((choice) => choice.id === 'c4-command-anchor-relay');
+if (!/Two rear guards.*lose their sight/i.test(flashChoice?.result ?? '')
+  || isChoiceVisible(relayChoice, flashState)
+  || !/cannot take a turn holding the anchor/i.test(renderedBody('c4-anchor', flashState))) {
+  failures.push('Rook’s free flash salt escape does not remove the blinded guards from the anchor relay');
+}
 const quietArchChoiceIds = new Set(nodes['c4-mara'].choices.map((choice) => choice.id));
 if (!quietArchChoiceIds.has('c4-hear-lysara-private-risk')
   || !quietArchChoiceIds.has('c4-name-lysara-personal')
@@ -1926,6 +2553,66 @@ if (!/promise not to ask her to soften the truth/i.test(lysaraTruthChoice?.label
 if ((lysaraInterestEffects.lysara?.attraction ?? 0) <= 0
   || lysaraInterestEffects.lysara?.intent !== 'exploring') {
   failures.push('Chapter Four has no explicit player choice for personal interest in Lysara');
+}
+const chapterFourRomanceChoices = [
+  ['c4-kiss-mara-bridge', 'mara'],
+  ['c4-name-lysara-personal', 'lysara'],
+];
+for (const [choiceId, person] of chapterFourRomanceChoices) {
+  const choice = nodes['c4-mara'].choices.find((candidate) => candidate.id === choiceId);
+  for (const intent of ['unresolved', 'exploring', 'committed']) {
+    const state = {
+      ...chapterFourBase,
+      relationships: {
+        ...chapterFourBase.relationships,
+        [person]: { ...chapterFourBase.relationships[person], trust: 20, attraction: 20, intent },
+      },
+    };
+    if (!canChoose(choice, state)) failures.push(`${choiceId} is unavailable for valid ${intent} intent`);
+  }
+  for (const intent of ['platonic', 'ended']) {
+    const state = {
+      ...chapterFourBase,
+      relationships: {
+        ...chapterFourBase.relationships,
+        [person]: { ...chapterFourBase.relationships[person], trust: 20, attraction: 20, intent },
+      },
+    };
+    if (isChoiceVisible(choice, state)) failures.push(`${choiceId} remains visible after ${person} intent becomes ${intent}`);
+  }
+}
+for (const intent of ['platonic', 'ended']) {
+  const state = {
+    ...chapterFourBase,
+    relationships: {
+      ...chapterFourBase.relationships,
+      mara: { ...chapterFourBase.relationships.mara, attraction: 20, intent },
+    },
+  };
+  const routeProse = `${renderedBody('c4-snow-span', state)} ${renderedBody('c4-storm-span', state)}`;
+  if (/warmth reaches you.*hard to ignore|breath touches your throat/i.test(routeProse)
+    || !/focus of an experienced guard|locks across your armour|locks her shoulder/i.test(routeProse)) {
+    failures.push(`Chapter Four route prose ignores Mara’s ${intent} intent`);
+  }
+}
+
+for (const node of Object.values(nodes)) {
+  for (const choice of node.choices) {
+    const effects = relationshipChanges(choice);
+    for (const [person, changes] of Object.entries(effects)) {
+      const romanceCoded = (changes.attraction ?? 0) > 0
+        || ['interested', 'exploring', 'committed'].includes(changes.intent);
+      if (!romanceCoded) continue;
+      for (const intent of ['platonic', 'ended']) {
+        const chapter = implementedChapterContracts.find((contract) => nodeIsInChapter(node.id, contract.chapter))?.chapter ?? 1;
+        const state = highResourceState(chapterBaseStates[chapter]);
+        state.relationships[person].intent = intent;
+        if (isChoiceVisible(choice, state)) {
+          failures.push(`Romance coded choice ${choice.id} remains visible after ${person} intent becomes ${intent}`);
+        }
+      }
+    }
+  }
 }
 const maraAbsentState = { ...chapterFourBase, flags: ['c4-mara-escorted-brann', 'c4-snow-route'] };
 const maraAbsentCrossing = [
@@ -1986,7 +2673,7 @@ const lostOrdanTrustEnding = renderedBody('c4-ending-trust', {
 });
 if (!/bound Ordan/i.test(capturedOrdanTrustEnding)
   || /bound Ordan|the prisoner/i.test(lostOrdanTrustEnding)
-  || !/Ordan is already gone on the lower road/i.test(lostOrdanTrustEnding)) {
+  || !/Ordan is gone on the lower road/i.test(lostOrdanTrustEnding)) {
   failures.push('The Chapter Four trust ending does not remember Ordan’s route');
 }
 const rookBargainChoice = nodes['c4-duty'].choices.find((choice) => choice.id === 'c4-bargain-with-rook');
@@ -1999,10 +2686,152 @@ if (/paid Ordan|payment below/i.test(chapterFourSource + chapterFiveSource)) {
   failures.push('Chapter Four or Five still claims Rook’s buyer financed Ordan without evidence');
 }
 
+const thiefEndingLanding = renderedBody('c3-ending-thief', {
+  ...chapterThreeBase,
+  flags: ['c3-target-thief', 'c3-pursuit-lysara'],
+});
+const thiefOpeningLanding = renderedBody('c4-bridge-start', {
+  ...chapterFourBase,
+  flags: ['c3-target-thief', 'c3-pursuit-lysara'],
+});
+if (!/silver wire catches a bronze brace.*both of you swing toward the next arch/is.test(thiefEndingLanding)
+  || !/boots hit the next arch beside the thief.*wire that saved you still loops your forearm/is.test(thiefOpeningLanding)
+  || (thiefEndingLanding + thiefOpeningLanding).match(/catches a bronze brace/gi)?.length !== 1
+  || /follow him out of Harrowfen/i.test(thiefOpeningLanding)) {
+  failures.push('The thief pursuit handoff does not show Caelan and Rook surviving the breaking arch exactly once');
+}
+
+const rookEndingContracts = [
+  {
+    flag: 'c4-rook-arrested',
+    ending: 'c4-ending-arrest',
+    object: /mirrored coin.*safe turn.*patrol marks.*square seal/is,
+    shelter: /mirrored coin Rook abandoned.*four short marks and a square seal/is,
+    decodeChoice: 'c5-decode-parting-clue',
+  },
+  {
+    flag: 'c4-rook-bargain',
+    ending: 'c4-ending-bargain',
+    object: /warning required by your bargain.*mirrored coin.*patrol marks.*seal press/is,
+    shelter: /Rook’s marked coin.*patrol lines and square seal/is,
+    decodeChoice: 'c5-decode-parting-clue',
+  },
+  {
+    flag: 'c4-rook-trusted',
+    ending: 'c4-ending-trust',
+    object: /silver wire tied around a sliver of black wax.*hidden entrance/is,
+    shelter: /silver knot Rook left.*black wax.*hidden camp entrance/is,
+    decodeChoice: 'c5-decode-trust-knot',
+  },
+];
+for (const contract of rookEndingContracts) {
+  const endingState = { ...chapterFourBase, flags: [contract.flag, 'c4-denied-rook-copy'] };
+  const openingState = { ...chapterFiveBase, flags: [contract.flag, 'c4-denied-rook-copy'] };
+  const ending = renderedBody(contract.ending, endingState);
+  const opening = renderedBody('c5-north-road', openingState);
+  const shelter = renderedBody('c5-glass-shelter', openingState);
+  const visibleDecodeChoices = nodes['c5-glass-shelter'].choices
+    .filter((choice) => isChoiceVisible(choice, openingState))
+    .map((choice) => choice.id);
+  if (!contract.object.test(ending)
+    || !contract.shelter.test(shelter)
+    || !visibleDecodeChoices.includes(contract.decodeChoice)
+    || visibleDecodeChoices.filter((id) => id.startsWith('c5-decode-')).length !== 1
+    || !/thin wax scrap.*northern mark and two blurred roads/i.test(opening)) {
+    failures.push(`Rook parting object or partial map continuity failed for ${contract.flag}`);
+  }
+}
+const fullMapChapterFive = renderedBody('c5-north-road', {
+  ...chapterFiveBase,
+  flags: ['c4-rook-bargain', 'c4-rook-full-copy'],
+});
+if (!/complete nine mark copy.*real fragment remains in your pack/i.test(fullMapChapterFive)) {
+  failures.push('Chapter Five does not distinguish Rook’s full map from the real fragment');
+}
+
+for (const ordanFlag of ['c4-captured-ordan', 'c4-ordan-lower-road']) {
+  for (const contract of rookEndingContracts) {
+    const flags = [ordanFlag, contract.flag, 'c4-denied-rook-copy', 'c4-found-dispatch'];
+    const ending = renderedBody(contract.ending, { ...chapterFourBase, flags });
+    const opening = renderedBody('c5-north-road', { ...chapterFiveBase, flags });
+    if (ordanFlag === 'c4-captured-ordan') {
+      if (!/Mara and one guard take bound Ordan.*Elene receives him/is.test(ending)
+        || !/returned him to Elene.*You kept the royal dispatch/is.test(opening)) {
+        failures.push(`${contract.ending} does not return captured Ordan to Elene before Chapter Five`);
+      }
+    } else if (!/Ordan is gone on the lower road/i.test(ending)
+      || !/Ordan escaped onto a lower road.*dispatch taken from him led you here/is.test(opening)) {
+      failures.push(`${contract.ending} does not preserve Ordan’s lower road outcome into Chapter Five`);
+    }
+  }
+}
+
+const chapterFourObjectLedger = [
+  {
+    object: 'Distance fragment',
+    checks: [
+      /real fragment.*beneath Rook’s coat/i.test(renderedBody('c4-wounded', { ...chapterFourBase, flags: ['c4-saw-mirror-trick'] })),
+      /take the iron/i.test(renderedBody('c4-nine-marks', { ...chapterFourBase, flags: ['c4-saw-mirror-trick'] })),
+      /real fragment remains in your pack/i.test(fullMapChapterFive),
+    ],
+  },
+  {
+    object: 'Ordan satchel and dispatch',
+    checks: [
+      woundedChoices.every((choice) => choice.addFlags?.includes('c4-found-dispatch')),
+      nodes['c4-ordan'].choices.every((choice) => !choice.addFlags?.includes('c4-found-dispatch')),
+      /royal dispatch/i.test(renderedBody('c4-duty', { ...chapterFourBase, flags: ['c4-found-dispatch'] })),
+    ],
+  },
+  {
+    object: 'arrest cuff',
+    checks: [
+      /cuff that held his wrist locked around a bridge chain/i.test(renderedBody('c4-ending-arrest', chapterFourBase)),
+      /empty place at your belt/i.test(renderedBody('c5-north-road', { ...chapterFiveBase, flags: ['c4-rook-arrested'] })),
+    ],
+  },
+  {
+    object: 'mirrored coin',
+    checks: [
+      /mirrored coin/i.test(renderedBody('c4-ending-arrest', chapterFourBase)),
+      /mirrored coin/i.test(renderedBody('c4-ending-bargain', chapterFourBase)),
+      !/mirrored coin/i.test(renderedBody('c4-ending-trust', chapterFourBase)),
+    ],
+  },
+  {
+    object: 'map wax and silver knot',
+    checks: [
+      /silver wire tied around a sliver of black wax/i.test(renderedBody('c4-ending-trust', chapterFourBase)),
+      /black wax inside still carries the hidden camp entrance/i.test(renderedBody('c5-glass-shelter', { ...chapterFiveBase, flags: ['c4-rook-trusted'] })),
+      isChoiceVisible(nodes['c5-heart-memory'].choices.find((choice) => choice.id === 'c5-copy-proof-into-map-wax'), { ...chapterFiveBase, flags: ['c4-rook-trusted'] }),
+    ],
+  },
+  {
+    object: 'guide rope',
+    checks: [
+      /guide rope/i.test(renderedBody('c3-ending-return', chapterThreeBase)),
+      /thread.*Harowfen|thread.*Harrowfen/i.test(renderedBody('c4-bridge-start', { ...chapterFourBase, flags: ['c3-secured-return'] })),
+      /returns along Lysara’s guide rope/i.test(renderedBody('c4-mara', { ...chapterFourBase, flags: ['c4-mara-escorted-brann'] })),
+    ],
+  },
+];
+for (const fixture of chapterFourObjectLedger) {
+  if (fixture.checks.some((passed) => !passed)) failures.push(`Object ledger continuity failed for ${fixture.object}`);
+}
+function objectLedgerProblems(state) {
+  return state.laterPossessed && !state.acquired && !state.transferredIn
+    ? ['object appears without acquisition or transfer']
+    : [];
+}
+const deliberateBrokenObjectLedger = objectLedgerProblems({ acquired: false, transferredIn: false, laterPossessed: true });
+if (!deliberateBrokenObjectLedger.includes('object appears without acquisition or transfer')) {
+  failures.push('Object ledger validator does not reject a deliberate unshown transfer');
+}
+
 const chapterFiveRookImports = [
   ['c4-rook-arrested', /escaped your cuff.*Underways.*mirrored coin/i],
-  ['c4-rook-bargain', /Underways.*mirrored coin.*warning/i],
-  ['c4-rook-trusted', /chose the Underways.*silver knot/i],
+  ['c4-rook-bargain', /Underways.*spoke the warning.*marked coin/is],
+  ['c4-rook-trusted', /chose the Underways.*silver knot.*black wax/is],
 ];
 for (const [flag, expected] of chapterFiveRookImports) {
   const arrival = renderedBody('c5-north-road', { ...chapterFiveBase, flags: [flag] });
@@ -2010,7 +2839,7 @@ for (const [flag, expected] of chapterFiveRookImports) {
 }
 const chapterFiveShelterRookImports = [
   ['c4-rook-arrested', /mirrored coin Rook abandoned/i],
-  ['c4-rook-bargain', /Rook’s warning coin/i],
+  ['c4-rook-bargain', /Rook’s marked coin/i],
   ['c4-rook-trusted', /silver knot Rook left/i],
 ];
 for (const [flag, expected] of chapterFiveShelterRookImports) {
@@ -2021,11 +2850,11 @@ const capturedOrdanArrival = renderedBody('c5-north-road', {
   ...chapterFiveBase,
   flags: ['c4-rook-bargain', 'c4-captured-ordan'],
 });
-if (!/Elene took him into Harrowfen custody/i.test(capturedOrdanArrival)) {
+if (!/returned him to Elene.*You kept the royal dispatch/is.test(capturedOrdanArrival)) {
   failures.push('Chapter Five does not account for captured Ordan before the climb');
 }
 const chapterFiveRouteImports = [
-  ['c4-snow-route', /resembles the flame from the bridge’s mountain span/i],
+  ['c4-snow-route', /flames that burned in stone bowls on the bridge’s mountain road/i],
   ['c4-storm-route', /miss the storm span/i],
   ['c4-brass-route', /measured turning of the bridge’s brass chamber/i],
 ];
@@ -3381,6 +4210,65 @@ if (failures.length) {
   console.error('Game graph check failed:');
   for (const failure of new Set(failures)) console.error(`  ${failure}`);
   process.exit(1);
+}
+
+if (process.argv.includes('--print-chapter-three-routes')) {
+  const routePrints = chapterThreeInvestigationFixtures.map((fixture) => ({
+    route: fixture.name,
+    lanternBridge: nodes['c3-bill'].body({ ...chapterThreeBase, flags: fixture.flags }),
+  }));
+  const endingPrints = chapterThreeHandoffFixtures.map((fixture) => ({
+    ending: fixture.endingId,
+    chapterThree: nodes[fixture.endingId].body({ ...chapterThreeBase, flags: fixture.flags }),
+    chapterFourOpening: nodes['c4-bridge-start'].body({ ...chapterFourBase, flags: fixture.flags }),
+  }));
+  console.log(JSON.stringify({ routePrints, endingPrints }, null, 2));
+}
+
+if (process.argv.includes('--print-chapter-four-routes')) {
+  const environmentPrints = [
+    { name: 'snow', flags: ['c4-snow-route', 'c4-broke-snow-line'] },
+    { name: 'storm', flags: ['c4-storm-route', 'c4-storm-rope-held'] },
+    { name: 'brass', flags: ['c4-brass-route', 'c4-jammed-gears'] },
+  ].map((fixture) => ({
+    route: fixture.name,
+    crossing: nodes[`c4-${fixture.name}-span`].body({ ...chapterFourBase, flags: fixture.flags }),
+    laterPayoff: nodes['c4-stage-turn'].body({ ...chapterFourBase, flags: fixture.flags }),
+  }));
+  const ordanPrints = [
+    { name: 'rescued personally', flags: ['c4-captured-ordan', 'c4-ordan-owes-life'] },
+    { name: 'rescued by guards', flags: ['c4-captured-ordan', 'c4-ordan-secured-by-guards'] },
+    { name: 'sent to lower road', flags: ['c4-ordan-lower-road'] },
+  ].map((fixture) => ({
+    outcome: fixture.name,
+    crownFight: nodes['c4-soldiers'].body({ ...chapterFourBase, flags: fixture.flags }),
+    endingTransfer: nodes['c4-ending-arrest'].body({ ...chapterFourBase, flags: fixture.flags }),
+  }));
+  const relationshipPrints = ['unresolved', 'exploring', 'committed', 'platonic', 'ended'].map((intent) => {
+    const state = {
+      ...chapterFourBase,
+      relationships: {
+        ...chapterFourBase.relationships,
+        mara: { trust: 9, attraction: 9, respect: 9, friction: 0, intent },
+        lysara: { trust: 9, attraction: 9, respect: 9, friction: 0, intent },
+      },
+    };
+    return {
+      intent,
+      body: nodes['c4-mara'].body(state),
+      visibleChoices: nodes['c4-mara'].choices.filter((choice) => isChoiceVisible(choice, state)).map((choice) => choice.id),
+    };
+  });
+  const endingPrints = [
+    ['c4-ending-arrest', 'c4-rook-arrested'],
+    ['c4-ending-bargain', 'c4-rook-bargain'],
+    ['c4-ending-trust', 'c4-rook-trusted'],
+  ].map(([endingId, flag]) => ({
+    ending: endingId,
+    chapterFour: nodes[endingId].body({ ...chapterFourBase, flags: [flag, 'c4-captured-ordan', 'c4-denied-rook-copy'] }),
+    chapterFive: nodes['c5-north-road'].body({ ...chapterFiveBase, flags: [flag, 'c4-captured-ordan', 'c4-denied-rook-copy'] }),
+  }));
+  console.log(JSON.stringify({ environmentPrints, ordanPrints, relationshipPrints, endingPrints }, null, 2));
 }
 
 const shortest = Math.min(...endingDepths);

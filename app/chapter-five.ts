@@ -6,22 +6,29 @@ function has(state: GameState, flag: string) {
 
 function bridgeParting(state: GameState) {
   if (has(state, 'c4-rook-arrested')) {
-    return 'Rook escaped your cuff at the final arch and took the lower road toward the Underways. He left a mirrored coin scratched with one safe northern turn. The empty chain at your belt still tightens your jaw.';
+    return 'Rook escaped your cuff at the final arch and took the lower road toward the Underways. He left a mirrored coin marked with one safe northern turn, four patrol lines, and the shape of a seal press. The empty place at your belt still tightens your jaw.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Rook took the Underways to follow his buyer’s trail. He kept the term of your bargain by leaving a mirrored coin scratched with one safe northern turn and one warning: royal watchers hold the first mountain pass.';
+    return 'Rook took the Underways to follow his buyer’s trail. He spoke the warning required by your bargain: royal watchers held the first mountain pass, and no fire was safe before the blue glass. His marked coin carries the route, patrol lines, and seal press he showed Mara.';
   }
-  return 'You trusted Rook to choose his own road. He chose the Underways, following the buyer while you turned north. The silver knot he threw back has opened one hidden turn during the three day climb. Trust did not make him obedient. It made his absence useful.';
+  return 'You trusted Rook to choose his own road. He chose the Underways while you turned north. The silver knot he left holds the black wax outline of one entrance to the royal camp. Trust did not make him obedient. It made his absence useful.';
 }
 
 function partingTool(state: GameState) {
   if (has(state, 'c4-rook-arrested')) {
-    return 'Mara sets the mirrored coin Rook abandoned beside Sorin’s charcoal map. Its scratched line points toward a narrow fold hidden inside the royal camp.';
+    return 'Mara sets the mirrored coin Rook abandoned beside Sorin’s charcoal map. One side shows the safe northern turn. Four short marks and a square seal cover the other.';
   }
   if (has(state, 'c4-rook-bargain')) {
-    return 'Mara sets Rook’s warning coin beside Sorin’s charcoal map. Under cold glass, writing appears along its edge: the buyer’s camp mark and a patrol time.';
+    return 'Mara sets Rook’s marked coin beside Sorin’s charcoal map. Its four patrol lines and square seal match the warning he gave at the bridge.';
   }
-  return 'Mara unties the silver knot Rook left at the bridge. A sliver of black map wax sits inside it, carrying the outline of a hidden entrance to the royal camp.';
+  return 'Mara unties the silver knot Rook left at the bridge. The black wax inside still carries the hidden camp entrance he showed you before taking the Underways.';
+}
+
+function rookMapMemory(state: GameState) {
+  if (has(state, 'c4-rook-full-copy')) {
+    return 'Rook entered the Underways with the complete nine mark copy you allowed him to make. The real fragment remains in your pack.';
+  }
+  return 'Rook entered the Underways with only a thin wax scrap showing the northern mark and two blurred roads. The real fragment remains in your pack.';
 }
 
 function relationshipInterlude(state: GameState) {
@@ -32,7 +39,7 @@ function relationshipInterlude(state: GameState) {
 
 function ordanCustody(state: GameState) {
   if (has(state, 'c4-captured-ordan')) {
-    return 'Ordan did not come north. Elene took him into Harrowfen custody with Garran and the surviving documents. The choice left a living witness behind and kept a wounded prisoner out of a climb that would have killed him. It still sits badly beneath your ribs.';
+    return 'Ordan did not come north. At the dividing roads, Mara and one guard returned him to Elene with Garran, the witnesses, and the remaining satchel papers. You kept the royal dispatch. The living prisoner is now part of Harrowfen’s case against the Crown.';
   }
   if (has(state, 'c4-ordan-lower-road')) {
     return 'Ordan escaped onto a lower road, but the dispatch taken from him led you here. Every time you unfold it, the memory of his empty chain returns with it.';
@@ -42,7 +49,7 @@ function ordanCustody(state: GameState) {
 
 function routeMemory(state: GameState) {
   if (has(state, 'c4-snow-route')) {
-    return 'The blue fire resembles the flame from the bridge’s mountain span. There it only filled the sky. Here, cold fingers reach through your armour for the warmth underneath.';
+    return 'The blue fire resembles the flames that burned in stone bowls on the bridge’s mountain road. Those flames stayed beside the path. These reach through your armour for the warmth underneath.';
   }
   if (has(state, 'c4-storm-route')) {
     return 'You miss the storm span for one foolish moment. Water tried to throw you into the sea, but at least water did not study you before it moved.';
@@ -162,6 +169,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'The last Mileless stone turns under your boot and becomes Dragonspine’s lower road before dusk. That first night, no one dares light a fire. Mara shares her blanket without asking, and every boot against the glass sounds like someone following. By the third day, the mountains have swallowed the last green tree and any help that could arrive in time.',
       ordanCustody(state),
       bridgeParting(state),
+      rookMapMemory(state),
       'Now blue flame rises from cracks on both sides of the path. It bends against the wind and reaches toward your lantern.',
       routeMemory(state),
       'Mara covers the lantern. The blue fire ignores the darkness and bends toward your exposed hand. You press your palm to the black glass. It steals enough heat to make the nearest flame turn away, leaving a pale numb line across two fingers. It is a shallow cold burn, painful but not a loss of Health. Old strips of keeper cloth lie frozen against the wall, cold enough to hide a body’s warmth for a few minutes.',
@@ -324,11 +332,22 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c5-decode-parting-clue',
-        label: 'Decode the clue left inside the thief’s parting tool.',
-        detail: 'Let Sorin handle the burn while you work out what the coin or wax is trying to show.',
+        label: 'Decode the marks on Rook’s mirrored coin.',
+        detail: 'Let Sorin handle the burn while you match the four lines and square to the royal camp.',
         advantage: 'The clue reveals the patrol schedule and the location of the commander’s seal press.',
+        showIfAnyFlags: ['c4-rook-arrested', 'c4-rook-bargain'],
         addFlags: ['c5-decoded-parting-clue', 'c5-chose-sorin-care'],
-        result: 'Cold makes the hidden marks visible. They show a patrol schedule and a square inside the commander’s tent. The thief is far below the world, but one final trick has reached Dragonspine before you.',
+        result: 'Sorin matches the four lines to the patrol’s return times and the square to a seal press inside the commander’s tent. Rook showed you both marks before he took the Underways.',
+        next: 'c5-royal-camp',
+      },
+      {
+        id: 'c5-decode-trust-knot',
+        label: 'Open Rook’s silver knot over Sorin’s map.',
+        detail: 'Let Sorin handle the burn while you place the black wax outline against the camp paths.',
+        advantage: 'The wax should reveal an unguarded entrance, but it carries no patrol time or commander’s seal.',
+        showIfAnyFlags: ['c4-rook-trusted'],
+        addFlags: ['c5-decoded-trust-knot', 'c5-chose-sorin-care'],
+        result: 'The wax outline matches a narrow split behind the royal camp. It shows one hidden entrance and nothing more. The knot remains tied around the wax.',
         next: 'c5-royal-camp',
       },
     ],
@@ -347,12 +366,16 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'Asterra’s crowned shield marks every coat. Your colours. Your kingdom. Your stomach tightens. Sorin points to a second mark stamped into the drill: Regent Malrec’s private seal. The ill Queen did not send this force. Commander Hale did.',
       has(state, 'c5-decoded-parting-clue')
         ? 'The same square mark appeared in the clue you decoded at the refuge. Rook’s buyer knew this camp and has already moved east.'
-        : 'Nothing here names Rook’s buyer. That trail remains Rook’s to follow beneath the world.',
+        : has(state, 'c5-decoded-trust-knot')
+          ? 'The black wax outline matches a split behind the camp. You entered through it unseen. Nothing here names Rook’s buyer.'
+          : 'Nothing here names Rook’s buyer. That trail remains Rook’s to follow beneath the world.',
       'A diagram beside the drill names its target: a living ember, a piece of Vaor’s own fire. The ember is not the fire Nail. Hale means to cut it out of the dragon and use it to control the damaged Nail.',
       'A surviving patrol is climbing back toward camp. You hear boots on glass and estimate four minutes before they see you.',
       has(state, 'c5-decoded-parting-clue')
         ? 'The hidden mark leads Mara to the commander’s seal press beneath a false floorboard. The thief could not steal it from the Underways, but he showed you exactly where to look.'
-        : 'The commander’s tent is locked, the dead may carry clues, and the drill still points toward the upper grave.',
+        : has(state, 'c5-decoded-trust-knot')
+          ? 'The hidden entrance opens behind the locked commander’s tent. You can search the dead or the drill before the patrol reaches the front of camp.'
+          : 'The commander’s tent is locked, the dead may carry clues, and the drill still points toward the upper grave.',
     ],
     choices: [
       {

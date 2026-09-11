@@ -26,17 +26,19 @@ Next hook: Regent Malrec has issued a genuine order sending the fragment to Drag
 
 ### Caelan pursued Ordan
 
-Caelan begins close to Ordan and can see the courier reach for the fragment. Rook still takes it first.
+Caelan begins on the first arch behind Ordan. Rook already has the fragment because the theft happened at the end of Chapter Three. Ordan blocks Caelan's path while Rook runs toward the broken centre.
 
 ### Caelan pursued the thief
 
-Caelan begins close to Rook. The mirrored coin from Harrowfen confirms that this is the same prepared thief the player saw in the market.
+Caelan and Rook fall when the Harrowfen arch breaks. Rook catches a bronze brace with silver wire, loops Caelan's arm, and swings both of them onto the next span. The false fragment becomes the mirrored coin already shown in Harrowfen. Ordan lands on the opposite arch.
 
 ### Caelan secured the return road
 
 The whole group enters together through Lysara's guide thread. Ordan and Rook have a longer lead, but Harrowfen remains easier to reach.
 
 These openings change advantage and feeling without changing the clear immediate goal.
+
+At the Bell Arch, Brann is visibly injured on every route. Every collapse result states what happens to Brann, Mara, and both Harrowfen guards. Earlier preparation can reduce the rescue cost or move the guards out of danger, but it cannot silently remove anyone from the scene.
 
 ## Main route
 
@@ -86,7 +88,7 @@ Rook's large tricks use objects shown before the result:
 
 His first large surprise impersonates Ordan, but Caelan must supply the correct Crown signal. His second stages one simple lie behind a small mirrored curtain. One wire moves it, one reed gives it a voice, and the Mileless Bridge repeats that same reflection on three nearby spans. Caelan chooses the lie and covers any weakness caused by tools Rook spent during earlier rescues.
 
-Rook's help always has a limit. The banner rescue destroys his strongest wire. Treating Brann damages his disguise coat. His environmental shortcuts preserve stats but leave pursuing soldiers in the later fight. Rook creates impossible openings; Caelan is still the person who turns them into survival.
+Rook's help always has a limit. The banner rescue destroys his strongest wire. Treating Brann damages his disguise coat. His environmental shortcuts preserve stats but leave pursuing soldiers in the later fight. A false retreat teaches the officers to distrust later signals. A false fragment warns the final anchor team. Flash salt blinds allies as well as enemies. Rook creates impossible openings; Caelan is still the person who turns them into survival.
 
 The player sees the ingredients first but should not predict the complete performance. Rook may cooperate, but he never becomes obedient. His humour stops during Brann's injury and returns only when the immediate human danger has passed.
 
@@ -104,7 +106,7 @@ Rook owns theft, deception, strange routes, and his final escape with a copy. Ne
 
 ## Relationship movement
 
-The quiet arch after the map reveal is no longer a mandatory Mara interlude. The player visibly chooses where Caelan spends the available minute:
+The quiet arch after the map reveal is no longer a mandatory Mara interlude. Explicit platonic or ended intent hides romantic narration and choices even when an old attraction score remains high. The player visibly chooses where Caelan spends the available minute:
 
 - answer Mara as an old friend;
 - bind himself to honest answers without treating the Oath as romantic commitment;
@@ -120,15 +122,15 @@ Lysara's route is political and personal rather than a copy of Mara's physical s
 
 ### Arrest
 
-Caelan applies the law before the roads divide. Rook slips free and leaves the locked cuff hanging from a bridge chain before entering the Underways as a named fugitive. Caelan keeps the fragment and turns north.
+Caelan applies the law before the roads divide. Rook slips free and leaves the locked cuff hanging from a bridge chain before entering the Underways as a named fugitive. He leaves a marked mirrored coin with the safe turn, four patrol marks, and the commander's seal shape. Caelan keeps the fragment and turns north.
 
 ### Bargain
 
-Rook agrees to follow his buyer's trail through the Underways and gives Caelan the one honest warning in their bargain. Their cooperation has explicit terms across separate roads. Caelan keeps the fragment and turns north.
+Rook agrees to follow his buyer's trail through the Underways and speaks the one honest warning in their bargain. He also leaves the marked mirrored coin. Their cooperation has explicit terms across separate roads. Caelan keeps the fragment and turns north.
 
 ### Trust
 
-Caelan places the survivors in Rook's hands and lets him choose his own road. Rook reveals a safe exit, accepts a personal debt, and chooses the Underways. Caelan keeps the fragment and turns north.
+Caelan places the survivors in Rook's hands and lets him choose his own road. Rook reveals a safe exit, accepts a personal debt, and leaves silver wire tied around black wax that shows one hidden camp entrance. He chooses the Underways. Caelan keeps the fragment and turns north.
 
 All three endings award the same Wayfire. The choice expresses duty and relationship instead of rewarding one answer with a stronger total gain.
 
@@ -138,12 +140,14 @@ All three endings award the same Wayfire. The choice expresses duty and relation
 - Caelan always keeps the real World Nail fragment.
 - The Map Arch must show Rook physically returning the real fragment before any choice can open, copy, sense, or memorise its map.
 - Ordan's survival and custody depend on the bridge choice.
+- Ordan's satchel is recovered exactly once on the wounded causeway. All three routes secure it. Only Rook's splint route lets Caelan read the first command early.
+- If Ordan is captured, Mara and one guard return him, the remaining satchel papers, and the witnesses to Elene before Caelan takes the north road. Caelan keeps the royal dispatch. If Ordan takes the lower road, the party still keeps the satchel and dispatch.
 - Mara and Brann remain absent between the wounded causeway and the quiet arch if Mara escorts him to Harrowfen. Neither may appear on those intervening routes.
-- Ordan's satchel is recovered on every wounded route, but only Rook's splint route lets Caelan read the dispatch early.
 - Sacrificing gear at the anchor removes part of the documentary case against the Crown.
 - Allowing a full wax copy gives Rook more accurate knowledge and creates a debt.
 - Mara remembers Caelan's stated rule about law, any honesty Oath, and any kiss.
 - Chapter Five must explain how Caelan's group reaches Dragonspine without Rook and why cold blue fire matters before offering choices that use it.
+- The arrest and bargain routes leave a marked mirrored coin. The trust route leaves silver wire around black wax. Chapter Five cannot exchange these objects or invent new markings.
 
 ## Automated protection
 
@@ -161,10 +165,15 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - all three Chapter Four image files exist and are used.
 - every route explicitly recovers the real fragment before the map choice;
 - every wounded route preserves Ordan's satchel while keeping the early reading advantage unique;
+- every Bell Arch result resolves Brann, Mara, and both guards and establishes Brann's injury;
+- every consequential Chapter Four flag has a later consumer or an explicit terminal history reason;
+- paid sibling choices produce a distinct result or later complication that a free sibling does not receive;
 - Mara and Brann stay absent from the snow, route, and first disguise scenes when sent back;
 - Ordan's presence in the Crown fight and ending follows the rescue choice;
+- captured Ordan reaches Elene on every ending before Chapter Five begins;
+- arrest, bargain, and trust preserve their exact parting object and only their established information;
 - Rook's bargain grants one warning rather than a repeating service;
-- relationship effects do not create attraction without an explicit player choice;
+- romantic choices and narration remain hidden for explicit platonic and ended intent;
 - the final theatre uses one reed and one repeated visible scene.
 - the brass machine explains what closes, the six closures being counted, the short safe opening, and the required movement before presenting a choice;
 - no route uses unexplained beat or rhythm language as a substitute for physical instructions.

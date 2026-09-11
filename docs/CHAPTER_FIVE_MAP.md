@@ -13,9 +13,9 @@ The next hook is direct: Caelan carries a living ember toward Kharad Vey while t
 ## Imported Chapter Four state
 
 - Arresting Rook sends him into the Underways as a named fugitive after he escapes the cuff. He leaves one marked mirrored coin behind.
-- Bargaining with Rook sends him into the Underways after the buyer's trail. His honest warning remains hidden on a parting coin.
-- Trusting Rook lets him choose the Underways freely. His silver knot carries one useful northern clue before it is spent.
-- Capturing Ordan leaves him in Harrowfen custody as a living witness.
+- Bargaining with Rook sends him into the Underways after the buyer's trail. He speaks his one honest warning and leaves a marked mirrored coin.
+- Trusting Rook lets him choose the Underways freely. His silver wire surrounds black wax that shows one hidden royal camp entrance.
+- Capturing Ordan causes Mara and one guard to return him, the witnesses, and the remaining satchel papers to Elene before the northward journey. Caelan keeps the royal dispatch.
 - Losing Ordan on the lower road still preserves the dispatch that leads north.
 - The snow, storm, and brass routes alter Caelan's first reaction to Dragonspine.
 - Mara remembers earlier honesty, attraction, promises, and kisses.
@@ -82,9 +82,10 @@ The routes rejoin at the grave entrance after one route specific decision. They 
 Rook's bridge choice matters without moving him onto Caelan's route:
 
 - the exact arrest, bargain, or trust state changes the parting clue;
-- decoding either clue reveals a patrol time and the commander's seal location;
+- decoding the arrest or bargain coin reveals four patrol routes and the shape of the commander's seal press;
+- opening the trust knot reveals one hidden camp entrance, but no patrol routes or command seal;
 - only the arrest and bargain routes leave a mirrored coin that can test Vaor's lock, and the coin breaks when used;
-- only the trust route leaves map wax that can preserve Orivane's memory, and doing so destroys its route;
+- only the trust route leaves black map wax that can preserve Orivane's memory, and doing so destroys the camp route held in that wax;
 - the false ember exists only after the mirrored coin breaks in Vaor's lock;
 - no new Rook action, dialogue, or physical presence occurs in Dragonspine.
 

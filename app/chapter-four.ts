@@ -6,25 +6,50 @@ function has(state: GameState, flag: string) {
 
 function pursuitOpening(state: GameState) {
   if (has(state, 'c3-target-ordan')) {
-    return 'Your boots strike the first arch behind Ordan. He reaches for the fragment at his belt, but the dark coated thief drops between you and takes it first.';
+    return 'Your boots strike the first arch behind Ordan. The dark coated thief already has the fragment and is running toward the broken centre. Ordan turns and blocks your path with his royal blade.';
   }
   if (has(state, 'c3-target-thief')) {
-    return 'The mirrored coin the thief left in your hand flashes as you follow him out of Harrowfen. Ahead, its twin turns between his fingers while Ordan closes from the opposite arch.';
+    return 'Your boots hit the next arch beside the thief. The silver wire that saved you still loops your forearm, and the false fragment in your hand has become a mirrored coin. The real iron flashes beneath his coat. Ordan lands on the opposite arch.';
   }
   return 'Lysara’s guide rope snaps tight behind you as Mara, Brann, and three town guards cross from Harrowfen. The last careful knot holds, but Ordan is already several arches ahead.';
 }
 
+function guideLineOpening(state: GameState) {
+  if (has(state, 'c3-pursuit-mara') && !has(state, 'c3-secured-return')) {
+    return 'Lysara’s short green thread marks the next fixed arch, but it is not tied back to Harrowfen. The fast pursuit left no safe return line.';
+  }
+  if (has(state, 'c3-oath-trail') && !has(state, 'c3-secured-return')) {
+    return 'Your red Oath trail marks the spans behind you. Lysara’s green thread shows which fixed arch comes next.';
+  }
+  return 'Green thread from Lysara’s glass seed runs back toward Harrowfen, showing you which fixed stone comes next.';
+}
+
 function savedBrann(state: GameState) {
   if (has(state, 'c4-saved-brann')) {
-    return 'Brann is alive because you pulled him clear, though every breath makes his face tighten.';
+    return 'You pulled Brann over the rail, but the falling stone crushed his right knee before his leg came free. He can stand only with someone carrying part of his weight.';
   }
   if (has(state, 'c4-saved-guards')) {
-    return 'Your rope line saved the Harrowfen guards. Mara dragged Brann out last, and his left arm now hangs useless at his side.';
+    return 'Your rope line saved the Harrowfen guards. Mara dragged Brann out last, but a broken rail struck his left knee. He cannot put weight on that leg.';
   }
   if (has(state, 'c4-held-collapse')) {
-    return 'Your Oath held the stone long enough for everyone to cross. It also left a hot crack along your palm that hurts whenever the bridge moves.';
+    return 'Your Oath held the stone long enough for everyone to cross. Brann’s boot caught in the last widening crack and twisted his knee before Mara freed him. He cannot walk alone.';
   }
   return 'Rook found a hanging banner where you saw only open air. Everyone survived the swing, but Brann struck the wall hard and cannot stand without help.';
+}
+
+function collapseDanger(state: GameState) {
+  if (has(state, 'c4-group-secured')) {
+    return 'The Bell Arch drops. The guide rope catches both Harrowfen guards before they reach the edge. Their weight drags Mara across the wet stone while Brann hangs from a broken rail below her.';
+  }
+  if (has(state, 'c4-harrowfen-held')) {
+    return 'The Bell Arch drops. The road you held open carries both Harrowfen guards onto stable stone. Mara turns back for Brann, but the guide rope jerks her off her feet as he slips below the rail.';
+  }
+  return 'The Bell Arch drops. Brann catches a stone rail with one hand. Two Harrowfen guards slide toward open air. Mara has the guide rope around her waist, but their weight pulls her across the wet stone.';
+}
+
+function relationshipAllowsRomance(state: GameState, person: 'mara' | 'lysara') {
+  const intent = state.relationships[person].intent;
+  return intent !== 'platonic' && intent !== 'ended';
 }
 
 function rookKit(state: GameState) {
@@ -39,42 +64,67 @@ function openingPayoff(state: GameState) {
     return 'The guide rope you secured keeps the group together when the first stones tilt. That order gives Mara time to reach the two sliding guards.';
   }
   if (has(state, 'c4-fast-pursuit')) {
-    return 'Your early leap placed you close to the Bell Arch. You reach the falling edge before Ordan’s nearest soldiers can block it.';
+    return 'Your early leap placed you beside the final anchor rope. You catch it before it snaps, slowing the fall enough to reach Brann with less strain.';
   }
   if (has(state, 'c4-harrowfen-held')) {
     return 'The road you anchored to Harrowfen stays behind the group when the other spans turn. The wounded still have a route back if someone can reach it.';
   }
-  return 'Because you kept every group in sight, you see the soldiers reach the anchor ropes and shout a warning before the first cut.';
+  if (has(state, 'c4-measured-start')) {
+    return 'Because you kept every group in sight, you see the soldiers reach the anchor ropes and shout a warning before the first cut.';
+  }
+  return 'The soldiers reach the anchor ropes before anyone can shout a warning.';
 }
 
 function fragmentTransfer(state: GameState) {
+  if (has(state, 'c4-saw-mirror-trick')) {
+    return 'You followed Rook’s silver wire during the first volley and know exactly where the real fragment lies. At the Map Arch, you cut the hidden knot and take the iron before he can offer another reflection.';
+  }
   if (has(state, 'c4-searched-rook')) {
     return 'During your search, you found the knot holding the real fragment beneath Rook’s coat. At the Map Arch, you cut that knot and take the iron into your own hand. Rook watches without pretending the arrest was forgotten.';
   }
   if (has(state, 'c4-route-bargain')) {
     return 'Rook draws the real fragment from beneath his coat and places it on the stone. “I wanted the map, not the iron,” he says. Giving it back is the first part of the bargain he chose to keep.';
   }
+  if (has(state, 'c4-heard-rook')) {
+    return 'Rook places the fragment between you as he promised nothing. You close one hand over the iron while the other remains on your sword. He releases it only after checking the road behind you.';
+  }
   return 'Rook draws the real fragment from beneath his coat and places it between you. He keeps two fingers on one edge until your hand closes over the other. Then he lets go. Neither of you calls that trust.';
 }
 
 function dispatchOpening(state: GameState) {
   if (has(state, 'c4-read-dispatch-early')) {
-    return 'You reopen the royal dispatch you recovered while Rook treated Brann.';
+    return 'You reopen the royal dispatch you began reading while Rook treated Brann. You already saw the first command: carry the Distance fragment north to a mountain stronghold. Now you read whose authority sent it.';
   }
   if (has(state, 'c4-found-dispatch')) {
-    return 'You break the seal on the dispatch recovered from Ordan’s satchel.';
+    return 'You break the seal on the royal dispatch recovered from Ordan’s satchel.';
   }
   return 'A surviving guard brings Ordan’s satchel from the last crossing. You break the seal on the royal dispatch inside.';
 }
 
 function routePayoff(state: GameState) {
-  if (has(state, 'c4-snow-route')) {
+  if (has(state, 'c4-broke-snow-line')) {
     return 'The open snow gave you warning of the upper squad. You reach the Crown Span before its last crossbow team can take position.';
   }
-  if (has(state, 'c4-storm-route')) {
+  if (has(state, 'c4-warmed-blue-fire')) {
+    return 'The warm guide flames kept frost from the wounded and showed that blue fire can answer an Oath. The soldiers behind you still found the bright path.';
+  }
+  if (has(state, 'c4-anchored-storm-crossing')) {
+    return 'Taking the wave through your own body kept the rope line moving. Your group reaches the Crown Span before the cliff squad can follow.';
+  }
+  if (has(state, 'c4-storm-rope-held')) {
     return 'The sea storm soaked the Crown crossbows behind you. Their strings will need time before they can fire again.';
   }
-  return 'The brass wheels close behind your group. The soldiers following from the lower road must find another way around.';
+  if (has(state, 'c4-commanded-gears') || has(state, 'c4-jammed-gears')) {
+    return 'The brass wheels close behind your group. The soldiers following from the lower road must find another way around.';
+  }
+  return 'Rook’s shortcut saved your strength, but the soldiers found the same route. Their boots remain close behind you.';
+}
+
+function ordanReturn(state: GameState) {
+  if (!has(state, 'c4-captured-ordan')) {
+    return 'Ordan is gone on the lower road. You still carry the satchel and royal dispatch recovered before he fell.';
+  }
+  return 'Rook opens a short road back to Harrowfen before the paths divide. Mara and one guard take bound Ordan across it. Elene receives him, the remaining satchel papers, and the witnesses. You keep the royal dispatch before Mara returns to the north road.';
 }
 
 function rookMapCopy(state: GameState) {
@@ -82,6 +132,10 @@ function rookMapCopy(state: GameState) {
     return 'the complete nine mark wax copy you allowed him to make';
   }
   return 'a thin wax scrap showing only the northern mark and two blurred roads';
+}
+
+function partingCoin(state: GameState) {
+  return has(state, 'c4-rook-lost-mirror-coins') ? 'his last mirrored coin' : 'a mirrored coin';
 }
 
 export const chapterFourNodes: Record<string, StoryNode> = {
@@ -99,15 +153,17 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     },
     body: (state) => [
       pursuitOpening(state),
-      'Broken arches cross beneath a dozen different skies. One span opens over a snowfield. Another hangs above a storming sea. A third ends inside a brass cavern. Green thread from Lysara’s glass seed runs back toward Harrowfen, showing you which fixed stone comes next.',
-      'The thief lands on the next arch with the iron fragment. Ordan lands behind him. Crown soldiers appear above and raise crossbows. Your Crown. Your soldiers. They are shooting at you anyway.',
+      'Broken arches cross beneath a dozen different skies. One span opens over a snowfield. Another hangs above a storming sea. A third ends inside a brass cavern.',
+      guideLineOpening(state),
+      'The thief lands on the next arch with the iron fragment. Ordan lands behind him. Soldiers wearing Asterra’s Crown badge appear above and raise crossbows. They serve your kingdom, not your command, and they are shooting at you.',
       'The fragment is one arch ahead. Behind you, Mara catches a stumbling guard while Brann pulls Lysara’s green thread tight. The bridge shudders, and a crossbow string clicks above.',
+      'Your stomach tightens at the distance between the fragment and your people. Whichever way you move first will leave something exposed.',
     ],
     choices: [
       {
         id: 'c4-secure-guide-rope',
         label: 'Secure Lysara’s guide rope and call everyone across.',
-        detail: 'Spend Command to keep the full group together before the pursuit.',
+        detail: 'Spend 1 Command to keep the full group together before the pursuit.',
         advantage: 'Clear commands should bring your companions onto the bridge in one protected line.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -118,7 +174,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-leap-for-fragment',
         label: 'Leap to the lower arch and close the distance.',
-        detail: 'Lose Health crossing a broken gap before Ordan can surround the thief.',
+        detail: 'Lose 1 Health crossing a broken gap before Ordan can surround the thief.',
         advantage: 'The early leap should reach the fight before Crown reinforcements form a wall.',
         changes: { health: -1 },
         requires: { health: 2 },
@@ -129,7 +185,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-oath-harrowfen-rope',
         label: 'Feed Oathfire into the road back to Harrowfen.',
-        detail: 'Spend Oathfire to stop the rear connection from closing.',
+        detail: 'Spend 1 Oathfire to stop the rear connection from closing.',
         advantage: 'Your Oath should keep a stable escape route behind the party.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -160,13 +216,13 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: () => [
       'A crossbow bolt cuts toward the thief’s back. He bends to examine his boot at exactly the right moment, and the bolt strikes Ordan’s shoulder plate instead.',
       '“Terrible manners,” the thief calls up to the soldiers. “He was standing behind me.”',
-      'You almost laugh before the next string clicks. The thief’s boot slips at the edge, the fragment swings over open sky, and Ordan reaches for both.',
+      'A laugh catches in your throat. The next string clicks. The thief’s boot slips at the edge, the fragment swings over open sky, and Ordan reaches for both.',
     ],
     choices: [
       {
         id: 'c4-shield-rook',
         label: 'Take the next bolt on your shield.',
-        detail: 'Lose Health to keep the thief and fragment on the bridge.',
+        detail: 'Lose 1 Health to keep the thief and fragment on the bridge.',
         advantage: 'Taking the bolt should expose the hidden shooter and earn the thief’s attention.',
         changes: { health: -1 },
         requires: { health: 2 },
@@ -177,7 +233,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-command-low-volley',
         label: 'Order a low volley at the soldiers’ legs.',
-        detail: 'Spend Command to stop the shooters without risking the fragment.',
+        detail: 'Spend 1 Command to stop the shooters without risking the fragment.',
         advantage: 'The low volley should drive the nearest Crown squad from its firing position.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -188,7 +244,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-study-rook-wire',
         label: 'Follow the silver wire beside his sleeve.',
-        detail: 'Spend Resolve ignoring the crossbows long enough to understand his trick.',
+        detail: 'Spend 1 Resolve while you ignore the crossbows long enough to understand his trick.',
         advantage: 'Following the wire should reveal which mirrored coin hides the fragment.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
@@ -221,13 +277,20 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       '“Rook Sable,” he says. “Thief when honesty is affordable. Travelling performer when it is not.”',
       'Beyond him, Lysara knots green thread around the fixed arches. The Bell Arch is beneath you. The Map Arch and final anchor wait ahead. The spans between them turn, but the green knots keep their order.',
       rookKit(state),
+      has(state, 'c4-shielded-rook')
+        ? 'Rook looks once at the fresh bolt mark in your shield. He moves the hand near his hidden wire into plain sight before speaking.'
+        : has(state, 'c4-dropped-shooters')
+          ? 'Your low volley removed two shooters. Only one crossbow still covers this arch, giving you room to keep Rook away from the edge.'
+          : has(state, 'c4-saw-mirror-trick')
+            ? 'The silver wire you followed ends beneath Rook’s coat. He notices where you are looking and stops pretending every iron shape is real.'
+            : 'You keep Rook and Ordan in the same line of sight. Neither man gets close enough to exchange the fragment unseen.',
       'Rook says he does not want the fragment’s power. He wants the map hidden inside it. Ordan arrives on the arch below and orders his soldiers to bring both of you alive. Three crossbows lower from Rook’s chest to his legs.',
     ],
     choices: [
       {
         id: 'c4-search-rook',
         label: 'Bind one wrist and search his coat.',
-        detail: 'Spend Command making the arrest clear while danger closes in.',
+        detail: 'Spend 1 Command to make the arrest clear while danger closes in.',
         advantage: 'The search should identify every visible tool Rook can use against you.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -237,13 +300,13 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c4-offer-route-bargain',
-        label: 'Offer him one safe road in return for the truth.',
-        detail: 'Spend Resolve trusting a bargain made under crossbows.',
-        advantage: 'The bargain should make Rook admit what he was paid to steal.',
+        label: 'Offer him one safe road in return for his buyer’s trail.',
+        detail: 'Spend 1 Resolve to trust a bargain made under crossbows.',
+        advantage: 'The bargain should reveal what he was paid to steal and where he meant to deliver it.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c4-route-bargain', 'c4-rook-hired-for-map'],
-        result: 'Rook names no buyer, but the humour leaves his voice. Someone paid him for a map of every World Nail, not for the iron itself.',
+        addFlags: ['c4-route-bargain'],
+        result: 'Rook names no buyer, but the humour leaves his voice. He was paid to copy every World Nail and carry the map through the Underways to a meeting beyond the northern mountains.',
         next: 'c4-collapse',
       },
       {
@@ -252,7 +315,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail: 'Keep your resources, but leave his hands free while he speaks.',
         advantage: 'You learn his goal without promising or spending anything.',
         addFlags: ['c4-heard-rook', 'c4-rook-kept-hidden-tool'],
-        result: 'Rook explains quickly. You believe the part about the map. You also see him hide something in his sleeve and decide not to pretend otherwise.',
+        result: 'Rook explains quickly. His eyes stay on the fragment whenever he says “map.” His hand hides something inside his sleeve while he speaks.',
         next: 'c4-collapse',
       },
     ],
@@ -269,8 +332,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The Crown soldiers ignore Ordan’s order to take everyone alive. Instead of advancing, they cut three anchor ropes.',
       openingPayoff(state),
-      'The Bell Arch drops. Brann catches a stone rail with one hand. Two Harrowfen guards slide toward open air. Mara has the guide rope around her waist, but the sudden weight pulls her across the wet stone. Far below, several roads turn like spokes inside a wheel.',
-      'Your hand reaches for Brann. The two guards slide faster, and Mara’s boots lose another span of wet stone.',
+      collapseDanger(state),
+      'Far below, several roads turn like spokes inside a wheel. Your hand reaches for Brann while Mara fights to keep every guard attached to the rope.',
       'Rook hooks one boot through the broken bell frame. “Captain,” he says, all humour gone, “choose quickly.”',
     ],
     choices: [
@@ -281,8 +344,21 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         advantage: 'Reaching Brann first should keep him from falling onto a lower road.',
         changes: { health: -2 },
         requires: { health: 3 },
+        hideIfAnyFlags: ['c4-fast-pursuit'],
         addFlags: ['c4-saved-brann'],
-        result: 'Stone tears your palms, but Brann’s wrist reaches yours. You haul him over the rail as the broken arch rolls beneath you.',
+        result: 'Stone tears your palms, but Brann’s wrist reaches yours. You haul him over the rail. Mara braces the guide rope and gets both Harrowfen guards onto firm stone. Brann’s right knee strikes the rail and will not bear his weight.',
+        next: 'c4-wounded',
+      },
+      {
+        id: 'c4-save-brann-fast',
+        label: 'Use the rope you caught to pull Brann up.',
+        detail: 'Lose 1 Health rescuing Brann from the slowed collapse.',
+        advantage: 'Your early leap should halve the physical cost while Mara keeps both guards on the guide rope.',
+        changes: { health: -1 },
+        requires: { health: 2 },
+        showIfAnyFlags: ['c4-fast-pursuit'],
+        addFlags: ['c4-saved-brann'],
+        result: 'The rope takes part of Brann’s weight. You pull him over the rail while Mara hauls both Harrowfen guards clear. Brann’s right knee strikes the stone and will not bear his weight.',
         next: 'c4-wounded',
       },
       {
@@ -293,7 +369,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         changes: { command: -2 },
         requires: { command: 2 },
         addFlags: ['c4-saved-guards'],
-        result: 'Your order moves faster than fear. Hands close on coats and belts. Mara reaches Brann last and drags him clear with his arm bent badly.',
+        result: 'Your order moves faster than fear. Every guard reaches firm stone. Mara pulls herself upright, then drags Brann clear. His left leg strikes the broken frame and folds beneath him.',
         next: 'c4-wounded',
       },
       {
@@ -304,7 +380,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c4-held-collapse', 'c4-oath-no-one-falls'],
-        result: 'Fire runs through every crack. The arch stops falling until the final guard crosses, then breaks the instant your promise is fulfilled.',
+        result: 'Fire runs through every crack. Mara leads both guards across. Brann comes last, but his boot catches and twists his knee before Mara frees it. The arch breaks only after everyone reaches stone.',
         next: 'c4-wounded',
       },
       {
@@ -312,8 +388,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Follow Rook onto the hanging royal banner.',
         detail: 'Trust his strange escape, accept Brann’s hard landing, and consume Rook’s strongest wire.',
         advantage: 'Everyone survives without spending a stat, but Rook loses a tool he needs for later tricks.',
-        addFlags: ['c4-followed-rook-banner', 'c4-brann-bruised', 'c4-rook-lost-long-wire'],
-        result: 'Rook cuts one cord with his longest silver wire. The banner swings like a ship’s sail and catches the whole rope line. You strike the next wall alive, while the wire snaps and vanishes into open sky.',
+        addFlags: ['c4-followed-rook-banner', 'c4-rook-lost-long-wire'],
+        result: 'Rook cuts one cord with his longest silver wire. The banner catches Mara, Brann, both guards, and you. Everyone strikes the next wall alive. Brann lands on his hip and cannot stand. Rook’s wire snaps and vanishes into open sky.',
         next: 'c4-wounded',
       },
     ],
@@ -331,18 +407,20 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       savedBrann(state),
       'The roofed causeway gives you one minute out of crossbow sight. Your hands check Brann’s breathing while your eyes measure the distance to Ordan’s satchel. Brann catches the movement and pushes weakly at your wrist.',
       'Rook kneels near Brann but does not touch him. For once he waits for permission. Ordan’s dropped satchel lies on a ledge across the causeway, close enough to reach if someone else handles the wounded.',
-      'The real fragment remains tied flat beneath Rook’s coat. You have not recovered it, and you have not forgotten it.',
+      has(state, 'c4-saw-mirror-trick') || has(state, 'c4-searched-rook')
+        ? 'The silver wire leads to the real fragment tied flat beneath Rook’s coat. You have not recovered it, but the knot remains clear in your mind.'
+        : 'A reflected piece of iron still moves across Rook’s coat. You have not recovered the real fragment, and you cannot yet tell which shape is solid.',
     ],
     choices: [
       {
         id: 'c4-carry-brann',
         label: 'Bind Brann’s injury and carry his weight.',
-        detail: 'Lose Health taking the wounded man through the next span yourself.',
+        detail: 'Lose 1 Health taking the wounded man through the next span yourself.',
         advantage: 'Carrying Brann should keep him with the group and able to advise you.',
         changes: { health: -1 },
         requires: { health: 2 },
         addFlags: ['c4-carried-brann', 'c4-found-dispatch'],
-        result: 'Brann curses softly while you bind him, which reassures you more than silence would. His good arm settles across your shoulders while Lysara loops green thread around Ordan’s satchel and drags it within reach.',
+        result: 'Brann curses softly while you bind him, which reassures you more than silence would. His good arm settles across your shoulders. Lysara loops green thread around Ordan’s satchel and drags it into your hand.',
         next: 'c4-three-spans',
       },
       {
@@ -350,8 +428,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Send Mara and one guard back with Brann.',
         detail: 'Lose Mara’s help for the next crossing so the wounded reach safety.',
         advantage: 'Brann and the injured guards return toward Harrowfen under protection.',
-        addFlags: ['c4-mara-escorted-brann', 'c4-found-dispatch'],
-        result: 'Mara dislikes leaving your side, but she understands the order. The departing guard hooks Ordan’s satchel from the ledge and passes it to you. Mara’s fingers close around yours once before she takes Brann back.',
+        addFlags: ['c4-mara-escorted-brann', 'c4-mara-absence-cost', 'c4-found-dispatch'],
+        result: 'Mara dislikes leaving your side, but she understands the order. A guard passes you Ordan’s satchel before leaving with her and Brann. One remaining guard takes Mara’s shield position for the next crossing.',
         next: 'c4-three-spans',
       },
       {
@@ -360,7 +438,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail: 'Give the thief access to your people and let him tear apart his disguise coat for the bandage.',
         advantage: 'Brann is stabilised and you find a royal dispatch, but Rook’s later disguise will be weaker.',
         addFlags: ['c4-rook-splinted-brann', 'c4-found-dispatch', 'c4-read-dispatch-early', 'c4-rook-tore-coat-lining'],
-        result: 'Rook turns two scabbards and the blue lining of his coat into a firm splint. You break Ordan’s seal, but the next span turns before you can read beyond the royal heading. The damaged coat leaves Rook’s Crown disguise visibly incomplete.',
+        result: 'Rook turns two scabbards and the blue lining of his coat into a firm splint. Inside Ordan’s satchel, the first line orders the Distance fragment carried north to a mountain stronghold. The next span turns before you can read who signed it. Rook’s damaged coat leaves his Crown disguise visibly incomplete.',
         next: 'c4-three-spans',
       },
     ],
@@ -425,14 +503,16 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'Blue flames burn inside stone bowls along the mountain road, but they give no warmth. Your wet clothes begin to freeze. Ordan’s soldiers are visible on the ridge ahead, cutting steps into the only safe slope.',
       has(state, 'c4-mara-escorted-brann')
         ? 'One Harrowfen guard misses the rope on his first reach. Without Mara beside you, the empty place at your right feels colder than the wind.'
-        : 'Brann misses the rope on his first reach. Mara presses close while you share the shelter of your shield. Her warmth reaches you through two wet coats, immediate and dangerously easy to notice.',
-      'Rook studies the soldiers, then the blue fire. You can almost see an unreasonable plan forming behind his eyes.',
+        : relationshipAllowsRomance(state, 'mara') && state.relationships.mara.attraction >= 3
+          ? 'Brann misses the rope on his first reach. Mara presses close while you share the shelter of your shield. Her warmth reaches you through two wet coats, immediate and hard to ignore.'
+          : 'Brann misses the rope on his first reach. Mara locks her shoulder beside yours so the shield covers both of you. Together, you pull him back to the rope.',
+      'Rook studies the soldiers, then the blue fire. His smile widens at exactly the wrong moment.',
     ],
     choices: [
       {
         id: 'c4-snow-shield-line',
         label: 'Drive the shield line straight up the slope.',
-        detail: 'Spend Command to cross before cold weakens the wounded.',
+        detail: 'Spend 1 Command to cross before cold weakens the wounded.',
         advantage: 'The shield formation should reach the ridge intact and scatter the cutters.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -443,7 +523,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-snow-use-blue-fire',
         label: 'Touch your Oath to the cold blue flame.',
-        detail: 'Spend Oathfire to turn the bowls into warm guides through the snow.',
+        detail: 'Spend 1 Oathfire to turn the bowls into warm guides through the snow.',
         advantage: 'Warm guide flames should prevent cold injuries and reveal how the fire answers Oaths.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -456,7 +536,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Follow Rook across the buried rail.',
         detail: 'Trust a path only the thief claims to see.',
         advantage: 'You preserve resources and emerge above the soldiers, but the bypass leaves them free to follow.',
-        addFlags: ['c4-used-rook-snow-path', 'c4-rook-shortcut-left-pursuit'],
+        addFlags: ['c4-rook-shortcut-left-pursuit'],
         result: 'Rook tests each step with wire and finds a buried bronze rail. It brings you out above the soldiers, but does nothing to stop them following your tracks.',
         next: 'c4-stage-turn',
       },
@@ -475,14 +555,16 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'The bridge narrows to wet black stone above a raging sea. Waves climb high enough to strike the underside and lift the whole span.',
       has(state, 'c4-mara-escorted-brann')
         ? 'You reach for Mara before remembering she is protecting Brann. The mistake leaves your hand closed around rain.'
-        : 'Mara’s body fits tightly between you and the cliff while a wave passes. You feel her breath at your throat, then both of you step apart before the danger becomes an excuse.',
+        : relationshipAllowsRomance(state, 'mara') && state.relationships.mara.attraction >= 3
+          ? 'Mara fits tightly between you and the cliff while a wave passes. Her breath touches your throat, then both of you step apart before danger becomes an excuse.'
+          : 'Mara braces between you and the cliff while a wave passes. Her forearm locks across your armour until both of you have stable footing.',
       'Ordan’s soldiers wait beyond the worst break. Rook looks down at the sea and says, “I have had bridges throw me out before. None were this enthusiastic.”',
     ],
     choices: [
       {
         id: 'c4-storm-take-wave',
         label: 'Anchor the rope around yourself and take the next wave.',
-        detail: 'Lose Health so everyone else can cross in your shelter.',
+        detail: 'Lose 1 Health so everyone else can cross in your shelter.',
         advantage: 'Holding the wave should let the group cross before the soldiers attack.',
         changes: { health: -1 },
         requires: { health: 2 },
@@ -493,7 +575,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-storm-oath-rope',
         label: 'Promise the guide rope will not break.',
-        detail: 'Spend Oathfire making one reliable line through the storm.',
+        detail: 'Spend 1 Oathfire to make one reliable line through the storm.',
         advantage: 'The Oath should keep the rope intact when the road lifts.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -506,7 +588,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Let Rook blind the soldiers with mirrored coins.',
         detail: 'Give him freedom to use his tools while you cross.',
         advantage: 'Lightning drives the ambush from cover, but destroys two of Rook’s three mirrored coins.',
-        addFlags: ['c4-used-rook-storm-trick', 'c4-rook-shortcut-left-pursuit', 'c4-rook-lost-mirror-coins'],
+        addFlags: ['c4-rook-shortcut-left-pursuit', 'c4-rook-lost-mirror-coins'],
         result: 'Rook spins three coins on silver wires. Lightning fills the mirrors and sends white flashes into the soldiers’ eyes. Two coins melt at the edges, and the blinded soldiers remain alive behind you.',
         next: 'c4-stage-turn',
       },
@@ -533,7 +615,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-brass-command-rhythm',
         label: 'Tell each person exactly when to step onto the safe platform.',
-        detail: 'Spend Command counting each of the six closures and calling the few safe seconds.',
+        detail: 'Spend 1 Command while you count all six closures and call the safe seconds.',
         advantage: 'Clear timing should move the entire group across without separating anyone.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -544,7 +626,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-brass-jam-gear',
         label: 'Jam your shield into the nearest gear.',
-        detail: 'Lose Health holding the machine still while the others cross.',
+        detail: 'Lose 1 Health holding the machine still while the others cross.',
         advantage: 'Jamming the wheels should also cut off Ordan’s reinforcements.',
         changes: { health: -1 },
         requires: { health: 2 },
@@ -557,7 +639,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Take Rook’s route through the hollow wheel.',
         detail: 'Trust him to lead everyone inside the moving machine.',
         advantage: 'You preserve resources and emerge behind the Crown line, but the soldiers remain able to pursue.',
-        addFlags: ['c4-used-rook-gear-path', 'c4-rook-shortcut-left-pursuit'],
+        addFlags: ['c4-rook-shortcut-left-pursuit'],
         result: 'Rook opens a maintenance door no larger than a coffin lid. The wheel carries you behind the waiting soldiers, but you hear them enter the machine after you.',
         next: 'c4-stage-turn',
       },
@@ -579,6 +661,11 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       has(state, 'c4-rook-tore-coat-lining')
         ? 'Rook reverses his damaged coat, but too much blue cloth is wrapped around Brann’s arm. The disguise will work only at a distance.'
         : 'Rook reverses his coat. The blue lining becomes a Crown officer’s jacket. Black wax changes the shape of his face, and the little reed gives him Ordan’s exact voice.',
+      has(state, 'c4-carried-brann')
+        ? 'Brann leans across your shoulders and identifies the bridge failure signal: three short bell strokes, then one long. It will pull soldiers from the weak spans, but officers will know which arch rang it.'
+        : has(state, 'c4-mara-absence-cost')
+          ? 'The guard filling Mara’s shield position catches a glancing bolt across his upper arm. He stays on his feet, but he will not hold a shield in the next fight.'
+          : 'Your remaining guards keep their shields high while Rook studies the signal bell.',
       'Three soldiers turn toward Rook’s false voice. Then they wait for a signal he does not know. Your hand makes the western recall from Crown drills, and you tell him which bell stroke must follow.',
       '“West span,” he calls. “The captain has doubled back.” You give the bell signal. Half the squad obeys before Ordan shouts from below.',
       has(state, 'c4-mara-escorted-brann')
@@ -590,7 +677,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-support-false-order',
         label: 'Make the false order look like your ambush.',
-        detail: 'Spend Command moving your guards where the deceived soldiers expect danger.',
+        detail: 'Spend 1 Command to move your guards where the deceived soldiers expect danger.',
         advantage: 'The false ambush should divide the Crown force across two spans.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -616,6 +703,16 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         result: 'You pull Rook away from the bell. He looks disappointed, but the opened path remains yours.',
         next: 'c4-ordan',
       },
+      {
+        id: 'c4-use-brann-counter-signal',
+        label: 'Use Brann’s bridge failure signal.',
+        detail: 'Use the advice he could give because you carried him, but reveal your real arch to Crown officers.',
+        advantage: 'Most soldiers should leave the unstable spans while their officers track your exact position.',
+        showIfAnyFlags: ['c4-carried-brann'],
+        addFlags: ['c4-officers-found-real-arch'],
+        result: 'You ring three short strokes and one long. Most soldiers abandon the weak spans. Their officers turn at once and mark the arch where the real bell moved.',
+        next: 'c4-ordan',
+      },
     ],
   },
 
@@ -636,32 +733,32 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-save-and-bind-ordan',
         label: 'Pull Ordan up and bind him for trial.',
-        detail: 'Lose Health lifting an enemy while the bridge turns.',
+        detail: 'Lose 1 Health lifting an enemy while the bridge turns.',
         advantage: 'Saving Ordan should preserve the best living witness against the conspiracy.',
         changes: { health: -1 },
         requires: { health: 2 },
-        addFlags: ['c4-captured-ordan', 'c4-found-dispatch'],
-        result: 'You drag Ordan onto stone and lock his wrists. A guard pulls his satchel from Lysara’s green line. Ordan stares at the chain, then at you. “After Bellweather, why?” he asks. The next span turns before you answer.',
+        addFlags: ['c4-captured-ordan', 'c4-ordan-owes-life'],
+        result: 'You drag Ordan onto stone and lock his wrists. His satchel is already secured with Lysara. Ordan stares at the severed chain, then at you. “After Bellweather, why?” he asks. He agrees to name the command that ordered his death.',
         next: 'c4-nine-marks',
       },
       {
         id: 'c4-command-ordan-rescue',
-        label: 'Order two guards to secure Ordan and his satchel.',
-        detail: 'Spend Command keeping the prisoner and his evidence together.',
-        advantage: 'The ordered rescue should preserve Ordan and recover his royal dispatch.',
+        label: 'Order two guards to secure Ordan.',
+        detail: 'Spend 1 Command to pull him up without exposing your own injuries.',
+        advantage: 'The ordered rescue should preserve Ordan as a guarded prisoner while you remain ready to fight.',
         changes: { command: -1 },
         requires: { command: 1 },
-        addFlags: ['c4-captured-ordan', 'c4-found-dispatch'],
-        result: 'The guards loop a rope around Ordan and lift him beside the satchel. His papers reach your hands before his anger finds words.',
+        addFlags: ['c4-captured-ordan', 'c4-ordan-secured-by-guards'],
+        result: 'The guards loop a rope around Ordan and lift him onto the stone. They lock his wrists and keep him between two shields. His satchel remains in Lysara’s care.',
         next: 'c4-nine-marks',
       },
       {
         id: 'c4-drop-ordan-to-ledge',
-        label: 'Cut him onto the lower road and take his satchel.',
+        label: 'Cut him onto the lower road.',
         detail: 'Keep your strength, but lose Ordan as a prisoner.',
-        advantage: 'You gain his documents and remove him from the immediate fight.',
-        addFlags: ['c4-ordan-lower-road', 'c4-found-dispatch'],
-        result: 'You cut the chain when a stone ledge turns beneath him. Ordan drops hard but alive. His satchel remains hooked beside you as his road carries him away.',
+        advantage: 'You keep the satchel already recovered and remove Ordan from the immediate fight, but lose the living witness.',
+        addFlags: ['c4-ordan-lower-road'],
+        result: 'You cut the chain when a stone ledge turns beneath him. Ordan drops hard but alive. The satchel remains with Lysara as his road carries him away.',
         next: 'c4-nine-marks',
       },
     ],
@@ -688,7 +785,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-lysara-read-map',
         label: 'Let Lysara join the marks with living thread.',
-        detail: 'Spend Resolve holding the fragment while its roads pull against your memories.',
+        detail: 'Spend 1 Resolve while you hold the fragment against the pull of its roads.',
         advantage: 'Lysara should identify the next active mark and record all nine locations.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
@@ -699,7 +796,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-allow-rook-copy',
         label: 'Allow Rook one wax copy under your eyes.',
-        detail: 'Trade information to learn who hired him for it.',
+        detail: 'Trade information to learn where his buyer waits.',
         advantage: 'You gain his buyer’s meeting place and a debt he openly accepts.',
         addFlags: ['c4-rook-full-copy', 'c4-rook-owes-caelan', 'c4-fragment-recovered'],
         result: 'Rook presses black wax beneath the lights. He names the price of his honesty: his buyer waits beyond the northern mountains. When he promises one favour, his free hand starts to cross two fingers behind his back, then falls open instead.',
@@ -708,7 +805,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-oath-find-next-nail',
         label: 'Use your Oath to feel which mark threatens your people next.',
-        detail: 'Spend Oathfire for a direct sense of the Crown’s next destination.',
+        detail: 'Spend 1 Oathfire to sense the Crown’s next destination.',
         advantage: 'Your Oath should identify the northern mark without granting Rook a copy.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -741,7 +838,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         ? 'Mara returns along Lysara’s guide rope just before the rear span closes. “Brann is safe in Harrowfen,” she says. The breath you had been holding leaves hard enough to hurt.'
         : 'Mara checks the road behind you while Lysara wraps the nine-mark map in living thread. Both women carry rain on their coats and questions they have not asked in front of the others.',
       'Mara taps the pear knife at her belt, your old signal for fear hidden behind a plan. “The law says arrest Rook. Staying alive says listen to him. Which answer will you pretend is simple?”',
-      'Across the shelter, Lysara finds one founder seal hidden beneath the northern mark. Her careful court mask slips when she sees it. Whatever she has recognised frightens her more than the Crown soldiers.',
+      'Across the shelter, Lysara finds a founder seal, the official mark of the elven family that first governed the northern settlement. Her careful court mask slips when she sees it. Her mother’s house still uses that mark.',
       'Rook guards the entrance without making a joke. Steel strikes stone two arches away. Mara looks between you and Lysara. “One minute,” she says. “Decide what you need from us.”',
     ],
     choices: [
@@ -757,7 +854,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-promise-mara-truth',
         label: 'Give Mara terms for Rook and promise her honest answers.',
-        detail: 'Spend Oathfire binding yourself to honesty without making it a romantic commitment.',
+        detail: 'Spend 1 Oathfire to bind yourself to honesty without making a romantic commitment.',
         advantage: 'The honesty Oath should deepen Mara’s trust and make later deception harder.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -771,6 +868,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail: 'Available when your shared trust and attraction have become unmistakable.',
         advantage: 'You and Mara enter the next fight certain of what stands between you.',
         requiresRelationships: { mara: { trust: 5, attraction: 4 } },
+        forbidsRelationshipIntents: { mara: ['platonic', 'ended'] },
         addFlags: ['c4-kissed-mara'],
         result: '“We hear him out,” you say. Mara nods, catches the front of your coat, and gives you enough time to move away. You do not. Her mouth is warm despite the rain. She breaks the kiss at the next clash of steel and leaves her hand over your heart for one last beat.',
         next: 'c4-soldiers',
@@ -781,7 +879,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail: 'Give the woman behind the treaty your full attention and make the reassurance part of your choice.',
         advantage: 'Lysara may trust you with a danger she has hidden from every court.',
         addFlags: ['c4-lysara-private-truth'],
-        result: 'Lysara shows you an elven founder seal beneath the northern mark. Her mother’s house still uses it. “If this proof condemns my own blood, I will speak it,” she says. “I need to know whether you can stand beside me without asking me to soften it.” You answer that disagreement is not abandonment. For the first time, she lets you see how badly she needed that answer.',
+        result: 'Lysara shows you an elven founder seal beneath the northern mark. Her mother’s house still uses it. “If this proof condemns my own blood, I will speak it,” she says. “I need to know whether you can stand beside me without asking me to soften it.” You answer that disagreement is not abandonment. Her fingers stop shaking against the seal.',
         next: 'c4-soldiers',
       },
       {
@@ -790,6 +888,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail: 'Available when mutual trust and attraction are already clear. Name personal interest without asking for a promise during danger.',
         advantage: 'Lysara enters the next fight knowing that your concern is personal and freely stated.',
         requiresRelationships: { lysara: { trust: 3, attraction: 2 } },
+        forbidsRelationshipIntents: { lysara: ['platonic', 'ended'] },
         addFlags: ['c4-lysara-interest-named'],
         result: '“Not the ambassador,” you say. “You.” Lysara steps close enough that her fingers rest against your jaw. “Then keep yourself alive too,” she says. The next clash of steel ends the moment before either of you turns it into more than you chose.',
         next: 'c4-soldiers',
@@ -808,7 +907,6 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Take one quiet minute alone before answering anyone.',
         detail: 'Choose solitude without being punished for declining a relationship scene.',
         advantage: 'You preserve every resource and return with your judgement settled.',
-        addFlags: ['c4-delayed-mara-answer'],
         result: 'You ask for one minute and receive it. When you return, Mara asks only for your decision about Rook. Lysara passes you the wrapped fragment. Neither treats solitude as a debt.',
         next: 'c4-soldiers',
       },
@@ -833,13 +931,29 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       has(state, 'c4-rook-shortcut-left-pursuit')
         ? 'The soldiers you bypassed on Rook’s shortcut now arrive behind the rear line. Saving your strength has made this fight larger.'
         : 'The route behind you remains blocked, so the captain must fight with the soldiers already on this arch.',
+      has(state, 'c4-mara-absence-cost')
+        ? 'Mara has returned, but the guard who covered her place cannot lift his wounded shield arm. Your left side has one fewer defender.'
+        : has(state, 'c4-officers-found-real-arch')
+          ? 'Brann’s signal cleared the weak spans. It also led three Crown officers straight to your real arch.'
+          : has(state, 'c4-crown-orders-confused')
+            ? 'Rook’s false retreat emptied part of the bridge. One confused officer fires without waiting and wounds a Harrowfen guard in the thigh.'
+            : has(state, 'c4-backed-rook-performance')
+              ? 'Your false ambush split the Crown force. Only the thinner half reaches the Map Arch in time.'
+              : has(state, 'c4-limited-rook-performance')
+                ? 'You preserved the Crown signal, but the soldiers Rook might have diverted now fill the rear span.'
+                : 'Your surviving guards still hold both sides of the guide rope.',
+      has(state, 'c4-ordan-owes-life')
+        ? 'Bound Ordan names the Regent’s private command as the order that abandoned him. The Crown captain tells him to be silent.'
+        : has(state, 'c4-ordan-secured-by-guards')
+          ? 'Ordan tests both bindings and finds no opening. The guards keep him behind their shields while the Crown captain aims past them.'
+          : 'No prisoner stands between you and the soldiers who came to erase him.',
       'Rook turns one mirrored coin across his knuckles. Mara sets her shield. Lysara tightens the green guide rope as the Crown captain raises his hand for the volley.',
     ],
     choices: [
       {
         id: 'c4-break-crown-line',
         label: 'Lead a shield charge through the thinner line.',
-        detail: 'Lose Health breaking a path before the crossbows fire together.',
+        detail: 'Lose 1 Health breaking a path before the crossbows fire together.',
         advantage: 'The shield charge should reach the final anchor before the Crown surrounds it.',
         changes: { health: -1 },
         requires: { health: 1 },
@@ -850,7 +964,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-command-crossfire',
         label: 'Split your guards and create crossing fields of fire.',
-        detail: 'Spend Command forcing both Crown lines behind cover.',
+        detail: 'Spend 1 Command to force both Crown lines behind cover.',
         advantage: 'Crossing fire should buy time to reach the anchor without close combat.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -863,8 +977,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Let Rook place a false fragment at your feet.',
         detail: 'Risk a deception made from his mirrored coin and black wax.',
         advantage: 'The Crown captain advances alone to claim the false prize.',
-        addFlags: ['c4-false-fragment-worked'],
-        result: 'Rook’s wax catches the fragment’s reflection and looks like iron. The captain steps inside Mara’s reach before he sees the trick.',
+        addFlags: ['c4-false-fragment-alerted-anchor'],
+        result: 'Rook’s wax catches the fragment’s reflection and looks like iron. The captain steps inside Mara’s reach before he sees the trick. He sounds one warning whistle before she knocks him down, alerting the final anchor guard.',
         next: 'c4-theatre-plan',
       },
     ],
@@ -885,16 +999,23 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         ? 'The banner rescue snapped his strongest wire. One guard must pull the curtain by hand, leaving that side of the escape less protected.'
         : 'Rook fixes the wire to his boot so the false figure will move when he runs.',
       has(state, 'c4-rook-rang-retreat')
-        ? 'The soldiers have already obeyed one false retreat. A second familiar voice will pull their attention before they question it.'
-        : 'The real captain is still shouting orders. One simple false scene can draw both Crown lines away from the same opening.',
+        ? 'The first false retreat emptied part of the bridge, but the officers no longer trust voices or bells. Their crossbows follow moving feet instead.'
+        : has(state, 'c4-false-fragment-alerted-anchor')
+          ? 'The captain’s warning reached the final anchor. A crossbowman waits above it and watches the real group instead of the reflected spans.'
+          : 'The real captain is still shouting orders. One simple false scene can draw both Crown lines away from the same opening.',
+      has(state, 'c4-broke-crown-line')
+        ? 'Your shield charge broke the nearest line. Rook needs to deceive only the soldiers still firing from above.'
+        : has(state, 'c4-pinned-crown-lines')
+          ? 'Your crossing fire keeps both Crown lines behind stone. Rook can stage the lie while they cannot see your full group.'
+          : 'The captain you trapped is down, but his warning put the final anchor guard on watch.',
       'Rook points to the final anchor. “You make one lie convincing. The bridge makes it look impossible.” Mara studies the curtain. “I hate that I can see this working,” she says.',
-      'Rook offers you the loose end of his wire. “Captain, which lie are your soldiers about to make true?”',
+      'Rook offers you the loose end of his wire. “Captain, which lie are your guards about to make true?”',
     ],
     choices: [
       {
         id: 'c4-stage-caelan-arrest',
         label: 'Let Rook stage your public arrest.',
-        detail: 'Spend Resolve trusting him with a blade at your back before both armies.',
+        detail: 'Spend 1 Resolve to trust him with a blade at your back before both armies.',
         advantage: 'The staged arrest should make the Crown lower its crossbows and expose a route.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
@@ -905,7 +1026,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-stage-ordan-return',
         label: 'Send a false Ordan across the empty span.',
-        detail: 'Spend Command timing your group’s movement with the deception.',
+        detail: 'Spend 1 Command to time your group’s movement with the deception.',
         advantage: 'The false Ordan should draw both Crown lines away from the anchor.',
         changes: { command: -1 },
         requires: { command: 1 },
@@ -916,10 +1037,10 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       {
         id: 'c4-flash-salt-curtain',
         label: 'Use the flash salt and run behind the theatre curtain.',
-        detail: 'Take the simplest part of Rook’s plan and leave the rest to chance.',
-        advantage: 'Your party reaches the anchor without spending a resource.',
-        addFlags: ['c4-used-flash-curtain'],
-        result: 'White fire fills the curtain. The bridge repeats your fleeing shadows on three empty spans while the real group runs straight toward the anchor.',
+        detail: 'Reach the anchor without spending a stat, but risk blinding your own rear guards.',
+        advantage: 'The sudden light should hide the real path long enough for the party to run.',
+        addFlags: ['c4-flash-blinded-guards'],
+        result: 'White fire fills the curtain. The bridge repeats your fleeing shadows on three empty spans. Two rear guards look back at the wrong moment and lose their sight, so Mara guides them toward the anchor.',
         next: 'c4-anchor',
       },
     ],
@@ -936,6 +1057,11 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The last anchor is a waist high ring of black iron. Roads tear away from it one by one. The fragment jerks inside your fist each time an arch opens, pulling your knuckles toward every road at once.',
       'Rook moves ahead, finding footholds where stone has not arrived yet. Lysara feeds green thread through his path. The black ring kicks inside your grip each time another road tears free.',
+      has(state, 'c4-flash-blinded-guards')
+        ? 'The two rear guards still cannot see after the flash salt. Mara keeps them on the rope, but they cannot take a turn holding the anchor.'
+        : has(state, 'c4-staged-arrest') || has(state, 'c4-staged-ordan')
+          ? 'Rook’s staged lie turns the nearest crossbows toward an empty span. No bolt reaches the anchor before you.'
+          : 'A crossbow bolt strikes the ring and tears a strip from your glove before the nearest shooter loses his angle.',
       has(state, 'c4-oath-no-one-falls')
         ? 'The promise you made during the collapse still burns across your palm. When you push it toward the ring, the hot crack climbs another finger width.'
         : 'A broken buckle on the ring matches one from the patrol you reached too late. Your hand closes over it before the memory can finish.',
@@ -971,6 +1097,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         advantage: 'The relay should hold the road without one person bearing the full injury.',
         changes: { command: -2 },
         requires: { command: 2 },
+        hideIfAnyFlags: ['c4-flash-blinded-guards'],
         addFlags: ['c4-shared-anchor'],
         result: 'You call each change before the last arms fail. Guard, envoy, thief, and captain hold the same iron ring in turn.',
         next: 'c4-duty',
@@ -1001,6 +1128,13 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'The order is real. Regent Malrec Vale rules Asterra while the young Queen is ill. He commands you to carry the fragment north to Dragonspine. The bright northern mark on the map points to the same place.',
       'The command may be protection or a trap. The Crown captain tried to kill Ordan after he failed, so Lysara checks the wax twice before giving it back.',
       'The royal seal bends in your left hand. The real fragment pulls north from your right.',
+      has(state, 'c4-oath-held-final-road')
+        ? 'The Oath that held the final road has gone quiet. It cost fire, but every shield and evidence pack crossed intact.'
+        : has(state, 'c4-held-anchor-by-strength')
+          ? 'Your shoulders shake after holding the anchor by hand. The pain will follow you north, but the Oathfire remains unused.'
+          : has(state, 'c4-shared-anchor')
+            ? 'The relay left every fighter exhausted but able to walk. No single pair of arms carries the bridge’s full injury.'
+            : 'Your missing shields and evidence copies remain inside the jammed anchor. Everyone survived, but your case against the Crown is thinner.',
       has(state, 'c4-rook-full-copy')
         ? 'Rook has the complete nine mark map you allowed him to make. He waits beside an opening road, his promised debt sitting uneasily behind his smile.'
         : 'Rook flicks a thin wax scrap into his palm. It shows only the northern mark and two blurred roads. Refusing the full copy has limited what he can sell or follow.',
@@ -1054,8 +1188,10 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     nextChapter: 'c5-north-road',
     body: (state) => [
       'Rook leads you through two false walls and a road hidden behind falling water. At the final stable arch, you reach for him and find the cuff that held his wrist locked around a bridge chain instead.',
+      ordanReturn(state),
       `Across the widening gap, Rook holds ${rookMapCopy(state)} to the light. His wrist is bare. “Escaped custody,” he calls. “Not the investigation.”`,
-      'Then he drops through the lower arch toward the Underways. He leaves his mirrored coin at your feet, scratched with the first safe turn toward Dragonspine.',
+      `Then he drops through the lower arch toward the Underways. He leaves ${partingCoin(state)} at your feet, scratched with the first safe turn toward Dragonspine.`,
+      'Four short patrol marks surround a square seal on the coin’s other face. “Cold glass makes those easier to read,” Rook calls before the arch closes.',
       'You keep the real fragment. Mara takes the marked coin. Ahead, blue fire burns above the northern mountains, and the Regent’s order feels heavier than the iron in your hand.',
     ],
     choices: [],
@@ -1073,9 +1209,10 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     nextChapter: 'c5-north-road',
     body: (state) => [
       'Rook guides every survivor through the hidden exit, then gives you the buyer’s meeting phrase and the first honest warning required by your bargain.',
+      ordanReturn(state),
       'Rook looks at the northern road instead of you. The missing smile holds your attention.',
       '“Royal watchers are waiting before the first mountain pass,” he says. “Do not light a fire until the blue glass is behind you.”',
-      `He gives Mara a mirrored coin scratched with the first safe turn north. Then he steps onto the lower road toward the Underways with ${rookMapCopy(state)} hidden inside his coat.`,
+      `He gives Mara ${partingCoin(state)} scratched with the first safe turn north, four patrol marks, and a square showing where the royal commander keeps a seal press. Then he steps onto the lower road toward the Underways with ${rookMapCopy(state)} hidden inside his coat.`,
       'You keep the real fragment and turn toward Dragonspine. Rook follows the money below the world. Your bargain now binds two separate journeys to the same unknown enemy.',
     ],
     choices: [],
@@ -1092,11 +1229,10 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     final: true,
     nextChapter: 'c5-north-road',
     body: (state) => [
-      has(state, 'c4-captured-ordan')
-        ? 'Rook finds a safe road for the wounded, bound Ordan, and every surviving guard.'
-        : 'Rook finds a safe road for the wounded and every surviving guard. Ordan is already gone on the lower road.',
+      'Rook finds a safe road for the wounded and every surviving guard.',
+      ordanReturn(state),
       'Your shoulders loosen when the last person reaches firm ground. Rook notices, gives no joke, and steps onto a separate arch before your hand can find the cuff at your belt.',
-      `He tosses you a silver wire tied into a small knot. “Pull that when the sensible options become fatal.” Then he hides ${rookMapCopy(state)} in his coat. Your trust has not made him obedient, but it has clearly unsettled him.`,
+      `He tosses you a silver wire tied around a sliver of black wax. The wax shows one hidden entrance to the royal camp. “Pull the knot when the sensible options become fatal.” Then he hides ${rookMapCopy(state)} in his coat.`,
       'The lower arch closes behind Rook and carries him toward the Underways. You keep the real fragment. Mara joins you on the north road as Dragonspine rises beyond the clouds, crowned in cold blue fire.',
     ],
     choices: [],

@@ -59,6 +59,20 @@ const courierRevealNodes = new Set([
   'c3-ending-return',
 ]);
 
+const rennKnownNodes = new Set([
+  'c3-divided-loyalty',
+  'c3-market-memory',
+  'c3-pin-test',
+  'c3-duplicate',
+  'c3-courier',
+  'c3-collapse',
+  'c3-pursuit',
+  'c3-world-nail',
+  'c3-ending-courier',
+  'c3-ending-thief',
+  'c3-ending-return',
+]);
+
 const rookKnownNodes = new Set([
   'c4-collapse',
   'c4-wounded',
@@ -198,7 +212,33 @@ export function knownTruths(game: GameState) {
     truths.push('Ordan’s soldiers belong to Asterra, the kingdom I serve. They follow his covert royal orders, not the Queen’s public command.');
     truths.push('Ordan lured Lysara and me to Bellweather so our authority and living magic would unlock the road pin. I drove it back into place, but a fragment pulled us to Harrowfen.');
     if (courierRevealNodes.has(game.nodeId) || game.completedChapters.includes(3)) {
-      truths.push('Ordan arranged the Bellweather attack, forged the later evidence against me, and paid Captain Renn to commit crimes in my cloak.');
+      truths.push('Ordan arranged the Bellweather attack, forged the later evidence against me, and sent a corrupt Warden to commit crimes in my cloak.');
+    }
+    if (rennKnownNodes.has(game.nodeId) || game.completedChapters.includes(3)) {
+      truths.push(game.flags.includes('c3-kept-courier-list')
+        ? 'The orders name Captain Renn, and the soldier list records Ordan’s payment to him.'
+        : 'The orders in Ordan’s safe room name Captain Renn as the Warden using my spare cloak.');
+    }
+    if (game.flags.includes('c3-caught-clerk')) {
+      truths.push('I captured the archive burner and saved Ordan’s signed route request and its last payment page.');
+    } else if (game.flags.includes('c3-bridge-record')) {
+      truths.push('Lysara copied Ordan’s route request and its royal payment line before the archive burner escaped.');
+    } else if (game.flags.includes('c3-lysara-read-ink')) {
+      truths.push('Lysara’s living thread preserved Ordan’s signature and payment figures from the burned archive page.');
+    }
+    if (game.flags.includes('c3-sable-identified-guard')) {
+      truths.push('Garran identified the guard Mara captured inside the healing house.');
+    } else if (game.flags.includes('c3-secured-healer')) {
+      truths.push('I kept every healing house patient safe while Garran and Iven connected the attackers to Ordan.');
+    } else if (game.flags.includes('c3-canal-defence')) {
+      truths.push('Brann’s divided guard line protected both rooms and trapped one of Ordan’s attackers.');
+    }
+    if (game.flags.includes('c3-tested-door')) {
+      truths.push('Varris revealed the true brass map of the Mileless Bridge.');
+    } else if (game.flags.includes('c3-unmasked-varris')) {
+      truths.push('I captured Varris’s attacker with Ordan’s murder order and a brass bridge key.');
+    } else if (game.flags.includes('c3-varris-map')) {
+      truths.push('Varris gave me the bridge opening word, and his fleeing attacker dropped Ordan’s signed threat.');
     }
     if (game.flags.includes('c3-target-ordan')
       || game.flags.includes('c3-target-thief')
@@ -400,7 +440,10 @@ export function knownTruths(game: GameState) {
     truths.push('A damaged road pin pulled distant road ends beside Bellweather Inn until Caelan drove it back into place.');
   }
   if (courierRevealNodes.has(game.nodeId) || game.completedChapters.includes(3)) {
-    truths.push('Royal courier Ordan Vale arranged the Bellweather attack, forged Caelan’s later orders, and hired a Warden to impersonate him.');
+    truths.push('Royal courier Ordan Vale arranged the Bellweather attack, forged Caelan’s later orders, and sent a corrupt Warden to impersonate him.');
+  }
+  if (rennKnownNodes.has(game.nodeId) || game.completedChapters.includes(3)) {
+    truths.push('The Warden in Caelan’s spare cloak was Captain Renn.');
   }
   if (game.nodeId === 'c3-world-nail'
     || game.flags.includes('c3-target-ordan')
@@ -478,21 +521,35 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c3-kept-close')) consequences.push('Because you continued the chase, Ordan reached the bridge with less time to hide his trail.');
   if (game.flags.includes('c3-bridge-warning')) consequences.push('Because you questioned Renn, you know the unknown thief opposes Ordan but wants the iron for himself.');
   if (game.flags.includes('c3-routed-ordan-plan')) consequences.push('Because you forced Renn to reveal Ordan’s plan, you know where the fragment must be joined to the larger shard.');
-  if (game.flags.includes('c3-route-archive')) consequences.push('Because you searched the archive, Lysara copied Ordan’s route to the Mileless Bridge.');
-  if (game.flags.includes('c3-route-healer')) consequences.push('Because you put the wounded first, Garran survived to identify Ordan’s personal guard.');
-  if (game.flags.includes('c3-route-broker')) consequences.push('Because you tested the road broker, you learned how Ordan planned to open the Mileless Bridge.');
+  if (game.flags.includes('c3-caught-clerk')) consequences.push('Because you caught the archive burner, Ordan’s signed request, payment page, and a living prisoner reached Lantern Bridge.');
+  if (game.flags.includes('c3-bridge-record')) consequences.push('Because you protected the papers first, Lysara copied Ordan’s route request and royal payment line before the archive burner escaped.');
+  if (game.flags.includes('c3-lysara-read-ink')) consequences.push('Because you trusted Lysara’s living magic, Ordan’s signature and payment figures survived the archive fire.');
+  if (game.flags.includes('c3-sable-identified-guard')) consequences.push('Because you shielded Garran, he identified the guard Mara captured in the healing house.');
+  if (game.flags.includes('c3-secured-healer')) consequences.push('Because you held the healing house door, every patient survived and Iven witnessed Ordan watching the attack.');
+  if (game.flags.includes('c3-canal-defence')) consequences.push('Because you divided the guard line, both threatened rooms stayed safe and one attacker was captured.');
+  if (game.flags.includes('c3-tested-door')) consequences.push('Because you forced Varris past his tricks, he revealed the true brass map of the Mileless Bridge.');
+  if (game.flags.includes('c3-unmasked-varris')) consequences.push('Because you seized Varris’s killer, you recovered Ordan’s murder order and a brass bridge key.');
+  if (game.flags.includes('c3-varris-map')) consequences.push('Because you traded the iron wrapping, Varris gave you the bridge word and his attacker dropped Ordan’s signed threat.');
+  if (game.flags.includes('c3-saved-courier-boy')) consequences.push('Because you stopped for the courier boy, he and his satchel survived the watch house fire.');
   if (game.flags.includes('c3-priority-people')) consequences.push('Because you chose immediate lives first, Mara knows exactly where your duty begins.');
   if (game.flags.includes('c3-priority-cause')) consequences.push('Because you chose the wider danger first, Lysara trusts you to face difficult truths.');
   if (game.flags.includes('c3-balanced-plan')) consequences.push('Because you joined protection and investigation, Mara and Lysara were ready when Harrowfen changed.');
   if (game.flags.includes('c3-target-ordan')) consequences.push('Because you targeted Ordan, the Crown courier must face you before reaching the thief.');
   if (game.flags.includes('c3-target-thief')) consequences.push('Because you targeted the thief, you reach for the fragment as the bridge breaks.');
   if (game.flags.includes('c3-secured-return')) consequences.push('Because you secured the first arch, your companions still have a path back to Harrowfen.');
-  if (game.flags.includes('c4-saved-brann')) consequences.push('Because you pulled Brann from the collapsing arch, he remains beside the escort despite your injuries.');
-  if (game.flags.includes('c4-held-collapse')) consequences.push('Because your Oath held the Bell Arch together, every companion crossed before it broke.');
+  if (game.flags.includes('c4-saved-brann')) consequences.push('Because you reached Brann first, he survived the Bell Arch collapse with an injured knee.');
+  if (game.flags.includes('c4-saved-guards')) consequences.push('Because you formed a human chain, both Harrowfen guards survived while Mara pulled the injured Brann clear.');
+  if (game.flags.includes('c4-held-collapse')) consequences.push('Because your Oath held the Bell Arch together, Mara, Brann, and both Harrowfen guards crossed before it broke.');
   if (game.flags.includes('c4-followed-rook-banner')) consequences.push('Because you trusted Rook’s hanging banner, everyone survived the first collapse without spending your strength.');
-  if (game.flags.includes('c4-captured-ordan')) consequences.push('Because you rescued Ordan for trial, the Crown conspiracy still has a living witness.');
+  if (game.flags.includes('c4-carried-brann')) consequences.push('Because you carried Brann, he stayed with the group and gave you the bridge failure signal.');
+  if (game.flags.includes('c4-mara-escorted-brann')) consequences.push('Because you sent Mara back, Brann reached Harrowfen safely while her temporary absence left one guard wounded.');
+  if (game.flags.includes('c4-rook-splinted-brann')) consequences.push('Because Rook treated Brann, you read that the fragment must go to a northern mountain stronghold, but Rook lost part of his disguise.');
+  if (game.flags.includes('c4-captured-ordan')) consequences.push('Because you rescued Ordan for trial, Mara returned him to Elene before the northward journey.');
   if (game.flags.includes('c4-ordan-lower-road')) consequences.push('Because you dropped Ordan onto a lower road, you kept his dispatch but lost the prisoner.');
   if (game.flags.includes('c4-rook-full-copy')) consequences.push('Because you allowed Rook to copy the map, he named his buyer’s meeting place and accepted a debt to you.');
+  if (game.flags.includes('c4-lysara-mapped-nine')) consequences.push('Because Lysara recorded all nine marks, the full Nail map remains in her treaty book.');
+  if (game.flags.includes('c4-sensed-northern-nail')) consequences.push('Because your Oath tested the map, you identified Dragonspine without giving Rook a full copy.');
+  if (game.flags.includes('c4-memorised-nine')) consequences.push('Because you closed the fragment quickly, you protected the map but retained only a clear memory of its northern mark.');
   if (game.flags.includes('c4-fragment-recovered')) consequences.push('Because you recovered the real fragment from Rook, the Nail map and its power remain in your hands.');
   if (game.flags.includes('c4-oath-honest-with-mara')) consequences.push('Because you promised honesty to Mara, duty can no longer be your excuse for silence with her.');
   if (game.flags.includes('c4-kissed-mara')) consequences.push('Because you kissed Mara on the bridge, neither of you can call the attraction unspoken again.');
@@ -500,9 +557,9 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c4-lysara-interest-named')) consequences.push('Because you named your concern for Lysara as personal, neither of you has to hide that interest behind the treaty.');
   if (game.flags.includes('c4-platonic-mara') && game.flags.includes('c4-platonic-lysara')) consequences.push('Because you chose friendship with Mara and Lysara, neither woman is left waiting for a romance you do not want.');
   if (game.flags.includes('c4-lost-gear-and-proof')) consequences.push('Because you sacrificed gear and documents at the final anchor, everyone escaped but some proof against the Crown was lost.');
-  if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he entered the Underways as a named fugitive after escaping the cuff.');
-  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he is following his buyer’s trail through the Underways while you travel north.');
-  if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook with the survivors, he showed you a safe northern turn before taking his own road into the Underways.');
+  if (game.flags.includes('c4-rook-arrested')) consequences.push('Because you arrested Rook, he escaped the cuff, left a marked mirrored coin, and entered the Underways as a named fugitive.');
+  if (game.flags.includes('c4-rook-bargain')) consequences.push('Because you bargained with Rook, he gave one spoken warning and a marked mirrored coin before following his buyer through the Underways.');
+  if (game.flags.includes('c4-rook-trusted')) consequences.push('Because you trusted Rook, he left a silver knot around one wax route before choosing the Underways.');
   if (game.flags.includes('c5-has-extraction-order')) consequences.push('Because you recovered the Regent’s extraction order, you can prove the Crown intended to cut an ember from a living dragon.');
   if (game.flags.includes('c5-diverted-patrol-with-seal') || game.flags.includes('c5-rook-diverted-patrol')) consequences.push('Because you used Hale’s seal, the returning royal patrol followed a false cold fire warning and lost your trail.');
   if (game.flags.includes('c5-seed-scorched-river')) consequences.push('Because Lysara used her living seed to divert the cold fire, her treaty magic is weakened.');

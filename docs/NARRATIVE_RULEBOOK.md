@@ -300,6 +300,8 @@ Horror in Veilfall comes from familiar laws changing: a road that remembers anot
 
 When a scene is rewritten, treat the complete playable node as one contract. Review the kicker, title, location, objective, lesson, body, every choice label, every choice result, costs, flags, journal knowledge, and the next scene callbacks together. Replacing only the body is not a complete revision.
 
+When an overlay changes a choice’s meaning, clear or restate every optional mechanical field before applying the new values. If any field remains inherited, record that decision in the choice revision audit. Never let an old cost, gate, flag, advantage, or destination survive only because the new prose omitted the field.
+
 ### Effective node preflight
 
 Before approving a new or revised scene:
@@ -352,5 +354,9 @@ Before a scene is approved, confirm:
 - A character may use only a prop, skill, signal, or fact already established on that route. If the setup is optional, the payoff must either be optional or use a different established tool.
 - Before action gives way to a memory, romance, or lore scene, every incoming route must visibly contain the active weapon, enemy, or physical danger. The story can pause only after the characters earn that pause.
 - A returning or departing companion must be re-established in the current scene before becoming an option.
+- Record one visible acquisition or transfer for every important object. Once an object is recovered, later scenes may read, hand over, damage, or lose it, but must not recover it again.
+- A chapter ending must establish every token, message, prisoner transfer, and map copy that the next opening uses. The next chapter may interpret that legacy, but cannot add marks, contents, owners, or prior uses offscreen.
+- A consequential flag needs a later mechanical, choice, journal, or complication consumer. A flag kept only for a future perspective or series must be listed as terminal history with a specific reason.
 - A relationship scene follows established commitment and attraction. It must not silently replace a developed path with the author's preferred partner.
+- Explicit relationship intent outranks a numerical attraction score. Friendship and ended romance states cannot display romantic availability or romantic narration unless the player first makes a new, clearly offered choice.
 - End a chapter with one named destination or mystery. Additional threats may be shown physically and named in the next chapter.

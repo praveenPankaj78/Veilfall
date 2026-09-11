@@ -40,6 +40,8 @@ Caelan keeps the real Distance fragment after the Mileless Bridge, reaches Drago
 
 Rook keeps a complete or partial map copy and the arrest, bargain, or trust relationship created with Caelan. He follows the buyer and Senna trail through the Underways, Brassreach, Serekh, the Unsea, and the Luminous Court. Leaving Caelan's road protects this plot rather than delaying it.
 
+The split also fixes what Rook leaves behind. Arrest and bargain routes leave a marked mirrored coin. The bargain warning is spoken before departure. The trust route leaves silver wire around black wax showing one hidden royal camp entrance. These are legacy objects only. Rook performs no new action on Caelan's Dragonspine route.
+
 ### Ilyra
 
 Ilyra meets Caelan on the Ember Steppe while tracing the ancestor storm, then leaves by her own route with the knowledge and relationship state she earned. Her independent story continues through Dragonspine, Serekh, the Unsea, and Worldroot. She first meets Rook in Serekh, not during Caelan's steppe chapters.

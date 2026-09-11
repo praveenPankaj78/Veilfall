@@ -397,7 +397,7 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'check-horses',
         label: 'Check the horses and harness yourself.',
-        detail: 'Use some strength now so a broken harness cannot stop you later.',
+        detail: 'Spend 1 Health and gain 1 Resolve. Repair the harness before it can fail on the road.',
         next: 'mara-returns',
         changes: { health: -1, resolve: 1 },
         addFlags: ['checked-horses'],
@@ -755,7 +755,7 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'false-signal',
         label: 'Use your polished shield to answer the signal.',
-        detail: 'Risk being seen to learn whether someone waits ahead.',
+        detail: 'Spend 1 Resolve and gain 1 Command. Risk being seen to learn whether someone waits ahead.',
         next: 'march-order',
         changes: { resolve: -1, command: 1 },
         addFlags: ['false-signal'],
@@ -1035,7 +1035,7 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'save-people-low',
         label: 'Leave the chest and pull everyone clear of the flood.',
-        detail: 'Protect lives while treaty pages and the attacker may escape.',
+        detail: 'Spend 1 Health. Protect lives while treaty pages and the attacker may escape.',
         next: 'aftermath',
         changes: { health: -1 },
         hideIfAnyFlags: ['saved-family'],
@@ -1045,7 +1045,7 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'save-people-low-family',
         label: 'Leave the chest and pull everyone clear of the flood.',
-        detail: 'Protect Joren and both children while treaty pages and the attacker may escape.',
+        detail: 'Spend 1 Health. Protect Joren and both children while treaty pages and the attacker may escape.',
         advantage: 'Your rescue should bring Joren and both children onto solid stone.',
         next: 'aftermath',
         changes: { health: -1 },
@@ -1202,7 +1202,7 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'take-leader',
         label: 'Trust Mara with the escort and take the leader alive.',
-        detail: 'Available when Mara trusts you with command. Risk the mission for the person carrying answers.',
+        detail: 'Available when Mara trusts you with command. Spend 1 Resolve to capture the person carrying answers.',
         next: 'aftermath',
         changes: { resolve: -1 },
         requiresRelationships: { mara: { trust: 4 } },
@@ -1362,7 +1362,7 @@ const originalNodes: Record<string, StoryNode> = {
       {
         id: 'press-bellweather',
         label: 'Press east toward Bellweather Inn.',
-        detail: 'Pursue shelter and the original mission while attackers remain ahead.',
+        detail: 'Spend 1 Health and gain 1 Resolve. Pursue shelter while attackers remain ahead.',
         next: 'folded-road',
         changes: { health: -1, resolve: 1 },
         addFlags: ['pressed-east'],
@@ -3629,7 +3629,25 @@ export function isChoiceVisible(choice: Choice, state: GameState) {
     || Object.entries(choice.showIfRelationshipIntents).every(([person, intents]) => (
       intents?.includes(state.relationships[person as RelationshipKey].intent)
     ));
-  return matchesAny && matchesAll && avoidsHiddenFlags && matchesRelationshipIntents;
+  const avoidsForbiddenIntent = !choice.forbidsRelationshipIntents
+    || Object.entries(choice.forbidsRelationshipIntents).every(([person, intents]) => (
+      !intents?.includes(state.relationships[person as RelationshipKey].intent)
+    ));
+  const effects = relationshipEffects[choice.id] ?? {};
+  const respectsResolvedRelationships = Object.entries(effects).every(([person, changes]) => {
+    const intent = state.relationships[person as RelationshipKey].intent;
+    const romanceCoded = (changes?.attraction ?? 0) > 0
+      || changes?.intent === 'interested'
+      || changes?.intent === 'exploring'
+      || changes?.intent === 'committed';
+    return !romanceCoded || (intent !== 'platonic' && intent !== 'ended');
+  });
+  return matchesAny
+    && matchesAll
+    && avoidsHiddenFlags
+    && matchesRelationshipIntents
+    && avoidsForbiddenIntent
+    && respectsResolvedRelationships;
 }
 
 export function resolveNext(choice: Choice, state: GameState) {
