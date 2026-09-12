@@ -3,10 +3,10 @@ import type { Choice, GameState, StoryNode } from './game-data';
 type NodeUpdate = Omit<Partial<StoryNode>, 'id' | 'choices'>;
 
 function chapterThreeLanternArrival(state: GameState) {
+  if (state.flags.includes('c3-caught-clerk')) {
+    return 'You reach Lantern Bridge with Ordan’s signed route request, the last payment page, and the masked soldier who tried to burn them. As Elene chains the prisoner, the dark coated thief cuts a brass bridge key from his belt and vanishes into the crowd.';
+  }
   if (state.flags.includes('c3-route-archive')) {
-    if (state.flags.includes('c3-caught-clerk')) {
-      return 'You reach Lantern Bridge with Ordan’s signed route request, the last payment page, and the masked soldier who tried to burn them. As Elene chains the prisoner, the dark coated thief cuts a brass bridge key from his belt and vanishes into the crowd.';
-    }
     if (state.flags.includes('c3-bridge-record')) {
       return 'You reach Lantern Bridge with Lysara’s copy of Ordan’s route request and its royal payment line. The masked soldier escaped. On the bridge, the dark coated thief slips behind one of Ordan’s guards and steals a brass key from his belt.';
     }

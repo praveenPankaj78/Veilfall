@@ -187,6 +187,58 @@ export const chapterSixContinuityContract = {
   ],
 };
 
+export const chapterSevenContinuityContract = {
+  authenticationRule: {
+    acquisition: 'The storm can copy spoken facts after a short delay.',
+    limit: 'It cannot answer a fresh challenge before a second living officer creates the reply.',
+  },
+  lioLocations: {
+    prisoner: 'c7-lio-prisoner',
+    returned: 'c7-lio-returned',
+    joined: 'c7-lio-joined',
+    guardedWitness: 'c7-lio-under-guard',
+  },
+  proofStates: {
+    original: 'c7-original-orders-safe',
+    publicCopies: [
+      'c7-proof-rider-relay',
+      'c7-oath-orders-reach-army',
+      'c7-signal-tube-paper-rain',
+      'c7-orders-on-banners',
+      'c7-orders-reached-every-rank',
+      'c7-seals-proved-sequence',
+      'c7-lio-carried-orders',
+      'c7-lio-delivered-orders',
+      'c7-lio-exposed-orders-inside-army',
+      'c7-lio-testimony-reached-ranks',
+    ],
+    burnedOriginal: 'c7-saved-both-burned-proof',
+    proofSurvivedBurn: 'c7-proof-survives-original-fire',
+  },
+  vaorUses: {
+    approved: ['c7-vaor-approved-pursuit-use', 'c7-vaor-approved-cavalry-use', 'c7-vaor-approved-battle-use'],
+    forced: ['c7-forced-vaor-pursuit-use', 'c7-forced-vaor-cavalry-use', 'c7-forced-vaor-battle-use'],
+  },
+  hiddenSenderExposures: [
+    'c7-shared-obedience-memory',
+    'c7-forced-vaor-battle-use',
+    'c7-vaor-approved-battle-use',
+    'c7-lio-refused-dead-command',
+    'c7-lio-refused-inside-army',
+    'c7-command-demanded-proof',
+  ],
+  finalForces: ['c7-gained-full-army', 'c7-gained-chosen-company', 'c7-gained-dangerous-reputation'],
+  fullArmyEligibilityFlag: 'c7-earned-full-army-offer',
+  handoffCosts: [
+    'c7-ally-lasting-injury',
+    'c7-company-storm-losses',
+    'c7-lost-gate-supplies',
+    'c7-spent-supplies-on-decoys',
+    'c7-lost-fast-horses',
+    'c7-korran-spent-signal-trust',
+  ],
+};
+
 export const terminalHistoryFlagReasons = {
   'c4-shielded-rook': 'Preserves Caelan taking a bolt for Rook for the later Rook perspective version of the bridge meeting.',
   'c4-watched-both': 'Preserves Caelan refusing both men control of his attention for the later crossover perspective.',
@@ -196,4 +248,10 @@ export const terminalHistoryFlagReasons = {
   'c6-kharad-full-army': 'Save compatible alias for the war outcome. The playable handoff consumes c6-red-moot-war as the canonical support state.',
   'c6-kharad-escort': 'Save compatible alias for the guarded alliance outcome. The playable handoff consumes c6-red-moot-alliance as the canonical support state.',
   'c6-kharad-safe-road': 'Save compatible alias for the neutral road outcome. The playable handoff consumes c6-red-moot-neutral as the canonical support state.',
+  'c7-alliance-shield-feint': 'Records the guarded alliance shield feint after its tactical result is fully resolved inside the same battle sequence.',
+  'c7-neutral-ridge-feint': 'Records the neutral route ridge feint after its tactical result is fully resolved inside the same battle sequence.',
+  'c7-lio-consented-threadread': 'Preserves that Lio gave informed permission for Threadread; c7-lio-under-guard is the canonical location state used later.',
+  'c7-marked-lanes-paid-off': 'Records that the earlier paid salt survey earned and consumed its free precise trap during the same chapter climax.',
+  'c7-oath-shield-fulfilled-final': 'Records that the broad shield Oath completed its exact protection and ended during the final red wall rescue.',
+  'c8-linked-malrec-to-gate-record': 'Preserves the joined Crown evidence chain for later political judgment after the current implemented story ends.',
 };

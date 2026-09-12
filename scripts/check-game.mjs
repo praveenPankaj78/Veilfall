@@ -4,6 +4,7 @@ import ts from 'typescript';
 import {
   chapterFiveContinuityContract,
   chapterSixContinuityContract,
+  chapterSevenContinuityContract,
   documentedSeriesRoutes,
   firstMeetingContracts,
   implementedChapterContracts,
@@ -1105,7 +1106,7 @@ for (const [id, node] of Object.entries(nodes)) {
   }
 }
 
-const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
+const closePointOfViewPattern = /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|list|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
 for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
   const chapterNodes = nodeOrder.filter((id) => chapter === 1
     ? !/^c[2345678]-/.test(id)
@@ -1151,8 +1152,6 @@ function playableNodeSnapshot(nodeId, state) {
   const node = nodes[nodeId];
   return JSON.stringify({
     body: node.body(state),
-    journal: knownTruths({ ...state, nodeId }),
-    consequences: majorConsequences({ ...state, nodeId }),
     choices: node.choices.map((choice) => ({
       id: choice.id,
       visible: isChoiceVisible(choice, state),
@@ -1162,14 +1161,41 @@ function playableNodeSnapshot(nodeId, state) {
   });
 }
 
+function stateForChoice(baseState, choice) {
+  const flags = new Set(baseState.flags);
+  for (const flag of choice.requiresFlags ?? []) flags.add(flag);
+  for (const flag of choice.showIfAllFlags ?? []) flags.add(flag);
+  if (choice.showIfAnyFlags?.length) flags.add(choice.showIfAnyFlags[0]);
+  const exclusiveFlagGroups = [
+    ['c5-freed-vaor', 'c5-took-ember-by-force', 'c5-vaor-pact'],
+    ['c6-red-moot-war', 'c6-red-moot-alliance', 'c6-red-moot-neutral'],
+    ['c7-lio-prisoner', 'c7-lio-returned', 'c7-lio-joined', 'c7-lio-under-guard'],
+  ];
+  for (const group of exclusiveFlagGroups) {
+    const selected = group.find((flag) => (
+      choice.requiresFlags?.includes(flag)
+      || choice.showIfAllFlags?.includes(flag)
+      || choice.showIfAnyFlags?.includes(flag)
+    ));
+    if (!selected) continue;
+    for (const flag of group) {
+      if (flag !== selected) flags.delete(flag);
+    }
+  }
+  return highResourceState(baseState, [...flags]);
+}
+
 function flagChangesLaterPlay(flag, ownerNodeId, baseState) {
-  const ownerIndex = nodeOrder.indexOf(ownerNodeId);
+  const ownerChapter = implementedChapterContracts.find((contract) => nodeIsInChapter(ownerNodeId, contract.chapter))?.chapter ?? 1;
   const baseFlags = baseState.flags.filter((candidate) => candidate !== flag);
   const withoutFlag = highResourceState(baseState, baseFlags);
   const withFlag = highResourceState(baseState, [...baseFlags, flag]);
-  return nodeOrder.slice(ownerIndex + 1).some((nodeId) => (
-    playableNodeSnapshot(nodeId, withoutFlag) !== playableNodeSnapshot(nodeId, withFlag)
-  ));
+  return nodeOrder.some((nodeId) => {
+    if (nodeId === ownerNodeId || nodes[nodeId].final) return false;
+    const nodeChapter = implementedChapterContracts.find((contract) => nodeIsInChapter(nodeId, contract.chapter))?.chapter ?? 1;
+    if (nodeChapter < ownerChapter) return false;
+    return playableNodeSnapshot(nodeId, withoutFlag) !== playableNodeSnapshot(nodeId, withFlag);
+  });
 }
 
 function normalisedConsequence(choice) {
@@ -1195,18 +1221,21 @@ for (const node of Object.values(nodes)) {
   for (const choice of node.choices) {
     const hasResourceCost = Object.values(choice.changes ?? {}).some((value) => (value ?? 0) < 0);
     if (!hasResourceCost) continue;
-    const destination = resolveNext(choice, baseState);
+    const choiceState = stateForChoice(baseState, choice);
+    const destination = resolveNext(choice, choiceState);
     const freeSiblings = node.choices.filter((sibling) => (
       sibling.id !== choice.id
-      && resolveNext(sibling, baseState) === destination
+      && isChoiceVisible(sibling, choiceState)
+      && resolveNext(sibling, choiceState) === destination
       && !Object.values(sibling.changes ?? {}).some((value) => (value ?? 0) < 0)
     ));
     if (!freeSiblings.length) continue;
     const materialFlags = (choice.addFlags ?? []).filter((flag) => (
-      flagChangesLaterPlay(flag, node.id, chapterBaseStates[chapter])
+      flagChangesLaterPlay(flag, node.id, choiceState)
     ));
+    const reachesFinalOutcome = Boolean(nodes[destination]?.final);
     paidSiblingContracts.push({ choiceId: choice.id, materialFlags, distinct: choiceHasDistinctConsequence(choice, freeSiblings) });
-    if (!materialFlags.length) {
+    if (!reachesFinalOutcome && !materialFlags.length) {
       failures.push(`Paid sibling choice ${choice.id} has no flag that changes later playable state`);
     }
     if (!choiceHasDistinctConsequence(choice, freeSiblings)) {
@@ -3775,6 +3804,110 @@ for (const [state, expected] of orderStatusCases) {
     failures.push('Chapter Seven loses Lio’s chosen status at the order case');
   }
 }
+
+const chapterSevenChoiceById = (nodeId, choiceId) => nodes[nodeId].choices.find((choice) => choice.id === choiceId);
+const rapidLearningChoice = chapterSevenChoiceById('c6-storm-trace', 'c6-compare-living-records');
+const chapterSevenAuthenticationText = [
+  renderedBody('c7-first-riders', chapterSevenBase),
+  renderedBody('c7-captured-soldier', chapterSevenBase),
+].join(' ');
+if (!/detail you spoke in the garden minutes ago/i.test(rapidLearningChoice.result)
+  || !/steal spoken facts after a short delay/i.test(chapterSevenAuthenticationText)
+  || !/cannot join a new call and answer before that answer exists/i.test(chapterSevenAuthenticationText)) {
+  failures.push('Chapter Seven authentication no longer preserves Chapter Six rapid learning while requiring a fresh living exchange');
+}
+
+const orderExposureLioActions = {
+  'c7-guard-lio-through-lines': ['joined', 'carries'],
+  'c7-lio-delivers-orders': ['joined', 'carries'],
+  'c7-lio-spreads-proof-from-within': ['returned', 'insideCopies'],
+  'c7-use-lio-witness-statement': ['witness'],
+  'c7-call-returned-lio-without-copies': ['returnedOnly'],
+};
+const orderExposureStates = {
+  joined: { ...chapterSevenBase, flags: ['c7-lio-joined', 'c7-lio-carries-orders'] },
+  returned: { ...chapterSevenBase, flags: ['c7-lio-returned', 'c7-lio-spreads-orders-inside-army'] },
+  prisoner: { ...chapterSevenBase, flags: ['c7-lio-prisoner', 'c7-lio-prisoner-testimony'] },
+  guarded: { ...chapterSevenBase, flags: ['c7-lio-under-guard', 'c7-lio-guarded-witness'] },
+  returnedOnly: { ...chapterSevenBase, flags: ['c7-lio-returned'] },
+};
+for (const [choiceId, allowed] of Object.entries(orderExposureLioActions)) {
+  const choice = chapterSevenChoiceById('c7-order-exposure', choiceId);
+  for (const [stateName, state] of Object.entries(orderExposureStates)) {
+    const expected = allowed.includes(stateName)
+      || (allowed.includes('witness') && ['prisoner', 'guarded'].includes(stateName));
+    if (isChoiceVisible(choice, state) !== expected) {
+      failures.push(`${choiceId} does not respect Lio's ${stateName} location and evidence state`);
+    }
+  }
+}
+
+const proofExposureCases = [
+  [['c7-orders-on-banners'], /copies.*rise on banners/i],
+  [['c7-proof-rider-relay'], /rider copies.*separate companies/i],
+  [['c7-signal-tube-paper-rain'], /ordinary copies.*Crown ranks/i],
+  [['c7-lio-spreads-orders-inside-army'], /signed copies inside the army/i],
+  [[], /Only the original sealed order/i],
+];
+for (const [flags, expected] of proofExposureCases) {
+  if (!expected.test(renderedBody('c7-order-exposure', { ...chapterSevenBase, flags }))) {
+    failures.push(`Chapter Seven order exposure loses the exact proof state ${flags.join(', ') || 'original only'}`);
+  }
+}
+const burnWithoutCopies = chapterSevenChoiceById('c7-many-or-one', 'c7-burn-proof-for-both');
+const burnWithCopies = chapterSevenChoiceById('c7-many-or-one', 'c7-burn-original-keep-public-proof');
+if (!isChoiceVisible(burnWithoutCopies, chapterSevenBase)
+  || isChoiceVisible(burnWithCopies, chapterSevenBase)
+  || isChoiceVisible(burnWithoutCopies, { ...chapterSevenBase, flags: ['c7-orders-on-banners'] })
+  || !isChoiceVisible(burnWithCopies, { ...chapterSevenBase, flags: ['c7-orders-on-banners'] })) {
+  failures.push('Chapter Seven does not distinguish burning the only original from burning it after authenticated copies exist');
+}
+
+const vaorChoiceFixtures = [
+  ['c7-red-horizon', 'c7-turn-neutral-town-away', 'c5-freed-vaor'],
+  ['c7-red-horizon', 'c7-force-stolen-ember-pursuit', 'c5-took-ember-by-force'],
+  ['c7-red-horizon', 'c7-share-pact-ember-pursuit', 'c5-vaor-pact'],
+  ['c7-break-town-line', 'c7-ember-frighten-horses', 'c5-freed-vaor'],
+  ['c7-break-town-line', 'c7-force-stolen-ember-horses', 'c5-took-ember-by-force'],
+  ['c7-break-town-line', 'c7-share-pact-ember-horses', 'c5-vaor-pact'],
+  ['c7-ilyra-command-thread', 'c7-open-vaor-ember-thread', 'c5-freed-vaor'],
+  ['c7-ilyra-command-thread', 'c7-force-stolen-ember-thread', 'c5-took-ember-by-force'],
+  ['c7-ilyra-command-thread', 'c7-share-pact-ember-thread', 'c5-vaor-pact'],
+];
+for (const [nodeId, choiceId, vaorFlag] of vaorChoiceFixtures) {
+  const choice = chapterSevenChoiceById(nodeId, choiceId);
+  for (const outcomeFlag of chapterFiveContinuityContract.vaorOutcomes) {
+    const visible = isChoiceVisible(choice, { ...chapterSevenBase, flags: [outcomeFlag] });
+    if (visible !== (outcomeFlag === vaorFlag)) failures.push(`${choiceId} ignores Vaor outcome ${outcomeFlag}`);
+  }
+}
+
+const earnedFullArmyChoice = chapterSevenChoiceById('c7-army-future', 'c7-take-full-army');
+for (const [flags, expected] of [
+  [[], false],
+  [['c7-earned-full-army-offer'], true],
+  [['c7-earned-full-army-offer', 'c6-oath-honest-limit'], false],
+  [['c7-earned-full-army-offer', 'c7-teren-won-formally'], false],
+  [['c7-earned-full-army-offer', 'c7-lost-army-command-trust'], false],
+]) {
+  if (isChoiceVisible(earnedFullArmyChoice, { ...chapterSevenBase, flags }) !== expected) {
+    failures.push(`Chapter Seven full army eligibility is wrong for ${flags.join(', ') || 'unearned history'}`);
+  }
+}
+
+const hiddenSenderHandoffs = [
+  [chapterSevenContinuityContract.hiddenSenderExposures[0], 'c8-counter-private-command-bait'],
+  [chapterSevenContinuityContract.hiddenSenderExposures[2], 'c8-shield-known-ember-bearer'],
+  [chapterSevenContinuityContract.hiddenSenderExposures[3], 'c8-use-lio-living-countercall'],
+  [chapterSevenContinuityContract.hiddenSenderExposures[5], 'c8-follow-ilyra-countermark'],
+];
+for (const [exposureFlag, chapterEightChoiceId] of hiddenSenderHandoffs) {
+  const choice = chapterSevenChoiceById('c8-force-deployment', chapterEightChoiceId);
+  if (!isChoiceVisible(choice, { ...chapterEightBase, flags: [exposureFlag] })
+    || isChoiceVisible(choice, chapterEightBase)) {
+    failures.push(`${exposureFlag} does not create its distinct Chapter Eight defence`);
+  }
+}
 const funeralChoiceIds = new Set([
   'c7-lio-calls-ghost-funeral',
   'c7-mara-calls-evren-funeral',
@@ -3844,10 +3977,10 @@ if (!/Caelan Vey means to open the eastern Gate.*loyal replacements secure the f
 }
 const chapterSevenEvidence = renderedBody('c7-captured-soldier', chapterSevenBase);
 if (!/Hale was alive.*never found a body/is.test(chapterSevenEvidence)
-  || !/claim of murder, not proof/i.test(chapterSevenEvidence)
+  || !/claim of murder.*not proof/is.test(chapterSevenEvidence)
   || !/date answers Malrec’s lie/i.test(chapterSevenEvidence)
   || !/Evren’s commands need a different test/i.test(chapterSevenEvidence)
-  || !/Teren can answer that password.*dead memory cannot/is.test(chapterSevenEvidence)) {
+  || !/fresh call and answer.*learns the reply/is.test(chapterSevenEvidence)) {
   failures.push('Chapter Seven does not separate Hale’s uncertain fate, Malrec’s dated order, and Evren’s password test');
 }
 const chapterSevenOpening = [
@@ -3924,6 +4057,27 @@ const chapterSevenEndingFlags = {
   'c7-ending-company': 'c7-gained-chosen-company',
   'c7-ending-outlaw': 'c7-gained-dangerous-reputation',
 };
+const chapterSevenRescueSummaries = [
+  [['c7-saved-many', 'c7-ally-lasting-injury'], /survived the last red wall.*injury will travel/i],
+  [['c7-saved-one', 'c7-company-storm-losses'], /lost soldiers/i],
+  [['c7-saved-both-burned-proof'], /original orders did not/i],
+  [['c7-saved-many-with-southern-escort', 'c7-lost-fast-horses'], /returning escorts saved/i],
+  [['c7-saved-many-under-shield-oath', 'c7-oath-shield-fulfilled-final'], /broad shield Oath protected/i],
+  [['c7-saved-many-with-lio', 'c7-lio-stranded-after-rescue'], /Lio saved the trapped companion/i],
+  [['c7-saved-many-with-teren', 'c7-teren-lasting-injury'], /Teren and his engineers saved/i],
+];
+for (const [rescueFlags, expected] of chapterSevenRescueSummaries) {
+  const ending = renderedBody('c7-ending-company', {
+    ...chapterSevenBase,
+    flags: ['c7-gained-chosen-company', ...rescueFlags],
+  });
+  if (!expected.test(ending)) {
+    failures.push(`Chapter Seven ending loses the final rescue outcome ${rescueFlags.join(', ')}`);
+  }
+  if (!rescueFlags.includes('c7-saved-many-with-lio') && /Lio saved the trapped companion/i.test(ending)) {
+    failures.push(`Chapter Seven credits Lio with a rescue on ${rescueFlags.join(', ')}`);
+  }
+}
 for (const [endingId, flag] of Object.entries(chapterSevenEndingFlags)) {
   const finalChoice = nodes['c7-army-future'].choices.find((choice) => choice.next === endingId);
   if (!finalChoice?.addFlags?.includes(flag) || finalChoice.changes?.wayfire !== 2) {
@@ -4635,6 +4789,44 @@ if (process.argv.includes('--print-chapter-six-routes')) {
     chapterEight: nodes['c8-oath-ledger'].body({ ...chapterEightBase, flags: ['c6-red-moot-alliance', 'c5-vaor-pact', flag] }),
   }));
   console.log(JSON.stringify({ dutyPrints, disclosurePrints, endingPrints, oathPrints }, null, 2));
+}
+
+if (process.argv.includes('--print-chapter-seven-routes')) {
+  const lioPrints = Object.entries(orderExposureStates).map(([status, state]) => ({
+    status,
+    orderCase: nodes['c7-captured-soldier'].body(state),
+    exposureChoices: nodes['c7-order-exposure'].choices
+      .filter((choice) => isChoiceVisible(choice, state))
+      .map((choice) => choice.id),
+  }));
+  const planPrints = [
+    ['salt', 'c7-salt-trap', ['c7-safe-salt-lanes-marked']],
+    ['orders', 'c7-order-exposure', ['c7-orders-on-banners', 'c7-lio-returned', 'c7-lio-spreads-orders-inside-army']],
+    ['duel', 'c7-steppe-duel', ['c7-teren-saw-gate-order']],
+  ].map(([plan, nodeId, flags]) => ({
+    plan,
+    scene: nodes[nodeId].body({ ...chapterSevenBase, flags }),
+    visibleChoices: nodes[nodeId].choices
+      .filter((choice) => isChoiceVisible(choice, { ...chapterSevenBase, flags }))
+      .map((choice) => choice.id),
+  }));
+  const endingPrints = Object.entries(chapterSevenEndingFlags).map(([endingId, flag]) => ({
+    ending: endingId,
+    chapterSeven: nodes[endingId].body({
+      ...chapterSevenBase,
+      flags: [flag, 'c7-original-orders-safe', 'c7-lio-returned', 'c7-saved-many-with-southern-escort', 'c7-lost-fast-horses'],
+    }),
+    chapterEight: nodes['c8-gate-ring'].body({
+      ...chapterEightBase,
+      flags: [flag, 'c7-original-orders-safe', 'c7-lio-returned', 'c7-saved-many-with-southern-escort', 'c7-lost-fast-horses'],
+    }),
+  }));
+  const senderPrints = hiddenSenderHandoffs.map(([exposureFlag, chapterEightChoiceId]) => ({
+    exposureFlag,
+    chapterEightChoiceId,
+    arrival: nodes['c8-gate-ring'].body({ ...chapterEightBase, flags: [exposureFlag] }),
+  }));
+  console.log(JSON.stringify({ lioPrints, planPrints, endingPrints, senderPrints }, null, 2));
 }
 
 const shortest = Math.min(...endingDepths);

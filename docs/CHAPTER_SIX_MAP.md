@@ -143,6 +143,7 @@ Every ending grants equal Wayfire. The difference is military strength, civilian
 - The ancestor command was broken through ember, public command, Oathfire, or Ilyra's Turn.
 - Preserved voices remain available for later investigation.
 - The pursuing Crown army is one day behind and hears dead commanders.
+- The storm can learn a newly spoken fact after a short delay. Chapter Seven must authenticate living command through a fresh two person exchange whose reply does not exist until after the challenge is spoken.
 
 ## Chapter artwork
 

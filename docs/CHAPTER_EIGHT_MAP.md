@@ -26,6 +26,10 @@ Caelan arrives from Chapter Seven with exactly one force state:
 2. The chosen company can hold three strong positions, but cannot cover the whole ring.
 3. The dangerous reputation route keeps a small mobile force together and uses alarms across the empty walls.
 
+The opening also accounts for the exact salt battle handoff. It states whether Malrec's sealed original survived, which authenticated copies or witnesses exist, where Lio is, who carries a lasting injury, and whether the company lost people. Lost food, arrows, shields, blankets, horses, or signal trust change the available defence rather than appearing only in a journal.
+
+The hidden sender learned one specific target during Ilyra's trace. A stolen private failure, the ember bearer, Lio's refusal, or Ilyra's limited countermark each creates a different Chapter Eight preparation. The player can spend that knowledge during force deployment.
+
 Vaor's freedom, forced ember, or pact remains active. Chapter Eight does not change how Caelan acquired the ember. A freely given ember requires Vaor's permission. A stolen ember obeys while Vaor resists. The pact requires Caelan to name the purpose, and either bearer may refuse.
 
 Lysara's hand treatment and every later strain to the glass seed remain active. Earlier damage changes the cost and method of using the seed to save Pell or restore the buried chain.
@@ -84,6 +88,8 @@ Benefit: mortal control, no new devil contract, no destroyed fort.
 Risk: frightened independent groups must hold all eight weak points together.
 
 The Chapter Seven force state changes the price. A full army faces sabotage from divided loyalists. A chosen company empties Fourth Fort to cover five posts. A small force needs wounded wardens and furnace workers, causing visible injuries.
+
+If Chapter Seven supplies were lost, the mortal route remains available through a depleted variant. It has no reserve, produces more injuries, and cannot pretend that missing food, arrows, horses, shields, or blankets returned offscreen.
 
 Caelan remains essential through coordination, personal action, Oathfire, or the deliberate transfer of local authority to Ansel.
 
@@ -148,8 +154,10 @@ No art from Chapters One through Seven is reused.
 10. Vexa must address the defence actually chosen and must not claim that Caelan promised entry when he did not.
 11. Any transferred Oath must name its willing bearer in the option, immediate result, ending recap, and journal.
 12. Player-facing objectives contain one job and no stage directions.
-13. A route may not offer an action that breaks a contract the player already accepted. Later options must honour the exact granted permission or show and resolve the breach as a deliberate consequence.
-14. A promise must be achievable in the chapter's canonical ending state. If the wording changes, its fulfilment or failure must be acknowledged on every affected route.
+13. Chapter Seven's sealed original, authenticated copies, Lio status, companion injury, company losses, supply losses, and hidden sender exposure must all alter rendered Chapter Eight play.
+14. Earlier Vaor consent makes a repeated protective use easier. Earlier forced use makes the next theft harder and leaves Vaor resisting inside the Gate fire.
+15. A route may not offer an action that breaks a contract the player already accepted. Later options must honour the exact granted permission or show and resolve the breach as a deliberate consequence.
+16. A promise must be achievable in the chapter's canonical ending state. If the wording changes, its fulfilment or failure must be acknowledged on every affected route.
 15. Free expert solutions must be earned through an earlier trust, knowledge, or preparation flag. They cannot silently dominate costly Health, Command, Resolve, or Oathfire choices.
 16. Imported force size must change a later complication or human cost, not only arrival prose.
 17. Any people, evidence, or supplies used in a route-specific crisis must be placed there in an earlier scene.

@@ -54,19 +54,21 @@ The player is given reasons not to slaughter them:
 - their living marshal, Teren, values the Crown above the Regent personally;
 - soldiers can change sides only after evidence, law, or witnessed restraint gives them a defensible choice.
 
-## The two commands
+## The two commands and the living test
 
 Malrec's order is living and legal. It moved the Crown March away from four Gate forts three weeks before Caelan took the ember.
 
-Evren's order has no paper, wax, living messenger, or today's password. It uses the authentic habits of a marshal dead for nineteen years. The hidden sender beyond the Gate uses this dead command to hold the army west.
+Evren's order has no paper, wax, or living messenger. It uses the authentic habits of a marshal dead for nineteen years. The hidden sender beyond the Gate uses this dead command to hold the army west.
+
+Chapter Six proved that the ancestor storm can learn a spoken fact within minutes. A fixed dawn password is therefore not safe. The Chapter Seven test uses a new exchange instead. One living officer gives a fresh challenge. A second living officer invents the reply at once. The storm may copy both later, but it cannot take part before the reply exists.
 
 The chapter never requires the player to understand how the Unsea works. The useful test is simple:
 
 1. Where is the paper?
 2. Where is the living messenger?
-3. What is today's password?
+3. Can a second living officer create a new reply before the copied voice answers?
 
-The explanation order is fixed. The opening names the Crown March and the people in danger. Lio then names Evren, Teren, and dead command. The field map gives Malrec one test, the date on his paper, and Evren another test, today's password. Hale's fate is always described from Caelan's last confirmed sighting before the Crown's murder claim is repeated.
+The explanation order is fixed. The opening names the Crown March and the people in danger. Lio then names Evren, Teren, and dead command. The field map gives Malrec one test, the date on his paper, and Evren another test, the fresh living exchange. Hale's fate is always described from Caelan's last confirmed sighting before the Crown's murder claim is repeated.
 
 During active battle prose, Crown army is the default short name. Crown March remains the formal name used in objectives, political decisions, and ending states.
 
@@ -88,7 +90,7 @@ An unattached Caelan who acknowledged interest may deepen the bond, slow it down
 
 ### No active romance
 
-Caelan prepares with his companions. The scene rewards trust, planning, local knowledge, or rehearsing why a dead command cannot answer today's password without treating romance as required content.
+Caelan prepares with his companions. The scene rewards trust, planning, local knowledge, or rehearsing why a dead command cannot answer a reply that living officers have not created yet. Romance is never required content.
 
 ## Lio location contract
 
@@ -121,6 +123,8 @@ The final storm creates Caelan's class conflict in plain form:
 - Oathfire saves both groups by burning the original Gate orders, destroying the best legal evidence against Malrec.
 - Lio can make the single rescue only if he joined Caelan, but he loses his Crown badge and becomes a named deserter among uncertain soldiers.
 - Teren and two engineers can perform the rescue on other routes, leaving Teren injured and his army under shared living command.
+- An earlier civilian evacuation or broad shield Oath can save both groups by spending the exact advantage prepared earlier.
+- A depleted Caelan can still save the trapped companion, but abandoning battlefield command causes severe company losses and destroys the full army offer.
 
 There is no option that preserves every person, proof, resource, and future advantage.
 
@@ -128,7 +132,7 @@ There is no option that preserves every person, proof, resource, and future adva
 
 ### Full Crown March
 
-Caelan gains the largest force and can attempt to defend all eight forts. He also inherits divided loyalty and thousands of soldiers trained to obey before questioning. This option is hidden if his Red Moot Oath limited him to authority the Moot personally granted.
+Caelan gains the largest force and can attempt to defend all eight forts. He also inherits divided loyalty and thousands of soldiers trained to obey before questioning. Teren offers the full standard only after a decisive action earns broad military confidence. Public proof, living authentication, restraint, and Teren's lawful support determine how stable that offer is. The option remains hidden if the limited Red Moot Oath forbids it, Teren formally won the duel, or Caelan abandoned the broken company without command.
 
 ### Chosen company
 
@@ -149,7 +153,10 @@ Every ending grants equal Wayfire. The difference is force size, loyalty, speed,
 - Teren survives every route and rejects the dead command.
 - If Caelan takes volunteers or refuses command, Teren still leads the remaining Crown March east on a separate road.
 - The original Gate orders may survive, be copied widely, or burn in the final rescue.
+- Ordinary copies, signed Lio copies, rider copies, banner records, witness statements, and the sealed original remain distinct evidence states.
 - One companion may carry a lasting injury, a Crown company may have suffered losses, or Lio may have lost his Crown status during the rescue.
+- Lost food, arrows, shields, blankets, horses, and signal trust alter the playable defence at the fort ring.
+- Sorin travels with the Dragonspine proof. If no active Mara or Lysara relationship places one of them in the final rescue, Sorin is the injured companion rather than Ilyra.
 - Caelan arrives with a full army, a chosen company, or only his established allies and reputation.
 - Ilyra leaves to follow the hidden thread by another route while retaining her relationship state.
 - The active Red Moot Oath appears in the Chapter Eight Oath ledger with its exact term.
@@ -176,7 +183,12 @@ The game check verifies:
 - every costly action names an expected advantage and stores a consequence;
 - Chapter Six's three support outcomes create distinct physical battlefields;
 - every later Lio action respects whether he is present, absent, bound, or recruited;
+- released Lio can distribute proof only when copies were actually sent after him;
+- prisoner and guarded witness actions require the signed statement created on that route;
 - each battlefield preparation unlocks or removes a later danger;
+- the salt survey earns a free precise trap, banner copies survive paper loss, and the signal post is spent only once;
+- the full army option requires an earned offer and respects the limited Moot Oath, Teren's formal victory, and lost command trust;
+- each hidden sender exposure unlocks a different defence in Chapter Eight;
 - Chapter Seven's fort horizon matches the occupied Fourth Fort revealed in Chapter Eight;
 - controlled story terms are introduced before use;
 - close player point of view appears across most scenes.

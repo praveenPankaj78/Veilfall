@@ -369,3 +369,7 @@ Before a scene is approved, confirm:
 - A paid Oath keeps its exact wording in later chapters. Later commands must honour that term, offer a visible choice to risk breaking it, or remain unavailable.
 - A freely given power, a stolen power, and a shared pact are different permissions on every use. Show the donor's consent, resistance, or shared right to refuse each time the difference matters.
 - When a leader leaves a sovereign community, name the lawful person who keeps local authority. A travelling ally does not silently take a town's government with them.
+- A power that learns information needs a stable acquisition rule. State its delay and limits, then use a fresh exchange or another demonstrated test instead of declaring familiar information unknowable.
+- Keep an original document, ordinary copy, signed copy, public display, and witness statement as separate evidence. Destroying one changes only the proof that actually depended on it.
+- An ending recap or journal line records history but does not by itself repay a resource cost or preparation. A paid choice must alter later availability, danger, people, proof, resources, or political state unless its immediate result is the final outcome.
+- Military or political support must be earned from explicit acts the player saw. State why a larger outcome is unavailable before the final menu and always preserve one viable path.

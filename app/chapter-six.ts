@@ -60,28 +60,28 @@ function vaorUseBoundary(state: GameState, purpose: string) {
 }
 
 function exactServiceRecord(state: GameState) {
+  if (has(state, 'c6-whole-herd-saved')) {
+    return 'All forty cattle and all three young riders returned because you used the herders’ own signals.';
+  }
+  if (has(state, 'c6-saved-all-herders') && has(state, 'c6-lost-part-herd')) {
+    return 'All three young riders returned. Twelve cattle were lost when you cut the lead ropes to keep the children off breaking ground.';
+  }
+  if (has(state, 'c6-saved-herder')) {
+    return 'You rode into the storm for one young herder. Korran brought the remaining riders and most of the herd home.';
+  }
   if (has(state, 'c6-herd-route')) {
-    if (has(state, 'c6-whole-herd-saved')) {
-      return 'All forty cattle and all three young riders returned because you used the herders’ own signals.';
-    }
-    if (has(state, 'c6-saved-all-herders') && has(state, 'c6-lost-part-herd')) {
-      return 'All three young riders returned. Twelve cattle were lost when you cut the lead ropes to keep the children off breaking ground.';
-    }
-    if (has(state, 'c6-saved-herder')) {
-      return 'You rode into the storm for one young herder. Korran brought the remaining riders and most of the herd home.';
-    }
     return 'Living dragonfire turned the herd from the storm and showed that the false voices fear Vaor’s flame.';
   }
+  if (has(state, 'c6-broke-ancestor-casting')) {
+    return 'You broke the unsafe heirloom casting. The plain spare still holds beneath the town.';
+  }
+  if (has(state, 'c6-forge-families-safe')) {
+    return 'You cleared every nearby home before Dema dropped the damaged channel and saved the brake.';
+  }
+  if (has(state, 'c6-dema-respect')) {
+    return 'You held the hot brake wheel while Dema directed the repair. Her crew kept control of its own forge.';
+  }
   if (has(state, 'c6-forge-route')) {
-    if (has(state, 'c6-broke-ancestor-casting')) {
-      return 'You broke the unsafe heirloom casting. The plain spare still holds beneath the town.';
-    }
-    if (has(state, 'c6-forge-families-safe')) {
-      return 'You cleared every nearby home before Dema dropped the damaged channel and saved the brake.';
-    }
-    if (has(state, 'c6-dema-respect')) {
-      return 'You held the hot brake wheel while Dema directed the repair. Her crew kept control of its own forge.';
-    }
     return 'You used one narrow thread of ember fire only after Dema named the metal and the safe point to heat.';
   }
   if (has(state, 'c6-children-chose-living')) {
@@ -172,10 +172,12 @@ function ilyraRoadState(state: GameState) {
 
 function chapterSixContinuityRecord(state: GameState) {
   const record: string[] = [];
-  if (hasAny(state, ['c6-showed-living-ember', 'c6-held-western-axle', 'c6-oath-held-western-deck'])) {
+  if (hasAny(state, ['c6-showed-living-ember', 'c6-held-western-axle', 'c6-oath-held-western-deck', 'c6-preserved-west-lift', 'c6-service-respect'])) {
     if (has(state, 'c6-showed-living-ember')) record.push('You entered by showing the ember without using it. The lift crew can testify that you respected their warning.');
     if (has(state, 'c6-held-western-axle')) record.push('You held the damaged axle with your own body. The repair crew kept its spare braces for the eastern journey.');
     if (has(state, 'c6-oath-held-western-deck')) record.push('Your entry Oath kept the western deck level. The promise still protects that platform while the town moves.');
+    if (has(state, 'c6-preserved-west-lift')) record.push('The western lift still works because your first rescue saved its platform as well as its handlers.');
+    if (has(state, 'c6-service-respect')) record.push('The lift crew saw you take the rope’s weight yourself. Korran includes that risk in the town’s judgment of your request.');
   }
   if (hasAny(state, ['c6-shrine-route', 'c6-storm-feared-ember', 'c6-dema-studied-ember', 'c6-saw-empty-storm'])) {
     if (has(state, 'c6-shrine-route')) record.push('The shrine families remember that you chose their dead and their living records as your first service.');

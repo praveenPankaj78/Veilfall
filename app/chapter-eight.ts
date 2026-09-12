@@ -8,6 +8,122 @@ function hasAny(state: GameState, flags: string[]) {
   return flags.some((flag) => has(state, flag));
 }
 
+const chapterSevenPublicProofFlags = [
+  'c7-proof-rider-relay',
+  'c7-oath-orders-reach-army',
+  'c7-signal-tube-paper-rain',
+  'c7-orders-on-banners',
+  'c7-orders-reached-every-rank',
+  'c7-seals-proved-sequence',
+  'c7-lio-carried-orders',
+  'c7-lio-delivered-orders',
+  'c7-lio-exposed-orders-inside-army',
+  'c7-lio-testimony-reached-ranks',
+  'c7-proof-survives-original-fire',
+];
+
+const chapterSevenSupplyLossFlags = [
+  'c7-lost-gate-supplies',
+  'c7-spent-supplies-on-decoys',
+  'c7-lost-fast-horses',
+];
+
+const chapterSevenApprovedVaorUseFlags = [
+  'c7-vaor-approved-pursuit-use',
+  'c7-vaor-approved-cavalry-use',
+  'c7-vaor-approved-battle-use',
+];
+
+const chapterSevenForcedVaorUseFlags = [
+  'c7-forced-vaor-pursuit-use',
+  'c7-forced-vaor-cavalry-use',
+  'c7-forced-vaor-battle-use',
+];
+
+function chapterSevenInjuredAlly(state: GameState) {
+  if (!has(state, 'c7-ally-lasting-injury')) return null;
+  if ((state.relationships.mara.intent === 'committed'
+    || state.relationships.mara.intent === 'exploring')
+    && !has(state, 'c7-wounded-on-ridge')) return 'Mara';
+  if (state.relationships.lysara.intent === 'committed'
+    || state.relationships.lysara.intent === 'exploring') return 'Lysara';
+  return 'Sorin';
+}
+
+function chapterSevenProofArrival(state: GameState) {
+  const publicProof = hasAny(state, chapterSevenPublicProofFlags);
+  if (has(state, 'c7-saved-both-burned-proof') && !publicProof) {
+    return 'Malrec’s original Gate order burned in the final rescue. Survivors know what it said, but no sealed paper or authenticated copy reached the fort ring.';
+  }
+  if (has(state, 'c7-saved-both-burned-proof')) {
+    return 'Malrec’s sealed original burned in the final rescue. Signed copies, banners, and witnesses still carry the dates that exposed him.';
+  }
+  if (publicProof) {
+    return 'Malrec’s sealed order remains in your coat, and authenticated copies already exist in several Crown companies. Destroying one page can no longer erase the case.';
+  }
+  if (has(state, 'c7-front-rank-saw-original')) {
+    return 'Malrec’s sealed order remains in your coat. Three front rank officers verified it, but the truth did not reach the army behind them.';
+  }
+  return 'Malrec’s sealed order remains in your coat. Only the nearest Crown officers verified it, so the paper is still the strongest proof against him.';
+}
+
+function chapterSevenLioArrival(state: GameState) {
+  if (has(state, 'c7-lio-stranded-after-rescue')) return 'Lio survived the signal frame rescue under Teren’s guard. He gave up his badge and now faces Malrec’s charge of desertion.';
+  if (has(state, 'c7-lio-named-deserter')) return 'Lio rides under his own name after refusing Evren in public. Malrec’s law now calls him a deserter.';
+  if (has(state, 'c7-lio-joined')) return 'Lio rides with your line as a former Crown lieutenant who chose to join you in public.';
+  if (has(state, 'c7-lio-verified-command-without-copies')) return 'Lio remains inside Teren’s army. He exposed Evren with a fresh challenge, but he never received copies of Malrec’s order.';
+  if (has(state, 'c7-lio-returned')) return 'Lio remains inside Teren’s Crown March. He can speak through its officers, not act beside you.';
+  if (has(state, 'c7-lio-prisoner')) return 'Lio reaches the ring as a lawful prisoner and witness. He is not one of your volunteers.';
+  return 'Lio reaches the ring under a white guard cord. He remains a neutral witness to the dead command.';
+}
+
+function chapterSevenEnemyKnowledge(state: GameState) {
+  if (has(state, 'c7-shared-obedience-memory')) {
+    return 'The hidden sender stole the memory of one order you obeyed against your judgment. The Gate now repeats the voice from that failure whenever you reach for command.';
+  }
+  if (hasAny(state, ['c7-forced-vaor-battle-use', 'c7-vaor-approved-battle-use'])) {
+    return 'The hidden sender learned that Vaor is bound to the ember you carry. Red cracks bend toward your chest whenever the dragon speaks.';
+  }
+  if (hasAny(state, ['c7-lio-refused-dead-command', 'c7-lio-refused-inside-army'])) {
+    return 'Lio exposed the eastern thread without giving it a magical weapon. The sender learned his refusal and now copies his voice near Crown sentries.';
+  }
+  if (has(state, 'c7-command-demanded-proof')) {
+    return 'Ilyra traced only the edge of the hidden command and kept your private memories out of its reach. Her last countermark points to the safest western approach.';
+  }
+  return 'The hidden sender lost its red storm, but you do not know what it learned before the thread broke.';
+}
+
+function hiddenSenderCounterAtFourthFort(state: GameState) {
+  if (has(state, 'c8-refused-private-command-bait')) return 'The Gate repeats the voice from your private failure. Your prepared officers ignore it and wait for the fresh call and answer. The copied order dies without moving a lock.';
+  if (has(state, 'c8-shielded-ember-bearer')) return 'A red fault turns toward the ember, but the marked shield line carries the heat into empty snow before it reaches your chest.';
+  if (has(state, 'c8-lio-countered-copied-voice')) return 'Lio’s copied voice orders the western post open. Two living officers demand a fresh call and answer. The false Lio cannot create the reply in time.';
+  if (has(state, 'c8-used-ilyra-countermark')) return 'Ilyra’s countermark darkens beside a buried red fault. Korran moves the column before the ground opens beneath it.';
+  if (has(state, 'c8-mara-held-command-veto')) return 'The Gate copies your voice and orders the outer hinge opened. Mara uses the veto you gave her. The hinge stays shut until you answer in person.';
+  if (has(state, 'c8-three-fact-warning-worked')) return 'A false officer gives the wrong fort, messenger, and written order. Lysara’s three checks expose him before anyone touches the hinge.';
+  if (has(state, 'c8-private-command-test-worked')) return 'The western post demands the private command test. The copied officer answers an older reply, and the defenders close the road around him.';
+  if (has(state, 'c8-preserved-signal-post-spent')) return 'The preserved living signal post gives one fresh call and answer across the ring. Every keeper ignores the copied reply that follows.';
+  return 'The hidden sender tests the western line with one false signal. The defenders catch it, but the delay leaves Fourth Fort’s outer hinge unguarded.';
+}
+
+function chapterSevenArrivalCosts(state: GameState) {
+  const costs: string[] = [];
+  const injured = chapterSevenInjuredAlly(state);
+  if (injured) costs.push(`${injured} reaches the ring with a lasting bone injury and cannot take the same physical risks as before.`);
+  if (has(state, 'c7-company-storm-losses')) costs.push('The broken company arrives with empty saddles after the last red wall. Fewer soldiers are fit to hold isolated forts.');
+  if (has(state, 'c7-families-inside-wheels')) costs.push('Kharad Vey carries its families east inside the wheel decks. The town must keep moving while its fighters guard the fort road.');
+  if (has(state, 'c7-alliance-shields-protected-wounded')) costs.push('The two steppe shield engines were damaged protecting the wounded. They cannot cover the first Gate deployment.');
+  if (has(state, 'c7-neutral-wounded-in-ridge')) costs.push('The wounded remain at Black Ridge with two guides. They are safe, but those guides and medicines did not reach the Gate.');
+  if (has(state, 'c7-lost-gate-supplies')) costs.push('The supply wagon sank in the salt basin. The force has less food and fewer arrows for the fort ring.');
+  if (has(state, 'c7-spent-supplies-on-decoys')) costs.push('The cavalry decoys cost spare shields and blankets. Any isolated post will face the cold with less protection.');
+  if (has(state, 'c7-lost-fast-horses')) costs.push('The southern rescue spent the fastest horses. Messages between distant forts will travel more slowly.');
+  if (has(state, 'c7-korran-spent-signal-trust')) costs.push('Korran’s false axle warning saved lives, but other steppe riders now wait for a second sign before trusting his red signal.');
+  if (has(state, 'c7-wagon-survivors-injured')) costs.push('The proof wagon survivors reach the aid line with cuts and broken gear from the overturned wagon.');
+  if (has(state, 'c7-wagon-messenger-injured')) costs.push('One proof messenger reaches the ring with a broken arm and cannot carry another signal tube.');
+  if (has(state, 'c7-proof-public-early')) costs.push('Because the copies appeared early, Malrec’s loyalists had time to prepare a forgery claim before reaching the forts.');
+  if (has(state, 'c7-living-signal-spent')) costs.push('The prepared living signal post was lost in the salt basin after its one decisive order.');
+  return costs;
+}
+
 function arrivingForce(state: GameState) {
   if (has(state, 'c7-gained-full-army')) {
     return 'The Crown March fills the eastern road behind you. Thousands answered your last order, but many still wear Regent Malrec’s badge beneath their cloaks. You have enough soldiers to fill every fort. You do not yet know whether you have enough trust.';
@@ -154,6 +270,9 @@ function endangeredCompanion(state: GameState) {
 
 function routeOutcome(state: GameState) {
   if (has(state, 'c8-united-wardens')) {
+    if (has(state, 'c8-depleted-mortal-defense')) {
+      return 'Eight mortal fires hold with no reserve behind them. The last blankets wrap burned keepers instead of sleeping soldiers, and the infirmary fills before the hour ends.';
+    }
     if (has(state, 'c7-gained-full-army')) {
       return 'Eight mortal fires hold. Teren spends the hour moving between them, exposing the last saboteur before a lock can be reversed. Your army supplied enough hands, and its divided loyalty nearly supplied the enemy with one.';
     }
@@ -248,6 +367,9 @@ function oathCost(state: GameState) {
 
 function gateDefenceRecord(state: GameState) {
   const record: string[] = [];
+  if (has(state, 'c8-preserved-original-ledgers')) record.push('Seventeen original Gate ledgers remain sealed in Fourth Fort for public judgment.');
+  if (has(state, 'c8-living-copy-of-openings')) record.push('Lysara’s living bark preserves the hidden opening dates after the original ledgers burned.');
+  if (has(state, 'c8-many-witnessed-openings')) record.push('Divided witnesses from every force can repeat the hidden opening dates even without the original paper.');
   if (hasAny(state, ['c8-saved-runner-personally', 'c8-guided-runner', 'c8-korran-saved-runner'])) {
     if (has(state, 'c8-saved-runner-personally')) record.push('The burn from Pell’s rescue still marks your leg, and the young Warden can testify that you crossed the fault yourself.');
     if (has(state, 'c8-guided-runner')) record.push('Pell survived by following your route across the fault. The marked drainage stones remain the safest path between forts.');
@@ -313,6 +435,8 @@ function gateDefenceRecord(state: GameState) {
     if (has(state, 'c8-freed-futureless-names')) record.push('The public Oath freed the names the collector tried to claim and now protects ownership of every living name.');
     if (has(state, 'c8-ansel-refused-second-price')) record.push('Ansel defeated the second collection by stating the original limit himself.');
   }
+  if (has(state, 'c8-linked-malrec-to-gate-record')) record.push('Malrec’s troop order is joined to the first and last hidden Gate reports, proving that the empty forts ended years of concealment.');
+  if (has(state, 'c8-gate-forgery-exposed')) record.push('Ansel’s nailed duty board exposed the false staffing ledger prepared after the steppe battle.');
   return record;
 }
 
@@ -336,6 +460,10 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       ...(has(state, 'c7-teren-lasting-injury')
         ? [terenCondition(state)]
         : []),
+      chapterSevenProofArrival(state),
+      chapterSevenLioArrival(state),
+      ...chapterSevenArrivalCosts(state),
+      chapterSevenEnemyKnowledge(state),
       emberState(state),
       steppeOathLedger(state),
       'Ilyra left before dawn to follow the hidden command along another road. No message from her has reached the fort ring yet.',
@@ -435,7 +563,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         addFlags: ['c8-pell-survived', 'c8-seed-weakened-saving-pell', 'c8-seed-critically-weakened'],
-        result: 'Sorin braces Lysara’s injured hand while you hold the green threads steady. Blood clears from Pell’s lungs. The seed saves him, then fades to one weak pulse.',
+        result: 'You brace Lysara’s injured hand and hold the green threads steady. Blood clears from Pell’s lungs. The seed saves him, then fades to one weak pulse.',
         next: 'c8-force-deployment',
       },
       {
@@ -444,7 +572,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         detail: 'Preserve every resource, but lose the witness who trusted you with the warning.',
         advantage: 'Gain the complete lock route before the next knock erases it.',
         addFlags: ['c8-pell-died-for-map', 'c8-complete-lock-map'],
-        result: 'Pell draws the last line with a shaking finger. When it is complete, his hand falls still. You remember every mark because forgetting would make his death smaller.',
+        result: 'Pell draws the last line with a shaking finger. When it is complete, his hand falls still. You copy every mark onto the inside of your shield.',
         next: 'c8-force-deployment',
       },
     ],
@@ -460,9 +588,10 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     art: 'blackgate',
     body: (state) => [
       'The fortress ring is simple when seen from above. Eight forts. Eight signal fires. One buried chain joining them around the Gate.',
+      'Your eyes follow the empty roads between the forts. Any order sent along them will arrive too late once the opening begins.',
       arrivingForce(state),
       'You cannot move people again once the yearly opening begins. Anyone outside a fort will face the heat without shelter. Anyone inside the wrong fort may be trapped with a broken lock.',
-      'Mara waits for an honest order. Lysara studies the black wall. Korran’s riders watch the occupied fort instead of the Gate. Your instincts agree with them. Living people can be the harder danger.',
+      'Mara waits for an order. Lysara studies the black wall. Korran’s riders watch the occupied fort instead of the Gate. A locked fort can hide a danger the open ground cannot.',
     ],
     choices: [
       {
@@ -492,6 +621,91 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         result: 'You leave no false garrisons. Bells, lamps, and marked snow will reveal where the danger begins. The main force waits within one hard ride of every approach.',
         next: 'c8-occupied-fort',
       },
+      {
+        id: 'c8-counter-private-command-bait',
+        label: 'Place living officers around you and wait for the stolen memory to speak.',
+        detail: 'Spend 1 Resolve hearing your old failure used as an order without obeying it.',
+        advantage: 'Expose the sender’s prepared command before it can open a fort.',
+        showIfAnyFlags: ['c7-shared-obedience-memory'],
+        changes: { resolve: -1 },
+        requires: { resolve: 1 },
+        addFlags: ['c8-refused-private-command-bait'],
+        result: 'The old voice comes from beneath First Fort and orders the western lock opened. You let the memory finish. Then two living officers create a fresh reply, and every keeper hears the false order fail.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-shield-known-ember-bearer',
+        label: 'Build the deployment around the ember route the sender learned.',
+        detail: 'Spend 1 Command placing empty shield lanes where the Gate expects Vaor’s bearer to walk.',
+        advantage: 'Turn the enemy’s knowledge of the ember into a false target.',
+        showIfAnyFlags: ['c7-forced-vaor-battle-use', 'c7-vaor-approved-battle-use'],
+        changes: { command: -1 },
+        requires: { command: 1 },
+        addFlags: ['c8-shielded-ember-bearer'],
+        result: 'Korran lays shield cloth over three empty paths. The red faults follow the ember’s reflected heat into bare snow while your real column reaches Fourth Fort.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-use-lio-living-countercall',
+        label: 'Warn every Crown post that the sender can copy Lio’s refusal.',
+        detail: 'Use a fresh call and answer before any order spoken in Lio’s voice is obeyed.',
+        advantage: 'Protect the Crown ranks without pretending Lio is beside you on every route.',
+        showIfAnyFlags: ['c7-lio-refused-dead-command', 'c7-lio-refused-inside-army'],
+        addFlags: ['c8-lio-countered-copied-voice'],
+        result: 'Riders carry the warning to Teren and every post between you. When Lio’s voice calls from an empty tower, no one moves until a living officer creates the reply.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-follow-ilyra-countermark',
+        label: 'Deploy along the safe western line marked in Ilyra’s last proof.',
+        detail: 'Use the limited trace she gained without giving the sender a private memory or magical target.',
+        advantage: 'Avoid the first buried fault and reach Fourth Fort with the force together.',
+        showIfAnyFlags: ['c7-command-demanded-proof'],
+        addFlags: ['c8-used-ilyra-countermark'],
+        result: 'The black countermark turns warm at each buried fault. Korran moves the column around all three before the hidden sender can open them.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-use-mara-command-veto',
+        label: 'Give Mara the final word on any order spoken in your voice.',
+        detail: 'Use the permission established on the steppe before the Gate can turn your authority against the forts.',
+        advantage: 'A false Caelan cannot open a lock unless Mara accepts the command.',
+        showIfAnyFlags: ['c7-mara-can-stop-caelan'],
+        addFlags: ['c8-mara-held-command-veto'],
+        result: 'You repeat the permission in front of every western keeper. Mara may stop any order in your voice until you confirm it face to face.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-use-three-fact-warning',
+        label: 'Give every post Lysara’s three checks for a dead command.',
+        detail: 'Require a correct fort, a living messenger, and a written order before any lock moves.',
+        advantage: 'Turn the warning prepared on the steppe into one shared defence around the ring.',
+        showIfAnyFlags: ['c7-three-fact-warning'],
+        addFlags: ['c8-three-fact-warning-worked'],
+        result: 'Each keeper repeats the three checks before taking a post. A copied uniform will no longer be enough to move a lock.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-use-private-command-test',
+        label: 'Use the private command test rehearsed before the salt battle.',
+        detail: 'Let each pair of living officers create a reply only after the challenge is spoken.',
+        advantage: 'Expose a copied commander before it can take control of a fort.',
+        showIfAnyFlags: ['c7-knows-private-command-test'],
+        addFlags: ['c8-private-command-test-worked'],
+        result: 'Every post forms a pair. One officer calls. The other invents the reply at once. No dead memory can answer before the living choice exists.',
+        next: 'c8-occupied-fort',
+      },
+      {
+        id: 'c8-spend-preserved-signal-post',
+        label: 'Carry the unused living signal post into the centre of the fort ring.',
+        detail: 'Spend its one stored call now so all eight forts receive the same living order.',
+        advantage: 'Block the first copied command across the whole ring, then lose the prepared post.',
+        showIfAllFlags: ['c7-living-signal-post-ready'],
+        hideIfAnyFlags: ['c7-living-signal-spent'],
+        addFlags: ['c8-preserved-signal-post-spent'],
+        result: 'Korran plants the post at the centre road. Its stored call reaches every fort. The answering officers create the reply together, and the copper reeds split after carrying it.',
+        next: 'c8-occupied-fort',
+      },
     ],
   },
 
@@ -506,6 +720,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     body: (state) => [
       deploymentResult(state),
       firstFortStaging(state),
+      hiddenSenderCounterAtFourthFort(state),
       'Fourth Fort opens one narrow viewing slot. Captain Ansel Greve looks through it. He is grey haired, unshaven, and holding a crossbow against his own gate lever.',
       '“Do not order us to open,” he says. “Some of us sold the future promise that we would obey the next true Warden who came from the west. If you command it, the bargain may decide what obedience means.”',
       'The warning strikes close. Your authority got people here. At this door, using it carelessly could give the enemy a key.',
@@ -564,7 +779,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Changing the sentence will not free them. The contract owns the act and meaning of that one promise, no matter which words they try to use.',
       'Ansel taps the final line of each contract. “One named promise. Nothing more. The buyer cannot demand another payment because it dislikes the first.”',
       'Ansel sold the words he meant to speak when his daughter came home: I will never leave you again. Another soldier sold the promise to guard the western signal basket if every other post fell. He still wants to guard it tonight, but the bargain owns the words he would use to accept that duty.',
-      'Your jaw tightens as the ledgers pass from hand to hand. The entries show people abandoned during secret openings and paying whatever kept someone alive.',
+      'The ledgers pass from hand to hand. Their entries show people abandoned during secret openings and paying whatever kept someone alive.',
       'A signal clock shows a little over two hours until sunset. A black mark moves across one contract, counting down with it.',
     ],
     choices: [
@@ -608,14 +823,18 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     objective: 'Recover the hidden opening record before the Gate’s heat destroys it.',
     threat: 'Immediate',
     art: 'futureless',
-    body: () => [
+    body: (state) => [
       'Ansel removes a brick behind the old duty board. Seventeen thin ledgers wait inside, one for each year he has commanded Fourth Fort.',
       'The Black Gate opened for one hour on the same winter night every year. At first it opened no wider than a finger. Last year, a person could have walked through sideways.',
       'Each report reached the Crown. Each reply ordered the wardens to call it a furnace fault, pay the dead families, and replace anyone who spoke publicly. Malrec’s seal appears on the newest orders, but the concealment began before he held power.',
       'For seventeen years, the Crown removed witnesses, delayed supplies, and quietly closed three failing garrisons. The remaining wardens became desperate enough to bargain for food, heat, and rescued lives.',
       'Then, three weeks ago, Malrec pulled the field army away from four more forts and sent no replacements. Years of neglect weakened the ring. His final order left only Fourth Fort occupied tonight.',
+      'Your eyes find the same fort names on Malrec’s order. The paper from the steppe and the hidden reports describe one continuous plan.',
       'Ansel points to the empty cord beneath Pell’s brass plate. The sealed packet you sent to First Fort is his complete copy of these reports. He made it before sending Pell for help because heat was already staining these walls.',
-      'Heat stains the far wall red. You remember every official who called these people unreliable. In less than a minute, the ledgers will burn from the inside.',
+      'Heat stains the far wall red. The same reports name officials who later called these wardens unreliable. In less than a minute, the ledgers will burn from the inside.',
+      ...(has(state, 'c7-proof-public-early')
+        ? ['A loose ledger near the door carries a fresh seal and claims the forts were fully staffed. Malrec’s loyalists prepared the forgery after your copies appeared on the steppe.']
+        : []),
     ],
     choices: [
       {
@@ -647,6 +866,26 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         result: 'Asterra officers, volunteers, steppe riders, and Futureless wardens watch the seals blacken together. Twenty people leave knowing the same dates.',
         next: 'c8-breach',
       },
+      {
+        id: 'c8-link-malrec-order-to-ledgers',
+        label: 'Join Malrec’s Gate order to the first and last hidden records.',
+        detail: 'Save the direct chain from years of concealment to the final troop withdrawal, while the other original ledgers burn.',
+        advantage: 'The proof from the salt basin now establishes who emptied the forts and how long the Crown hid the openings.',
+        showIfAnyFlags: ['c7-original-orders-safe', ...chapterSevenPublicProofFlags],
+        addFlags: ['c8-linked-malrec-to-gate-record'],
+        result: 'Lysara binds the first hidden report and the final troop order with one strip of treaty bark. Crown officers compare the seals before the remaining ledgers burn. The record now shows a policy, not one isolated betrayal.',
+        next: 'c8-breach',
+      },
+      {
+        id: 'c8-expose-prepared-gate-forgery',
+        label: 'Compare Malrec’s prepared forgery with the fort duty board.',
+        detail: 'Use the warning created when you published the first proof early. Save the roster conflict while most old ledgers burn.',
+        advantage: 'Destroy the loyalists’ planned answer before it can divide the Crown force inside the ring.',
+        showIfAnyFlags: ['c7-proof-public-early'],
+        addFlags: ['c8-gate-forgery-exposed'],
+        result: 'Ansel places the fresh ledger beside his nailed duty board. The names do not match the soldiers who actually served. Teren tears off the false seal in front of his officers.',
+        next: 'c8-breach',
+      },
     ],
   },
 
@@ -664,8 +903,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'More than an hour before the yearly opening, the Gate inhales.',
       'Air tears from the yard toward the black wall. Carts roll backward. Two soldiers lose their footing. A furnace red crack appears down the Gate’s centre, thin as a sword blade and bright enough to leave an afterimage.',
       'The opening is not a doorway yet. It is a wound drawing heat, air, and every active promise toward itself. The powder room door breaks from its hinges and begins sliding across the stones.',
+      'Your attention moves between the wounded wagon and the sparks racing toward the powder.',
       'Mara catches one falling soldier. Ansel reaches the other. A wagon carrying three wounded wardens rolls toward the crack while sparks race for the exposed powder barrels.',
-      'Your body chooses the wagon before your mind finishes counting lives. You force the instinct back. You have time to stop the wagon or the sparks yourself. The other danger must belong to someone you trust.',
+      'The wagon is closest. The powder will kill more people if it catches. You have time to stop one danger yourself. The other must belong to someone you trust.',
     ],
     choices: [
       {
@@ -949,7 +1189,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         changes: { health: -2 },
         requires: { health: 1 },
         addFlags: ['c8-chain-repaired-by-hand'],
-        result: 'Heat cuts through your greaves. You and Mara drag the iron into place while Korran’s riders hammer the joining pin from horseback.',
+        result: 'Heat cuts through your greaves. You and Korran’s riders drag the iron into place and hammer the joining pin while Mara calls the safe steps from cover.',
         next: 'c8-opening',
       },
       {
@@ -958,10 +1198,24 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         detail: 'Spend 2 Resolve holding the fire after Vaor chooses to answer.',
         advantage: 'Relight every furnace at once and preserve mortal fuel for the night.',
         showIfAnyFlags: ['c5-freed-vaor'],
+        hideIfAnyFlags: chapterSevenApprovedVaorUseFlags,
         changes: { resolve: -2 },
         requires: { resolve: 2 },
         addFlags: ['c8-chain-lit-by-ember'],
         result: 'You name the danger to the forts. Vaor agrees and opens one breath of fire. You hold it inside the flooded channels until all eight baskets wake.',
+        next: 'c8-opening',
+      },
+      {
+        id: 'c8-call-vaor-after-steppe-consent',
+        label: 'Ask Vaor to repeat the careful ember use that protected people on the steppe.',
+        detail: 'Spend 1 Resolve guiding a use whose limits both of you already tested.',
+        advantage: 'Relight every furnace with less strain because earlier consent built a working method.',
+        showIfAllFlags: ['c5-freed-vaor'],
+        showIfAnyFlags: chapterSevenApprovedVaorUseFlags,
+        changes: { resolve: -1 },
+        requires: { resolve: 1 },
+        addFlags: ['c8-chain-lit-by-ember', 'c8-vaor-approved-gate-use'],
+        result: 'You ask for the same narrow fire that protected living people on the steppe. Vaor agrees. The ember follows the tested limits and wakes all eight baskets without spreading into the fort rooms.',
         next: 'c8-opening',
       },
       {
@@ -970,10 +1224,24 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         detail: 'Spend 3 Resolve controlling dragon fire while Vaor resists.',
         advantage: 'Relight every furnace at once, but deepen Vaor’s anger and expose the theft to every witness.',
         showIfAnyFlags: ['c5-took-ember-by-force'],
+        hideIfAnyFlags: chapterSevenForcedVaorUseFlags,
         changes: { resolve: -3 },
         requires: { resolve: 3 },
         addFlags: ['c8-chain-lit-by-ember', 'c8-forced-vaor-gate-use'],
         result: 'Vaor refuses. You force the ember open anyway. Fire runs through the flooded channels while his resistance tears at your breath. All eight baskets wake, and every witness hears the dragon’s anger.',
+        next: 'c8-opening',
+      },
+      {
+        id: 'c8-force-ember-after-steppe-abuse',
+        label: 'Force the stolen ember again after Vaor resisted you on the steppe.',
+        detail: 'Spend 4 Resolve overcoming stronger resistance. The fire may damage the furnace channels after it wakes them.',
+        advantage: 'Relight every furnace, but enter the opening hour with Vaor actively fighting your control.',
+        showIfAllFlags: ['c5-took-ember-by-force'],
+        showIfAnyFlags: chapterSevenForcedVaorUseFlags,
+        changes: { resolve: -4 },
+        requires: { resolve: 4 },
+        addFlags: ['c8-chain-lit-by-ember', 'c8-forced-vaor-gate-use', 'c8-vaor-resisting-at-gate'],
+        result: 'Vaor recognises the pressure and tears back. You force the ember through the flooded channels. All eight baskets wake, but one furnace wall cracks and the dragon’s anger remains inside every flame.',
         next: 'c8-opening',
       },
       {
@@ -982,10 +1250,24 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         detail: 'Spend 2 Resolve after both bearers agree to protect the fort ring.',
         advantage: 'Relight every furnace without breaking either bearer’s right to refuse.',
         showIfAnyFlags: ['c5-vaor-pact'],
+        hideIfAnyFlags: chapterSevenApprovedVaorUseFlags,
         changes: { resolve: -2 },
         requires: { resolve: 2 },
         addFlags: ['c8-chain-lit-by-ember', 'c8-vaor-approved-gate-use'],
         result: 'You name the purpose and the risk. Vaor agrees. The pact opens, and fire runs through the flooded channels until all eight baskets wake.',
+        next: 'c8-opening',
+      },
+      {
+        id: 'c8-share-tested-pact-ember-chain',
+        label: 'Use the protective ember method Vaor accepted on the steppe.',
+        detail: 'Spend 1 Resolve after both bearers agree that the fort ring protects living people.',
+        advantage: 'Relight every furnace with less strain because the pact already tested this limit together.',
+        showIfAllFlags: ['c5-vaor-pact'],
+        showIfAnyFlags: chapterSevenApprovedVaorUseFlags,
+        changes: { resolve: -1 },
+        requires: { resolve: 1 },
+        addFlags: ['c8-chain-lit-by-ember', 'c8-vaor-approved-gate-use'],
+        result: 'You name the same protective limit used on the steppe. Vaor agrees. The pact carries a narrow flame through the flooded channels and wakes every basket.',
         next: 'c8-opening',
       },
       {
@@ -1013,6 +1295,9 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'The Gate opens at sunset.',
       'First comes a red line. Then the two halves move apart by the width of one hand. Through the gap, you see a city of black towers beneath an orange sky. A hot wind carries voices speaking in several languages.',
       'The yearly opening lasts one hour. It has happened seventeen times. Every earlier year, the gap widened. Tonight someone beneath the Gate is pulling on the stolen future promises to force it farther.',
+      ...(has(state, 'c8-vaor-resisting-at-gate')
+        ? ['Stolen dragonfire burns in the signal baskets, but Vaor keeps pulling against it. Any defence that depends on those flames may fail when his resistance peaks.']
+        : []),
       forceChoiceAtOpening(state),
       'The eight signal fires answer, but some links lack people or power. You have three ways to fill those gaps.',
       'Mortal wardens can hold every fire, but one frightened group could break the chain. The Ash Compact can strengthen each weak fire, but it will earn the peaceful embassy it requested.',
@@ -1024,8 +1309,19 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         label: 'Unite the mortal wardens and let each fort choose its own keeper.',
         detail: 'Reject devil aid and refuse to destroy a fort. The defence will depend on frightened people holding every weak point.',
         advantage: 'Keep the Gate under mortal control without creating a new contract or permanent gap.',
+        hideIfAnyFlags: chapterSevenSupplyLossFlags,
         addFlags: ['c8-united-wardens'],
         result: 'You send one question around the ring: Who freely chooses a fire? Names return from Crown ranks, volunteers, steppe riders, and the Futureless.',
+        next: 'c8-wardens-route',
+      },
+      {
+        id: 'c8-choose-depleted-wardens',
+        label: 'Unite the mortal wardens with the supplies that survived the salt basin.',
+        detail: 'Reject devil aid and refuse to destroy a fort. Thin food, arrows, horses, or cold weather gear will leave the mortal defence with no reserve.',
+        advantage: 'Keep the Gate under mortal control, but accept more burns and no spare force if a second wall breaks.',
+        showIfAnyFlags: chapterSevenSupplyLossFlags,
+        addFlags: ['c8-united-wardens', 'c8-depleted-mortal-defense'],
+        result: 'Every remaining cloak, arrow, ration, and horse goes to a named post. The eight fires gain willing keepers. There is nothing left behind them except the people already carrying wounds.',
         next: 'c8-wardens-route',
       },
       {
@@ -1322,6 +1618,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Your father’s old inn key hangs beneath your armour. It represents the hope that you can return and become the man who left. Your cracked Crown badge carries the Oath of service you swore to Asterra.',
       'Beside the badge hangs your Warden whistle. When you became captain, you promised to answer any Warden who sounded it. The promise once made you reliable. Here, the Gate can make every call sound at once.',
       `${endangeredCompanion(state)} steps close enough to share the burden if you ask. The choice now has a key, a badge, a whistle, and a person attached to it.`,
+      ...gateDefenceRecord(state),
     ],
     choices: [
       {
@@ -1403,6 +1700,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     body: (state) => [
       'The hostile opening is contained. No army crossed, and the gap has narrowed to the width of one person.',
       ...pellOathOutcome(state),
+      oathCost(state),
       'A white ember holds that final space long enough for one envoy to request the promised meeting. It cannot widen the Gate again.',
       'A woman steps to the far side carrying a white ember lantern. Swept black horns rise through dark hair. Her armour is deep red, cut for ceremony rather than battle, and every weapon behind her has been sealed inside a brass case.',
       vexaGreeting(state),
@@ -1480,8 +1778,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'For the first time in Asterra’s recorded history, a devil embassy sits at a mortal table under a public agreement. Soldiers keep their weapons. The envoys keep theirs sealed. Nobody mistakes peace for trust.',
       'Every chair remains angled toward the sealed weapons. Survival has created a meeting, not safety.',
       routeOutcome(state),
-      oathCost(state),
-      ...gateDefenceRecord(state),
       'Vexa places seventeen contracts beside the Crown ledgers. The seals belong to different rulers, different devil houses, and one hand that appears on both sides of the Gate.',
       'She turns the final page toward you. It is a prepared claim, older than your first command, carrying your full name but not your agreement.',
       'The price is blank. The page owns nothing yet. Someone has been studying your choices so they can offer the one bargain you may accept.',
@@ -1502,8 +1798,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       vexaMeetingStatus(state),
       'Your attention stays on her sealed cases. A peaceful object can still carry a dangerous truth.',
       routeOutcome(state),
-      oathCost(state),
-      ...gateDefenceRecord(state),
       has(state, 'c8-vexa-received-outer-fort')
         ? 'Inside the isolated fort yard, Vexa opens the first brass case. It holds copies of bargains made during seventeen hidden Gate openings and one unfinished contract claim prepared long before them.'
         : 'Without crossing, Vexa opens the first brass case. It holds copies of bargains made during seventeen hidden Gate openings and one unfinished contract claim prepared long before them.',
@@ -1527,8 +1821,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Ansel stands between two worlds and asks the question rulers avoided for seventeen years. Vexa answers him before she answers you. The house that bought the wardens’ future promises also paid mortal officials to hide every opening.',
       'You watch his shoulders settle as the answer gives his anger a name.',
       routeOutcome(state),
-      oathCost(state),
-      ...gateDefenceRecord(state),
       'Only after the Futureless have heard the truth does Vexa place a separate contract draft in your hands.',
       'It carries your full name, written before you became an Oathwarden. The price and your agreement remain blank. It is a trap being prepared, not a bargain already made.',
       'Somewhere beyond the Gate, something is still waiting to learn which future will hurt you most to lose.',

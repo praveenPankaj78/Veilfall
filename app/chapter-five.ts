@@ -25,10 +25,15 @@ function partingTool(state: GameState) {
 }
 
 function rookMapMemory(state: GameState) {
+  const caelanMap = has(state, 'c4-lysara-mapped-nine')
+    ? 'Lysara’s treaty book holds all nine marks, so losing the fragment would not erase their locations.'
+    : has(state, 'c4-sensed-northern-nail')
+      ? 'Your Oath identified the northern fire mark without revealing the other eight locations to Rook.'
+      : 'The fragment still provides your only complete guide to the active northern mark.';
   if (has(state, 'c4-rook-full-copy')) {
-    return 'Rook entered the Underways with the complete nine mark copy you allowed him to make. The real fragment remains in your pack.';
+    return `Rook entered the Underways with the complete nine mark copy you allowed him to make. The real fragment remains in your pack. ${caelanMap}`;
   }
-  return 'Rook entered the Underways with only a thin wax scrap showing the northern mark and two blurred roads. The real fragment remains in your pack.';
+  return `Rook entered the Underways with only a thin wax scrap showing the northern mark and two blurred roads. The real fragment remains in your pack. ${caelanMap}`;
 }
 
 function relationshipInterlude(state: GameState) {

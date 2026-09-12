@@ -389,6 +389,7 @@ export function knownTruths(game: GameState) {
       || game.flags.includes('c7-lio-under-guard')
       || !['c7-red-horizon', 'c7-break-town-line', 'c7-first-riders'].includes(game.nodeId)) {
       truths.push('The Red Wind Hunt follows commands spoken in the voice of Marshal Evren, an Asterra officer who died nineteen years ago.');
+      truths.push('The storm can copy spoken facts after a short delay. It cannot answer a fresh challenge before a second living officer creates the reply.');
     }
 
     if (game.flags.includes('c7-copied-gate-diversion')
@@ -401,8 +402,14 @@ export function knownTruths(game: GameState) {
       truths.push('Malrec’s written order moved the living army. A separate dead command is keeping it in the west. The two powers are cooperating, but they are not the same enemy.');
     }
     if (game.flags.includes('c7-traced-hidden-sender')) {
-      truths.push('Ilyra traced the dead command to a hidden will beyond the Black Gate. It now knows more about us because of the method I chose.');
+      if (game.flags.includes('c7-shared-obedience-memory')) truths.push('Ilyra traced the dead command beyond the Black Gate, but the hidden sender learned one private failure from me.');
+      else if (game.flags.includes('c7-forced-vaor-battle-use') || game.flags.includes('c7-vaor-approved-battle-use')) truths.push('Vaor’s ember traced the dead command beyond the Black Gate, and the hidden sender learned the ember and its bearer.');
+      else if (game.flags.includes('c7-lio-refused-dead-command') || game.flags.includes('c7-lio-refused-inside-army')) truths.push('Lio’s willing refusal traced the dead command beyond the Black Gate. The hidden sender learned his voice, but gained no magical weapon.');
+      else if (game.flags.includes('c7-command-demanded-proof')) truths.push('Ilyra traced only the edge of the command beyond the Black Gate. Her countermark preserved the safe western approach without exposing a private memory.');
     }
+    if (game.flags.includes('c7-saved-both-burned-proof') && !game.flags.includes('c7-proof-survives-original-fire')) truths.push('Malrec’s original Gate order burned during the final rescue. Survivor testimony remains, but the sealed legal proof is gone.');
+    else if (game.flags.includes('c7-saved-both-burned-proof')) truths.push('Malrec’s original Gate order burned during the final rescue, but authenticated copies and witnesses still carry its dates.');
+    else if (game.flags.includes('c7-original-orders-safe')) truths.push('Malrec’s original sealed Gate order remains in my coat.');
     if (game.flags.includes('c7-gained-full-army')) {
       truths.push('I turned the Crown March east under my command. A full army now follows me toward the Black Gate fort ring.');
     }
@@ -659,6 +666,14 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c7-lio-under-guard')) consequences.push('Because Lio offered evidence without joining you, he remains a protected witness under guard.');
   if (game.flags.includes('c7-copied-gate-diversion')) consequences.push('Because you preserved Malrec’s Gate order, the army saw that he emptied the forts before accusing you.');
   if (game.flags.includes('c7-traced-hidden-sender')) consequences.push('Because you traced the dead command, you know a separate power beyond the Black Gate is helping keep Asterra’s army west.');
+  if (game.flags.includes('c7-proof-rider-relay')) consequences.push('Because five riders carried separate copies, no single capture can erase Malrec’s dated order.');
+  if (game.flags.includes('c7-orders-on-banners')) consequences.push('Because the orders were copied onto banners, burning loose paper cannot hide the dates from the army.');
+  if (game.flags.includes('c7-front-rank-saw-original')) consequences.push('Because only the front rank verified the original, most of the Crown March still relies on Teren’s judgment.');
+  if (game.flags.includes('c7-ally-lasting-injury')) consequences.push('Because Command saved the broken company, the companion under the signal frame carries a lasting bone injury.');
+  if (game.flags.includes('c7-company-storm-losses')) consequences.push('Because Caelan went to the trapped companion, the broken Crown company lost soldiers in the final red wall.');
+  if (game.flags.includes('c7-lost-gate-supplies')) consequences.push('Because the supply wagon blocked the final charge, the fort road begins with less food and fewer arrows.');
+  if (game.flags.includes('c7-lost-fast-horses')) consequences.push('Because the returning southern escort saved both groups, its exhausted horses could not continue to the Gate.');
+  if (game.flags.includes('c7-lio-named-deserter') || game.flags.includes('c7-lio-stranded-after-rescue')) consequences.push('Because Lio refused the dead command in public, Malrec’s law now calls him a deserter.');
   if (game.flags.includes('c7-mara-chosen-future')) consequences.push('Because you promised Mara a shared future as an equal, danger no longer leaves her waiting outside your plans.');
   if (game.flags.includes('c7-mara-romance-ended')) consequences.push('Because you ended the romance honestly, Mara remains your Warden without carrying a false promise.');
   if (game.flags.includes('c7-lysara-chosen-future')) consequences.push('Because you chose partnership with Lysara, your bond now allows two loyalties and honest disagreement.');
@@ -685,6 +700,10 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c8-preserved-original-ledgers')) consequences.push('Because you carried the opening ledgers through falling stone, seventeen years of original Crown proof survived.');
   if (game.flags.includes('c8-living-copy-of-openings')) consequences.push('Because Lysara copied the hidden opening dates, foreign courts can test the truth even though the Crown paper burned.');
   if (game.flags.includes('c8-many-witnessed-openings')) consequences.push('Because you called divided witnesses into the record room, no single stolen document can erase the hidden openings again.');
+  if (game.flags.includes('c8-linked-malrec-to-gate-record')) consequences.push('Because you joined Malrec’s order to the hidden Gate reports, the evidence connects the final troop withdrawal to years of Crown concealment.');
+  if (game.flags.includes('c8-gate-forgery-exposed')) consequences.push('Because you checked the fresh staffing ledger against Ansel’s duty board, Malrec’s prepared forgery failed in front of Crown officers.');
+  if (game.flags.includes('c8-depleted-mortal-defense')) consequences.push('Because Chapter Seven supplies were lost, the mortal fort defence held without a reserve and left more keepers burned.');
+  if (game.flags.includes('c8-vaor-resisting-at-gate')) consequences.push('Because Vaor’s stolen ember was forced again, the fort fires held while the dragon resisted inside every flame.');
   if (game.flags.includes('c8-mara-knows-home-desire')) consequences.push('Because you told Mara what home means to you without making an Oath, she knows what future the Gate may threaten.');
   if (game.flags.includes('c8-lysara-knows-road-desire')) consequences.push('Because you named a road with Lysara beyond both kingdoms, she knows what future the Gate may threaten.');
   if (game.flags.includes('c8-living-seed-spent')) consequences.push('Because Lysara’s weakened seed saved Pell and then lifted the buried chain, its treaty magic is now dormant.');
