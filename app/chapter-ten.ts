@@ -1558,6 +1558,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'vathisapproach',
     final: true,
+    nextChapter: 'c11-vathis-gate',
     body: (state) => [
       'Vathis rises in stacked black towers, each shaped like an open hand around a different flame.',
       'Your shared ledger carries every offer term and refusal. The company can compare any new price, but its painful desires are no longer private within the expedition.',
@@ -1578,6 +1579,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'vathisapproach',
     final: true,
+    nextChapter: 'c11-vathis-gate',
     body: (state) => [
       'Vathis rises in stacked black towers, each shaped like an open hand around a different flame.',
       'Every private offer seal remains with its owner. The company knows its tested safety signal, while one unshared risk may still wait behind a closed page.',
@@ -1598,6 +1600,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'vathisapproach',
     final: true,
+    nextChapter: 'c11-vathis-gate',
     body: (state) => [
       'Vathis rises in stacked black towers, each shaped like an open hand around a different flame.',
       has(state, 'c10-burden-oath-active')

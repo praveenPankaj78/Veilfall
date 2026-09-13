@@ -99,6 +99,8 @@ For Ilyra, the player first uses Health, Mana, Threadread, and a simple Ward dur
 - Before the first use, state what the mechanic represents, how the player gains it, what spending it can do, and any lasting risk.
 - Show costs on the choice before selection.
 - Label the concrete advantage beside every resource cost before selection.
+- When a power transfers freedom, name the receiving promise, the exact action the player loses, the duration, success condition, breach condition, and whether it survives the chapter.
+- An illusion may make a real desire visible. Rejecting its price must not require the protagonist to deny that desire, and the illusion cannot answer for an absent person.
 - Do not rely on a positive stat badge to explain why an option is worthwhile.
 - A player choosing by numbers alone should still face a real trade between different advantages, not a correct profitable option and a costly roleplay option.
 - After selection, show the resource change and its fictional effect together.

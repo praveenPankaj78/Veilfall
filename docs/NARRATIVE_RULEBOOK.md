@@ -357,6 +357,8 @@ Before a scene is approved, confirm:
 - Record one visible acquisition or transfer for every important object. Once an object is recovered, later scenes may read, hand over, damage, or lose it, but must not recover it again.
 - A chapter ending must establish every token, message, prisoner transfer, and map copy that the next opening uses. The next chapter may interpret that legacy, but cannot add marks, contents, owners, or prior uses offscreen.
 - A consequential flag needs a later mechanical, choice, journal, or complication consumer. A flag kept only for a future perspective or series must be listed as terminal history with a specific reason.
+- A terminal history reason must name the exact future scene, choice, restriction, proof, or reaction that will consume the flag. Phrases such as "preserve this in the ledger" are not contracts.
+- A voice heard through an engine, memory, dream, or illusion proves only what that route tests. Do not turn a voice into a confirmed body, location, identity, death, or consent without separate evidence.
 - A relationship scene follows established commitment and attraction. It must not silently replace a developed path with the author's preferred partner.
 - Explicit relationship intent outranks a numerical attraction score. Friendship and ended romance states cannot display romantic availability or romantic narration unless the player first makes a new, clearly offered choice.
 - A friendship choice cannot silently end an exploring or committed romance. Hide it during an active bond, or write a deliberate relationship change that names what is ending.

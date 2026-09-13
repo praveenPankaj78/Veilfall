@@ -154,6 +154,21 @@ vm.runInNewContext(
   { filename: 'chapter-ten.js' },
 );
 
+const chapterElevenSource = await readFile('app/chapter-eleven.ts', 'utf8');
+const chapterElevenCompiled = ts.transpileModule(chapterElevenSource, {
+  compilerOptions,
+}).outputText;
+const chapterElevenExports = {};
+vm.runInNewContext(
+  chapterElevenCompiled,
+  {
+    exports: chapterElevenExports,
+    module: { exports: chapterElevenExports },
+    console,
+  },
+  { filename: 'chapter-eleven.js' },
+);
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -192,6 +207,7 @@ const context = {
     if (specifier === './chapter-eight') return chapterEightExports;
     if (specifier === './chapter-nine') return chapterNineExports;
     if (specifier === './chapter-ten') return chapterTenExports;
+    if (specifier === './chapter-eleven') return chapterElevenExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -235,6 +251,7 @@ const postBridgeSources = [
   chapterEightSource,
   chapterNineSource,
   chapterTenSource,
+  chapterElevenSource,
 ];
 const activeRookAction =
   /\bRook (?:walks|waits|follows|looks|points|returns|offers|asks|says|carries|pulls|uses|takes|finds|helps|stands|runs|rides|scouts)\b/i;
@@ -314,6 +331,11 @@ const chapterTenArtAssets = {
   ashroadoffer: 'public/art/ash-road-first-offer.png',
   privateoffers: 'public/art/ash-road-private-offers.png',
   vathisapproach: 'public/art/vathis-approach.png',
+};
+const chapterElevenArtAssets = {
+  vathisstreets: 'public/art/vathis-contract-streets.png',
+  vathisauction: 'public/art/vathis-invasion-auction.png',
+  vathisengine: 'public/art/vathis-engine-gate.png',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -480,6 +502,30 @@ for (const [art, asset] of Object.entries(chapterTenArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Ten artwork is missing: ${asset}`);
+  }
+}
+const earlierThanElevenArt = new Set([
+  ...earlierThanTenArt,
+  ...Object.keys(chapterTenArtAssets),
+]);
+const chapterElevenArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c11-')) continue;
+  if (!node.art)
+    failures.push(`Chapter Eleven node has no explicit art: ${id}`);
+  if (earlierThanElevenArt.has(node.art))
+    failures.push(
+      `Chapter Eleven node reuses earlier chapter art: ${id} uses ${node.art}`,
+    );
+  if (node.art) chapterElevenArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterElevenArtAssets)) {
+  if (!chapterElevenArtUsed.has(art))
+    failures.push(`Chapter Eleven never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Eleven artwork is missing: ${asset}`);
   }
 }
 
@@ -872,6 +918,9 @@ function stateKey(state) {
     'c10-offer-method-shared',
     'c10-offer-method-private',
     'c10-offer-method-oath',
+    'c11-route-revolt',
+    'c11-route-auction',
+    'c11-route-force',
   ]);
   const currentNode = nodes[state.nodeId];
   for (const choice of currentNode?.choices ?? []) {
@@ -1180,6 +1229,7 @@ const chapterTenBase = {
     'c9-route-bargain',
     'c9-fragment-recovered-bargain',
     'c9-return-promise-owned',
+    'c9-true-name-freely-disclosed',
     'c9-kept-true-name-clause',
     'c9-learned-desire-offer-danger',
     'c9-vexa-guarded-trust',
@@ -1187,6 +1237,32 @@ const chapterTenBase = {
     'c9-roster-futureless',
     'c9-no-mortal-partner-crossed',
     'c9-crossed-black-gate',
+  ],
+};
+const chapterElevenKnownTerms = Object.keys(statLabels);
+const chapterElevenKnownStoryTerms = [
+  ...chapterTenKnownStoryTerms,
+  'Ash Road',
+  'Vathis',
+  'Free Ledger',
+];
+const chapterElevenBase = {
+  ...chapterTenBase,
+  nodeId: 'c11-vathis-gate',
+  chapter: 11,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  flags: [
+    ...chapterTenBase.flags,
+    'c10-offer-method-shared',
+    'c10-shared-terms-only',
+    'c10-listening-ash-broken',
+    'c10-exact-roster-crossed-bridge',
+    'c10-road-danger-ended',
+    'c10-limits-respected',
+    'c10-free-ledger-guide-accepted',
+    'c10-free-ledger-petition-owed',
+    'c10-reached-vathis',
   ],
 };
 
@@ -1201,10 +1277,11 @@ const chapterBaseStates = {
   8: chapterEightBase,
   9: chapterNineBase,
   10: chapterTenBase,
+  11: chapterElevenBase,
 };
 
 function nodeIsInChapter(nodeId, chapter) {
-  if (chapter === 1) return !/^c(?:[2-9]|10)-/.test(nodeId);
+  if (chapter === 1) return !/^c(?:[2-9]|10|11)-/.test(nodeId);
   return nodeId.startsWith(`c${chapter}-`);
 }
 
@@ -1509,27 +1586,43 @@ const storyTermRules = {
     introduction:
       /calls them the Free Ledger only after every listening mark is gone/i,
   },
+  'Price Court': {
+    use: /\bPrice Court\b/i,
+    introduction:
+      /Price Court.+sells public use of the city|Price Court controls Vathis’s public contracts and auction/i,
+  },
+  'invasion right': {
+    use: /\binvasion right\b/i,
+    introduction:
+      /permits one Gate opening, one named force, and one bell inside Edrath/i,
+  },
+  Elian: {
+    use: /\bElian\b/i,
+    introduction: /“My name is Elian,” the voice says/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c10-')
-    ? chapterTenBase
-    : id.startsWith('c9-')
-      ? chapterNineBase
-      : id.startsWith('c8-')
-        ? chapterEightBase
-        : id.startsWith('c7-')
-          ? chapterSevenBase
-          : id.startsWith('c6-')
-            ? chapterSixBase
-            : id.startsWith('c5-')
-              ? chapterFiveBase
-              : id.startsWith('c4-')
-                ? chapterFourBase
-                : id.startsWith('c3-')
-                  ? chapterThreeBase
-                  : id.startsWith('c2-')
-                    ? chapterTwoBase
-                    : initialState;
+  const sampleState = id.startsWith('c11-')
+    ? chapterElevenBase
+    : id.startsWith('c10-')
+      ? chapterTenBase
+      : id.startsWith('c9-')
+        ? chapterNineBase
+        : id.startsWith('c8-')
+          ? chapterEightBase
+          : id.startsWith('c7-')
+            ? chapterSevenBase
+            : id.startsWith('c6-')
+              ? chapterSixBase
+              : id.startsWith('c5-')
+                ? chapterFiveBase
+                : id.startsWith('c4-')
+                  ? chapterFourBase
+                  : id.startsWith('c3-')
+                    ? chapterThreeBase
+                    : id.startsWith('c2-')
+                      ? chapterTwoBase
+                      : initialState;
   const introductionText = [
     node.lesson?.title,
     node.lesson?.body,
@@ -1586,11 +1679,12 @@ for (const [id, node] of Object.entries(nodes)) {
   }
 }
 
-const closePointOfViewPattern =
-  /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|list|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+const closePointOfViewPattern = /\byou(?:r)?\b/i;
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
   const chapterNodes = nodeOrder.filter((id) =>
-    chapter === 1 ? !/^c(?:[2-9]|10)-/.test(id) : id.startsWith(`c${chapter}-`),
+    chapter === 1
+      ? !/^c(?:[2-9]|10|11)-/.test(id)
+      : id.startsWith(`c${chapter}-`),
   );
   const sampleState =
     chapter === 1
@@ -1609,7 +1703,11 @@ for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
                   ? chapterSevenBase
                   : chapter === 8
                     ? chapterEightBase
-                    : chapterNineBase;
+                    : chapter === 9
+                      ? chapterNineBase
+                      : chapter === 10
+                        ? chapterTenBase
+                        : chapterElevenBase;
   const closeNodes = chapterNodes.filter((id) =>
     closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')),
   );
@@ -2137,6 +2235,10 @@ for (const [flag, reason] of Object.entries(terminalHistoryFlagReasons)) {
     );
   if (reason.length < 40)
     failures.push(`Terminal history flag ${flag} lacks a useful reason`);
+  if (/preserve this recorded Ash Road choice or consequence/i.test(reason))
+    failures.push(
+      `Terminal history flag ${flag} uses a generic ledger contract instead of naming its playable consumer`,
+    );
 }
 
 const safeTreatyArrival = renderedBody('c2-arrival', {
@@ -8931,7 +9033,437 @@ const stack = [
     knownTerms: chapterTenKnownTerms,
     knownStoryTerms: chapterTenKnownStoryTerms,
   },
+  {
+    state: chapterElevenBase,
+    knownTerms: chapterElevenKnownTerms,
+    knownStoryTerms: chapterElevenKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterElevenBase,
+      stats: {
+        ...chapterElevenBase.stats,
+        health: 1,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+        medicine: 0,
+      },
+    },
+    knownTerms: chapterElevenKnownTerms,
+    knownStoryTerms: chapterElevenKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterElevenBase,
+      flags: chapterElevenBase.flags
+        .filter(
+          (flag) =>
+            !flag.startsWith('c9-route-') &&
+            !flag.startsWith('c9-roster-') &&
+            !flag.startsWith('c10-offer-method-') &&
+            !flag.startsWith('c10-free-ledger-guide-') &&
+            flag !== 'c10-free-ledger-petition-owed' &&
+            flag !== 'c9-return-promise-owned' &&
+            flag !== 'c9-true-name-freely-disclosed' &&
+            flag !== 'c9-kept-true-name-clause' &&
+            flag !== 'c9-vexa-guarded-trust',
+        )
+        .concat(
+          'c9-route-theft',
+          'c9-theft-publicly-named',
+          'c9-roster-pell',
+          'c9-vexa-permanent-hostility',
+          'c10-offer-method-private',
+          'c10-private-seals-kept',
+          'c10-free-ledger-guide-refused',
+        ),
+      relationships: {
+        ...chapterElevenBase.relationships,
+        vexa: {
+          ...chapterElevenBase.relationships.vexa,
+          intent: 'hostile',
+          friction: 4,
+        },
+      },
+    },
+    knownTerms: chapterElevenKnownTerms,
+    knownStoryTerms: chapterElevenKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterElevenBase,
+      flags: chapterElevenBase.flags
+        .filter(
+          (flag) =>
+            !flag.startsWith('c9-route-') &&
+            !flag.startsWith('c9-roster-') &&
+            !flag.startsWith('c10-offer-method-'),
+        )
+        .concat(
+          'c9-route-exposure',
+          'c9-sableglass-publicly-exposed',
+          'c9-roster-wardens',
+          'c10-offer-method-oath',
+          'c10-burden-oath-active',
+          'c10-burden-oath-explicit-consent',
+          'c10-oath-traveller-withdrew',
+        ),
+    },
+    knownTerms: chapterElevenKnownTerms,
+    knownStoryTerms: chapterElevenKnownStoryTerms,
+  },
 ];
+
+function chapterElevenFixtureState({
+  add = [],
+  remove = [],
+  relationships,
+} = {}) {
+  const removed = new Set(remove);
+  return {
+    ...chapterElevenBase,
+    nodeId: 'c11-vathis-gate',
+    chapterChoices: 0,
+    history: [],
+    defeat: false,
+    stats: {
+      ...chapterElevenBase.stats,
+      health: 8,
+      resolve: 6,
+      command: 5,
+      oathfire: 5,
+      medicine: 3,
+    },
+    flags: [
+      ...new Set(
+        chapterElevenBase.flags
+          .filter((flag) => !removed.has(flag))
+          .concat(add),
+      ),
+    ],
+    relationships: relationships ?? chapterElevenBase.relationships,
+  };
+}
+
+function walkChapterEleven(label, openingState, choiceIds, expectedEnding) {
+  let state = openingState;
+  for (const choiceId of choiceIds) {
+    const node = nodes[state.nodeId];
+    const choice = node?.choices.find((candidate) => candidate.id === choiceId);
+    if (!choice) {
+      failures.push(`${label} cannot find ${choiceId} at ${state.nodeId}`);
+      return;
+    }
+    if (!canChoose(choice, state)) {
+      failures.push(`${label} cannot choose ${choiceId} at ${state.nodeId}`);
+      return;
+    }
+    state = applyChoice(state, choice);
+    if (Object.values(state.stats).some((value) => value < 0)) {
+      failures.push(`${label} makes a resource negative at ${choiceId}`);
+      return;
+    }
+  }
+  if (state.nodeId !== expectedEnding)
+    failures.push(
+      `${label} ends at ${state.nodeId}, expected ${expectedEnding}`,
+    );
+  if (!state.flags.includes('c11-elian-voice-heard'))
+    failures.push(
+      `${label} reaches its ending without the earned engine warning`,
+    );
+}
+
+const chapterElevenWalkthroughs = [
+  {
+    label: 'shared bargain Futureless revolt',
+    state: chapterElevenFixtureState({ add: ['oath-bring-them-home'] }),
+    ending: 'c11-ending-revolt',
+    choices: [
+      'c11-use-promised-ledger-checkpoint',
+      'c11-hear-petition-with-shared-ledger',
+      'c11-record-engine-lease-with-guide',
+      'c11-cross-by-shared-price-check',
+      'c11-align-fragment-under-limited-precision',
+      'c11-test-mythic-shelter-transfer',
+      'c11-register-shared-terms-not-people',
+      'c11-state-plain-illusion-refusal',
+      'c11-inventory-free-ledger-hearing-credit',
+      'c11-start-debt-bound-revolt',
+      'c11-record-collar-fraud-before-refusal',
+      'c11-build-individual-refusal-line',
+      'c11-secure-revolt-tunnel-first',
+      'c11-let-refusers-speak-engine-phrase',
+      'c11-ask-engine-voice-identity',
+      'c11-record-elian-bounded-claims',
+      'c11-hold-revolt-witness-circle',
+    ],
+  },
+  {
+    label: 'private admitted theft hostile Vexa Pell force',
+    state: chapterElevenFixtureState({
+      remove: chapterElevenBase.flags.filter((flag) =>
+        /c9-route-|c9-roster-|c10-offer-method-|c10-free-ledger-guide-/.test(
+          flag,
+        ),
+      ),
+      add: [
+        'c9-route-theft',
+        'c9-theft-publicly-named',
+        'c9-roster-pell',
+        'c9-vexa-permanent-hostility',
+        'c10-offer-method-private',
+        'c10-private-seals-kept',
+        'c10-clean-refusal-recorded',
+        'c10-free-ledger-guide-refused',
+      ],
+    }),
+    ending: 'c11-ending-force',
+    choices: [
+      'c11-take-slower-public-entry',
+      'c11-use-recorded-clean-refusal',
+      'c11-read-public-lease-chain',
+      'c11-cross-by-private-owner-signals',
+      'c11-open-door-with-admitted-theft',
+      'c11-refuse-owned-weather',
+      'c11-register-private-seal-edges',
+      'c11-state-plain-illusion-refusal',
+      'c11-inventory-roster-witness-bond',
+      'c11-march-to-engine-by-force',
+      'c11-force-pell-service-route',
+      'c11-use-mapped-force-retreat',
+      'c11-force-burn-relay-with-stolen-fragment',
+      'c11-send-relay-phrase-with-expedition-witness',
+      'c11-ask-engine-voice-for-verifiable-limit',
+      'c11-protect-elian-channel-from-ownership',
+      'c11-hold-force-engine-corridor',
+    ],
+  },
+  {
+    label: 'burden Oath exposure mixed auction',
+    state: chapterElevenFixtureState({
+      remove: chapterElevenBase.flags.filter((flag) =>
+        /c9-route-|c9-roster-|c10-offer-method-/.test(flag),
+      ),
+      add: [
+        'c9-route-exposure',
+        'c9-sableglass-publicly-exposed',
+        'c9-roster-wardens',
+        'c10-offer-method-oath',
+        'c10-burden-oath-active',
+        'c10-burden-oath-explicit-consent',
+      ],
+    }),
+    ending: 'c11-ending-auction',
+    choices: [
+      'c11-use-promised-ledger-checkpoint',
+      'c11-give-burden-accounts-before-hearing',
+      'c11-match-public-evidence-to-lease',
+      'c11-cross-by-ended-burden-record',
+      'c11-open-door-with-public-custody',
+      'c11-accept-ordinary-weather-shelter',
+      'c11-complete-burden-private-accounting',
+      'c11-state-plain-illusion-refusal',
+      'c11-inventory-sableglass-damages-claim',
+      'c11-enter-invasion-auction',
+      'c11-bid-sableglass-damages-claim',
+      'c11-use-method-proof-at-auction',
+      'c11-free-seat-holds-invasion-right',
+      'c11-let-free-seat-invoke-audit',
+      'c11-ask-engine-voice-opposition',
+      'c11-ask-elian-to-repeat-opposition-publicly',
+      'c11-lock-auction-deed-to-gate-limit',
+    ],
+  },
+  {
+    label: 'Crown volunteers low resource force',
+    state: {
+      ...chapterElevenFixtureState({
+        remove: chapterElevenBase.flags.filter((flag) =>
+          flag.startsWith('c9-roster-'),
+        ),
+        add: ['c9-roster-crown'],
+      }),
+      stats: {
+        ...chapterElevenBase.stats,
+        health: 1,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+        medicine: 0,
+      },
+    },
+    ending: 'c11-ending-force',
+    choices: [
+      'c11-use-promised-ledger-checkpoint',
+      'c11-hear-petition-with-shared-ledger',
+      'c11-record-engine-lease-with-guide',
+      'c11-cross-by-shared-price-check',
+      'c11-align-fragment-under-limited-precision',
+      'c11-refuse-owned-weather',
+      'c11-register-shared-terms-not-people',
+      'c11-state-plain-illusion-refusal',
+      'c11-inventory-free-ledger-hearing-credit',
+      'c11-march-to-engine-by-force',
+      'c11-force-seven-volunteer-marks',
+      'c11-break-sidewall-for-retreat',
+      'c11-force-align-bargained-fragment',
+      'c11-send-relay-phrase-with-expedition-witness',
+      'c11-ask-engine-voice-identity',
+      'c11-record-elian-bounded-claims',
+      'c11-hold-force-engine-corridor',
+    ],
+  },
+];
+for (const route of chapterElevenWalkthroughs)
+  walkChapterEleven(route.label, route.state, route.choices, route.ending);
+
+const destroyedOathVisibility = [
+  [
+    'c9-destroyed-red-moot-authority-oath',
+    'c11-revolt-oathfire',
+    'c11-mythic-red-moot-refusal-square',
+  ],
+  [
+    'c9-destroyed-crown-restitution-oath',
+    'c11-auction-counterbid',
+    'c11-mythic-crown-victims-claim',
+  ],
+  [
+    'c9-destroyed-clan-refusal-oath',
+    'c11-force-oathfire',
+    'c11-mythic-clan-refusal-retreat',
+  ],
+  ['c9-destroyed-honest-command-limit-oath', 'c11-revolt-oathfire', null],
+  ['c9-destroyed-unsea-investigation-oath', 'c11-auction-counterbid', null],
+];
+for (const [flag, nodeId, mythicChoice] of destroyedOathVisibility) {
+  const state = chapterElevenFixtureState({ add: [flag] });
+  if (!/gone/i.test(renderedBody(nodeId, state)))
+    failures.push(`Chapter Eleven does not show the loss recorded by ${flag}`);
+  if (mythicChoice) {
+    const choice = nodes[nodeId].choices.find(
+      (candidate) => candidate.id === mythicChoice,
+    );
+    if (choice && isChoiceVisible(choice, state))
+      failures.push(`${mythicChoice} returns after ${flag}`);
+  }
+}
+
+const maraIllusion = renderedBody(
+  'c11-illusion-street',
+  chapterElevenFixtureState({
+    add: ['c9-mara-remained-at-gate'],
+    relationships: {
+      ...chapterElevenBase.relationships,
+      mara: { ...chapterElevenBase.relationships.mara, intent: 'committed' },
+    },
+  }),
+);
+const lysaraIllusion = renderedBody(
+  'c11-illusion-street',
+  chapterElevenFixtureState({
+    add: ['c9-lysara-remained-at-gate'],
+    relationships: {
+      ...chapterElevenBase.relationships,
+      lysara: {
+        ...chapterElevenBase.relationships.lysara,
+        intent: 'committed',
+      },
+    },
+  }),
+);
+const nonRomanticIllusion = renderedBody(
+  'c11-illusion-street',
+  chapterElevenFixtureState({
+    remove: [
+      'c9-mara-crossed-black-gate',
+      'c9-mara-remained-at-gate',
+      'c9-lysara-crossed-black-gate',
+      'c9-lysara-remained-at-gate',
+      'c9-shared-private-night',
+      'c9-vexa-attraction-acknowledged',
+    ],
+    relationships: Object.fromEntries(
+      Object.entries(chapterElevenBase.relationships).map(([key, value]) => [
+        key,
+        { ...value, intent: 'platonic' },
+      ]),
+    ),
+  }),
+);
+if (!/Mara’s face/i.test(maraIllusion))
+  failures.push('Mara commitment does not select the Mara illusion');
+if (!/Lysara’s face/i.test(lysaraIllusion))
+  failures.push('Lysara commitment does not select the Lysara illusion');
+if (!/father’s inn/i.test(nonRomanticIllusion))
+  failures.push('No-romance state lacks a complete non-romantic illusion');
+if (
+  !/cannot speak here|cannot answer here|no new .*consent/i.test(
+    `${maraIllusion} ${lysaraIllusion}`,
+  )
+)
+  failures.push(
+    'An absent partner illusion is not clearly separated from the real person’s consent',
+  );
+
+const platonicRelationships = Object.fromEntries(
+  Object.entries(chapterElevenBase.relationships).map(([key, value]) => [
+    key,
+    { ...value, intent: 'platonic' },
+  ]),
+);
+const vexaIllusionState = chapterElevenFixtureState({
+  add: ['c9-vexa-attraction-acknowledged'],
+  remove: [
+    'c9-mara-crossed-black-gate',
+    'c9-mara-remained-at-gate',
+    'c9-lysara-crossed-black-gate',
+    'c9-lysara-remained-at-gate',
+    'c9-refused-private-connection',
+    'c9-vexa-permanent-hostility',
+  ],
+  relationships: platonicRelationships,
+});
+if (
+  !/Vexa’s face/i.test(renderedBody('c11-illusion-street', vexaIllusionState))
+)
+  failures.push('Eligible Vexa history does not select the Vexa illusion');
+const refusedVexaIllusion = renderedBody('c11-illusion-street', {
+  ...vexaIllusionState,
+  flags: [...vexaIllusionState.flags, 'c9-refused-private-connection'],
+});
+if (/Vexa’s face/i.test(refusedVexaIllusion))
+  failures.push('A refused Vexa connection still creates a romantic illusion');
+for (const [flag, expected] of [
+  ['c9-vexa-guarded-trust', /patrol map/i],
+  ['c9-vexa-adversarial-respect', /Adversarial respect/i],
+  ['c9-vexa-permanent-hostility', /armed public truce/i],
+]) {
+  const state = chapterElevenFixtureState({
+    add: [flag],
+    remove: [
+      'c9-vexa-guarded-trust',
+      'c9-vexa-adversarial-respect',
+      'c9-vexa-permanent-hostility',
+      'c9-refused-private-connection',
+      'c9-shared-private-night',
+      'c9-vexa-attraction-acknowledged',
+    ].filter((candidate) => candidate !== flag),
+  });
+  if (!expected.test(renderedBody('c11-defining-route', state)))
+    failures.push(`Chapter Eleven does not actively render Vexa state ${flag}`);
+}
+
+if (
+  !/CURRENT_SAVE_KEY = 'veilfall\.saga\.v15\.save'/.test(pageSource) ||
+  !/veilfall\.saga\.v14\.save/.test(pageSource)
+)
+  failures.push(
+    'Chapter Eleven save migration does not accept the prior version',
+  );
+
 const visited = new Set();
 const reachableNodes = new Set();
 const endings = new Set();
@@ -8945,6 +9477,7 @@ const chapterSevenEndings = new Set();
 const chapterEightEndings = new Set();
 const chapterNineEndings = new Set();
 const chapterTenEndings = new Set();
+const chapterElevenEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -9042,7 +9575,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c10-')) chapterTenEndings.add(node.id);
+    if (node.id.startsWith('c11-')) chapterElevenEndings.add(node.id);
+    else if (node.id.startsWith('c10-')) chapterTenEndings.add(node.id);
     else if (node.id.startsWith('c9-')) chapterNineEndings.add(node.id);
     else if (node.id.startsWith('c8-')) chapterEightEndings.add(node.id);
     else if (node.id.startsWith('c7-')) chapterSevenEndings.add(node.id);
@@ -9053,7 +9587,11 @@ while (stack.length && visited.size < 100000) {
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
-    const expectedChapterChoices = /^(?:c8|c9|c10)-/.test(node.id) ? 16 : 15;
+    const expectedChapterChoices = node.id.startsWith('c11-')
+      ? 17
+      : /^(?:c8|c9|c10)-/.test(node.id)
+        ? 16
+        : 15;
     if (state.chapterChoices !== expectedChapterChoices) {
       failures.push(
         `${node.id} reached after ${state.chapterChoices} decisions instead of ${expectedChapterChoices}`,
@@ -9137,7 +9675,11 @@ if (chapterTenEndings.size !== 3)
   failures.push(
     `Expected 3 Chapter Ten endings, found ${chapterTenEndings.size}`,
   );
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+if (chapterElevenEndings.size !== 3)
+  failures.push(
+    `Expected 3 Chapter Eleven endings, found ${chapterElevenEndings.size}`,
+  );
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
   if (!deathChapters.has(chapter))
     failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
@@ -9476,5 +10018,5 @@ if (process.argv.includes('--print-chapter-nine-routes')) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, ${chapterTenEndings.size} Chapter Ten endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, ${chapterTenEndings.size} Chapter Ten endings, ${chapterElevenEndings.size} Chapter Eleven endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

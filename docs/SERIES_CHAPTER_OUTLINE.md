@@ -202,7 +202,7 @@ Class pressure: Oathfire reaches mythic strength, but each use transfers part of
 
 Romance movement: The person closest to Caelan becomes the memory used to tempt him with a safe private life. Rejecting the illusion should affirm desire, not deny it.
 
-Revelation: Malrec's daughter Elian answers from inside the engine and begs Caelan not to let her father merge the worlds.
+Revelation: A voice identifying herself as Elian answers through the engine. Malrec remembers her as his daughter and believes merger can restore her. The voice opposes his method, while her identity and location remain unproved.
 
 End state: Caelan reaches the inner side of the Black Gate while it begins to open.
 

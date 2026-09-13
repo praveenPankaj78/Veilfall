@@ -24,6 +24,7 @@ Every protagonist has Health, plus the two or three resources that express that 
 - Medicine records the strongest healing supplies currently available to the escort. The player learns every eligible patient and likely immediate result before spending it.
 - Active Oaths are named duties with success and breach conditions.
 - Oathscars record broken promises and alter powers, dialogue, and ending options.
+- Mythic Oathfire transfers one precisely named freedom to one surviving active Oath. The option is hidden when that Oath was destroyed or released, and the restriction ends only at its stated duration or success condition.
 
 Recovery:
 

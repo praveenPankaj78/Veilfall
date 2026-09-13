@@ -9,6 +9,7 @@ import { chapterSevenNodes } from './chapter-seven';
 import { chapterEightNodes } from './chapter-eight';
 import { chapterNineNodes } from './chapter-nine';
 import { chapterTenNodes } from './chapter-ten';
+import { chapterElevenNodes } from './chapter-eleven';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -44,7 +45,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -125,7 +126,10 @@ export type StoryNode = {
     | 'gatecrossing'
     | 'ashroadoffer'
     | 'privateoffers'
-    | 'vathisapproach';
+    | 'vathisapproach'
+    | 'vathisstreets'
+    | 'vathisauction'
+    | 'vathisengine';
   intimacyControls?: (state: GameState) => boolean;
   body: (state: GameState) => string[];
   activeConsequences?: {
@@ -169,7 +173,10 @@ export type StoryTermKey =
   | 'House Sableglass'
   | 'Ash Road'
   | 'Vathis'
-  | 'Free Ledger';
+  | 'Free Ledger'
+  | 'Price Court'
+  | 'invasion right'
+  | 'Elian';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -406,6 +413,15 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   'c10-rest-with-mara': { mara: { trust: 2, attraction: 1 } },
   'c10-rest-with-lysara': { lysara: { trust: 2, attraction: 1 } },
   'c10-share-shelter-conversation': { vexa: { trust: 1, respect: 1 } },
+  'c11-affirm-mara-future-refuse-price': {
+    mara: { trust: 1, respect: 1 },
+  },
+  'c11-affirm-lysara-future-refuse-price': {
+    lysara: { trust: 1, respect: 1 },
+  },
+  'c11-affirm-vexa-future-refuse-price': {
+    vexa: { trust: 1, respect: 1 },
+  },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -3844,6 +3860,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...chapterEightNodes,
   ...chapterNineNodes,
   ...chapterTenNodes,
+  ...chapterElevenNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -4081,6 +4098,35 @@ export const nodeOrder = [
   'c10-ending-shared',
   'c10-ending-private',
   'c10-ending-oath',
+  'c11-vathis-gate',
+  'c11-petition-hearing',
+  'c11-slow-street',
+  'c11-engine-control',
+  'c11-street-expiry',
+  'c11-contract-door',
+  'c11-weather-contract',
+  'c11-method-accounting',
+  'c11-illusion-street',
+  'c11-obligation-inventory',
+  'c11-defining-route',
+  'c11-revolt-voices',
+  'c11-revolt-oathfire',
+  'c11-revolt-crisis',
+  'c11-revolt-engine-phrase',
+  'c11-auction-bid',
+  'c11-auction-counterbid',
+  'c11-auction-result',
+  'c11-auction-engine-phrase',
+  'c11-force-formation',
+  'c11-force-oathfire',
+  'c11-force-breach',
+  'c11-force-engine-phrase',
+  'c11-engine-heart',
+  'c11-elian-answer',
+  'c11-inner-gate',
+  'c11-ending-revolt',
+  'c11-ending-auction',
+  'c11-ending-force',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

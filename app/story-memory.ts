@@ -746,6 +746,37 @@ export function knownTruths(game: GameState) {
     return truths;
   }
 
+  if (game.chapter === 11) {
+    truths.push(
+      'Vathis sells public streets, doors, shelter, and weather through contracts whose stated prices end at stated exits.',
+      'The exact expedition that crossed the Black Gate remains together in Vathis. Rook, Ilyra, Korran, Vaor’s body, and the full Crown March are absent.',
+    );
+    if (game.flags.includes('c11-engine-control-proved'))
+      truths.push(
+        'The Price Court controls Vathis’s public contracts and invasion auction. House Sableglass holds the current lease controlling access to Malrec’s engine.',
+        'The invasion right permits one Gate opening, one registered force, and one Vathis bell inside Edrath. It owns no names, bodies, affection, or unlisted land.',
+      );
+    if (
+      game.flags.includes('c11-shelter-all-crossed-dry') ||
+      game.flags.includes('c11-freedom-command-restricted') ||
+      game.flags.includes('c11-freedom-hearing-restricted') ||
+      game.flags.includes('c11-freedom-door-order-restricted')
+    )
+      truths.push(
+        'Mythic Oathfire gives one active promise control of one named freedom for a stated duration. The promise cannot take an unnamed freedom.',
+      );
+    if (game.flags.includes('c11-elian-voice-heard'))
+      truths.push(
+        'A voice identifying herself as Elian answered through Malrec’s engine. Malrec remembers her as his daughter and believes merger can restore her.',
+        'Elian’s voice opposes Malrec’s method. The channel did not prove her death, singular identity, physical location, or objective status.',
+      );
+    if (game.flags.includes('c11-inner-gate-opening'))
+      truths.push(
+        'The inner Black Gate is opening. Its failing law needs a new promise.',
+      );
+    return truths;
+  }
+
   if (game.chapter === 10) {
     truths.push(
       'A desire can make an offer appear in the Cinder Deep. Silence, fear, attraction, and curiosity accept nothing.',
@@ -768,7 +799,7 @@ export function knownTruths(game: GameState) {
       truths.push(
         'The burden Oath holds only offers whose owners consented, and each owner may withdraw their own offer.',
       );
-    if (game.flags.includes('c10-free-ledger-alliance'))
+    if (game.flags.includes('c10-free-ledger-guide-accepted'))
       truths.push(
         'The Free Ledger opposes Malrec because a merged world would erase the boundaries that let separate people refuse each other.',
         'The Free Ledger will guide one checkpoint and identify the engine district. Its sealed petition must receive a public hearing before any ruling faction receives it.',
@@ -1713,9 +1744,46 @@ export function majorConsequences(game: GameState) {
     consequences.push(
       'Because you accepted the limits spoken at the shelter, the matching private temptation lost its power before Vathis.',
     );
-  if (game.flags.includes('c10-free-ledger-alliance'))
+  if (
+    game.flags.includes('c10-free-ledger-guide-accepted') &&
+    !game.flags.includes('c11-petition-hearing-held')
+  )
     consequences.push(
       'Because you accepted the Free Ledger’s bounded price, its sealed petition must receive a public hearing before any ruling faction receives it.',
+    );
+  if (game.flags.includes('c11-petition-hearing-held'))
+    consequences.push(
+      'Because you held the promised Free Ledger hearing before delivery, its named signers gained public standing and a transferable hearing credit.',
+    );
+  if (game.flags.includes('c11-route-revolt'))
+    consequences.push(
+      'Because you made room for debt-bound workers to refuse, named refusers opened the engine witness line and now demand a place in the Gate law.',
+    );
+  if (game.flags.includes('c11-route-auction'))
+    consequences.push(
+      game.flags.includes('c11-price-court-review-owed')
+        ? 'Because you won the invasion auction with legal obligations, the narrow deed blocks every unregistered force while one public review remains owed.'
+        : 'Because you won the invasion auction with legal obligations, the narrow deed blocks every unregistered force without creating an extra review duty.',
+    );
+  if (game.flags.includes('c11-route-force'))
+    consequences.push(
+      'Because the exact expedition marched through the leased district, it controls a damaged engine corridor while Vathis records the physical and political cost.',
+    );
+  if (game.flags.includes('c11-freedom-command-restricted'))
+    consequences.push(
+      'Because mythic Oathfire protected the refusal square, the Red Moot authority Oath now prevents any order beyond each fighter’s accepted command until the Gate law changes.',
+    );
+  if (game.flags.includes('c11-freedom-hearing-restricted'))
+    consequences.push(
+      'Because mythic Oathfire made hidden victims impossible to erase, you cannot refuse their Price Court hearing until it ends.',
+    );
+  if (game.flags.includes('c11-freedom-door-order-restricted'))
+    consequences.push(
+      'Because mythic Oathfire kept the retreat open, you cannot cross a contracted door first until the opening stops or every willing traveller reaches a freely chosen safe side.',
+    );
+  if (game.flags.includes('c11-elian-voice-heard'))
+    consequences.push(
+      'Because the chosen route earned a witnessed engine channel, a voice identifying herself as Elian revealed Malrec’s restoration belief and opposed merger without proving any deeper identity claim.',
     );
   return consequences.length
     ? consequences

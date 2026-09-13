@@ -71,7 +71,7 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 
 ## Phase Five: complete Caelan season, in progress
 
-Chapters Four through Ten are implemented. Produce Chapters Eleven and Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four through Eleven are implemented. Produce Chapter Twelve only after playtesting all three Vathis routes. Test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -135,4 +135,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first ten canonical chapters are implemented. The next production gate is to playtest the shared, private, and burden Oath routes into Vathis. Confirm that Chapter Eleven receives the exact fragment custody, defence legacy, destroyed Oath, relationship state, Free Ledger price, and surviving expedition.
+The foundation and the first eleven canonical chapters are implemented. The next production gate is to playtest revolt, auction, and force at Vathis. Confirm that Chapter Twelve receives the exact fragment custody, surviving expedition, active freedom restrictions, Vathis alliance, relationship state, and bounded Elian record.

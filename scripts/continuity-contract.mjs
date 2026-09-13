@@ -97,6 +97,19 @@ export const implementedChapterContracts = [
     chapter: 10,
     entryNode: 'c10-ash-road',
     endingNodes: ['c10-ending-shared', 'c10-ending-private', 'c10-ending-oath'],
+    nextNode: 'c11-vathis-gate',
+    activeGuests: [],
+    legacyOnlyHeroes: ['rook', 'ilyra'],
+  },
+  {
+    series: 'caelan',
+    chapter: 11,
+    entryNode: 'c11-vathis-gate',
+    endingNodes: [
+      'c11-ending-revolt',
+      'c11-ending-auction',
+      'c11-ending-force',
+    ],
     nextNode: null,
     activeGuests: [],
     legacyOnlyHeroes: ['rook', 'ilyra'],
@@ -142,6 +155,15 @@ export const protectedPlotTransitions = [
     id: 'ash-road-to-vathis',
     endingNodes: ['c10-ending-shared', 'c10-ending-private', 'c10-ending-oath'],
     requiredTerms: ['Vathis', 'fragment', 'Free Ledger', 'engine'],
+  },
+  {
+    id: 'vathis-to-inner-gate',
+    endingNodes: [
+      'c11-ending-revolt',
+      'c11-ending-auction',
+      'c11-ending-force',
+    ],
+    requiredTerms: ['Elian', 'inner Black Gate', 'new promise'],
   },
 ];
 
@@ -942,129 +964,165 @@ export const terminalHistoryFlagReasons = {
   'c9-crossed-black-gate':
     'Chapter Ten begins after the selected voluntary expedition physically crosses the Black Gate with the recovered fragment.',
   'c10-bargain-custody-used':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the leased-door alignment keeps the neutral return promise and its true-name scope intact.',
   'c10-burden-oath-active':
     'Chapter Eleven must preserve that the burden Oath ended at Vathis, keep every traveller’s individual withdrawal history, and require Caelan to give each consenting person a private accounting.',
   'c10-burden-oath-explicit-consent':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the public hearing and private-account scene verify each traveller’s consent and separate account.',
   'c10-burden-oath-withdrawn':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the hearing and method scenes treat the blank proposal as unowned and keep the private seals closed.',
   'c10-clean-refusal-recorded':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the slower public entry uses the recorded refusal to dismiss each stair offer without accepting it.',
   'c10-copy-risk-active':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the contract street presents the copied-route danger and makes the selected Chapter Ten method answer it.',
   'c10-crown-volunteer-pairs':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the force route gives Teren and exactly six volunteers seven separate breach posts.',
   'c10-destroyed-oath-loss-faced':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the Oath-price scenes remove each destroyed protection before any mythic option is offered.',
   'c10-exact-roster-crossed-bridge':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the gate, force formation, and inner Gate render only the expedition recorded as crossing.',
   'c10-exposure-custody-used':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the leased door admits the public evidence frame without transferring the fragment.',
   'c10-first-arch-delay':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the public-gate investigation loses the first auction timing advantage while preserving a complete path.',
   'c10-free-ledger-guide-accepted':
     'Chapter Eleven must let the Free Ledger guide the expedition through one faction checkpoint and identify the engine district from outside.',
   'c10-free-ledger-guide-refused':
     'Chapter Eleven must begin on the slower public road, grant no checkpoint passage, and impose no petition hearing duty.',
   'c10-free-ledger-offered-help':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the public gate either delivers the guide’s checkpoint help or preserves the complete refused route.',
   'c10-free-ledger-petition-owed':
     'Chapter Eleven must require a public hearing for the sealed Free Ledger petition before Caelan gives it to any ruling Vathis faction.',
   'c10-free-ledger-proved-by-oath-exit':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the petition hearing accepts the ended burden bands as separate proof with private accounting.',
   'c10-free-ledger-proved-by-private-seals':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the petition hearing accepts sealed edges while withholding every private desire.',
   'c10-free-ledger-proved-by-shared-record':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the petition hearing uses the shared record to expose a changed Sableglass exit clause.',
   'c10-free-ledger-rope-saved':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the revolt crisis offers the saved rope as an exclusive rescue of families and the engine tunnel.',
   'c10-futureless-record-line':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the Futureless force formation cancels one copied guard order through three independently owned records.',
   'c10-limits-public-only':
     'Chapter Eleven must preserve the complete platonic boundary and withhold any choice that treats the shelter conversation as romantic consent.',
   'c10-limits-respected':
     'Chapter Eleven must weaken the matching partner temptation because both people’s refused promises were repeated without alteration.',
   'c10-listening-ash-broken':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the defining-route scene withholds Sableglass’s early route closure when the listening ash was broken.',
   'c10-listening-mark-following':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the contract street lets the following mark buy a false turn before the expedition acts.',
   'c10-mixed-call-answer':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the force formation requires every mixed warden and Moot fighter to repeat accepted command limits.',
   'c10-oath-copy-contained':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the method-accounting scene uses closed burden bands without giving the Court ownership of a traveller.',
   'c10-oath-traveller-withdrew':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the accounting scene removes the withdrawn traveller’s testimony from the group claim.',
   'c10-offer-bridge-accelerated':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the public-gate approach preserves the gained timing advantage before the first auction bell.',
   'c10-offer-method-oath':
     'Chapter Eleven must carry the completed consensual burden Oath, each personal exit, and its owed private accounting without treating the Oath as ownership.',
   'c10-offer-method-oath-proposed':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the Vathis accounting scenes distinguish the proposed burden wording from an accepted Oath.',
   'c10-offer-method-private':
     'Chapter Eleven must keep offer seals with their owners and retain the unresolved coordination risk without exposing their private terms.',
   'c10-offer-method-shared':
     'Chapter Eleven must use the shared ledger to detect changed offers while preserving whether motives were withheld or exposed by permission.',
   'c10-partner-temptation-known':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the illusion street uses the recorded closest relationship as its temptation source without creating consent.',
   'c10-pell-safe-exit-mapped':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the force route gives wounded Pell a mapped retreat that keeps him behind his escort.',
   'c10-prepared-offer-pause':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the contract street pauses the whole expedition until its accepting stone and exit are visible.',
   'c10-private-desires-exposed':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the accounting scene makes Sableglass know only motives that owners chose to reveal.',
   'c10-private-false-alarm-contained':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the private-seal street contains an ownerless safe signal without opening another person’s terms.',
   'c10-private-route-delay':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the private crossing reaches the reverse bell later and preserves a concrete coordination risk.',
   'c10-private-seals-kept':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the street and auction proof keep every opaque seal with its original owner.',
   'c10-reached-vathis':
     'Chapter Eleven begins at Vathis with the exact surviving expedition, fragment custody, known contract risk, and clear objective to locate Malrec’s engine.',
   'c10-refusal-demonstrated':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the slower stair route uses the demonstrated no to collapse an offer without acceptance.',
   'c10-rest-with-lysara':
     'Chapter Eleven must preserve Lysara’s renewed consent, sole-control temptation, and refusal to promise obedience to a Crown future without implying new consent.',
   'c10-rest-with-mara':
     'Chapter Eleven must preserve Mara’s renewed consent, quiet-home temptation, and refusal to promise safety behind Caelan without implying new consent.',
   'c10-rested-apart':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the illusion route offers a complete non-romantic refusal and does not infer a partner.',
   'c10-road-danger-ended':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the Vathis gate opens after the Ash Road danger ends and begins a new civic objective.',
   'c10-roster-offer-answered-crown':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Teren and six volunteers use separate witness marks rather than Crown army authority.',
   'c10-roster-offer-answered-futureless':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Ansel and two witnesses join three independently owned records in Vathis.',
   'c10-roster-offer-answered-mixed':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the mixed company moves only under each fighter’s accepted command limit.',
   'c10-roster-offer-answered-pell':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Pell’s lock map opens a safe service route while his injury limits his pace.',
   'c10-roster-offer-kept-private':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the private route preserves each companion’s seal and withholds their confidential offer.',
   'c10-shared-complete-offers':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the shared ledger compares full terms at both ends of the expiring street.',
   'c10-shared-terms-only':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the shared ledger challenges changed terms without exposing motives that owners withheld.',
   'c10-shelter-conversation':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the illusion uses the established limits conversation to separate a wanted future from its dishonest price.',
   'c10-silence-demonstrated':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the street and door keep silent travellers unbound until a clear accepting act occurs.',
   'c10-surviving-oaths-private':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the accounting scene keeps surviving Oaths outside the Court inventory and names them only to their dependants.',
   'c10-surviving-oaths-public':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the public Oath record determines which mythic freedom transfers are visible and available.',
   'c10-theft-custody-used':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the leased door uses the admitted theft to reject Sableglass ownership while preserving the Compact debt.',
   'c10-vexa-boundary-witnessed':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Vexa’s gate and illusion dialogue respects the recorded public boundary and creates no private access.',
   'c10-vexa-hostile-truce-held':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: hostile Vexa supplies only required threat warnings and remains outside weapon reach.',
   'c10-vexa-refused-own-offer':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Vexa identifies city pressure while retaining her own refusal and independent objective.',
   'c10-water-bargain-ended':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: the slow stair reads the dark exit mark and prevents the completed cup bargain from restarting.',
   'c10-water-offer-accepted':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Vathis treats the completed cup as a past bargain with no widening ownership.',
   'c10-water-offer-refused':
-    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+    'Chapter Eleven actively consumes this state: Vathis uses the clean refusal as proof that an offer can end without binding.',
+  'c11-platonic-limit-held':
+    'Chapter Twelve must keep the selected relationship platonic and may not turn the rejected illusion, a memory, or earlier intimacy into renewed consent.',
+  'c11-price-court-review-owed':
+    'Chapter Twelve must hold one public Price Court review of the replacement Gate law and remove this restriction when that named review ends.',
+  'c11-revolt-collar-proof':
+    'Chapter Twelve must admit Pellan’s three approved collar copies as worker-owned proof when the replacement Gate law defines who may refuse.',
+  'c11-freedom-command-restricted':
+    'Chapter Twelve must prevent Caelan from ordering Moot fighters beyond their accepted command until the replacement Gate law is settled.',
+  'c11-revolt-refusal-record':
+    'Chapter Twelve must let Sira, Oren, and Pellan present or withhold their approved refusal record during the replacement-law hearing.',
+  'c11-freedom-hearing-restricted':
+    'Chapter Twelve must require Caelan to attend the named hidden victims’ hearing before this transferred freedom returns.',
+  'c11-independent-engine-audit':
+    'Chapter Twelve must let the free Price Court seat authenticate the purchased engine access limits without transferring fragment custody.',
+  'c11-freedom-door-order-restricted':
+    'Chapter Twelve must keep Caelan behind the last willing traveller at contracted doors until the opening stops or everyone reaches a freely chosen safe side.',
+  'c11-vathis-civic-damage':
+    'Chapter Twelve must make the broken public sidewall raise the Ash Compact cooperation price or reduce civic access during the Gate crisis.',
+  'c11-vaor-engine-response-tested':
+    'Chapter Twelve may treat Vaor’s permitted ember as proof of a real engine response, but never as proof of the speaker’s identity or location.',
+  'c11-elian-voice-heard':
+    'Chapter Twelve must preserve only that a voice naming herself Elian spoke through the engine and opposed Malrec’s merger method.',
+  'c11-elian-record-bounded':
+    'Chapter Twelve must offer the bounded witness record as evidence while withholding claims about death, singular identity, body, prison, or location.',
+  'c11-elian-public-opposition':
+    'Chapter Twelve must let the chosen Vathis ally cite the public opposition to merger without treating the voice as owned faction evidence.',
+  'c11-elian-channel-protected':
+    'Chapter Twelve must keep the engine voice outside auction ownership unless a new voluntary agreement is made after the channel was closed.',
+  'c11-inner-gate-opening':
+    'Chapter Twelve begins at the inner face while the Black Gate is opening and must ask what new promise can replace its failing law.',
+  'c11-alliance-free-ledger-refusers':
+    'Chapter Twelve must give the named refusers a protected public place and require one renewal hearing where affected groups may refuse.',
+  'c11-alliance-price-court-dissent':
+    'Chapter Twelve must let the free Price Court seat delay unregistered invasion forces in exchange for public review of the replacement law.',
+  'c11-alliance-ash-compact-passage':
+    'Chapter Twelve must let the Ash Compact hold the engine corridor for the exact price of one witnessed passage after Malrec’s opening stops.',
 };

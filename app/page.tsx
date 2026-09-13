@@ -59,8 +59,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v14.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v15.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v14.save',
   'veilfall.saga.v13.save',
   'veilfall.saga.v12.save',
   'veilfall.saga.v11.save',
@@ -74,7 +75,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
 const sceneArtwork = {
   departure: {
@@ -177,6 +178,18 @@ const sceneArtwork = {
     src: '/art/vathis-approach.png',
     alt: 'Caelan leads the surviving expedition toward the divided towers of Vathis',
   },
+  vathisstreets: {
+    src: '/art/vathis-contract-streets.png',
+    alt: 'Contract streets move between the black hand shaped towers of Vathis',
+  },
+  vathisauction: {
+    src: '/art/vathis-invasion-auction.png',
+    alt: 'Three Price Court seals hang above the circular invasion auction in Vathis',
+  },
+  vathisengine: {
+    src: '/art/vathis-engine-gate.png',
+    alt: 'Malrec’s white engine pulls contract chains as the inner Black Gate begins to open',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
@@ -189,6 +202,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   8: 'veilfall.chapter-eight.v1.start',
   9: 'veilfall.chapter-nine.v1.start',
   10: 'veilfall.chapter-ten.v1.start',
+  11: 'veilfall.chapter-eleven.v1.start',
 };
 
 const chapterLibrary = [
@@ -251,6 +265,12 @@ const chapterLibrary = [
     title: 'The Ash Road',
     summary:
       'Lead the voluntary expedition to Vathis while every spoken desire becomes an offer.',
+  },
+  {
+    number: 11 as const,
+    title: 'City of Every Price',
+    summary:
+      'Reach Malrec’s engine before Vathis auctions the right to invade Edrath.',
   },
 ];
 
@@ -467,25 +487,27 @@ function migrateRelationships(value: Partial<GameState>) {
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId =
     value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c10-')
-    ? 10
-    : nodeId.startsWith('c9-')
-      ? 9
-      : nodeId.startsWith('c8-')
-        ? 8
-        : nodeId.startsWith('c7-')
-          ? 7
-          : nodeId.startsWith('c6-')
-            ? 6
-            : nodeId.startsWith('c5-')
-              ? 5
-              : nodeId.startsWith('c4-')
-                ? 4
-                : nodeId.startsWith('c3-')
-                  ? 3
-                  : nodeId.startsWith('c2-')
-                    ? 2
-                    : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c11-')
+    ? 11
+    : nodeId.startsWith('c10-')
+      ? 10
+      : nodeId.startsWith('c9-')
+        ? 9
+        : nodeId.startsWith('c8-')
+          ? 8
+          : nodeId.startsWith('c7-')
+            ? 7
+            : nodeId.startsWith('c6-')
+              ? 6
+              : nodeId.startsWith('c5-')
+                ? 5
+                : nodeId.startsWith('c4-')
+                  ? 4
+                  : nodeId.startsWith('c3-')
+                    ? 3
+                    : nodeId.startsWith('c2-')
+                      ? 2
+                      : (value.chapter ?? 1);
   const savedStats = (value.stats ?? {}) as Partial<GameStats> & {
     stamina?: number;
   };
@@ -565,6 +587,7 @@ function defeatForChoice(
     8: 'You complete the action, but the Black Gate takes the last of your strength. Snow and furnace light blur together while the defenders struggle to keep the opening from becoming an invasion road.',
     9: 'You complete the action, but the embassy attack takes the last of your strength. Glass chains and handbow smoke blur while your allies keep the Gate Nail fragment from both assassin groups.',
     10: 'You complete the action, but the Ash Road takes the last of your strength. Your expedition closes around the fragment while the road carries its unanswered offers toward Vathis.',
+    11: 'You complete the action, but Vathis takes the last of your strength. Contract streets rise around the expedition while Malrec’s engine pulls the inner Black Gate open.',
   };
   return {
     title: 'Caelan has fallen',
@@ -988,7 +1011,7 @@ export default function Home() {
     }
 
     for (const later of (
-      [2, 3, 4, 5, 6, 7, 8, 9, 10] as ChapterNumber[]
+      [2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as ChapterNumber[]
     ).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
@@ -1201,6 +1224,27 @@ export default function Home() {
       ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[10]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
+  function startChapterEleven() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c11-vathis-gate',
+      chapter: 11,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 10])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 1),
+        resolve: Math.min(8, game.stats.resolve + 1),
+      },
+      history: [
+        ...game.history,
+        'You enter Vathis with the exact Ash Road expedition, recovered fragment, and every surviving contract limit.',
+      ],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[11]!, JSON.stringify(next));
     loadChapterState(next);
   }
 
@@ -1798,7 +1842,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 9 ? (
                     <>
                       <h2>Chapter Ten is ready</h2>
                       <p>
@@ -1823,22 +1867,48 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Eleven is ready</h2>
+                      <p>
+                        Continue into City of Every Price with the exact
+                        expedition, fragment custody, offer method, Free Ledger
+                        price, and surviving Oaths.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterEleven}
+                      >
+                        Continue to Chapter Eleven
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
+                        Replay Chapter Ten
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Chapter Eleven will return</h2>
+                    <h2>Chapter Twelve will return</h2>
                     <p>
-                      The surviving expedition has reached Vathis with the Gate
-                      Nail fragment and a bounded Free Ledger bargain. Next you
-                      must learn which faction controls the city and
-                      Malrec&apos;s engine.
+                      The inner Black Gate is opening. Next you must decide what
+                      new promise can replace its failing law while preserving
+                      the expedition, the fragment, and every named freedom
+                      cost.
                     </p>
                     <Button
                       className="begin-button"
                       size="lg"
                       onClick={restart}
                     >
-                      Replay Chapter Ten
+                      Replay Chapter Eleven
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>

@@ -16,6 +16,7 @@ Both show the mortal continent of Edrath and three planar insets. The insets are
 - Tikket is an underground goblin settlement beneath the southern edge of Brassreach.
 - Kharad Vey is a fortified wheel town in the Ember Steppe.
 - Vathis is marked inside the Cinder Deep inset because it belongs to that outer realm.
+- Inside Vathis, the Price Court controls public routes and auctions. House Sableglass holds the engine-district lease, while the Free Ledger and Ash Compact contest its use.
 - Worldroot is deliberately absent as a fixed point. It lies beneath every region and can be reached only through particular living paths.
 
 Future critical settlements should be added to the story atlas when their route is approved. The regional map should remain uncluttered.

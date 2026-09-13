@@ -112,11 +112,11 @@ Mechanic: A reversible water bargain teaches offers, acceptance, duration, and e
 
 Active question: Why is Malrec willing to merge the realms?
 
-Answer: He is trying to recover Elian, who asks not to be restored this way.
+Answer: Malrec remembers a daughter named Elian and believes merger can restore her. A voice identifying herself as Elian answers through the engine and opposes his method. Her identity, condition, and location remain unproved.
 
 Next hook: What new promise can replace the failing Gate law?
 
-Mechanic: Mythic Oathfire with accumulated costs.
+Mechanic: Mythic Oathfire transfers one named freedom to a surviving active promise for a stated duration.
 
 ## 12. The Ember Oath
 

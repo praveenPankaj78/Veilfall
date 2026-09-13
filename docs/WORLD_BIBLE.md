@@ -104,6 +104,8 @@ The Cinder Deep is not a place of punishment. It is a realm where desire, promis
 
 Devils cannot break the exact words of a sworn bargain. They excel at making the words incomplete. Some want Edrath opened for conquest. Others fear that a full merger will destroy the rules that let them remain themselves.
 
+Vathis sells public movement through civic contracts. Its three-seat Price Court controls public streets, weather rights, and the invasion auction. House Sableglass controls two seats through accumulated obligations and holds the current lease to Malrec's engine district. The Free Ledger helps debt-bound devils challenge owned service, while the Ash Compact protects the separate-realm laws that let each person refuse.
+
 ### Luminous Court
 
 The Luminous Court is a radiant realm of terraces, white rivers, bells, and living laws. Its celestials believe suffering comes from uncontrolled choice. They are beautiful, sincere, and terrifying when certainty becomes cruelty.
