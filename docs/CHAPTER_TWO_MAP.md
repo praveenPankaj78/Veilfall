@@ -66,6 +66,10 @@ Caelan reseats the pin through command, strength, a new binding Oath, or a wagon
 
 Caelan witnesses Ordan tear a waxed map page from the chamber wall and escape through the eastern service passage. Every surviving paper, witness, and important object travels toward Harrowfen. The closing choice determines which proof Caelan presents first: ordinary testimony, the broken iron fragment, or a public Oath against the Crown plot. The fragment is visibly packed on every ending and still pulls toward Harrowfen, shortening the next journey to one mile.
 
+## Recursive audit protection
+
+The automated lifecycle audit distinguishes later mechanics and explicitly reviewed active complications from body, ending, or journal recap. Duplicate discovery flags no longer count as one another's consumers, and every paid sibling must retain a distinct visible result plus a meaningful stored consequence when the routes reconverge.
+
 ## Art
 
 The canonical illustration is `public/art/bellweather-inn.png`.

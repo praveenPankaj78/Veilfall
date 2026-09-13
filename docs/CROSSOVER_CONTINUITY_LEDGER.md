@@ -56,6 +56,14 @@ Ilyra meets Caelan on the Ember Steppe while tracing the ancestor storm, then le
 4. The first named introduction of every visiting playable hero.
 5. The three canonical world routes.
 6. The absence of active Rook choices after his Underways exit.
+7. Flag lifecycle classification: choice mechanics, declared active complications or reactions, and exact future contracts count as consumers; journals, final summaries, and duplicate producers do not.
+8. Paid choices need a later playable consequence beyond summary prose, and a free sibling cannot deliver the same result without earned preparation.
+9. Every Chapter Eight ending carries exactly one explicit deployment selected before the independent counterorder.
+10. Chapter Seven losses alter Chapter Eight staffing, options, costs, or results; they cannot survive only as an arrival receipt.
+11. Chapter Eight evidence-loss combinations preserve the distinction among originals, authenticated copies, living bark, witnesses, forgeries, duplicates, and foreign contracts.
+12. Personal watch choices receive a later Gate reaction before the Oath price is chosen.
+
+Exact post-implementation contracts are also machine readable. Rook begins the Underways with only his last mirrored coin if two were destroyed on the bridge. A destroyed Dragonspine drill must be rebuilt before any later extraction. Vaor's memory-repair duty must be paid before later memory, testimony, or power cooperation. Preserved ancestor voices must be tested in the first Unsea investigation. A Kharad service debt gives the Red Moot one bounded post-Gate claim before the Crown can use it, and archived Orivane proof gives an independent Kharad custodian standing at the first Crown hearing. Hale's last-known-alive record proves neither death nor survival. Chapter Nine must preserve Vexa's exact entry location and whether Ansel already received the first question.
 
 Changing a protected route or crossover requires changing the design documents and the machine contract deliberately. An accidental prose edit will fail validation.
 

@@ -82,6 +82,10 @@ Caelan and Lysara stop Ordan from placing Asterra's hidden royal force on the Mi
 
 If Caelan follows Rook, the thief throws a mirrored coin disguised as the fragment and reveals the switch only after Caelan catches it. Caelan then chooses to pursue Ordan, intercept Rook, or secure Harrowfen's return path. Mara, Lysara, and Brann visibly reach the bridge on every ending before Chapter Four begins.
 
+## Recursive audit protection
+
+The paid courier list now changes the soldiers' response, market priorities establish different opening tactics, and Mara's archive search produces the precise practice-forgery evidence it later uses. Route and evidence flags receive explicit active-consumer contracts; body, ending, and journal recap alone cannot satisfy the lifecycle audit.
+
 ## Art
 
 The canonical illustration is `public/art/harrowfen-wrong-mile.png`.

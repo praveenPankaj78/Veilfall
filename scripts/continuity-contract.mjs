@@ -74,7 +74,11 @@ export const implementedChapterContracts = [
     series: 'caelan',
     chapter: 8,
     entryNode: 'c8-gate-ring',
-    endingNodes: ['c8-ending-embassy', 'c8-ending-threshold', 'c8-ending-witness'],
+    endingNodes: [
+      'c8-ending-embassy',
+      'c8-ending-threshold',
+      'c8-ending-witness',
+    ],
     nextNode: null,
     activeGuests: [],
     legacyOnlyHeroes: ['ilyra'],
@@ -104,21 +108,64 @@ export const protectedPlotTransitions = [
   },
   {
     id: 'gate-to-first-embassy',
-    endingNodes: ['c8-ending-embassy', 'c8-ending-threshold', 'c8-ending-witness'],
+    endingNodes: [
+      'c8-ending-embassy',
+      'c8-ending-threshold',
+      'c8-ending-witness',
+    ],
     requiredTerms: ['Vexa', 'contract', 'name'],
   },
 ];
 
 export const documentedSeriesRoutes = {
-  caelan: ['Greyhaven', "King's Road", 'Mileless Bridge', 'Dragonspine', 'Ember Steppe', 'Black Gate', 'Cinder Deep'],
-  rook: ['Greyhaven', 'Mileless Bridge', 'Underways', 'Brassreach', 'Serekh', 'Unsea', 'Luminous Court'],
-  ilyra: ['Shard Coast', 'Thornweald', 'Ember Steppe', 'Dragonspine', 'Serekh', 'Unsea', 'Worldroot'],
+  caelan: [
+    'Greyhaven',
+    "King's Road",
+    'Mileless Bridge',
+    'Dragonspine',
+    'Ember Steppe',
+    'Black Gate',
+    'Cinder Deep',
+  ],
+  rook: [
+    'Greyhaven',
+    'Mileless Bridge',
+    'Underways',
+    'Brassreach',
+    'Serekh',
+    'Unsea',
+    'Luminous Court',
+  ],
+  ilyra: [
+    'Shard Coast',
+    'Thornweald',
+    'Ember Steppe',
+    'Dragonspine',
+    'Serekh',
+    'Unsea',
+    'Worldroot',
+  ],
 };
 
 export const firstMeetingContracts = [
-  { heroes: ['caelan', 'rook'], hostChapter: 4, introductionNode: 'c4-corner', place: 'Mileless Bridge' },
-  { heroes: ['caelan', 'ilyra'], hostChapter: 6, introductionNode: 'c6-ilyra-entry', place: 'Ember Steppe' },
-  { heroes: ['rook', 'ilyra'], hostChapter: null, introductionNode: null, place: 'Serekh' },
+  {
+    heroes: ['caelan', 'rook'],
+    hostChapter: 4,
+    introductionNode: 'c4-corner',
+    place: 'Mileless Bridge',
+  },
+  {
+    heroes: ['caelan', 'ilyra'],
+    hostChapter: 6,
+    introductionNode: 'c6-ilyra-entry',
+    place: 'Ember Steppe',
+  },
+  {
+    heroes: ['rook', 'ilyra'],
+    hostChapter: null,
+    introductionNode: null,
+    place: 'Serekh',
+  },
 ];
 
 export const chapterFiveContinuityContract = {
@@ -164,10 +211,10 @@ export const chapterSixContinuityContract = {
     'c6-oath-investigate-unsea',
   ],
   ancestorCommandOutcomes: [
-    'c6-broke-storm-command',
-    'c6-living-vote-broke-storm',
-    'c6-oath-dead-may-witness',
-    'c6-ilyra-turned-storm-command',
+    'c6-sender-learned-ember',
+    'c6-sender-heard-living-leaders',
+    'c6-oath-guards-steppe-shrines',
+    'c6-hidden-sender-marked',
   ],
   relationshipBoundaries: [
     'c6-named-ilyra-manipulation',
@@ -175,7 +222,11 @@ export const chapterSixContinuityContract = {
     'c6-refused-ilyra-pressure',
     'c6-ilyra-professional-alliance',
   ],
-  supportOutcomes: ['c6-red-moot-war', 'c6-red-moot-alliance', 'c6-red-moot-neutral'],
+  supportOutcomes: [
+    'c6-red-moot-war',
+    'c6-red-moot-alliance',
+    'c6-red-moot-neutral',
+  ],
   seedDamage: [
     'c5-stair-scorched-thread',
     'c5-seed-scorched-river',
@@ -190,7 +241,8 @@ export const chapterSixContinuityContract = {
 export const chapterSevenContinuityContract = {
   authenticationRule: {
     acquisition: 'The storm can copy spoken facts after a short delay.',
-    limit: 'It cannot answer a fresh challenge before a second living officer creates the reply.',
+    limit:
+      'It cannot answer a fresh challenge before a second living officer creates the reply.',
   },
   lioLocations: {
     prisoner: 'c7-lio-prisoner',
@@ -213,11 +265,18 @@ export const chapterSevenContinuityContract = {
       'c7-lio-testimony-reached-ranks',
     ],
     burnedOriginal: 'c7-saved-both-burned-proof',
-    proofSurvivedBurn: 'c7-proof-survives-original-fire',
   },
   vaorUses: {
-    approved: ['c7-vaor-approved-pursuit-use', 'c7-vaor-approved-cavalry-use', 'c7-vaor-approved-battle-use'],
-    forced: ['c7-forced-vaor-pursuit-use', 'c7-forced-vaor-cavalry-use', 'c7-forced-vaor-battle-use'],
+    approved: [
+      'c7-vaor-approved-pursuit-use',
+      'c7-vaor-approved-cavalry-use',
+      'c7-vaor-approved-battle-use',
+    ],
+    forced: [
+      'c7-forced-vaor-pursuit-use',
+      'c7-forced-vaor-cavalry-use',
+      'c7-forced-vaor-battle-use',
+    ],
   },
   hiddenSenderExposures: [
     'c7-shared-obedience-memory',
@@ -227,7 +286,11 @@ export const chapterSevenContinuityContract = {
     'c7-lio-refused-inside-army',
     'c7-command-demanded-proof',
   ],
-  finalForces: ['c7-gained-full-army', 'c7-gained-chosen-company', 'c7-gained-dangerous-reputation'],
+  finalForces: [
+    'c7-gained-full-army',
+    'c7-gained-chosen-company',
+    'c7-gained-dangerous-reputation',
+  ],
   fullArmyEligibilityFlag: 'c7-earned-full-army-offer',
   handoffCosts: [
     'c7-ally-lasting-injury',
@@ -239,19 +302,543 @@ export const chapterSevenContinuityContract = {
   ],
 };
 
+export const activeConsequenceContracts = {
+  'mara-returns': {
+    complications: ['checked-horses'],
+  },
+  'choose-road': {
+    complications: [
+      'checked-route',
+      'declared-change',
+      'mara-read-order',
+      'tested-case',
+    ],
+  },
+  wheelwright: {
+    complications: ['checked-treaty'],
+  },
+  'c2-night-watch': {
+    complications: ['flirted-mara', 'planned-evening', 'c2-found-cellar-note'],
+  },
+  'envoy-arrives': {
+    complications: ['steady-axle', 'found-file-mark'],
+  },
+  'ridge-road': {
+    complications: ['split-cargo'],
+  },
+  'march-order': {
+    complications: ['fast-column', 'read-water'],
+  },
+  'ridge-crisis': {
+    complications: ['took-tower', 'tight-column', 'false-signal'],
+  },
+  evidence: {
+    complications: ['wounded-stable', 'secure-perimeter', 'mara-tended'],
+  },
+  'inspection-crisis': {
+    complications: ['rough-formation', 'ready-for-riders'],
+  },
+  'ambush-warning': {
+    complications: ['guarding-wagon', 'forced-march', 'watched-trees'],
+  },
+  'road-conversation': {
+    complications: ['mara-ahead', 'oath-safe-arrival'],
+  },
+  'low-crisis': {
+    complications: ['shielded-opening', 'ordered-walls', 'felt-mortal-blow'],
+  },
+  'c3-gate': {
+    complications: [
+      'treaty-damaged',
+      'c3-calm-entry',
+      'c3-shielded-wounded',
+      'c3-showed-iron',
+    ],
+  },
+  aftermath: {
+    complications: ['treaty-safe', 'saved-mara', 'mara-hurt'],
+  },
+  'folded-road': {
+    complications: [
+      'guard-wounded',
+      'turned-west',
+      'pressed-east',
+      'scouted-rise',
+    ],
+  },
+  retreat: {
+    complications: ['confirmed-advance-orders'],
+  },
+  'c2-arrival': {
+    complications: ['chose-silver-road', 'chose-high-ground'],
+  },
+  'c2-threshold': {
+    complications: [
+      'c2-ordered-entry',
+      'c2-faced-creature',
+      'c2-mara-led-entry',
+      'c2-oath-found-child',
+    ],
+  },
+  'c2-triage': {
+    complications: ['c2-carried-nilo'],
+  },
+  'c2-eleven-years': {
+    complications: ['c2-demanded-answer'],
+  },
+  'c2-medicine': {
+    complications: [
+      'c2-organised-care',
+      'c2-compressed-wound',
+      'c2-lysara-led-care',
+    ],
+  },
+  'c2-last-testimony': {
+    complications: [
+      'c2-saved-nilo',
+      'c2-crown-voice',
+      'c2-offered-sable-safety',
+      'c2-garran-named-quartermaster',
+      'c2-chain-ambush',
+      'c2-proved-crown-tool',
+      'c2-felt-road-lives',
+      'c2-command-repair',
+      'c2-caelan-injured',
+      'c2-oath-repair-road',
+      'c2-wagon-axle-lost',
+      'c2-wagon-lost',
+    ],
+  },
+  'c2-attacker': {
+    complications: ['c2-saved-attacker'],
+  },
+  'c2-folded-cellar': {
+    complications: ['c2-compared-memories', 'c2-tracked-stone'],
+  },
+  'c2-investigate': {
+    complications: ['c2-tested-ledger'],
+  },
+  'c2-descend': {
+    complications: [
+      'c2-ledger-route',
+      'c2-cellar-route',
+      'c2-no-fight',
+      'c2-united-versions',
+      'c2-shielded-descent',
+      'c2-maelin-secret-path',
+      'c2-left-supplies',
+    ],
+  },
+  'c2-bell': {
+    complications: [
+      'c2-attacker-route',
+      'c2-knows-midnight-pattern',
+      'c2-knows-bell-signal',
+      'c2-shared-fear',
+      'c2-captain-promise',
+    ],
+  },
+  'c2-common-room-crisis': {
+    complications: [
+      'c2-found-pantry-entry',
+      'c2-rope-line',
+      'c2-held-door',
+      'c2-oath-anchored',
+    ],
+  },
+  'c2-road-pin': {
+    complications: [
+      'c2-rope-path',
+      'c2-key-found-path',
+      'c2-trusted-mara-path',
+      'c2-trusted-lysara-path',
+      'c2-trusted-maelin-path',
+    ],
+  },
+  'c3-arrival': {
+    complications: [
+      'c2-chose-testimony',
+      'c2-chose-pin',
+      'c2-oath-expose-crown',
+    ],
+  },
+  'c3-triage': {
+    complications: ['c3-tested-signature', 'c3-proved-command'],
+  },
+  'c3-bill': {
+    complications: [
+      'c3-route-archive',
+      'c3-route-healer',
+      'c3-caught-clerk',
+      'c3-tested-door',
+      'c3-unmasked-varris',
+    ],
+  },
+  'c3-pursuit': {
+    complications: [
+      'c3-bridge-record',
+      'c3-burned-future-room',
+      'c3-saved-healing-house',
+      'c3-kept-close',
+      'c3-oath-hold-town',
+    ],
+  },
+  'c3-evidence': {
+    complications: [
+      'c3-challenged-crown-control',
+      'c3-centred-harrowfen-victims',
+      'c3-stripped-ordan-command',
+    ],
+  },
+  'c3-watch-house': {
+    complications: [
+      'c3-saved-courier-boy',
+      'c3-reached-house-first',
+      'c3-closed-roads',
+    ],
+  },
+  'c3-market-memory': {
+    complications: ['c3-took-future-cloak', 'c3-balanced-plan'],
+  },
+  'c3-pin-test': {
+    complications: [
+      'c3-saved-market-crowd',
+      'c3-saved-market-children',
+      'c3-stilled-fragment',
+    ],
+  },
+  'c3-duplicate': {
+    complications: [
+      'c3-faced-double-alone',
+      'c3-mara-flanked-double',
+      'c3-saw-false-oath',
+    ],
+  },
+  'c3-courier': {
+    complications: [
+      'c3-double-yielded',
+      'c3-double-disarmed',
+      'c3-routed-ordan-plan',
+    ],
+  },
+  'c3-collapse': {
+    complications: [
+      'c3-cut-silver-glove',
+      'c3-broke-escape-road',
+      'c3-marked-ordan',
+    ],
+  },
+  'c3-world-nail': {
+    complications: ['c3-pursuit-mara', 'c3-oath-trail'],
+  },
+  'c4-bridge-start': {
+    complications: ['c3-target-ordan', 'c3-target-thief'],
+  },
+  'c4-collapse': {
+    complications: [
+      'c4-group-secured',
+      'c4-harrowfen-held',
+      'c4-measured-start',
+    ],
+  },
+  'c4-corner': {
+    complications: ['c4-dropped-shooters', 'c4-saw-mirror-trick'],
+  },
+  'c4-wounded': {
+    complications: [
+      'c4-searched-rook',
+      'c4-saved-brann',
+      'c4-saved-guards',
+      'c4-held-collapse',
+    ],
+  },
+  'c4-nine-marks': {
+    complications: ['c4-route-bargain', 'c4-heard-rook'],
+  },
+  'c4-anchor': {
+    complications: [
+      'c4-oath-no-one-falls',
+      'c4-staged-arrest',
+      'c4-staged-ordan',
+    ],
+  },
+  'c4-theatre-plan': {
+    complications: [
+      'c4-rook-lost-long-wire',
+      'c4-rook-rang-retreat',
+      'c4-broke-crown-line',
+      'c4-pinned-crown-lines',
+      'c4-false-fragment-alerted-anchor',
+    ],
+  },
+  'c4-duty': {
+    complications: [
+      'c4-found-dispatch',
+      'c4-read-dispatch-early',
+      'c4-rook-full-copy',
+      'c4-oath-held-final-road',
+      'c4-held-anchor-by-strength',
+      'c4-shared-anchor',
+    ],
+  },
+  'c4-three-spans': {
+    complications: ['c4-mara-escorted-brann'],
+  },
+  'c4-stage-turn': {
+    complications: [
+      'c4-mara-absence-cost',
+      'c4-rook-tore-coat-lining',
+      'c4-broke-snow-line',
+      'c4-warmed-blue-fire',
+      'c4-anchored-storm-crossing',
+      'c4-storm-rope-held',
+      'c4-commanded-gears',
+      'c4-jammed-gears',
+    ],
+  },
+  'c5-north-road': {
+    complications: [
+      'c4-snow-route',
+      'c4-storm-route',
+      'c4-brass-route',
+      'c4-ordan-lower-road',
+      'c4-lysara-mapped-nine',
+      'c4-sensed-northern-nail',
+      'c4-memorised-nine',
+    ],
+  },
+  'c4-soldiers': {
+    complications: [
+      'c4-rook-shortcut-left-pursuit',
+      'c4-backed-rook-performance',
+      'c4-crown-orders-confused',
+      'c4-limited-rook-performance',
+      'c4-officers-found-real-arch',
+      'c4-captured-ordan',
+      'c4-ordan-owes-life',
+      'c4-ordan-secured-by-guards',
+    ],
+  },
+  'c5-mara-burns': {
+    complications: [
+      'c4-oath-honest-with-mara',
+      'c4-kissed-mara',
+      'c5-let-mara-check-burns',
+      'c5-fast-to-vaor',
+    ],
+  },
+  'c5-lysara-burns': {
+    complications: ['c4-lysara-private-truth'],
+  },
+  'c5-crown-assault': {
+    complications: [
+      'c5-slow-shadow-crossing',
+      'c5-knows-commander-sacrifice',
+      'c5-diverted-patrol-with-seal',
+      'c5-crown-lost-trail',
+      'c5-sorin-revealed-to-crown',
+      'c5-crown-saw-flare',
+    ],
+  },
+  'c5-glass-shelter': {
+    complications: ['c5-lantern-relay', 'c5-lost-winter-supplies'],
+  },
+  'c5-vaor-test': {
+    complications: [
+      'c5-carried-first-grief',
+      'c5-carried-dragon-grief',
+      'c5-wrote-living-names',
+      'c5-knows-vaor-kindness',
+      'c5-vaor-heard-first',
+      'c5-secured-warm-shelter',
+      'c5-found-control-spike',
+    ],
+  },
+  'c5-coldfire-rescue': {
+    complications: ['c5-burned-at-rear'],
+  },
+  'c5-three-climbs': {
+    complications: ['c5-sorin-full-guide', 'c5-knows-route-purposes'],
+  },
+  'c5-grave-mouth': {
+    complications: [
+      'c5-fragment-found-grave',
+      'c5-stair-formation',
+      'c5-silenced-archers',
+      'c5-river-oath-path',
+      'c5-river-dark-crossing',
+      'c5-held-ash-beam',
+      'c5-trapped-drill-crew',
+    ],
+  },
+  'c5-ember-choice': {
+    complications: [
+      'c5-chose-sorin-care',
+      'c5-lysara-sorted-memories',
+      'c5-told-mara-survivor-fear',
+      'c5-admitted-future-with-lysara',
+      'c5-protected-lysara-choice',
+      'c5-defended-living-world',
+      'c5-vaor-trusted-memory',
+      'c5-staged-reflected-ember',
+      'c5-vaor-broke-drill',
+      'c5-vaor-stated-terms',
+      'c5-lost-parting-route',
+      'c5-saved-chosen-companion',
+      'c5-trapped-hale-with-gallery',
+      'c5-lost-royal-camp-proof',
+    ],
+  },
+  'c5-royal-camp': {
+    complications: ['c5-decoded-trust-knot'],
+  },
+  'c5-memory-wall': {
+    complications: [
+      'c5-oath-held-grave',
+      'c5-broke-fire-channels',
+      'c5-split-coldfire',
+    ],
+  },
+  'c5-heart-memory': {
+    complications: [
+      'c5-found-orivane-memory',
+      'c5-shared-dragon-witness',
+      'c5-demanded-full-truth',
+    ],
+  },
+  'c5-vaor-wakes': {
+    complications: ['c5-asked-memory-permission'],
+  },
+  'c6-broken-axle': {
+    complications: [
+      'c6-preserved-west-lift',
+      'c6-west-lift-damaged',
+      'c6-west-lift-lost',
+    ],
+  },
+  'c6-oath-case': {
+    complications: ['c6-broad-steppe-oath'],
+  },
+  'c6-korran-terms': {
+    complications: [
+      'c6-herd-route',
+      'c6-forge-route',
+      'c6-shrine-route',
+      'c6-saved-herder',
+      'c6-dema-respect',
+      'c6-forge-families-safe',
+      'c6-broke-ancestor-casting',
+      'c6-children-safe',
+      'c6-children-chose-living',
+      'c6-heard-storm-accusation',
+      'c6-oath-living-authority',
+    ],
+  },
+  'c6-impossible-memory': {
+    complications: [
+      'c6-admitted-concord-crime',
+      'c6-unsea-thread-found',
+      'c6-korran-memory-test',
+      'c6-tested-storm-fear',
+      'c6-voice-knew-new-events',
+    ],
+  },
+  'c7-red-horizon': {
+    complications: ['c6-oath-investigate-unsea'],
+  },
+  'c6-red-moot': {
+    complications: ['c6-ilyra-leads-evidence', 'c6-precise-unsea-truth'],
+  },
+  'c6-final-alliance': {
+    complications: ['c6-lost-part-herd'],
+  },
+  'c8-force-deployment': {
+    complications: ['c7-families-inside-wheels'],
+  },
+  'c7-army-future': {
+    complications: [
+      'c7-spared-first-cavalry',
+      'c7-trapped-first-cavalry',
+      'c7-scattered-first-cavalry',
+      'c7-saved-family-wagon',
+      'c7-broke-dead-horn',
+      'c7-living-horns-won',
+      'c7-oath-silenced-dead-horn',
+      'c7-lio-called-funeral',
+      'c7-mara-called-evren-funeral',
+      'c7-lio-called-funeral-inside-army',
+      'c7-invoked-queen-border-law',
+      'c7-teren-tested-dead-command',
+      'c7-mixed-shield-ring',
+      'c7-saved-teren-at-parley',
+      'c7-oath-living-command',
+      'c7-lio-used-private-answer',
+      'c7-caelan-used-password-test',
+      'c7-salt-trap-merciful',
+      'c7-saved-crown-cavalry',
+      'c7-oath-surrender-road',
+      'c7-defeated-teren-mercifully',
+      'c7-won-by-terens-lesson',
+      'c7-duel-on-equal-ground',
+      'c7-teren-yielded-for-gate',
+      'c7-saved-many',
+      'c7-saved-both-burned-proof',
+      'c7-saved-many-with-southern-escort',
+      'c7-saved-many-under-shield-oath',
+      'c7-saved-many-with-lio',
+      'c7-saved-many-with-teren',
+    ],
+  },
+  'c7-dead-horn': {
+    complications: ['c7-taught-dead-command-test'],
+  },
+  'c7-battlefield-setup': {
+    complications: ['c7-korran-salt-warning'],
+  },
+  'c7-many-or-one': {
+    complications: ['c7-wounded-on-ridge'],
+  },
+};
+
 export const terminalHistoryFlagReasons = {
-  'c4-shielded-rook': 'Preserves Caelan taking a bolt for Rook for the later Rook perspective version of the bridge meeting.',
-  'c4-watched-both': 'Preserves Caelan refusing both men control of his attention for the later crossover perspective.',
-  'c4-law-first': 'Preserves Caelan beginning the relationship with Rook through an explicit arrest and search.',
-  'c4-rook-kept-hidden-tool': 'Preserves the tool Rook concealed during his first explanation for his own playable bridge chapter.',
-  'c4-rook-owes-caelan': 'Carries Rook’s personal debt into his independent Underways series after the implemented Caelan chapters end.',
-  'c6-kharad-full-army': 'Save compatible alias for the war outcome. The playable handoff consumes c6-red-moot-war as the canonical support state.',
-  'c6-kharad-escort': 'Save compatible alias for the guarded alliance outcome. The playable handoff consumes c6-red-moot-alliance as the canonical support state.',
-  'c6-kharad-safe-road': 'Save compatible alias for the neutral road outcome. The playable handoff consumes c6-red-moot-neutral as the canonical support state.',
-  'c7-alliance-shield-feint': 'Records the guarded alliance shield feint after its tactical result is fully resolved inside the same battle sequence.',
-  'c7-neutral-ridge-feint': 'Records the neutral route ridge feint after its tactical result is fully resolved inside the same battle sequence.',
-  'c7-lio-consented-threadread': 'Preserves that Lio gave informed permission for Threadread; c7-lio-under-guard is the canonical location state used later.',
-  'c7-marked-lanes-paid-off': 'Records that the earlier paid salt survey earned and consumed its free precise trap during the same chapter climax.',
-  'c7-oath-shield-fulfilled-final': 'Records that the broad shield Oath completed its exact protection and ended during the final red wall rescue.',
-  'c8-linked-malrec-to-gate-record': 'Preserves the joined Crown evidence chain for later political judgment after the current implemented story ends.',
+  'oath-bring-them-home':
+    'The first playable return toward Greyhaven must keep every surviving Chapter One escort member on a route to a safe hearth or force Caelan to resolve a visible Oath breach before he can spend its remaining power.',
+  'c4-shielded-rook':
+    'Rook’s first playable recollection of the bridge meeting must react to Caelan taking the bolt before Rook chooses whether to trust or exploit him.',
+  'c4-watched-both':
+    'Rook’s first playable recollection of the bridge standoff must preserve that Caelan watched both suspects and cannot describe himself as overlooked.',
+  'c4-law-first':
+    'Rook’s first playable recollection of Caelan must begin from the explicit arrest and search, changing his opening trust response before any later cooperation.',
+  'c4-rook-kept-hidden-tool':
+    'Rook’s first playable bridge scene must place the concealed tool in his inventory and offer the action it enables; no other route may invent it.',
+  'c4-rook-owes-caelan':
+    'The first playable request Caelan makes of Rook in the Underways series must present this debt as a bounded reason to help or refuse, never as automatic obedience.',
+  'c4-denied-rook-copy':
+    'Rook’s first playable Underways map choice must offer only the blurred-wax route and withhold every action requiring the complete nine-mark copy.',
+  'c4-rook-lost-mirror-coins':
+    'Rook’s first playable Underways inventory check must leave exactly one mirrored coin and remove any option that spends two or three.',
+  'c5-destroyed-royal-drill':
+    'The first later Crown extraction attempt at Dragonspine must identify a newly built machine and cannot reuse Hale’s destroyed portable drill.',
+  'c5-repair-vaor-memory-duty':
+    'The first later scene that asks Vaor for memory, testimony, or power must require Caelan to preserve a surviving memory and disclose the destroyed summer day before Vaor can cooperate.',
+  'c6-preserved-ancestor-voices':
+    'The first playable Unsea investigation must distinguish the preserved independent voices from copies still bound to the hidden command and let the player test whether any voice is conscious.',
+  'c6-owes-kharad-service':
+    'The first post-Gate request made of Kharad Vey must let the Red Moot choose one bounded act of service for Caelan before any Crown command can claim that debt.',
+  'c6-shared-orivane-proof':
+    'The first Crown hearing about the Concord must allow an independent Kharad custodian to authenticate the Orivane proof copied into the Moot archive.',
+  'c7-recorded-hale-last-seen-alive':
+    'The first Crown hearing about Hale must admit this as Caelan’s limited eyewitness account: Hale was alive when the grave collapsed, and the record proves neither death nor survival.',
+  'c8-linked-malrec-to-gate-record':
+    'The first playable Crown hearing about the Gate withdrawals must offer the joined Malrec evidence chain as admissible proof and must withhold that option when the chain was never established.',
+  'c8-vexa-entered-publicly':
+    'Chapter Nine must begin with Vexa inside Fourth Fort under public guard and may not replay or revoke the witnessed crossing.',
+  'c8-vexa-held-at-threshold':
+    'Chapter Nine must keep Vexa outside the fortress ring until Caelan makes a new explicit entry decision.',
+  'c8-vexa-received-outer-fort':
+    'Chapter Nine must begin with Vexa inside isolated Second Fort and keep her away from wounded people and lock rooms unless the player changes that limit.',
+  'c8-ansel-spoke-first':
+    'Chapter Nine must let the Futureless answer Vexa’s first disclosure before Crown rulers redirect the meeting.',
+  'c8-ansel-spoke-first-after-entry':
+    'Chapter Nine must preserve that the Compact embassy entered Second Fort before Ansel received the first question.',
 };

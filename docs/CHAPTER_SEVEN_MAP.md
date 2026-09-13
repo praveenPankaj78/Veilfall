@@ -189,6 +189,9 @@ The game check verifies:
 - the salt survey earns a free precise trap, banner copies survive paper loss, and the signal post is spent only once;
 - the full army option requires an earned offer and respects the limited Moot Oath, Teren's formal victory, and lost command trust;
 - each hidden sender exposure unlocks a different defence in Chapter Eight;
+- originals, authenticated copies, living bark, and witnesses remain separate through every proof-destruction ending combination;
+- every inherited loss changes a Chapter Eight complication, option, cost, or result, while recap prose alone does not qualify as consumption;
+- personal-scene promises produce a later Chapter Eight reaction or choice;
 - Chapter Seven's fort horizon matches the occupied Fourth Fort revealed in Chapter Eight;
 - controlled story terms are introduced before use;
 - close player point of view appears across most scenes.

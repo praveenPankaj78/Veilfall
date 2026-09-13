@@ -2,7 +2,7 @@
 
 ## Identity
 
-Title: Eight Empty Forts
+Title: Seven Cold Fires
 
 Playable hero: Caelan Vey
 
@@ -20,15 +20,17 @@ Next hook: Why was an unfinished claim bearing Caelan's name prepared before his
 
 ## Route continuity
 
-Caelan arrives from Chapter Seven with exactly one force state:
+Caelan arrives from Chapter Seven with exactly one force state. Force size and Chapter Eight deployment are separate dimensions:
 
-1. The full Crown March can staff every fort, but divided loyalties place danger inside every lock.
-2. The chosen company can hold three strong positions, but cannot cover the whole ring.
-3. The dangerous reputation route keeps a small mobile force together and uses alarms across the empty walls.
+1. The full Crown March has enough people for every fort, but divided loyalties place danger inside every lock.
+2. The chosen company has trusted volunteers but too few people to cover the whole ring safely.
+3. The dangerous reputation route brings only companions, guides, and scattered survivors.
+
+Every force state then receives the same explicit deployment decision: spread across all eight forts, concentrate at strongpoints, or remain mobile behind warning posts. Each combination has different staffing prose and later pressure. No inherited countermeasure assigns or implies a deployment.
 
 The opening also accounts for the exact salt battle handoff. It states whether Malrec's sealed original survived, which authenticated copies or witnesses exist, where Lio is, who carries a lasting injury, and whether the company lost people. Lost food, arrows, shields, blankets, horses, or signal trust change the available defence rather than appearing only in a journal.
 
-The hidden sender learned one specific target during Ilyra's trace. A stolen private failure, the ember bearer, Lio's refusal, or Ilyra's limited countermark each creates a different Chapter Eight preparation. The player can spend that knowledge during force deployment.
+The hidden sender learned one specific target during Ilyra's trace. A stolen private failure, the ember bearer, Lio's refusal, or Ilyra's limited countermark each creates a different Chapter Eight counterorder after deployment. The baseline paired-living check remains available when none of those preparations exists.
 
 Vaor's freedom, forced ember, or pact remains active. Chapter Eight does not change how Caelan acquired the ember. A freely given ember requires Vaor's permission. A stolen ember obeys while Vaor resists. The pact requires Caelan to name the purpose, and either bearer may refuse.
 
@@ -59,25 +61,26 @@ No decision in this chapter changes either absent hero's main plot.
 
 The story does not assume that the player understands contract magic, devil politics, or the fortress system before these scenes.
 
-## Fifteen decision structure
+## Sixteen decision structure
 
 1. The fortress ring: save Pell while learning the physical danger of the Gate knock.
 2. Pell's warning: choose how his knowledge and life are preserved.
 3. Force deployment: choose between covering all eight forts, holding several strong positions, or keeping the available force mobile. The Chapter Seven army outcome changes the risk, staffing problem, and final human cost of the defence.
-4. Fourth Fort: enter without letting Warden authority activate an old bargain.
-5. Futureless hall: learn the limits of sold future promises.
-6. Hidden record room: preserve proof of seventeen concealed openings.
-7. Breach in the yard: save wounded people and the powder store through a visible tradeoff.
-8. Ash offer: hear, test, or delay a bounded devil offer.
-9. Personal watch: continue the chosen relationship or define Caelan's private desire.
-10. Buried chain: restore the physical fortress link.
-11. Yearly opening: choose who owns the defence after tonight.
-12. Route execution: complete the warden, Compact, or sacrificed fort plan.
-13. Collector crossing: repel the rival house trying to collect the contracts.
-14. Oath ledger: keep, release, burn, or share the duties pulling Caelan apart.
-15. Embassy terms: receive Vexa publicly, keep a non-Compact envoy at the threshold, honour Compact entry inside an isolated outer fort, or give Ansel the first question in a way that respects the agreement already made.
+4. Counterorder: choose how the already deployed force answers the hidden sender's stolen command or target.
+5. Fourth Fort: enter without letting Warden authority activate an old bargain.
+6. Futureless hall: learn the limits of sold future promises.
+7. Hidden record room: preserve proof of seventeen concealed openings.
+8. Breach in the yard: save wounded people and the powder store through a visible tradeoff.
+9. Ash offer: hear, test, or delay a bounded devil offer.
+10. Personal watch: continue the chosen relationship or define Caelan's private desire.
+11. Buried chain: restore the physical fortress link.
+12. Yearly opening: choose who owns the defence after tonight.
+13. Route execution: complete the warden, Compact, or sacrificed fort plan.
+14. Collector crossing: repel the rival house trying to collect the contracts.
+15. Oath ledger: keep, release, burn, or share the duties pulling Caelan apart.
+16. Embassy terms: receive Vexa publicly, keep a non-Compact envoy at the threshold, honour Compact entry inside an isolated outer fort, or give Ansel the first question in a way that respects the agreement already made.
 
-Every complete route contains exactly fifteen player decisions.
+Every complete route contains exactly sixteen player decisions.
 
 ## Defining routes
 
@@ -111,6 +114,8 @@ The route still lets the player decide whether evidence, wounded people, or both
 
 ## Oath pressure
 
+Saving Pell through the new Oath grants 2 Oathfire but exposes the strand keeping him alive to the collector. Ansel must remain beside Pell, the free refusal solution is unavailable, and Caelan must personally repel the claim. The Oath is fulfilled only after Pell sees the hostile hand withdraw and the opening contained. The benefit is immediate; the later burden is mandatory and bounded.
+
 The Gate attacks Caelan by making every active duty demand him at once. This pressure includes the exact promises Caelan made at the Red Moot. The choice offers four distinct prices:
 
 1. Surrender the hope of returning to the unchanged life he once knew.
@@ -119,6 +124,16 @@ The Gate attacks Caelan by making every active duty demand him at once. This pre
 4. Ask Mara, Lysara, or Korran by name to share one strand, placing a visible Gate mark on that person.
 
 Keeping all Oaths is powerful, but it is not free. Spending Resolve or Oathfire preserves a different future. Sharing the burden protects Caelan while creating danger for someone he trusts.
+
+## Evidence states
+
+- The seventeen original Gate ledgers survive only after the Health route carries them out of Fourth Fort.
+- Living bark preserves opening dates but never becomes Crown paper.
+- Witness routes preserve testimony and seal recognition, not documents.
+- Malrec's original withdrawal order is distinct from authenticated public copies made in Chapter Seven.
+- Pell's sealed packet is a separate duplicate staged in First Fort. Evacuation may save it, while the people-first route burns it.
+- Ansel's duty board can expose the prepared staffing forgery without becoming an original ledger.
+- Vexa's devil contracts are always a separate foreign source, even when dates or house marks corroborate mortal evidence.
 
 ## End states
 
@@ -148,7 +163,7 @@ No art from Chapters One through Seven is reused.
 4. Vexa cannot be named before the embassy scene.
 5. Every negative stat change must state an expected advantage and store a consequence.
 6. Every route must remain lethal when Health is low and completable when a costly option is unavailable.
-7. All three endings must take fifteen decisions and award equal Wayfire.
+7. All three endings must take sixteen decisions and award equal Wayfire.
 8. Chapter Nine must inherit the defence route, Oath price, evidence state, and Vexa entry state.
 9. The collector barrier must match the chosen defence: mortal fires, Compact white fire, or First Fort's stored heat.
 10. Vexa must address the defence actually chosen and must not claim that Caelan promised entry when he did not.
@@ -158,12 +173,13 @@ No art from Chapters One through Seven is reused.
 14. Earlier Vaor consent makes a repeated protective use easier. Earlier forced use makes the next theft harder and leaves Vaor resisting inside the Gate fire.
 15. A route may not offer an action that breaks a contract the player already accepted. Later options must honour the exact granted permission or show and resolve the breach as a deliberate consequence.
 16. A promise must be achievable in the chapter's canonical ending state. If the wording changes, its fulfilment or failure must be acknowledged on every affected route.
-15. Free expert solutions must be earned through an earlier trust, knowledge, or preparation flag. They cannot silently dominate costly Health, Command, Resolve, or Oathfire choices.
-16. Imported force size must change a later complication or human cost, not only arrival prose.
-17. Any people, evidence, or supplies used in a route-specific crisis must be placed there in an earlier scene.
-18. A weakened item or power must produce a weaker later option, a new cost, or an unavailable action.
-19. Contract prose must distinguish an owned promise, a prepared claim, an offered bargain, and an accepted agreement.
-20. An ending must state whether a visitor entered, remained outside, or crossed under an earlier agreement.
-21. Every use of Vaor's ember must preserve the gift, theft, or pact permission established in Chapter Five.
-22. Every exact Red Moot Oath must appear in the Chapter Eight ledger and constrain any action that touches its terms.
-23. Earlier damage to Lysara or the glass seed must alter later precision magic instead of disappearing between chapters.
+17. Free expert solutions must be earned through an earlier trust, knowledge, or preparation flag. They cannot silently dominate costly Health, Command, Resolve, Medicine, or Oathfire choices.
+18. Imported force size must change a later complication or human cost, not only arrival prose.
+19. Any people, evidence, or supplies used in a route-specific crisis must be placed there in an earlier scene.
+20. A weakened item or power must produce a weaker later option, a new cost, or an unavailable action.
+21. Contract prose must distinguish an owned promise, a prepared claim, an offered bargain, and an accepted agreement.
+22. An ending must state whether a visitor entered, remained outside, or crossed under an earlier agreement.
+23. Every use of Vaor's ember must preserve the gift, theft, or pact permission established in Chapter Five.
+24. Every exact Red Moot Oath must appear in the Chapter Eight ledger and constrain any action that touches its terms.
+25. Earlier damage to Lysara or the glass seed must alter later precision magic instead of disappearing between chapters.
+26. Original records, authenticated copies, living bark, witnesses, forgeries, Pell's duplicate, and Vexa's contracts must never collapse into a generic proof state.

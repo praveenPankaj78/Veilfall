@@ -166,42 +166,50 @@ const chapterLibrary = [
   {
     number: 1 as const,
     title: 'The Road Before Rain',
-    summary: 'Escort Ambassador Lysara beyond Greyhaven before the storm closes the road.',
+    summary:
+      'Escort Ambassador Lysara beyond Greyhaven before the storm closes the road.',
   },
   {
     number: 2 as const,
     title: 'The Inn That Waited',
-    summary: 'Defend the wounded during an inn siege and repair the road beneath it.',
+    summary:
+      'Defend the wounded during an inn siege and repair the road beneath it.',
   },
   {
     number: 3 as const,
     title: 'The Town at the Wrong Mile',
-    summary: 'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
+    summary:
+      'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
   },
   {
     number: 4 as const,
     title: 'Thief at the Mileless Bridge',
-    summary: 'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
+    summary:
+      'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
   },
   {
     number: 5 as const,
     title: 'The Dragon’s Cold Grave',
-    summary: 'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
+    summary:
+      'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
   },
   {
     number: 6 as const,
     title: 'The City on Wheels',
-    summary: 'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
+    summary:
+      'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
   },
   {
     number: 7 as const,
     title: 'The Red Wind Hunt',
-    summary: 'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
+    summary:
+      'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
   },
   {
     number: 8 as const,
-    title: 'Eight Empty Forts',
-    summary: 'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
+    title: 'Seven Cold Fires',
+    summary:
+      'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
   },
 ];
 
@@ -215,7 +223,10 @@ type ModelTool = {
 };
 
 type ModelContext = {
-  registerTool: (tool: ModelTool, options?: { signal?: AbortSignal }) => void | Promise<void>;
+  registerTool: (
+    tool: ModelTool,
+    options?: { signal?: AbortSignal },
+  ) => void | Promise<void>;
 };
 
 const statIcons: Record<StatKey, typeof Heart> = {
@@ -231,9 +242,12 @@ const statHelp: Record<StatKey, string> = {
   health: 'Injury and exhaustion reduce this. At zero, Caelan dies.',
   resolve: 'His strength against fear, pain, manipulation, and despair.',
   command: 'Readiness and trust he can spend to coordinate the escort.',
-  oathfire: 'Magic gained from a binding promise and spent on extraordinary protection.',
-  medicine: 'Strong healing supplies. The story explains who can benefit before you spend any.',
-  wayfire: 'Optional path currency earned through lasting choices and chapter completion.',
+  oathfire:
+    'Magic gained from a binding promise and spent on extraordinary protection.',
+  medicine:
+    'Strong healing supplies. The story explains who can benefit before you spend any.',
+  wayfire:
+    'Optional path currency earned through lasting choices and chapter completion.',
 };
 
 const coreStatKeys: StatKey[] = ['health', 'resolve', 'command', 'oathfire'];
@@ -247,25 +261,42 @@ function migrateRelationships(value: Partial<GameState>) {
       if (flags.has('c7-mara-friendship-chosen')) return 'platonic' as const;
       if (flags.has('c7-mara-chosen-future')) return 'committed' as const;
       if (flags.has('c7-mara-duty-before-future')) return 'exploring' as const;
-      if (flags.has('c5-mara-friendship') || flags.has('c4-platonic-mara') || flags.has('c2-mara-friendship')) return 'platonic' as const;
-      if (flags.has('c5-admitted-future-with-mara')) return 'committed' as const;
-      if (flags.has('c5-kissed-mara') || flags.has('c4-kissed-mara') || flags.has('c2-kissed-mara')) return 'exploring' as const;
-      if (flags.has('flirted-mara') || flags.has('shared-unease')) return 'interested' as const;
+      if (
+        flags.has('c5-mara-friendship') ||
+        flags.has('c4-platonic-mara') ||
+        flags.has('c2-mara-friendship')
+      )
+        return 'platonic' as const;
+      if (flags.has('c5-admitted-future-with-mara'))
+        return 'committed' as const;
+      if (
+        flags.has('c5-kissed-mara') ||
+        flags.has('c4-kissed-mara') ||
+        flags.has('c2-kissed-mara')
+      )
+        return 'exploring' as const;
+      if (flags.has('flirted-mara') || flags.has('shared-unease'))
+        return 'interested' as const;
     } else if (person === 'lysara') {
       if (flags.has('c7-lysara-romance-ended')) return 'ended' as const;
       if (flags.has('c7-lysara-friendship-chosen')) return 'platonic' as const;
       if (flags.has('c7-lysara-chosen-future')) return 'committed' as const;
-      if (flags.has('c7-lysara-duty-before-future')) return 'exploring' as const;
-      if (flags.has('c5-lysara-friendship') || flags.has('c4-platonic-lysara')) return 'platonic' as const;
-      if (flags.has('c5-admitted-future-with-lysara')) return 'committed' as const;
+      if (flags.has('c7-lysara-duty-before-future'))
+        return 'exploring' as const;
+      if (flags.has('c5-lysara-friendship') || flags.has('c4-platonic-lysara'))
+        return 'platonic' as const;
+      if (flags.has('c5-admitted-future-with-lysara'))
+        return 'committed' as const;
       if (flags.has('c5-kissed-lysara')) return 'exploring' as const;
-      if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara')) return 'interested' as const;
+      if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara'))
+        return 'interested' as const;
     } else {
       if (flags.has('c7-ilyra-leverage-refused')) return 'ended' as const;
       if (flags.has('c7-ilyra-friendship-chosen')) return 'platonic' as const;
       if (flags.has('c7-ilyra-bond-deepened')) return 'exploring' as const;
       if (flags.has('c7-ilyra-interest-kept')) return 'interested' as const;
-      if (flags.has('c6-ilyra-interest-acknowledged')) return 'interested' as const;
+      if (flags.has('c6-ilyra-interest-acknowledged'))
+        return 'interested' as const;
     }
     return 'unresolved' as const;
   };
@@ -290,43 +321,90 @@ function migrateRelationships(value: Partial<GameState>) {
     };
   }
 
-  const count = (names: string[]) => names.filter((flag) => flags.has(flag)).length;
+  const count = (names: string[]) =>
+    names.filter((flag) => flags.has(flag)).length;
   return {
     mara: {
-      trust: 2 + count([
-        'trusted-mara-scouting', 'shared-unease', 'mara-read-order', 'ridge-route',
-        'planned-evening', 'trusted-mara-in-fight', 'saved-mara', 'mara-tended',
-        'c2-mara-led-entry', 'c2-compressed-wound', 'c2-shared-fear', 'c2-mara-below',
-        'c3-shielded-wounded', 'c3-entered-unarmed', 'c3-backed-mara',
-        'c3-priority-people', 'c3-mara-flanked-double', 'c3-pursuit-mara',
-      ]),
-      attraction: 1 + count([
-        'flirted-mara', 'shared-unease', 'planned-evening', 'saved-mara',
-        'mara-tended', 'c2-shared-fear', 'c2-kissed-mara', 'c3-entered-unarmed',
-        'c3-priority-people', 'c3-pursuit-mara',
-      ]),
+      trust:
+        2 +
+        count([
+          'trusted-mara-scouting',
+          'shared-unease',
+          'mara-read-order',
+          'ridge-route',
+          'planned-evening',
+          'trusted-mara-in-fight',
+          'saved-mara',
+          'mara-tended',
+          'c2-mara-led-entry',
+          'c2-compressed-wound',
+          'c2-shared-fear',
+          'c2-mara-below',
+          'c3-shielded-wounded',
+          'c3-entered-unarmed',
+          'c3-backed-mara',
+          'c3-priority-people',
+          'c3-mara-flanked-double',
+          'c3-pursuit-mara',
+        ]),
+      attraction:
+        1 +
+        count([
+          'flirted-mara',
+          'shared-unease',
+          'planned-evening',
+          'saved-mara',
+          'mara-tended',
+          'c2-shared-fear',
+          'c2-kissed-mara',
+          'c3-entered-unarmed',
+          'c3-priority-people',
+          'c3-pursuit-mara',
+        ]),
       respect: 2 + count(['c3-priority-people', 'c4-told-mara-law-bends']),
       friction: 0,
       intent: inferredIntent('mara'),
     },
     lysara: {
-      trust: Math.max(0, count([
-        'kept-seed-secret', 'seed-safe', 'found-shard-salt', 'c2-lysara-led-care',
-        'c2-saved-lysara', 'c2-lysara-below', 'c3-backed-lysara',
-        'c3-lysara-read-ink', 'c3-priority-cause', 'c3-pursuit-lysara',
-      ]) - (flags.has('revealed-seed') ? 1 : 0)),
+      trust: Math.max(
+        0,
+        count([
+          'kept-seed-secret',
+          'seed-safe',
+          'found-shard-salt',
+          'c2-lysara-led-care',
+          'c2-saved-lysara',
+          'c2-lysara-below',
+          'c3-backed-lysara',
+          'c3-lysara-read-ink',
+          'c3-priority-cause',
+          'c3-pursuit-lysara',
+        ]) - (flags.has('revealed-seed') ? 1 : 0),
+      ),
       attraction: count([
-        'intrigued-lysara', 'kept-seed-secret', 'c3-lysara-read-ink',
-        'c3-priority-cause', 'c3-pursuit-lysara',
+        'intrigued-lysara',
+        'kept-seed-secret',
+        'c3-lysara-read-ink',
+        'c3-priority-cause',
+        'c3-pursuit-lysara',
       ]),
       respect: 1 + count(['c3-priority-cause', 'c4-lysara-private-truth']),
       friction: flags.has('revealed-seed') ? 1 : 0,
       intent: inferredIntent('lysara'),
     },
     ilyra: {
-      trust: count(['c6-named-ilyra-manipulation', 'c6-ilyra-professional-alliance', 'c6-ilyra-evidence-alliance']),
+      trust: count([
+        'c6-named-ilyra-manipulation',
+        'c6-ilyra-professional-alliance',
+        'c6-precise-unsea-truth',
+        'c6-ilyra-leads-evidence',
+      ]),
       attraction: flags.has('c6-ilyra-interest-acknowledged') ? 2 : 0,
-      respect: count(['c6-named-ilyra-manipulation', 'c6-ilyra-professional-alliance', 'c6-ilyra-leads-evidence']),
+      respect: count([
+        'c6-named-ilyra-manipulation',
+        'c6-ilyra-professional-alliance',
+        'c6-ilyra-leads-evidence',
+      ]),
       friction: flags.has('c6-refused-ilyra-pressure') ? 1 : 0,
       intent: inferredIntent('ilyra'),
     },
@@ -334,30 +412,38 @@ function migrateRelationships(value: Partial<GameState>) {
 }
 
 function normaliseState(value: Partial<GameState>): GameState {
-  const nodeId = value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
+  const nodeId =
+    value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
   const chapter = nodeId.startsWith('c7-')
     ? 7
     : nodeId.startsWith('c6-')
       ? 6
       : nodeId.startsWith('c5-')
-      ? 5
-      : nodeId.startsWith('c4-')
-      ? 4
-      : nodeId.startsWith('c3-')
-        ? 3
-        : nodeId.startsWith('c2-')
-          ? 2
-          : (value.chapter ?? 1);
-  const savedStats = (value.stats ?? {}) as Partial<GameStats> & { stamina?: number };
-  const health = savedStats.health ?? savedStats.stamina ?? initialState.stats.health;
-  const completedChapters = Array.from(new Set([
-    ...(value.completedChapters ?? []),
-    ...(nodes[nodeId]?.final && health > 0 && !value.defeat ? [chapter] : []),
-  ]));
+        ? 5
+        : nodeId.startsWith('c4-')
+          ? 4
+          : nodeId.startsWith('c3-')
+            ? 3
+            : nodeId.startsWith('c2-')
+              ? 2
+              : (value.chapter ?? 1);
+  const savedStats = (value.stats ?? {}) as Partial<GameStats> & {
+    stamina?: number;
+  };
+  const health =
+    savedStats.health ?? savedStats.stamina ?? initialState.stats.health;
+  const completedChapters = Array.from(
+    new Set([
+      ...(value.completedChapters ?? []),
+      ...(nodes[nodeId]?.final && health > 0 && !value.defeat ? [chapter] : []),
+    ]),
+  );
   return {
     nodeId,
     chapter,
-    chapterChoices: value.chapterChoices ?? (chapter === 1 ? value.history?.length ?? 0 : 0),
+    chapterChoices:
+      value.chapterChoices ??
+      (chapter === 1 ? (value.history?.length ?? 0) : 0),
     completedChapters,
     stats: {
       health,
@@ -378,7 +464,11 @@ function normaliseState(value: Partial<GameState>): GameState {
   };
 }
 
-function defeatForChoice(chapter: ChapterNumber, choice: Choice, state: GameState) {
+function defeatForChoice(
+  chapter: ChapterNumber,
+  choice: Choice,
+  state: GameState,
+) {
   const bodies: Record<ChapterNumber, string> = {
     1: 'You complete the action, but your wounds finally take your strength. Rain fills your mouth as the road darkens above you. The escort continues for only a few steps before the enemy closes in.',
     2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
@@ -408,10 +498,10 @@ function applyChoice(state: GameState, choice: Choice): GameState {
   }
   const nodeId = resolveNext(choice, state);
   const updatedRelationships = nextRelationships(state.relationships, choice);
-  const completedChapters = nodes[nodeId]?.final
-    && nextStats.health > 0
-    ? Array.from(new Set([...state.completedChapters, state.chapter]))
-    : state.completedChapters;
+  const completedChapters =
+    nodes[nodeId]?.final && nextStats.health > 0
+      ? Array.from(new Set([...state.completedChapters, state.chapter]))
+      : state.completedChapters;
   return {
     nodeId,
     chapter: state.chapter,
@@ -422,7 +512,10 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     contentPreference: state.contentPreference,
     flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
     history: [...state.history, choice.result],
-    defeat: nextStats.health <= 0 ? defeatForChoice(state.chapter, choice, state) : null,
+    defeat:
+      nextStats.health <= 0
+        ? defeatForChoice(state.chapter, choice, state)
+        : null,
   };
 }
 
@@ -445,14 +538,21 @@ function changeSummary(choice: Choice, state: GameState) {
       const name = relationshipLabels[person as RelationshipKey];
       const notes: string[] = [];
       if ((changes?.trust ?? 0) > 0) notes.push(`${name}: trust may deepen`);
-      if ((changes?.trust ?? 0) < 0) notes.push(`${name}: trust may be damaged`);
-      if ((changes?.attraction ?? 0) > 0) notes.push(`${name}: attraction may deepen`);
-      if ((changes?.respect ?? 0) > 0) notes.push(`${name}: respect may deepen`);
+      if ((changes?.trust ?? 0) < 0)
+        notes.push(`${name}: trust may be damaged`);
+      if ((changes?.attraction ?? 0) > 0)
+        notes.push(`${name}: attraction may deepen`);
+      if ((changes?.respect ?? 0) > 0)
+        notes.push(`${name}: respect may deepen`);
       if ((changes?.friction ?? 0) > 0) notes.push(`${name}: tension may rise`);
-      if (changes?.intent === 'platonic') notes.push(`${name}: friendship chosen`);
-      if (changes?.intent === 'interested') notes.push(`${name}: interest acknowledged`);
-      if (changes?.intent === 'exploring') notes.push(`${name}: relationship being explored`);
-      if (changes?.intent === 'committed') notes.push(`${name}: commitment chosen`);
+      if (changes?.intent === 'platonic')
+        notes.push(`${name}: friendship chosen`);
+      if (changes?.intent === 'interested')
+        notes.push(`${name}: interest acknowledged`);
+      if (changes?.intent === 'exploring')
+        notes.push(`${name}: relationship being explored`);
+      if (changes?.intent === 'committed')
+        notes.push(`${name}: commitment chosen`);
       if (changes?.intent === 'ended') notes.push(`${name}: romance ended`);
       return notes;
     },
@@ -466,23 +566,53 @@ function changeSummary(choice: Choice, state: GameState) {
 
 function activePromises(game: GameState) {
   const promises: string[] = [];
-  if (game.flags.includes('oath-bring-them-home')) promises.push('Bring the escort home alive.');
-  if (game.flags.includes('c2-oath-repair-road')) promises.push('Repair the damaged King’s Road.');
-  if (game.flags.includes('c2-oath-expose-crown')) promises.push('Expose the Crown officer behind the attack.');
-  if (game.flags.includes('c3-oath-hold-town')) promises.push('Do not let Harrowfen fall while Ordan is pursued.');
-  if (game.flags.includes('c4-oath-no-one-falls')) promises.push('Do not let anyone fall from the Mileless Bridge while you stand.');
-  if (game.flags.includes('c4-oath-honest-with-mara')) promises.push('Do not hide behind duty when speaking with Mara.');
-  if (game.flags.includes('c5-oath-carry-vaor-grief')) promises.push('Hear Vaor’s grief without turning away.');
-  if (game.flags.includes('c5-vaor-pact')) promises.push('Carry Vaor’s voice and ember until both of you agree the duty is complete.');
-  if (game.flags.includes('c6-oath-investigate-unsea')) promises.push('Discover which ancestor voices are truly conscious.');
-  if (game.flags.includes('c6-oath-recognised-red-moot')) promises.push('Recognise the Red Moot’s living authority in every alliance you lead.');
-  if (game.flags.includes('c6-oath-crown-restitution')) promises.push('Bring the Concord’s hidden victims before the Queen or oppose the throne that buries them.');
-  if (game.flags.includes('c6-oath-defends-refusal')) promises.push('Defend the clans’ right to refuse future Crown control.');
-  if (game.flags.includes('c6-oath-honest-limit')) promises.push('Bind only your own command, testimony, and defence of the Red Moot.');
-  if (game.flags.includes('c7-oath-living-command')) promises.push('No dead officer holds lawful rank over a living soldier.');
-  if (game.flags.includes('c7-oath-surrender-road')) promises.push('Give safe ground to every soldier who lowers a weapon.');
-  if (game.flags.includes('c2-caelan-injured')) promises.push('Injury: Caelan hurt his back driving the road pin into place.');
-  return promises.length ? promises : ['No binding Oath or lasting injury is active.'];
+  if (game.flags.includes('oath-bring-them-home'))
+    promises.push('Bring the escort home alive.');
+  if (game.flags.includes('c2-oath-repair-road'))
+    promises.push('Repair the damaged King’s Road.');
+  if (game.flags.includes('c2-oath-expose-crown'))
+    promises.push('Expose the Crown officer behind the attack.');
+  if (game.flags.includes('c3-oath-hold-town'))
+    promises.push('Do not let Harrowfen fall while Ordan is pursued.');
+  if (game.flags.includes('c4-oath-no-one-falls'))
+    promises.push(
+      'Do not let anyone fall from the Mileless Bridge while you stand.',
+    );
+  if (game.flags.includes('c4-oath-honest-with-mara'))
+    promises.push('Do not hide behind duty when speaking with Mara.');
+  if (game.flags.includes('c5-oath-carry-vaor-grief'))
+    promises.push('Hear Vaor’s grief without turning away.');
+  if (game.flags.includes('c5-vaor-pact'))
+    promises.push(
+      'Carry Vaor’s voice and ember until both of you agree the duty is complete.',
+    );
+  if (game.flags.includes('c6-oath-investigate-unsea'))
+    promises.push('Discover which ancestor voices are truly conscious.');
+  if (game.flags.includes('c6-oath-recognised-red-moot'))
+    promises.push(
+      'Recognise the Red Moot’s living authority in every alliance you lead.',
+    );
+  if (game.flags.includes('c6-oath-crown-restitution'))
+    promises.push(
+      'Bring the Concord’s hidden victims before the Queen or oppose the throne that buries them.',
+    );
+  if (game.flags.includes('c6-oath-defends-refusal'))
+    promises.push('Defend the clans’ right to refuse future Crown control.');
+  if (game.flags.includes('c6-oath-honest-limit'))
+    promises.push(
+      'Bind only your own command, testimony, and defence of the Red Moot.',
+    );
+  if (game.flags.includes('c7-oath-living-command'))
+    promises.push('No dead officer holds lawful rank over a living soldier.');
+  if (game.flags.includes('c7-oath-surrender-road'))
+    promises.push('Give safe ground to every soldier who lowers a weapon.');
+  if (game.flags.includes('c2-caelan-injured'))
+    promises.push(
+      'Injury: Caelan hurt his back driving the road pin into place.',
+    );
+  return promises.length
+    ? promises
+    : ['No binding Oath or lasting injury is active.'];
 }
 
 const beforeIlyraNodes = new Set([
@@ -499,9 +629,10 @@ const beforeIlyraNodes = new Set([
 ]);
 
 function visibleRelationshipKeys(game: GameState): RelationshipKey[] {
-  const ilyraKnown = game.completedChapters.includes(6)
-    || game.nodeId.startsWith('c7-')
-    || (game.nodeId.startsWith('c6-') && !beforeIlyraNodes.has(game.nodeId));
+  const ilyraKnown =
+    game.completedChapters.includes(6) ||
+    game.nodeId.startsWith('c7-') ||
+    (game.nodeId.startsWith('c6-') && !beforeIlyraNodes.has(game.nodeId));
   return ilyraKnown ? ['mara', 'lysara', 'ilyra'] : ['mara', 'lysara'];
 }
 
@@ -514,7 +645,9 @@ export default function Home() {
   const [showJournal, setShowJournal] = useState(false);
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
   const [showReturnRecap, setShowReturnRecap] = useState(false);
-  const [pendingReplay, setPendingReplay] = useState<ChapterNumber | null>(null);
+  const [pendingReplay, setPendingReplay] = useState<ChapterNumber | null>(
+    null,
+  );
   const gameRef = useRef(game);
   const storyRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -533,7 +666,9 @@ export default function Home() {
         .find((value) => value !== null);
       if (saved) {
         try {
-          const parsed = normaliseState(JSON.parse(saved) as Partial<GameState>);
+          const parsed = normaliseState(
+            JSON.parse(saved) as Partial<GameState>,
+          );
           if (parsed.nodeId && nodes[parsed.nodeId]) {
             setGame(parsed);
             setStarted(true);
@@ -558,7 +693,10 @@ export default function Home() {
 
   useEffect(() => {
     if (!scrollAfterChoice.current) return;
-    const target = scrollAfterChoice.current === 'scene' ? sceneRef.current : storyRef.current;
+    const target =
+      scrollAfterChoice.current === 'scene'
+        ? sceneRef.current
+        : storyRef.current;
     scrollAfterChoice.current = null;
     window.requestAnimationFrame(() => {
       target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -566,7 +704,9 @@ export default function Home() {
   }, [game.nodeId]);
 
   useEffect(() => {
-    const modelContext = (document as Document & { modelContext?: ModelContext }).modelContext;
+    const modelContext = (
+      document as Document & { modelContext?: ModelContext }
+    ).modelContext;
     if (!modelContext?.registerTool) return;
 
     const lifecycle = new AbortController();
@@ -583,8 +723,13 @@ export default function Home() {
     register({
       name: 'read_current_scene',
       title: 'Read current Veilfall scene',
-      description: 'Read the active scene, character stats, and available actions without changing the game.',
-      inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+      description:
+        'Read the active scene, character stats, and available actions without changing the game.',
+      inputSchema: {
+        type: 'object',
+        properties: {},
+        additionalProperties: false,
+      },
       annotations: { readOnlyHint: true, untrustedContentHint: false },
       execute: () => {
         const current = gameRef.current;
@@ -598,8 +743,8 @@ export default function Home() {
           actions: current.defeat
             ? []
             : currentNode.choices
-              .filter((choice) => canChoose(choice, current))
-              .map((choice) => ({ id: choice.id, label: choice.label })),
+                .filter((choice) => canChoose(choice, current))
+                .map((choice) => ({ id: choice.id, label: choice.label })),
         };
       },
     });
@@ -607,7 +752,8 @@ export default function Home() {
     register({
       name: 'choose_veilfall_action',
       title: 'Choose a Veilfall action',
-      description: 'Choose one currently available action by its id and advance the visible story.',
+      description:
+        'Choose one currently available action by its id and advance the visible story.',
       inputSchema: {
         type: 'object',
         properties: { choiceId: { type: 'string' } },
@@ -620,13 +766,18 @@ export default function Home() {
           throw new Error('choiceId is required');
         }
         const choiceId = (input as { choiceId?: unknown }).choiceId;
-        if (typeof choiceId !== 'string') throw new Error('choiceId must be a string');
+        if (typeof choiceId !== 'string')
+          throw new Error('choiceId must be a string');
 
         const current = gameRef.current;
         if (current.defeat) {
-          throw new Error('Caelan has fallen. Return to the chapter start before choosing again');
+          throw new Error(
+            'Caelan has fallen. Return to the chapter start before choosing again',
+          );
         }
-        const choice = nodes[current.nodeId].choices.find((item) => item.id === choiceId);
+        const choice = nodes[current.nodeId].choices.find(
+          (item) => item.id === choiceId,
+        );
         if (!choice || !canChoose(choice, current)) {
           throw new Error('That action is not available in the current scene');
         }
@@ -636,7 +787,11 @@ export default function Home() {
         setStarted(true);
         setLastResult(choice.result);
         setGame(next);
-        return { sceneId: next.nodeId, result: choice.result, stats: next.stats };
+        return {
+          sceneId: next.nodeId,
+          result: choice.result,
+          stats: next.stats,
+        };
       },
     });
 
@@ -656,7 +811,8 @@ export default function Home() {
   function choose(choice: Choice) {
     if (game.defeat || !canChoose(choice, game)) return;
     const next = applyChoice(game, choice);
-    scrollAfterChoice.current = nodes[next.nodeId].art !== node.art ? 'scene' : 'story';
+    scrollAfterChoice.current =
+      nodes[next.nodeId].art !== node.art ? 'scene' : 'story';
     setLastResult(choice.result);
     setGame(next);
   }
@@ -683,7 +839,11 @@ export default function Home() {
   }
 
   function restartStoryAfterDeath() {
-    for (const key of [CURRENT_SAVE_KEY, ...LEGACY_SAVE_KEYS, ...Object.values(CHAPTER_START_KEYS)]) {
+    for (const key of [
+      CURRENT_SAVE_KEY,
+      ...LEGACY_SAVE_KEYS,
+      ...Object.values(CHAPTER_START_KEYS),
+    ]) {
       window.localStorage.removeItem(key);
     }
     loadChapterState(initialState);
@@ -714,7 +874,9 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4, 5, 6, 7, 8] as ChapterNumber[]).filter((number) => number > chapter)) {
+    for (const later of ([2, 3, 4, 5, 6, 7, 8] as ChapterNumber[]).filter(
+      (number) => number > chapter,
+    )) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -746,7 +908,10 @@ export default function Home() {
         resolve: Math.min(8, game.stats.resolve + 1),
         medicine: 1,
       },
-      history: [...game.history, 'You continue to Bellweather Inn with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You continue to Bellweather Inn with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[2]!, JSON.stringify(next));
     loadChapterState(next);
@@ -765,7 +930,10 @@ export default function Home() {
         resolve: Math.min(8, game.stats.resolve + 1),
         command: Math.min(6, game.stats.command + 1),
       },
-      history: [...game.history, 'You continue to Harrowfen with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You continue to Harrowfen with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[3]!, JSON.stringify(next));
     loadChapterState(next);
@@ -782,7 +950,10 @@ export default function Home() {
         ...game.stats,
         health: Math.min(8, game.stats.health + 1),
       },
-      history: [...game.history, 'You enter the Mileless Bridge with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You enter the Mileless Bridge with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[4]!, JSON.stringify(next));
     loadChapterState(next);
@@ -801,7 +972,10 @@ export default function Home() {
         resolve: Math.min(8, game.stats.resolve + 1),
         command: Math.min(6, game.stats.command + 1),
       },
-      history: [...game.history, 'You follow the northern mark into Dragonspine with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You follow the northern mark into Dragonspine with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[5]!, JSON.stringify(next));
     loadChapterState(next);
@@ -820,7 +994,10 @@ export default function Home() {
         resolve: Math.min(8, game.stats.resolve + 1),
         command: Math.min(6, game.stats.command + 1),
       },
-      history: [...game.history, 'You leave Dragonspine for Kharad Vey with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You leave Dragonspine for Kharad Vey with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[6]!, JSON.stringify(next));
     loadChapterState(next);
@@ -839,7 +1016,10 @@ export default function Home() {
         resolve: Math.min(8, game.stats.resolve + 1),
         command: Math.min(6, game.stats.command + 1),
       },
-      history: [...game.history, 'You leave Kharad Vey beneath the Red Wind Hunt with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You leave Kharad Vey beneath the Red Wind Hunt with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[7]!, JSON.stringify(next));
     loadChapterState(next);
@@ -859,14 +1039,22 @@ export default function Home() {
         command: Math.min(6, game.stats.command + 1),
         medicine: Math.max(1, game.stats.medicine),
       },
-      history: [...game.history, 'You reach the eight forts surrounding the Black Gate with every earlier consequence.'],
+      history: [
+        ...game.history,
+        'You reach the eight forts surrounding the Black Gate with every earlier consequence.',
+      ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[8]!, JSON.stringify(next));
     loadChapterState(next);
   }
 
   if (!loaded) {
-    return <main className="min-h-screen bg-[#07090b]" aria-label="Loading Veilfall" />;
+    return (
+      <main
+        className="min-h-screen bg-[#07090b]"
+        aria-label="Loading Veilfall"
+      />
+    );
   }
 
   if (!started) {
@@ -882,34 +1070,60 @@ export default function Home() {
         />
         <div className="cover-shade" />
         <section className="cover-copy">
-          <div className="brand-mark" aria-hidden="true">V</div>
+          <div className="brand-mark" aria-hidden="true">
+            V
+          </div>
           <p className="eyebrow">An interactive dark fantasy</p>
           <h1>Veilfall</h1>
           <p className="cover-subtitle">The Broken Concord</p>
           <p className="cover-intro">
-            You know the King&apos;s Road, the people under your command, and the promise
-            waiting at its end. Before night, an enemy will know every route you might choose.
+            You know the King&apos;s Road, the people under your command, and
+            the promise waiting at its end. Before night, an enemy will know
+            every route you might choose.
           </p>
-          <Button className="begin-button" size="lg" onClick={() => setStarted(true)}>
+          <Button
+            className="begin-button"
+            size="lg"
+            onClick={() => setStarted(true)}
+          >
             Begin chapter one
             <ArrowRight data-icon="inline-end" />
           </Button>
-          <p className="play-note">About 30 to 40 minutes. Your choices are saved on this device.</p>
+          <p className="play-note">
+            About 30 to 40 minutes. Your choices are saved on this device.
+          </p>
         </section>
       </main>
     );
   }
 
   return (
-    <main className={`game-shell min-h-screen text-[#eee7d8] ${game.stats.health <= 2 ? 'health-critical' : ''}`}>
+    <main
+      className={`game-shell min-h-screen text-[#eee7d8] ${game.stats.health <= 2 ? 'health-critical' : ''}`}
+    >
       <header className="topbar">
         <div className="wordmark">
-          <span className="wordmark-rune" aria-hidden="true">V</span>
+          <span className="wordmark-rune" aria-hidden="true">
+            V
+          </span>
           <span>VEILFALL</span>
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {game.chapter === 7 ? 'VII' : game.chapter === 6 ? 'VI' : game.chapter === 5 ? 'V' : game.chapter === 4 ? 'IV' : game.chapter === 3 ? 'III' : game.chapter === 2 ? 'II' : 'I'}
+          Caelan{' '}
+          {game.chapter === 7
+            ? 'VII'
+            : game.chapter === 6
+              ? 'VI'
+              : game.chapter === 5
+                ? 'V'
+                : game.chapter === 4
+                  ? 'IV'
+                  : game.chapter === 3
+                    ? 'III'
+                    : game.chapter === 2
+                      ? 'II'
+                      : 'I'}
         </div>
         <div className="top-actions">
           <Button
@@ -931,7 +1145,12 @@ export default function Home() {
             <BookOpen data-icon="inline-start" />
             Chapters
           </Button>
-          <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+          <Button
+            className="restart-button"
+            variant="ghost"
+            size="sm"
+            onClick={restart}
+          >
             <RotateCcw data-icon="inline-start" />
             Replay current
           </Button>
@@ -946,10 +1165,18 @@ export default function Home() {
             <p>{game.history.at(-1) ?? truths.at(-1)}</p>
           </div>
           <div className="return-recap-actions">
-            <Button variant="outline" size="sm" onClick={() => setShowJournal(true)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowJournal(true)}
+            >
               Open journal
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => setShowReturnRecap(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowReturnRecap(false)}
+            >
               Continue reading
             </Button>
           </div>
@@ -963,21 +1190,34 @@ export default function Home() {
               <p className="eyebrow">Caelan’s journey</p>
               <h2>Replay an unlocked chapter</h2>
             </div>
-            <Button variant="ghost" size="sm" onClick={() => setShowChapterLibrary(false)}>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowChapterLibrary(false)}
+            >
               Close
             </Button>
           </div>
           <p className="chapter-library-note">
-            Replaying a chapter replaces its choices, points, and outcome. Earlier chapters stay the same. Replaying an earlier chapter removes later chapter progress, because those events came from the old path.
+            Replaying a chapter replaces its choices, points, and outcome.
+            Earlier chapters stay the same. Replaying an earlier chapter removes
+            later chapter progress, because those events came from the old path.
           </p>
           <div className="chapter-library-list">
             {chapterLibrary.map((chapter) => {
-              const unlocked = chapter.number === 1
-                || game.chapter === chapter.number
-                || game.completedChapters.includes(chapter.number - 1);
-              const available = chapter.number === 1
-                || (loaded && typeof window !== 'undefined'
-                  && Boolean(window.localStorage.getItem(CHAPTER_START_KEYS[chapter.number]!)));
+              const unlocked =
+                chapter.number === 1 ||
+                game.chapter === chapter.number ||
+                game.completedChapters.includes(chapter.number - 1);
+              const available =
+                chapter.number === 1 ||
+                (loaded &&
+                  typeof window !== 'undefined' &&
+                  Boolean(
+                    window.localStorage.getItem(
+                      CHAPTER_START_KEYS[chapter.number]!,
+                    ),
+                  ));
               return (
                 <div className="chapter-library-entry" key={chapter.number}>
                   <div>
@@ -993,7 +1233,9 @@ export default function Home() {
                       disabled={!available}
                       onClick={() => setPendingReplay(chapter.number)}
                     >
-                      {chapter.number === game.chapter ? 'Replay' : 'Play again'}
+                      {chapter.number === game.chapter
+                        ? 'Replay'
+                        : 'Play again'}
                     </Button>
                   ) : (
                     <span className="chapter-locked">
@@ -1023,7 +1265,11 @@ export default function Home() {
         <Button variant="ghost" size="sm" onClick={() => setShowJournal(true)}>
           Journal
         </Button>
-        <Button variant="ghost" size="sm" onClick={() => setShowCharacterSheet(true)}>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowCharacterSheet(true)}
+        >
           Stats
         </Button>
       </section>
@@ -1063,38 +1309,50 @@ export default function Home() {
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">
-                {node.choices.filter((choice) => isChoiceVisible(choice, game)).map((choice, index) => {
-                  const available = canChoose(choice, game);
-                  const changes = changeSummary(choice, game);
-                  const lethal = wouldBeFatal(choice, game);
-                  return (
-                    <Button
-                      key={choice.id}
-                      className="choice-card"
-                      variant="outline"
-                      disabled={!available}
-                      onClick={() => choose(choice)}
-                    >
-                      <span className="choice-number">{String(index + 1).padStart(2, '0')}</span>
-                      <span className="choice-copy">
-                        <strong>{choice.label}</strong>
-                        <span>{choice.detail}</span>
-                        {choice.advantage ? (
-                          <span className="choice-advantage">
-                            <b>Expected advantage</b>
-                            {choice.advantage}
-                          </span>
-                        ) : null}
-                        <span className={`choice-effects ${lethal ? 'choice-effects-lethal' : ''}`}>
-                          {available
-                            ? changes.join(' · ')
-                            : [`Requires ${requirementText(choice)}`, ...changes].join(' · ')}
+                {node.choices
+                  .filter((choice) => isChoiceVisible(choice, game))
+                  .map((choice, index) => {
+                    const available = canChoose(choice, game);
+                    const changes = changeSummary(choice, game);
+                    const lethal = wouldBeFatal(choice, game);
+                    return (
+                      <Button
+                        key={choice.id}
+                        className="choice-card"
+                        variant="outline"
+                        disabled={!available}
+                        onClick={() => choose(choice)}
+                      >
+                        <span className="choice-number">
+                          {String(index + 1).padStart(2, '0')}
                         </span>
-                      </span>
-                      <ArrowRight className="choice-arrow" aria-hidden="true" />
-                    </Button>
-                  );
-                })}
+                        <span className="choice-copy">
+                          <strong>{choice.label}</strong>
+                          <span>{choice.detail}</span>
+                          {choice.advantage ? (
+                            <span className="choice-advantage">
+                              <b>Expected advantage</b>
+                              {choice.advantage}
+                            </span>
+                          ) : null}
+                          <span
+                            className={`choice-effects ${lethal ? 'choice-effects-lethal' : ''}`}
+                          >
+                            {available
+                              ? changes.join(' · ')
+                              : [
+                                  `Requires ${requirementText(choice)}`,
+                                  ...changes,
+                                ].join(' · ')}
+                          </span>
+                        </span>
+                        <ArrowRight
+                          className="choice-arrow"
+                          aria-hidden="true"
+                        />
+                      </Button>
+                    );
+                  })}
               </div>
             ) : (
               <div className="ending-panel">
@@ -1112,8 +1370,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Two is ready</h2>
                       <p>
-                        Continue into The Inn That Waited with every consequence from this route.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into The Inn That Waited with every consequence
+                        from this route. Your {game.stats.wayfire} Wayfire
+                        remains available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1123,7 +1382,12 @@ export default function Home() {
                         Continue to Chapter Two
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter One
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1132,8 +1396,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Three is ready</h2>
                       <p>
-                        Continue into The Town at the Wrong Mile with every surviving consequence.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into The Town at the Wrong Mile with every
+                        surviving consequence. Your {game.stats.wayfire} Wayfire
+                        remains available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1143,7 +1408,12 @@ export default function Home() {
                         Continue to Chapter Three
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter Two
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1152,8 +1422,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Four is ready</h2>
                       <p>
-                        Continue into Thief at the Mileless Bridge with every surviving consequence.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into Thief at the Mileless Bridge with every
+                        surviving consequence. Your {game.stats.wayfire} Wayfire
+                        remains available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1163,7 +1434,12 @@ export default function Home() {
                         Continue to Chapter Four
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter Three
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1172,8 +1448,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Five is ready</h2>
                       <p>
-                        Continue into The Dragon&apos;s Cold Grave with every surviving consequence.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into The Dragon&apos;s Cold Grave with every
+                        surviving consequence. Your {game.stats.wayfire} Wayfire
+                        remains available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1183,7 +1460,12 @@ export default function Home() {
                         Continue to Chapter Five
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter Four
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1192,8 +1474,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Six is ready</h2>
                       <p>
-                        Continue into The City on Wheels with every surviving consequence.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into The City on Wheels with every surviving
+                        consequence. Your {game.stats.wayfire} Wayfire remains
+                        available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1203,7 +1486,12 @@ export default function Home() {
                         Continue to Chapter Six
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter Five
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1212,8 +1500,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Seven is ready</h2>
                       <p>
-                        Continue into The Red Wind Hunt with every surviving consequence.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into The Red Wind Hunt with every surviving
+                        consequence. Your {game.stats.wayfire} Wayfire remains
+                        available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1223,7 +1512,12 @@ export default function Home() {
                         Continue to Chapter Seven
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter Six
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1232,8 +1526,9 @@ export default function Home() {
                     <>
                       <h2>Chapter Eight is ready</h2>
                       <p>
-                        Continue into Eight Empty Forts with every surviving consequence.
-                        Your {game.stats.wayfire} Wayfire remains available for future optional paths.
+                        Continue into Seven Cold Fires with every surviving
+                        consequence. Your {game.stats.wayfire} Wayfire remains
+                        available for future optional paths.
                       </p>
                       <Button
                         className="begin-button"
@@ -1243,7 +1538,12 @@ export default function Home() {
                         Continue to Chapter Eight
                         <ArrowRight data-icon="inline-end" />
                       </Button>
-                      <Button className="restart-button" variant="ghost" size="sm" onClick={restart}>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
                         Replay Chapter Seven
                         <RotateCcw data-icon="inline-end" />
                       </Button>
@@ -1253,10 +1553,15 @@ export default function Home() {
                   <>
                     <h2>Caelan will return in Chapter Nine</h2>
                     <p>
-                      You carry Vaor&apos;s ember and {game.stats.wayfire} Wayfire into the first open embassy.
-                      Vexa Ash has brought a contract bearing your name and an unwritten price.
+                      You carry Vaor&apos;s ember and {game.stats.wayfire}{' '}
+                      Wayfire into the first open embassy. Vexa Ash has brought
+                      a contract bearing your name and an unwritten price.
                     </p>
-                    <Button className="begin-button" size="lg" onClick={restart}>
+                    <Button
+                      className="begin-button"
+                      size="lg"
+                      onClick={restart}
+                    >
                       Replay Chapter Eight
                       <RotateCcw data-icon="inline-end" />
                     </Button>
@@ -1267,9 +1572,14 @@ export default function Home() {
           </article>
         </section>
 
-        <aside className="character-panel" aria-label="Caelan's character sheet">
+        <aside
+          className="character-panel"
+          aria-label="Caelan's character sheet"
+        >
           <div className="character-heading">
-            <div className="sigil" aria-hidden="true"><Swords /></div>
+            <div className="sigil" aria-hidden="true">
+              <Swords />
+            </div>
             <div>
               <p className="eyebrow">The Ember Oath</p>
               <h2>Caelan Vey</h2>
@@ -1300,7 +1610,10 @@ export default function Home() {
             {coreStatKeys.map((key) => {
               const Icon = statIcons[key];
               return (
-                <div className={`stat-row ${key === 'health' && game.stats.health <= 2 ? 'danger-row' : ''}`} key={key}>
+                <div
+                  className={`stat-row ${key === 'health' && game.stats.health <= 2 ? 'danger-row' : ''}`}
+                  key={key}
+                >
                   <Icon aria-hidden="true" />
                   <div>
                     <span>{statLabels[key]}</span>
@@ -1314,14 +1627,14 @@ export default function Home() {
 
           <div className="resources-panel">
             <p className="panel-title">Resources</p>
-            {resourceStatKeys.filter(
-              (key) => game.chapter >= 2 || key !== 'medicine',
-            ).map((key) => (
-              <div className="resource-row" key={key}>
-                <span>{statLabels[key]}</span>
-                <strong>{game.stats[key]}</strong>
-              </div>
-            ))}
+            {resourceStatKeys
+              .filter((key) => game.chapter >= 2 || key !== 'medicine')
+              .map((key) => (
+                <div className="resource-row" key={key}>
+                  <span>{statLabels[key]}</span>
+                  <strong>{game.stats[key]}</strong>
+                </div>
+              ))}
           </div>
 
           <div className="relationships-panel">
@@ -1343,7 +1656,9 @@ export default function Home() {
                 ))}
               </ol>
             ) : (
-              <p className="empty-note">The page is waiting for your first mark.</p>
+              <p className="empty-note">
+                The page is waiting for your first mark.
+              </p>
             )}
           </div>
         </aside>
@@ -1353,18 +1668,26 @@ export default function Home() {
         <SheetContent className="journal-sheet" side="right">
           <SheetHeader>
             <SheetTitle>Caelan’s journal</SheetTitle>
-            <SheetDescription>Only facts Caelan has learned appear here.</SheetDescription>
+            <SheetDescription>
+              Only facts Caelan has learned appear here.
+            </SheetDescription>
           </SheetHeader>
           <div className="journal-sections">
             <section>
               <span>Now</span>
               <h3>{node.title}</h3>
               <p>{node.objective}</p>
-              <small>{node.location} · Threat {node.threat}</small>
+              <small>
+                {node.location} · Threat {node.threat}
+              </small>
             </section>
             <section>
               <span>Confirmed knowledge</span>
-              <ul>{truths.map((truth) => <li key={truth}>{truth}</li>)}</ul>
+              <ul>
+                {truths.map((truth) => (
+                  <li key={truth}>{truth}</li>
+                ))}
+              </ul>
             </section>
             <section>
               <span>People</span>
@@ -1379,11 +1702,19 @@ export default function Home() {
             </section>
             <section>
               <span>Promises and injuries</span>
-              <ul>{promises.map((promise) => <li key={promise}>{promise}</li>)}</ul>
+              <ul>
+                {promises.map((promise) => (
+                  <li key={promise}>{promise}</li>
+                ))}
+              </ul>
             </section>
             <section>
               <span>Because you chose</span>
-              <ul>{consequences.map((consequence) => <li key={consequence}>{consequence}</li>)}</ul>
+              <ul>
+                {consequences.map((consequence) => (
+                  <li key={consequence}>{consequence}</li>
+                ))}
+              </ul>
             </section>
             <section>
               <span>Recent path</span>
@@ -1405,15 +1736,21 @@ export default function Home() {
           </SheetHeader>
           <div className="mobile-sheet-grid">
             {coreStatKeys.map((key) => (
-              <div key={key}><span>{statLabels[key]}</span><strong>{game.stats[key]}</strong></div>
+              <div key={key}>
+                <span>{statLabels[key]}</span>
+                <strong>{game.stats[key]}</strong>
+              </div>
             ))}
           </div>
           <div className="mobile-sheet-resources">
-            {resourceStatKeys.filter(
-              (key) => game.chapter >= 2 || key !== 'medicine',
-            ).map((key) => (
-              <p key={key}><span>{statLabels[key]}</span><strong>{game.stats[key]}</strong></p>
-            ))}
+            {resourceStatKeys
+              .filter((key) => game.chapter >= 2 || key !== 'medicine')
+              .map((key) => (
+                <p key={key}>
+                  <span>{statLabels[key]}</span>
+                  <strong>{game.stats[key]}</strong>
+                </p>
+              ))}
           </div>
           <div className="mobile-sheet-relationships">
             {visibleRelationships.map((person) => (
@@ -1434,15 +1771,23 @@ export default function Home() {
             <AlertDialogDescription>{game.defeat?.body}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={restartStoryAfterDeath}>Restart the story</AlertDialogCancel>
-            <AlertDialogAction className="confirm-replay" onClick={returnToChapterStart}>
+            <AlertDialogCancel onClick={restartStoryAfterDeath}>
+              Restart the story
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="confirm-replay"
+              onClick={returnToChapterStart}
+            >
               Return to chapter start
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      <AlertDialog open={pendingReplay !== null} onOpenChange={(open) => !open && setPendingReplay(null)}>
+      <AlertDialog
+        open={pendingReplay !== null}
+        onOpenChange={(open) => !open && setPendingReplay(null)}
+      >
         <AlertDialogContent className="replay-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle>Replay Chapter {pendingReplay}?</AlertDialogTitle>
@@ -1460,13 +1805,15 @@ export default function Home() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Keep current path</AlertDialogCancel>
-            <AlertDialogAction className="confirm-replay" onClick={confirmReplay}>
+            <AlertDialogAction
+              className="confirm-replay"
+              onClick={confirmReplay}
+            >
               Replay chapter
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
     </main>
   );
 }

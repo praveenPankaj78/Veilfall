@@ -18,6 +18,7 @@ const priorSeedDamageFlags = [
 const warMeritFlags = [
   'c6-whole-herd-saved',
   'c6-saved-all-herders',
+  'c6-saved-swinging-families',
   'c6-forge-service-complete',
   'c6-shrine-service-complete',
   'c6-trial-won-moot',
@@ -93,19 +94,43 @@ function exactServiceRecord(state: GameState) {
   if (has(state, 'c6-heard-storm-accusation')) {
     return 'Your Oath drew the storm away from the children and made its charge against the Concord public.';
   }
-  return 'You opened the shrine door and let the children see that the loving voices had no bodies or safe road behind them.';
+  if (has(state, 'c6-shrine-route')) {
+    return 'You opened the shrine door and let the children see that the loving voices had no bodies or safe road behind them.';
+  }
+  return 'The Moot has no completed local duty to present.';
+}
+
+function westernRepairAtStorm(state: GameState) {
+  if (has(state, 'c6-held-western-axle')) {
+    return 'Because you held the axle in the killing position, the repair crew saved its spare braces. They lock those braces beneath the twisting homes now.';
+  }
+  if (has(state, 'c6-oath-held-western-deck')) {
+    return 'The Oath around the western homes catches the first violent twist. It keeps the roofs standing, but every new crack pulls against your ribs while the storm lasts.';
+  }
+  if (has(state, 'c6-followed-local-command')) {
+    return 'Korran’s crew knows exactly which pins it fitted under his command. They hold the repair, but have no spare braces to protect the homes from a second turn.';
+  }
+  return '';
 }
 
 function evidenceAtMoot(state: GameState) {
   const facts: string[] = [];
-  if (has(state, 'c5-has-extraction-order')) facts.push('Malrec’s signed extraction order');
-  if (has(state, 'c5-royal-witnesses-turned')) facts.push('two royal witnesses');
-  if (has(state, 'c5-memory-copied-to-map-wax')) facts.push('Orivane’s memory in black wax');
-  if (has(state, 'c5-saved-memory-witnesses')) facts.push('three memory plates guarded by Sorin');
-  if (has(state, 'c5-oath-held-memory-grave')) facts.push('six memory plates guarded by Sorin');
-  if (has(state, 'c5-knows-orivane-renewal-wish')) facts.push('Orivane’s request that the living judge the Concord again');
-  if (has(state, 'c5-memorised-founder-seals')) facts.push('the founder seals of every people who hid the cost');
-  if (!facts.length) return 'You have memory and testimony, but no carried object can make the argument for you.';
+  if (has(state, 'c5-has-extraction-order'))
+    facts.push('Malrec’s signed extraction order');
+  if (has(state, 'c5-royal-witnesses-turned'))
+    facts.push('two royal witnesses');
+  if (has(state, 'c5-memory-copied-to-map-wax'))
+    facts.push('Orivane’s memory in black wax');
+  if (has(state, 'c5-saved-memory-witnesses'))
+    facts.push('three memory plates guarded by Sorin');
+  if (has(state, 'c5-oath-held-memory-grave'))
+    facts.push('six memory plates guarded by Sorin');
+  if (has(state, 'c5-knows-orivane-renewal-wish'))
+    facts.push('Orivane’s request that the living judge the Concord again');
+  if (has(state, 'c5-memorised-founder-seals'))
+    facts.push('the founder seals of every people who hid the cost');
+  if (!facts.length)
+    return 'You have memory and testimony, but no carried object can make the argument for you.';
   return `Your case can use ${facts.join(', ')}. The proof shows what rulers did. It does not replace service or give you authority over the clans.`;
 }
 
@@ -142,16 +167,16 @@ function oathCaseBenefit(state: GameState) {
 }
 
 function ancestorCommandOutcome(state: GameState) {
-  if (has(state, 'c6-broke-storm-command')) {
+  if (has(state, 'c6-sender-learned-ember')) {
     return 'Vaor’s fire burned only the shared order. The separate voices survived, but the hidden sender learned how the ember feels.';
   }
-  if (has(state, 'c6-living-vote-broke-storm')) {
+  if (has(state, 'c6-sender-heard-living-leaders')) {
     return 'The living vote drowned out the shared order. Individual voices remained, and the hidden sender heard the names of Kharad Vey’s chosen leaders.';
   }
-  if (has(state, 'c6-oath-dead-may-witness')) {
+  if (has(state, 'c6-oath-guards-steppe-shrines')) {
     return 'Your Oath removed the voices from the vote while allowing them to speak as witnesses. The promise now guards every Kharad shrine.';
   }
-  if (has(state, 'c6-ilyra-turned-storm-command')) {
+  if (has(state, 'c6-hidden-sender-marked')) {
     return 'Ilyra turned the shared order back toward its source. Some voices vanished with it, but the hidden sender exposed its direction beyond the Black Gate.';
   }
   return 'The Moot has not yet recorded how the shared ancestor command was broken.';
@@ -170,86 +195,9 @@ function ilyraRoadState(state: GameState) {
   return 'Ilyra travels under the Red Moot’s rules to continue her investigation. The alliance remains professional and under local authority.';
 }
 
-function chapterSixContinuityRecord(state: GameState) {
-  const record: string[] = [];
-  if (hasAny(state, ['c6-showed-living-ember', 'c6-held-western-axle', 'c6-oath-held-western-deck', 'c6-preserved-west-lift', 'c6-service-respect'])) {
-    if (has(state, 'c6-showed-living-ember')) record.push('You entered by showing the ember without using it. The lift crew can testify that you respected their warning.');
-    if (has(state, 'c6-held-western-axle')) record.push('You held the damaged axle with your own body. The repair crew kept its spare braces for the eastern journey.');
-    if (has(state, 'c6-oath-held-western-deck')) record.push('Your entry Oath kept the western deck level. The promise still protects that platform while the town moves.');
-    if (has(state, 'c6-preserved-west-lift')) record.push('The western lift still works because your first rescue saved its platform as well as its handlers.');
-    if (has(state, 'c6-service-respect')) record.push('The lift crew saw you take the rope’s weight yourself. Korran includes that risk in the town’s judgment of your request.');
-  }
-  if (hasAny(state, ['c6-shrine-route', 'c6-storm-feared-ember', 'c6-dema-studied-ember', 'c6-saw-empty-storm'])) {
-    if (has(state, 'c6-shrine-route')) record.push('The shrine families remember that you chose their dead and their living records as your first service.');
-    if (has(state, 'c6-storm-feared-ember')) record.push('You proved the ancestor storm feared living dragonfire. The Moot carries that weakness toward the Gate.');
-    if (has(state, 'c6-dema-studied-ember')) record.push('Dema saw the ember obey restraint at close range. Her report gives the steering crews a safer rule for travelling beside it.');
-    if (has(state, 'c6-saw-empty-storm')) record.push('You found an empty face inside the storm. The Moot now knows some ancestor shapes may be tools rather than people.');
-  }
-  if (hasAny(state, ['c6-public-truth', 'c6-questioned-storm-source', 'c6-disciplined-storm-defence'])) {
-    if (has(state, 'c6-public-truth')) record.push('Your public admission lets the clans judge the Concord crime without first proving you tried to hide it.');
-    if (has(state, 'c6-questioned-storm-source')) record.push('You followed the storm’s source before answering its accusation. Ilyra begins the eastern trace with that evidence.');
-    if (has(state, 'c6-disciplined-storm-defence')) record.push('You protected the party before answering the voices. Korran records it as an urgent defence, not deliberate silence.');
-  }
-  if (hasAny(state, ['c6-climbing-line-paid-off', 'c6-city-followed-command', 'c6-learned-living-rhythm', 'c6-saved-swinging-families', 'c6-followed-local-command'])) {
-    if (has(state, 'c6-climbing-line-paid-off')) record.push('The climbing line saved the swinging family and remains tied across the damaged decks as an escape route.');
-    if (has(state, 'c6-city-followed-command')) record.push('Every deck followed one emergency signal. Korran keeps the same signal ready for the Crown pursuit.');
-    if (has(state, 'c6-learned-living-rhythm')) record.push('By following Korran’s calls, you learned the town’s living rhythm without claiming authority over it.');
-    if (has(state, 'c6-saved-swinging-families')) record.push('The entire swinging family platform survived, giving the Moot living witnesses to your personal risk.');
-    if (has(state, 'c6-followed-local-command')) record.push('You followed Korran’s repair call at the axle. His crews kept ownership of the city’s movement and remember that restraint.');
-  }
-  if (hasAny(state, ['c6-supports-restitution', 'c6-gate-before-restitution', 'c6-korran-named-standard'])) {
-    if (has(state, 'c6-supports-restitution')) record.push('Your support for repayment strengthens the clans willing to testify against Malrec.');
-    if (has(state, 'c6-gate-before-restitution')) record.push('Your decision to put the Gate first leaves the old Crown debt unsettled. Korran will not let the emergency erase it.');
-    if (has(state, 'c6-korran-named-standard')) record.push('Korran named his limit before the vote: help close the Gate, then refuse any victory that places his people under foreign rule.');
-  }
-  if (hasAny(state, ['c6-forced-vaor-storm-test', 'c6-vaor-consented-storm-test', 'c6-voice-knew-private-truth', 'c6-compared-living-records', 'c6-voice-knew-new-events', 'c6-precise-unsea-truth'])) {
-    if (has(state, 'c6-forced-vaor-storm-test')) record.push('The Moot heard Vaor resist the storm test. His anger now travels with every claim based on that evidence.');
-    if (has(state, 'c6-vaor-consented-storm-test')) record.push('Vaor agreed to the storm test, so its evidence does not break the pact that produced it.');
-    if (has(state, 'c6-voice-knew-private-truth')) record.push('Korran’s private memory proved that one voice knew more than the public shrine records.');
-    if (has(state, 'c6-compared-living-records') || has(state, 'c6-voice-knew-new-events')) record.push('Living witnesses proved the storm can learn new events instead of only repeating old records.');
-    if (has(state, 'c6-precise-unsea-truth')) record.push('You kept the Unsea claim exact: the voices learn, but nobody has proved they are the original dead.');
-  }
-  if (hasAny(state, ['c6-stood-with-korran', 'c6-moot-service-path', 'c6-moot-trial-path', 'c6-moot-oath-path', 'c6-owes-kharad-service', 'c6-shared-orivane-proof'])) {
-    if (has(state, 'c6-stood-with-korran')) record.push('You stood beside Korran when the crowd turned on him. His personal support now has a public cause.');
-    if (has(state, 'c6-moot-service-path')) record.push('Your Moot case rests on service the clans watched with their own eyes.');
-    if (has(state, 'c6-moot-trial-path')) record.push('Your Moot case rests on a trial completed under local law.');
-    if (has(state, 'c6-moot-oath-path')) record.push('Your Moot case rests on a public Oath whose exact limit remains visible.');
-    if (has(state, 'c6-owes-kharad-service')) record.push('The duty you accepted belongs to Kharad Vey, not to the Crown. The Moot keeps the record of how you paid it.');
-    if (has(state, 'c6-shared-orivane-proof')) record.push('Sorin’s Orivane proof is copied into the Moot record and travels east with the witnesses.');
-  }
-  if (hasAny(state, ['c6-trial-won-first-blood', 'c6-trial-won-position', 'c6-trial-won-restraint', 'c6-trial-mercy'])) {
-    if (has(state, 'c6-trial-won-first-blood')) record.push('The trial proved your speed, but the blood you drew remains part of the clans’ judgment.');
-    if (has(state, 'c6-trial-won-position')) record.push('The trial proved you could win ground without demanding obedience.');
-    if (has(state, 'c6-trial-won-restraint')) record.push('The trial proved restraint under pressure, giving cautious clans a reason to support you.');
-    if (has(state, 'c6-trial-mercy')) record.push('You ended the trial with mercy, and Varka carries that choice into the war vote.');
-  }
-  if (hasAny(state, ['c6-sender-learned-ember', 'c6-sender-heard-living-leaders', 'c6-oath-guards-steppe-shrines', 'c6-some-ancestor-voices-dismissed'])) {
-    if (has(state, 'c6-sender-learned-ember')) record.push('The hidden sender learned the ember’s location when you burned the shared command.');
-    if (has(state, 'c6-sender-heard-living-leaders')) record.push('The living vote preserved every voice, but the hidden sender heard which leaders opposed it.');
-    if (has(state, 'c6-oath-guards-steppe-shrines')) record.push('Your Oath protects the steppe shrines as well as the living voices. That defence remains active after the vote.');
-    if (has(state, 'c6-some-ancestor-voices-dismissed')) record.push('Ilyra’s turn dismissed the voices still tied to the command. The independent voices remain, and the sender now knows her method.');
-  }
-  if (hasAny(state, [
-    'c6-forced-vaor-lift-use', 'c6-vaor-consented-lift-use',
-    'c6-forced-vaor-herd-use', 'c6-vaor-consented-herd-use',
-    'c6-forced-vaor-forge-use', 'c6-vaor-consented-forge-use',
-    'c6-forced-vaor-command-use', 'c6-vaor-consented-command-use',
-  ])) {
-    if (hasAny(state, ['c6-forced-vaor-lift-use', 'c6-forced-vaor-herd-use', 'c6-forced-vaor-forge-use', 'c6-forced-vaor-command-use'])) {
-      record.push('The Moot heard Vaor resist an ember use. The help it produced remains real, and so does the theft behind it.');
-    }
-    if (hasAny(state, ['c6-vaor-consented-lift-use', 'c6-vaor-consented-herd-use', 'c6-vaor-consented-forge-use', 'c6-vaor-consented-command-use'])) {
-      record.push('Vaor agreed to the ember use after its purpose was named. The pact remains unbroken.');
-    }
-  }
-  return record;
-}
-
 function emberArrival(state: GameState) {
   if (has(state, 'c5-freed-vaor')) {
-    return has(state, 'c5-kingdoms-fear-vaor')
-      ? 'The ember Vaor gave you warms at the sight of the open steppe. High above, a dark wing crosses the clouds. Riders below raise warning banners when they see him. The dragon promised to meet you here, not to obey you, and you feel the difference like space around a drawn sword.'
-      : 'The ember Vaor gave you warms at the sight of the open steppe. High above, a dark wing crosses the clouds. The dragon promised to meet you here, not to obey you, and you feel the difference like space around a drawn sword.';
+    return 'The ember Vaor gave you warms at the sight of the open steppe. High above, a dark wing crosses the clouds. Riders below raise warning banners when they see him. The dragon promised to meet you here, not to obey you, and you feel the difference like space around a drawn sword.';
   }
   if (has(state, 'c5-took-ember-by-force')) {
     return 'The ember you tore from Vaor pulls east beneath your breastplate. A roar rolls out of Dragonspine behind you. It is still far away. Your body does not believe that distance will last.';
@@ -268,10 +216,12 @@ function vaorAtStorm(state: GameState) {
 }
 
 function relationshipBoundary(state: GameState) {
-  const maraOpen = state.relationships.mara.intent === 'exploring'
-    || state.relationships.mara.intent === 'committed';
-  const lysaraOpen = state.relationships.lysara.intent === 'exploring'
-    || state.relationships.lysara.intent === 'committed';
+  const maraOpen =
+    state.relationships.mara.intent === 'exploring' ||
+    state.relationships.mara.intent === 'committed';
+  const lysaraOpen =
+    state.relationships.lysara.intent === 'exploring' ||
+    state.relationships.lysara.intent === 'committed';
 
   if (maraOpen) {
     return 'Mara is close enough to hear. Ilyra notices the bond between you before her gaze returns to your face. Whatever else she is testing, she does not pretend that bond is absent.';
@@ -304,11 +254,16 @@ function lysaraSeedAtStorm(state: GameState) {
 
 function dragonspineHandoff(state: GameState) {
   const records: string[] = [];
-  if (has(state, 'c5-has-extraction-order')) records.push('Malrec’s extraction order');
-  if (has(state, 'c5-memory-copied-to-map-wax')) records.push('Orivane’s memory in black wax');
-  if (has(state, 'c5-saved-memory-witnesses')) records.push('three memory plates');
-  if (has(state, 'c5-oath-held-memory-grave')) records.push('six memory plates');
-  if (has(state, 'c5-royal-witnesses-turned')) records.push('two royal witnesses');
+  if (has(state, 'c5-has-extraction-order'))
+    records.push('Malrec’s extraction order');
+  if (has(state, 'c5-memory-copied-to-map-wax'))
+    records.push('Orivane’s memory in black wax');
+  if (has(state, 'c5-saved-memory-witnesses'))
+    records.push('three memory plates');
+  if (has(state, 'c5-oath-held-memory-grave'))
+    records.push('six memory plates');
+  if (has(state, 'c5-royal-witnesses-turned'))
+    records.push('two royal witnesses');
   const proof = records.length
     ? `${records.join(', ')} came out with you.`
     : 'The buried truth came out mainly in the memories of the four survivors.';
@@ -328,7 +283,10 @@ function stormTestFinding(state: GameState) {
   if (has(state, 'c6-tested-storm-fear')) {
     return 'Vaor brings his fire close without touching the face. It recoils before the heat changes. The reaction looks like fear, though you still cannot prove what felt it.';
   }
-  return 'Asha’s records show when every old story entered the shrine. The voice then repeats a detail you spoke only minutes ago. Something is feeding the storm new knowledge now.';
+  if (has(state, 'c6-voice-knew-new-events')) {
+    return 'Asha’s records show when every old story entered the shrine. The voice then repeats a detail you spoke only minutes ago. Something is feeding the storm new knowledge now.';
+  }
+  return 'The test record is incomplete. Ilyra refuses to assign the storm a source that the player did not establish.';
 }
 
 function mootSupport(state: GameState) {
@@ -338,13 +296,22 @@ function mootSupport(state: GameState) {
   const damage = [
     has(state, 'c6-west-lift-lost') ? 'the western lift was lost' : '',
     has(state, 'c6-lost-part-herd') ? 'twelve cattle were lost' : '',
-    has(state, 'c6-seed-scorched-by-horn') ? 'Lysara’s seed was damaged further' : '',
+    has(state, 'c6-seed-scorched-by-horn')
+      ? 'Lysara’s seed was damaged further'
+      : '',
   ].filter(Boolean);
-  const damageLine = damage.length ? ` The clans also count the cost: ${damage.join(', ')}.` : '';
+  const damageLine = damage.length
+    ? ` The clans also count the cost: ${damage.join(', ')}.`
+    : '';
   if (has(state, 'c6-concealed-ember-theft')) {
     return `Korran says service earned you a road, but concealing Vaor’s theft bars any request for fighters.${damageLine}`;
   }
-  if (respected && originDeclared && strongLocalRecord && !has(state, 'c6-oath-honest-limit')) {
+  if (
+    respected &&
+    originDeclared &&
+    strongLocalRecord &&
+    !has(state, 'c6-oath-honest-limit')
+  ) {
     return `Korran names the full record: how you boarded, whose lives and work survived, the duty you completed, the proof you carried, and how you answered for the ember. The Moot will hear a request for war, alliance, or a road.${damageLine}`;
   }
   if (originDeclared) {
@@ -354,15 +321,19 @@ function mootSupport(state: GameState) {
 }
 
 function mootQuestion(state: GameState) {
-  const canAskWar = has(state, 'c6-korran-respect')
-    && has(state, 'c6-declared-ember-origin')
-    && hasAny(state, warMeritFlags)
-    && !has(state, 'c6-oath-honest-limit')
-    && !has(state, 'c6-concealed-ember-theft');
+  const canAskWar =
+    has(state, 'c6-korran-respect') &&
+    has(state, 'c6-declared-ember-origin') &&
+    hasAny(state, warMeritFlags) &&
+    !has(state, 'c6-oath-honest-limit') &&
+    !has(state, 'c6-concealed-ember-theft');
   if (canAskWar) {
     return 'Korran asks the final question. “Do you ask Kharad Vey for war, alliance, or only a road?”';
   }
-  if (!has(state, 'c6-declared-ember-origin') || has(state, 'c6-concealed-ember-theft')) {
+  if (
+    !has(state, 'c6-declared-ember-origin') ||
+    has(state, 'c6-concealed-ember-theft')
+  ) {
     return 'Korran gives the limit before you choose. “We can grant a road. We will not risk fighters while the fire in your chest remains unexplained.”';
   }
   return 'Korran asks the final question. “Do you ask for a guarded alliance, or only a road?”';
@@ -370,13 +341,31 @@ function mootQuestion(state: GameState) {
 
 function proofCarried(state: GameState) {
   const proof: string[] = [];
-  if (has(state, 'c5-has-extraction-order')) proof.push('Malrec’s extraction order proves his private force meant to cut power from a living dragon');
-  if (has(state, 'c5-royal-witnesses-turned')) proof.push('two royal soldiers can testify about Hale’s drill and the order behind it');
-  if (has(state, 'c5-memory-copied-to-map-wax') || has(state, 'c5-rook-copied-first-memory')) proof.push('black wax carries Orivane’s buried memory');
-  if (has(state, 'c5-saved-memory-witnesses')) proof.push('Sorin protects three memory plates');
-  if (has(state, 'c5-oath-held-memory-grave')) proof.push('Sorin protects six memory plates');
-  if (has(state, 'c5-knows-orivane-renewal-wish')) proof.push('you can repeat Orivane’s final demand that living people judge the Concord again');
-  if (has(state, 'c5-memorised-founder-seals')) proof.push('you can identify the human, elven, orc, goblin, and other seals used to bury the truth');
+  if (has(state, 'c5-has-extraction-order'))
+    proof.push(
+      'Malrec’s extraction order proves his private force meant to cut power from a living dragon',
+    );
+  if (has(state, 'c5-royal-witnesses-turned'))
+    proof.push(
+      'two royal soldiers can testify about Hale’s drill and the order behind it',
+    );
+  if (
+    has(state, 'c5-memory-copied-to-map-wax') ||
+    has(state, 'c5-rook-copied-first-memory')
+  )
+    proof.push('black wax carries Orivane’s buried memory');
+  if (has(state, 'c5-saved-memory-witnesses'))
+    proof.push('Sorin protects three memory plates');
+  if (has(state, 'c5-oath-held-memory-grave'))
+    proof.push('Sorin protects six memory plates');
+  if (has(state, 'c5-knows-orivane-renewal-wish'))
+    proof.push(
+      'you can repeat Orivane’s final demand that living people judge the Concord again',
+    );
+  if (has(state, 'c5-memorised-founder-seals'))
+    proof.push(
+      'you can identify the human, elven, orc, goblin, and other seals used to bury the truth',
+    );
   if (!proof.length) {
     return 'The truth of Orivane’s sacrifice survives mainly in your memory. You will have to earn belief before you can ask anyone to act on it.';
   }
@@ -389,7 +378,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Six',
     title: 'The City on Wheels',
     location: 'The Western Ember Steppe',
-    objective: 'Reach Kharad Vey before the moving town passes beyond the storm line.',
+    objective:
+      'Reach Kharad Vey before the moving town passes beyond the storm line.',
     threat: 'Rising',
     art: 'kharad',
     introducesStoryTerms: ['Kharad Vey', 'Ember Steppe', 'ancestor storm'],
@@ -409,42 +399,56 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-run-for-lift',
-        label: 'Run directly for the western lift before the city reaches the split.',
-        detail: 'Lose 1 Health pushing your wounded body across the open steppe.',
-        advantage: 'You should reach the lift first and have time to help the slower travellers aboard.',
+        label:
+          'Run directly for the western lift before the city reaches the split.',
+        detail:
+          'Lose 1 Health pushing your wounded body across the open steppe.',
+        advantage:
+          'You should reach the lift first and have time to help the slower travellers aboard.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c6-reached-lift-first'],
-        result: 'Pain pulls at every mountain wound, but you reach the lift rope before it rises. You turn and pull the next traveller through the grass.',
+        result:
+          'Pain pulls at every mountain wound, but you reach the lift rope before it rises. You turn and pull the next traveller through the grass.',
         next: 'c6-running-gate',
       },
       {
         id: 'c6-command-steppe-line',
-        label: 'Form a running line and move at the pace of the slowest person.',
-        detail: 'Spend 1 Command keeping the scattered party together across broken ground.',
-        advantage: 'Nobody should be isolated when the ancestor storm reaches the road.',
+        label:
+          'Form a running line and move at the pace of the slowest person.',
+        detail:
+          'Spend 1 Command keeping the scattered party together across broken ground.',
+        advantage:
+          'Nobody should be isolated when the ancestor storm reaches the road.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c6-party-crossed-together'],
-        result: 'Your count gives the run a rhythm. Strong hands support tired ones, and the entire party reaches the lift as one line.',
+        result:
+          'Your count gives the run a rhythm. Strong hands support tired ones, and the entire party reaches the lift as one line.',
         next: 'c6-running-gate',
       },
       {
         id: 'c6-follow-red-grass-channel',
         label: 'Follow the flattened grass left by the city’s outer wheel.',
-        detail: 'Take a slower covered route that avoids the worst broken ground.',
-        advantage: 'The wheel track protects your supplies and shows how Kharad Vey approaches dangerous terrain.',
+        detail:
+          'Take a slower covered route that avoids the worst broken ground.',
+        advantage:
+          'The wheel track protects your supplies and shows how Kharad Vey approaches dangerous terrain.',
         addFlags: ['c6-read-wheel-track'],
-        result: 'You follow the deep wheel track where the grass has already been crushed. The route curves, but no one falls and every pack reaches the lift.',
+        result:
+          'You follow the deep wheel track where the grass has already been crushed. The route curves, but no one falls and every pack reaches the lift.',
         next: 'c6-running-gate',
       },
       {
         id: 'c6-hook-livestock-crane',
         label: 'Have Mara hook the passing livestock crane.',
-        detail: 'Sacrifice the best climbing line and accept an undignified entrance.',
-        advantage: 'The crane should pull the weakest travellers to the city without spending a stat.',
+        detail:
+          'Sacrifice the best climbing line and accept an undignified entrance.',
+        advantage:
+          'The crane should pull the weakest travellers to the city without spending a stat.',
         addFlags: ['c6-spent-climbing-line-entry'],
-        result: 'Mara loops the best climbing line through the crane rope. The livestock basket collects your whole travelling party and rises beside a deeply offended goat. Mara gives the goat the safer corner. “It was here first.”',
+        result:
+          'Mara loops the best climbing line through the crane rope. The livestock basket collects your whole travelling party and rises beside a deeply offended goat. Mara gives the goat the safer corner. “It was here first.”',
         next: 'c6-running-gate',
       },
     ],
@@ -460,7 +464,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     art: 'kharad',
     body: (state) => [
       'The western lift hangs three body lengths above the grass. Orc handlers lower two rope loops while the city keeps moving. Before anyone can climb, the left anchor splits. The platform tilts toward a wheel large enough to crush it whole.',
-      has(state, 'c6-spent-climbing-line-entry') ? craneTravellers(state) : entryPreparation(state),
+      has(state, 'c6-spent-climbing-line-entry')
+        ? craneTravellers(state)
+        : entryPreparation(state),
       'A young handler catches the broken rope around his forearm. It lifts him from his feet. His older sister locks both hands around his belt and begins sliding after him.',
       'You look once at the rope, once at the turning wheel, and feel the ember tense beneath your armour.',
       vaorUseBoundary(state, 'free the safety hook'),
@@ -471,97 +477,121 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         id: 'c6-use-first-rope-catch',
         label: 'Use the guide rope you secured before the lift rose.',
         detail: 'Spend the time gained by reaching the lift first.',
-        advantage: 'Catch both handlers and keep the western lift intact without another resource cost.',
+        advantage:
+          'Catch both handlers and keep the western lift intact without another resource cost.',
         showIfAllFlags: ['c6-reached-lift-first'],
-        addFlags: ['c6-saved-lift-siblings', 'c6-preserved-west-lift', 'c6-entry-preparation-paid-off'],
-        result: 'The guide rope is already in your hands. You loop it around both handlers and the sound anchor. The crew pulls them up before the platform reaches the wheel.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'The guide rope is already in your hands. You loop it around both handlers and the sound anchor. The crew pulls them up before the platform reaches the wheel.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-use-running-line-counterweight',
         label: 'Turn the linked running line into a counterweight.',
         detail: 'Use the formation your party kept across the steppe.',
-        advantage: 'Nobody must reorganise under the wheel, so the handlers and lift rise together.',
+        advantage:
+          'Nobody must reorganise under the wheel, so the handlers and lift rise together.',
         showIfAllFlags: ['c6-party-crossed-together'],
-        addFlags: ['c6-saved-lift-siblings', 'c6-preserved-west-lift', 'c6-entry-preparation-paid-off'],
-        result: 'Every traveller is still linked. On your count, the whole line leans back. Both handlers rise and the platform levels before the wheel catches it.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'Every traveller is still linked. On your count, the whole line leans back. Both handlers rise and the platform levels before the wheel catches it.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-drop-lift-to-wheel-track',
         label: 'Guide the falling platform into the firm wheel track.',
-        detail: 'Use the safe channel you studied on the way in. The lift will be damaged, not destroyed.',
-        advantage: 'Both handlers survive and repair crews keep most of the western entrance.',
+        detail:
+          'Use the safe channel you studied on the way in. The lift will be damaged, not destroyed.',
+        advantage:
+          'Both handlers survive and repair crews keep most of the western entrance.',
         showIfAllFlags: ['c6-read-wheel-track'],
-        addFlags: ['c6-saved-lift-siblings', 'c6-west-lift-damaged', 'c6-entry-preparation-paid-off'],
-        result: 'You cut one side rope and kick the platform toward the crushed grass channel. It lands flat and slides clear of the wheel. Both handlers remain aboard. One rail breaks, but the tower and ropes survive.',
+        addFlags: ['c6-west-lift-damaged'],
+        result:
+          'You cut one side rope and kick the platform toward the crushed grass channel. It lands flat and slides clear of the wheel. Both handlers remain aboard. One rail breaks, but the tower and ropes survive.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-catch-handler-rope',
         label: 'Catch the handler and take the rope’s weight yourself.',
-        detail: 'Lose 1 Health stopping both siblings before the wheel reaches them.',
-        advantage: 'The handlers live, and the gate crew sees you risk yourself before asking for entry.',
+        detail:
+          'Lose 1 Health stopping both siblings before the wheel reaches them.',
+        advantage:
+          'The handlers live, and the gate crew sees you risk yourself before asking for entry.',
         changes: { health: -1 },
         requires: { health: 1 },
-        addFlags: ['c6-saved-lift-siblings', 'c6-service-respect'],
-        result: 'You wrap the rope around your shield arm and drop to one knee. The strain opens a mountain cut, but both siblings reach the ladder alive.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'You wrap the rope around your shield arm and drop to one knee. The strain opens a mountain cut, but both siblings reach the ladder alive.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-command-counterweight',
         label: 'Order everyone into a counterweight line.',
         detail: 'Spend 1 Command turning strangers into one balanced pull.',
-        advantage: 'The platform and handlers should both rise without further damage to the lift.',
+        advantage:
+          'The platform and handlers should both rise without further damage to the lift.',
         changes: { command: -1 },
         requires: { command: 1 },
-        addFlags: ['c6-saved-lift-siblings', 'c6-preserved-west-lift'],
-        result: 'Your party catches the loose line on your count. The platform levels, the handlers rise, and the gate crew answers your final pull without being asked.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'Your party catches the loose line on your count. The platform levels, the handlers rise, and the gate crew answers your final pull without being asked.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-ember-burn-anchor',
         label: 'Ask Vaor to burn the jammed safety hook free.',
-        detail: 'Spend 1 Resolve controlling the fire after Vaor agrees to save the handlers.',
-        advantage: 'A precise burn should release the second platform and catch everyone below.',
+        detail:
+          'Spend 1 Resolve controlling the fire after Vaor agrees to save the handlers.',
+        advantage:
+          'A precise burn should release the second platform and catch everyone below.',
         showIfAnyFlags: ['c5-freed-vaor'],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-showed-living-ember', 'c6-saved-lift-siblings'],
-        result: 'You ask Vaor to save the handlers. He answers with one finger of red gold fire. You hold it to one link until the spare platform drops beneath them.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'You ask Vaor to save the handlers. He answers with one finger of red gold fire. You hold it to one link until the spare platform drops beneath them.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-force-stolen-ember-anchor',
         label: 'Force the stolen ember to burn the jammed safety hook free.',
-        detail: 'Spend 2 Resolve controlling the fire while Vaor resists your use of it.',
-        advantage: 'Release the second platform and save the handlers, while making the theft visible to the lift crew.',
+        detail:
+          'Spend 2 Resolve controlling the fire while Vaor resists your use of it.',
+        advantage:
+          'Release the second platform and save the handlers, while making the theft visible to the lift crew.',
         showIfAnyFlags: ['c5-took-ember-by-force'],
         changes: { resolve: -2 },
         requires: { resolve: 2 },
-        addFlags: ['c6-showed-living-ember', 'c6-saved-lift-siblings', 'c6-forced-vaor-lift-use'],
-        result: 'Vaor refuses. You force one finger of fire through the ember. It frees the hook and catches the handlers, but his roar tells the lift crew the flame was not freely given.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'Vaor refuses. You force one finger of fire through the ember. It frees the hook and catches the handlers, but his roar tells the lift crew the flame was not freely given.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-share-pact-ember-anchor',
         label: 'Ask Vaor to share one precise burn through the pact.',
-        detail: 'Spend 1 Resolve after both bearers agree to save the falling handlers.',
-        advantage: 'Release the second platform without breaking either bearer’s right to refuse.',
+        detail:
+          'Spend 1 Resolve after both bearers agree to save the falling handlers.',
+        advantage:
+          'Release the second platform without breaking either bearer’s right to refuse.',
         showIfAnyFlags: ['c5-vaor-pact'],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-showed-living-ember', 'c6-saved-lift-siblings', 'c6-vaor-consented-lift-use'],
-        result: 'You name the purpose. Vaor agrees. One narrow flame frees the hook, and the spare platform drops beneath the handlers.',
+        addFlags: ['c6-preserved-west-lift'],
+        result:
+          'You name the purpose. Vaor agrees. One narrow flame frees the hook, and the spare platform drops beneath the handlers.',
         next: 'c6-broken-axle',
       },
       {
         id: 'c6-cut-lift-free',
         label: 'Cut the damaged platform loose and turn it into a drag sled.',
-        detail: 'Sacrifice the western lift so nobody is pulled beneath the wheel.',
-        advantage: 'Everyone survives, but the town must repair an entrance it needs during the storm.',
-        addFlags: ['c6-saved-lift-siblings', 'c6-west-lift-lost'],
-        result: 'Your sword parts the last rope. The platform hits the grass and skids beside the wheel instead of beneath it. The handlers live. The gate captain stares at the ruined lift, then orders down a ladder.',
+        detail:
+          'Sacrifice the western lift so nobody is pulled beneath the wheel.',
+        advantage:
+          'Everyone survives, but the town must repair an entrance it needs during the storm.',
+        addFlags: ['c6-west-lift-lost'],
+        result:
+          'Your sword parts the last rope. The platform hits the grass and skids beside the wheel instead of beneath it. The handlers live. The gate captain stares at the ruined lift, then orders down a ladder.',
         next: 'c6-broken-axle',
       },
     ],
@@ -572,7 +602,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Safety must be earned at speed',
     title: 'The Wheel Beneath the Houses',
     location: 'Kharad Vey, Lower Western Deck',
-    objective: 'Stop a failing axle before it tears through the homes above it.',
+    objective:
+      'Stop a failing axle before it tears through the homes above it.',
     threat: 'Immediate',
     art: 'kharad',
     body: (state) => [
@@ -581,7 +612,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         ? 'The lost lift has taken half the repair crew with it. Nobody blames you for saving the handlers, but the empty stations make the price visible.'
         : has(state, 'c6-west-lift-damaged')
           ? 'The lift’s broken rail keeps part of its crew behind. The tower still works, but the axle repair has fewer hands.'
-        : 'The lift crew swings directly onto the repair lines. Saving the entrance has bought the wheel a few more hands.',
+          : has(state, 'c6-preserved-west-lift')
+            ? 'The intact lift swings its whole crew directly onto the repair lines. Saving the entrance has bought the wheel the hands needed to reach every failing pin.'
+            : 'No western-lift outcome was recorded, so Korran will not invent one.',
       'The gate captain removes her helmet. One tusk is capped in brass, and grey runs through her tied black hair. “Korran Red Wind,” she says, pointing toward a tall scarred orc bracing the steering beam. “He speaks for the town this season. If this wheel breaks, there will be no town left to convince.”',
       'Korran does not look at your badge. “You know how to command roads,” he calls. “Show me you can serve one.”',
     ],
@@ -589,43 +622,56 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-brace-axle-body',
         label: 'Climb beneath the deck and brace the axle by hand.',
-        detail: 'Lose 2 Health holding the beam while the repair crew replaces its pins.',
-        advantage: 'The dangerous position gives the crew enough time to save every home above.',
+        detail:
+          'Lose 2 Health holding the beam while the repair crew replaces its pins.',
+        advantage:
+          'The dangerous position gives the crew enough time to save every home above.',
         changes: { health: -2 },
         requires: { health: 1 },
-        addFlags: ['c6-held-western-axle', 'c6-service-respect'],
-        result: 'The axle hammers your shoulder with every turn. You hold until fresh pins bite into the housing and the homes stop shaking apart.',
+        addFlags: ['c6-held-western-axle'],
+        result:
+          'The axle hammers your shoulder with every turn. You hold until fresh pins bite into the housing and the homes stop shaking apart.',
         next: 'c6-first-duty',
       },
       {
         id: 'c6-command-axle-crews',
         label: 'Split the repair into brace, pin, and evacuation crews.',
-        detail: 'Spend 2 Command learning the local signals and coordinating the deck.',
-        advantage: 'The town keeps moving while every threatened family reaches safety.',
+        detail:
+          'Spend 2 Command learning the local signals and coordinating the deck.',
+        advantage:
+          'The town keeps moving while every threatened family reaches safety.',
         changes: { command: -2 },
         requires: { command: 2 },
-        addFlags: ['c6-learned-wheel-signals', 'c6-service-respect'],
-        result: 'You repeat each local signal before giving an order. Korran hears the effort. The braces land together, new pins enter cleanly, and the last family clears the deck before the axle settles.',
+        addFlags: ['c6-learned-wheel-signals'],
+        result:
+          'You repeat each local signal before giving an order. Korran hears the effort. The braces land together, new pins enter cleanly, and the last family clears the deck before the axle settles.',
         next: 'c6-first-duty',
       },
       {
         id: 'c6-oath-hold-western-deck',
-        label: 'Promise that the western homes will stand through this crossing.',
-        detail: 'Spend 2 Oathfire binding your protection to a town that has not accepted you.',
-        advantage: 'The Oath should hold the damaged structure and prove your power protects people outside Crown rule.',
+        label:
+          'Promise that the western homes will stand through this crossing.',
+        detail:
+          'Spend 2 Oathfire binding your protection to a town that has not accepted you.',
+        advantage:
+          'The Oath should hold the damaged structure and prove your power protects people outside Crown rule.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c6-oath-held-western-deck', 'c6-broad-steppe-oath'],
-        result: 'Gold fire spreads through the beams. The weight of hundreds of strangers enters your promise. The axle turns, the houses hold, and every future crack pulls faintly behind your ribs.',
+        result:
+          'Gold fire spreads through the beams. The weight of hundreds of strangers enters your promise. The axle turns, the houses hold, and every future crack pulls faintly behind your ribs.',
         next: 'c6-first-duty',
       },
       {
         id: 'c6-let-korran-lead-repair',
         label: 'Ask Korran where an unfamiliar pair of hands belongs.',
-        detail: 'Give local knowledge authority instead of taking control of the repair.',
-        advantage: 'You learn the work without spending a stat and avoid issuing a dangerous foreign order.',
-        addFlags: ['c6-followed-local-command', 'c6-service-respect'],
-        result: 'Korran puts you on the hot pin line. You carry iron until your gloves smoke. The repair succeeds under his commands, and the nod he gives you afterward is small but real.',
+        detail:
+          'Give local knowledge authority instead of taking control of the repair.',
+        advantage:
+          'You learn the work without spending a stat and avoid issuing a dangerous foreign order.',
+        addFlags: ['c6-followed-local-command'],
+        result:
+          'Korran puts you on the hot pin line. You carry iron until your gloves smoke. The repair succeeds under his commands, and the nod he gives you afterward is small but real.',
         next: 'c6-first-duty',
       },
     ],
@@ -636,7 +682,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'A hearing has a price',
     title: 'Choose How You Serve',
     location: 'Kharad Vey, Turning Market',
-    objective: 'Complete one local duty before asking the clans for an alliance.',
+    objective:
+      'Complete one local duty before asking the clans for an alliance.',
     threat: 'Uneasy',
     art: 'kharad',
     introducesStoryTerms: ['Red Moot', 'Black Gate'],
@@ -655,28 +702,37 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-choose-herd-duty',
         label: 'Bring the steppe herd through the moving outer gate.',
-        detail: 'Choose a physical rescue where frightened animals and riders can be lost in the storm.',
-        advantage: 'The herders’ clan will judge you by who returns, not by your title.',
+        detail:
+          'Choose a physical rescue where frightened animals and riders can be lost in the storm.',
+        advantage:
+          'The herders’ clan will judge you by who returns, not by your title.',
         addFlags: ['c6-herd-route'],
-        result: 'You take a hook pole and follow the herders onto the outer bridge. Red horned cattle run beside the moving town while the storm bends toward them.',
+        result:
+          'You take a hook pole and follow the herders onto the outer bridge. Red horned cattle run beside the moving town while the storm bends toward them.',
         next: 'c6-herd-duty',
       },
       {
         id: 'c6-choose-forge-duty',
         label: 'Repair the forge brakes before the next descent.',
-        detail: 'Choose a dangerous craft problem inside the hottest part of the town.',
-        advantage: 'The wheelwright clan will see whether you can listen before using the ember near their machines.',
+        detail:
+          'Choose a dangerous craft problem inside the hottest part of the town.',
+        advantage:
+          'The wheelwright clan will see whether you can listen before using the ember near their machines.',
         addFlags: ['c6-forge-route'],
-        result: 'You follow the wheelwrights below the market. The forge deck leans with every turn, and molten iron crawls toward a broken brake housing.',
+        result:
+          'You follow the wheelwrights below the market. The forge deck leans with every turn, and molten iron crawls toward a broken brake housing.',
         next: 'c6-forge-duty',
       },
       {
         id: 'c6-choose-shrine-duty',
         label: 'Protect the children at the ancestor shrine.',
-        detail: 'Choose the first direct contact with the voices inside the storm.',
-        advantage: 'The shrine keepers may reveal why the dead have begun calling to the living.',
+        detail:
+          'Choose the first direct contact with the voices inside the storm.',
+        advantage:
+          'The shrine keepers may reveal why the dead have begun calling to the living.',
         addFlags: ['c6-shrine-route'],
-        result: 'You climb toward the shrine deck. Small handprints cover the red door, and a dead woman’s voice is singing from the other side.',
+        result:
+          'You climb toward the shrine deck. Small handprints cover the red door, and a dead woman’s voice is singing from the other side.',
         next: 'c6-shrine-duty',
       },
     ],
@@ -687,7 +743,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Red horns in red grass',
     title: 'The Herd Runs Beside You',
     location: 'Kharad Vey, Outer Herd Bridge',
-    objective: 'Bring forty cattle and three young riders inside before the ground splits.',
+    objective:
+      'Bring forty cattle and three young riders inside before the ground splits.',
     threat: 'Immediate',
     art: 'kharad',
     body: (state) => [
@@ -701,68 +758,87 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-ride-for-lost-herder',
         label: 'Ride into the storm’s edge and bring the young herder back.',
-        detail: 'Lose 1 Health crossing unstable ground while the herd continues without you.',
-        advantage: 'The child returns alive, and Korran can guide the remaining herd through the gate.',
+        detail:
+          'Lose 1 Health crossing unstable ground while the herd continues without you.',
+        advantage:
+          'The child returns alive, and Korran can guide the remaining herd through the gate.',
         changes: { health: -1 },
         requires: { health: 1 },
-        addFlags: ['c6-saved-herder', 'c6-herd-service-complete'],
-        result: 'Your horse nearly loses a leg in the widening crack. You catch the rider by his belt and turn him away from the voice wearing his mother’s love.',
+        addFlags: ['c6-saved-herder'],
+        result:
+          'Your horse nearly loses a leg in the widening crack. You catch the rider by his belt and turn him away from the voice wearing his mother’s love.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-command-herd-funnel',
-        label: 'Repeat the three whistle calls the lead herder just taught you.',
-        detail: 'Spend 1 Command using the local signals to funnel herd and children together.',
-        advantage: 'The whole herd should enter without leaving a rider alone with the voices.',
+        label:
+          'Repeat the three whistle calls the lead herder just taught you.',
+        detail:
+          'Spend 1 Command using the local signals to funnel herd and children together.',
+        advantage:
+          'The whole herd should enter without leaving a rider alone with the voices.',
         changes: { command: -1 },
         requires: { command: 1 },
-        addFlags: ['c6-whole-herd-saved', 'c6-herd-service-complete'],
-        result: 'You repeat the herders’ own whistle pattern. Cattle close around the young riders, and the living herd drowns the dead voices beneath hoofbeats.',
+        addFlags: ['c6-whole-herd-saved'],
+        result:
+          'You repeat the herders’ own whistle pattern. Cattle close around the young riders, and the living herd drowns the dead voices beneath hoofbeats.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-ember-wall-herd',
-        label: 'Ask Vaor for a low wall of fire between the herd and the storm.',
-        detail: 'Spend 1 Resolve keeping the agreed flame low enough not to panic the animals.',
-        advantage: 'The barrier blocks the voices and reveals that the storm fears living dragonfire.',
+        label:
+          'Ask Vaor for a low wall of fire between the herd and the storm.',
+        detail:
+          'Spend 1 Resolve keeping the agreed flame low enough not to panic the animals.',
+        advantage:
+          'The barrier blocks the voices and brings all forty cattle and every rider home.',
         showIfAnyFlags: ['c5-freed-vaor'],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-storm-feared-ember', 'c6-herd-service-complete'],
-        result: 'You ask Vaor to protect the riders. He agrees. Red gold flame runs through the grass without consuming it. The dead voices recoil, and the cattle carry every rider toward the city.',
+        addFlags: ['c6-whole-herd-saved'],
+        result:
+          'You ask Vaor to protect the riders. He agrees. Red gold flame runs through the grass without consuming it. The dead voices recoil, and the cattle carry every rider toward the city.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-force-stolen-ember-herd',
         label: 'Force the stolen ember into a low wall before the herd.',
         detail: 'Spend 2 Resolve holding the fire low while Vaor resists.',
-        advantage: 'Block the voices and save every rider, but show the herders that the dragon refused.',
+        advantage:
+          'Block the voices and save every rider, but show the herders that the dragon refused.',
         showIfAnyFlags: ['c5-took-ember-by-force'],
         changes: { resolve: -2 },
         requires: { resolve: 2 },
-        addFlags: ['c6-storm-feared-ember', 'c6-herd-service-complete', 'c6-forced-vaor-herd-use'],
-        result: 'Vaor pulls against the stolen flame. You force it low across the grass. The voices recoil, every rider escapes, and the dragon’s anger follows them home.',
+        addFlags: ['c6-whole-herd-saved'],
+        result:
+          'Vaor pulls against the stolen flame. You force it low across the grass. The voices recoil, every rider escapes, and the dragon’s anger follows them home.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-share-pact-ember-herd',
         label: 'Ask Vaor to share a low wall of fire through the pact.',
-        detail: 'Spend 1 Resolve after both bearers agree to protect the riders.',
-        advantage: 'Block the voices and save every rider without breaking the pact.',
+        detail:
+          'Spend 1 Resolve after both bearers agree to protect the riders.',
+        advantage:
+          'Block the voices and save every rider without breaking the pact.',
         showIfAnyFlags: ['c5-vaor-pact'],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-storm-feared-ember', 'c6-herd-service-complete', 'c6-vaor-consented-herd-use'],
-        result: 'You name the living riders at risk. Vaor agrees. The pact opens a low red wall, and the herd carries every child toward the city.',
+        addFlags: ['c6-whole-herd-saved'],
+        result:
+          'You name the living riders at risk. Vaor agrees. The pact opens a low red wall, and the herd carries every child toward the city.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-cut-herd-loose',
         label: 'Cut the lead ropes and let the animals choose solid ground.',
-        detail: 'Risk losing part of the herd to save the riders from the widening crack.',
-        advantage: 'Every child survives, and the animals reveal a safe path the maps missed.',
-        addFlags: ['c6-saved-all-herders', 'c6-lost-part-herd', 'c6-herd-service-complete'],
-        result: 'The cattle scatter, then curve around ground too thin to trust. Twelve animals vanish into the grass, but all three riders follow the surviving herd home.',
+        detail:
+          'Risk losing part of the herd to save the riders from the widening crack.',
+        advantage:
+          'Every child survives, and the animals reveal a safe path the maps missed.',
+        addFlags: ['c6-saved-all-herders', 'c6-lost-part-herd'],
+        result:
+          'The cattle scatter, then curve around ground too thin to trust. Twelve animals vanish into the grass, but all three riders follow the surviving herd home.',
         next: 'c6-ancestor-warning',
       },
     ],
@@ -780,74 +856,92 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'The forge tilts farther than its chains should allow. Molten iron slides across a black stone channel toward ropes that steer the next wheel. Wheelwright Dema strikes the broken brake housing and curses the old casting inside it.',
       '“Wrong metal,” she says. “One of our honoured grandfathers insisted it would last another season.” Her crew waits for her order, not the grandfather’s reputation.',
       'Your ember leans toward the molten iron. Hunger moves through it. You can help, but every person on the deck is watching whether you understand the machine before touching it.',
-      vaorUseBoundary(state, 'soften the cracked casting without burning the forge'),
+      vaorUseBoundary(
+        state,
+        'soften the cracked casting without burning the forge',
+      ),
     ],
     choices: [
       {
         id: 'c6-turn-forge-wheel',
         label: 'Take the brake wheel while Dema replaces the casting.',
         detail: 'Lose 1 Health holding hot iron against the city’s weight.',
-        advantage: 'Dema controls the repair while you absorb the danger her crew cannot.',
+        advantage:
+          'Dema controls the repair while you absorb the danger her crew cannot.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c6-forge-service-complete', 'c6-dema-respect'],
-        result: 'The wheel burns through your gloves. You hold it at Dema’s count until the new casting locks and the molten iron stops short of the ropes.',
+        result:
+          'The wheel burns through your gloves. You hold it at Dema’s count until the new casting locks and the molten iron stops short of the ropes.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-command-forge-evacuation',
         label: 'Move the crew and neighbouring homes before the next tilt.',
         detail: 'Spend 1 Command placing lives ahead of the machine.',
-        advantage: 'Nobody dies if the repair fails, and Dema gains room to work without panic.',
+        advantage:
+          'Nobody dies if the repair fails, and Dema gains room to work without panic.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c6-forge-service-complete', 'c6-forge-families-safe'],
-        result: 'Dema calls each local signal and you carry it across the deck with a captain’s voice. The homes empty in one clean line. She drops the damaged channel after the last child clears it and saves the brake from below.',
+        result:
+          'Dema calls each local signal and you carry it across the deck with a captain’s voice. The homes empty in one clean line. She drops the damaged channel after the last child clears it and saves the brake from below.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-feed-ember-to-brake',
         label: 'Ask Vaor to soften only the cracked casting.',
         detail: 'Spend 1 Resolve holding the agreed flame inside one crack.',
-        advantage: 'The precise heat lets Dema reshape the metal instead of replacing it.',
+        advantage:
+          'The precise heat lets Dema reshape the metal instead of replacing it.',
         showIfAnyFlags: ['c5-freed-vaor'],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-forge-service-complete', 'c6-dema-studied-ember'],
-        result: 'You ask Vaor for one narrow flame. He agrees after Dema names the safe point. You hold the heat inside one crack while she hammers the casting whole.',
+        addFlags: ['c6-forge-service-complete'],
+        result:
+          'You ask Vaor for one narrow flame. He agrees after Dema names the safe point. You hold the heat inside one crack while she hammers the casting whole.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-force-stolen-ember-brake',
         label: 'Force the stolen ember to soften the cracked casting.',
-        detail: 'Spend 2 Resolve containing the fire while Vaor resists inside a crowded forge.',
-        advantage: 'Save the casting, but expose the stolen flame to Dema and her crew.',
+        detail:
+          'Spend 2 Resolve containing the fire while Vaor resists inside a crowded forge.',
+        advantage:
+          'Save the casting, but expose the stolen flame to Dema and her crew.',
         showIfAnyFlags: ['c5-took-ember-by-force'],
         changes: { resolve: -2 },
         requires: { resolve: 2 },
-        addFlags: ['c6-forge-service-complete', 'c6-dema-studied-ember', 'c6-forced-vaor-forge-use'],
-        result: 'Vaor refuses the forge. You force one narrow flame into the casting while Dema hammers. The brake holds, and every worker hears the dragon’s anger.',
+        addFlags: ['c6-forge-service-complete'],
+        result:
+          'Vaor refuses the forge. You force one narrow flame into the casting while Dema hammers. The brake holds, and every worker hears the dragon’s anger.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-share-pact-ember-brake',
         label: 'Ask Vaor to share one precise forge flame through the pact.',
-        detail: 'Spend 1 Resolve after Dema names the metal and both bearers agree.',
-        advantage: 'Save the casting without breaking local command or the pact’s refusal term.',
+        detail:
+          'Spend 1 Resolve after Dema names the metal and both bearers agree.',
+        advantage:
+          'Save the casting without breaking local command or the pact’s refusal term.',
         showIfAnyFlags: ['c5-vaor-pact'],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-forge-service-complete', 'c6-dema-studied-ember', 'c6-vaor-consented-forge-use'],
-        result: 'Dema names the safe point. You ask Vaor, and he agrees. One narrow flame softens the crack while Dema hammers the casting whole.',
+        addFlags: ['c6-forge-service-complete'],
+        result:
+          'Dema names the safe point. You ask Vaor, and he agrees. One narrow flame softens the crack while Dema hammers the casting whole.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-break-grandfather-casting',
         label: 'Destroy the honoured casting and use the plain spare.',
-        detail: 'Reject a prestigious heirloom that is endangering the living crew.',
-        advantage: 'The simple repair works and gives you a concrete lesson for the Red Moot.',
+        detail:
+          'Reject a prestigious heirloom that is endangering the living crew.',
+        advantage:
+          'The simple repair works and gives you a concrete lesson for the Red Moot.',
         addFlags: ['c6-forge-service-complete', 'c6-broke-ancestor-casting'],
-        result: 'Dema hands you the hammer. One blow breaks the famous casting. The plain spare fits perfectly. Nobody on the deck mourns the old name while the wheel slows safely.',
+        result:
+          'Dema hands you the hammer. One blow breaks the famous casting. The plain spare fits perfectly. Nobody on the deck mourns the old name while the wheel slows safely.',
         next: 'c6-ancestor-warning',
       },
     ],
@@ -858,7 +952,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'A loving voice at the wrong door',
     title: 'Children of the Red Shrine',
     location: 'Kharad Vey, Ancestor Deck',
-    objective: 'Bring the children away from voices asking them to enter the storm.',
+    objective:
+      'Bring the children away from voices asking them to enter the storm.',
     threat: 'Immediate',
     art: 'storm',
     body: () => [
@@ -870,43 +965,59 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-carry-children-from-shrine',
         label: 'Carry the youngest children out while Asha holds the door.',
-        detail: 'Lose 1 Health when the storm pulls the door through your injured shoulder.',
-        advantage: 'Every child leaves before the voice can learn what else they want to hear.',
+        detail:
+          'Lose 1 Health when the storm pulls the door through your injured shoulder.',
+        advantage:
+          'Every child leaves before the voice can learn what else they want to hear.',
         changes: { health: -1 },
         requires: { health: 1 },
         addFlags: ['c6-shrine-service-complete', 'c6-children-safe'],
-        result: 'You carry two children and lead the rest by a rope. The door slams against your shoulder, but every living voice reaches the lower deck.',
+        result:
+          'You carry two children and lead the rest by a rope. The door slams against your shoulder, but every living voice reaches the lower deck.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-name-living-shrine-voices',
         label: 'Make each child name one living person waiting outside.',
-        detail: 'Spend 1 Command giving the frightened children a shared answer to the dead.',
-        advantage: 'Their own voices should break the storm’s hold without denying their grief.',
+        detail:
+          'Spend 1 Command giving the frightened children a shared answer to the dead.',
+        advantage:
+          'Their own voices should break the storm’s hold without denying their grief.',
         changes: { command: -1 },
         requires: { command: 1 },
         addFlags: ['c6-shrine-service-complete', 'c6-children-chose-living'],
-        result: 'Each child names someone alive. Mother. Cousin. Teacher. Friend. The words become louder than the storm, and small hands release the latch.',
+        result:
+          'Each child names someone alive. Mother. Cousin. Teacher. Friend. The words become louder than the storm, and small hands release the latch.',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-oath-no-dead-command',
         label: 'Promise that no dead voice will command a child here.',
         detail: 'Spend 1 Oathfire drawing every false command toward yourself.',
-        advantage: 'The children can leave safely, and you will hear what the storm is truly accusing you of.',
+        advantage:
+          'The children can leave safely, and you will hear what the storm is truly accusing you of.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
-        addFlags: ['c6-shrine-service-complete', 'c6-heard-storm-accusation', 'c6-broad-steppe-oath'],
-        result: 'Gold fire seals the red door. The children hear silence. Hundreds of voices turn toward you. “You serve the power that stopped our families from ever being born.”',
+        addFlags: [
+          'c6-shrine-service-complete',
+          'c6-heard-storm-accusation',
+          'c6-broad-steppe-oath',
+        ],
+        result:
+          'Gold fire seals the red door. The children hear silence. Hundreds of voices turn toward you. “You serve the power that stopped our families from ever being born.”',
         next: 'c6-ancestor-warning',
       },
       {
         id: 'c6-open-shrine-door-yourself',
-        label: 'Open the door alone and show the children what is calling them.',
-        detail: 'Face the storm without magical protection so fear cannot invent something worse.',
-        advantage: 'The children see that the loving voices have no bodies and cannot lead anyone home.',
-        addFlags: ['c6-shrine-service-complete', 'c6-saw-empty-storm'],
-        result: 'You open the door. Red dust fills the frame. Faces appear, but there are no hands, no road, and no lost home. The oldest child closes the door herself.',
+        label:
+          'Open the door alone and show the children what is calling them.',
+        detail:
+          'Face the storm without magical protection so fear cannot invent something worse.',
+        advantage:
+          'The children see that the loving voices have no bodies and cannot lead anyone home.',
+        addFlags: ['c6-shrine-service-complete'],
+        result:
+          'You open the door. Red dust fills the frame. Faces appear, but there are no hands, no road, and no lost home. The oldest child closes the door herself.',
         next: 'c6-ancestor-warning',
       },
     ],
@@ -917,7 +1028,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'The storm chooses an accusation',
     title: 'The Families Who Never Lived',
     location: 'Kharad Vey, Upper Spine',
-    objective: 'Keep the town moving while the ancestor voices turn against you.',
+    objective:
+      'Keep the town moving while the ancestor voices turn against you.',
     threat: 'Rising',
     art: 'storm',
     body: (state) => [
@@ -933,62 +1045,82 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-admit-rulers-lied',
         label: 'Admit publicly that the old rulers hid the Concord’s victims.',
-        detail: 'Give up the safety of an easier story before you know how the crowd will react.',
-        advantage: 'Korran and the town hear the truth from you before the storm can twist it.',
-        addFlags: ['c6-admitted-concord-crime', 'c6-public-truth', 'c6-ember-disclosure-pending'],
-        result: 'You say what Orivane’s memory showed you. Anger moves through the crowd, but nobody can accuse you of hiding the same truth.',
+        detail:
+          'Give up the safety of an easier story before you know how the crowd will react.',
+        advantage:
+          'Korran and the town hear the truth from you before the storm can twist it.',
+        addFlags: ['c6-admitted-concord-crime', 'c6-ember-disclosure-pending'],
+        result:
+          'You say what Orivane’s memory showed you. Anger moves through the crowd, but nobody can accuse you of hiding the same truth.',
         next: 'c6-storm-breach',
       },
       {
         id: 'c6-demand-storm-name-source',
         label: 'Ask the voice where it learned your new name.',
-        detail: 'Spend 1 Resolve resisting the pull of your father’s voice beneath hers.',
-        advantage: 'The answer may distinguish an old memory from something watching you now.',
+        detail:
+          'Spend 1 Resolve resisting the pull of your father’s voice beneath hers.',
+        advantage:
+          'The answer may distinguish an old memory from something watching you now.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-questioned-storm-source', 'c6-ember-disclosure-pending'],
-        result: 'You ask who taught the dead to call you Ember Bearer. The woman smiles with Korran’s mother’s mouth. “The sea beneath every lost road.”',
+        addFlags: ['c6-ember-disclosure-pending'],
+        result:
+          'You ask who taught the dead to call you Ember Bearer. The woman smiles with Korran’s mother’s mouth. “The sea beneath every lost road.”',
         next: 'c6-storm-breach',
       },
       {
         id: 'c6-declare-given-ember',
         label: 'Tell them Vaor gave you the ember and remained free.',
-        detail: 'Let the town judge a willing gift instead of the storm’s accusation.',
-        advantage: 'Vaor’s shadow and Lysara’s witness support your account, though neither can force the crowd to trust you.',
+        detail:
+          'Let the town judge a willing gift instead of the storm’s accusation.',
+        advantage:
+          'Vaor’s shadow and Lysara’s witness support your account, though neither can force the crowd to trust you.',
         showIfAnyFlags: ['c5-freed-vaor'],
-        addFlags: ['c6-declared-ember-origin', 'c6-declared-willing-ember', 'c6-voluntary-ember-disclosure'],
-        result: 'You name the choice exactly. Vaor gave the ember and kept his freedom. His shadow crosses the cloud as Lysara confirms what she saw. Some people lower their weapons. Others keep watching the dragon.',
+        addFlags: ['c6-declared-ember-origin', 'c6-voluntary-ember-disclosure'],
+        result:
+          'You name the choice exactly. Vaor gave the ember and kept his freedom. His shadow crosses the cloud as Lysara confirms what she saw. Some people lower their weapons. Others keep watching the dragon.',
         next: 'c6-storm-breach',
       },
       {
         id: 'c6-confess-stolen-ember',
         label: 'Admit that you tore the ember from Vaor against his will.',
-        detail: 'Expose the choice that may cost the town’s trust and give Vaor a claim against you.',
-        advantage: 'Korran hears the truth from you and can judge the danger without the storm controlling the story.',
+        detail:
+          'Expose the choice that may cost the town’s trust and give Vaor a claim against you.',
+        advantage:
+          'Korran hears the truth from you and can judge the danger without the storm controlling the story.',
         showIfAnyFlags: ['c5-took-ember-by-force'],
-        addFlags: ['c6-declared-ember-origin', 'c6-admitted-ember-theft', 'c6-voluntary-ember-disclosure'],
-        result: 'You admit the theft. Anger breaks across the deck. Korran does not forgive you, but he stops the first drawn spear. “He answered,” he says. “Now we judge the whole man, not the lie he could have told.”',
+        addFlags: ['c6-declared-ember-origin', 'c6-voluntary-ember-disclosure'],
+        result:
+          'You admit the theft. Anger breaks across the deck. Korran does not forgive you, but he stops the first drawn spear. “He answered,” he says. “Now we judge the whole man, not the lie he could have told.”',
         next: 'c6-storm-breach',
       },
       {
         id: 'c6-declare-pact-ember',
-        label: 'Tell them Vaor chose a pact and now shares the burden with you.',
-        detail: 'Reveal that the second presence inside you is an ally with his own will.',
-        advantage: 'The ember’s second heartbeat and Lysara’s witness distinguish the pact from possession or theft.',
+        label:
+          'Tell them Vaor chose a pact and now shares the burden with you.',
+        detail:
+          'Reveal that the second presence inside you is an ally with his own will.',
+        advantage:
+          'The ember’s second heartbeat and Lysara’s witness distinguish the pact from possession or theft.',
         showIfAnyFlags: ['c5-vaor-pact'],
-        addFlags: ['c6-declared-ember-origin', 'c6-declared-pact-ember', 'c6-voluntary-ember-disclosure'],
-        result: 'You state the pact in full. You and Vaor carry the ember to the black stone gate, protect living people, and expose what the Concord erased. Either of you may refuse its use. The bond ends only when the gate is safe and both of you call the duty complete. Lysara confirms that two living wills chose the bond. At Vaor’s consent, the ember beats twice. The word thief loses its hold.',
+        addFlags: ['c6-declared-ember-origin', 'c6-voluntary-ember-disclosure'],
+        result:
+          'You state the pact in full. You and Vaor carry the ember to the black stone gate, protect living people, and expose what the Concord erased. Either of you may refuse its use. The bond ends only when the gate is safe and both of you call the duty complete. Lysara confirms that two living wills chose the bond. At Vaor’s consent, the ember beats twice. The word thief loses its hold.',
         next: 'c6-storm-breach',
       },
       {
         id: 'c6-order-party-defensive-ring',
-        label: 'Place your companions around the ember and prepare for an attack.',
-        detail: 'Spend 1 Command protecting the party while the town decides whether you are an enemy.',
-        advantage: 'A disciplined defence prevents panic without threatening Kharad Vey’s civilians.',
+        label:
+          'Place your companions around the ember and prepare for an attack.',
+        detail:
+          'Spend 1 Command protecting the party while the town decides whether you are an enemy.',
+        advantage:
+          'A disciplined defence prevents panic without threatening Kharad Vey’s civilians.',
         changes: { command: -1 },
         requires: { command: 1 },
-        addFlags: ['c6-disciplined-storm-defence', 'c6-ember-disclosure-pending'],
-        result: '“The storm wants panic more than truth,” you tell Korran. Your people form a tight shield ring facing the cloud, not the crowd. Mara makes certain everyone notices the difference.',
+        addFlags: ['c6-ember-disclosure-pending'],
+        result:
+          '“The storm wants panic more than truth,” you tell Korran. Your people form a tight shield ring facing the cloud, not the crowd. Mara makes certain everyone notices the difference.',
         next: 'c6-storm-breach',
       },
     ],
@@ -1002,12 +1134,20 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     objective: 'Stop the storm from turning the city into the broken ground.',
     threat: 'Critical',
     art: 'storm',
+    activeConsequences: {
+      complications: [
+        'c6-held-western-axle',
+        'c6-oath-held-western-deck',
+        'c6-followed-local-command',
+      ],
+    },
     body: (state) => [
       'The storm hits before the argument can continue. Red wind tears across the open decks. Ancestor faces descend over the steering bridge, and every helmsman hears a dead teacher ordering a different turn.',
       'The front wheels pull north. The rear wheels pull south. Houses twist between them. A family platform breaks one chain and swings out over the grass.',
       has(state, 'c6-learned-wheel-signals')
         ? 'You know the deck signals now. The living crews are waiting for one command they can share.'
         : 'You do not know every wheel signal, but you know what fear does to a line when orders conflict.',
+      westernRepairAtStorm(state),
       has(state, 'c6-reached-lift-first')
         ? 'The people you helped aboard first are already on the inner deck, clear of the swinging platform.'
         : has(state, 'c6-party-crossed-together')
@@ -1022,80 +1162,106 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-use-climbing-line-family',
-        label: 'Throw the preserved climbing line to Mara and the swinging family.',
-        detail: 'Use the rope you kept by entering through the lift instead of the livestock crane.',
-        advantage: 'Mara can pull every civilian home while you help Korran keep the city upright.',
+        label:
+          'Throw the preserved climbing line to Mara and the swinging family.',
+        detail:
+          'Use the rope you kept by entering through the lift instead of the livestock crane.',
+        advantage:
+          'Mara can pull every civilian home while you help Korran keep the city upright.',
         hideIfAnyFlags: ['c6-spent-climbing-line-entry'],
-        addFlags: ['c6-saved-swinging-families', 'c6-climbing-line-paid-off'],
-        result: 'Mara catches the line and loops it through the platform rail. The family crawls back one person at a time while you put both hands on Korran’s steering rope.',
+        addFlags: ['c6-saved-swinging-families'],
+        result:
+          'Mara catches the line and loops it through the platform rail. The family crawls back one person at a time while you put both hands on Korran’s steering rope.',
         next: 'c6-korran-terms',
       },
       {
         id: 'c6-save-family-platform',
         label: 'Cross the loose chain and pull the family platform back.',
-        detail: 'Lose 2 Health rescuing the people while Korran holds the steering rope.',
-        advantage: 'Every trapped civilian survives, and Korran remains free to keep the city upright.',
+        detail:
+          'Lose 2 Health rescuing the people while Korran holds the steering rope.',
+        advantage:
+          'Every trapped civilian survives, and Korran remains free to keep the city upright.',
         changes: { health: -2 },
         requires: { health: 1 },
         addFlags: ['c6-saved-swinging-families'],
-        result: 'The platform drops under your weight. You cross the chain, tie three children to your belt, and pull until living hands drag the platform home.',
+        result:
+          'The platform drops under your weight. You cross the chain, tie three children to your belt, and pull until living hands drag the platform home.',
         next: 'c6-korran-terms',
       },
       {
         id: 'c6-command-all-wheels',
         label: 'Call one living rhythm across every wheel deck.',
-        detail: 'Spend 2 Command overriding the conflicting dead voices with signals the crews know.',
-        advantage: 'The whole city turns together and avoids the broken ground without sacrificing a platform.',
+        detail:
+          'Spend 2 Command overriding the conflicting dead voices with signals the crews know.',
+        advantage:
+          'The whole city turns together and avoids the broken ground without sacrificing a platform.',
         changes: { command: -2 },
         requires: { command: 2 },
-        addFlags: ['c6-city-followed-command', 'c6-learned-living-rhythm'],
-        result: 'You call the rhythm Korran used at the axle. One deck answers, then twelve. The city turns away from the split, and the loose family platform swings back within Mara’s reach.',
+        addFlags: ['c6-saved-swinging-families'],
+        result:
+          'You call the rhythm Korran used at the axle. One deck answers, then twelve. The city turns away from the split, and the loose family platform swings back within Mara’s reach.',
         next: 'c6-korran-terms',
       },
       {
         id: 'c6-oath-living-steer',
         label: 'Promise that only living hands will steer Kharad Vey tonight.',
-        detail: 'Spend 2 Oathfire binding your magic to the town’s right to govern itself.',
-        advantage: 'The Oath silences every command in the storm and gives the wheel crews control.',
+        detail:
+          'Spend 2 Oathfire binding your magic to the town’s right to govern itself.',
+        advantage:
+          'The Oath silences every command in the storm and gives the wheel crews control.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
         addFlags: ['c6-oath-living-authority', 'c6-broad-steppe-oath'],
-        result: 'Gold fire circles every steering rope. Dead commands break against the promise. The living crews choose one turn, and Mara pulls the family platform home as the city follows it.',
+        result:
+          'Gold fire circles every steering rope. Dead commands break against the promise. The living crews choose one turn, and Mara pulls the family platform home as the city follows it.',
         next: 'c6-korran-terms',
       },
       {
         id: 'c6-carry-living-horn',
         label: 'Carry Korran’s living horn call across the banner ropes.',
-        detail: 'Let Lysara spread one true signal while you hold the main rope beside Korran.',
-        advantage: 'The living crews hear their commander above the dead, but the effort scorches more of Lysara’s seed.',
+        detail:
+          'Let Lysara spread one true signal while you hold the main rope beside Korran.',
+        advantage:
+          'The living crews hear their commander above the dead, but the effort scorches more of Lysara’s seed.',
         showIfAllFlags: ['c2-saved-lysara'],
         hideIfAnyFlags: priorSeedDamageFlags,
-        addFlags: ['c6-living-horn-crossed-storm', 'c6-korran-shared-steering', 'c6-seed-scorched-by-horn'],
-        result: 'Lysara runs green thread through the banner ropes. Korran sounds one long call. Every deck follows it, and Mara pulls the family platform home while you and Korran haul the main rope.',
+        addFlags: ['c6-seed-scorched-by-horn'],
+        result:
+          'Lysara runs green thread through the banner ropes. Korran sounds one long call. Every deck follows it, and Mara pulls the family platform home while you and Korran haul the main rope.',
         next: 'c6-korran-terms',
       },
       {
         id: 'c6-carry-living-horn-untreated',
-        label: 'Brace Lysara’s untreated wrist while she carries Korran’s horn call.',
-        detail: 'Spend 1 Resolve sharing the steering rope and keeping her injured hand steady.',
-        advantage: 'Every deck hears Korran, but the old Bellweather injury flares and will need rest.',
+        label:
+          'Brace Lysara’s untreated wrist while she carries Korran’s horn call.',
+        detail:
+          'Spend 1 Resolve sharing the steering rope and keeping her injured hand steady.',
+        advantage:
+          'Every deck hears Korran, but the old Bellweather injury flares and will need rest.',
         hideIfAnyFlags: ['c2-saved-lysara', ...priorSeedDamageFlags],
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-living-horn-crossed-storm', 'c6-korran-shared-steering', 'c6-seed-scorched-by-horn', 'c6-lysara-hand-strained-by-horn'],
-        result: 'Sorin binds Lysara’s wrist while you hold the steering rope against her shoulder. Her thread carries Korran’s call. Mara pulls the family platform home before the light snaps back into the seed.',
+        addFlags: [
+          'c6-seed-scorched-by-horn',
+          'c6-lysara-hand-strained-by-horn',
+        ],
+        result:
+          'Sorin binds Lysara’s wrist while you hold the steering rope against her shoulder. Her thread carries Korran’s call. Mara pulls the family platform home before the light snaps back into the seed.',
         next: 'c6-korran-terms',
       },
       {
         id: 'c6-carry-living-horn-damaged',
         label: 'Help Lysara spend the scorched seed’s last wide signal.',
-        detail: 'Spend 1 Resolve holding the line steady. The seed will retain only a short thread after this use.',
-        advantage: 'Every deck hears Korran now, but future living magic will have much less reach.',
+        detail:
+          'Spend 1 Resolve holding the line steady. The seed will retain only a short thread after this use.',
+        advantage:
+          'Every deck hears Korran now, but future living magic will have much less reach.',
         showIfAnyFlags: priorSeedDamageFlags,
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-living-horn-crossed-storm', 'c6-korran-shared-steering', 'c6-seed-scorched-by-horn', 'c6-seed-critically-weakened'],
-        result: 'Sorin braces Lysara’s wrist while you hold the steering rope. The scorched seed carries Korran’s call across every deck. Mara pulls the family platform home, then most of the green light goes dark.',
+        addFlags: ['c6-seed-scorched-by-horn', 'c6-seed-critically-weakened'],
+        result:
+          'Sorin braces Lysara’s wrist while you hold the steering rope. The scorched seed carries Korran’s call across every deck. Mara pulls the family platform home, then most of the green light goes dark.',
         next: 'c6-korran-terms',
       },
     ],
@@ -1106,7 +1272,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'The living speak after the dead',
     title: 'Korran’s Law',
     location: 'Kharad Vey, Wind Caller’s Deck',
-    objective: 'Understand what the clans need before asking them to approach the Black Gate.',
+    objective:
+      'Understand what the clans need before asking them to approach the Black Gate.',
     threat: 'Rising',
     art: 'storm',
     body: (state) => [
@@ -1125,93 +1292,140 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-say-crown-owes-restitution',
-        label: 'Say the Crown must tell the truth, return stolen land, and repay the people it harmed.',
+        label:
+          'Say the Crown must tell the truth, return stolen land, and repay the people it harmed.',
         detail: 'Take a public position your own government may call treason.',
-        advantage: 'Korran hears that alliance will not require silence about the Concord’s victims.',
+        advantage:
+          'Korran hears that alliance will not require silence about the Concord’s victims.',
         showIfAllFlags: ['c6-declared-ember-origin'],
-        addFlags: ['c6-supports-restitution', 'c6-korran-respect'],
-        result: 'You name the truth, the land taken, and the debt still unpaid. The words may cost your rank if you ever return to Greyhaven. Korran hears that an apology alone will not satisfy you.',
+        addFlags: ['c6-korran-respect'],
+        result:
+          'You name the truth, the land taken, and the debt still unpaid. The words may cost your rank if you ever return to Greyhaven. Korran hears that an apology alone will not satisfy you.',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-say-living-authority-first',
-        label: 'Say no old promise outranks the consent of people living under it.',
-        detail: 'Reject inherited authority as a complete answer, including your own Crown commission.',
-        advantage: 'The principle directly answers the fear driving the Red Moot.',
+        label:
+          'Say no old promise outranks the consent of people living under it.',
+        detail:
+          'Reject inherited authority as a complete answer, including your own Crown commission.',
+        advantage:
+          'The principle directly answers the fear driving the Red Moot.',
         showIfAllFlags: ['c6-declared-ember-origin'],
-        addFlags: ['c6-living-authority-principle', 'c6-korran-respect'],
-        result: 'You say the living must be allowed to renew, change, or refuse what the dead arranged. Korran’s shoulders ease by a fraction.',
+        addFlags: ['c6-korran-respect'],
+        result:
+          'You say the living must be allowed to renew, change, or refuse what the dead arranged. Korran’s shoulders ease by a fraction.',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-say-gate-first',
-        label: 'Say survival at the Black Gate must come before settling old crimes.',
-        detail: 'Keep the immediate threat first even if the clans hear another request to wait for justice.',
-        advantage: 'The direct military argument may appeal to leaders who fear what is already opening.',
+        label:
+          'Say survival at the Black Gate must come before settling old crimes.',
+        detail:
+          'Keep the immediate threat first even if the clans hear another request to wait for justice.',
+        advantage:
+          'The direct military argument may appeal to leaders who fear what is already opening.',
         showIfAllFlags: ['c6-declared-ember-origin'],
-        addFlags: ['c6-gate-before-restitution', 'c6-korran-friction'],
-        result: 'You say a future dispute requires people alive to have it. Korran accepts the logic without liking the familiar shape of the delay.',
+        result:
+          'You say a future dispute requires people alive to have it. Korran accepts the logic without liking the familiar shape of the delay.',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-ask-korran-his-price',
-        label: 'Ask what duty Korran would accept if your positions were reversed.',
+        label:
+          'Ask what duty Korran would accept if your positions were reversed.',
         detail: 'Make him name his own standard before you offer yours.',
         advantage: 'His answer reveals what he will defend during the Moot.',
         showIfAllFlags: ['c6-declared-ember-origin'],
-        addFlags: ['c6-korran-named-standard'],
-        result: 'Korran answers without offence. “I would help close the Gate. I would refuse any victory that returned my people to someone else’s rule.”',
+        result:
+          'Korran answers without offence. “I would help close the Gate. I would refuse any victory that returned my people to someone else’s rule.”',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-disclose-gift-after-crisis',
-        label: 'Explain that Vaor gave the ember freely, then recognise the clans’ right to choose.',
-        detail: 'Give the full answer after dealing with the storm’s immediate danger first.',
-        advantage: 'Delayed honesty clears the accusation and gives Korran a direct political answer.',
+        label:
+          'Explain that Vaor gave the ember freely, then recognise the clans’ right to choose.',
+        detail:
+          'Give the full answer after dealing with the storm’s immediate danger first.',
+        advantage:
+          'Delayed honesty clears the accusation and gives Korran a direct political answer.',
         showIfAllFlags: ['c5-freed-vaor', 'c6-ember-disclosure-pending'],
-        addFlags: ['c6-declared-ember-origin', 'c6-declared-willing-ember', 'c6-delayed-ember-disclosure', 'c6-living-authority-principle', 'c6-korran-respect'],
-        result: 'You explain that Vaor gave the ember and remained free. Then you say Kharad Vey must choose its own road. Korran marks the delay, hears the full answer, and accepts it.',
+        addFlags: [
+          'c6-declared-ember-origin',
+          'c6-delayed-ember-disclosure',
+          'c6-korran-respect',
+        ],
+        result:
+          'You explain that Vaor gave the ember and remained free. Then you say Kharad Vey must choose its own road. Korran marks the delay, hears the full answer, and accepts it.',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-disclose-theft-after-crisis',
-        label: 'Admit that you took the ember by force, then recognise the clans’ right to choose.',
-        detail: 'Tell the truth after the urgent storm response. The theft will still damage your case.',
-        advantage: 'Korran can judge a confessed wrong instead of an unanswered accusation.',
-        showIfAllFlags: ['c5-took-ember-by-force', 'c6-ember-disclosure-pending'],
-        addFlags: ['c6-declared-ember-origin', 'c6-admitted-ember-theft', 'c6-delayed-ember-disclosure', 'c6-living-authority-principle', 'c6-korran-respect', 'c6-korran-friction'],
-        result: 'You say that Vaor refused and you took the ember anyway. Anger crosses Korran’s face. He also hears you place the clans’ choice above your need. “Truth does not repair theft,” he says. “It gives us something solid to judge.”',
+        label:
+          'Admit that you took the ember by force, then recognise the clans’ right to choose.',
+        detail:
+          'Tell the truth after the urgent storm response. The theft will still damage your case.',
+        advantage:
+          'Korran can judge a confessed wrong instead of an unanswered accusation.',
+        showIfAllFlags: [
+          'c5-took-ember-by-force',
+          'c6-ember-disclosure-pending',
+        ],
+        addFlags: [
+          'c6-declared-ember-origin',
+          'c6-delayed-ember-disclosure',
+          'c6-korran-respect',
+        ],
+        result:
+          'You say that Vaor refused and you took the ember anyway. Anger crosses Korran’s face. He also hears you place the clans’ choice above your need. “Truth does not repair theft,” he says. “It gives us something solid to judge.”',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-disclose-pact-after-crisis',
-        label: 'State Vaor’s pact terms, then recognise the clans’ right to choose.',
-        detail: 'Explain the shared duty, either bearer’s right to refuse, and how the pact ends.',
-        advantage: 'The Moot hears that the ember has two willing bearers and clear limits.',
+        label:
+          'State Vaor’s pact terms, then recognise the clans’ right to choose.',
+        detail:
+          'Explain the shared duty, either bearer’s right to refuse, and how the pact ends.',
+        advantage:
+          'The Moot hears that the ember has two willing bearers and clear limits.',
         showIfAllFlags: ['c5-vaor-pact', 'c6-ember-disclosure-pending'],
-        addFlags: ['c6-declared-ember-origin', 'c6-declared-pact-ember', 'c6-delayed-ember-disclosure', 'c6-living-authority-principle', 'c6-korran-respect'],
-        result: 'You state the shared duty, Vaor’s right to refuse any use, and the pact’s ending. Then you give Kharad Vey the same freedom. Vaor confirms the words with one second heartbeat.',
+        addFlags: [
+          'c6-declared-ember-origin',
+          'c6-delayed-ember-disclosure',
+          'c6-korran-respect',
+        ],
+        result:
+          'You state the shared duty, Vaor’s right to refuse any use, and the pact’s ending. Then you give Kharad Vey the same freedom. Vaor confirms the words with one second heartbeat.',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-refuse-ember-account',
-        label: 'Refuse to explain the ember and ask only for help the Moot can safely offer.',
-        detail: 'Make the refusal explicit. Korran will not treat it as an accidental omission.',
-        advantage: 'You keep Vaor’s history private, but full military support will close to you.',
+        label:
+          'Refuse to explain the ember and ask only for help the Moot can safely offer.',
+        detail:
+          'Make the refusal explicit. Korran will not treat it as an accidental omission.',
+        advantage:
+          'You keep Vaor’s history private, but full military support will close to you.',
         showIfAnyFlags: ['c5-freed-vaor', 'c5-vaor-pact'],
         showIfAllFlags: ['c6-ember-disclosure-pending'],
-        addFlags: ['c6-refused-ember-disclosure', 'c6-korran-friction'],
-        result: '“I will not explain the ember,” you say. “Then do not ask us to risk lives on it,” Korran answers. He leaves the road request open and closes the larger military question.',
+        addFlags: ['c6-refused-ember-disclosure'],
+        result:
+          '“I will not explain the ember,” you say. “Then do not ask us to risk lives on it,” Korran answers. He leaves the road request open and closes the larger military question.',
         next: 'c6-ilyra-entry',
       },
       {
         id: 'c6-conceal-ember-theft',
         label: 'Refuse to say how you took the ember.',
-        detail: 'Deliberately conceal Vaor’s refusal. The Moot will offer a road but no fighters.',
+        detail:
+          'Deliberately conceal Vaor’s refusal. The Moot will offer a road but no fighters.',
         advantage: 'The theft stays out of your public testimony for now.',
-        showIfAllFlags: ['c5-took-ember-by-force', 'c6-ember-disclosure-pending'],
-        addFlags: ['c6-refused-ember-disclosure', 'c6-concealed-ember-theft', 'c6-korran-friction'],
-        result: 'You decline to answer. Vaor’s distant roar makes the silence worse. Korran names the limit in front of the witnesses: Kharad Vey may give you a road, but no fighter will follow a concealed fire.',
+        showIfAllFlags: [
+          'c5-took-ember-by-force',
+          'c6-ember-disclosure-pending',
+        ],
+        addFlags: ['c6-refused-ember-disclosure', 'c6-concealed-ember-theft'],
+        result:
+          'You decline to answer. Vaor’s distant roar makes the silence worse. Korran names the limit in front of the witnesses: Kharad Vey may give you a road, but no fighter will follow a concealed fire.',
         next: 'c6-ilyra-entry',
       },
     ],
@@ -1222,7 +1436,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'A witch has already read the room',
     title: 'Ilyra Fen',
     location: 'Kharad Vey, Wind Caller’s Deck',
-    objective: 'Decide how much room to give the witch studying the ancestor storm.',
+    objective:
+      'Decide how much room to give the witch studying the ancestor storm.',
     threat: 'Uneasy',
     art: 'moot',
     introducesStoryTerms: ['Ilyra Fen', 'Threadread'],
@@ -1243,42 +1458,56 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-name-ilyra-test',
-        label: 'Name the pressure behind her public offer before taking her hand.',
-        detail: 'Show Ilyra that beauty and urgency will not make you miss the public pressure behind her offer.',
-        advantage: 'She must negotiate openly, and Korran sees that neither of you controls the alliance alone.',
+        label:
+          'Name the pressure behind her public offer before taking her hand.',
+        detail:
+          'Show Ilyra that beauty and urgency will not make you miss the public pressure behind her offer.',
+        advantage:
+          'She must negotiate openly, and Korran sees that neither of you controls the alliance alone.',
         addFlags: ['c6-named-ilyra-manipulation'],
-        result: '“You want the Moot to see me choose your method before I know its cost,” you say. Ilyra’s mouth curves, not quite a smile. “Good. This may be less exhausting than I feared.” She names the test before you take her hand.',
+        result:
+          '“You want the Moot to see me choose your method before I know its cost,” you say. Ilyra’s mouth curves, not quite a smile. “Good. This may be less exhausting than I feared.” She names the test before you take her hand.',
         next: 'c6-storm-trace',
       },
       {
         id: 'c6-accept-ilyra-interest',
-        label: 'Take her hand and admit that both the alliance and the woman interest you.',
-        detail: 'Begin a slow mutual attraction only if no other relationship remains open.',
-        advantage: 'Honest desire removes one tool she might otherwise use indirectly and earns her respect.',
+        label:
+          'Take her hand and admit that both the alliance and the woman interest you.',
+        detail:
+          'Begin a slow mutual attraction only if no other relationship remains open.',
+        advantage:
+          'Honest desire removes one tool she might otherwise use indirectly and earns her respect.',
         forbidsRelationshipIntents: {
           mara: ['exploring', 'committed'],
           lysara: ['exploring', 'committed'],
         },
         addFlags: ['c6-ilyra-interest-acknowledged'],
-        result: 'You take her hand. “I want your evidence. I am also interested in you. Those are different choices.” Heat touches Ilyra’s composure for one brief breath. “Then we will keep both honest,” she says.',
+        result:
+          'You take her hand. “I want your evidence. I am also interested in you. Those are different choices.” Heat touches Ilyra’s composure for one brief breath. “Then we will keep both honest,” she says.',
         next: 'c6-storm-trace',
       },
       {
         id: 'c6-refuse-ilyra-pressure',
         label: 'Refuse the hand and ask for evidence without theatre.',
-        detail: 'Reject her first attempt to shape the room without rejecting her investigation.',
-        advantage: 'The boundary protects your position and shows Ilyra that pressure will have a visible cost.',
+        detail:
+          'Reject her first attempt to shape the room without rejecting her investigation.',
+        advantage:
+          'The boundary protects your position and shows Ilyra that pressure will have a visible cost.',
         addFlags: ['c6-refused-ilyra-pressure'],
-        result: 'You leave her hand between you. “Evidence first.” Ilyra lowers it without embarrassment. “A boundary stated in time is useful,” she says. “I dislike it. That is not the same as disrespecting it.”',
+        result:
+          'You leave her hand between you. “Evidence first.” Ilyra lowers it without embarrassment. “A boundary stated in time is useful,” she says. “I dislike it. That is not the same as disrespecting it.”',
         next: 'c6-storm-trace',
       },
       {
         id: 'c6-keep-ilyra-professional',
         label: 'Accept the test only under Korran’s local authority.',
-        detail: 'Keep the relationship professional and place the experiment under rules the town controls.',
-        advantage: 'Korran can stop the test, and Ilyra gains access without owning its terms.',
+        detail:
+          'Keep the relationship professional and place the experiment under rules the town controls.',
+        advantage:
+          'Korran can stop the test, and Ilyra gains access without owning its terms.',
         addFlags: ['c6-ilyra-professional-alliance'],
-        result: 'You accept the work only if Korran names the limits. Ilyra studies you for a moment, then agrees. “You make caution sound almost attractive,” she says. You let the word pass without mistaking it for a promise.',
+        result:
+          'You accept the work only if Korran names the limits. Ilyra studies you for a moment, then agrees. “You make caution sound almost attractive,” she says. You let the word pass without mistaking it for a promise.',
         next: 'c6-storm-trace',
       },
     ],
@@ -1300,7 +1529,10 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         : has(state, 'c6-refused-ilyra-pressure')
           ? 'She does not touch you or the ember. The distance honours the boundary while making her concentration harder.'
           : 'She waits for your spoken permission before bringing the thread near the ember. Knowing what you want is not permission, and she makes the distinction visible.',
-      vaorUseBoundary(state, 'let Ilyra trace the storm through it for one breath'),
+      vaorUseBoundary(
+        state,
+        'let Ilyra trace the storm through it for one breath',
+      ),
       'Korran’s mother appears above the garden. She knows the lullaby he buried with her. Then she points to the pale burn beneath your breastplate, left by Dragonspine last week. Korran stares at her. “My mother died two winters ago.”',
       'Ilyra’s eyes sharpen. “That should be impossible. Choose what we test next.”',
     ],
@@ -1308,65 +1540,83 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-let-ilyra-thread-ember',
         label: 'Let Ilyra connect the ember to the voice for one breath.',
-        detail: 'Spend 1 Resolve holding your identity apart from Vaor and the storm.',
-        advantage: 'The direct test can show where the voice receives new memories.',
+        detail:
+          'Spend 1 Resolve holding your identity apart from Vaor and the storm.',
+        advantage:
+          'The direct test can show where the voice receives new memories.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         showIfAllFlags: ['c5-freed-vaor'],
-        addFlags: ['c6-ilyra-traced-ember', 'c6-unsea-thread-found'],
-        result: 'You ask Vaor first. His shadow turns once above the garden, and the ember answers. You give Ilyra one breath. Cold salt fills your mouth as her thread drops through a place with no ground.',
+        addFlags: ['c6-unsea-thread-found'],
+        result:
+          'You ask Vaor first. His shadow turns once above the garden, and the ember answers. You give Ilyra one breath. Cold salt fills your mouth as her thread drops through a place with no ground.',
         next: 'c6-impossible-memory',
       },
       {
         id: 'c6-force-stolen-ember-thread',
         label: 'Force the stolen ember to carry Ilyra’s thread for one breath.',
-        detail: 'Spend 2 Resolve controlling the fire while Vaor resists the use.',
-        advantage: 'The direct test can reveal the source, but Vaor’s anger becomes visible to the Moot.',
+        detail:
+          'Spend 2 Resolve controlling the fire while Vaor resists the use.',
+        advantage:
+          'The direct test can reveal the source, but Vaor’s anger becomes visible to the Moot.',
         changes: { resolve: -2 },
         requires: { resolve: 2 },
         showIfAllFlags: ['c5-took-ember-by-force'],
-        addFlags: ['c6-ilyra-traced-ember', 'c6-unsea-thread-found', 'c6-forced-vaor-storm-test'],
-        result: 'The ember obeys, but Vaor pulls against it. Fire bites your ribs while Ilyra follows the thread downward. Cold salt fills your mouth, and Vaor’s roar shakes every branch above the garden.',
+        addFlags: ['c6-unsea-thread-found'],
+        result:
+          'The ember obeys, but Vaor pulls against it. Fire bites your ribs while Ilyra follows the thread downward. Cold salt fills your mouth, and Vaor’s roar shakes every branch above the garden.',
         next: 'c6-impossible-memory',
       },
       {
         id: 'c6-share-pact-ember-thread',
         label: 'Ask Vaor to share the pact ember with Ilyra for one breath.',
-        detail: 'Spend 1 Resolve keeping three living wills separate inside the same magical line.',
-        advantage: 'The direct test can reveal the source without breaking either bearer’s right to refuse.',
+        detail:
+          'Spend 1 Resolve keeping three living wills separate inside the same magical line.',
+        advantage:
+          'The direct test can reveal the source without breaking either bearer’s right to refuse.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
         showIfAllFlags: ['c5-vaor-pact'],
-        addFlags: ['c6-ilyra-traced-ember', 'c6-unsea-thread-found', 'c6-vaor-consented-storm-test'],
-        result: 'You ask. Vaor agrees, and Ilyra waits for your answer too. Three separate choices meet for one breath. Cold salt fills your mouth as the thread drops through a place with no ground.',
+        addFlags: ['c6-unsea-thread-found'],
+        result:
+          'You ask. Vaor agrees, and Ilyra waits for your answer too. Three separate choices meet for one breath. Cold salt fills your mouth as the thread drops through a place with no ground.',
         next: 'c6-impossible-memory',
       },
       {
         id: 'c6-test-korran-private-memory',
         label: 'Ask Korran for a private memory the storm cannot guess.',
-        detail: 'Risk the pain of a personal test instead of exposing the ember.',
-        advantage: 'A correct answer would prove the voice is more than a public imitation.',
-        addFlags: ['c6-korran-memory-test', 'c6-voice-knew-private-truth'],
-        result: 'Korran asks where his mother hid after her final argument with him. The voice answers, “Under your unfinished cradle.” Korran closes his eyes. Nobody else knew the cradle existed.',
+        detail:
+          'Risk the pain of a personal test instead of exposing the ember.',
+        advantage:
+          'A correct answer would prove the voice is more than a public imitation.',
+        addFlags: ['c6-korran-memory-test'],
+        result:
+          'Korran asks where his mother hid after her final argument with him. The voice answers, “Under your unfinished cradle.” Korran closes his eyes. Nobody else knew the cradle existed.',
         next: 'c6-impossible-memory',
       },
       {
         id: 'c6-ask-vaor-hear-fear',
         label: 'Ask Vaor whether the voice can feel fear.',
-        detail: 'Use the dragon’s response if he is near or bound to the ember.',
-        advantage: 'Fear would suggest a present mind rather than an empty recording.',
+        detail:
+          'Use the dragon’s response if he is near or bound to the ember.',
+        advantage:
+          'Fear would suggest a present mind rather than an empty recording.',
         showIfAnyFlags: ['c5-vaor-pact'],
         addFlags: ['c6-tested-storm-fear'],
-        result: 'You bring Vaor’s living fire close to the voice without striking it. The ancestor face recoils before the heat changes. Whatever is inside the storm can anticipate harm.',
+        result:
+          'You bring Vaor’s living fire close to the voice without striking it. The ancestor face recoils before the heat changes. Whatever is inside the storm can anticipate harm.',
         next: 'c6-impossible-memory',
       },
       {
         id: 'c6-compare-living-records',
         label: 'Compare the voice with shrine records and living witnesses.',
-        detail: 'Choose slower evidence without exposing anyone’s mind or the ember.',
-        advantage: 'The method can separate copied history from knowledge acquired after death.',
-        addFlags: ['c6-compared-living-records', 'c6-voice-knew-new-events'],
-        result: 'Asha brings the shrine rolls. The voice knows every written event, then repeats a detail you spoke in the garden minutes ago. It is receiving information now, not merely reciting an old life.',
+        detail:
+          'Choose slower evidence without exposing anyone’s mind or the ember.',
+        advantage:
+          'The method can separate copied history from knowledge acquired after death.',
+        addFlags: ['c6-voice-knew-new-events'],
+        result:
+          'Asha brings the shrine rolls. The voice knows every written event, then repeats a detail you spoke in the garden minutes ago. It is receiving information now, not merely reciting an old life.',
         next: 'c6-impossible-memory',
       },
     ],
@@ -1377,7 +1627,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'A dead voice learns something new',
     title: 'The Sea Beneath Lost Roads',
     location: 'Kharad Vey, Open Root Garden',
-    objective: 'Carry the discovery to the Red Moot without letting the storm decide what it means.',
+    objective:
+      'Carry the discovery to the Red Moot without letting the storm decide what it means.',
     threat: 'Rising',
     art: 'moot',
     introducesStoryTerms: ['Unsea'],
@@ -1400,39 +1651,50 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-promise-investigate-voices',
         label: 'Promise to help discover which voices are truly conscious.',
-        detail: 'Spend 1 Oathfire taking responsibility beyond the Black Gate crisis.',
-        advantage: 'The clans gain a binding promise that their lost families will not be dismissed as tricks.',
+        detail:
+          'Spend 1 Oathfire taking responsibility beyond the Black Gate crisis.',
+        advantage:
+          'The clans gain a binding promise that their lost families will not be dismissed as tricks.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
         addFlags: ['c6-oath-investigate-unsea', 'c6-broad-steppe-oath'],
-        result: 'Your Oath burns around the salt thread. You promise investigation, not reunion, and the careful limit makes Korran believe it.',
+        result:
+          'Your Oath burns around the salt thread. You promise investigation, not reunion, and the careful limit makes Korran believe it.',
         next: 'c6-red-moot',
       },
       {
         id: 'c6-state-what-is-known',
         label: 'State only what the test proved and what remains unknown.',
         detail: 'Refuse both false comfort and easy dismissal.',
-        advantage: 'Ilyra will carry the same precise account before the Red Moot.',
-        addFlags: ['c6-precise-unsea-truth', 'c6-ilyra-evidence-alliance'],
-        result: 'You list what everyone witnessed. The voice knew a new burn. Your chosen test added one more fact. Nothing yet proves that every face belongs to the dead person it resembles.',
+        advantage:
+          'Ilyra will carry the same precise account before the Red Moot.',
+        addFlags: ['c6-precise-unsea-truth'],
+        result:
+          'You list what everyone witnessed. The voice knew a new burn. Your chosen test added one more fact. Nothing yet proves that every face belongs to the dead person it resembles.',
         next: 'c6-red-moot',
       },
       {
         id: 'c6-comfort-korran-without-promise',
         label: 'Tell Korran you will not use uncertainty to deny his hope.',
-        detail: 'Offer human support without claiming knowledge you do not have.',
-        advantage: 'Korran enters the Moot hurt but not isolated, strengthening your personal alliance.',
-        addFlags: ['c6-stood-with-korran', 'c6-korran-respect'],
-        result: 'You stand beside him while his mother’s face watches from the cloud. You do not call her false. You do not call her real. Korran accepts the harder kindness.',
+        detail:
+          'Offer human support without claiming knowledge you do not have.',
+        advantage:
+          'Korran enters the Moot hurt but not isolated, strengthening your personal alliance.',
+        addFlags: ['c6-korran-respect'],
+        result:
+          'You stand beside him while his mother’s face watches from the cloud. You do not call her false. You do not call her real. Korran accepts the harder kindness.',
         next: 'c6-red-moot',
       },
       {
         id: 'c6-ask-ilyra-publicly-lead-proof',
         label: 'Ask Ilyra to present the evidence under her own name.',
-        detail: 'Give the witch credit and control over her discovery instead of using her as your expert.',
-        advantage: 'The Moot hears the finding from its investigator, and Ilyra becomes responsible for defending it.',
-        addFlags: ['c6-ilyra-leads-evidence', 'c6-ilyra-evidence-alliance'],
-        result: 'Ilyra looks for a trap in the offer and finds none. “I will present the evidence,” she says. “You may explain why anyone should follow it into danger.”',
+        detail:
+          'Give the witch credit and control over her discovery instead of using her as your expert.',
+        advantage:
+          'The Moot hears the finding from its investigator, and Ilyra becomes responsible for defending it.',
+        addFlags: ['c6-ilyra-leads-evidence'],
+        result:
+          'Ilyra looks for a trap in the offer and finds none. “I will present the evidence,” she says. “You may explain why anyone should follow it into danger.”',
         next: 'c6-red-moot',
       },
     ],
@@ -1443,7 +1705,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Three clans, one moving floor',
     title: 'The Red Moot',
     location: 'Kharad Vey, Central Wheel Hall',
-    objective: 'Choose how to persuade the clans before their vote on your alliance.',
+    objective:
+      'Choose how to persuade the clans before their vote on your alliance.',
     threat: 'Rising',
     art: 'moot',
     body: (state) => [
@@ -1451,6 +1714,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       'Korran presents the service you completed. Nobody calls it payment. It earns you the right to be heard, not the right to win.',
       exactServiceRecord(state),
       evidenceAtMoot(state),
+      has(state, 'c6-precise-unsea-truth')
+        ? 'You give the Moot the exact limit you promised: the voices learn, but no test has proved that every face is the dead person it resembles.'
+        : 'The test remains evidence about the storm’s behaviour, not permission to call every face a returned ancestor.',
       has(state, 'c6-ilyra-leads-evidence')
         ? 'Ilyra presents the Unsea evidence in her own name. She does not soften uncertainty or let the storm claim certainty either.'
         : 'Ilyra stands at the edge of the map. When someone mistakes possibility for proof, one lifted finger is enough to stop them.',
@@ -1463,28 +1729,34 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       {
         id: 'c6-choose-service-case',
         label: 'Build the case from the duty you completed among the clans.',
-        detail: 'Rely on witnessed actions and local relationships rather than rank or magic.',
-        advantage: 'Service creates the safest alliance and avoids binding a promise beyond what you know.',
-        addFlags: ['c6-moot-service-path'],
-        result: 'You remove your Crown badge and place the tool from your chosen duty on the map. The hall quiets because everyone knows what that work cost.',
+        detail:
+          'Rely on witnessed actions and local relationships rather than rank or magic.',
+        advantage:
+          'Service creates the safest alliance and avoids binding a promise beyond what you know.',
+        result:
+          'You remove your Crown badge and place the tool from your chosen duty on the map. The hall quiets because everyone knows what that work cost.',
         next: 'c6-service-case',
       },
       {
         id: 'c6-choose-trial-case',
         label: 'Accept trial combat under steppe law.',
-        detail: 'Risk Health proving you will stand under the same law as any clan leader.',
-        advantage: 'Victory can win immediate military respect without speaking for the Crown’s future.',
-        addFlags: ['c6-moot-trial-path'],
-        result: 'You set sword and shield on the map. The herder champion Varka steps forward and names the rules: first blood, surrender, or removal from the moving ring.',
+        detail:
+          'Risk Health proving you will stand under the same law as any clan leader.',
+        advantage:
+          'Victory can win immediate military respect without speaking for the Crown’s future.',
+        result:
+          'You set sword and shield on the map. The herder champion Varka steps forward and names the rules: first blood, surrender, or removal from the moving ring.',
         next: 'c6-trial-case',
       },
       {
         id: 'c6-choose-oath-case',
         label: 'Offer a public Oath recognising the clans’ right to choose.',
-        detail: 'Risk Oathfire and your future standing with the Crown on a promise no Regent approved.',
-        advantage: 'A binding guarantee can win the broadest support if its terms protect choice rather than purchase it.',
-        addFlags: ['c6-moot-oath-path'],
-        result: 'You place your bare hand over the map. Gold light gathers beneath your scars. The hall waits to hear exactly what you will promise and what you will refuse to own.',
+        detail:
+          'Risk Oathfire and your future standing with the Crown on a promise no Regent approved.',
+        advantage:
+          'A binding guarantee can win the broadest support if its terms protect choice rather than purchase it.',
+        result:
+          'You place your bare hand over the map. Gold light gathers beneath your scars. The hall waits to hear exactly what you will promise and what you will refuse to own.',
         next: 'c6-oath-case',
       },
     ],
@@ -1495,7 +1767,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'A deed must answer a future question',
     title: 'What Your Hands Proved',
     location: 'Kharad Vey, Central Wheel Hall',
-    objective: 'Show what your local service proves about the alliance you are asking for.',
+    objective:
+      'Show what your local service proves about the alliance you are asking for.',
     threat: 'Immediate',
     art: 'moot',
     body: (state) => [
@@ -1512,27 +1785,35 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-service-living-before-road',
-        label: 'Say the living people beside a road matter more than the power controlling it.',
-        detail: 'Turn your service into a rule the clans can use to judge your future actions.',
-        advantage: 'The answer joins Caelan’s protection instinct to the town’s demand that living people stay in control.',
-        addFlags: ['c6-service-won-moot', 'c6-living-authority-principle'],
-        result: 'You say a road exists for the people using it, not the ruler naming it. Ugra looks toward the families you helped and accepts that your actions fit the claim.',
+        label:
+          'Say the living people beside a road matter more than the power controlling it.',
+        detail:
+          'Turn your service into a rule the clans can use to judge your future actions.',
+        advantage:
+          'The answer joins Caelan’s protection instinct to the town’s demand that living people stay in control.',
+        result:
+          'You say a road exists for the people using it, not the ruler naming it. Ugra looks toward the families you helped and accepts that your actions fit the claim.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-service-name-debt',
         label: 'Name the debt as mutual and let Kharad Vey collect first.',
-        detail: 'Offer one future act of service before asking the city to approach the Gate.',
-        advantage: 'The limited debt earns guarded support without promising Crown authority you do not possess.',
-        addFlags: ['c6-service-won-moot', 'c6-owes-kharad-service'],
-        result: 'You offer one duty chosen by the Moot after the Gate crisis. Ilyra makes you define its limits. The clans accept a debt that neither side can quietly expand.',
+        detail:
+          'Offer one future act of service before asking the city to approach the Gate.',
+        advantage:
+          'The limited debt earns guarded support without promising Crown authority you do not possess.',
+        addFlags: ['c6-owes-kharad-service'],
+        result:
+          'You offer one duty chosen by the Moot after the Gate crisis. Ilyra makes you define its limits. The clans accept a debt that neither side can quietly expand.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-service-share-orivane-truth',
         label: 'Place Orivane’s hidden truth beside the work you completed.',
-        detail: 'Reveal painful evidence that several peoples’ rulers shared responsibility.',
-        advantage: 'The clans gain reason to approach the Gate as people who will help decide what comes after.',
+        detail:
+          'Reveal painful evidence that several peoples’ rulers shared responsibility.',
+        advantage:
+          'The clans gain reason to approach the Gate as people who will help decide what comes after.',
         showIfAnyFlags: [
           'c5-has-extraction-order',
           'c5-royal-witnesses-turned',
@@ -1542,8 +1823,9 @@ export const chapterSixNodes: Record<string, StoryNode> = {
           'c5-knows-orivane-renewal-wish',
           'c5-memorised-founder-seals',
         ],
-        addFlags: ['c6-service-won-moot', 'c6-shared-orivane-proof'],
-        result: 'Sorin places the carried proof beside the tool from your service. You describe the rulers around Orivane’s sacrifice and the truth they hid. The evidence proves the crime. Your work among the clans proves why they should hear you.',
+        addFlags: ['c6-shared-orivane-proof'],
+        result:
+          'Sorin places the carried proof beside the tool from your service. You describe the rulers around Orivane’s sacrifice and the truth they hid. The evidence proves the crime. Your work among the clans proves why they should hear you.',
         next: 'c6-ancestor-coup',
       },
     ],
@@ -1554,7 +1836,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'The ring moves beneath both fighters',
     title: 'Varka’s Challenge',
     location: 'Kharad Vey, Moot Ring',
-    objective: 'Survive the trial without treating the clan champion as an enemy.',
+    objective:
+      'Survive the trial without treating the clan champion as an enemy.',
     threat: 'Critical',
     art: 'moot',
     body: () => [
@@ -1565,44 +1848,57 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-trial-take-first-blood',
-        label: 'Take the axe across your guard and mark Varka with the shield rim.',
+        label:
+          'Take the axe across your guard and mark Varka with the shield rim.',
         detail: 'Lose 2 Health winning first blood without using the ember.',
-        advantage: 'A clean lawful victory proves courage while leaving Varka able to fight at the Gate.',
+        advantage:
+          'A clean lawful victory proves courage while leaving Varka able to fight at the Gate.',
         changes: { health: -2 },
         requires: { health: 1 },
-        addFlags: ['c6-trial-won-first-blood', 'c6-trial-won-moot'],
-        result: 'The axe cuts through your shoulder plate. You stay inside its reach and touch the sharpened shield rim to Varka’s brow. One line of blood ends the trial.',
+        addFlags: ['c6-trial-won-moot'],
+        result:
+          'The axe cuts through your shoulder plate. You stay inside its reach and touch the sharpened shield rim to Varka’s brow. One line of blood ends the trial.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-trial-command-ring',
         label: 'Read the wheel rhythm and force Varka to choose solid ground.',
-        detail: 'Spend 2 Command using what the city taught you about its moving decks.',
-        advantage: 'You win by learning local ground rather than overpowering its champion.',
+        detail:
+          'Spend 2 Command using what the city taught you about its moving decks.',
+        advantage:
+          'You win by learning local ground rather than overpowering its champion.',
         changes: { command: -2 },
         requires: { command: 2 },
-        addFlags: ['c6-trial-won-position', 'c6-trial-won-moot'],
-        result: 'You count the platform turns aloud. Varka realises one breath too late that each safe step narrows her path. She yields at the edge and laughs when the crowd sees how you learned it.',
+        addFlags: ['c6-trial-won-moot'],
+        result:
+          'You count the platform turns aloud. Varka realises one breath too late that each safe step narrows her path. She yields at the edge and laughs when the crowd sees how you learned it.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-trial-refuse-ember',
         label: 'Release shield and ember, then finish the trial hand to hand.',
-        detail: 'Spend 1 Resolve refusing the easier power while Varka keeps her axe.',
-        advantage: 'The risk proves that carrying a weapon does not mean using it to control every contest.',
+        detail:
+          'Spend 1 Resolve refusing the easier power while Varka keeps her axe.',
+        advantage:
+          'The risk proves that carrying a weapon does not mean using it to control every contest.',
         changes: { resolve: -1 },
         requires: { resolve: 1 },
-        addFlags: ['c6-trial-won-restraint', 'c6-trial-won-moot'],
-        result: 'You let the shield fall and close before the axe can turn. Varka hits the deck beneath you, then taps surrender against your wrist. The ember never leaves your chest.',
+        addFlags: ['c6-trial-won-moot'],
+        result:
+          'You let the shield fall and close before the axe can turn. Varka hits the deck beneath you, then taps surrender against your wrist. The ember never leaves your chest.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-trial-save-varka',
-        label: 'Abandon the winning strike when the platform gap catches Varka’s leg.',
-        detail: 'Give up a clear victory to stop the moving ring from maiming her.',
-        advantage: 'Varka survives unhurt and may judge the rescue as stronger proof than first blood.',
-        addFlags: ['c6-trial-mercy', 'c6-trial-won-moot'],
-        result: 'You throw away the strike and pull Varka free. She could claim the trial. Instead she raises your arm. “He understood the law before he won it,” she tells the Moot.',
+        label:
+          'Abandon the winning strike when the platform gap catches Varka’s leg.',
+        detail:
+          'Give up a clear victory to stop the moving ring from maiming her.',
+        advantage:
+          'Varka survives unhurt and may judge the rescue as stronger proof than first blood.',
+        addFlags: ['c6-trial-won-moot'],
+        result:
+          'You throw away the strike and pull Varka free. She could claim the trial. Instead she raises your arm. “He understood the law before he won it,” she tells the Moot.',
         next: 'c6-ancestor-coup',
       },
     ],
@@ -1613,7 +1909,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'A promise can protect or purchase',
     title: 'Terms the Crown Did Not Write',
     location: 'Kharad Vey, Central Wheel Hall',
-    objective: 'Make a promise that protects the clans without claiming their future.',
+    objective:
+      'Make a promise that protects the clans without claiming their future.',
     threat: 'Critical',
     art: 'moot',
     body: (state) => [
@@ -1627,44 +1924,58 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c6-oath-recognise-moot',
-        label: 'Promise to recognise the Red Moot’s authority in every alliance you lead.',
-        detail: 'Spend 2 Oathfire binding your future command to the clans’ living decisions.',
-        advantage: 'The narrow promise protects sovereignty without pretending you control the whole Crown.',
+        label:
+          'Promise to recognise the Red Moot’s authority in every alliance you lead.',
+        detail:
+          'Spend 2 Oathfire binding your future command to the clans’ living decisions.',
+        advantage:
+          'The narrow promise protects sovereignty without pretending you control the whole Crown.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
-        addFlags: ['c6-oath-won-moot', 'c6-oath-recognised-red-moot', 'c6-broad-steppe-oath'],
-        result: 'You bind every alliance you personally lead. Kharad commanders will continue to answer to the Red Moot, even when they fight beside you. Gold fire settles around the clan markers without covering them.',
+        addFlags: ['c6-oath-recognised-red-moot', 'c6-broad-steppe-oath'],
+        result:
+          'You bind every alliance you personally lead. Kharad commanders will continue to answer to the Red Moot, even when they fight beside you. Gold fire settles around the clan markers without covering them.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-oath-crown-restitution',
-        label: 'Promise to force the Crown to answer those harmed by the Concord.',
-        detail: 'Spend 3 Oathfire making a larger promise that may turn your kingdom against you.',
-        advantage: 'The broad Oath can win full support and gain power whenever you confront Crown denial.',
+        label:
+          'Promise to force the Crown to answer those harmed by the Concord.',
+        detail:
+          'Spend 3 Oathfire making a larger promise that may turn your kingdom against you.',
+        advantage:
+          'The broad Oath can win full support and gain power whenever you confront Crown denial.',
         changes: { oathfire: -3, resolve: 1 },
         requires: { oathfire: 3 },
-        addFlags: ['c6-oath-won-moot', 'c6-oath-crown-restitution', 'c6-broad-steppe-oath'],
-        result: 'You promise to bring the hidden crime before the Queen or stand against the throne that buries it. The Oath enters your bones. Korran hears both its strength and its danger.',
+        addFlags: ['c6-oath-crown-restitution', 'c6-broad-steppe-oath'],
+        result:
+          'You promise to bring the hidden crime before the Queen or stand against the throne that buries it. The Oath enters your bones. Korran hears both its strength and its danger.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-oath-defend-refusal',
-        label: 'Promise to defend the clans’ right to refuse you after the Gate is safe.',
+        label:
+          'Promise to defend the clans’ right to refuse you after the Gate is safe.',
         detail: 'Spend 1 Oathfire protecting a future answer you may dislike.',
-        advantage: 'The promise proves this alliance is not a disguised claim of ownership.',
+        advantage:
+          'The promise proves this alliance is not a disguised claim of ownership.',
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
-        addFlags: ['c6-oath-won-moot', 'c6-oath-defends-refusal', 'c6-broad-steppe-oath'],
-        result: 'You promise that help today will not become obedience tomorrow. The Oath burns brightest around the word refuse.',
+        addFlags: ['c6-oath-defends-refusal', 'c6-broad-steppe-oath'],
+        result:
+          'You promise that help today will not become obedience tomorrow. The Oath burns brightest around the word refuse.',
         next: 'c6-ancestor-coup',
       },
       {
         id: 'c6-limit-oath-to-self',
         label: 'Refuse to speak for the Crown and bind only your own conduct.',
-        detail: 'Accept a smaller alliance. Promise only to state your orders clearly and never claim authority the Moot did not grant.',
-        advantage: 'The honest limit avoids a future broken Oath, but it cannot earn the full town’s march.',
-        addFlags: ['c6-oath-won-moot', 'c6-oath-honest-limit'],
-        result: 'You bind only your own conduct. You will state every order clearly and claim no command the Moot did not grant. The smaller fire holds, and the clan markers remain untouched.',
+        detail:
+          'Accept a smaller alliance. Promise only to state your orders clearly and never claim authority the Moot did not grant.',
+        advantage:
+          'The honest limit avoids a future broken Oath, but it cannot earn the full town’s march.',
+        addFlags: ['c6-oath-honest-limit'],
+        result:
+          'You bind only your own conduct. You will state every order clearly and claim no command the Moot did not grant. The smaller fire holds, and the clan markers remain untouched.',
         next: 'c6-ancestor-coup',
       },
     ],
@@ -1686,7 +1997,10 @@ export const chapterSixNodes: Record<string, StoryNode> = {
       has(state, 'c6-ilyra-interest-acknowledged')
         ? 'Her eyes find yours through the light. The attraction between you is present and useless against the storm. Trust must come from what you do next.'
         : 'She does not ask you to trust her. She shows you the line carrying the command and leaves the choice in your hands.',
-      vaorUseBoundary(state, 'burn only the shared command and leave each separate voice intact'),
+      vaorUseBoundary(
+        state,
+        'burn only the shared command and leave each separate voice intact',
+      ),
       'The thread begins cutting into her palms. “I have exposed it,” she says. “How do you want it broken?”',
     ],
     choices: [
@@ -1694,67 +2008,91 @@ export const chapterSixNodes: Record<string, StoryNode> = {
         id: 'c6-cut-command-with-ember',
         label: 'Ask Vaor to burn the single command binding the voices.',
         detail: 'Lose 2 Health carrying his agreed fire through the storm.',
-        advantage: 'The command breaks while individual ancestor voices remain free to speak or leave.',
+        advantage:
+          'The command breaks while individual ancestor voices remain free to speak or leave.',
         showIfAnyFlags: ['c5-freed-vaor'],
         changes: { health: -2 },
         requires: { health: 1 },
-        addFlags: ['c6-broke-storm-command', 'c6-preserved-ancestor-voices', 'c6-sender-learned-ember'],
-        result: 'You ask Vaor to protect the living vote. He agrees. Fire tears across your nerves and burns only the shared order. Separate voices remain, but the hidden sender learns Vaor’s flame.',
+        addFlags: ['c6-preserved-ancestor-voices', 'c6-sender-learned-ember'],
+        result:
+          'You ask Vaor to protect the living vote. He agrees. Fire tears across your nerves and burns only the shared order. Separate voices remain, but the hidden sender learns Vaor’s flame.',
         next: 'c6-final-alliance',
       },
       {
         id: 'c6-force-stolen-ember-command',
         label: 'Force the stolen ember through the command binding the voices.',
-        detail: 'Lose 2 Health and spend 1 Resolve controlling the fire while Vaor resists.',
-        advantage: 'Break the shared command and preserve separate voices, while exposing the theft to the whole Moot.',
+        detail:
+          'Lose 2 Health and spend 1 Resolve controlling the fire while Vaor resists.',
+        advantage:
+          'Break the shared command and preserve separate voices, while exposing the theft to the whole Moot.',
         showIfAnyFlags: ['c5-took-ember-by-force'],
         changes: { health: -2, resolve: -1 },
         requires: { health: 1, resolve: 1 },
-        addFlags: ['c6-broke-storm-command', 'c6-preserved-ancestor-voices', 'c6-sender-learned-ember', 'c6-forced-vaor-command-use'],
-        result: 'Vaor refuses. You force his fire through Ilyra’s thread. It burns the shared order and leaves the separate voices, but his roar fills the hall as the hidden sender learns the stolen flame.',
+        addFlags: ['c6-preserved-ancestor-voices', 'c6-sender-learned-ember'],
+        result:
+          'Vaor refuses. You force his fire through Ilyra’s thread. It burns the shared order and leaves the separate voices, but his roar fills the hall as the hidden sender learns the stolen flame.',
         next: 'c6-final-alliance',
       },
       {
         id: 'c6-share-pact-ember-command',
         label: 'Ask Vaor to share the fire that will break the command.',
-        detail: 'Lose 2 Health after both bearers agree to protect the living vote.',
-        advantage: 'Break the shared command and preserve separate voices without breaking the pact.',
+        detail:
+          'Lose 2 Health after both bearers agree to protect the living vote.',
+        advantage:
+          'Break the shared command and preserve separate voices without breaking the pact.',
         showIfAnyFlags: ['c5-vaor-pact'],
         changes: { health: -2 },
         requires: { health: 1 },
-        addFlags: ['c6-broke-storm-command', 'c6-preserved-ancestor-voices', 'c6-sender-learned-ember', 'c6-vaor-consented-command-use'],
-        result: 'You name the living people losing their vote. Vaor agrees. The pact carries fire through Ilyra’s thread. It breaks the shared order and preserves the separate voices.',
+        addFlags: ['c6-preserved-ancestor-voices', 'c6-sender-learned-ember'],
+        result:
+          'You name the living people losing their vote. Vaor agrees. The pact carries fire through Ilyra’s thread. It breaks the shared order and preserves the separate voices.',
         next: 'c6-final-alliance',
       },
       {
         id: 'c6-command-living-vote',
-        label: 'Call every living clan member to speak the name of their chosen leader.',
-        detail: 'Spend 2 Command making the living vote louder than the dead order.',
-        advantage: 'The public answer restores the Moot without destroying the ancestor voices.',
+        label:
+          'Call every living clan member to speak the name of their chosen leader.',
+        detail:
+          'Spend 2 Command making the living vote louder than the dead order.',
+        advantage:
+          'The public answer restores the Moot without destroying the ancestor voices.',
         changes: { command: -2 },
         requires: { command: 2 },
-        addFlags: ['c6-living-vote-broke-storm', 'c6-preserved-ancestor-voices', 'c6-sender-heard-living-leaders'],
-        result: 'Names rise from every gallery. Korran. Ugra. Dema. Asha. The living vote drowns out the shared order. The separate voices remain, but the hidden sender hears which leaders the town chose.',
+        addFlags: [
+          'c6-preserved-ancestor-voices',
+          'c6-sender-heard-living-leaders',
+        ],
+        result:
+          'Names rise from every gallery. Korran. Ugra. Dema. Asha. The living vote drowns out the shared order. The separate voices remain, but the hidden sender hears which leaders the town chose.',
         next: 'c6-final-alliance',
       },
       {
         id: 'c6-oath-dead-witness-only',
         label: 'Promise that the dead may witness here but never rule.',
-        detail: 'Spend 2 Oathfire making one rule hold at every shrine: the dead may advise, but only the living may vote.',
-        advantage: 'The Oath keeps living people in control while honest ancestor voices remain able to advise.',
+        detail:
+          'Spend 2 Oathfire making one rule hold at every shrine: the dead may advise, but only the living may vote.',
+        advantage:
+          'The Oath keeps living people in control while honest ancestor voices remain able to advise.',
         changes: { oathfire: -2 },
         requires: { oathfire: 2 },
-        addFlags: ['c6-oath-dead-may-witness', 'c6-preserved-ancestor-voices', 'c6-oath-guards-steppe-shrines'],
-        result: 'Gold fire passes through every ancestor shrine. The voices remain, but they can no longer move a vote or issue an order there. Korran’s mother looks at him without commanding him.',
+        addFlags: [
+          'c6-preserved-ancestor-voices',
+          'c6-oath-guards-steppe-shrines',
+        ],
+        result:
+          'Gold fire passes through every ancestor shrine. The voices remain, but they can no longer move a vote or issue an order there. Korran’s mother looks at him without commanding him.',
         next: 'c6-final-alliance',
       },
       {
         id: 'c6-let-ilyra-turn-command',
         label: 'Let Ilyra turn the command back toward its hidden sender.',
-        detail: 'Trust her to redirect the magical order while you keep the ember beyond her control.',
-        advantage: 'The command leaves the town and reveals that someone beyond the Black Gate is listening.',
-        addFlags: ['c6-ilyra-turned-storm-command', 'c6-hidden-sender-marked', 'c6-some-ancestor-voices-dismissed'],
-        result: 'You hold the ember shut and give Ilyra the exposed command. She turns it east. The voices still tied to that order vanish with it. The others remain. A distant answer beyond the Gate shakes the floor and reveals the sender’s direction.',
+        detail:
+          'Trust her to redirect the magical order while you keep the ember beyond her control.',
+        advantage:
+          'The command leaves the town and reveals that someone beyond the Black Gate is listening.',
+        addFlags: ['c6-hidden-sender-marked'],
+        result:
+          'You hold the ember shut and give Ilyra the exposed command. She turns it east. The voices still tied to that order vanish with it. The others remain. A distant answer beyond the Gate shakes the floor and reveals the sender’s direction.',
         next: 'c6-final-alliance',
       },
     ],
@@ -1765,61 +2103,70 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'The Red Moot votes in its own voice',
     title: 'What Kharad Vey Will Risk',
     location: 'Kharad Vey, Central Wheel Hall',
-    objective: 'Ask for the form of support that matches the future you argued for.',
+    objective:
+      'Ask for the form of support that matches the future you argued for.',
     threat: 'Rising',
     art: 'moot',
-    body: (state) => [
-      'The red fires return to ordinary orange. Some ancestor faces remain in the clouds, speaking separately now. Others dissolve. Korran’s mother touches two fingers to her brow and disappears before he can decide whether to answer.',
-      'The three clan markers rest where living hands placed them. Kharad Vey continues east. Ahead, the Black Gate opens another finger’s width, and a red pulse travels through the grass toward the city.',
-      exactServiceRecord(state),
-      evidenceAtMoot(state),
-      ancestorCommandOutcome(state),
-      has(state, 'c6-oath-won-moot')
-        ? 'Your public promise burns over the map. The clans know exactly what it protects and which cost will fall on you if it breaks.'
-        : has(state, 'c6-trial-won-moot')
-          ? 'Varka stands beside your marker with fresh blood drying at her brow or respect earned without it. The martial clans are ready to hear a dangerous request.'
-          : 'The people from your chosen duty stand in the galleries. Their presence turns your argument from a speech into memory.',
-      oathCaseBenefit(state),
-      emberDisclosureStatus(state),
-      'The ember answers the red pulse beneath your armour. A western lookout moves the map pin marking the Crown army one day closer. The next problem is already marching toward the town.',
-      mootSupport(state),
-      mootQuestion(state),
-      ...chapterSixContinuityRecord(state),
-    ],
+    body: (state) =>
+      [
+        'The red fires return to ordinary orange. Some ancestor faces remain in the clouds, speaking separately now. Others dissolve. Korran’s mother touches two fingers to her brow and disappears before he can decide whether to answer.',
+        'The three clan markers rest where living hands placed them. Kharad Vey continues east. Ahead, the Black Gate opens another finger’s width, and a red pulse travels through the grass toward the city.',
+        mootSupport(state),
+        oathCaseBenefit(state),
+        emberDisclosureStatus(state),
+        mootQuestion(state),
+      ].filter(Boolean),
     choices: [
       {
         id: 'c6-ask-red-war',
         label: 'Ask Kharad Vey to ride for war at the Black Gate.',
-        detail: 'Request riders, wheel engines, and the whole moving town against the opening Gate.',
-        advantage: 'The strongest military commitment can hold the Gate, but it places thousands of civilians in the coming campaign.',
+        detail:
+          'Request riders, wheel engines, and the whole moving town against the opening Gate.',
+        advantage:
+          'The strongest military commitment can hold the Gate, but it places thousands of civilians in the coming campaign.',
         showIfAnyFlags: warMeritFlags,
         showIfAllFlags: ['c6-korran-respect', 'c6-declared-ember-origin'],
-        hideIfAnyFlags: ['c6-oath-honest-limit', 'c6-refused-ember-disclosure', 'c6-concealed-ember-theft'],
+        hideIfAnyFlags: [
+          'c6-oath-honest-limit',
+          'c6-refused-ember-disclosure',
+          'c6-concealed-ember-theft',
+        ],
         changes: { wayfire: 2 },
-        addFlags: ['c6-red-moot-war', 'c6-kharad-full-army'],
-        result: 'You ask for war and name its danger without hiding civilians behind the word army. The three clans vote to turn every wheel toward the Black Gate.',
+        addFlags: ['c6-red-moot-war'],
+        result:
+          'You ask for war and name its danger without hiding civilians behind the word army. The three clans vote to turn every wheel toward the Black Gate.',
         next: 'c6-ending-war',
       },
       {
         id: 'c6-ask-guarded-alliance',
-        label: 'Ask for a guarded alliance led by the Red Moot’s own commanders.',
-        detail: 'Request an ember escort and volunteer riders while Kharad Vey keeps authority over its people.',
-        advantage: 'The alliance provides meaningful forces without making the town an extension of Caelan’s command.',
+        label:
+          'Ask for a guarded alliance led by the Red Moot’s own commanders.',
+        detail:
+          'Request an ember escort and volunteer riders while Kharad Vey keeps authority over its people.',
+        advantage:
+          'The alliance provides meaningful forces without making the town an extension of Caelan’s command.',
         showIfAllFlags: ['c6-declared-ember-origin'],
-        hideIfAnyFlags: ['c6-refused-ember-disclosure', 'c6-concealed-ember-theft'],
+        hideIfAnyFlags: [
+          'c6-refused-ember-disclosure',
+          'c6-concealed-ember-theft',
+        ],
         changes: { wayfire: 2 },
-        addFlags: ['c6-red-moot-alliance', 'c6-kharad-escort'],
-        result: 'You ask the clans to choose their own commanders and the number they can risk. The vote grants an ember escort, wind callers, and riders under Korran’s seasonal authority.',
+        addFlags: ['c6-red-moot-alliance'],
+        result:
+          'You ask the clans to choose their own commanders and the number they can risk. The vote grants an ember escort, wind callers, and riders under Korran’s seasonal authority.',
         next: 'c6-ending-alliance',
       },
       {
         id: 'c6-accept-neutral-road',
         label: 'Ask only for a safe road, witnesses, and the right to return.',
-        detail: 'Accept military neutrality rather than turn earned trust into pressure for troops.',
-        advantage: 'Kharad Vey remains protected while its guides and evidence strengthen Caelan’s cause.',
+        detail:
+          'Accept military neutrality rather than turn earned trust into pressure for troops.',
+        advantage:
+          'Kharad Vey remains protected while its guides and evidence strengthen Caelan’s cause.',
         changes: { wayfire: 2 },
-        addFlags: ['c6-red-moot-neutral', 'c6-kharad-safe-road'],
-        result: 'You ask for no army. The Moot grants guides, public witnesses, supplies, and a safe road through the steppe. Neutrality becomes a boundary, not abandonment.',
+        addFlags: ['c6-red-moot-neutral'],
+        result:
+          'You ask for no army. The Moot grants guides, public witnesses, supplies, and a safe road through the steppe. Neutrality becomes a boundary, not abandonment.',
         next: 'c6-ending-neutral',
       },
     ],
@@ -1830,7 +2177,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Six complete',
     title: 'Every Wheel Turns East',
     location: 'Kharad Vey, Eastern Steppe',
-    objective: 'Lead the wheel town toward the Black Gate before the Crown army catches it.',
+    objective:
+      'Lead the wheel town toward the Black Gate before the Crown army catches it.',
     threat: 'Critical',
     art: 'storm',
     final: true,
@@ -1864,7 +2212,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Six complete',
     title: 'An Alliance with Its Own Voice',
     location: 'Kharad Vey, Eastern Steppe',
-    objective: 'Carry the ember toward the Black Gate with Korran’s chosen escort.',
+    objective:
+      'Carry the ember toward the Black Gate with Korran’s chosen escort.',
     threat: 'Critical',
     art: 'moot',
     final: true,
@@ -1894,7 +2243,8 @@ export const chapterSixNodes: Record<string, StoryNode> = {
     kicker: 'Chapter Six complete',
     title: 'A Road Freely Given',
     location: 'Kharad Vey, Eastern Steppe',
-    objective: 'Reach the Black Gate with guides before the pursuing Crown army overtakes you.',
+    objective:
+      'Reach the Black Gate with guides before the pursuing Crown army overtakes you.',
     threat: 'Critical',
     art: 'kharad',
     final: true,

@@ -112,6 +112,12 @@ All routes reach the folded road, but state remains distinct:
 - whether Caelan carries his first active Oath;
 - which ambush detail points toward the saboteur.
 
+The safe-hearth Oath is not free power. Its exact later contract is that the first playable return toward Greyhaven must keep every surviving member of this escort on a route to a safe hearth, or require Caelan to resolve a visible breach before spending the Oath's remaining power.
+
+## Recursive audit protection
+
+The lifecycle check now covers Chapter One as well as the numbered node prefixes. A surviving flag must change choice mechanics, be explicitly classified at a later non-ending complication or reaction, or carry an exact future contract. Body, ending, and journal recaps do not qualify on their own. Relationship scores and route destinations remain authoritative where old duplicate flags were removed.
+
 ## Art plan
 
 The implemented chapter uses two canonical scene illustrations:

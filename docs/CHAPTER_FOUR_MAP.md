@@ -167,6 +167,7 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - every wounded route preserves Ordan's satchel while keeping the early reading advantage unique;
 - every Bell Arch result resolves Brann, Mara, and both guards and establishes Brann's injury;
 - every consequential Chapter Four flag has a later consumer or an explicit terminal history reason;
+- the recursive lifecycle audit accepts only choice mechanics, an explicitly classified active complication or reaction, or an exact future contract, never summary prose alone;
 - paid sibling choices produce a distinct result or later complication that a free sibling does not receive;
 - Mara and Brann stay absent from the snow, route, and first disguise scenes when sent back;
 - Ordan's presence in the Crown fight and ending follows the rescue choice;

@@ -171,4 +171,6 @@ The game check verifies:
 - Hale's arrival reflects the player's flare, trail, patrol, and mountain route choices;
 - Vaor's ancient imprisonment and Malrec's recent attempt to bind him again remain distinct;
 - every mountain route receives a later physical or tactical callback;
+- relationship state, not duplicate kiss or friendship flags, controls later romantic availability and reactions;
+- the recursive lifecycle audit rejects body, ending, and journal recap as standalone consumers and validates each declared active complication against rendered play;
 - all endings keep Vaor's living ember separate from the fire Nail.

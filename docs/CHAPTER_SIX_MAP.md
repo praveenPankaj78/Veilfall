@@ -99,6 +99,8 @@ This keeps the mystery curious rather than confusing. Chapter Six proves that th
 
 Caelan uses the duty the player completed as evidence of how he behaves when local lives and his larger mission compete. He must then state a principle that will still matter after the immediate crisis.
 
+If Caelan lets the Moot collect a later debt, the first post-Gate Kharad request must give the Red Moot one bounded act of service before any Crown order can claim that obligation. If he deposits Orivane evidence, the first Crown hearing must allow an independent Kharad custodian to authenticate the copy held in the Moot archive.
+
 ### Trial combat
 
 Caelan faces Varka on two moving platforms. The strongest outcomes come from respecting the local law, learning the moving ground, or saving the champion rather than using the ember as an automatic victory.
@@ -172,6 +174,7 @@ The game check verifies:
 - Vaor's gift, theft, and pact rules govern every ember use;
 - damaged seed states alter both Chapter Six horn magic and Chapter Eight seed options;
 - all four ancestor command methods produce distinct consequences;
-- all Chapter Six flags have a later consumer or a documented terminal history reason;
+- all Chapter Six flags change mechanics, have an explicitly classified and render-verified active complication or reaction, or carry an exact future contract;
+- body, ending, and journal recap never count as a lifecycle consumer by themselves, and duplicate producers never substitute for consumers;
 - every paid Chapter Six option has a later practical consequence;
 - each Moot ending records its distinct consequence and grants equal Wayfire.

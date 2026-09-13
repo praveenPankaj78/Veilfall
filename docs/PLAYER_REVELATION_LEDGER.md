@@ -78,7 +78,7 @@ Next hook: What is he preparing to release?
 
 Mechanic: Command at large scale and mutually exclusive protection.
 
-## 8. Eight Empty Forts
+## 8. Seven Cold Fires
 
 Active question: Why were the forts abandoned?
 

@@ -142,7 +142,7 @@ Revelation: Regent Malrec is deliberately moving armies away from the Black Gate
 
 End state: Caelan gains an army, a smaller chosen company, or a dangerous reputation and no formal allies.
 
-### Chapter Eight: Eight Empty Forts
+### Chapter Eight: Seven Cold Fires
 
 Location: The fortress ring surrounding the Black Gate.
 
