@@ -746,6 +746,36 @@ export function knownTruths(game: GameState) {
     return truths;
   }
 
+  if (game.chapter === 10) {
+    truths.push(
+      'A desire can make an offer appear in the Cinder Deep. Silence, fear, attraction, and curiosity accept nothing.',
+      'A bargain binds only after its benefit, price, duration, exit, and exact accepting act are visible.',
+      'Malrec has allies inside the Cinder Deep who plan to release owned promises and weaken Worldroot.',
+    );
+    if (game.flags.includes('c10-water-bargain-ended'))
+      truths.push(
+        'The water cup bargain ended at its named stone. A completed bargain cannot widen afterward.',
+      );
+    if (game.flags.includes('c10-offer-method-shared'))
+      truths.push(
+        'The expedition records each offer publicly after its owner gives permission.',
+      );
+    if (game.flags.includes('c10-offer-method-private'))
+      truths.push(
+        'Each traveller keeps private offer terms and reports only whether they are safe.',
+      );
+    if (game.flags.includes('c10-offer-method-oath'))
+      truths.push(
+        'The burden Oath holds only offers whose owners consented, and each owner may withdraw their own offer.',
+      );
+    if (game.flags.includes('c10-free-ledger-alliance'))
+      truths.push(
+        'The Free Ledger opposes Malrec because a merged world would erase the boundaries that let separate people refuse each other.',
+        'The Free Ledger will guide one checkpoint and identify the engine district. Its sealed petition must receive a public hearing before any ruling faction receives it.',
+      );
+    return truths;
+  }
+
   if (game.chapter === 9) {
     if (game.flags.includes('c9-vexa-moved-fourth-to-second'))
       truths.push(
@@ -1650,6 +1680,42 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c9-roster-crown'))
     consequences.push(
       'Because you chose official witnesses, Teren and six Crown volunteers crossed without importing the divided army’s command.',
+    );
+  if (game.flags.includes('c9-mara-crossed-black-gate'))
+    consequences.push(
+      'Because Mara freely chose the Ash Road after hearing its danger, she crossed as your partner and the expedition’s scout.',
+    );
+  if (game.flags.includes('c9-mara-remained-at-gate'))
+    consequences.push(
+      'Because Mara chose the mortal return watch, she remains at the Black Gate with the signal cord and your relationship intact.',
+    );
+  if (game.flags.includes('c9-lysara-crossed-black-gate'))
+    consequences.push(
+      'Because Lysara freely chose the Ash Road outside any treaty price, she crossed as your partner and an independent envoy.',
+    );
+  if (game.flags.includes('c9-lysara-remained-at-gate'))
+    consequences.push(
+      'Because Lysara chose to guard the evidence in Edrath, she remains at the Black Gate with your relationship intact.',
+    );
+  if (game.flags.includes('c10-offer-method-shared'))
+    consequences.push(
+      'Because every traveller shared offers with permission, the company broke hidden listening marks but exposed painful wants to witnesses.',
+    );
+  if (game.flags.includes('c10-offer-method-private'))
+    consequences.push(
+      'Because each traveller kept private terms, every sealed choice stayed personal while the expedition accepted a harder coordination risk.',
+    );
+  if (game.flags.includes('c10-offer-method-oath'))
+    consequences.push(
+      'Because every affected traveller consented to the burden Oath, Caelan carried their temptations until Vathis and now owes each person a private accounting.',
+    );
+  if (game.flags.includes('c10-limits-respected'))
+    consequences.push(
+      'Because you accepted the limits spoken at the shelter, the matching private temptation lost its power before Vathis.',
+    );
+  if (game.flags.includes('c10-free-ledger-alliance'))
+    consequences.push(
+      'Because you accepted the Free Ledger’s bounded price, its sealed petition must receive a public hearing before any ruling faction receives it.',
     );
   return consequences.length
     ? consequences

@@ -88,6 +88,15 @@ export const implementedChapterContracts = [
     chapter: 9,
     entryNode: 'c9-embassy-watch',
     endingNodes: ['c9-ending-bargain', 'c9-ending-theft', 'c9-ending-exposure'],
+    nextNode: 'c10-ash-road',
+    activeGuests: [],
+    legacyOnlyHeroes: ['rook', 'ilyra'],
+  },
+  {
+    series: 'caelan',
+    chapter: 10,
+    entryNode: 'c10-ash-road',
+    endingNodes: ['c10-ending-shared', 'c10-ending-private', 'c10-ending-oath'],
     nextNode: null,
     activeGuests: [],
     legacyOnlyHeroes: ['rook', 'ilyra'],
@@ -128,6 +137,11 @@ export const protectedPlotTransitions = [
     id: 'embassy-to-cinder-deep',
     endingNodes: ['c9-ending-bargain', 'c9-ending-theft', 'c9-ending-exposure'],
     requiredTerms: ['fragment', 'Malrec', 'Worldroot', 'offer'],
+  },
+  {
+    id: 'ash-road-to-vathis',
+    endingNodes: ['c10-ending-shared', 'c10-ending-private', 'c10-ending-oath'],
+    requiredTerms: ['Vathis', 'fragment', 'Free Ledger', 'engine'],
   },
 ];
 
@@ -907,6 +921,16 @@ export const terminalHistoryFlagReasons = {
     'Chapter Ten must keep the stolen fragment visible and admitted, preventing any clean-custody or hidden-taking claim.',
   'c9-sableglass-publicly-exposed':
     'Chapter Ten must allow the public Sableglass evidence to challenge its house agents and prevent the house from denying the embassy attack.',
+  'c9-mara-crossed-black-gate':
+    'Chapter Ten may place Mara on the Ash Road as Caelan’s scout and partner; the first private offer must respect her refusal to promise safety or an unchanged return.',
+  'c9-mara-remained-at-gate':
+    'Chapter Ten must keep Mara physically at the mortal Black Gate and may use only her established return signal as a legacy.',
+  'c9-lysara-crossed-black-gate':
+    'Chapter Ten may place Lysara on the Ash Road as an independent envoy and partner; no treaty, proof duty, or bargain may be treated as consent to accompany Caelan.',
+  'c9-lysara-remained-at-gate':
+    'Chapter Ten must keep Lysara physically at the mortal Black Gate as custodian of the evidence and may use only that custody as a legacy.',
+  'c9-no-mortal-partner-crossed':
+    'Chapter Ten must not place Mara, Lysara, or Ilyra on the Ash Road; any partner scene is limited to Vexa when her recorded relationship allows it.',
   'c9-roster-futureless':
     'Chapter Ten must place Ansel and two Futureless witnesses physically inside the Cinder Deep and use their living testimony.',
   'c9-roster-pell':
@@ -917,4 +941,130 @@ export const terminalHistoryFlagReasons = {
     'Chapter Ten must place Teren and six Crown volunteers inside the Cinder Deep without importing command over the full divided army.',
   'c9-crossed-black-gate':
     'Chapter Ten begins after the selected voluntary expedition physically crosses the Black Gate with the recovered fragment.',
+  'c10-bargain-custody-used':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-burden-oath-active':
+    'Chapter Eleven must preserve that the burden Oath ended at Vathis, keep every traveller’s individual withdrawal history, and require Caelan to give each consenting person a private accounting.',
+  'c10-burden-oath-explicit-consent':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-burden-oath-withdrawn':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-clean-refusal-recorded':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-copy-risk-active':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-crown-volunteer-pairs':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-destroyed-oath-loss-faced':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-exact-roster-crossed-bridge':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-exposure-custody-used':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-first-arch-delay':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-free-ledger-guide-accepted':
+    'Chapter Eleven must let the Free Ledger guide the expedition through one faction checkpoint and identify the engine district from outside.',
+  'c10-free-ledger-guide-refused':
+    'Chapter Eleven must begin on the slower public road, grant no checkpoint passage, and impose no petition hearing duty.',
+  'c10-free-ledger-offered-help':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-free-ledger-petition-owed':
+    'Chapter Eleven must require a public hearing for the sealed Free Ledger petition before Caelan gives it to any ruling Vathis faction.',
+  'c10-free-ledger-proved-by-oath-exit':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-free-ledger-proved-by-private-seals':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-free-ledger-proved-by-shared-record':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-free-ledger-rope-saved':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-futureless-record-line':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-limits-public-only':
+    'Chapter Eleven must preserve the complete platonic boundary and withhold any choice that treats the shelter conversation as romantic consent.',
+  'c10-limits-respected':
+    'Chapter Eleven must weaken the matching partner temptation because both people’s refused promises were repeated without alteration.',
+  'c10-listening-ash-broken':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-listening-mark-following':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-mixed-call-answer':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-oath-copy-contained':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-oath-traveller-withdrew':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-offer-bridge-accelerated':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-offer-method-oath':
+    'Chapter Eleven must carry the completed consensual burden Oath, each personal exit, and its owed private accounting without treating the Oath as ownership.',
+  'c10-offer-method-oath-proposed':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-offer-method-private':
+    'Chapter Eleven must keep offer seals with their owners and retain the unresolved coordination risk without exposing their private terms.',
+  'c10-offer-method-shared':
+    'Chapter Eleven must use the shared ledger to detect changed offers while preserving whether motives were withheld or exposed by permission.',
+  'c10-partner-temptation-known':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-pell-safe-exit-mapped':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-prepared-offer-pause':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-private-desires-exposed':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-private-false-alarm-contained':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-private-route-delay':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-private-seals-kept':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-reached-vathis':
+    'Chapter Eleven begins at Vathis with the exact surviving expedition, fragment custody, known contract risk, and clear objective to locate Malrec’s engine.',
+  'c10-refusal-demonstrated':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-rest-with-lysara':
+    'Chapter Eleven must preserve Lysara’s renewed consent, sole-control temptation, and refusal to promise obedience to a Crown future without implying new consent.',
+  'c10-rest-with-mara':
+    'Chapter Eleven must preserve Mara’s renewed consent, quiet-home temptation, and refusal to promise safety behind Caelan without implying new consent.',
+  'c10-rested-apart':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-road-danger-ended':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-roster-offer-answered-crown':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-roster-offer-answered-futureless':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-roster-offer-answered-mixed':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-roster-offer-answered-pell':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-roster-offer-kept-private':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-shared-complete-offers':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-shared-terms-only':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-shelter-conversation':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-silence-demonstrated':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-surviving-oaths-private':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-surviving-oaths-public':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-theft-custody-used':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-vexa-boundary-witnessed':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-vexa-hostile-truce-held':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-vexa-refused-own-offer':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-water-bargain-ended':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-water-offer-accepted':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
+  'c10-water-offer-refused':
+    'Chapter Eleven must preserve this recorded Ash Road choice or consequence in the expedition ledger before any Vathis faction may use or replace it.',
 };

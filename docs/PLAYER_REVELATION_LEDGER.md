@@ -102,11 +102,11 @@ Mechanic: True-name precision through a harmless witnessed test, followed by con
 
 Active question: How do travellers remain free in the Cinder Deep?
 
-Answer: The Deep has strict bargain laws and factions that oppose merger.
+Answer: Desire can create an offer, but only a clear acceptance after stated terms creates a bargain. The Free Ledger opposes Malrec because merger would erase the boundaries that let separate people refuse each other.
 
 Next hook: Which faction controls the city and Malrec's engine?
 
-Mechanic: Small reversible bargains before dangerous contracts.
+Mechanic: A reversible water bargain teaches offers, acceptance, duration, and exit before the company chooses shared disclosure, private seals, or a consensual burden Oath.
 
 ## 11. City of Every Price
 

@@ -373,3 +373,5 @@ Before a scene is approved, confirm:
 - Keep an original document, ordinary copy, signed copy, public display, and witness statement as separate evidence. Destroying one changes only the proof that actually depended on it.
 - An ending recap or journal line records history but does not by itself repay a resource cost or preparation. A paid choice must alter later availability, danger, people, proof, resources, or political state unless its immediate result is the final outcome.
 - Military or political support must be earned from explicit acts the player saw. State why a larger outcome is unavailable before the final menu and always preserve one viable path.
+- A later chapter may place a companion only when the prior ending records that person crossing or travelling. Relationship intent alone cannot move a character between locations.
+- When desire creates an automatic offer, show the offer as a physical object before naming the rule. Keep wanting, silence, acceptance, completion, and later memory as separate visible states.

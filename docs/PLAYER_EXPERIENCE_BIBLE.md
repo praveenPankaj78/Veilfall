@@ -242,6 +242,10 @@ Do not explain answers during the test. If fewer than four of five players give 
 
 Different predictions for the sixth question are desirable if they are supported by the story.
 
+A contract tutorial must use a small reversible example before a dangerous bargain. Show benefit, price, duration, accepting act, and exit before the player answers. A completed example must visibly end.
+
+Private choices deserve a real advantage and a real coordination cost. Public sharing requires each owner's permission before revealing motives. Group protection may never turn one person's consent into consent for another.
+
 ## Emotional clarity
 
 The player need not agree with the protagonist's companions, but should understand what each important person wants in the scene.

@@ -59,8 +59,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v13.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v14.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v13.save',
   'veilfall.saga.v12.save',
   'veilfall.saga.v11.save',
   'veilfall.saga.v10.save',
@@ -73,7 +74,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 const sceneArtwork = {
   departure: {
@@ -164,6 +165,18 @@ const sceneArtwork = {
     src: '/art/black-gate-crossing.png',
     alt: 'Caelan crosses the Black Gate with Vexa, willing allies, and the recovered Gate Nail fragment',
   },
+  ashroadoffer: {
+    src: '/art/ash-road-first-offer.png',
+    alt: 'A clear cup of water rises from the ash before Caelan and the expedition',
+  },
+  privateoffers: {
+    src: '/art/ash-road-private-offers.png',
+    alt: 'Caelan and the expedition face separate glowing offers along the Ash Road',
+  },
+  vathisapproach: {
+    src: '/art/vathis-approach.png',
+    alt: 'Caelan leads the surviving expedition toward the divided towers of Vathis',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
@@ -175,6 +188,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   7: 'veilfall.chapter-seven.v1.start',
   8: 'veilfall.chapter-eight.v1.start',
   9: 'veilfall.chapter-nine.v1.start',
+  10: 'veilfall.chapter-ten.v1.start',
 };
 
 const chapterLibrary = [
@@ -231,6 +245,12 @@ const chapterLibrary = [
     title: 'The Price of a Name',
     summary:
       'Recover the missing Gate Nail piece while mortal and devil assassins strike the first embassy.',
+  },
+  {
+    number: 10 as const,
+    title: 'The Ash Road',
+    summary:
+      'Lead the voluntary expedition to Vathis while every spoken desire becomes an offer.',
   },
 ];
 
@@ -447,23 +467,25 @@ function migrateRelationships(value: Partial<GameState>) {
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId =
     value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c9-')
-    ? 9
-    : nodeId.startsWith('c8-')
-      ? 8
-      : nodeId.startsWith('c7-')
-        ? 7
-        : nodeId.startsWith('c6-')
-          ? 6
-          : nodeId.startsWith('c5-')
-            ? 5
-            : nodeId.startsWith('c4-')
-              ? 4
-              : nodeId.startsWith('c3-')
-                ? 3
-                : nodeId.startsWith('c2-')
-                  ? 2
-                  : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c10-')
+    ? 10
+    : nodeId.startsWith('c9-')
+      ? 9
+      : nodeId.startsWith('c8-')
+        ? 8
+        : nodeId.startsWith('c7-')
+          ? 7
+          : nodeId.startsWith('c6-')
+            ? 6
+            : nodeId.startsWith('c5-')
+              ? 5
+              : nodeId.startsWith('c4-')
+                ? 4
+                : nodeId.startsWith('c3-')
+                  ? 3
+                  : nodeId.startsWith('c2-')
+                    ? 2
+                    : (value.chapter ?? 1);
   const savedStats = (value.stats ?? {}) as Partial<GameStats> & {
     stamina?: number;
   };
@@ -475,6 +497,28 @@ function normaliseState(value: Partial<GameState>): GameState {
       ...(nodes[nodeId]?.final && health > 0 && !value.defeat ? [chapter] : []),
     ]),
   );
+  const relationships = migrateRelationships(value);
+  const flags = [...(value.flags ?? [])];
+  const chapterNineRosterResolved = [
+    'c9-mara-crossed-black-gate',
+    'c9-mara-remained-at-gate',
+    'c9-lysara-crossed-black-gate',
+    'c9-lysara-remained-at-gate',
+    'c9-no-mortal-partner-crossed',
+  ].some((flag) => flags.includes(flag));
+  if (completedChapters.includes(9) && !chapterNineRosterResolved) {
+    if (
+      relationships.mara.intent === 'committed' ||
+      relationships.mara.intent === 'exploring'
+    )
+      flags.push('c9-mara-crossed-black-gate');
+    else if (
+      relationships.lysara.intent === 'committed' ||
+      relationships.lysara.intent === 'exploring'
+    )
+      flags.push('c9-lysara-crossed-black-gate');
+    else flags.push('c9-no-mortal-partner-crossed');
+  }
   return {
     nodeId,
     chapter,
@@ -490,12 +534,12 @@ function normaliseState(value: Partial<GameState>): GameState {
       medicine: savedStats.medicine ?? initialState.stats.medicine,
       wayfire: savedStats.wayfire ?? initialState.stats.wayfire,
     },
-    relationships: migrateRelationships(value),
+    relationships,
     contentPreference: {
       ...initialState.contentPreference,
       ...value.contentPreference,
     },
-    flags: value.flags ?? [],
+    flags,
     history: value.history ?? [],
     defeat: value.defeat ?? null,
   };
@@ -520,6 +564,7 @@ function defeatForChoice(
     7: 'You complete the action, but the Red Wind Hunt takes the last of your strength. Salt and red sky blur together while your companions fight to keep the living army from obeying its dead.',
     8: 'You complete the action, but the Black Gate takes the last of your strength. Snow and furnace light blur together while the defenders struggle to keep the opening from becoming an invasion road.',
     9: 'You complete the action, but the embassy attack takes the last of your strength. Glass chains and handbow smoke blur while your allies keep the Gate Nail fragment from both assassin groups.',
+    10: 'You complete the action, but the Ash Road takes the last of your strength. Your expedition closes around the fragment while the road carries its unanswered offers toward Vathis.',
   };
   return {
     title: 'Caelan has fallen',
@@ -694,7 +739,11 @@ function visibleRelationshipKeys(game: GameState): RelationshipKey[] {
   const known: RelationshipKey[] = ilyraKnown
     ? ['mara', 'lysara', 'ilyra']
     : ['mara', 'lysara'];
-  if (game.completedChapters.includes(8) || game.nodeId.startsWith('c9-')) {
+  if (
+    game.completedChapters.includes(8) ||
+    game.nodeId.startsWith('c9-') ||
+    game.nodeId.startsWith('c10-')
+  ) {
     known.push('vexa');
   }
   return known;
@@ -938,9 +987,9 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4, 5, 6, 7, 8, 9] as ChapterNumber[]).filter(
-      (number) => number > chapter,
-    )) {
+    for (const later of (
+      [2, 3, 4, 5, 6, 7, 8, 9, 10] as ChapterNumber[]
+    ).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
     }
@@ -1134,6 +1183,27 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterTen() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c10-ash-road',
+      chapter: 10,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 9])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 1),
+        resolve: Math.min(8, game.stats.resolve + 1),
+      },
+      history: [
+        ...game.history,
+        'You take the exact voluntary expedition from the inner Black Gate onto the Ash Road.',
+      ],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[10]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return (
       <main
@@ -1198,7 +1268,7 @@ export default function Home() {
           <BookOpen aria-hidden="true" />
           Caelan{' '}
           {
-            ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'][
+            ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][
               game.chapter - 1
             ]
           }
@@ -1702,7 +1772,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 8 ? (
                     <>
                       <h2>Chapter Nine is ready</h2>
                       <p>
@@ -1728,22 +1798,47 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Ten is ready</h2>
+                      <p>
+                        Continue into The Ash Road with the recovered fragment,
+                        exact expedition, surviving Oaths, and chosen limits.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterTen}
+                      >
+                        Continue to Chapter Ten
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
+                        Replay Chapter Nine
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Chapter Ten will return</h2>
+                    <h2>Chapter Eleven will return</h2>
                     <p>
-                      The recovered Gate Nail fragment, your chosen allies, and
-                      every surviving Oath cross into the Cinder Deep. The next
-                      question is how desire can remain free when it becomes an
-                      offer before thought can refuse.
+                      The surviving expedition has reached Vathis with the Gate
+                      Nail fragment and a bounded Free Ledger bargain. Next you
+                      must learn which faction controls the city and
+                      Malrec&apos;s engine.
                     </p>
                     <Button
                       className="begin-button"
                       size="lg"
                       onClick={restart}
                     >
-                      Replay Chapter Nine
+                      Replay Chapter Ten
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>

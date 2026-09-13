@@ -139,6 +139,21 @@ vm.runInNewContext(
   { filename: 'chapter-nine.js' },
 );
 
+const chapterTenSource = await readFile('app/chapter-ten.ts', 'utf8');
+const chapterTenCompiled = ts.transpileModule(chapterTenSource, {
+  compilerOptions,
+}).outputText;
+const chapterTenExports = {};
+vm.runInNewContext(
+  chapterTenCompiled,
+  {
+    exports: chapterTenExports,
+    module: { exports: chapterTenExports },
+    console,
+  },
+  { filename: 'chapter-ten.js' },
+);
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -176,6 +191,7 @@ const context = {
     if (specifier === './chapter-seven') return chapterSevenExports;
     if (specifier === './chapter-eight') return chapterEightExports;
     if (specifier === './chapter-nine') return chapterNineExports;
+    if (specifier === './chapter-ten') return chapterTenExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -218,6 +234,7 @@ const postBridgeSources = [
   chapterSevenSource,
   chapterEightSource,
   chapterNineSource,
+  chapterTenSource,
 ];
 const activeRookAction =
   /\bRook (?:walks|waits|follows|looks|points|returns|offers|asks|says|carries|pulls|uses|takes|finds|helps|stands|runs|rides|scouts)\b/i;
@@ -292,6 +309,11 @@ const chapterNineArtAssets = {
   cinderembassy: 'public/art/cinder-deep-embassy.png',
   twosidedattack: 'public/art/two-sided-assassination.png',
   gatecrossing: 'public/art/black-gate-crossing.png',
+};
+const chapterTenArtAssets = {
+  ashroadoffer: 'public/art/ash-road-first-offer.png',
+  privateoffers: 'public/art/ash-road-private-offers.png',
+  vathisapproach: 'public/art/vathis-approach.png',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -435,6 +457,29 @@ for (const [art, asset] of Object.entries(chapterNineArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Nine artwork is missing: ${asset}`);
+  }
+}
+const earlierThanTenArt = new Set([
+  ...earlierThanNineArt,
+  ...Object.keys(chapterNineArtAssets),
+]);
+const chapterTenArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c10-')) continue;
+  if (!node.art) failures.push(`Chapter Ten node has no explicit art: ${id}`);
+  if (earlierThanTenArt.has(node.art))
+    failures.push(
+      `Chapter Ten node reuses earlier chapter art: ${id} uses ${node.art}`,
+    );
+  if (node.art) chapterTenArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterTenArtAssets)) {
+  if (!chapterTenArtUsed.has(art))
+    failures.push(`Chapter Ten never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Ten artwork is missing: ${asset}`);
   }
 }
 
@@ -824,6 +869,9 @@ function stateKey(state) {
     'c9-route-bargain',
     'c9-route-theft',
     'c9-route-exposure',
+    'c10-offer-method-shared',
+    'c10-offer-method-private',
+    'c10-offer-method-oath',
   ]);
   const currentNode = nodes[state.nodeId];
   for (const choice of currentNode?.choices ?? []) {
@@ -1114,6 +1162,33 @@ const chapterNineBase = {
     wayfire: 17,
   },
 };
+const chapterTenKnownTerms = Object.keys(statLabels);
+const chapterTenKnownStoryTerms = [
+  ...chapterNineKnownStoryTerms,
+  'Cinder Deep',
+  'true name',
+  'House Sableglass',
+];
+const chapterTenBase = {
+  ...chapterNineBase,
+  nodeId: 'c10-ash-road',
+  chapter: 10,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  flags: [
+    ...chapterNineBase.flags,
+    'c9-route-bargain',
+    'c9-fragment-recovered-bargain',
+    'c9-return-promise-owned',
+    'c9-kept-true-name-clause',
+    'c9-learned-desire-offer-danger',
+    'c9-vexa-guarded-trust',
+    'c9-malrec-cinder-alliance-proved',
+    'c9-roster-futureless',
+    'c9-no-mortal-partner-crossed',
+    'c9-crossed-black-gate',
+  ],
+};
 
 const chapterBaseStates = {
   1: initialState,
@@ -1125,10 +1200,11 @@ const chapterBaseStates = {
   7: chapterSevenBase,
   8: chapterEightBase,
   9: chapterNineBase,
+  10: chapterTenBase,
 };
 
 function nodeIsInChapter(nodeId, chapter) {
-  if (chapter === 1) return !/^c[2-9]-/.test(nodeId);
+  if (chapter === 1) return !/^c(?:[2-9]|10)-/.test(nodeId);
   return nodeId.startsWith(`c${chapter}-`);
 }
 
@@ -1419,25 +1495,41 @@ const storyTermRules = {
     introduction:
       /contract seal shaped like six joined fingers.*House Sableglass/is,
   },
+  'Ash Road': {
+    use: /\bAsh Road\b/i,
+    introduction:
+      /(?:calls it the Ash Road after everyone sees its surface move|“Vathis,” she says\. “The Ash Road reaches its public gate)/i,
+  },
+  Vathis: {
+    use: /\bVathis\b/i,
+    introduction: /points to the distant towers\. “Vathis,” she says/i,
+  },
+  'Free Ledger': {
+    use: /\bFree Ledger\b/i,
+    introduction:
+      /calls them the Free Ledger only after every listening mark is gone/i,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c9-')
-    ? chapterNineBase
-    : id.startsWith('c8-')
-      ? chapterEightBase
-      : id.startsWith('c7-')
-        ? chapterSevenBase
-        : id.startsWith('c6-')
-          ? chapterSixBase
-          : id.startsWith('c5-')
-            ? chapterFiveBase
-            : id.startsWith('c4-')
-              ? chapterFourBase
-              : id.startsWith('c3-')
-                ? chapterThreeBase
-                : id.startsWith('c2-')
-                  ? chapterTwoBase
-                  : initialState;
+  const sampleState = id.startsWith('c10-')
+    ? chapterTenBase
+    : id.startsWith('c9-')
+      ? chapterNineBase
+      : id.startsWith('c8-')
+        ? chapterEightBase
+        : id.startsWith('c7-')
+          ? chapterSevenBase
+          : id.startsWith('c6-')
+            ? chapterSixBase
+            : id.startsWith('c5-')
+              ? chapterFiveBase
+              : id.startsWith('c4-')
+                ? chapterFourBase
+                : id.startsWith('c3-')
+                  ? chapterThreeBase
+                  : id.startsWith('c2-')
+                    ? chapterTwoBase
+                    : initialState;
   const introductionText = [
     node.lesson?.title,
     node.lesson?.body,
@@ -1498,7 +1590,7 @@ const closePointOfViewPattern =
   /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|list|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
 for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
   const chapterNodes = nodeOrder.filter((id) =>
-    chapter === 1 ? !/^c[2-9]-/.test(id) : id.startsWith(`c${chapter}-`),
+    chapter === 1 ? !/^c(?:[2-9]|10)-/.test(id) : id.startsWith(`c${chapter}-`),
   );
   const sampleState =
     chapter === 1
@@ -7710,6 +7802,7 @@ const chapterNineWalkthroughs = [
       'c9-share-private-night',
       'c9-complete-bargain',
       'c9-take-crown-volunteers',
+      'c9-cross-with-no-mortal-partner',
     ],
   },
   {
@@ -7741,6 +7834,7 @@ const chapterNineWalkthroughs = [
       'c9-talk-with-vexa-only',
       'c9-take-fragment-during-attack',
       'c9-take-mixed-warden-company',
+      'c9-cross-with-mara',
     ],
   },
   {
@@ -7773,6 +7867,7 @@ const chapterNineWalkthroughs = [
       'c9-leave-vexa-private',
       'c9-compel-sableglass-surrender',
       'c9-take-mixed-warden-company',
+      'c9-cross-with-no-mortal-partner',
     ],
   },
 ].map(walkChapterNine);
@@ -7785,6 +7880,351 @@ if (chapterNineEndingsByRoute.size !== 3) {
     'Representative Chapter Nine routes do not reach three distinct endings',
   );
 }
+
+function walkChapterTen(route) {
+  let state = {
+    ...chapterTenBase,
+    nodeId: 'c10-ash-road',
+    chapterChoices: 0,
+    flags: [...route.flags],
+    stats: { ...chapterTenBase.stats, ...route.stats },
+    relationships: {
+      ...chapterTenBase.relationships,
+      mara: {
+        ...chapterTenBase.relationships.mara,
+        intent: route.maraIntent ?? 'platonic',
+      },
+      lysara: {
+        ...chapterTenBase.relationships.lysara,
+        intent: route.lysaraIntent ?? 'platonic',
+      },
+      vexa: {
+        ...chapterTenBase.relationships.vexa,
+        intent: route.vexaIntent ?? 'platonic',
+      },
+    },
+    contentPreference:
+      route.contentPreference ?? chapterTenBase.contentPreference,
+  };
+  for (const choiceId of route.choiceIds) {
+    const node = nodes[state.nodeId];
+    const choice = node?.choices.find((candidate) => candidate.id === choiceId);
+    if (!choice || !canChoose(choice, state)) {
+      failures.push(
+        `${route.name} cannot choose ${choiceId} in ${state.nodeId}`,
+      );
+      return state;
+    }
+    state = applyChoice(state, choice);
+  }
+  if (!nodes[state.nodeId]?.final)
+    failures.push(`${route.name} does not reach a Chapter Ten ending`);
+  if (!state.flags.includes('c10-reached-vathis'))
+    failures.push(`${route.name} does not reach Vathis`);
+  const rosters = [
+    'c9-roster-futureless',
+    'c9-roster-pell',
+    'c9-roster-wardens',
+    'c9-roster-crown',
+  ];
+  if (rosters.filter((flag) => state.flags.includes(flag)).length !== 1)
+    failures.push(
+      `${route.name} does not preserve one exact expedition roster`,
+    );
+  if (Math.min(...Object.values(state.stats)) < 0)
+    failures.push(`${route.name} creates a negative resource`);
+  return state;
+}
+
+const sharedTail = [
+  'c10-use-prepared-pause',
+  'c10-refuse-water-test',
+  'c10-record-clean-refusal',
+  'c10-use-bargain-custody',
+  'c10-futureless-record-impossible-price',
+  'c10-speak-surviving-oath-limits',
+  'c10-let-vexa-speak-offer-first',
+  'c10-choose-shared-offers',
+  'c10-share-terms-not-reasons',
+  'c10-shared-ledger-breaks-copy',
+  'c10-use-roster-crossing-drill',
+  'c10-test-free-ledger-with-shared-record',
+  'c10-respect-mutual-limits',
+  'c10-share-shelter-conversation',
+  'c10-accept-free-ledger-guide',
+];
+const chapterTenFixtures = [
+  {
+    name: 'bargain clause kept / Futureless / shared offers',
+    flags: [...chapterTenBase.flags],
+    choiceIds: ['c10-futureless-front-record', ...sharedTail],
+  },
+  {
+    name: 'admitted theft / hostile Vexa / mixed private offers',
+    flags: chapterTenBase.flags
+      .filter(
+        (flag) =>
+          !flag.startsWith('c9-route-') &&
+          !flag.startsWith('c9-roster-') &&
+          !flag.startsWith('c9-vexa-'),
+      )
+      .concat(
+        'c9-route-theft',
+        'c9-theft-publicly-named',
+        'c9-fragment-recovered-theft',
+        'c9-roster-wardens',
+        'c9-vexa-permanent-hostility',
+        'c9-no-mortal-partner-crossed',
+      ),
+    vexaIntent: 'hostile',
+    choiceIds: [
+      'c10-mixed-company-call-answer',
+      'c10-vexa-demonstrates-silence',
+      'c10-accept-water-test',
+      'c10-return-empty-cup',
+      'c10-name-theft-at-toll',
+      'c10-mixed-fighters-answer-individually',
+      'c10-keep-oaths-private',
+      'c10-hold-public-truce-line',
+      'c10-choose-private-offers',
+      'c10-let-private-groups-return-slowly',
+      'c10-private-status-check',
+      'c10-use-roster-crossing-drill',
+      'c10-test-free-ledger-with-private-seals',
+      'c10-keep-limits-to-command',
+      'c10-rest-apart',
+      'c10-refuse-free-ledger-guide',
+    ],
+  },
+  {
+    name: 'public exposure / strong proof / Pell / consensual burden Oath',
+    flags: chapterTenBase.flags
+      .filter(
+        (flag) =>
+          !flag.startsWith('c9-route-') && !flag.startsWith('c9-roster-'),
+      )
+      .concat(
+        'c9-route-exposure',
+        'c9-fragment-recovered-exposure',
+        'c9-sableglass-publicly-exposed',
+        'c8-preserved-original-ledgers',
+        'c9-roster-pell',
+      ),
+    choiceIds: [
+      'c10-pell-maps-offer-bridges',
+      'c10-use-prepared-pause',
+      'c10-refuse-water-test',
+      'c10-record-clean-refusal',
+      'c10-use-public-exposure-custody',
+      'c10-pell-maps-offer-exit',
+      'c10-speak-surviving-oath-limits',
+      'c10-record-vexa-boundary-publicly',
+      'c10-propose-burden-oath',
+      'c10-bind-consenting-offers',
+      'c10-spend-oathfire-on-carried-offers',
+      'c10-use-contained-oath-crossing',
+      'c10-test-free-ledger-with-oath-exit',
+      'c10-keep-limits-to-command',
+      'c10-rest-apart',
+      'c10-accept-free-ledger-guide',
+    ],
+  },
+];
+const chapterTenWalkthroughs = chapterTenFixtures.map(walkChapterTen);
+if (new Set(chapterTenWalkthroughs.map((state) => state.nodeId)).size !== 3)
+  failures.push(
+    'Representative Chapter Ten routes do not reach three distinct endings',
+  );
+
+for (const destroyed of [
+  'c9-destroyed-red-moot-authority-oath',
+  'c9-destroyed-crown-restitution-oath',
+  'c9-destroyed-clan-refusal-oath',
+  'c9-destroyed-honest-command-limit-oath',
+  'c9-destroyed-unsea-investigation-oath',
+]) {
+  const text = renderedBody('c10-old-oath-price', {
+    ...chapterTenBase,
+    flags: [...chapterTenBase.flags, destroyed],
+  });
+  if (!/lost|gone|destroyed|no longer/i.test(text))
+    failures.push(`${destroyed} has no active Chapter Ten loss`);
+  walkChapterTen({
+    ...chapterTenFixtures[0],
+    name: `bargain with ${destroyed}`,
+    flags: chapterTenFixtures[0].flags
+      .filter((flag) => flag !== 'c9-kept-true-name-clause')
+      .concat('c9-cut-true-name-clause', destroyed),
+    choiceIds: chapterTenFixtures[0].choiceIds.map((id) =>
+      id === 'c10-speak-surviving-oath-limits'
+        ? 'c10-name-destroyed-oath-loss'
+        : id,
+    ),
+  });
+}
+
+walkChapterTen({
+  ...chapterTenFixtures[1],
+  name: 'admitted theft / adversarial cooperative Vexa',
+  flags: chapterTenFixtures[1].flags
+    .filter((flag) => flag !== 'c9-vexa-permanent-hostility')
+    .concat('c9-vexa-adversarial-respect'),
+  vexaIntent: 'platonic',
+  choiceIds: chapterTenFixtures[1].choiceIds.map((id) =>
+    id === 'c10-hold-public-truce-line' ? 'c10-let-vexa-speak-offer-first' : id,
+  ),
+});
+
+walkChapterTen({
+  ...chapterTenFixtures[1],
+  name: 'Teren volunteers / low resources / complete route',
+  flags: chapterTenFixtures[1].flags
+    .filter((flag) => flag !== 'c9-roster-wardens')
+    .concat('c9-roster-crown', 'c7-lost-gate-supplies'),
+  stats: { health: 1, resolve: 0, command: 0, oathfire: 0, medicine: 0 },
+  choiceIds: chapterTenFixtures[1].choiceIds
+    .map((id) =>
+      id === 'c10-mixed-company-call-answer' ? 'c10-crown-volunteer-pairs' : id,
+    )
+    .map((id) =>
+      id === 'c10-mixed-fighters-answer-individually'
+        ? 'c10-crown-volunteers-refuse-safe-return'
+        : id,
+    ),
+});
+
+const fadeRomance = walkChapterTen({
+  ...chapterTenFixtures[0],
+  name: 'committed Mara fade',
+  flags: chapterTenFixtures[0].flags
+    .filter((flag) => flag !== 'c9-no-mortal-partner-crossed')
+    .concat('c9-mara-crossed-black-gate'),
+  maraIntent: 'committed',
+  contentPreference: { intimacy: 'fade', adultConfirmed: false },
+  choiceIds: chapterTenFixtures[0].choiceIds.map((id) =>
+    id === 'c10-share-shelter-conversation' ? 'c10-rest-with-mara' : id,
+  ),
+});
+const detailedRomance = walkChapterTen({
+  ...chapterTenFixtures[0],
+  name: 'committed Mara detailed',
+  flags: chapterTenFixtures[0].flags
+    .filter((flag) => flag !== 'c9-no-mortal-partner-crossed')
+    .concat('c9-mara-crossed-black-gate'),
+  maraIntent: 'committed',
+  contentPreference: { intimacy: 'detailed', adultConfirmed: true },
+  choiceIds: chapterTenFixtures[0].choiceIds.map((id) =>
+    id === 'c10-share-shelter-conversation' ? 'c10-rest-with-mara' : id,
+  ),
+});
+if (
+  JSON.stringify(fadeRomance.flags) !== JSON.stringify(detailedRomance.flags) ||
+  JSON.stringify(fadeRomance.relationships) !==
+    JSON.stringify(detailedRomance.relationships) ||
+  JSON.stringify(fadeRomance.stats) !== JSON.stringify(detailedRomance.stats)
+)
+  failures.push(
+    'Fade and detailed Chapter Ten variants produce different story outcomes',
+  );
+const detailedText = renderedBody('c10-guide-bargain', detailedRomance);
+const fadeText = renderedBody('c10-guide-bargain', fadeRomance);
+if (
+  detailedText === fadeText ||
+  !/unfasten travel leathers/i.test(detailedText) ||
+  /unfasten travel leathers/i.test(fadeText)
+)
+  failures.push(
+    'Fade and detailed Chapter Ten variants do not render distinct gated prose',
+  );
+if (/\bElian\b/i.test(chapterTenSource))
+  failures.push('Chapter Ten reveals Elian before Chapter Eleven');
+for (const flag of [
+  'c8-united-wardens',
+  'c8-accepted-ash-compact',
+  'c8-sacrificed-first-fort',
+]) {
+  const text = renderedBody('c10-road-danger', {
+    ...chapterTenBase,
+    flags: [...chapterTenBase.flags, flag],
+  });
+  if (
+    !new RegExp(
+      flag === 'c8-sacrificed-first-fort'
+        ? 'First Fort is gone'
+        : flag === 'c8-accepted-ash-compact'
+          ? 'burns white'
+          : 'united wardens',
+      'i',
+    ).test(text)
+  )
+    failures.push(`${flag} does not change the Chapter Ten road danger`);
+}
+for (const [flag, pattern] of [
+  ['c9-vaor-gift-proof-guard', /willing ember/i],
+  ['c9-vaor-pact-proof-carried', /ask through the pact/i],
+  ['c9-stolen-ember-not-used', /stolen ember stays sheathed/i],
+  ['c9-vaor-collateral-released', /restored outer flame/i],
+  ['c9-forced-collateral-broken', /Vaor refuses road service/i],
+]) {
+  if (
+    !pattern.test(
+      renderedBody('c10-oath-consent', {
+        ...chapterTenBase,
+        flags: [...chapterTenBase.flags, flag],
+      }),
+    )
+  )
+    failures.push(`${flag} has no active Chapter Ten Vaor consequence`);
+}
+for (const [flag, pattern] of [
+  ['c8-preserved-original-ledgers', /Original Gate ledgers/i],
+  ['c8-living-copy-of-openings', /living bark/i],
+  ['c8-many-witnessed-openings', /crossing witnesses/i],
+  ['c8-gate-forgery-exposed', /forgery pattern/i],
+  ['c8-lost-duplicate-records', /destroyed records cannot return/i],
+]) {
+  const flags = chapterTenBase.flags
+    .filter(
+      (value) =>
+        ![
+          'c8-preserved-original-ledgers',
+          'c8-living-copy-of-openings',
+          'c8-many-witnessed-openings',
+          'c8-gate-forgery-exposed',
+          'c8-lost-duplicate-records',
+        ].includes(value),
+    )
+    .concat(flag);
+  if (
+    !pattern.test(renderedBody('c10-free-ledger', { ...chapterTenBase, flags }))
+  )
+    failures.push(`${flag} has no active Chapter Ten proof consequence`);
+}
+for (const [flag, pattern] of [
+  ['c9-sableglass-proved-by-glove', /checkpoint clerk/i],
+  ['c9-sableglass-proved-by-source', /checkpoint clerk/i],
+  ['c9-sableglass-proved-by-ring', /no living collector/i],
+  ['c9-sableglass-proved-by-broken-chain', /no living collector/i],
+  ['c9-sableglass-proved-by-refusal', /test the clerk’s identity/i],
+  ['c9-sableglass-proved-by-freed-names', /test the clerk’s identity/i],
+  ['c9-sableglass-proved-by-attack-chain', /collector unnamed/i],
+]) {
+  const text = renderedBody('c10-free-ledger', {
+    ...chapterTenBase,
+    flags: [...chapterTenBase.flags, flag],
+  });
+  if (!pattern.test(text))
+    failures.push(
+      `${flag} does not change the Chapter Ten Sableglass proof route`,
+    );
+}
+if (
+  !/completedChapters\.includes\(9\)/.test(pageSource) ||
+  !/c9-mara-crossed-black-gate/.test(pageSource)
+)
+  failures.push(
+    'Older Chapter Nine saves lack backward-compatible partner roster migration',
+  );
 
 const chapterNineEntryCases = [
   [
@@ -8450,6 +8890,47 @@ const stack = [
     knownTerms: chapterNineKnownTerms,
     knownStoryTerms: chapterNineKnownStoryTerms,
   },
+  {
+    state: chapterTenBase,
+    knownTerms: chapterTenKnownTerms,
+    knownStoryTerms: chapterTenKnownStoryTerms,
+  },
+  ...[
+    ['c9-roster-pell', 'c9-mara-crossed-black-gate'],
+    ['c9-roster-wardens', 'c9-lysara-crossed-black-gate'],
+    ['c9-roster-crown', 'c9-no-mortal-partner-crossed'],
+  ].map(([roster, partner]) => ({
+    state: {
+      ...chapterTenBase,
+      flags: chapterTenBase.flags
+        .filter(
+          (flag) =>
+            !flag.startsWith('c9-roster-') && !flag.includes('mortal-partner'),
+        )
+        .concat(roster, partner),
+      relationships: {
+        ...chapterTenBase.relationships,
+        mara: {
+          ...chapterTenBase.relationships.mara,
+          intent: partner.includes('mara') ? 'committed' : 'platonic',
+        },
+        lysara: {
+          ...chapterTenBase.relationships.lysara,
+          intent: partner.includes('lysara') ? 'committed' : 'platonic',
+        },
+      },
+    },
+    knownTerms: chapterTenKnownTerms,
+    knownStoryTerms: chapterTenKnownStoryTerms,
+  })),
+  {
+    state: {
+      ...chapterTenBase,
+      stats: { ...chapterTenBase.stats, health: 1, command: 0, oathfire: 0 },
+    },
+    knownTerms: chapterTenKnownTerms,
+    knownStoryTerms: chapterTenKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -8463,6 +8944,7 @@ const chapterSixEndings = new Set();
 const chapterSevenEndings = new Set();
 const chapterEightEndings = new Set();
 const chapterNineEndings = new Set();
+const chapterTenEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -8560,7 +9042,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c9-')) chapterNineEndings.add(node.id);
+    if (node.id.startsWith('c10-')) chapterTenEndings.add(node.id);
+    else if (node.id.startsWith('c9-')) chapterNineEndings.add(node.id);
     else if (node.id.startsWith('c8-')) chapterEightEndings.add(node.id);
     else if (node.id.startsWith('c7-')) chapterSevenEndings.add(node.id);
     else if (node.id.startsWith('c6-')) chapterSixEndings.add(node.id);
@@ -8570,7 +9053,7 @@ while (stack.length && visited.size < 100000) {
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
-    const expectedChapterChoices = node.id.startsWith('c8-') ? 16 : 15;
+    const expectedChapterChoices = /^(?:c8|c9|c10)-/.test(node.id) ? 16 : 15;
     if (state.chapterChoices !== expectedChapterChoices) {
       failures.push(
         `${node.id} reached after ${state.chapterChoices} decisions instead of ${expectedChapterChoices}`,
@@ -8650,7 +9133,11 @@ if (chapterNineEndings.size !== 3)
   failures.push(
     `Expected 3 Chapter Nine endings, found ${chapterNineEndings.size}`,
   );
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+if (chapterTenEndings.size !== 3)
+  failures.push(
+    `Expected 3 Chapter Ten endings, found ${chapterTenEndings.size}`,
+  );
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
   if (!deathChapters.has(chapter))
     failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
@@ -8989,5 +9476,5 @@ if (process.argv.includes('--print-chapter-nine-routes')) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, ${chapterTenEndings.size} Chapter Ten endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

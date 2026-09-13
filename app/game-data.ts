@@ -8,6 +8,7 @@ import { chapterSixNodes } from './chapter-six';
 import { chapterSevenNodes } from './chapter-seven';
 import { chapterEightNodes } from './chapter-eight';
 import { chapterNineNodes } from './chapter-nine';
+import { chapterTenNodes } from './chapter-ten';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -43,7 +44,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -121,7 +122,10 @@ export type StoryNode = {
     | 'embassy'
     | 'cinderembassy'
     | 'twosidedattack'
-    | 'gatecrossing';
+    | 'gatecrossing'
+    | 'ashroadoffer'
+    | 'privateoffers'
+    | 'vathisapproach';
   intimacyControls?: (state: GameState) => boolean;
   body: (state: GameState) => string[];
   activeConsequences?: {
@@ -162,7 +166,10 @@ export type StoryTermKey =
   | 'Vexa Ash'
   | 'Cinder Deep'
   | 'true name'
-  | 'House Sableglass';
+  | 'House Sableglass'
+  | 'Ash Road'
+  | 'Vathis'
+  | 'Free Ledger';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -394,6 +401,11 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   },
   'c9-talk-with-vexa-only': { vexa: { trust: 1, respect: 1 } },
   'c9-leave-vexa-private': { vexa: { respect: 1 } },
+  'c10-let-vexa-speak-offer-first': { vexa: { trust: 1, respect: 1 } },
+  'c10-hold-public-truce-line': { vexa: { respect: 1 } },
+  'c10-rest-with-mara': { mara: { trust: 2, attraction: 1 } },
+  'c10-rest-with-lysara': { lysara: { trust: 2, attraction: 1 } },
+  'c10-share-shelter-conversation': { vexa: { trust: 1, respect: 1 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -3831,6 +3843,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...chapterSevenNodes,
   ...chapterEightNodes,
   ...chapterNineNodes,
+  ...chapterTenNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -4043,9 +4056,31 @@ export const nodeOrder = [
   'c9-private-choice',
   'c9-recover-fragment',
   'c9-crossing-roster',
+  'c9-crossing-partner',
   'c9-ending-bargain',
   'c9-ending-theft',
   'c9-ending-exposure',
+  'c10-ash-road',
+  'c10-water-offer',
+  'c10-water-terms',
+  'c10-water-exit',
+  'c10-fragment-custody',
+  'c10-roster-offer',
+  'c10-old-oath-price',
+  'c10-vexa-offer',
+  'c10-defining-method',
+  'c10-shared-offers',
+  'c10-private-offers',
+  'c10-oath-consent',
+  'c10-listening-ash',
+  'c10-road-danger',
+  'c10-free-ledger',
+  'c10-limits',
+  'c10-rest-choice',
+  'c10-guide-bargain',
+  'c10-ending-shared',
+  'c10-ending-private',
+  'c10-ending-oath',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

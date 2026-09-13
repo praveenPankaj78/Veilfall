@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the first nine canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
+The project contains a functioning choice engine and the first ten canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -71,7 +71,7 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 
 ## Phase Five: complete Caelan season, in progress
 
-Chapters Four through Nine are implemented. Produce Chapters Ten through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four through Ten are implemented. Produce Chapters Eleven and Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -135,4 +135,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first nine canonical chapters are implemented. The next production gate is to playtest the bargain, theft, and exposure crossings. Confirm that Chapter Ten receives the exact defence route, destroyed Oath, Vexa relationship, evidence source, and voluntary ally roster.
+The foundation and the first ten canonical chapters are implemented. The next production gate is to playtest the shared, private, and burden Oath routes into Vathis. Confirm that Chapter Eleven receives the exact fragment custody, defence legacy, destroyed Oath, relationship state, Free Ledger price, and surviving expedition.

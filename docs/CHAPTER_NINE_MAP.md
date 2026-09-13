@@ -58,8 +58,8 @@ Next hook: How can travellers remain free where desires automatically become off
 
 - Caelan begins on the fortress road or inside the fort required by Vexa's Chapter Eight location.
 - Vexa begins in Fourth Fort's public embassy hall, beyond the Gate threshold, or inside Second Fort's isolated yard. Every move is chosen and shown.
-- Mara commands the mortal west door and remains on Caelan's route. A lasting injury moves her to the witness gallery rather than erasing her.
-- Lysara tends the living witness rail. If her seed is dormant, she uses ink, touch, and mortal witnesses instead of restored magic.
+- Mara commands the mortal west door and remains at the Gate unless a final visible choice records that she crossed. A lasting injury moves her to the witness gallery rather than erasing her.
+- Lysara tends the living witness rail and remains at the Gate unless a final visible choice records that she crossed. If her seed is dormant, she uses ink, touch, and mortal witnesses instead of restored magic.
 - Korran guards the Gate-facing yard under Red Moot authority. If he carries the shared Oath mark, he cannot safely touch the fragment.
 - Teren commands Crown soldiers when the full army or chosen company remains available. His injured shoulder keeps command divided among three officers.
 - Ansel and Pell remain at Fourth Fort unless the player explicitly brings them to the neutral gallery. If Ansel spoke first, his answer occurs before Crown procedure.
@@ -118,6 +118,7 @@ The chapter keeps five states separate:
 13. When freely available, choose a private conversation, optional intimacy, or distance. Fade and detailed rendering share one decision and one outcome state.
 14. Complete the defining route and recover the fragment.
 15. Choose the route-accurate volunteers who cross the Black Gate.
+16. If Mara or Lysara is an active committed partner, ask her to cross or keep a named duty at the mortal Gate. Record either answer explicitly.
 
 ## Defining routes
 
@@ -233,7 +234,8 @@ Every ending must carry:
 - every destroyed Oath and the named person or community that lost its protection;
 - defence route and First Fort state;
 - Vaor gift, theft, pact, refusal, and collateral release state;
-- Vexa relationship state and whether she crosses;
+- Vexa relationship state and her established crossing;
+- whether Mara or Lysara explicitly crossed or remained at the mortal Gate;
 - Mara, Lysara, and Ilyra intent unchanged except through explicit Chapter Nine choices;
 - exact ally roster chosen at the Gate;
 - wound and resource state;
@@ -270,22 +272,22 @@ All three images are original Chapter Nine assets. No earlier chapter art is reu
 16. Every paid choice buys an immediate visible advantage and a later active consumer.
 17. Every free expert solution requires exact prior preparation.
 18. Low-resource routes remain completable and physical costs can remain lethal.
-19. All endings carry defence route, Oath state, relationship state, evidence, fragment custody, and exact ally roster into Chapter Ten.
+19. All endings carry defence route, Oath state, relationship state, evidence, fragment custody, exact ally roster, and the explicit partner crossing decision into Chapter Ten.
 20. The active mystery ends with recovery of the fragment. The Ash Road offer rule remains the single next hook.
 
 ## Representative walkthroughs
 
 ### Bargain, public entry, full army, Mara committed
 
-Vexa remains in Fourth Fort under public guard. The meeting moves through the witnessed corridor to Second Fort. Original ledgers expose the mortal cell. Caelan protects Mara's shared mark, accepts the fully stated name bargain, keeps the return clause, refuses Vexa's personal invitation, and crosses with Mara, Teren, Vexa, and a small confirmed Crown guard.
+Vexa remains in Fourth Fort under public guard. The meeting moves through the witnessed corridor to Second Fort. Original ledgers expose the mortal cell. Caelan protects Mara's shared mark, accepts the fully stated name bargain, keeps the return clause, refuses Vexa's personal invitation, and asks Mara to choose the road. Mara explicitly crosses with Teren, Vexa, and six Crown volunteers.
 
 ### Exposure, isolated entry, chosen company, Lysara committed
 
-Vexa remains inside isolated Second Fort. Ansel's prior question is answered before Crown procedure. Living bark reacts to the Sableglass payment strip while Lysara's dormant or weakened seed changes the verification method. Vaor's pact reveals hidden ink only after both bearers agree. Caelan exposes Sableglass and crosses with Lysara, Korran, Ansel, and Vexa as public witnesses.
+Vexa remains inside isolated Second Fort. Ansel's prior question is answered before Crown procedure. Living bark reacts to the Sableglass payment strip while Lysara's dormant or weakened seed changes the verification method. Vaor's pact reveals hidden ink only after both bearers agree. Caelan exposes Sableglass, asks Lysara separately, and crosses with Lysara, Ansel, two Futureless witnesses, and Vexa. Korran remains in Edrath.
 
 ### Theft, threshold entry, no army, unattached
 
-Vexa stays outside until Caelan explicitly admits her to neutral Second Fort. Pell's map opens a route beneath the mortal attackers. The captured collector glove identifies the devil seam. Caelan takes the lantern during the attack, saves Vexa's envoys, and states the theft openly. After danger and negotiation end, Vexa may share a freely chosen private scene in fade or detailed form. Caelan crosses with Korran, Ansel, and an adversarial but attracted Vexa.
+Vexa stays outside until Caelan explicitly admits her to neutral Second Fort. Pell's map opens a route beneath the mortal attackers. The captured collector glove identifies the devil seam. Caelan takes the lantern during the attack, saves Vexa's envoys, and states the theft openly. After danger and negotiation end, Vexa may share a freely chosen private scene in fade or detailed form. Caelan crosses with Ansel, two Futureless witnesses, and an adversarial but attracted Vexa. Korran remains in Edrath.
 
 ### Low-resource survival
 

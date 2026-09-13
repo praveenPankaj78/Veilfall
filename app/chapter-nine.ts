@@ -230,7 +230,19 @@ function crossingRoster(state: GameState) {
     allies.push('a mixed company of wardens and Moot fighters');
   if (has(state, 'c9-roster-crown'))
     allies.push('Teren and six Crown volunteers');
+  if (has(state, 'c9-mara-crossed-black-gate')) allies.push('Mara');
+  if (has(state, 'c9-lysara-crossed-black-gate')) allies.push('Lysara');
   return `You cross with ${allies.join(', ')}. Every traveller speaks consent before stepping through.`;
+}
+
+function crossingGroupResult(state: GameState) {
+  if (has(state, 'c9-roster-futureless'))
+    return 'Ansel and two Futureless witnesses wait beyond the seam with their promises written in their own hands.';
+  if (has(state, 'c9-roster-pell'))
+    return 'Pell and his small shield escort wait beyond the seam. The complete lock map is tied to his uninjured arm.';
+  if (has(state, 'c9-roster-crown'))
+    return 'Teren and six Crown volunteers wait beyond the seam without an army order binding them.';
+  return 'The mixed wardens and Moot fighters wait beyond the seam under the command limits each person accepted.';
 }
 
 function embassyTransition(state: GameState) {
@@ -1817,7 +1829,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         addFlags: ['c9-roster-futureless', 'c9-crossed-black-gate'],
         result:
           'Ansel and two witnesses speak consent at the line. They cross beside you with their names and promises recorded in their own hands.',
-        next: endingForRoute,
+        next: 'c9-crossing-partner',
       },
       {
         id: 'c9-take-pell-and-lock-map',
@@ -1835,7 +1847,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         ],
         result:
           'Pell straps the map to his uninjured arm. A mixed shield escort matches his pace through the Gate.',
-        next: endingForRoute,
+        next: 'c9-crossing-partner',
       },
       {
         id: 'c9-take-mixed-warden-company',
@@ -1856,7 +1868,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         addFlags: ['c9-roster-wardens', 'c9-crossed-black-gate'],
         result:
           'Each fighter names the command they accept and the moment they may leave. The small company crosses as one chosen unit.',
-        next: endingForRoute,
+        next: 'c9-crossing-partner',
       },
       {
         id: 'c9-take-crown-volunteers',
@@ -1869,6 +1881,101 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         addFlags: ['c9-roster-crown', 'c9-crossed-black-gate'],
         result:
           'Teren removes his marshal badge. Six soldiers choose the crossing without an order, then follow him through the seam.',
+        next: 'c9-crossing-partner',
+      },
+    ],
+  },
+
+  'c9-crossing-partner': {
+    id: 'c9-crossing-partner',
+    kicker: 'One last choice at the line',
+    title: 'Who Chooses the Road Beside You',
+    location: 'Inside the Black Gate Threshold',
+    objective:
+      'Record whether an eligible committed partner freely joins the Ash Road expedition.',
+    threat: 'Unknown',
+    art: 'gatecrossing',
+    introducesStoryTerms: ['Ash Road'],
+    body: (state) => [
+      crossingGroupResult(state),
+      'Beyond the Gate, pale ash has packed itself into a narrow road. Vexa calls it the Ash Road after everyone sees its surface move.',
+      'You turn back before the Gate closes. A relationship cannot place anyone on this road without a spoken choice.',
+      state.relationships.mara.intent === 'committed' ||
+      state.relationships.mara.intent === 'exploring'
+        ? 'Mara stands at the line with her pack closed. “Ask me to choose the danger,” she says. “Do not promise it will be safe.”'
+        : state.relationships.lysara.intent === 'committed' ||
+            state.relationships.lysara.intent === 'exploring'
+          ? 'Lysara stands at the line with her living silk tied clear of the fragment. “I can share the road,” she says. “I will not become part of its price.”'
+          : 'No committed mortal partner waits at the line. The expedition already contains every person who chose its stated risk.',
+      'Who crosses into the Cinder Deep beside the recorded expedition?',
+    ],
+    choices: [
+      {
+        id: 'c9-cross-with-mara',
+        label: 'Ask Mara to choose the Ash Road beside you.',
+        detail:
+          'State the danger and accept that neither of you can promise safety or an unchanged return.',
+        advantage:
+          'Mara crosses as an explicit scout and committed partner for the next journey.',
+        showIfRelationshipIntents: { mara: ['committed', 'exploring'] },
+        addFlags: ['c9-mara-crossed-black-gate'],
+        result:
+          'Mara names the risk, chooses it, and crosses. Her hand finds yours only after both boots reach the far stone.',
+        next: endingForRoute,
+      },
+      {
+        id: 'c9-mara-stays-at-gate',
+        label: 'Ask Mara to keep command at the mortal Gate.',
+        detail:
+          'Preserve the relationship while choosing different duties on opposite sides.',
+        advantage:
+          'The fort ring keeps its strongest scout and a trusted return signal.',
+        showIfRelationshipIntents: { mara: ['committed', 'exploring'] },
+        addFlags: ['c9-mara-remained-at-gate'],
+        result:
+          'Mara accepts the return watch. She closes her hand around the signal cord and promises only to answer if the Gate opens.',
+        next: endingForRoute,
+      },
+      {
+        id: 'c9-cross-with-lysara',
+        label: 'Ask Lysara to choose the Ash Road beside you.',
+        detail:
+          'Keep her consent separate from proof custody, treaty duty, and the fragment.',
+        advantage:
+          'Lysara crosses as an explicit envoy and committed partner for the next journey.',
+        showIfRelationshipIntents: { lysara: ['committed', 'exploring'] },
+        addFlags: ['c9-lysara-crossed-black-gate'],
+        result:
+          'Lysara states that no treaty requires the step. She chooses it, crosses, and releases the cord behind her.',
+        next: endingForRoute,
+      },
+      {
+        id: 'c9-lysara-stays-at-gate',
+        label: 'Ask Lysara to keep the mortal proof at the Gate.',
+        detail:
+          'Preserve the relationship while leaving one trusted custodian outside.',
+        advantage:
+          'The exposed evidence keeps an independent guardian in Edrath.',
+        showIfRelationshipIntents: { lysara: ['committed', 'exploring'] },
+        addFlags: ['c9-lysara-remained-at-gate'],
+        result:
+          'Lysara keeps the proof chest and declines the crossing. You both leave the relationship intact without inventing a promise to return.',
+        next: endingForRoute,
+      },
+      {
+        id: 'c9-cross-with-no-mortal-partner',
+        label: 'Close the Gate with no other mortal partner crossing.',
+        detail:
+          'Keep the expedition to Vexa and the already recorded voluntary group.',
+        advantage:
+          'No absent or unattached companion is added to the Ash Road party.',
+        forbidsRelationshipIntents: {
+          mara: ['committed', 'exploring'],
+          lysara: ['committed', 'exploring'],
+        },
+        addFlags: ['c9-no-mortal-partner-crossed'],
+        result:
+          'You count the company once more. No other partner crosses before the black iron seals behind you.',
         next: endingForRoute,
       },
     ],
@@ -1884,6 +1991,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'gatecrossing',
     final: true,
+    nextChapter: 'c10-ash-road',
     body: (state) => [
       'Your fingers feel the white seam answer one exact identity and no wider command.',
       'The Black Gate closes to a narrow white seam behind you. The fragment answers your freely given self-name and nothing beyond its witnessed purpose.',
@@ -1906,6 +2014,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'gatecrossing',
     final: true,
+    nextChapter: 'c10-ash-road',
     body: (state) => [
       'Your hand keeps the stolen metal visible. Concealment would turn an admitted theft into another lie.',
       'The stolen fragment cuts a white seam through the Gate. No true name guides it, so you keep one gloved hand around the hot metal.',
@@ -1928,6 +2037,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     threat: 'Unknown',
     art: 'gatecrossing',
     final: true,
+    nextChapter: 'c10-ash-road',
     body: (state) => [
       'Your eyes stay on the separate proof bearers. No single death or theft can erase the case now.',
       'The surrendered fragment opens a clean white seam. Copies of the joined case travel with separate mortal, Futureless, and Compact witnesses.',

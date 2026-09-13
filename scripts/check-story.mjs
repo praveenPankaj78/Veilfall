@@ -9,6 +9,7 @@ const directFiles = [
   'app/chapter-five.ts',
   'app/choice-economy.ts',
   'app/chapter-four.ts',
+  'app/chapter-ten.ts',
   'app/game-data.ts',
   'app/page.tsx',
   'app/story-memory.ts',
@@ -243,6 +244,7 @@ const chapterSixExports = await loadStoryModule('app/chapter-six.ts');
 const chapterSevenExports = await loadStoryModule('app/chapter-seven.ts');
 const chapterEightExports = await loadStoryModule('app/chapter-eight.ts');
 const chapterNineExports = await loadStoryModule('app/chapter-nine.ts');
+const chapterTenExports = await loadStoryModule('app/chapter-ten.ts');
 const gameDataSource = await readFile('app/game-data.ts', 'utf8');
 const gameDataCompiled = ts.transpileModule(gameDataSource, {
   compilerOptions,
@@ -263,6 +265,7 @@ vm.runInNewContext(
       if (specifier === './chapter-seven') return chapterSevenExports;
       if (specifier === './chapter-eight') return chapterEightExports;
       if (specifier === './chapter-nine') return chapterNineExports;
+      if (specifier === './chapter-ten') return chapterTenExports;
       throw new Error(`Unexpected module in story style check: ${specifier}`);
     },
   },

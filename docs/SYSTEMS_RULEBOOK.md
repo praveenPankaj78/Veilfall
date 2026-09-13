@@ -217,6 +217,10 @@ Every unlocked chapter stores a chapter start snapshot. Replaying Chapter Four l
 
 Replaying an earlier chapter invalidates every later chapter snapshot and result. Those later events were created by the old path and cannot remain true after its cause changes. The chapter library tells the player this before replay begins.
 
+Chapter handoffs store physical roster flags separately from relationship intent. Save migration may infer a missing roster only from a completed chapter's established eligible partner, and it must never infer an absent playable hero.
+
+Offer state uses separate flags for appearance, explicit acceptance, completion, and any owned duty. True-name precision never substitutes for acceptance, attraction, or consent.
+
 ## Choice data shape
 
 Every authored choice should include:
