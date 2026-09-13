@@ -145,6 +145,7 @@ const storySourceFiles = [
   'app/chapter-six.ts',
   'app/chapter-seven.ts',
   'app/chapter-eight.ts',
+  'app/chapter-nine.ts',
   'app/story-memory.ts',
 ];
 const maximumStorySentenceWords = 30;
@@ -154,7 +155,14 @@ const failures = [];
 for (const file of uniqueFiles) {
   const text = await readFile(file, 'utf8');
   for (const rule of forbidden) {
-    if (text.toLowerCase().includes(rule.value.toLowerCase())) {
+    const checkedText =
+      rule.label === 'two adjacent hyphens' && file.endsWith('.md')
+        ? text
+            .split(/\r?\n/)
+            .filter((line) => !/^\s*\|(?:\s*:?-{3,}:?\s*\|)+\s*$/.test(line))
+            .join('\n')
+        : text;
+    if (checkedText.toLowerCase().includes(rule.value.toLowerCase())) {
       failures.push(`${file}: ${rule.label}`);
     }
   }
@@ -234,6 +242,7 @@ const chapterFiveExports = await loadStoryModule('app/chapter-five.ts');
 const chapterSixExports = await loadStoryModule('app/chapter-six.ts');
 const chapterSevenExports = await loadStoryModule('app/chapter-seven.ts');
 const chapterEightExports = await loadStoryModule('app/chapter-eight.ts');
+const chapterNineExports = await loadStoryModule('app/chapter-nine.ts');
 const gameDataSource = await readFile('app/game-data.ts', 'utf8');
 const gameDataCompiled = ts.transpileModule(gameDataSource, {
   compilerOptions,
@@ -253,6 +262,7 @@ vm.runInNewContext(
       if (specifier === './chapter-six') return chapterSixExports;
       if (specifier === './chapter-seven') return chapterSevenExports;
       if (specifier === './chapter-eight') return chapterEightExports;
+      if (specifier === './chapter-nine') return chapterNineExports;
       throw new Error(`Unexpected module in story style check: ${specifier}`);
     },
   },
@@ -438,12 +448,11 @@ if (!pageSource.includes('relationshipSummary(game.relationships[person])')) {
   );
 }
 if (
-  !pageSource.includes(
-    "return ilyraKnown ? ['mara', 'lysara', 'ilyra'] : ['mara', 'lysara'];",
-  )
+  !pageSource.includes("? ['mara', 'lysara', 'ilyra']") ||
+  !pageSource.includes("known.push('vexa')")
 ) {
   failures.push(
-    'app/page.tsx: Ilyra relationship state is visible before the player meets her',
+    'app/page.tsx: relationship visibility does not preserve Ilyra and Vexa introduction gates',
   );
 }
 const lessonPosition = pageSource.indexOf('{node.lesson && (');

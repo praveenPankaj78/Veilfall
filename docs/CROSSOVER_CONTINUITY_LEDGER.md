@@ -8,7 +8,7 @@ This ledger is the canonical route check for every playable chapter. Update it b
 2. Rook Chapter Two follows his flight through the King's Road night market.
 3. Caelan Chapter Four and Rook Chapter Three show the same Mileless Bridge crisis from different viewpoints.
 4. At the final stable arch, Caelan takes the real fragment north toward Dragonspine. Rook takes his copied route down into the Underways.
-5. Caelan Chapters Five through Eight continue through Dragonspine, the Ember Steppe, and the Black Gate. Rook is not physically present.
+5. Caelan Chapters Five through Nine continue through Dragonspine, the Ember Steppe, the Black Gate, and the first crossing into the Cinder Deep. Rook is not physically present.
 6. Rook continues through the Underways, Brassreach, Serekh, the Unsea, and the Luminous Court.
 7. Rook first meets Ilyra in Serekh. They meet again in the Unsea.
 8. Caelan's changed sunrise reaches Rook later in his series and alters his approach to the Luminous Court. It does not launch Rook's story.
@@ -34,7 +34,7 @@ This ledger is the canonical route check for every playable chapter. Update it b
 
 ### Caelan
 
-Caelan keeps the real Distance fragment after the Mileless Bridge, reaches Dragonspine, becomes the bearer of Vaor's ember through freedom, force, or pact, earns or refuses steppe and Crown forces, defends the Black Gate through one of three strategies, and controls how Vexa's embassy is first heard. Rook's departure cannot remove any of these decisions.
+Caelan keeps the real Distance fragment after the Mileless Bridge, reaches Dragonspine, becomes the bearer of Vaor's ember through freedom, force, or pact, earns or refuses steppe and Crown forces, and defends the Black Gate through one of three strategies. He controls how Vexa's embassy is first heard, recovers the missing Black Gate Nail piece through bargain, theft, or exposure, and crosses into the Cinder Deep. Rook's departure cannot remove any of these decisions.
 
 ### Rook
 
@@ -62,8 +62,13 @@ Ilyra meets Caelan on the Ember Steppe while tracing the ancestor storm, then le
 10. Chapter Seven losses alter Chapter Eight staffing, options, costs, or results; they cannot survive only as an arrival receipt.
 11. Chapter Eight evidence-loss combinations preserve the distinction among originals, authenticated copies, living bark, witnesses, forgeries, duplicates, and foreign contracts.
 12. Personal watch choices receive a later Gate reaction before the Oath price is chosen.
+13. Chapter Nine keeps Vexa's three entry locations physical until a visible transition occurs.
+14. Every Chapter Nine route separately proves Malrec's mortal cell and House Sableglass before joining their evidence.
+15. Oathfire clause cuts destroy one named active Oath, and released or burned Oaths never return as payment.
+16. Fade and detailed intimacy prose produce identical story flags, information, relationships, and later choices.
+17. Every Chapter Nine ending carries its defence route, surviving Oaths, Vexa relationship, evidence source, and voluntary ally roster into Chapter Ten.
 
-Exact post-implementation contracts are also machine readable. Rook begins the Underways with only his last mirrored coin if two were destroyed on the bridge. A destroyed Dragonspine drill must be rebuilt before any later extraction. Vaor's memory-repair duty must be paid before later memory, testimony, or power cooperation. Preserved ancestor voices must be tested in the first Unsea investigation. A Kharad service debt gives the Red Moot one bounded post-Gate claim before the Crown can use it, and archived Orivane proof gives an independent Kharad custodian standing at the first Crown hearing. Hale's last-known-alive record proves neither death nor survival. Chapter Nine must preserve Vexa's exact entry location and whether Ansel already received the first question.
+Exact post-implementation contracts are also machine readable. Rook begins the Underways with only his last mirrored coin if two were destroyed on the bridge. A destroyed Dragonspine drill must be rebuilt before any later extraction. Vaor's memory-repair duty must be paid before later memory, testimony, or power cooperation. Preserved ancestor voices must be tested in the first Unsea investigation. A Kharad service debt gives the Red Moot one bounded post-Gate claim before the Crown can use it, and archived Orivane proof gives an independent Kharad custodian standing at the first Crown hearing. Hale's last-known-alive record proves neither death nor survival. Chapter Nine preserves Vexa's exact entry location and whether Ansel already received the first question. Chapter Ten must consume the exact Gate Nail recovery route, true-name access limit, surviving Oaths, evidence provenance, Vexa relationship, Vaor state, and ally roster before any new bargain can replace them.
 
 Changing a protected route or crossover requires changing the design documents and the machine contract deliberately. An accidental prose edit will fail validation.
 

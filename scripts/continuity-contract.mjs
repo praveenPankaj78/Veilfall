@@ -79,9 +79,18 @@ export const implementedChapterContracts = [
       'c8-ending-threshold',
       'c8-ending-witness',
     ],
-    nextNode: null,
+    nextNode: 'c9-embassy-watch',
     activeGuests: [],
     legacyOnlyHeroes: ['ilyra'],
+  },
+  {
+    series: 'caelan',
+    chapter: 9,
+    entryNode: 'c9-embassy-watch',
+    endingNodes: ['c9-ending-bargain', 'c9-ending-theft', 'c9-ending-exposure'],
+    nextNode: null,
+    activeGuests: [],
+    legacyOnlyHeroes: ['rook', 'ilyra'],
   },
 ];
 
@@ -114,6 +123,11 @@ export const protectedPlotTransitions = [
       'c8-ending-witness',
     ],
     requiredTerms: ['Vexa', 'contract', 'name'],
+  },
+  {
+    id: 'embassy-to-cinder-deep',
+    endingNodes: ['c9-ending-bargain', 'c9-ending-theft', 'c9-ending-exposure'],
+    requiredTerms: ['fragment', 'Malrec', 'Worldroot', 'offer'],
   },
 ];
 
@@ -841,4 +855,66 @@ export const terminalHistoryFlagReasons = {
     'Chapter Nine must let the Futureless answer Vexa’s first disclosure before Crown rulers redirect the meeting.',
   'c8-ansel-spoke-first-after-entry':
     'Chapter Nine must preserve that the Compact embassy entered Second Fort before Ansel received the first question.',
+  'c9-route-bargain':
+    'Chapter Ten must begin with the fragment under the accepted return promise and keep Vexa’s precise access at the chosen clause limit.',
+  'c9-route-theft':
+    'Chapter Ten must treat the fragment as an admitted theft and preserve the resulting Compact political debt.',
+  'c9-route-exposure':
+    'Chapter Ten must admit the public Sableglass case as the legal source of the recovered fragment.',
+  'c9-malrec-cinder-alliance-proved':
+    'Chapter Ten must begin with Malrec’s Sableglass alliance and released-promise plan known to every proof bearer who crossed.',
+  'c9-vaor-gift-proof-guard':
+    'Chapter Ten proof copies must retain Vaor’s willing heat test and reject altered copies by cooling.',
+  'c9-vaor-pact-proof-carried':
+    'Chapter Ten must preserve that Vaor willingly carried the proof under the pact duty to expose erased truth.',
+  'c9-stolen-ember-not-used':
+    'Chapter Ten must not credit the stolen ember with guarding the embassy proof and must preserve Vaor’s refusal.',
+  'c9-vaor-collateral-released':
+    'Chapter Ten must restore Vaor’s outer flame because his approved collateral ended before the crossing.',
+  'c9-forced-collateral-broken':
+    'Chapter Ten must preserve the acknowledged collateral breach and may not treat Vaor’s recovered flame as willing aid.',
+  'c9-destroyed-red-moot-authority-oath':
+    'Chapter Ten must remove the magical guarantee that Kharad fighters answer only commanders chosen by the Red Moot and make Korran react to the loss.',
+  'c9-destroyed-crown-restitution-oath':
+    'Chapter Ten must withhold every action requiring the Oath to bring hidden Concord victims before the Queen and preserve Ansel’s reaction.',
+  'c9-destroyed-clan-refusal-oath':
+    'Chapter Ten must remove Caelan’s magical defence of the clans’ right to leave after the Gate is safe and preserve Moot distrust.',
+  'c9-destroyed-honest-command-limit-oath':
+    'Chapter Ten must withhold Moot and full-army command options and preserve that Korran and Teren refused to cross under unbounded command.',
+  'c9-destroyed-unsea-investigation-oath':
+    'Chapter Ten must preserve that Korran carries the abandoned duty to test the preserved ancestor voices and that Caelan cannot invoke it as his Oath.',
+  'c9-vexa-guarded-trust':
+    'Chapter Ten must provide Vexa’s Sableglass patrol map while keeping public limits on her access to Caelan and the expedition.',
+  'c9-vexa-adversarial-respect':
+    'Chapter Ten must keep personal trust withheld while enforcing the mutual duty to disclose known expedition threats.',
+  'c9-vexa-attraction-acknowledged':
+    'Chapter Ten must preserve acknowledged attraction without treating it as payment, consent, or permission for intimacy.',
+  'c9-vexa-permanent-hostility':
+    'Chapter Ten must restrict Vexa contact to armed public diplomacy and withhold every guarded-trust or intimacy action.',
+  'c9-shared-private-night':
+    'Chapter Ten must preserve the explored Vexa relationship and the identical political and information state from fade or detailed prose.',
+  'c9-private-conversation-only':
+    'Chapter Ten must preserve the physical boundary while retaining Vexa’s warning about desires becoming offers.',
+  'c9-refused-private-connection':
+    'Chapter Ten must keep the private refusal intact and may not infer later romantic consent from political cooperation.',
+  'c9-learned-desire-offer-danger':
+    'Chapter Ten must let Caelan prepare a consent pause before the first automatic desire offer and withhold that preparation otherwise.',
+  'c9-true-name-freely-disclosed':
+    'Chapter Ten may use true-name precision only for the witnessed fragment alignment purpose and never as ownership or consent.',
+  'c9-return-promise-owned':
+    'Chapter Ten must display and enforce the exact neutral-custody return promise after Malrec’s inside opening is stopped.',
+  'c9-theft-publicly-named':
+    'Chapter Ten must keep the stolen fragment visible and admitted, preventing any clean-custody or hidden-taking claim.',
+  'c9-sableglass-publicly-exposed':
+    'Chapter Ten must allow the public Sableglass evidence to challenge its house agents and prevent the house from denying the embassy attack.',
+  'c9-roster-futureless':
+    'Chapter Ten must place Ansel and two Futureless witnesses physically inside the Cinder Deep and use their living testimony.',
+  'c9-roster-pell':
+    'Chapter Ten must place wounded Pell and the complete lock map inside the Cinder Deep while preventing him from taking a running fight.',
+  'c9-roster-wardens':
+    'Chapter Ten must provide the mixed warden and Moot shield company under individually accepted shared command.',
+  'c9-roster-crown':
+    'Chapter Ten must place Teren and six Crown volunteers inside the Cinder Deep without importing command over the full divided army.',
+  'c9-crossed-black-gate':
+    'Chapter Ten begins after the selected voluntary expedition physically crosses the Black Gate with the recovered fragment.',
 };

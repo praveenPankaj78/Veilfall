@@ -124,6 +124,21 @@ vm.runInNewContext(
   { filename: 'chapter-eight.js' },
 );
 
+const chapterNineSource = await readFile('app/chapter-nine.ts', 'utf8');
+const chapterNineCompiled = ts.transpileModule(chapterNineSource, {
+  compilerOptions,
+}).outputText;
+const chapterNineExports = {};
+vm.runInNewContext(
+  chapterNineCompiled,
+  {
+    exports: chapterNineExports,
+    module: { exports: chapterNineExports },
+    console,
+  },
+  { filename: 'chapter-nine.js' },
+);
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -140,6 +155,7 @@ vm.runInNewContext(
 );
 
 const source = await readFile('app/game-data.ts', 'utf8');
+const pageSource = await readFile('app/page.tsx', 'utf8');
 const compiled = ts.transpileModule(source, {
   compilerOptions: {
     ...compilerOptions,
@@ -159,6 +175,7 @@ const context = {
     if (specifier === './chapter-six') return chapterSixExports;
     if (specifier === './chapter-seven') return chapterSevenExports;
     if (specifier === './chapter-eight') return chapterEightExports;
+    if (specifier === './chapter-nine') return chapterNineExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -171,6 +188,8 @@ const {
   nodeOrder,
   nodes,
   nextRelationships,
+  normaliseRelationships,
+  relationshipSummary,
   relationshipChanges,
   resolveNext,
   statLabels,
@@ -198,6 +217,7 @@ const postBridgeSources = [
   chapterSixSource,
   chapterSevenSource,
   chapterEightSource,
+  chapterNineSource,
 ];
 const activeRookAction =
   /\bRook (?:walks|waits|follows|looks|points|returns|offers|asks|says|carries|pulls|uses|takes|finds|helps|stands|runs|rides|scouts)\b/i;
@@ -267,6 +287,11 @@ const chapterEightArtAssets = {
   blackgate: 'public/art/black-gate-fortress-ring.png',
   futureless: 'public/art/futureless-fort-breach.png',
   embassy: 'public/art/first-devil-embassy.png',
+};
+const chapterNineArtAssets = {
+  cinderembassy: 'public/art/cinder-deep-embassy.png',
+  twosidedattack: 'public/art/two-sided-assassination.png',
+  gatecrossing: 'public/art/black-gate-crossing.png',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -385,6 +410,31 @@ for (const [art, asset] of Object.entries(chapterEightArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Eight artwork is missing: ${asset}`);
+  }
+}
+const earlierThanNineArt = new Set([
+  ...earlierThanEightArt,
+  ...Object.keys(chapterEightArtAssets),
+]);
+const chapterNineArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c9-')) continue;
+  if (!node.art) failures.push(`Chapter Nine node has no explicit art: ${id}`);
+  if (earlierThanNineArt.has(node.art)) {
+    failures.push(
+      `Chapter Nine node reuses earlier chapter art: ${id} uses ${node.art}`,
+    );
+  }
+  if (node.art) chapterNineArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterNineArtAssets)) {
+  if (!chapterNineArtUsed.has(art)) {
+    failures.push(`Chapter Nine never uses its ${art} artwork`);
+  }
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Nine artwork is missing: ${asset}`);
   }
 }
 
@@ -771,6 +821,9 @@ function stateKey(state) {
     'c6-red-moot-neutral',
     'c7-copied-gate-diversion',
     'c7-teren-saw-gate-order',
+    'c9-route-bargain',
+    'c9-route-theft',
+    'c9-route-exposure',
   ]);
   const currentNode = nodes[state.nodeId];
   for (const choice of currentNode?.choices ?? []) {
@@ -1027,6 +1080,40 @@ const chapterEightBase = {
     wayfire: 15,
   },
 };
+const chapterNineKnownTerms = Object.keys(statLabels);
+const chapterNineKnownStoryTerms = [
+  ...chapterEightKnownStoryTerms,
+  'Futureless',
+  'Ash Compact',
+  'Vexa Ash',
+];
+const chapterNineBase = {
+  ...initialState,
+  nodeId: 'c9-embassy-watch',
+  chapter: 9,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5, 6, 7, 8],
+  flags: [
+    'c5-freed-vaor',
+    'c6-red-moot-alliance',
+    'c7-gained-full-army',
+    'c8-united-wardens',
+    'c8-preserved-original-ledgers',
+    'c8-surrendered-homecoming',
+    'c8-vexa-entered-publicly',
+    'c8-pell-survived',
+    'c8-complete-lock-map',
+  ],
+  stats: {
+    ...initialState.stats,
+    health: 7,
+    resolve: 7,
+    command: 5,
+    oathfire: 5,
+    medicine: 1,
+    wayfire: 17,
+  },
+};
 
 const chapterBaseStates = {
   1: initialState,
@@ -1037,10 +1124,11 @@ const chapterBaseStates = {
   6: chapterSixBase,
   7: chapterSevenBase,
   8: chapterEightBase,
+  9: chapterNineBase,
 };
 
 function nodeIsInChapter(nodeId, chapter) {
-  if (chapter === 1) return !/^c[2-8]-/.test(nodeId);
+  if (chapter === 1) return !/^c[2-9]-/.test(nodeId);
   return nodeId.startsWith(`c${chapter}-`);
 }
 
@@ -1318,23 +1406,38 @@ const storyTermRules = {
     use: /\bVexa Ash\b/i,
     introduction: /“Vexa Ash,” she says/i,
   },
+  'Cinder Deep': {
+    use: /\bCinder Deep\b/i,
+    introduction: /first Cinder Deep embassy/i,
+  },
+  'true name': {
+    use: /\btrue name (?:gives|is|guides|for one use|so the fragment)\b/i,
+    introduction: /private answer a person chooses for who they are/i,
+  },
+  'House Sableglass': {
+    use: /\bHouse Sableglass\b/i,
+    introduction:
+      /contract seal shaped like six joined fingers.*House Sableglass/is,
+  },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c8-')
-    ? chapterEightBase
-    : id.startsWith('c7-')
-      ? chapterSevenBase
-      : id.startsWith('c6-')
-        ? chapterSixBase
-        : id.startsWith('c5-')
-          ? chapterFiveBase
-          : id.startsWith('c4-')
-            ? chapterFourBase
-            : id.startsWith('c3-')
-              ? chapterThreeBase
-              : id.startsWith('c2-')
-                ? chapterTwoBase
-                : initialState;
+  const sampleState = id.startsWith('c9-')
+    ? chapterNineBase
+    : id.startsWith('c8-')
+      ? chapterEightBase
+      : id.startsWith('c7-')
+        ? chapterSevenBase
+        : id.startsWith('c6-')
+          ? chapterSixBase
+          : id.startsWith('c5-')
+            ? chapterFiveBase
+            : id.startsWith('c4-')
+              ? chapterFourBase
+              : id.startsWith('c3-')
+                ? chapterThreeBase
+                : id.startsWith('c2-')
+                  ? chapterTwoBase
+                  : initialState;
   const introductionText = [
     node.lesson?.title,
     node.lesson?.body,
@@ -1393,9 +1496,9 @@ for (const [id, node] of Object.entries(nodes)) {
 
 const closePointOfViewPattern =
   /(?:\byou (?:feel|remember|notice|realise|recognise|want|know|think|expect|fear|wonder|suspect|believe|dislike|sort|list|search|reach|flinch|hesitate|refuse|taste|watch|count)|\byour (?:mind|instincts?|attention|conscience|training|memory|fear|guilt|nerves|thoughts?|captain’s mind|hands?|eyes?|breath|chest|body|legs?|shoulders?|stomach|pulse|jaw|feet|fingers?|tongue)|\bpart of you\b|\brelief (?:comes|should|tries)|\banger (?:comes|urges))/i;
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
   const chapterNodes = nodeOrder.filter((id) =>
-    chapter === 1 ? !/^c[2345678]-/.test(id) : id.startsWith(`c${chapter}-`),
+    chapter === 1 ? !/^c[2-9]-/.test(id) : id.startsWith(`c${chapter}-`),
   );
   const sampleState =
     chapter === 1
@@ -1412,7 +1515,9 @@ for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
                 ? chapterSixBase
                 : chapter === 7
                   ? chapterSevenBase
-                  : chapterEightBase;
+                  : chapter === 8
+                    ? chapterEightBase
+                    : chapterNineBase;
   const closeNodes = chapterNodes.filter((id) =>
     closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')),
   );
@@ -7524,6 +7629,522 @@ const chapterEightWalkthroughs = [
     ],
   },
 ].map(walkChapterEight);
+
+function walkChapterNine(route) {
+  let state = {
+    ...chapterNineBase,
+    nodeId: 'c9-embassy-watch',
+    chapterChoices: 0,
+    flags: [...route.flags],
+    stats: {
+      ...chapterNineBase.stats,
+      health: route.health ?? 8,
+      resolve: 8,
+      command: 8,
+      oathfire: 8,
+    },
+    relationships: Object.fromEntries(
+      Object.entries(chapterNineBase.relationships).map(([person, score]) => [
+        person,
+        {
+          ...score,
+          intent: route.relationshipIntents?.[person] ?? 'unresolved',
+        },
+      ]),
+    ),
+    contentPreference:
+      route.contentPreference ?? chapterNineBase.contentPreference,
+  };
+  const visitedNodes = [];
+  for (const choiceId of route.choiceIds) {
+    const node = nodes[state.nodeId];
+    visitedNodes.push(node.id);
+    const choice = node.choices.find((candidate) => candidate.id === choiceId);
+    if (!choice) {
+      failures.push(`${route.name} cannot find ${choiceId} in ${node.id}`);
+      break;
+    }
+    if (!canChoose(choice, state)) {
+      failures.push(`${route.name} cannot choose ${choiceId} in ${node.id}`);
+      break;
+    }
+    state = applyChoice(state, choice);
+  }
+  if (!nodes[state.nodeId]?.final) {
+    failures.push(`${route.name} does not reach a Chapter Nine ending`);
+  }
+  if (!state.flags.includes('c9-malrec-cinder-alliance-proved')) {
+    failures.push(`${route.name} does not prove Malrec's Cinder Deep alliance`);
+  }
+  return { ...route, state, visitedNodes };
+}
+
+const chapterNineWalkthroughs = [
+  {
+    name: 'public embassy / united wardens / bargain / gift / intimacy',
+    flags: [
+      'c5-freed-vaor',
+      'c6-oath-recognised-red-moot',
+      'c7-gained-full-army',
+      'c8-united-wardens',
+      'c8-preserved-original-ledgers',
+      'c8-captured-collector-glove',
+      'c8-surrendered-homecoming',
+      'c8-vexa-entered-publicly',
+      'c8-pell-survived',
+      'c8-complete-lock-map',
+    ],
+    choiceIds: [
+      'c9-move-public-embassy',
+      'c9-let-futureless-record-first',
+      'c9-test-name-with-own-bead',
+      'c9-wardens-lock-public-door',
+      'c9-choose-bargain-route',
+      'c9-shield-ansel-with-locked-door',
+      'c9-protect-vexa-from-chains',
+      'c9-match-original-ledger-cuts',
+      'c9-join-collector-glove-chain',
+      'c9-vaor-gift-guards-proof',
+      'c9-keep-bargain-clause',
+      'c9-name-attraction',
+      'c9-share-private-night',
+      'c9-complete-bargain',
+      'c9-take-crown-volunteers',
+    ],
+  },
+  {
+    name: 'threshold embassy / Ash Compact / theft / pact / committed Mara',
+    flags: [
+      'c5-vaor-pact',
+      'c6-oath-defends-refusal',
+      'c7-gained-chosen-company',
+      'c8-accepted-ash-compact',
+      'c8-living-copy-of-openings',
+      'c8-severed-collector-hand',
+      'c8-shared-oath-mara',
+      'c8-vexa-held-at-threshold',
+    ],
+    relationshipIntents: { mara: 'committed' },
+    choiceIds: [
+      'c9-admit-threshold-embassy',
+      'c9-split-speaking-bell',
+      'c9-have-ansel-test-name-bead',
+      'c9-compact-seals-gate-wall',
+      'c9-choose-theft-route',
+      'c9-shield-ansel-and-witnesses',
+      'c9-break-sableglass-breach',
+      'c9-test-target-strip-on-living-bark',
+      'c9-match-severed-ring',
+      'c9-vaor-pact-carries-proof',
+      'c9-refusal-keeps-every-oath',
+      'c9-name-adversarial-respect',
+      'c9-talk-with-vexa-only',
+      'c9-take-fragment-during-attack',
+      'c9-take-mixed-warden-company',
+    ],
+  },
+  {
+    name: 'isolated embassy / sacrificed fort / exposure / stolen ember / low health',
+    flags: [
+      'c5-took-ember-by-force',
+      'c6-oath-crown-restitution',
+      'c7-gained-dangerous-reputation',
+      'c8-sacrificed-first-fort',
+      'c8-many-witnessed-openings',
+      'c8-cut-collector-source-line',
+      'c8-burned-lesser-oath',
+      'c8-vexa-received-outer-fort',
+      'c8-ember-held-as-collateral',
+    ],
+    health: 3,
+    choiceIds: [
+      'c9-keep-isolated-embassy',
+      'c9-split-speaking-bell',
+      'c9-break-name-bead-after-test',
+      'c9-first-fort-survivors-hold-passage',
+      'c9-choose-exposure-route',
+      'c9-shield-ansel-and-witnesses',
+      'c9-protect-vexa-from-chains',
+      'c9-witnesses-identify-mortal-route',
+      'c9-match-cracked-source-seal',
+      'c9-break-forced-collateral',
+      'c9-refusal-keeps-every-oath',
+      'c9-name-permanent-hostility',
+      'c9-leave-vexa-private',
+      'c9-compel-sableglass-surrender',
+      'c9-take-mixed-warden-company',
+    ],
+  },
+].map(walkChapterNine);
+
+const chapterNineEndingsByRoute = new Set(
+  chapterNineWalkthroughs.map((walkthrough) => walkthrough.state.nodeId),
+);
+if (chapterNineEndingsByRoute.size !== 3) {
+  failures.push(
+    'Representative Chapter Nine routes do not reach three distinct endings',
+  );
+}
+
+const chapterNineEntryCases = [
+  [
+    ['c8-vexa-entered-publicly'],
+    'c9-move-public-embassy',
+    /inside Fourth Fort under public guard/i,
+  ],
+  [
+    ['c8-vexa-held-at-threshold'],
+    'c9-admit-threshold-embassy',
+    /remains outside the fortress ring/i,
+  ],
+  [
+    ['c8-vexa-received-outer-fort'],
+    'c9-keep-isolated-embassy',
+    /inside isolated Second Fort/i,
+  ],
+  [
+    ['c8-ansel-spoke-first'],
+    'c9-ansel-controls-threshold',
+    /no new entry permission exists/i,
+  ],
+  [
+    ['c8-ansel-spoke-first', 'c8-ansel-spoke-first-after-entry'],
+    'c9-keep-isolated-embassy',
+    /already stands inside Second Fort|remains inside isolated Second Fort/i,
+  ],
+];
+for (const [flags, choiceId, expectedBody] of chapterNineEntryCases) {
+  const state = { ...chapterNineBase, flags };
+  const visibleIds = nodes['c9-embassy-watch'].choices
+    .filter((choice) => isChoiceVisible(choice, state))
+    .map((choice) => choice.id);
+  if (
+    !visibleIds.includes(choiceId) ||
+    !expectedBody.test(renderedBody('c9-embassy-watch', state)) ||
+    !expectedBody.test(knownTruths(state).join(' '))
+  ) {
+    failures.push(
+      `Chapter Nine scene or journal loses the physical Vexa entry state for ${flags.join(', ')}`,
+    );
+  }
+}
+
+const chapterNineEvidenceCases = [
+  ['c8-preserved-original-ledgers', 'c9-match-original-ledger-cuts'],
+  ['c8-saved-pell-packet', 'c9-authenticate-pell-packet'],
+  ['c8-linked-malrec-to-gate-record', 'c9-test-joined-malrec-record'],
+  ['c8-living-copy-of-openings', 'c9-test-target-strip-on-living-bark'],
+  ['c8-many-witnessed-openings', 'c9-witnesses-identify-mortal-route'],
+  ['c8-gate-forgery-exposed', 'c9-use-forgery-against-seal'],
+  ['c8-lost-duplicate-records', 'c9-rebuild-proof-from-assassin-kit'],
+];
+for (const [flag, choiceId] of chapterNineEvidenceCases) {
+  const state = { ...chapterNineBase, flags: [flag] };
+  if (!isChoiceVisible(choiceById('c9-mortal-proof', choiceId), state)) {
+    failures.push(
+      `${flag} does not unlock its exact Chapter Nine evidence route`,
+    );
+  }
+}
+if (
+  isChoiceVisible(
+    choiceById('c9-mortal-proof', 'c9-match-original-ledger-cuts'),
+    { ...chapterNineBase, flags: ['c8-lost-duplicate-records'] },
+  )
+) {
+  failures.push(
+    'Destroyed Gate records reappear as original evidence in Chapter Nine',
+  );
+}
+
+const oathPriceExpectations = [
+  ['c8-surrendered-homecoming', /father’s key is gone/i],
+  ['c8-released-crown-oath', /released service Oath/i],
+  ['c8-burned-lesser-oath', /Warden whistle is ash/i],
+  ['c8-shared-oath-mara', /mark remains in Mara’s palm/i],
+  ['c8-shared-oath-lysara', /mark remains in Lysara’s palm/i],
+  ['c8-shared-oath-korran', /mark remains in Korran’s palm/i],
+];
+const oathPriceFlagsForAudit = oathPriceExpectations.map(([flag]) => flag);
+const chapterNineOathCuts = [
+  ['c6-oath-recognised-red-moot', 'c9-cut-clause-destroy-red-moot-authority'],
+  ['c6-oath-crown-restitution', 'c9-cut-clause-destroy-crown-restitution'],
+  ['c6-oath-defends-refusal', 'c9-cut-clause-destroy-clan-refusal'],
+  ['c6-oath-honest-limit', 'c9-cut-clause-destroy-honest-limit'],
+  ['c6-oath-investigate-unsea', 'c9-cut-clause-destroy-unsea-investigation'],
+];
+for (const [oathFlag, choiceId] of chapterNineOathCuts) {
+  const state = {
+    ...chapterNineBase,
+    flags: ['c9-route-bargain', oathFlag],
+    stats: { ...chapterNineBase.stats, oathfire: 1 },
+  };
+  if (!canChoose(choiceById('c9-oath-clause', choiceId), state)) {
+    failures.push(
+      `${oathFlag} does not expose its exact Chapter Nine clause cut`,
+    );
+  }
+}
+for (const destroyedFlag of [
+  'c9-destroyed-red-moot-authority-oath',
+  'c9-destroyed-clan-refusal-oath',
+  'c9-destroyed-honest-command-limit-oath',
+]) {
+  const mixedCompanyChoice = choiceById(
+    'c9-crossing-roster',
+    'c9-take-mixed-warden-company',
+  );
+  if (
+    isChoiceVisible(mixedCompanyChoice, {
+      ...chapterNineBase,
+      flags: ['c7-gained-chosen-company', destroyedFlag],
+    })
+  ) {
+    failures.push(
+      `${destroyedFlag} does not withdraw the promised Moot roster`,
+    );
+  }
+}
+for (const [flag, expected] of oathPriceExpectations) {
+  if (
+    !expected.test(
+      renderedBody('c9-oath-clause', { ...chapterNineBase, flags: [flag] }),
+    )
+  ) {
+    failures.push(
+      `${flag} does not materially preserve its exact Chapter Eight Oath price`,
+    );
+  }
+}
+
+const eligibleVexaState = {
+  ...chapterNineBase,
+  flags: ['c9-attacks-stopped', 'c9-vexa-attraction-acknowledged'],
+  relationships: {
+    ...chapterNineBase.relationships,
+    vexa: {
+      ...chapterNineBase.relationships.vexa,
+      trust: 2,
+      attraction: 3,
+      intent: 'interested',
+    },
+  },
+};
+const intimacyChoice = choiceById(
+  'c9-private-choice',
+  'c9-share-private-night',
+);
+if (
+  !isChoiceVisible(intimacyChoice, eligibleVexaState) ||
+  !nodes['c9-private-choice'].intimacyControls(eligibleVexaState)
+) {
+  failures.push(
+    'Eligible unattached adults cannot reach the optional Vexa intimacy scene',
+  );
+}
+for (const person of ['mara', 'lysara']) {
+  const committed = {
+    ...eligibleVexaState,
+    relationships: {
+      ...eligibleVexaState.relationships,
+      [person]: {
+        ...eligibleVexaState.relationships[person],
+        intent: 'committed',
+      },
+    },
+  };
+  if (
+    isChoiceVisible(intimacyChoice, committed) ||
+    nodes['c9-private-choice'].intimacyControls(committed)
+  ) {
+    failures.push(`Vexa intimacy ignores the existing ${person} commitment`);
+  }
+}
+if (
+  relationshipSummary({
+    trust: 0,
+    attraction: 0,
+    respect: 3,
+    friction: 4,
+    intent: 'hostile',
+  }) !== 'Permanent hostility, respect still forming, serious tension'
+) {
+  failures.push(
+    'Vexa permanent hostility lacks a stable qualitative relationship summary',
+  );
+}
+
+const disclosedNameProducers = Object.values(nodes)
+  .flatMap((node) => node.choices)
+  .filter((choice) =>
+    choice.addFlags?.includes('c9-true-name-freely-disclosed'),
+  );
+if (
+  disclosedNameProducers.length !== 1 ||
+  disclosedNameProducers[0].id !== 'c9-complete-bargain'
+) {
+  failures.push(
+    'True-name disclosure can be inferred outside the explicit bargain consent choice',
+  );
+}
+
+const releasedCrownOathState = {
+  ...chapterNineBase,
+  flags: [
+    'c9-route-bargain',
+    'c6-oath-crown-restitution',
+    'c8-released-crown-oath',
+  ],
+};
+if (
+  isChoiceVisible(
+    choiceById('c9-oath-clause', 'c9-cut-clause-destroy-crown-restitution'),
+    releasedCrownOathState,
+  )
+) {
+  failures.push(
+    'Chapter Nine resurrects the released Crown Oath as clause payment',
+  );
+}
+if (
+  nodes['c9-oath-clause'].choices.some((choice) =>
+    /Warden promise|patrol whistle/i.test(`${choice.label} ${choice.detail}`),
+  )
+) {
+  failures.push(
+    'Chapter Nine resurrects the burned Warden promise as clause payment',
+  );
+}
+
+const lowResourceStolenState = {
+  ...chapterNineBase,
+  nodeId: 'c9-joined-crisis',
+  flags: ['c5-took-ember-by-force', 'c9-sableglass-proved-by-broken-chain'],
+  stats: {
+    ...chapterNineBase.stats,
+    health: 1,
+    resolve: 0,
+    command: 0,
+    oathfire: 0,
+  },
+};
+if (
+  !canChoose(
+    choiceById('c9-joined-crisis', 'c9-stolen-ember-kept-sheathed'),
+    lowResourceStolenState,
+  )
+) {
+  failures.push(
+    'Low-resource stolen-ember route cannot preserve the Malrec revelation',
+  );
+}
+
+for (const destroyedFlag of [
+  'c9-destroyed-red-moot-authority-oath',
+  'c9-destroyed-crown-restitution-oath',
+  'c9-destroyed-clan-refusal-oath',
+  'c9-destroyed-honest-command-limit-oath',
+  'c9-destroyed-unsea-investigation-oath',
+]) {
+  if (!pageSource.includes(`!game.flags.includes('${destroyedFlag}')`)) {
+    failures.push(`${destroyedFlag} can return in the active Oath journal`);
+  }
+}
+
+const fadePrivateState = applyChoice(
+  {
+    ...eligibleVexaState,
+    nodeId: 'c9-private-choice',
+    contentPreference: { intimacy: 'fade', adultConfirmed: false },
+  },
+  intimacyChoice,
+);
+const detailedPrivateState = applyChoice(
+  {
+    ...eligibleVexaState,
+    nodeId: 'c9-private-choice',
+    contentPreference: { intimacy: 'detailed', adultConfirmed: true },
+  },
+  intimacyChoice,
+);
+const fadeState = {
+  ...fadePrivateState,
+  contentPreference: { intimacy: 'fade', adultConfirmed: false },
+};
+const detailedState = {
+  ...detailedPrivateState,
+  contentPreference: { intimacy: 'detailed', adultConfirmed: true },
+};
+const fadeOutcome = {
+  flags: fadeState.flags,
+  relationships: fadeState.relationships,
+  nodeId: fadeState.nodeId,
+};
+const detailedOutcome = {
+  flags: detailedState.flags,
+  relationships: detailedState.relationships,
+  nodeId: detailedState.nodeId,
+};
+if (JSON.stringify(fadeOutcome) !== JSON.stringify(detailedOutcome)) {
+  failures.push(
+    'Fade and detailed Chapter Nine variants produce different story outcomes',
+  );
+}
+if (
+  renderedBody('c9-recover-fragment', fadeState) ===
+  renderedBody('c9-recover-fragment', detailedState)
+) {
+  failures.push(
+    'Fade and detailed Chapter Nine variants do not render distinct prose',
+  );
+}
+for (const walkthrough of chapterNineWalkthroughs) {
+  const carriedDefence = walkthrough.flags.some((flag) =>
+    [
+      'c8-united-wardens',
+      'c8-accepted-ash-compact',
+      'c8-sacrificed-first-fort',
+    ].includes(flag),
+  );
+  const carriedOathPrice = walkthrough.flags.some((flag) =>
+    oathPriceFlagsForAudit.includes(flag),
+  );
+  const carriedRoster = walkthrough.state.flags.some((flag) =>
+    [
+      'c9-roster-futureless',
+      'c9-roster-pell',
+      'c9-roster-wardens',
+      'c9-roster-crown',
+    ].includes(flag),
+  );
+  const carriedVexaRelationship =
+    walkthrough.state.relationships.vexa.intent !== 'unresolved';
+  if (
+    !carriedDefence ||
+    !carriedOathPrice ||
+    !carriedRoster ||
+    !carriedVexaRelationship
+  ) {
+    failures.push(
+      `${walkthrough.name} drops defence, Oath price, Vexa relationship, or ally roster before Chapter Ten`,
+    );
+  }
+}
+const migratedOldRelationships = normaliseRelationships({
+  mara: { trust: 7, intent: 'committed' },
+});
+if (
+  migratedOldRelationships.mara.trust !== 7 ||
+  !migratedOldRelationships.vexa ||
+  migratedOldRelationships.vexa.intent !== 'unresolved' ||
+  !pageSource.includes("known.push('vexa')") ||
+  !source.includes("vexa: 'Vexa'")
+) {
+  failures.push(
+    'Old saves do not safely gain a persistent visible Vexa relationship',
+  );
+}
+
 const stack = [
   { state: initialState, knownTerms: [], knownStoryTerms: [] },
   {
@@ -7787,6 +8408,48 @@ const stack = [
     knownTerms: chapterEightKnownTerms,
     knownStoryTerms: chapterEightKnownStoryTerms,
   },
+  {
+    state: chapterNineBase,
+    knownTerms: chapterNineKnownTerms,
+    knownStoryTerms: chapterNineKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterNineBase,
+      flags: [
+        'c5-vaor-pact',
+        'c6-oath-defends-refusal',
+        'c7-gained-chosen-company',
+        'c8-accepted-ash-compact',
+        'c8-living-copy-of-openings',
+        'c8-captured-collector-glove',
+        'c8-shared-oath-mara',
+        'c8-vexa-held-at-threshold',
+        'c8-pell-died-for-map',
+      ],
+    },
+    knownTerms: chapterNineKnownTerms,
+    knownStoryTerms: chapterNineKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterNineBase,
+      flags: [
+        'c5-took-ember-by-force',
+        'c6-oath-crown-restitution',
+        'c7-gained-dangerous-reputation',
+        'c8-sacrificed-first-fort',
+        'c8-many-witnessed-openings',
+        'c8-cut-collector-source-line',
+        'c8-burned-lesser-oath',
+        'c8-vexa-received-outer-fort',
+        'c8-ember-held-as-collateral',
+      ],
+      stats: { ...chapterNineBase.stats, health: 2 },
+    },
+    knownTerms: chapterNineKnownTerms,
+    knownStoryTerms: chapterNineKnownStoryTerms,
+  },
 ];
 const visited = new Set();
 const reachableNodes = new Set();
@@ -7799,6 +8462,7 @@ const chapterFiveEndings = new Set();
 const chapterSixEndings = new Set();
 const chapterSevenEndings = new Set();
 const chapterEightEndings = new Set();
+const chapterNineEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
@@ -7896,7 +8560,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c8-')) chapterEightEndings.add(node.id);
+    if (node.id.startsWith('c9-')) chapterNineEndings.add(node.id);
+    else if (node.id.startsWith('c8-')) chapterEightEndings.add(node.id);
     else if (node.id.startsWith('c7-')) chapterSevenEndings.add(node.id);
     else if (node.id.startsWith('c6-')) chapterSixEndings.add(node.id);
     else if (node.id.startsWith('c5-')) chapterFiveEndings.add(node.id);
@@ -7981,7 +8646,11 @@ if (chapterEightEndings.size !== 3)
   failures.push(
     `Expected 3 Chapter Eight endings, found ${chapterEightEndings.size}`,
   );
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8]) {
+if (chapterNineEndings.size !== 3)
+  failures.push(
+    `Expected 3 Chapter Nine endings, found ${chapterNineEndings.size}`,
+  );
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
   if (!deathChapters.has(chapter))
     failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
@@ -8283,8 +8952,42 @@ if (process.argv.includes('--print-chapter-eight-routes')) {
   console.log(JSON.stringify({ routePrints }, null, 2));
 }
 
+if (process.argv.includes('--print-chapter-nine-routes')) {
+  const routePrints = chapterNineWalkthroughs.map((walkthrough) => ({
+    route: walkthrough.name,
+    choices: walkthrough.choiceIds,
+    visitedNodes: walkthrough.visitedNodes,
+    ending: walkthrough.state.nodeId,
+    recovery: walkthrough.state.flags.find((flag) =>
+      [
+        'c9-fragment-recovered-by-bargain',
+        'c9-fragment-recovered-by-theft',
+        'c9-fragment-recovered-by-exposure',
+      ].includes(flag),
+    ),
+    defence: walkthrough.state.flags.find((flag) =>
+      [
+        'c8-united-wardens',
+        'c8-accepted-ash-compact',
+        'c8-sacrificed-first-fort',
+      ].includes(flag),
+    ),
+    oathPrice: walkthrough.state.flags.find((flag) =>
+      oathPriceFlagsForAudit.includes(flag),
+    ),
+    vexaRelationship: relationshipSummary(walkthrough.state.relationships.vexa),
+    roster: walkthrough.state.flags.filter((flag) =>
+      flag.startsWith('c9-roster-'),
+    ),
+    malrecAllianceProved: walkthrough.state.flags.includes(
+      'c9-malrec-cinder-alliance-proved',
+    ),
+  }));
+  console.log(JSON.stringify({ routePrints }, null, 2));
+}
+
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

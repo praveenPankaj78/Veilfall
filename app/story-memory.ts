@@ -746,6 +746,85 @@ export function knownTruths(game: GameState) {
     return truths;
   }
 
+  if (game.chapter === 9) {
+    if (game.flags.includes('c9-vexa-moved-fourth-to-second'))
+      truths.push(
+        'Vexa moved from Fourth Fort under public guard into Second Fort’s witnessed gallery. The wounded wards and lock rooms remain closed to the embassy.',
+      );
+    else if (game.flags.includes('c9-vexa-entered-second-explicitly'))
+      truths.push(
+        'Vexa crossed the old threshold by a new spoken decision and entered Second Fort’s public corridor. The wounded wards and lock rooms remain closed.',
+      );
+    else if (
+      game.flags.includes('c9-vexa-isolation-preserved') ||
+      game.flags.includes('c8-vexa-received-outer-fort') ||
+      game.flags.includes('c8-ansel-spoke-first-after-entry')
+    )
+      truths.push(
+        'Vexa remains inside isolated Second Fort. White cords and locks keep the embassy from wounded wards and lock rooms.',
+      );
+    else if (
+      game.flags.includes('c9-vexa-remains-outside') ||
+      game.flags.includes('c9-ansel-kept-first-hearing') ||
+      game.flags.includes('c8-vexa-held-at-threshold') ||
+      game.flags.includes('c8-ansel-spoke-first')
+    )
+      truths.push(
+        'Vexa remains outside the fortress ring. No new entry permission exists, and the hearing crosses the barred corridor by voice.',
+      );
+    else
+      truths.push(
+        'Vexa begins inside Fourth Fort under public guard. Her witnessed Chapter Eight crossing remains valid while Second Fort is prepared as neutral ground.',
+      );
+    truths.push(
+      'The unfinished claim bears the ordinary name Caelan Vey. Its price and consent are blank, so it owns nothing.',
+    );
+    if (
+      game.flags.includes('c9-true-name-limit-tested') ||
+      game.flags.includes('c9-ansel-verified-name-limit') ||
+      game.flags.includes('c9-name-vessel-destruction-proved')
+    ) {
+      truths.push(
+        'A true name is a private self-definition freely disclosed for an exact use. It gives magic precision for the stated purpose and time, not unlimited ownership.',
+      );
+    }
+    if (
+      game.flags.includes('c9-witnesses-survived-mortal-attack') ||
+      game.flags.includes('c9-mortal-assassin-captured') ||
+      game.flags.includes('c9-fragment-survived-mortal-attack')
+    ) {
+      truths.push(
+        'Malrec’s mortal assassins used grey courier coats, smoke, human handbows, and hidden fortress routes to target witnesses and evidence.',
+      );
+    }
+    if (
+      game.flags.includes('c9-sableglass-breach-closed') ||
+      game.flags.includes('c9-vexa-survived-devil-attack') ||
+      game.flags.includes('c9-fragment-survived-devil-attack') ||
+      game.flags.includes('c9-sableglass-chain-captured')
+    ) {
+      truths.push(
+        'House Sableglass attacked through the Gate with mirror shards and contract chains to kill Vexa, reclaim the fragment, and erase its trade with Malrec.',
+      );
+    }
+    if (game.flags.includes('c9-malrec-cinder-alliance-proved')) {
+      truths.push(
+        'Malrec has allies inside the Cinder Deep. They plan to release thousands of owned promises at once so the broken duties weaken Worldroot.',
+      );
+    }
+    if (game.flags.includes('c9-return-promise-owned')) {
+      truths.push(
+        'The accepted bargain binds one exact return promise. The Black Gate fragment returns to neutral custody after Malrec’s inside opening is stopped, unless every living Gate keeper freely agrees otherwise.',
+      );
+    }
+    if (game.flags.includes('c9-learned-desire-offer-danger')) {
+      truths.push(
+        'In the Cinder Deep, a strong desire can become an offer before thought catches it. Vexa fears a complete merger because freedom needs time to refuse.',
+      );
+    }
+    return truths;
+  }
+
   truths.push(
     'The sealed route page did not match Caelan’s memory, and the attackers prepared for every route before he chose one.',
   );
@@ -1507,6 +1586,70 @@ export function majorConsequences(game: GameState) {
   else if (game.flags.includes('c8-ansel-spoke-first'))
     consequences.push(
       'Because Ansel asked the first question, Vexa remained outside while the embassy answered the Futureless before rulers.',
+    );
+  if (game.flags.includes('c9-fragment-recovered-bargain'))
+    consequences.push(
+      'Because you accepted the bounded bargain, the fragment aligned through a freely disclosed true name and one exact return promise.',
+    );
+  if (game.flags.includes('c9-fragment-recovered-theft'))
+    consequences.push(
+      'Because you stole the fragment and named the act publicly, no bargain binds you while a lasting political debt follows the crossing.',
+    );
+  if (game.flags.includes('c9-fragment-recovered-exposure'))
+    consequences.push(
+      'Because you exposed House Sableglass under its own witness law, the rival house surrendered the fragment as attack material.',
+    );
+  if (game.flags.includes('c9-destroyed-red-moot-authority-oath'))
+    consequences.push(
+      'Because you destroyed the exact Red Moot authority Oath, true-name access ended after alignment and Korran’s community lost that magical protection.',
+    );
+  if (game.flags.includes('c9-destroyed-crown-restitution-oath'))
+    consequences.push(
+      'Because you destroyed the Crown restitution Oath, true-name access ended after alignment and the hidden victims lost your magical promise of judgment.',
+    );
+  if (game.flags.includes('c9-destroyed-clan-refusal-oath'))
+    consequences.push(
+      'Because you destroyed the clan refusal Oath, true-name access ended after alignment and the clans lost your magical defence of their right to leave.',
+    );
+  if (game.flags.includes('c9-destroyed-honest-command-limit-oath'))
+    consequences.push(
+      'Because you destroyed the honest command limit, true-name access ended after alignment and neither Moot fighters nor the full army accepted your command across the Gate.',
+    );
+  if (game.flags.includes('c9-destroyed-unsea-investigation-oath'))
+    consequences.push(
+      'Because you destroyed the Unsea investigation Oath, true-name access ended after alignment and Korran carried the abandoned duty back to the preserved voices.',
+    );
+  if (game.flags.includes('c9-vexa-guarded-trust'))
+    consequences.push(
+      'Because you offered Vexa guarded trust with public limits, she shared a private Sableglass patrol map for the expedition.',
+    );
+  if (game.flags.includes('c9-vexa-adversarial-respect'))
+    consequences.push(
+      'Because you chose adversarial respect, Vexa promised to name known threats before using them against the expedition.',
+    );
+  if (game.flags.includes('c9-vexa-permanent-hostility'))
+    consequences.push(
+      'Because you declared permanent hostility, every future meeting with Vexa will use armed public diplomacy.',
+    );
+  if (game.flags.includes('c9-shared-private-night'))
+    consequences.push(
+      'Because you and Vexa freely chose intimacy outside magic and bargaining, guarded attraction became an explored relationship and revealed her fear of realm merger.',
+    );
+  if (game.flags.includes('c9-roster-futureless'))
+    consequences.push(
+      'Because you chose living testimony, Ansel and two Futureless witnesses crossed the Black Gate with you.',
+    );
+  if (game.flags.includes('c9-roster-pell'))
+    consequences.push(
+      'Because you chose route knowledge, wounded Pell crossed with the complete lock map and a shield escort.',
+    );
+  if (game.flags.includes('c9-roster-wardens'))
+    consequences.push(
+      'Because you chose shared command, a mixed company of wardens and Moot fighters crossed by individual consent.',
+    );
+  if (game.flags.includes('c9-roster-crown'))
+    consequences.push(
+      'Because you chose official witnesses, Teren and six Crown volunteers crossed without importing the divided army’s command.',
     );
   return consequences.length
     ? consequences

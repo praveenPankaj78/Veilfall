@@ -168,7 +168,7 @@ Defining choice: Bargain, steal the fragment during negotiations, or expose Vexa
 
 Class pressure: Exact language becomes combat. Oathfire can cut one clause, but doing so destroys one earlier Oath.
 
-Romance movement: Vexa may become a temporary lover, adversary, or trusted negotiator. Any intimate encounter is an informed bargain that reveals why she fears a total merger. This is the first planned optional detailed intimacy scene in Caelan's series. It receives a fade alternative and remains unavailable if the negotiation includes captivity, magical pressure, or an unclear right to refuse.
+Romance movement: Vexa may become a temporary lover, adversary, or trusted negotiator. Any intimate encounter is separate from bargaining and reveals why she fears a total merger. This is the first optional detailed intimacy scene in Caelan's series. It receives a fade alternative and remains unavailable during captivity, magical pressure, commitment elsewhere, or an unclear right to refuse.
 
 Revelation: Malrec plans to open the Gate from inside the Cinder Deep and use its released promises to break Worldroot.
 

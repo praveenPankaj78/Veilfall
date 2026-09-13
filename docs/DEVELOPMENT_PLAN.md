@@ -2,7 +2,7 @@
 
 ## Current status
 
-The project contains a functioning choice engine and the first seven canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
+The project contains a functioning choice engine and the first nine canonical Caelan chapters. The reader now includes qualitative relationship states, a journal, returning player recaps, replay confirmation, responsive status controls, and versioned save migration.
 
 The redesigned foundation now includes:
 
@@ -36,7 +36,7 @@ Required work:
 
 - add protagonist specific resource schemas;
 - add world Nail and regional state;
-- maintain Trust, Attraction, Respect, Friction, and explicit relationship intent for Mara, Lysara, and Ilyra while showing only qualitative summaries to players;
+- maintain Trust, Attraction, Respect, Friction, and explicit relationship intent for Mara, Lysara, Ilyra, and Vexa while showing only qualitative summaries to players;
 - add travel and companion state;
 - add imported finale summaries;
 - add content preference for detailed intimacy or fade, now implemented with an adult confirmation gate;
@@ -71,7 +71,7 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 
 ## Phase Five: complete Caelan season, in progress
 
-Chapters Four through Eight are implemented. Produce Chapters Nine through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four through Nine are implemented. Produce Chapters Ten through Twelve in small batches. After every batch, test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
 
 Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
 
@@ -135,4 +135,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first eight canonical chapters are implemented. The next production gate is to playtest the three Black Gate defence routes, confirm that the full army, chosen company, and dangerous reputation openings remain distinct, and confirm that each Vexa entry state creates a meaningfully different Chapter Nine negotiation.
+The foundation and the first nine canonical chapters are implemented. The next production gate is to playtest the bargain, theft, and exposure crossings. Confirm that Chapter Ten receives the exact defence route, destroyed Oath, Vexa relationship, evidence source, and voluntary ally roster.

@@ -92,11 +92,11 @@ Mechanic: Several active Oaths tested in one visible ledger.
 
 Active question: Can Caelan recover the other Gate fragment?
 
-Answer: Vexa has it, Malrec has allies inside the Deep, and exact promises govern passage.
+Answer: Vexa carries the missing Black Gate Nail piece. Malrec's mortal cell and House Sableglass attack for separate reasons, exposing their alliance and a plan to break Worldroot with released promises. Caelan recovers the piece by bargain, admitted theft, or public exposure.
 
-Next hook: Can Caelan survive a realm where every desire has a price?
+Next hook: How can travellers remain free where desires automatically become offers?
 
-Mechanic: Contract wording through bounded negotiation.
+Mechanic: True-name precision through a harmless witnessed test, followed by contract wording and an optional Oathfire clause cut with a named permanent loss.
 
 ## 10. The Ash Road
 

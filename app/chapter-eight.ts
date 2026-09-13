@@ -2729,6 +2729,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'embassy',
     final: true,
+    nextChapter: 'c9-embassy-watch',
     body: (state) => [
       'Vexa’s embassy moves from the public crossing to Fourth Fort’s hall. Soldiers keep their weapons, the envoys keep theirs sealed, and every chair faces the brass cases.',
       routeOutcome(state),
@@ -2749,6 +2750,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'embassy',
     final: true,
+    nextChapter: 'c9-embassy-watch',
     body: (state) => [
       vexaMeetingStatus(state),
       routeOutcome(state),
@@ -2771,6 +2773,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'embassy',
     final: true,
+    nextChapter: 'c9-embassy-watch',
     body: (state) => [
       vexaMeetingStatus(state),
       'Ansel stands between two worlds and asks the question rulers avoided for seventeen years. Vexa answers him before she answers you. The house that bought the wardens’ future promises also paid mortal officials to hide every opening.',

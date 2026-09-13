@@ -44,6 +44,7 @@ import {
   initialState,
   nextRelationships,
   nodes,
+  normaliseRelationships,
   relationshipChanges,
   relationshipLabels,
   relationshipSummary,
@@ -58,8 +59,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v12.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v13.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v12.save',
   'veilfall.saga.v11.save',
   'veilfall.saga.v10.save',
   'veilfall.saga.v9.save',
@@ -71,7 +73,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 const sceneArtwork = {
   departure: {
@@ -150,6 +152,18 @@ const sceneArtwork = {
     src: '/art/first-devil-embassy.png',
     alt: 'Vexa Ash leads the first devil embassy across the Black Gate under open safe conduct',
   },
+  cinderembassy: {
+    src: '/art/cinder-deep-embassy.png',
+    alt: 'Caelan and Vexa face each other across the neutral Cinder Deep embassy table',
+  },
+  twosidedattack: {
+    src: '/art/two-sided-assassination.png',
+    alt: 'Mortal handbow assassins and rival devil chain wielders attack the embassy from opposite sides',
+  },
+  gatecrossing: {
+    src: '/art/black-gate-crossing.png',
+    alt: 'Caelan crosses the Black Gate with Vexa, willing allies, and the recovered Gate Nail fragment',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
@@ -160,6 +174,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   6: 'veilfall.chapter-six.v1.start',
   7: 'veilfall.chapter-seven.v1.start',
   8: 'veilfall.chapter-eight.v1.start',
+  9: 'veilfall.chapter-nine.v1.start',
 };
 
 const chapterLibrary = [
@@ -210,6 +225,12 @@ const chapterLibrary = [
     title: 'Seven Cold Fires',
     summary:
       'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
+  },
+  {
+    number: 9 as const,
+    title: 'The Price of a Name',
+    summary:
+      'Recover the missing Gate Nail piece while mortal and devil assassins strike the first embassy.',
   },
 ];
 
@@ -290,33 +311,41 @@ function migrateRelationships(value: Partial<GameState>) {
       if (flags.has('c5-kissed-lysara')) return 'exploring' as const;
       if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara'))
         return 'interested' as const;
-    } else {
+    } else if (person === 'ilyra') {
       if (flags.has('c7-ilyra-leverage-refused')) return 'ended' as const;
       if (flags.has('c7-ilyra-friendship-chosen')) return 'platonic' as const;
       if (flags.has('c7-ilyra-bond-deepened')) return 'exploring' as const;
       if (flags.has('c7-ilyra-interest-kept')) return 'interested' as const;
       if (flags.has('c6-ilyra-interest-acknowledged'))
         return 'interested' as const;
+    } else {
+      if (flags.has('c9-vexa-permanent-hostility')) return 'hostile' as const;
+      if (flags.has('c9-shared-private-night')) return 'exploring' as const;
+      if (flags.has('c9-vexa-attraction-acknowledged'))
+        return 'interested' as const;
+      if (flags.has('c9-vexa-adversarial-respect')) return 'platonic' as const;
     }
     return 'unresolved' as const;
   };
 
   if (value.relationships) {
+    const saved = normaliseRelationships(value.relationships);
     return {
       mara: {
-        ...initialState.relationships.mara,
-        ...value.relationships.mara,
+        ...saved.mara,
         intent: value.relationships.mara?.intent ?? inferredIntent('mara'),
       },
       lysara: {
-        ...initialState.relationships.lysara,
-        ...value.relationships.lysara,
+        ...saved.lysara,
         intent: value.relationships.lysara?.intent ?? inferredIntent('lysara'),
       },
       ilyra: {
-        ...initialState.relationships.ilyra,
-        ...value.relationships.ilyra,
+        ...saved.ilyra,
         intent: value.relationships.ilyra?.intent ?? inferredIntent('ilyra'),
+      },
+      vexa: {
+        ...saved.vexa,
+        intent: value.relationships.vexa?.intent ?? inferredIntent('vexa'),
       },
     };
   }
@@ -408,25 +437,33 @@ function migrateRelationships(value: Partial<GameState>) {
       friction: flags.has('c6-refused-ilyra-pressure') ? 1 : 0,
       intent: inferredIntent('ilyra'),
     },
+    vexa: {
+      ...initialState.relationships.vexa,
+      intent: inferredIntent('vexa'),
+    },
   };
 }
 
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId =
     value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c7-')
-    ? 7
-    : nodeId.startsWith('c6-')
-      ? 6
-      : nodeId.startsWith('c5-')
-        ? 5
-        : nodeId.startsWith('c4-')
-          ? 4
-          : nodeId.startsWith('c3-')
-            ? 3
-            : nodeId.startsWith('c2-')
-              ? 2
-              : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c9-')
+    ? 9
+    : nodeId.startsWith('c8-')
+      ? 8
+      : nodeId.startsWith('c7-')
+        ? 7
+        : nodeId.startsWith('c6-')
+          ? 6
+          : nodeId.startsWith('c5-')
+            ? 5
+            : nodeId.startsWith('c4-')
+              ? 4
+              : nodeId.startsWith('c3-')
+                ? 3
+                : nodeId.startsWith('c2-')
+                  ? 2
+                  : (value.chapter ?? 1);
   const savedStats = (value.stats ?? {}) as Partial<GameStats> & {
     stamina?: number;
   };
@@ -482,6 +519,7 @@ function defeatForChoice(
     6: 'You complete the action, but the moving city and the red storm take the last of your strength. The deck rolls beneath you while Korran calls the living crews together and the ember fades behind your ribs.',
     7: 'You complete the action, but the Red Wind Hunt takes the last of your strength. Salt and red sky blur together while your companions fight to keep the living army from obeying its dead.',
     8: 'You complete the action, but the Black Gate takes the last of your strength. Snow and furnace light blur together while the defenders struggle to keep the opening from becoming an invasion road.',
+    9: 'You complete the action, but the embassy attack takes the last of your strength. Glass chains and handbow smoke blur while your allies keep the Gate Nail fragment from both assassin groups.',
   };
   return {
     title: 'Caelan has fallen',
@@ -586,19 +624,35 @@ function activePromises(game: GameState) {
     promises.push(
       'Carry Vaor’s voice and ember until both of you agree the duty is complete.',
     );
-  if (game.flags.includes('c6-oath-investigate-unsea'))
+  if (
+    game.flags.includes('c6-oath-investigate-unsea') &&
+    !game.flags.includes('c9-destroyed-unsea-investigation-oath')
+  )
     promises.push('Discover which ancestor voices are truly conscious.');
-  if (game.flags.includes('c6-oath-recognised-red-moot'))
+  if (
+    game.flags.includes('c6-oath-recognised-red-moot') &&
+    !game.flags.includes('c9-destroyed-red-moot-authority-oath')
+  )
     promises.push(
       'Recognise the Red Moot’s living authority in every alliance you lead.',
     );
-  if (game.flags.includes('c6-oath-crown-restitution'))
+  if (
+    game.flags.includes('c6-oath-crown-restitution') &&
+    !game.flags.includes('c8-released-crown-oath') &&
+    !game.flags.includes('c9-destroyed-crown-restitution-oath')
+  )
     promises.push(
       'Bring the Concord’s hidden victims before the Queen or oppose the throne that buries them.',
     );
-  if (game.flags.includes('c6-oath-defends-refusal'))
+  if (
+    game.flags.includes('c6-oath-defends-refusal') &&
+    !game.flags.includes('c9-destroyed-clan-refusal-oath')
+  )
     promises.push('Defend the clans’ right to refuse future Crown control.');
-  if (game.flags.includes('c6-oath-honest-limit'))
+  if (
+    game.flags.includes('c6-oath-honest-limit') &&
+    !game.flags.includes('c9-destroyed-honest-command-limit-oath')
+  )
     promises.push(
       'Bind only your own command, testimony, and defence of the Red Moot.',
     );
@@ -606,6 +660,10 @@ function activePromises(game: GameState) {
     promises.push('No dead officer holds lawful rank over a living soldier.');
   if (game.flags.includes('c7-oath-surrender-road'))
     promises.push('Give safe ground to every soldier who lowers a weapon.');
+  if (game.flags.includes('c9-return-promise-owned'))
+    promises.push(
+      'Return the Black Gate fragment to neutral custody after Malrec’s inside opening is stopped, unless every living Gate keeper freely agrees otherwise.',
+    );
   if (game.flags.includes('c2-caelan-injured'))
     promises.push(
       'Injury: Caelan hurt his back driving the road pin into place.',
@@ -633,7 +691,13 @@ function visibleRelationshipKeys(game: GameState): RelationshipKey[] {
     game.completedChapters.includes(6) ||
     game.nodeId.startsWith('c7-') ||
     (game.nodeId.startsWith('c6-') && !beforeIlyraNodes.has(game.nodeId));
-  return ilyraKnown ? ['mara', 'lysara', 'ilyra'] : ['mara', 'lysara'];
+  const known: RelationshipKey[] = ilyraKnown
+    ? ['mara', 'lysara', 'ilyra']
+    : ['mara', 'lysara'];
+  if (game.completedChapters.includes(8) || game.nodeId.startsWith('c9-')) {
+    known.push('vexa');
+  }
+  return known;
 }
 
 export default function Home() {
@@ -874,7 +938,7 @@ export default function Home() {
       return;
     }
 
-    for (const later of ([2, 3, 4, 5, 6, 7, 8] as ChapterNumber[]).filter(
+    for (const later of ([2, 3, 4, 5, 6, 7, 8, 9] as ChapterNumber[]).filter(
       (number) => number > chapter,
     )) {
       const key = CHAPTER_START_KEYS[later];
@@ -1048,6 +1112,28 @@ export default function Home() {
     loadChapterState(next);
   }
 
+  function startChapterNine() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c9-embassy-watch',
+      chapter: 9,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 8])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 1),
+        resolve: Math.min(8, game.stats.resolve + 1),
+        medicine: Math.max(1, game.stats.medicine),
+      },
+      history: [
+        ...game.history,
+        'You establish neutral Second Fort for the first Cinder Deep embassy with every earlier consequence.',
+      ],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[9]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
   if (!loaded) {
     return (
       <main
@@ -1111,19 +1197,11 @@ export default function Home() {
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
           Caelan{' '}
-          {game.chapter === 7
-            ? 'VII'
-            : game.chapter === 6
-              ? 'VI'
-              : game.chapter === 5
-                ? 'V'
-                : game.chapter === 4
-                  ? 'IV'
-                  : game.chapter === 3
-                    ? 'III'
-                    : game.chapter === 2
-                      ? 'II'
-                      : 'I'}
+          {
+            ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'][
+              game.chapter - 1
+            ]
+          }
         </div>
         <div className="top-actions">
           <Button
@@ -1306,6 +1384,82 @@ export default function Home() {
                 <p key={`${node.id}-${index}`}>{paragraph}</p>
               ))}
             </div>
+
+            {node.intimacyControls?.(game) ? (
+              <aside
+                className="lesson-card"
+                aria-label="Optional intimacy detail"
+              >
+                <p className="eyebrow">Optional scene detail</p>
+                <h3>Choose how the same scene is described</h3>
+                <p>
+                  Fade and detailed versions preserve identical choices,
+                  information, flags, and later consequences.
+                </p>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={game.contentPreference.adultConfirmed}
+                    onChange={(event) =>
+                      setGame((current) => ({
+                        ...current,
+                        contentPreference: {
+                          ...current.contentPreference,
+                          adultConfirmed: event.target.checked,
+                          intimacy: event.target.checked
+                            ? current.contentPreference.intimacy
+                            : 'fade',
+                        },
+                      }))
+                    }
+                  />{' '}
+                  I confirm that I am an adult and may choose detailed prose.
+                </label>
+                <div className="top-actions">
+                  <Button
+                    type="button"
+                    variant={
+                      game.contentPreference.intimacy === 'fade'
+                        ? 'default'
+                        : 'outline'
+                    }
+                    size="sm"
+                    onClick={() =>
+                      setGame((current) => ({
+                        ...current,
+                        contentPreference: {
+                          ...current.contentPreference,
+                          intimacy: 'fade',
+                        },
+                      }))
+                    }
+                  >
+                    Fade
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={
+                      game.contentPreference.intimacy === 'detailed'
+                        ? 'default'
+                        : 'outline'
+                    }
+                    size="sm"
+                    disabled={!game.contentPreference.adultConfirmed}
+                    onClick={() =>
+                      setGame((current) => ({
+                        ...current,
+                        contentPreference: {
+                          ...current.contentPreference,
+                          intimacy: 'detailed',
+                        },
+                      }))
+                    }
+                  >
+                    Detailed
+                  </Button>
+                </div>
+              </aside>
+            ) : null}
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">
@@ -1522,7 +1676,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 7 ? (
                     <>
                       <h2>Chapter Eight is ready</h2>
                       <p>
@@ -1548,21 +1702,48 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Nine is ready</h2>
+                      <p>
+                        Continue into The Price of a Name with the exact Gate
+                        defence, evidence, Oath price, and embassy position you
+                        carried from Chapter Eight.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterNine}
+                      >
+                        Continue to Chapter Nine
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
+                        Replay Chapter Eight
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Caelan will return in Chapter Nine</h2>
+                    <h2>Chapter Ten will return</h2>
                     <p>
-                      You carry Vaor&apos;s ember and {game.stats.wayfire}{' '}
-                      Wayfire into the first open embassy. Vexa Ash has brought
-                      a contract bearing your name and an unwritten price.
+                      The recovered Gate Nail fragment, your chosen allies, and
+                      every surviving Oath cross into the Cinder Deep. The next
+                      question is how desire can remain free when it becomes an
+                      offer before thought can refuse.
                     </p>
                     <Button
                       className="begin-button"
                       size="lg"
                       onClick={restart}
                     >
-                      Replay Chapter Eight
+                      Replay Chapter Nine
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>

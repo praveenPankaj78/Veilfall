@@ -897,7 +897,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         detail:
           'Use his real rank to carry the proof, exposing him as a deserter if the army rejects it.',
         advantage:
-          'Soldiers who distrust you may still read an order delivered under Lio’s true name.',
+          'Soldiers who distrust you may still read an order delivered under Lio’s full name.',
         showIfAnyFlags: ['c7-lio-joined'],
         addFlags: ['c7-lio-carries-orders'],
         result:

@@ -7,6 +7,7 @@ import { chapterFiveNodes } from './chapter-five';
 import { chapterSixNodes } from './chapter-six';
 import { chapterSevenNodes } from './chapter-seven';
 import { chapterEightNodes } from './chapter-eight';
+import { chapterNineNodes } from './chapter-nine';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -19,7 +20,7 @@ export type StatKey =
 
 export type GameStats = Record<StatKey, number>;
 
-export type RelationshipKey = 'mara' | 'lysara' | 'ilyra';
+export type RelationshipKey = 'mara' | 'lysara' | 'ilyra' | 'vexa';
 
 export type RelationshipIntent =
   | 'unresolved'
@@ -27,6 +28,7 @@ export type RelationshipIntent =
   | 'exploring'
   | 'committed'
   | 'platonic'
+  | 'hostile'
   | 'ended';
 
 export type RelationshipScore = {
@@ -41,7 +43,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -116,7 +118,11 @@ export type StoryNode = {
     | 'marshal'
     | 'blackgate'
     | 'futureless'
-    | 'embassy';
+    | 'embassy'
+    | 'cinderembassy'
+    | 'twosidedattack'
+    | 'gatecrossing';
+  intimacyControls?: (state: GameState) => boolean;
   body: (state: GameState) => string[];
   activeConsequences?: {
     complications?: string[];
@@ -153,7 +159,10 @@ export type StoryTermKey =
   | 'Marshal Teren Voss'
   | 'Futureless'
   | 'Ash Compact'
-  | 'Vexa Ash';
+  | 'Vexa Ash'
+  | 'Cinder Deep'
+  | 'true name'
+  | 'House Sableglass';
 
 export const initialState: GameState = {
   nodeId: 'gate-yard',
@@ -190,6 +199,13 @@ export const initialState: GameState = {
       friction: 0,
       intent: 'unresolved',
     },
+    vexa: {
+      trust: 0,
+      attraction: 0,
+      respect: 1,
+      friction: 0,
+      intent: 'unresolved',
+    },
   },
   contentPreference: {
     intimacy: 'fade',
@@ -213,7 +229,19 @@ export const relationshipLabels: Record<RelationshipKey, string> = {
   mara: 'Mara',
   lysara: 'Lysara',
   ilyra: 'Ilyra',
+  vexa: 'Vexa',
 };
+
+export function normaliseRelationships(
+  saved?: Partial<Record<RelationshipKey, Partial<RelationshipScore>>>,
+): Relationships {
+  return {
+    mara: { ...initialState.relationships.mara, ...saved?.mara },
+    lysara: { ...initialState.relationships.lysara, ...saved?.lysara },
+    ilyra: { ...initialState.relationships.ilyra, ...saved?.ilyra },
+    vexa: { ...initialState.relationships.vexa, ...saved?.vexa },
+  };
+}
 
 type RelationshipEffects = Partial<
   Record<RelationshipKey, Partial<RelationshipScore>>
@@ -351,6 +379,21 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   },
   'c8-lysara-share-lock-authority': { lysara: { trust: 2, respect: 2 } },
   'c8-lysara-admit-two-loyalties': { lysara: { trust: 2, respect: 1 } },
+  'c9-name-guarded-trust': { vexa: { trust: 2, respect: 1 } },
+  'c9-name-adversarial-respect': {
+    vexa: { respect: 2, friction: 1, intent: 'platonic' },
+  },
+  'c9-name-attraction': {
+    vexa: { trust: 1, attraction: 2, respect: 1, intent: 'interested' },
+  },
+  'c9-name-permanent-hostility': {
+    vexa: { trust: -2, friction: 4, intent: 'hostile' },
+  },
+  'c9-share-private-night': {
+    vexa: { trust: 2, attraction: 2, respect: 1, intent: 'exploring' },
+  },
+  'c9-talk-with-vexa-only': { vexa: { trust: 1, respect: 1 } },
+  'c9-leave-vexa-private': { vexa: { respect: 1 } },
 };
 
 export function relationshipChanges(choice: Choice) {
@@ -365,6 +408,7 @@ export function nextRelationships(
     mara: { ...current.mara },
     lysara: { ...current.lysara },
     ilyra: { ...current.ilyra },
+    vexa: { ...current.vexa },
   };
   const effects = relationshipChanges(choice);
   for (const [person, changes] of Object.entries(effects)) {
@@ -428,6 +472,8 @@ export function relationshipSummary(score: RelationshipScore) {
     return `Interest acknowledged, ${trust}${tension}`;
   if (score.intent === 'platonic')
     return `Friendship chosen, ${trust}, ${respect}${tension}`;
+  if (score.intent === 'hostile')
+    return `Permanent hostility, ${respect}${tension}`;
   if (score.intent === 'ended') return `Romance ended, ${trust}${tension}`;
   if (score.attraction >= 4)
     return `Strong attraction not yet defined, ${trust}${tension}`;
@@ -3784,6 +3830,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...chapterSixNodes,
   ...chapterSevenNodes,
   ...chapterEightNodes,
+  ...chapterNineNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -3981,6 +4028,24 @@ export const nodeOrder = [
   'c8-ending-embassy',
   'c8-ending-threshold',
   'c8-ending-witness',
+  'c9-embassy-watch',
+  'c9-futureless-answer',
+  'c9-name-demonstration',
+  'c9-prepare-room',
+  'c9-defining-route',
+  'c9-mortal-attack',
+  'c9-devil-attack',
+  'c9-mortal-proof',
+  'c9-devil-proof',
+  'c9-joined-crisis',
+  'c9-oath-clause',
+  'c9-vexa-standing',
+  'c9-private-choice',
+  'c9-recover-fragment',
+  'c9-crossing-roster',
+  'c9-ending-bargain',
+  'c9-ending-theft',
+  'c9-ending-exposure',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {
@@ -4056,7 +4121,10 @@ export function isChoiceVisible(choice: Choice, state: GameState) {
         changes?.intent === 'interested' ||
         changes?.intent === 'exploring' ||
         changes?.intent === 'committed';
-      return !romanceCoded || (intent !== 'platonic' && intent !== 'ended');
+      return (
+        !romanceCoded ||
+        (intent !== 'platonic' && intent !== 'hostile' && intent !== 'ended')
+      );
     },
   );
   return (
