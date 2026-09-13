@@ -307,7 +307,7 @@ function revoltProtection(state: GameState) {
 
 function revoltRescueConsequence(state: GameState) {
   if (has(state, 'c11-revolt-worker-injured'))
-    return 'The engine tunnel is secure, but one worker reaches its wheel with a crushed hand and needs Medicine.';
+    return 'The engine tunnel is secure, but Sira reaches her wheel with the cut on her arm still bleeding.';
   if (has(state, 'c11-revolt-families-saved'))
     return 'The shelter line reaches safety before the three workers turn the engine wheels.';
   return 'The refusers reach the engine wheels with the square still unsettled behind them.';
@@ -341,7 +341,7 @@ function auctionCounterConsequence(state: GameState) {
   if (has(state, 'c11-auction-fraud-countered'))
     return 'The captured illusion bead voids Sableglass’s hidden threshold and preserves every term of the first bid.';
   if (has(state, 'c11-auction-method-countered'))
-    return 'The Chapter Ten records separate every owner. Sableglass loses the collected block and cannot rebundle it.';
+    return 'The Ash Road records separate every owner. Sableglass loses the collected block and cannot rebundle it.';
   if (has(state, 'c11-auction-review-counterbid'))
     return 'The narrow review defeats the final house bid. Your right to refuse that one public session is already bound.';
   return 'The free seat holds the sale open until every remaining term is visible.';
@@ -458,7 +458,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-use-uncontracted-entry',
         label: 'Take the uncontracted stair beside the gate.',
         detail:
-          'Use the safe fallback for an older save with no stored guide answer.',
+          'Take the public stair without claiming a guide agreement you cannot verify.',
         advantage:
           'Enter without inventing a checkpoint benefit or hearing obligation.',
         hideIfAnyFlags: [
@@ -486,7 +486,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       'The guide places the sealed petition on the free metal seat. It does not hand the page to the Price Court or Vexa.',
       methodAtGate(state),
       'Sira, Oren, and Pellan name themselves as signers. Sira wants sold service promises opened now. Oren wants families moved first. Pellan fears losing the shelter tied to his collar.',
-      'The hearing must keep all three voices separate. Which Chapter Ten record protects that hearing?',
+      'The hearing must keep all three voices separate. Which Ash Road record protects that hearing?',
     ],
     choices: [
       {
@@ -579,7 +579,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-use-recorded-clean-refusal',
         label: 'Repeat the tested refusal at every landing.',
         detail:
-          'Use Chapter Ten’s physical proof that a clear no creates no debt.',
+          'Use the cup test’s physical proof that a clear no creates no debt.',
         advantage: 'Keep the public route open without accepting a new offer.',
         showIfAnyFlags: [
           'c10-clean-refusal-recorded',
@@ -698,7 +698,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       has(state, 'c10-listening-mark-following')
         ? 'A black listening mark reaches the street first and purchases a false turn in the company’s name.'
         : 'No hidden listening mark reaches the accepting stone before you.',
-      'One reverse bell will end the price and raise the stones back into a wall. Which Chapter Ten method guides the crossing?',
+      'One reverse bell will end the price and raise the stones back into a wall. Which offer method guides the crossing?',
     ],
     choices: [
       {
@@ -844,7 +844,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     body: (state) => [
       weatherPressure(state),
       'A roof lowers over the street and dry stones appear beneath it. The offer grants shelter until the rain stops. Its price is leaving only through the far arch.',
-      'Oathfire burns white around one existing promise. At mythic strength it could give that promise your right to leave before the last expedition member. The transfer would end with the rain.',
+      'You remember bringing the first escort to shelter. You could freely renew that duty for this expedition and give it your right to leave first. The transfer would end with the rain.',
       'How do you cross the weather contract?',
     ],
     choices: [
@@ -852,7 +852,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-test-mythic-shelter-transfer',
         label: 'Spend 1 Oathfire and transfer the right to leave first.',
         detail:
-          'Spend 1 Oathfire. Recipient: Bring Them Home. Freedom lost: leave before the last expedition member. Duration: the rain. Success: all exit. Breach: leave first. No later restriction.',
+          'Spend 1 Oathfire. Renew Bring Them Home for this expedition. Freedom lost: leave before its last member. Duration: the rain. Success: all exit. Breach: leave first. No later restriction.',
         advantage:
           'Keep the whole expedition dry and stop the rain from separating the rear guard.',
         showIfAllFlags: ['oath-bring-them-home'],
@@ -860,7 +860,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         requires: { oathfire: 1 },
         addFlags: ['c11-shelter-all-crossed-dry'],
         result:
-          'White fire joins the shelter to Bring Them Home. Your lead boot will not lift until the last traveller reaches the far arch.',
+          'You freely renew Bring Them Home for the expedition. White fire joins it to the shelter. Your lead boot will not lift until the last traveller reaches the far arch.',
         next: 'c11-method-accounting',
       },
       {
@@ -896,7 +896,8 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     kicker: 'Old offer records meet city law',
     title: 'What Each Record Can Prove',
     location: 'Price Court Outer Hall',
-    objective: 'Prepare the Chapter Ten method for active use inside Vathis.',
+    objective:
+      'Prepare the company’s offer method for active use inside Vathis.',
     threat: 'Rising',
     art: 'vathisauction',
     activeConsequences: {
@@ -1074,7 +1075,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'Refuse romance, ownership, and private access without paying Resolve.',
         advantage:
-          'Break the illusion through the exact Chapter Ten limit and preserve a complete platonic path.',
+          'Break the illusion through the exact shelter boundary and preserve a complete platonic path.',
         showIfAllFlags: ['c10-limits-public-only'],
         addFlags: ['c11-platonic-limit-held', 'c11-illusion-refused'],
         result:
@@ -1197,7 +1198,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-inventory-caelan-appearance-duty',
         label: 'List your own limited Price Court appearance duty.',
         detail:
-          'Owner: Caelan. Transfer: yes after clear acceptance. Future cost: you cannot refuse one Chapter Twelve review of the replacement Gate law.',
+          'Owner: Caelan. Transfer: yes after clear acceptance. Future cost: you cannot refuse one coming public review of the replacement Gate law.',
         advantage:
           'Create a complete lawful bid even when no faction proof survived.',
         addFlags: [
@@ -1433,7 +1434,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-protect-revolt-families-with-rope',
         label: 'Use the saved Free Ledger rope to lower the shelter slabs.',
         detail:
-          'Apply the Chapter Ten rescue asset while Sira leads the willing refusers.',
+          'Use the rope saved at the broken bridge while Sira leads the willing refusers.',
         advantage:
           'Save the families and preserve the engine tunnel without spending Health.',
         showIfAllFlags: ['c10-free-ledger-rope-saved'],
@@ -1517,7 +1518,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
           'Record each refusal, then repeat the phrase as their protector.',
         detail: 'Let each person approve the record before Caelan uses it.',
         advantage:
-          'Open the channel while creating a durable proof copy for Chapter Twelve.',
+          'Open the channel while creating a durable proof copy for the Gate hearing.',
         addFlags: [
           'c11-revolt-engine-phrase-earned',
           'c11-revolt-refusal-record',
@@ -1601,9 +1602,9 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-bid-caelan-appearance-duty',
         label: 'Bid your one accepted Price Court review duty.',
         detail:
-          'You own and may transfer it. You lose the right to refuse one Chapter Twelve review of the replacement Gate law.',
+          'You own and may transfer it. You lose the right to refuse one coming public review of the replacement Gate law.',
         advantage:
-          'Meet the final legal threshold on a save with no stronger faction asset.',
+          'Meet the final legal threshold without a stronger faction asset.',
         showIfAllFlags: ['c11-bid-asset-appearance-duty'],
         addFlags: ['c11-auction-appearance-duty-bid'],
         result:
@@ -1677,7 +1678,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c11-use-method-proof-at-auction',
-        label: 'Use the Chapter Ten method proof to separate every owner.',
+        label: 'Use the Ash Road method proof to separate every owner.',
         detail:
           'Apply shared terms, private seal edges, or approved burden accounts without transferring the people.',
         advantage:
@@ -1697,7 +1698,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         label:
           'Accept one narrow Price Court review of the replacement Gate law.',
         detail:
-          'Freedom lost: refuse that one public review. Duration: until the review ends. This carries into Chapter Twelve. No other service transfers.',
+          'Freedom lost: refuse that one public review. Duration: until the review ends. The duty continues at the Gate. No other service transfers.',
         advantage:
           'Win the invasion right through a complete fallback while preserving all other Oaths and relationships.',
         addFlags: [
@@ -2202,7 +2203,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'Preserve her warning and deny the Court, Compact, or Sableglass a new ownership contract.',
         advantage:
-          'Keep Elian’s answer from becoming auction property in Chapter Twelve.',
+          'Keep Elian’s answer from becoming auction property at the Gate.',
         addFlags: ['c11-elian-voice-heard', 'c11-elian-channel-protected'],
         result:
           'You pull the route phrase from the wheel. The voice ends without a sale mark, while its warning remains in the living record.',
@@ -2256,7 +2257,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-lock-auction-deed-to-gate-limit',
         label: 'Lock the narrow invasion deed to its one named force.',
         detail:
-          'Carry the lawful right, public review, and exact registered limits into Chapter Twelve.',
+          'Carry the lawful right, public review, and exact registered limits to the Gate.',
         advantage:
           'Delay any unregistered Sableglass invasion while the replacement promise is decided.',
         showIfAllFlags: ['c11-route-auction'],
@@ -2272,7 +2273,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-hold-force-engine-corridor',
         label: 'Hold the damaged corridor with the exact expedition.',
         detail:
-          'Carry physical losses, civic damage, truce limits, and Compact price into the next chapter.',
+          'Carry physical losses, civic damage, truce limits, and Compact price to the Gate.',
         advantage:
           'Keep Malrec’s engine workers from reaching the Gate controls first.',
         showIfAllFlags: ['c11-route-force'],

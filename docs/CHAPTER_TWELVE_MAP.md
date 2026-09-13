@@ -100,10 +100,10 @@ The implementation exposes this inventory through tested helpers rather than res
 
 | Oath family                   | Possible state                                                         | Beneficiary                     | Finale consumer                                                                                                                   |
 | ----------------------------- | ---------------------------------------------------------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| Bring them home               | Active, completed, or scarred                                          | Caelan's company                | Reduces the survival cost of regrouping only if still active; a scar makes the company demand an explicit right to withdraw.      |
-| Repair the road               | Active, completed, released, or scarred                                | Road communities                | Gives mortal evacuation order; if absent, fortress defenders must build the path under fire.                                      |
-| Hold the town                 | Active, completed, released, or scarred                                | Earlier town defenders          | Supports a stable mortal shield line; its absence raises battle damage.                                                           |
-| No one falls                  | Active, completed, destroyed, or scarred                               | Named companions                | Protects one evacuation without erasing injury; destruction forces the beneficiary to refuse being used as a symbol.              |
+| Bring them home               | Original escort duty; later expedition renewal is explicit             | Original escort                 | Its learned practice guides witnessed regrouping. It binds no new traveller.                                                      |
+| Repair the road               | Bound to the damaged road                                              | Road communities                | Earlier rescue practice helps present volunteers organise evacuation without granting wider magical authority.                    |
+| Hold the town                 | Local pursuit duty completed                                           | Harrowfen defenders             | Earlier rescue practice helps present volunteers organise evacuation. No old magical duty restarts.                               |
+| No one falls                  | Bridge duty completed                                                  | Mileless Bridge companions      | Caelan repeats learned shield placement for one willing evacuation. The old Oath supplies no new magic.                           |
 | Carry Vaor's grief            | Active, completed, released, or scarred                                | Vaor and those harmed by him    | Permits the ember to identify engine lies only under gift or pact permission. Theft never becomes consent.                        |
 | Recognise Red Moot authority  | Active or destroyed                                                    | Red Moot communities            | Lets Moot fighters name their own Gate delegate. Destruction removes Caelan's right to nominate one.                              |
 | Crown restitution             | Active or destroyed                                                    | Crown-harmed communities        | Makes restitution a clause in passage governance. Destruction requires those communities to speak without Caelan claiming credit. |
@@ -202,7 +202,7 @@ The chapter targets eighteen decisions. Conditional obligation scenes replace on
 - **Refusal:** Traveller or either side may withdraw before crossing.
 - **Crossing:** Individual, named, witnessed passages only.
 - **Duration:** One year per renewal; either realm may close it sooner by public withdrawal.
-- **Immediate cost:** Caelan owes the first year of public service or must name a freely willing replacement. Continuing governance attracts pressure and dispute.
+- **Immediate cost:** Caelan owes the first year of public service. Continuing governance attracts pressure and dispute.
 - **Stored promises:** Remain locked and may be released only to their original living owners through public review.
 - **Caelan's freedom:** He loses the right to make an unwitnessed crossing during the first term.
 - **World state:** Devils become recognised neighbours.
@@ -253,11 +253,11 @@ The chapter targets eighteen decisions. Conditional obligation scenes replace on
 ## Personal destinations
 
 | Destination                       | Seal                                               | Consent passage                                                                             | Break                                                         | Gatekeeper                                                      |
-| --------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
-| Return to the road                | Choose the mortal face before closing.             | Serve the first hearing, then travel under the same named consent as others.                | Travel the unguarded roads and answer future breaches.        | Walk the boundary road while never living wholly in one realm.  |
+| --------------------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------- |
+| Return to the road                | Choose the mortal face before closing.             | Serve the first year, then travel under the same named consent as others.                    | Travel the unguarded roads and answer future breaches.        | Walk the boundary road while never living wholly in one realm.  |
 | Rule or rebuild the fortress ring | Choose the mortal face before closing.             | Rebuild it as the mortal half of the joint bench.                                           | Build shelters and warning posts without claiming the breach. | Anchor the carried Gate at the ring while remaining its keeper. |
 | Remain within the Gate            | Keep watch in the sealed threshold chamber.        | Serve as a neutral threshold keeper for the first term.                                     | Patrol the broken boundary rather than a vanished doorway.    | Remain at the boundary as the living Gate.                      |
-| Disappear into the Cinder Deep    | Choose the Cinder Deep face and accept separation. | Cross by recorded consent and leave public office after the first duty is met or delegated. | Enter Vathis through the uncontrolled breach.                 | Travel its inner edge but never belong wholly to the Deep.      |
+| Disappear into the Cinder Deep    | Choose the Cinder Deep face and accept separation. | Cross by recorded consent and leave public office after the first year of duty is completed. | Enter Vathis through the uncontrolled breach.                 | Travel its inner edge but never belong wholly to the Deep.      |
 
 ## Relationship endings
 
@@ -272,6 +272,10 @@ The relationship decision occurs after the Gate law and personal destination. It
 | Platonic, ended, or single                  | Fulfilled single life, friendship, or unresolved future. No absent person supplies new consent.                                           |
 
 Earlier intimacy supplies history only. Every continuing relationship is chosen now. An illusion or memory cannot consent for an absent partner.
+
+Ilyra remains on her road east. Caelan may remember her boundary and leave his future open or release his hopes; she gives no new answer here. Generic friendship explicitly releases active romantic claims. Closure and single life update active intent to ended, including on save load, without changing existing platonic or hostile boundaries.
+
+Stopping the opening already fulfils the original door-order Oath. Crossing last afterward is voluntary, and crossing first cannot create a scar. Correct old saves that recorded that impossible post-completion breach. The changed-sunrise scene is located at the changed boundary, covering either freely chosen side.
 
 ## Persistent finale outputs
 
@@ -338,7 +342,7 @@ The exact mixed company holds the damaged engine corridor. Civic damage raises t
 
 ### Crown volunteers, command restriction, gatekeeper
 
-Teren and six volunteers accept a defensive order within their limit. Caelan cannot issue a wider command until he fulfils the restriction. The door-order restriction makes him cross last. He takes the Gate into himself only after reading the permanent loss of silence, full residence, transfer, and abandonment. He remains at the threshold and chooses a relationship conclusion separately.
+Teren and six volunteers accept a defensive order within their limit. Caelan cannot issue a wider command until he fulfils the restriction. Stopping the opening already fulfils the original door-order ending condition; crossing last is now a voluntary rear guard. He takes the Gate into himself only after reading the permanent loss of silence, full residence, transfer, and abandonment. He remains at the threshold and chooses a relationship conclusion separately.
 
 ### Mara or Lysara across the Gate
 

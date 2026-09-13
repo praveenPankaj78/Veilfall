@@ -184,3 +184,9 @@ The graph check now includes Chapter Four in its route exploration. It verifies:
 - `public/art/mileless-bridge-chase.png` covers the pursuit, bridge collapse, Ordan, and Crown attack.
 - `public/art/mileless-three-spans.png` covers the three route choice and its snow, storm, and brass paths.
 - `public/art/nine-nails-revelation.png` covers the hidden map reveal and the northward chapter endings.
+
+## Final review contract
+
+Three town guards arrive. At the collapse, the third holds the rope beside Lysara. Sending Mara with Brann sends one guard and leaves two. Mara cannot act in the next crossing or its death text after leaving. The brass crossing waits for the menu before Caelan jumps.
+
+Rook's bargain supplies a safe exit and one warning before the roads divide, followed by his independent pursuit of the buyer in the Underways. Giving him a full copy preserves Caelan's original fragment and its nine marks for the north-road handoff.

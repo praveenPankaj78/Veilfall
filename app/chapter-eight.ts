@@ -129,7 +129,7 @@ function chapterSevenArrivalCosts(state: GameState) {
     );
   if (has(state, 'c7-lost-gate-supplies'))
     costs.push(
-      'The supply wagon sank in the salt basin. The force has less food and fewer arrows for the fort ring.',
+      'The supply wagon lies wrecked in the salt basin. The force has less food and fewer arrows for the fort ring.',
     );
   if (has(state, 'c7-spent-supplies-on-decoys'))
     costs.push(
@@ -554,7 +554,7 @@ function personalWatchConfrontation(state: GameState) {
     return 'The Gate offers to make every danger miss Mara if you surrender the future you admitted wanting. She sees panic reach for duty and closes your hand around the unused key. “Name the cost before you call it protection,” she says.';
   }
   if (has(state, 'c8-lysara-knows-road-desire')) {
-    return 'The Gate opens a false green road with Lysara waiting at its end. She cuts the image with the half seal you gave her. “A shared road requires both of us,” she says. “This one never asked me.”';
+    return 'The Gate opens a false green road with Lysara waiting at its end. The real Lysara grips your wrist beside the image. “A shared road requires both of us,” she says. “This one never asked me.”';
   }
   if (has(state, 'c8-lysara-equal-lockkeeper')) {
     return 'The living lock tries to answer only your pulse. Lysara presses her half seal into the chain and refuses the false order. The Gate must now defeat two independent decisions instead of removing one commander.';
@@ -2698,7 +2698,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         changes: { wayfire: 2 },
         addFlags: ['c8-ansel-spoke-first'],
         result:
-          'Ansel lowers his crossbow and asks which house bought his daughter’s future promise. Vexa remains beyond the threshold and gives the question her full attention.',
+          'Ansel lowers his crossbow and asks which house bought his promise to stay when his daughter returned. Vexa remains beyond the threshold and gives the question her full attention.',
         next: 'c8-ending-witness',
       },
       {
@@ -2713,7 +2713,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         changes: { wayfire: 2 },
         addFlags: ['c8-ansel-spoke-first', 'c8-ansel-spoke-first-after-entry'],
         result:
-          'Vexa and two sealed envoys cross into Second Fort’s isolated yard. Ansel asks which house bought his daughter’s future promise, and the embassy must answer him before any ruler.',
+          'Vexa and two sealed envoys cross into Second Fort’s isolated yard. Ansel asks which house bought his promise to stay when his daughter returned, and the embassy must answer him before any ruler.',
         next: 'c8-ending-witness',
       },
     ],

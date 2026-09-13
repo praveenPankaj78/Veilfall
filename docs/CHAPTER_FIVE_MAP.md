@@ -174,3 +174,5 @@ The game check verifies:
 - relationship state, not duplicate kiss or friendship flags, controls later romantic availability and reactions;
 - the recursive lifecycle audit rejects body, ending, and journal recap as standalone consumers and validates each declared active complication against rendered play;
 - all endings keep Vaor's living ember separate from the fire Nail.
+
+The final review also checks the full-copy bridge route at `c5-north-road`. Sorin's minute spent resetting plates gives time for the selected caregiver; it does not override Mara, Lysara, or Sorin care choices.

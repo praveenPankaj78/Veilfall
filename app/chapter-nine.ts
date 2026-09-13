@@ -79,7 +79,7 @@ function futurelessPriority(state: GameState) {
     return 'Ansel points to the place where Vexa answered him after entering Second Fort. Crown clerks cannot move the meeting until the Futureless record that answer.';
   }
   if (has(state, 'c8-ansel-spoke-first')) {
-    return 'Ansel repeats Vexa’s disclosure before the Crown can redirect it. The rival house bought his daughter’s future promise and paid mortal officials to hide the openings.';
+    return 'Ansel repeats Vexa’s disclosure before the Crown can redirect it. The rival house bought his promise to stay when his daughter returned and paid mortal officials to hide the openings.';
   }
   return 'Ansel waits at the witness rail with his surviving ledger. Crown officials want the unfinished claim heard first. He wants the sold promises named first.';
 }
@@ -106,10 +106,10 @@ function forcePosition(state: GameState) {
 
 function evidencePosition(state: GameState) {
   if (has(state, 'c8-preserved-original-ledgers')) {
-    return 'Pell sets the original fort ledgers under glass. Their old ink and matched cuts can prove which mortal hand opened the Gate.';
+    return 'Ansel sets the original fort ledgers under glass. Their old ink and matched cuts can prove which mortal hand opened the Gate.';
   }
   if (has(state, 'c8-saved-pell-packet')) {
-    return 'Pell sets the sealed duplicate packet under glass. Its witness threads can authenticate a copy without pretending the original survived.';
+    return 'Ansel sets the sealed duplicate packet under glass. Its witness threads can authenticate a copy without pretending the original survived.';
   }
   if (has(state, 'c8-linked-malrec-to-gate-record')) {
     return 'Malrec’s order has already been joined to the Gate record. Its seal, witness trail, and opening dates can be tested against the assassins’ target strip.';
@@ -783,7 +783,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       oathPrice(state),
       'Your hand stays off the fragment while the offer still waits for consent.',
       preparedDefence(state),
-      'Do you bargain, prepare to steal during the expected attack, or prove Vexa’s rival house serves Malrec?',
+      'Do you bargain, prepare to take the fragment without permission, or prove Vexa’s rival house serves Malrec?',
     ],
     choices: [
       {
@@ -806,7 +806,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       {
         id: 'c9-choose-theft-route',
         label:
-          'Refuse the offer and prepare to take the fragment during the attack.',
+          'Refuse the offer and prepare to take the fragment without permission.',
         detail:
           'Keep your true name private and accept that Vexa will treat the taking as a political wound.',
         advantage:
@@ -1031,7 +1031,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         showIfAllFlags: ['c8-preserved-original-ledgers'],
         addFlags: ['c9-mortal-cell-proved-original'],
         result:
-          'Pell fits the target strip into a cut page. Fiber, ink, and hand match Malrec’s hidden fort ledger before every witness.',
+          'Ansel fits the target strip into a cut page. Fiber, ink, and hand match Malrec’s hidden fort ledger before every witness.',
         next: 'c9-devil-proof',
       },
       {
@@ -1044,7 +1044,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         showIfAllFlags: ['c8-saved-pell-packet'],
         addFlags: ['c9-mortal-cell-proved-authenticated-copy'],
         result:
-          'Pell breaks the packet seal before both delegations. Each witness thread matches the target strip’s paper, ink batch, and clerk knot.',
+          'Ansel breaks the packet seal before both delegations. Each witness thread matches the target strip’s paper, ink batch, and clerk knot.',
         next: 'c9-devil-proof',
       },
       {
@@ -1678,7 +1678,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Keep the doors open and ask why Vexa fears the realms becoming one.',
         advantage:
-          'Learn the Chapter Ten danger while preserving the chosen personal boundary.',
+          'Learn the danger beyond the Gate while preserving the chosen personal boundary.',
         hideIfAnyFlags: ['c9-vexa-permanent-hostility'],
         addFlags: [
           'c9-private-conversation-only',
@@ -1838,7 +1838,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Accept slower movement so the expedition can identify every inside opening.',
         advantage:
-          'Begin Chapter Ten with the only complete map of mortal and devil Gate routes.',
+          'Begin the expedition with the only complete map of mortal and devil Gate routes.',
         showIfAllFlags: ['c8-pell-survived', 'c8-complete-lock-map'],
         addFlags: [
           'c9-roster-pell',

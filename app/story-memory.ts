@@ -1,4 +1,4 @@
-import type { GameState } from './game-data';
+import { resolveCompletedOathFlags, type GameState } from './game-data';
 
 const pageKnownNodes = new Set([
   'sealed-case',
@@ -1478,7 +1478,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c7-copied-gate-diversion'))
     consequences.push(
-      'Because you preserved Malrec’s Gate order, the army saw that he emptied the forts before accusing you.',
+      'Because you preserved Malrec’s Gate order, you carry dated proof that he emptied the forts before accusing you.',
     );
   if (game.flags.includes('c7-proof-rider-relay'))
     consequences.push(
@@ -1615,7 +1615,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c8-living-seed-spent'))
     consequences.push(
-      'Because Lysara’s weakened seed saved Pell and then lifted the buried chain, its treaty magic is now dormant.',
+      'Because Lysara spent the weakened seed lifting the buried chain, its treaty magic is now dormant.',
     );
   else if (game.flags.includes('c8-living-seed-weakened'))
     consequences.push(
@@ -1800,15 +1800,33 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c11-freedom-command-restricted'))
     consequences.push(
-      'Because mythic Oathfire protected the refusal square, the Red Moot authority Oath now prevents any order beyond each fighter’s accepted command until the Gate law changes.',
+      game.flags.includes('c12-oathscar-command')
+        ? 'You breached the accepted command limit. The command Oathscar records the loss of fighters outside your authority.'
+        : game.flags.some((flag) =>
+              [
+                'c12-gate-sealed',
+                'c12-gate-consent-passage',
+                'c12-gate-broken',
+                'c12-gatekeeper',
+              ].includes(flag),
+            )
+          ? 'The Gate law has changed, ending the mythic command restriction. Each fighter still keeps their own accepted command limits.'
+          : 'Because mythic Oathfire protected the refusal square, the Red Moot authority Oath now prevents any order beyond each fighter’s accepted command until the Gate law changes.',
     );
   if (game.flags.includes('c11-freedom-hearing-restricted'))
     consequences.push(
-      'Because mythic Oathfire made hidden victims impossible to erase, you cannot refuse their Price Court hearing until it ends.',
+      game.flags.includes('c12-freedom-hearing-returned')
+        ? 'The victims completed their Price Court hearing. The exact hearing freedom has returned.'
+        : game.flags.includes('c12-oathscar-hearing')
+          ? 'You refused the owed victims’ hearing. Its Oathscar records the breach without granting new authority.'
+          : 'Because mythic Oathfire made hidden victims impossible to erase, you cannot refuse their Price Court hearing until it ends.',
     );
   if (game.flags.includes('c11-freedom-door-order-restricted'))
     consequences.push(
-      'Because mythic Oathfire kept the retreat open, you cannot cross a contracted door first until the opening stops or every willing traveller reaches a freely chosen safe side.',
+      game.flags.includes('c12-opening-stopped') ||
+        game.flags.includes('c12-door-freedom-returned')
+        ? 'The retreat Oath ended when its first ending condition was met. Your freedom to cross a contracted door first has returned.'
+        : 'Because mythic Oathfire kept the retreat open, you cannot cross a contracted door first until the opening stops or every willing traveller reaches a freely chosen safe side.',
     );
   if (game.flags.includes('c11-elian-voice-heard'))
     consequences.push(
@@ -1870,7 +1888,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c12-relationship-distance'))
     consequences.push(
-      'Because you chose honest distance, the relationship continues without a false promise of reunion.',
+      'Because you chose honest distance, existing care and future possibilities remain open without a promise of reunion or a new answer from anyone absent.',
     );
   if (game.flags.includes('c12-relationship-friendship'))
     consequences.push(
@@ -1894,6 +1912,7 @@ export function majorConsequences(game: GameState) {
 }
 
 export function caelanFinaleExport(game: GameState) {
+  game = { ...game, flags: resolveCompletedOathFlags(game.flags) };
   const firstFlag = (candidates: string[]) =>
     candidates.find((flag) => game.flags.includes(flag)) ?? null;
 

@@ -264,8 +264,9 @@ function dragonspineHandoff(state: GameState) {
     records.push('six memory plates');
   if (has(state, 'c5-royal-witnesses-turned'))
     records.push('two royal witnesses');
+  const carried = records.join(', ');
   const proof = records.length
-    ? `${records.join(', ')} came out with you.`
+    ? `${carried[0].toUpperCase()}${carried.slice(1)} came out with you.`
     : 'The buried truth came out mainly in the memories of the four survivors.';
   const lost = has(state, 'c5-lost-royal-camp-proof')
     ? ' Hale’s loose drill logs and copied camp records were lost, but carried items survived.'
@@ -369,7 +370,7 @@ function proofCarried(state: GameState) {
   if (!proof.length) {
     return 'The truth of Orivane’s sacrifice survives mainly in your memory. You will have to earn belief before you can ask anyone to act on it.';
   }
-  return `${proof.join('. ')}. The evidence can challenge Malrec and the old rulers. It cannot decide what the living clans should do now.`;
+  return `${proof.map((line) => line[0].toUpperCase() + line.slice(1)).join('. ')}. The evidence can challenge Malrec and the old rulers. It cannot decide what the living clans should do now.`;
 }
 
 export const chapterSixNodes: Record<string, StoryNode> = {

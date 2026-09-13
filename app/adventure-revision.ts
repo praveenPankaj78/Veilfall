@@ -163,8 +163,8 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
         : 'Nilo’s bandage darkens again. He will live if the bleeding stays controlled, but the damage may still cost him the leg.',
       'Lysara tries to close her cut hand and cannot. Without the dose, she may lose the hand and her control of the living magic in the seed. That would also threaten the border treaty.',
       state.flags.includes('captured-attacker')
-        ? 'Garran’s fever will kill him without the dose. His testimony may be the only proof strong enough to keep the Crown from executing you for the attack.'
-        : 'Garran’s fever will kill him without the dose. He may be the only witness who can identify the person who ordered the attack.',
+        ? 'Without the dose, Garran’s fever may leave him too weak to testify. His testimony may be the only proof strong enough to challenge the Crown’s charges.'
+        : 'Without the dose, Garran’s fever may leave him too weak to testify. He may be the only witness who can identify the person who ordered the attack.',
       state.flags.includes('c2-compressed-wound')
         ? 'Mara keeps one hand on the pressure bandage you tied together. Lysara hides her shaking fingers. Garran watches the bottle through the fever.'
         : state.flags.includes('c2-organised-care')
@@ -682,7 +682,7 @@ export const adventureNodeUpdates: Record<string, NodeUpdate> = {
     body: (state) => [
       chapterThreeLanternArrival(state),
       'Ordan waits on the raised centre span with town guards and civilians watching from both banks. He argues that independent roads let smugglers, foreign armies, and border lords avoid Asterra’s defences.',
-      'You recognise the shape of his argument. He calls control protection, then leaves other people to pay for it.',
+      'Your fingers curl against your palm while Ordan speaks.',
       chapterThreeLanternProof(state),
       ...(state.flags.includes('c3-found-practice-forgery')
         ? [

@@ -195,3 +195,5 @@ The game check verifies:
 - Chapter Seven's fort horizon matches the occupied Fourth Fort revealed in Chapter Eight;
 - controlled story terms are introduced before use;
 - close player point of view appears across most scenes.
+
+The ordinary salt-trap approach does not claim surveyed escape lanes. That preparation belongs to its exact earned option. Copying Malrec's Gate diversion gives carried dated proof immediately; the army hears it only when the player presents it.

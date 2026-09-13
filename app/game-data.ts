@@ -458,6 +458,44 @@ export function relationshipChanges(choice: Choice) {
   return relationshipEffects[choice.id] ?? {};
 }
 
+export function resolveCompletedOathFlags(flags: string[]): string[] {
+  if (
+    !flags.includes('c11-freedom-door-order-restricted') ||
+    !flags.includes('c12-opening-stopped')
+  )
+    return flags;
+  // The original promise ends at either condition, not both. Correct the
+  // obsolete post-opening scar in saved finales as well as new transitions.
+  return [
+    ...new Set([
+      ...flags.filter((flag) => flag !== 'c12-oathscar-door-order'),
+      'c12-door-freedom-returned',
+    ]),
+  ];
+}
+
+export function resolveFinalRelationshipIntents(
+  current: Relationships,
+  flags: string[],
+): Relationships {
+  const intent = flags.includes('c12-relationship-friendship')
+    ? 'platonic'
+    : flags.some((flag) =>
+          ['c12-relationship-closed', 'c12-relationship-single'].includes(flag),
+        )
+      ? 'ended'
+      : null;
+  if (!intent) return current;
+  return Object.fromEntries(
+    Object.entries(current).map(([person, score]) => [
+      person,
+      ['interested', 'exploring', 'committed'].includes(score.intent)
+        ? { ...score, intent }
+        : { ...score },
+    ]),
+  ) as Relationships;
+}
+
 export function nextRelationships(
   current: Relationships,
   choice: Choice,
@@ -503,7 +541,7 @@ export function nextRelationships(
       }
     }
   }
-  return next;
+  return resolveFinalRelationshipIntents(next, choice.addFlags ?? []);
 }
 
 export function relationshipSummary(score: RelationshipScore) {
@@ -643,7 +681,7 @@ const originalNodes: Record<string, StoryNode> = {
         ? 'The lead mare still works her tongue after you cleaned the strange oil from her bit. Before you can trace its source, a grey horse enters from the eastern road.'
         : 'A grey horse trots through the gate from the eastern road, mist lifting from its flanks.',
       'Mara Renn swings down before the animal stops. Rain has darkened her hair and drawn her green riding coat close across her shoulders. She carries her bow, a stolen pear, and the annoyed look that usually means she has found trouble.',
-      'Mara throws you the pear without looking. You catch it the same way you caught every warning she tossed across your father’s forge when both of you were small enough to hide beneath his workbench.',
+      'Mara throws you the pear without looking. You catch it as you caught scraps of bread across your father’s inn kitchen. Back then, both of you could hide beneath his table.',
       'She is already watching the road behind her. The old habit in your hands says she came home. The stillness in her shoulders says the danger followed.',
       '“The ridge is clear,” she says. “The low road has water over the stones already. Also, someone moved the third mile marker during the night. It points back at Greyhaven.” She bites the pear. “Still want the easy duty?”',
     ],

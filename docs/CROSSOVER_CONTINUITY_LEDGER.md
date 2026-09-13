@@ -8,7 +8,7 @@ This ledger is the canonical route check for every playable chapter. Update it b
 2. Rook Chapter Two follows his flight through the King's Road night market.
 3. Caelan Chapter Four and Rook Chapter Three show the same Mileless Bridge crisis from different viewpoints.
 4. At the final stable arch, Caelan takes the real fragment north toward Dragonspine. Rook takes his copied route down into the Underways.
-5. Caelan Chapters Five through Twelve continue through Dragonspine, the Ember Steppe, the Black Gate, the Ash Road, Vathis, and both faces of the changed Gate. Rook and Ilyra are not physically present.
+5. Caelan Chapters Five through Twelve continue through Dragonspine, the Ember Steppe, the Black Gate, the Ash Road, Vathis, and both faces of the changed Gate. Rook remains absent after the bridge. Ilyra joins Caelan on the Ember Steppe in Chapters Six and Seven, then leaves before Chapter Eight.
 6. Rook continues through the Underways, Brassreach, Serekh, the Unsea, and the Luminous Court.
 7. Rook first meets Ilyra in Serekh. They meet again in the Unsea.
 8. Caelan's changed sunrise reaches Rook later in his series and alters his approach to the Luminous Court. It does not launch Rook's story.
@@ -72,7 +72,7 @@ Ilyra meets Caelan on the Ember Steppe while tracing the ancestor storm, then le
 20. Every Chapter Ten ending reaches Vathis with fragment custody, the exact expedition, offer method, relationship state, and Free Ledger price intact for Chapter Eleven.
 21. Chapter Eleven resolves Price Court and Sableglass engine control through play, earns one bounded engine voice warning per route, and preserves uncertainty about Elian's identity and location.
 22. Every Chapter Eleven ending reaches the opening inner Black Gate with one route, exact roster, custody state, active freedom restrictions, Vathis alliance, and relationship state for Chapter Twelve.
-23. Chapter Twelve resolves every owed hearing, review, passage, command limit, door order, and fragment-custody promise through a playable choice before the finale.
+23. Chapter Twelve resolves every owed hearing, review, passage, command limit, door order, and fragment-custody promise through its exact ending condition and a visible consequence before the finale.
 24. Each Chapter Twelve ending records one Gate law, one compatible personal destination, one independent relationship conclusion, one stored-promise result, and one changed sunrise.
 25. The Rook import maps seal to a closed Luminous Court approach, consent passage to mutual permission, breakage to an unstable approach, and mortal gatekeeping to carried-voice recognition.
 
@@ -90,3 +90,10 @@ Before a chapter is accepted, answer these questions in its chapter map:
 4. Where does every visiting hero leave, and what is that hero's next canonical location?
 5. Does any choice give a visiting hero work that belongs to the active protagonist or a current local companion?
 6. Does the automated graph check reject an unapproved hero name, choice identifier, or active action in this chapter?
+
+7. Has every named actor in a shared callback survived and travelled on every route that reaches it, independently of relationship intent and evidence ownership?
+8. Does each promised warning arrive at the promised time, and does every exact escort count account for those who leave?
+9. Is each promise still attributed to the person who made it, rather than the person they hoped to protect?
+10. Does a shared result use only common preparation? A sibling option's map, seal, permission, or surveyed escape route requires its own gate.
+
+Caelan finale corrections: stopping the inside opening fulfils the original retreat door-order condition immediately. Later crossing order is voluntary. Ilyra remains on her own road east; her remembered boundary can shape Caelan's choice without a new answer from her. Closure, single life, and an explicit move to friendship release active romantic claims in both saved and newly played finales.

@@ -37,10 +37,10 @@ function mortalFace(state: GameState) {
     lines.push('First Fort is a smoking gap with no survivors inside it');
   else lines.push('First Fort answers with its surviving bell');
   if (has(state, 'c7-gained-full-army'))
-    lines.push('the Crown force you earned holds its recorded posts');
+    lines.push('The Crown force you earned holds its recorded posts');
   else if (has(state, 'c7-gained-chosen-company'))
-    lines.push('the chosen Crown company holds its narrow sector');
-  else lines.push('no formal Crown army fills the empty road');
+    lines.push('The chosen Crown company holds its narrow sector');
+  else lines.push('No formal Crown army fills the empty road');
   if (has(state, 'c9-mara-remained-at-gate'))
     lines.push('Mara waits at the mortal face');
   if (has(state, 'c9-lysara-remained-at-gate'))
@@ -112,7 +112,8 @@ function injuryPressure(state: GameState) {
     pressures.push('the last sealed supplies are gone');
   if (pressures.length === 0)
     return 'The company has enough breath to choose its next position, though nobody is unhurt.';
-  return `${pressures.join(', ')}. The slower shield route remains open and asks no class resource.`;
+  const pressure = pressures.join(', ');
+  return `${pressure[0].toUpperCase()}${pressure.slice(1)}. The slower shield route remains open without spending your remaining strength.`;
 }
 
 function offerMethodAtGate(state: GameState) {
@@ -180,6 +181,12 @@ function relationshipPresence(state: GameState) {
     ])
   )
     return 'Vexa keeps the exact political distance already agreed. No romantic choice appears in her silence.';
+  if (
+    ['committed', 'exploring', 'interested'].includes(
+      state.relationships.ilyra.intent,
+    )
+  )
+    return 'You remember Ilyra choosing her own road east. No message has arrived, and she cannot answer here. You may keep the possibility open or release your own hopes.';
   return 'No partner owns this hour. Friendship and a full single life remain complete futures.';
 }
 
@@ -223,11 +230,11 @@ function relationshipResult(state: GameState) {
   if (has(state, 'c12-relationship-together'))
     return 'You choose a continued partnership. It grants no command, passage, or protection from the Gate law.';
   if (has(state, 'c12-relationship-distance'))
-    return 'You choose a relationship that keeps its truth across distance without promising an impossible return.';
+    return 'You leave the future open across distance without claiming a new answer or promising an impossible return.';
   if (has(state, 'c12-relationship-friendship'))
     return 'You choose friendship and preserve the other person’s limits.';
   if (has(state, 'c12-relationship-closed'))
-    return 'You close the relationship in plain words. No earlier intimacy answers for either of you now.';
+    return 'You release your remaining romantic hopes. No earlier intimacy obliges anyone to begin again.';
   if (has(state, 'c12-relationship-political-truce'))
     return 'You and Vexa choose a bounded political truce. It creates no trust, intimacy, passage, or private access.';
   return 'You choose a full single life. It costs no strength and weakens no world outcome.';
@@ -300,7 +307,9 @@ function obligationResult(state: GameState) {
       'the command breach loses fighters outside your old authority',
     );
   if (has(state, 'c12-door-freedom-returned'))
-    results.push('crossing last returns your contracted-door freedom');
+    results.push(
+      'the completed ending condition returns your contracted-door freedom',
+    );
   if (has(state, 'c12-oathscar-door-order'))
     results.push('crossing first protects the wounded but leaves a door scar');
   return results.length
@@ -318,11 +327,11 @@ function lawSupport(state: GameState) {
   if (has(state, 'c12-law-support-command-limit'))
     return 'Every army stops at the authority it already accepted.';
   if (has(state, 'c12-law-support-homecoming'))
-    return 'The homecoming Oath protects the company’s route to its chosen side and promises no forced crossing.';
+    return 'The homecoming lesson guides a witnessed route to each chosen side. The old escort Oath binds no new traveller.';
   if (has(state, 'c12-law-support-road-communities'))
-    return 'Road and town promises organise mortal evacuation while their communities keep authority over the paths.';
+    return 'Experience protecting roads and Harrowfen helps organise mortal evacuation. Present volunteers keep authority over the paths.';
   if (has(state, 'c12-law-support-no-one-falls'))
-    return 'The surviving protection Oath shields one named evacuation without erasing anyone’s injury or refusal.';
+    return 'The bridge rescue taught you how to shield a vulnerable withdrawal. Its completed Oath supplies no new power.';
   if (has(state, 'c12-law-support-living-command'))
     return 'The living command Oath carries one defensive request to units that still freely answer it.';
   if (has(state, 'c12-law-support-shared-oath'))
@@ -390,8 +399,8 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-build-unallied-contact-line',
         label: 'Build a contact line from individual volunteers.',
         detail:
-          'Use when an older save has no recorded Vathis route. Each person chooses a post.',
-        advantage: 'Preserve a complete backward-compatible path.',
+          'With no verified faction agreement, ask each person to choose a post.',
+        advantage: 'Hold the breach through individual volunteers.',
         hideIfAnyFlags: allRouteFlags,
         result:
           'People name themselves and choose their posts. The improvised line bends, but it does not become your property.',
@@ -417,7 +426,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-shield-inner-wounded',
         label: 'Turn the expedition shields over the wounded.',
         detail:
-          'Protect Pell and other injured travellers. The mortal line absorbs more damage.',
+          'Protect the injured travellers who crossed with you. The mortal line absorbs more damage.',
         advantage: 'Preserve the injured expedition for the final hearing.',
         addFlags: ['c12-inner-wounded-protected'],
         result:
@@ -658,7 +667,8 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       {
         id: 'c12-seat-legacy-fragment-publicly',
         label: 'Record the fragment publicly before seating it.',
-        detail: 'A safe route for an older save without a recovery flag.',
+        detail:
+          'Let both sides witness custody when no earlier recovery record can be verified.',
         advantage: 'Stop the opening without inventing private ownership.',
         hideIfAnyFlags: [
           'c9-route-bargain',
@@ -885,7 +895,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     body: (state) => [
       has(state, 'c11-alliance-ash-compact-passage')
         ? 'Malrec’s inside opening has stopped. The Ash Compact’s price is now due: exactly one witnessed passage. Civic damage makes its delegates demand that the traveller carry no weapon.'
-        : 'The Ash Compact holds no purchased passage from Chapter Eleven. Nobody may turn its old help into permanent access.',
+        : 'The Ash Compact holds no purchased passage from Vathis. Nobody may turn its old help into permanent access.',
       'The single crossing can carry one unarmed messenger to the mortal witness line. Refusing it preserves position but breaks the alliance. What do you allow?',
     ],
     choices: [
@@ -987,20 +997,23 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     art: 'blackgatecollision',
     body: (state) => [
       has(state, 'c11-freedom-door-order-restricted')
-        ? 'The contracted-door promise still bars you from crossing first. It ends when the opening stops and everyone reaches the chosen safe line. The opening is stopped. Your company has not yet crossed that line.'
+        ? has(state, 'c12-opening-stopped')
+          ? 'The contracted-door promise ended when the opening stopped. Its other ending condition was everyone reaching a chosen safe side. Either was enough. The dark mark cannot punish your crossing order now.'
+          : 'The contracted-door promise bars you from crossing first until the opening stops or every willing traveller reaches a chosen safe side.'
         : 'No mythic promise fixes the crossing order. The wounded still need a clear lane to the law circle.',
-      'The safe line lies six steps away. Waiting exposes you to one more engine strike. Crossing first saves time but can breach the exact promise. Who moves?',
+      'The safe line lies six steps away. The wounded need shields while the last engine sparks fall. Who moves?',
     ],
     choices: [
       {
         id: 'c12-let-expedition-cross-safe-line-first',
         label: 'Hold the door while the expedition crosses first.',
-        detail: 'Fulfil the restriction after the opening stopped.',
-        advantage: 'Return your contracted-door freedom without a scar.',
+        detail:
+          'The opening has stopped, so following last is now a free choice.',
+        advantage: 'Guard the rear while the wounded reach the law circle.',
         showIfAllFlags: ['c11-freedom-door-order-restricted'],
         addFlags: ['c12-door-freedom-returned'],
         result:
-          'The exact expedition crosses the safe line. The door mark goes dark, and you follow last with your freedom returned.',
+          'The exact expedition crosses the safe line. Your door mark is already dark. You follow last because you choose to guard the rear.',
         next: 'c12-oath-hearing',
       },
       {
@@ -1010,6 +1023,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
           'Save the wounded from the strike. Break the order promise and take an Oathscar.',
         advantage: 'Prevent one expedition injury during the crossing.',
         showIfAllFlags: ['c11-freedom-door-order-restricted'],
+        hideIfAnyFlags: ['c12-opening-stopped'],
         addFlags: ['c12-oathscar-door-order'],
         result:
           'You cross first. The strike hits your shield instead of the wounded, and a door-shaped scar burns across your wrist.',
@@ -1019,11 +1033,11 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-move-wounded-through-open-lane',
         label: 'Move the wounded through the open lane.',
         detail:
-          'No order promise binds you. Pell remains behind his shield escort.',
+          'No order promise binds you. The wounded remain behind their shields.',
         advantage: 'Bring the whole expedition to the law circle.',
-        hideIfAnyFlags: ['c11-freedom-door-order-restricted'],
+        showIfAllFlags: ['c12-opening-stopped'],
         result:
-          'The shield escort sets the pace. Pell and every other present traveller reach the circle without pretending their injuries vanished.',
+          'The shield escort sets the pace. Every present traveller reaches the circle, with the wounded leaning on willing shoulders.',
         next: 'c12-oath-hearing',
       },
     ],
@@ -1057,7 +1071,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       ],
     },
     body: (state) => [
-      `${destroyedOathCost(state)} ${has(state, 'c10-offer-method-oath') ? 'The Chapter Ten burden Oath has ended. Its private accounts return to their owners and give you no authority over them.' : 'No burden Oath lets you carry another traveller’s will.'}`,
+      `${destroyedOathCost(state)} ${has(state, 'c10-offer-method-oath') ? 'The Ash Road burden Oath has ended. Its private accounts return to their owners and give you no authority over them.' : 'No burden Oath lets you carry another traveller’s will.'}`,
       `${obligationResult(state)} Active promises may support only their named beneficiaries. Scars create no power. Present consent remains a slower complete path. What should support the final hearing?`,
     ],
     choices: [
@@ -1112,39 +1126,39 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-support-law-with-homecoming',
-        label: 'Use the surviving homecoming Oath for the company.',
+        label: 'Use the homecoming lesson to guide the company.',
         detail:
-          'It protects a route to each traveller’s chosen side and cannot force crossing.',
+          'Mark a witnessed route to each chosen side. The old escort Oath binds no new traveller.',
         advantage: 'Give the exact expedition one protected regrouping.',
         showIfAllFlags: ['oath-bring-them-home'],
         addFlags: ['c12-law-support-homecoming'],
         result:
-          'The Oath draws one warm route to each traveller’s freely chosen side. It does not pull anyone across.',
+          'You mark a route to each freely chosen side and ask witnesses to guard it. Nobody is pulled across.',
         next: 'c12-four-laws',
       },
       {
         id: 'c12-support-law-with-road-communities',
         label: 'Ask the road communities to organise the mortal retreat.',
         detail:
-          'A surviving road or town Oath gives its own community authority over evacuation.',
+          'Use the care learned on the road and at Harrowfen. Ask present volunteers to control the evacuation.',
         advantage: 'Open a stable civilian path behind the fortress shields.',
         showIfAnyFlags: ['c2-oath-repair-road', 'c3-oath-hold-town'],
         addFlags: ['c12-law-support-road-communities'],
         result:
-          'Mortal road keepers answer the old promise and mark a civilian path. They keep control of it.',
+          'Present mortal volunteers follow your rescue plan and mark a civilian path. They keep control of it.',
         next: 'c12-four-laws',
       },
       {
         id: 'c12-support-law-with-no-one-falls',
-        label: 'Use the surviving protection Oath for one evacuation.',
+        label: 'Use the bridge rescue lesson for one evacuation.',
         detail:
-          'Protect its named beneficiaries once. It cannot erase injury or refusal.',
+          'The bridge Oath has ended. Repeat its shield placement with willing defenders; it supplies no new magic.',
         advantage:
           'Shield one vulnerable crossing or withdrawal from the promise storm.',
         showIfAllFlags: ['c4-oath-no-one-falls'],
         addFlags: ['c12-law-support-no-one-falls'],
         result:
-          'The Oath covers one named withdrawal. The wounded still limp, and anyone may refuse the route.',
+          'You place willing defenders as you did at the bridge. Their shields cover one withdrawal. The wounded still limp, and anyone may refuse the route.',
         next: 'c12-four-laws',
       },
       {
@@ -1229,7 +1243,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-sealed-gate',
         label: 'Seal the Cinder Deep.',
         detail:
-          'After a final free choice of side, no person, army, promise, offer, or message crosses. No ruler may reopen it. It lasts until separately chosen delegates of both realms freely replace it. Stored promises stay inert in the stone. Allies remain stranded. Caelan loses the right to cross after choosing a side.',
+          'After a final free choice of side, no person, army, promise, offer, or message crosses. Nobody can require another person to evacuate. No ruler may reopen it. It lasts until separately chosen delegates of both realms freely replace it. Stored promises stay inert in the stone and cannot be spent. Allies remain stranded. Caelan loses the right to cross after choosing a side. At sunrise, one road of light will stay barred.',
         advantage:
           'Stop all large and small crossings after the final closing.',
         addFlags: [
@@ -1248,7 +1262,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-consent-passage',
         label: 'Create controlled passage by mutual consent.',
         detail:
-          'A named traveller and chosen keepers on both sides must record yes. Any signer may withdraw before crossing. A public joint bench reviews disputes. Either realm may close passage, and both renew yearly. Stored promises return only through review. Caelan owes one year of public service and may not cross unwitnessed during it.',
+          'A named traveller and chosen keepers on both sides must record yes. Any signer may withdraw before crossing. A public joint bench reviews disputes. Either realm may close passage, and both renew yearly. Stored promises remain locked until public review returns them to their original living owners. Allies must wait for permission too. Caelan owes one year of public service and may not cross unwitnessed during it. At sunrise, a narrow road of light will open only when witnesses on both sides name it.',
         advantage:
           'Create named crossings that either side and the traveller may refuse.',
         addFlags: [
@@ -1267,8 +1281,8 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-broken-gate',
         label: 'Break the Gate.',
         detail:
-          'No Gate or keeper owns crossing. The stone breaks now, and no central authority may close it. Stored promises return to living makers or enter Worldroot without a new owner. The opening remains until people build another law. Caelan keeps movement but loses central power to stop invasion.',
-        advantage: 'End the Gate’s ownership and central control permanently.',
+          'No Gate or keeper owns crossing. The stone breaks now, and no central authority may close it. People may refuse bargains, but cannot close the shared road alone. Stored promises return to living makers or enter Worldroot without a new owner. Their release strikes both shield lines; weaker defences suffer more. Allies and invading armies can cross freely in both directions. The opening remains until people build another law. Caelan keeps movement but loses central power to stop invasion. At sunrise, an unstable road of light will open.',
+        advantage: 'End the old Gate’s ownership and central control.',
         addFlags: [
           'c12-gate-broken',
           'c12-devils-invading-powers',
@@ -1285,7 +1299,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-mortal-gatekeeper',
         label: 'Take the Gate into Caelan.',
         detail:
-          'The Gate and stored promises enter Caelan. He may open for one named willing person and refuse armies. This uses public witnessed identity, not true-name access. He cannot silence the voices, give the Gate away, abandon the boundary, or live wholly in either realm. This lasts until death or a freely accepted replacement releases every voice.',
+          'The Gate and stored promises enter Caelan as separate voices he cannot spend or erase. He must hear individual requests and may open for one named willing person or refuse armies. Every traveller may refuse; allies must ask too. This uses public witnessed identity, not true-name access. He cannot silence the voices, give the Gate away, abandon the boundary, or live wholly in either realm. This lasts until death or a freely accepted replacement law releases every voice. At sunrise, light will bend around him and answer witnessed identity.',
         advantage:
           'Give a mortal keeper precise passage control without power to compel crossing.',
         addFlags: [
@@ -1354,7 +1368,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         detail:
           'The inside opening has stopped. Custody must now be resolved honestly.',
         advantage:
-          'Prevent the final promise from disappearing into an ending summary.',
+          'Bring the fragment before its keepers while every witness can still reach the case.',
         requiresFlags: ['c12-opening-stopped'],
         result:
           'Both witness lines repeat the new law while you lift the fragment from the stilled engine.',
@@ -1424,7 +1438,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-record-legacy-bargain-custody',
         label: 'Place the old bargain fragment in public neutral custody.',
         detail:
-          'An older save lacks the owned-return flag. Do not invent fulfilment, amendment, or breach.',
+          'No witnessed return term can be verified. Record present custody without claiming an earlier promise was kept or broken.',
         advantage: 'Resolve custody publicly without manufacturing old terms.',
         showIfAllFlags: ['c9-route-bargain'],
         hideIfAnyFlags: ['c9-return-promise-owned'],
@@ -1486,7 +1500,8 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       {
         id: 'c12-place-legacy-fragment-in-public-custody',
         label: 'Place the unclassified fragment in public custody.',
-        detail: 'A backward-compatible resolution for an older save.',
+        detail:
+          'Let present witnesses resolve custody where earlier records are missing.',
         advantage: 'End private possession without inventing past terms.',
         hideIfAnyFlags: [
           'c9-route-bargain',
@@ -1745,32 +1760,34 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-choose-honest-distance',
-        label: 'Keep the bond across honest distance.',
+        label: 'Leave the future open across honest distance.',
         detail: 'Promise no reunion that the Gate law may prevent.',
         advantage: 'Preserve care without false certainty.',
         addFlags: ['c12-relationship-distance'],
         result:
-          'You name the distance and refuse to disguise it. The bond remains, with no claim on passage or return.',
+          'You leave room for a future meeting without claiming passage or a return. Whatever care already exists remains freely given; nobody owes you a new answer.',
         next: 'c12-changed-sunrise',
       },
       {
         id: 'c12-choose-enduring-friendship',
-        label: 'Choose friendship without a romantic claim.',
-        detail: 'Preserve trust and independent futures.',
+        label: 'Choose a future built around friendship.',
+        detail:
+          'Release your remaining romantic claims while preserving trust and independent futures.',
         advantage: 'Carry the relationship forward as chosen friendship.',
         addFlags: ['c12-relationship-friendship'],
         result:
-          'You offer friendship in plain words. The answer keeps affection, argument, and freedom without a romantic promise.',
+          'You choose friendship without asking anyone to answer for an absent person. Your companions keep their own futures, and you release your remaining romantic claims.',
         next: 'c12-changed-sunrise',
       },
       {
         id: 'c12-close-relationship-honestly',
-        label: 'Close the relationship honestly.',
-        detail: 'End the claim without rewriting what happened.',
+        label: 'Release any remaining romantic hopes.',
+        detail:
+          'End your romantic claims without rewriting what happened or requiring another person’s permission.',
         advantage: 'Give both people a clear end and independent future.',
         addFlags: ['c12-relationship-closed'],
         result:
-          'You say the ending without blame or magic. What you shared remains true, and no longer makes a claim.',
+          'You release your hopes without blame or magic. Whatever you shared remains true, and no longer makes a romantic claim.',
         next: 'c12-changed-sunrise',
       },
       {
@@ -1808,7 +1825,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     id: 'c12-changed-sunrise',
     kicker: 'The first altered dawn',
     title: 'A Law Written in Light',
-    location: 'The Eastern Edge of the Fortress Ring',
+    location: 'The Changed Boundary',
     objective: 'Witness the changed sunrise and carry its exact future state.',
     threat: 'Low',
     art: 'blackgatecollision',

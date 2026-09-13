@@ -280,3 +280,13 @@ A chapter is ready only when:
 - at least one consequence is visible without opening a menu;
 - the final beat makes the next action desirable and understandable;
 - playtesters are divided by anticipation, not by basic comprehension.
+
+## Final season review
+
+Compare each menu's promised advantage with the immediate result and every free sibling. A claim of an extra reward requires an actual difference. State uncertainty as uncertainty when a later route permits survival or testimony.
+
+Before a final world-law choice, disclose authority, refusal, crossing, duration, ending condition, immediate cost, stored promises, allies, personal freedom, and the observable world change. Later narration confirms these terms; it cannot introduce an undisclosed permanent price.
+
+Journal entries describe what has happened at the moment they become visible. Carrying evidence does not mean an army has already heard it. Spending an object does not prove it performed every optional earlier rescue.
+
+Keep save repair and implementation terminology out of story choices. Describe an unverified agreement or missing public record in terms Caelan can observe. Interface headings may still identify chapters and replay controls.

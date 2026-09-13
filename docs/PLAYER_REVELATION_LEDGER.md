@@ -367,3 +367,9 @@ Mechanic: Finale synthesis with no new mechanic.
 A player beginning with Rook or Ilyra receives a short world state card containing only facts the new protagonist can observe. The card names no more than three consequences and never summarises another protagonist's emotional ending.
 
 Every essential answer in this ledger can still be learned inside the active series. Playing earlier series adds recognition, relationships, and consequence, not basic comprehension.
+
+## Evidence callback review
+
+Check each evidence test against its acquisition route and permission. A surviving authenticated copy can be compared with recorded witness marks; it does not acquire an unintroduced magical test or Vaor's consent. The person presenting a record must be present and alive independently of the record's survival.
+
+Distinguish the owner of a sold promise from its beneficiary. Ansel sold his own promise to stay when his daughter returned. Later disclosures and Ash Road offers must preserve that ownership.

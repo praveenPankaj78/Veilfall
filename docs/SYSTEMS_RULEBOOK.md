@@ -252,3 +252,9 @@ A series finale records its world outcome, protagonist destination, and relation
 Every terminal world flag needs a concrete later import contract. The contract names the option, cost, route, reaction, or restriction that consumes it. A final paragraph or journal line does not count as the consumer. The graph checker must keep finale dimensions in its state key so different world and personal endings cannot collapse into one tested path.
 
 When a finale fulfils or breaches an owned promise, store that result separately from the world outcome. Fulfilment ends only the named duty. Amendment requires every living keeper named by the contract. Breach creates a named Oathscar and cannot be rewritten as fulfilment by an ending summary.
+
+Preserve the exact logical ending condition of an Oath. If it ends when either event happens, the first event returns the freedom immediately. Never widen that condition to require both events or charge a later scar. Save normalization and terminal exports must agree with the original accepted terms; migrate demonstrably invalid historical outcomes without removing genuine breaches.
+
+A finale choice that explicitly releases active romantic claims updates relationship intent as well as its ending flag. Apply the same correction when loading a saved finale. Preserve existing platonic, ended, hostile, and unresolved boundaries and all numerical scores. Leaving a future open cannot create a partner or obtain an absent person's answer.
+
+Structural and prose checks load the registered runtime graph and its imports, including overlays. Verify that chapter contracts and actual interface handoffs cover that same graph. Use actual transition and replay functions in an isolated save store for continuous-season tests; never manipulate a player's browser saves for QA.

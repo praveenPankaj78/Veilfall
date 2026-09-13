@@ -78,7 +78,7 @@ End state: Harrowfen rejects Ordan's warrant and Caelan prevents the army road f
 
 Location: A ruined bridge that connects several distant roads at once.
 
-Main event: Caelan pursues the stolen Nail fragment and catches Rook stealing it from the Crown courier who arranged the ambush. Both are trapped when soldiers collapse the bridge's stable path.
+Main event: Caelan pursues Rook, who has just stolen the Nail fragment from the Crown courier who arranged the ambush. Both are trapped when soldiers collapse the bridge's stable path.
 
 Defining choice: Arrest Rook, bargain with him, or trust him to lead the survivors across an impossible route.
 

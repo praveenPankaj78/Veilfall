@@ -126,3 +126,7 @@ The implemented chapter uses two canonical scene illustrations:
 2. The final reveal, with the King's Road ending at an impossible sea.
 
 The images are stored as `public/art/caelan-east-gate.png` and `public/art/kings-road-folded.png`.
+
+## Final review contract
+
+Mara's childhood memory places Caelan's father at his inn, consistent with his biography. At `folded-road`, `take-high-ground` promises defensive ground and a clear view; its five Wayfire match `follow-silver-road` and are not an extra reward.

@@ -377,3 +377,11 @@ Before a scene is approved, confirm:
 - Military or political support must be earned from explicit acts the player saw. State why a larger outcome is unavailable before the final menu and always preserve one viable path.
 - A later chapter may place a companion only when the prior ending records that person crossing or travelling. Relationship intent alone cannot move a character between locations.
 - When desire creates an automatic offer, show the offer as a physical object before naming the rule. Keep wanting, silence, acceptance, completion, and later memory as separate visible states.
+
+## Season review additions
+
+- Read the effective node after every overlay. Review its lesson, body, menu, result, journal, and ending together; a correct retired base scene does not approve the playable scene.
+- Stop the physical action before the choice that performs it. The result completes the chosen crossing, rescue, or acquisition. A proposed theft during an attack must not happen after the attack has ended without revising the proposal.
+- After dialogue and visible consequences establish a moral conflict, use Caelan's next physical observation rather than a sentence telling the player how to judge it.
+- Check the named caregiver against the actual care choice, including the free branch. Shared quiet time does not establish who treated an injury.
+- Audit complete seasons with representative continuous routes and conditional text inspection. Automated reachability verifies structure, not emotional clarity or character voice.

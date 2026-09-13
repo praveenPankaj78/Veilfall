@@ -1128,7 +1128,7 @@ export const terminalHistoryFlagReasons = {
   'c11-independent-engine-audit':
     'Chapter Twelve must let the free Price Court seat authenticate the purchased engine access limits without transferring fragment custody.',
   'c11-freedom-door-order-restricted':
-    'Chapter Twelve must keep Caelan behind the last willing traveller at contracted doors until the opening stops or everyone reaches a freely chosen safe side.',
+    'Chapter Twelve must keep Caelan behind the last willing traveller at contracted doors until the opening stops or everyone reaches a freely chosen safe side. Either condition returns the freedom; a later crossing cannot create an Oathscar. Correct obsolete post-opening scars when importing older saves.',
   'c11-vathis-civic-damage':
     'Chapter Twelve must make the broken public sidewall raise the Ash Compact cooperation price or reduce civic access during the Gate crisis.',
   'c11-vaor-engine-response-tested':
@@ -1228,7 +1228,7 @@ export const terminalHistoryFlagReasons = {
   'c12-relationship-vexa':
     'The finale export identifies Vexa as Caelan’s freely chosen equal partner without using true-name access or earlier intimacy as consent.',
   'c12-relationship-distance':
-    'The finale export preserves the relationship across honest distance without promising a reunion the Gate law may prevent.',
+    'The finale export leaves the future open across honest distance without inventing a partner, a fresh answer from an absent person, or a reunion the Gate law may prevent.',
   'c12-relationship-friendship':
     'The finale export carries trust and affection forward as friendship without a romantic or contractual claim.',
   'c12-relationship-closed':

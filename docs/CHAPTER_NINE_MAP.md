@@ -14,7 +14,7 @@ Immediate objective: recover the missing half of the Black Gate Nail and cross t
 
 Active question: Can Caelan recover the other half of the Gate Nail?
 
-Chapter answer: yes. Caelan can receive it through a bounded bargain, steal it during the attack, or expose House Sableglass and force its surrender under public law.
+Chapter answer: yes. Caelan can receive it through a bounded bargain, take it openly after the attack, or expose House Sableglass and force its surrender under public law.
 
 Main event: Vexa offers the missing Gate Nail piece for Caelan's true name and one unbreakable promise while mortal and devil assassins attack the negotiation.
 
@@ -101,7 +101,7 @@ The chapter keeps five states separate:
 6. The payment strip and fragment memory reveal the plan: Malrec will open the Gate from inside the Cinder Deep and release stored promises into Worldroot, breaking the law that keeps each person one continuous self.
 7. The missing fragment can be recovered now, but the road beyond turns spoken desires into offers. The next problem is freedom on the Ash Road.
 
-## Fifteen-decision structure
+## Sixteen-decision structure
 
 1. Preserve or change Vexa's exact Chapter Eight location.
 2. If Ansel spoke first, let the Futureless react before Crown procedure; otherwise choose the first witness priority.
@@ -124,15 +124,15 @@ The chapter keeps five states separate:
 
 ### Bargain for the fragment
 
-Caelan accepts a complete offer: freely disclose his true name for this agreement only and make one unbreakable promise to return the Gate Nail piece to neutral custody after stopping Malrec's inside opening. The paid price grants immediate precision: the fragment joins Caelan without resisting, closes the assassination seam, and lets the party cross under a named protection. Cutting Vexa's true-name access after alignment requires destroying one exact earlier active Oath and creates an acknowledged breach or release. The return promise remains intact.
+Caelan accepts a complete offer: freely disclose his true name for this agreement only and make one unbreakable promise to return the Gate Nail piece to neutral custody after stopping Malrec's inside opening. The paid price grants immediate precision: Vexa places the fragment in Caelan’s hand before the final consent and payment. The fragment aligns without resisting and lets the party cross under named protection. Cutting Vexa's true-name access after alignment requires destroying one exact earlier active Oath and creates an acknowledged breach or release. The return promise remains intact.
 
-Payoff: safest crossing and Vexa or the Compact as an escort.
+Payoff: a precisely aligned crossing with Vexa as the Compact escort.
 
 Cost: the stated return promise persists into Chapter Twelve, and Vexa can identify every use of the Gate fragment made under the bargain.
 
-### Steal it during the attack
+### Take it after the attack
 
-Caelan uses the two-sided assault to take the lantern and separate the Nail piece from House Sableglass's collection wire. This is not a free version of the bargain. The fragment resists an unnamed bearer, the crossing is more dangerous, and Vexa's response depends on whether Caelan protected her people and stated the theft openly.
+The assault cracks the case hinge. After the danger and optional private conversation end, Caelan takes the fragment from mortal guard and names the theft publicly. This is not a free version of the bargain. The fragment resists an unnamed bearer, the crossing is more dangerous, and Vexa's response depends on whether Caelan protected her people and stated the theft openly.
 
 Payoff: no true-name disclosure and no new unbreakable promise.
 
@@ -213,11 +213,11 @@ Refusal is a complete path. It can create guarded trust or adversarial respect w
 
 ### `c9-ending-bargain`: The Name Freely Given
 
-The Gate Nail fragment joins Caelan under the stated bargain. His true name gives precision only to this agreement. The return promise and any surviving clause remain visible. Vexa or another Compact advocate crosses with the chosen mortal allies.
+The Gate Nail fragment joins Caelan under the stated bargain. His true name gives precision only to this agreement. The return promise and any surviving clause remain visible. Vexa crosses with the chosen mortal allies.
 
 ### `c9-ending-theft`: The Fragment Taken in Fire
 
-Caelan takes the fragment during the attack without disclosing his true name. The party crosses through a rough opening without Compact protection. Vexa follows as an adversarial ally, remains behind in guarded refusal, or becomes permanently hostile according to the theft's conduct.
+Caelan takes the fragment after the attack without disclosing his true name. The party crosses through a rough opening without Compact protection. Vexa crosses under the public truce even when she remains personally hostile. Her crossing grants neither friendship nor consent to a private encounter.
 
 ### `c9-ending-exposure`: The House Named Before Witnesses
 
@@ -287,7 +287,7 @@ Vexa remains inside isolated Second Fort. Ansel's prior question is answered bef
 
 ### Theft, threshold entry, no army, unattached
 
-Vexa stays outside until Caelan explicitly admits her to neutral Second Fort. Pell's map opens a route beneath the mortal attackers. The captured collector glove identifies the devil seam. Caelan takes the lantern during the attack, saves Vexa's envoys, and states the theft openly. After danger and negotiation end, Vexa may share a freely chosen private scene in fade or detailed form. Caelan crosses with Ansel, two Futureless witnesses, and an adversarial but attracted Vexa. Korran remains in Edrath.
+Vexa stays outside until Caelan explicitly admits her to neutral Second Fort. Pell's map opens a route beneath the mortal attackers. The captured collector glove identifies the devil seam. Caelan protects Vexa during the attack. After the danger ends and the refused offer creates no bargain, Vexa may choose a private scene in fade or detailed form. Back at the guarded table, Caelan takes the fragment through the cracked hinge and states the theft openly. Caelan crosses with Ansel, two Futureless witnesses, and an adversarial but attracted Vexa. Korran remains in Edrath.
 
 ### Low-resource survival
 

@@ -33,7 +33,7 @@ export const choiceAdvantages: Record<string, string> = {
   'turn-west': 'Keep the wounded away from the attackers who fled east.',
   'press-bellweather': 'Reach the nearest shelter and continue the treaty mission.',
   'climb-scout': 'See the altered landscape before committing the wounded escort.',
-  'take-high-ground': 'Gain defensible ground, a clear view, and additional Wayfire.',
+  'take-high-ground': 'Gain defensible ground, a clear view, and Command for the road ahead.',
   'swear-home-oath': 'Gain Oathfire, additional Wayfire, and a magical path toward safety.',
   'c2-shield-arrival': 'A tight shield wall should bring every wounded traveller through the flooded yard together.',
   'c2-lead-water': 'Making yourself the nearest target should draw the mire hound away from the wounded.',

@@ -60,7 +60,7 @@ The Price Court is a civic bench of public contract judges. It is not a people o
 All routes always contain Caelan and Vexa. Rook and Ilyra are absent. Korran, Vaor's body, the full Crown March, and any partner recorded at the mortal Gate are absent.
 
 | Imported roster | Physical cast in Vathis | Active limits and use |
-| --- | --- | --- |
+| ------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Futureless | Ansel and two Futureless witnesses | Each speaks and records independently. Their sold-promise records can prove debt bondage and support revolt or a lawful auction challenge. |
 | Pell | Wounded Pell and his recorded small shield escort | Pell does not run or lead a charge. His complete lock map identifies a service door and a retreat lane. |
 | Mixed company | The exact mixed wardens and Moot fighters who accepted shared command | They answer individual call signs and retain Red Moot command limits. No absent Korran authority is invented. |
@@ -121,8 +121,8 @@ Every mythic choice displays:
 
 Planned uses:
 
-1. Shelter demonstration, 1 Oathfire: the active bring-them-home Oath receives Caelan's right to leave the shelter before the last expedition member. It lasts until the ash rain stops and gains a protected dry crossing. Breach means leaving first. It ends in Chapter Eleven.
-2. Revolt, 2 Oathfire: the surviving Red Moot authority Oath receives Caelan's right to issue an order outside each fighter's accepted command. It lasts until the inner Gate begins opening. It creates a protected refusal square. Breach burns the square and carries an Oathscar. The restriction reaches Chapter Twelve until the Gate law is replaced.
+1. Shelter demonstration, 1 Oathfire: Caelan freely renews the bring-them-home duty for this exact expedition and transfers his right to leave before its last member. It lasts until the ash rain stops and gains a protected dry crossing. Breach means leaving first. It ends in Chapter Eleven. The original escort promise does not silently acquire new beneficiaries.
+2. Revolt, 2 Oathfire: the surviving Red Moot authority Oath receives Caelan's right to issue an order outside each fighter's accepted command. It creates a protected refusal square. Breach burns the square and carries an Oathscar. The restriction reaches Chapter Twelve until the Gate law is replaced.
 3. Auction, 2 Oathfire: the surviving Crown restitution Oath receives Caelan's right to refuse the Price Court hearing about hidden Concord victims. It lasts until those victims receive a lawful hearing. It makes their claim legally unerasable and wins an exclusive bid advantage. It carries into Chapter Twelve.
 4. Force, 2 Oathfire: the surviving clan-refusal Oath receives Caelan's right to cross a contracted door before the last willing traveller. It lasts until the opening stops or everyone reaches a freely chosen safe side. It keeps a retreat door open for every consenting traveller. Crossing early breaches it. The restriction reaches Chapter Twelve while the Gate remains open.
 
@@ -176,7 +176,7 @@ Caelan uses only the expedition that crossed. Roster preparations determine door
 ## Chapter Nine and Ten consequence matrix
 
 | Imported state | Active Chapter Eleven consequence |
-| --- | --- |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared offers | Changed prices are caught at the first street and shared terms support public proof; exposed motives sharpen the illusion if complete desires were shared. |
 | Private seals | Owners keep confidentiality and gain a sealed auction proof; the hidden coordination risk creates a false safe-door complication. |
 | Burden Oath completed | The Oath has ended. Caelan must give each participant a private accounting before using their testimony. A recorded withdrawal reduces available witness strength but proves individual exit. |
@@ -228,7 +228,7 @@ If Chapter Ten recorded mutual limits, those exact refused promises expose the i
 
 ## Endings and Chapter Twelve handoff
 
-All endings occur at the inner face of the Black Gate as it begins to open. They are final nodes until Chapter Twelve exists.
+All endings occur at the inner face of the Black Gate as it begins to open. Each completed ending offers the implemented Chapter Twelve handoff.
 
 - `c11-ending-revolt`: debt-bound refusers hold the witness square and a Free Ledger faction offers help for a public renewal hearing. Cost: civic instability and any named casualty or damaged route.
 - `c11-ending-auction`: Caelan holds the invasion right under its exact registered limits and a Price Court dissenting seat offers help for the right to review the replacement Gate law. Cost: transferred obligations and Caelan's named future restriction.
@@ -280,7 +280,7 @@ Concrete Chapter Twelve consumers:
 - Force uses only the crossed expedition.
 - Low-resource states retain a completion route.
 - Standard prose uses close second person, present tense, no em dash, no adjacent hyphens, and mostly sentences under thirty words.
-- Endings have no Chapter Twelve button.
+- Completed endings offer Chapter Twelve. Only Chapter Twelve is terminal for the series.
 
 ## Representative walkthroughs
 

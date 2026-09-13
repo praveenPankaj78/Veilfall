@@ -1,20 +1,10 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { extname, join } from 'node:path';
-import vm from 'node:vm';
+import { loadStory } from './story-loader.mjs';
 import ts from 'typescript';
 
 const roots = ['docs', 'app'];
-const directFiles = [
-  'app/adventure-revision.ts',
-  'app/chapter-five.ts',
-  'app/choice-economy.ts',
-  'app/chapter-four.ts',
-  'app/chapter-ten.ts',
-  'app/game-data.ts',
-  'app/page.tsx',
-  'app/story-memory.ts',
-  'README.md',
-];
+const directFiles = ['README.md'];
 const narratorShortcuts = [
   'You understand ',
   'You cannot know',
@@ -136,19 +126,12 @@ async function collect(directory) {
 
 const files = [...directFiles];
 for (const root of roots) files.push(...(await collect(root)));
-const uniqueFiles = [...new Set(files)];
-const narrationFiles = uniqueFiles.filter((file) => file.startsWith('app'));
-const storySourceFiles = [
-  'app/game-data.ts',
-  'app/adventure-revision.ts',
-  'app/chapter-four.ts',
-  'app/chapter-five.ts',
-  'app/chapter-six.ts',
-  'app/chapter-seven.ts',
-  'app/chapter-eight.ts',
-  'app/chapter-nine.ts',
-  'app/story-memory.ts',
+const uniqueFiles = [
+  ...new Set(files.map((file) => file.replaceAll('\\', '/'))),
 ];
+const narrationFiles = uniqueFiles.filter((file) => file.startsWith('app'));
+const { game: gameDataExports, sources: storySources } = loadStory();
+const storySourceFiles = [...storySources.keys()];
 const maximumStorySentenceWords = 30;
 const maximumRenderedParagraphWords = 180;
 
@@ -159,6 +142,8 @@ for (const file of uniqueFiles) {
     const checkedText =
       rule.label === 'two adjacent hyphens' && file.endsWith('.md')
         ? text
+            .replace(/```[\s\S]*?```/g, '')
+            .replace(/`[^`\r\n]*`/g, '')
             .split(/\r?\n/)
             .filter((line) => !/^\s*\|(?:\s*:?-{3,}:?\s*\|)+\s*$/.test(line))
             .join('\n')
@@ -214,67 +199,6 @@ for (const file of storySourceFiles) {
   };
   visit(sourceFile);
 }
-
-const compilerOptions = {
-  module: ts.ModuleKind.CommonJS,
-  target: ts.ScriptTarget.ES2022,
-};
-
-async function loadStoryModule(path) {
-  const source = await readFile(path, 'utf8');
-  const compiled = ts.transpileModule(source, { compilerOptions }).outputText;
-  const exported = {};
-  vm.runInNewContext(
-    compiled,
-    {
-      exports: exported,
-      module: { exports: exported },
-      console,
-    },
-    { filename: path.replace(/\.ts$/, '.js') },
-  );
-  return exported;
-}
-
-const adventureExports = await loadStoryModule('app/adventure-revision.ts');
-const economyExports = await loadStoryModule('app/choice-economy.ts');
-const chapterFourExports = await loadStoryModule('app/chapter-four.ts');
-const chapterFiveExports = await loadStoryModule('app/chapter-five.ts');
-const chapterSixExports = await loadStoryModule('app/chapter-six.ts');
-const chapterSevenExports = await loadStoryModule('app/chapter-seven.ts');
-const chapterEightExports = await loadStoryModule('app/chapter-eight.ts');
-const chapterNineExports = await loadStoryModule('app/chapter-nine.ts');
-const chapterTenExports = await loadStoryModule('app/chapter-ten.ts');
-const chapterElevenExports = await loadStoryModule('app/chapter-eleven.ts');
-const chapterTwelveExports = await loadStoryModule('app/chapter-twelve.ts');
-const gameDataSource = await readFile('app/game-data.ts', 'utf8');
-const gameDataCompiled = ts.transpileModule(gameDataSource, {
-  compilerOptions,
-}).outputText;
-const gameDataExports = {};
-vm.runInNewContext(
-  gameDataCompiled,
-  {
-    exports: gameDataExports,
-    module: { exports: gameDataExports },
-    console,
-    require: (specifier) => {
-      if (specifier === './adventure-revision') return adventureExports;
-      if (specifier === './choice-economy') return economyExports;
-      if (specifier === './chapter-four') return chapterFourExports;
-      if (specifier === './chapter-five') return chapterFiveExports;
-      if (specifier === './chapter-six') return chapterSixExports;
-      if (specifier === './chapter-seven') return chapterSevenExports;
-      if (specifier === './chapter-eight') return chapterEightExports;
-      if (specifier === './chapter-nine') return chapterNineExports;
-      if (specifier === './chapter-ten') return chapterTenExports;
-      if (specifier === './chapter-eleven') return chapterElevenExports;
-      if (specifier === './chapter-twelve') return chapterTwelveExports;
-      throw new Error(`Unexpected module in story style check: ${specifier}`);
-    },
-  },
-  { filename: 'game-data.js' },
-);
 
 const { initialState, nodes } = gameDataExports;
 const producedFlags = [
@@ -363,6 +287,10 @@ function checkRenderedParagraph(nodeId, paragraph) {
   const key = `${nodeId}\u0000${paragraph}`;
   if (renderedOutputs.has(key)) return;
   renderedOutputs.add(key);
+  if (/^[a-z]/.test(paragraph))
+    failures.push(
+      `${nodeId}: a rendered prose paragraph starts with an uncapitalized fragment`,
+    );
   const paragraphWords = countWords(paragraph);
   if (paragraphWords > maximumRenderedParagraphWords) {
     failures.push(
@@ -385,6 +313,31 @@ for (const node of Object.values(nodes)) {
   const samples = [
     baseState,
     ...producedFlags.map((flag) => ({ ...baseState, flags: [flag] })),
+    ...Object.keys(baseState.relationships).flatMap((person) =>
+      [
+        'committed',
+        'exploring',
+        'interested',
+        'platonic',
+        'ended',
+        'hostile',
+      ].map((intent) => ({
+        ...baseState,
+        relationships: {
+          ...baseState.relationships,
+          [person]: { ...baseState.relationships[person], intent },
+        },
+      })),
+    ),
+    ...[
+      'c9-shared-private-night',
+      'c10-rest-with-mara',
+      'c10-rest-with-lysara',
+    ].map((flag) => ({
+      ...baseState,
+      flags: [flag],
+      contentPreference: { intimacy: 'detailed', adultConfirmed: true },
+    })),
   ];
   if (chapter === 8)
     samples.push(

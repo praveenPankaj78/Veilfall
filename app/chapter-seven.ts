@@ -420,7 +420,7 @@ function finalBattleCost(state: GameState) {
     return `${endangeredAlly(state)} survived the last red wall, but the signal frame broke bone. The injury will travel into every road ahead.`;
   }
   if (has(state, 'c7-company-storm-losses')) {
-    return 'Teren writes the names lost in the final red wall. Saving one person did not make the soldiers beyond your reach matter less.';
+    return 'Teren writes the names lost in the final red wall. He leaves blank spaces for the soldiers nobody has identified yet.';
   }
   if (has(state, 'c7-saved-both-burned-proof')) {
     return 'Every person survived the final storm. Malrec’s original orders did not. The army must carry witnessed truth where sealed proof once stood.';
@@ -1842,7 +1842,7 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
         advantage:
           'The army loses its ability to pursue without suffering a massacre.',
         result:
-          'You raise the Kharad red pennant. Riders race toward the white basin, drawing the Crown cavalry after them while your marked escape lanes remain hidden.',
+          'You raise the Kharad red pennant. Riders race toward the white basin, drawing the Crown cavalry after them toward the thin salt.',
         next: 'c7-salt-trap',
       },
       {

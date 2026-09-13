@@ -109,7 +109,7 @@ function proofHandoff(state: GameState) {
   if (has(state, 'c9-mortal-cell-proved-original'))
     return 'The original Gate ledger lets the Free Ledger match Sableglass cuts to the same physical page.';
   if (has(state, 'c9-mortal-cell-proved-authenticated-copy'))
-    return 'The authenticated copy keeps its seal and exposes one altered route by cooling under Vaor’s test.';
+    return 'The authenticated copy keeps its seal. Its witness threads fail to match an altered route offered by the Free Ledger.';
   if (has(state, 'c9-mortal-cell-proved-living-bark'))
     return 'The living bark curls away from a false Sableglass date and stays flat beside the true opening record.';
   if (has(state, 'c9-mortal-cell-proved-witnesses'))
@@ -128,7 +128,7 @@ function proofHandoff(state: GameState) {
     return 'The exposed forgery pattern reveals a copied stroke in the faction’s route claim.';
   if (has(state, 'c8-lost-duplicate-records'))
     return 'The destroyed records cannot return. Only the assassin kit and public attack chain can test the route claim.';
-  return 'Separate proof copies expose one altered route because their seals cool at different speeds.';
+  return 'Separate proof copies expose one altered route when the witnesses compare their recorded marks.';
 }
 
 function sableglassHandoff(state: GameState) {
@@ -207,7 +207,7 @@ function routeCustodyResult(state: GameState) {
 
 function rosterOffer(state: GameState) {
   if (has(state, 'c9-roster-futureless'))
-    return 'Ash forms a child’s red mitten before Ansel. The offer promises his daughter’s stolen future back if you guarantee every sold promise will return unchanged.';
+    return 'Ash forms a child’s red mitten before Ansel. It offers to restore his promise to stay for his daughter if you guarantee every sold promise will return unchanged.';
   if (has(state, 'c9-roster-pell'))
     return 'Ash forms a painless silver glove before Pell. The offer will heal his hand if you promise the lock map to one devil house forever.';
   if (has(state, 'c9-roster-crown'))
@@ -217,20 +217,20 @@ function rosterOffer(state: GameState) {
 
 function destroyedOathPressure(state: GameState) {
   if (has(state, 'c9-destroyed-red-moot-authority-oath'))
-    return 'The road offers Moot fighters a commander chosen without the Red Moot. Korran’s lost magical protection cannot reject it for them.';
+    return 'The road offers you command over Moot fighters without the Red Moot. Korran’s lost magical protection cannot reject it for them.';
   if (has(state, 'c9-destroyed-crown-restitution-oath'))
-    return 'The road offers Ansel a royal hearing that your destroyed restitution Oath can no longer guarantee.';
+    return 'The road offers a royal hearing that your destroyed restitution Oath can no longer guarantee.';
   if (has(state, 'c9-destroyed-clan-refusal-oath'))
-    return 'The road offers each Moot fighter a private exit. Your destroyed refusal Oath no longer protects that choice.';
+    return 'The road offers private exits beyond the Moot’s authority. Your destroyed refusal Oath no longer protects that choice.';
   if (has(state, 'c9-destroyed-honest-command-limit-oath'))
-    return 'The road offers obedience without questions. Teren and the mixed fighters demand every command limit aloud because your old guarantee is gone.';
+    return 'The road offers obedience without questions. You must state every command limit aloud because your old guarantee is gone.';
   if (has(state, 'c9-destroyed-unsea-investigation-oath'))
     return 'The road offers an ancestor answer in Korran’s voice. The investigation Oath that could test the voice is gone.';
   if (has(state, 'c8-released-crown-oath'))
     return 'A Crown badge appears and asks for obedience. The released service Oath stays released, so the badge has no old promise to seize.';
   if (has(state, 'c8-burned-lesser-oath'))
     return 'A Warden whistle appears in the ash. The burned patrol duty does not return, and the whistle cannot pull you from the company.';
-  return 'Every old Oath remains active. The road can price those duties, but it cannot change their wording.';
+  return 'Only duties still within their original terms remain active. The road can price those duties, but it cannot change their wording.';
 }
 
 function survivingOaths(state: GameState) {
@@ -239,10 +239,6 @@ function survivingOaths(state: GameState) {
     duties.push('bring the original escort home alive');
   if (has(state, 'c2-oath-repair-road'))
     duties.push('repair the damaged King’s Road');
-  if (has(state, 'c3-oath-hold-town'))
-    duties.push('keep Harrowfen standing during the pursuit');
-  if (has(state, 'c4-oath-no-one-falls'))
-    duties.push('let nobody fall from the Mileless Bridge while you stand');
   if (has(state, 'c5-oath-carry-vaor-grief'))
     duties.push('hear Vaor’s grief without turning away');
   if (
@@ -528,7 +524,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
         id: 'c10-use-prepared-pause',
         label: 'Use the prepared pause and have every traveller remain silent.',
         detail:
-          'Apply Vexa’s Chapter Nine warning before anyone touches the cup.',
+          'Apply Vexa’s warning at the Gate before anyone touches the cup.',
         advantage:
           'Prove silence is safe while the whole company learns the same response.',
         showIfAllFlags: ['c9-learned-desire-offer-danger'],
@@ -657,7 +653,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     title: 'The Toll That Claims the Fragment',
     location: 'First Offer Bridge',
     objective:
-      'Cross the toll without changing the fragment’s Chapter Nine custody.',
+      'Cross the toll without changing the fragment’s recorded custody.',
     threat: 'Rising',
     art: 'ashroadoffer',
     body: (state) => [
@@ -665,7 +661,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
       fragmentCustody(state),
       'A white hand rises from the bridge and offers safe passage in exchange for ownership of anything hidden from the road.',
       'You cannot give the fragment away, hide an admitted theft, or let true-name precision widen beyond its witnessed purpose.',
-      'Which Chapter Nine custody defeats the toll?',
+      'Which custody agreement defeats the toll?',
     ],
     choices: [
       {
@@ -811,7 +807,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
       destroyedOathPressure(state),
       survivingOaths(state),
       'Each surviving promise appears as a warm line on your shield. Beside it, the road writes the person or community harmed by a breach.',
-      'A destroyed or released Oath leaves only a cold scar. It cannot become power or payment again.',
+      'The Harrowfen pursuit and Mileless Bridge duties ended with those dangers. A completed Oath cannot become power or payment again. A destroyed or released Oath leaves only a cold scar.',
       'What do you expose to keep the road from imitating your duties?',
     ],
     choices: [

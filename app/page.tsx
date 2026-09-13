@@ -43,6 +43,8 @@ import {
   isChoiceVisible,
   initialState,
   nextRelationships,
+  resolveFinalRelationshipIntents,
+  resolveCompletedOathFlags,
   nodes,
   normaliseRelationships,
   relationshipChanges,
@@ -550,7 +552,7 @@ function normaliseState(value: Partial<GameState>): GameState {
     ]),
   );
   const relationships = migrateRelationships(value);
-  const flags = [...(value.flags ?? [])];
+  const flags = resolveCompletedOathFlags([...(value.flags ?? [])]);
   const chapterNineRosterResolved = [
     'c9-mara-crossed-black-gate',
     'c9-mara-remained-at-gate',
@@ -586,13 +588,20 @@ function normaliseState(value: Partial<GameState>): GameState {
       medicine: savedStats.medicine ?? initialState.stats.medicine,
       wayfire: savedStats.wayfire ?? initialState.stats.wayfire,
     },
-    relationships,
+    relationships: resolveFinalRelationshipIntents(relationships, flags),
     contentPreference: {
       ...initialState.contentPreference,
       ...value.contentPreference,
     },
     flags,
-    history: value.history ?? [],
+    history: (value.history ?? []).map((entry) =>
+      value.flags?.includes('c12-oathscar-door-order') &&
+      flags.includes('c12-door-freedom-returned') &&
+      entry ===
+        'You cross first. The strike hits your shield instead of the wounded, and a door-shaped scar burns across your wrist.'
+        ? 'You crossed first after the opening stopped. Your shield took the strike for the wounded. The completed door promise created no scar.'
+        : entry,
+    ),
     defeat: value.defeat ?? null,
   };
 }
@@ -606,7 +615,7 @@ function defeatForChoice(
     1: 'You complete the action, but your wounds finally take your strength. Rain fills your mouth as the road darkens above you. The escort continues for only a few steps before the enemy closes in.',
     2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
     3: 'Your choice changes the fight, but blood and exhaustion pull you down beside the canal. Harrowfen’s lanterns blur on the water as Ordan escapes toward the eastern bridge.',
-    4: 'You complete the action, but the moving bridge takes the last of your strength. Stone turns beneath you as Mara reaches for your hand and the World Nail fragment disappears into another sky.',
+    4: 'You complete the action, but the moving bridge takes the last of your strength. Stone turns beneath you. Your shield slips from your hand, and the World Nail fragment disappears into another sky.',
     5: state.flags.includes('c5-chose-lysara-care')
       ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Lysara calls your name and Vaor roars beneath the mountain.'
       : state.flags.includes('c5-chose-sorin-care')
@@ -647,7 +656,9 @@ function applyChoice(state: GameState, choice: Choice): GameState {
     stats: nextStats,
     relationships: updatedRelationships,
     contentPreference: state.contentPreference,
-    flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
+    flags: resolveCompletedOathFlags(
+      Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
+    ),
     history: [...state.history, choice.result],
     defeat:
       nextStats.health <= 0
@@ -709,9 +720,9 @@ function activePromises(game: GameState) {
     promises.push('Repair the damaged King’s Road.');
   if (game.flags.includes('c2-oath-expose-crown'))
     promises.push('Expose the Crown officer behind the attack.');
-  if (game.flags.includes('c3-oath-hold-town'))
+  if (game.flags.includes('c3-oath-hold-town') && game.chapter <= 4)
     promises.push('Do not let Harrowfen fall while Ordan is pursued.');
-  if (game.flags.includes('c4-oath-no-one-falls'))
+  if (game.flags.includes('c4-oath-no-one-falls') && game.chapter <= 4)
     promises.push(
       'Do not let anyone fall from the Mileless Bridge while you stand.',
     );
@@ -759,7 +770,16 @@ function activePromises(game: GameState) {
     promises.push('No dead officer holds lawful rank over a living soldier.');
   if (game.flags.includes('c7-oath-surrender-road'))
     promises.push('Give safe ground to every soldier who lowers a weapon.');
-  if (game.flags.includes('c9-return-promise-owned'))
+  if (
+    game.flags.includes('c9-return-promise-owned') &&
+    !game.flags.some((flag) =>
+      [
+        'c12-fragment-return-fulfilled',
+        'c12-fragment-custody-amended',
+        'c12-fragment-return-breached',
+      ].includes(flag),
+    )
+  )
     promises.push(
       'Return the Black Gate fragment to neutral custody after Malrec’s inside opening is stopped, unless every living Gate keeper freely agrees otherwise.',
     );

@@ -1,6 +1,6 @@
 import { access, readFile } from 'node:fs/promises';
-import vm from 'node:vm';
-import ts from 'typescript';
+import { loadStory } from './story-loader.mjs';
+import { checkSeriesReview } from './series-review.mjs';
 import {
   activeConsequenceContracts,
   chapterFiveContinuityContract,
@@ -14,220 +14,22 @@ import {
   terminalHistoryFlagReasons,
 } from './continuity-contract.mjs';
 
-const compilerOptions = {
-  module: ts.ModuleKind.CommonJS,
-  target: ts.ScriptTarget.ES2022,
-};
-
-const adventureSource = await readFile('app/adventure-revision.ts', 'utf8');
-const adventureCompiled = ts.transpileModule(adventureSource, {
-  compilerOptions,
-}).outputText;
-const adventureExports = {};
-vm.runInNewContext(
-  adventureCompiled,
-  {
-    exports: adventureExports,
-    module: { exports: adventureExports },
-    console,
-  },
-  { filename: 'adventure-revision.js' },
-);
-
-const economySource = await readFile('app/choice-economy.ts', 'utf8');
-const economyCompiled = ts.transpileModule(economySource, {
-  compilerOptions,
-}).outputText;
-const economyExports = {};
-vm.runInNewContext(
-  economyCompiled,
-  {
-    exports: economyExports,
-    module: { exports: economyExports },
-    console,
-  },
-  { filename: 'choice-economy.js' },
-);
-
-const chapterFourSource = await readFile('app/chapter-four.ts', 'utf8');
-const chapterFourCompiled = ts.transpileModule(chapterFourSource, {
-  compilerOptions,
-}).outputText;
-const chapterFourExports = {};
-vm.runInNewContext(
-  chapterFourCompiled,
-  {
-    exports: chapterFourExports,
-    module: { exports: chapterFourExports },
-    console,
-  },
-  { filename: 'chapter-four.js' },
-);
-
-const chapterFiveSource = await readFile('app/chapter-five.ts', 'utf8');
-const chapterFiveCompiled = ts.transpileModule(chapterFiveSource, {
-  compilerOptions,
-}).outputText;
-const chapterFiveExports = {};
-vm.runInNewContext(
-  chapterFiveCompiled,
-  {
-    exports: chapterFiveExports,
-    module: { exports: chapterFiveExports },
-    console,
-  },
-  { filename: 'chapter-five.js' },
-);
-
-const chapterSixSource = await readFile('app/chapter-six.ts', 'utf8');
-const chapterSixCompiled = ts.transpileModule(chapterSixSource, {
-  compilerOptions,
-}).outputText;
-const chapterSixExports = {};
-vm.runInNewContext(
-  chapterSixCompiled,
-  {
-    exports: chapterSixExports,
-    module: { exports: chapterSixExports },
-    console,
-  },
-  { filename: 'chapter-six.js' },
-);
-
-const chapterSevenSource = await readFile('app/chapter-seven.ts', 'utf8');
-const chapterSevenCompiled = ts.transpileModule(chapterSevenSource, {
-  compilerOptions,
-}).outputText;
-const chapterSevenExports = {};
-vm.runInNewContext(
-  chapterSevenCompiled,
-  {
-    exports: chapterSevenExports,
-    module: { exports: chapterSevenExports },
-    console,
-  },
-  { filename: 'chapter-seven.js' },
-);
-
-const chapterEightSource = await readFile('app/chapter-eight.ts', 'utf8');
-const chapterEightCompiled = ts.transpileModule(chapterEightSource, {
-  compilerOptions,
-}).outputText;
-const chapterEightExports = {};
-vm.runInNewContext(
-  chapterEightCompiled,
-  {
-    exports: chapterEightExports,
-    module: { exports: chapterEightExports },
-    console,
-  },
-  { filename: 'chapter-eight.js' },
-);
-
-const chapterNineSource = await readFile('app/chapter-nine.ts', 'utf8');
-const chapterNineCompiled = ts.transpileModule(chapterNineSource, {
-  compilerOptions,
-}).outputText;
-const chapterNineExports = {};
-vm.runInNewContext(
-  chapterNineCompiled,
-  {
-    exports: chapterNineExports,
-    module: { exports: chapterNineExports },
-    console,
-  },
-  { filename: 'chapter-nine.js' },
-);
-
-const chapterTenSource = await readFile('app/chapter-ten.ts', 'utf8');
-const chapterTenCompiled = ts.transpileModule(chapterTenSource, {
-  compilerOptions,
-}).outputText;
-const chapterTenExports = {};
-vm.runInNewContext(
-  chapterTenCompiled,
-  {
-    exports: chapterTenExports,
-    module: { exports: chapterTenExports },
-    console,
-  },
-  { filename: 'chapter-ten.js' },
-);
-
-const chapterElevenSource = await readFile('app/chapter-eleven.ts', 'utf8');
-const chapterElevenCompiled = ts.transpileModule(chapterElevenSource, {
-  compilerOptions,
-}).outputText;
-const chapterElevenExports = {};
-vm.runInNewContext(
-  chapterElevenCompiled,
-  {
-    exports: chapterElevenExports,
-    module: { exports: chapterElevenExports },
-    console,
-  },
-  { filename: 'chapter-eleven.js' },
-);
-
-const chapterTwelveSource = await readFile('app/chapter-twelve.ts', 'utf8');
-const chapterTwelveCompiled = ts.transpileModule(chapterTwelveSource, {
-  compilerOptions,
-}).outputText;
-const chapterTwelveExports = {};
-vm.runInNewContext(
-  chapterTwelveCompiled,
-  {
-    exports: chapterTwelveExports,
-    module: { exports: chapterTwelveExports },
-    console,
-  },
-  { filename: 'chapter-twelve.js' },
-);
-
-const memorySource = await readFile('app/story-memory.ts', 'utf8');
-const memoryCompiled = ts.transpileModule(memorySource, {
-  compilerOptions,
-}).outputText;
-const memoryExports = {};
-vm.runInNewContext(
-  memoryCompiled,
-  {
-    exports: memoryExports,
-    module: { exports: memoryExports },
-    console,
-  },
-  { filename: 'story-memory.js' },
-);
-
-const source = await readFile('app/game-data.ts', 'utf8');
+const story = loadStory();
+const exported = story.game;
+const context = { module: { exports: exported } };
+const source = story.sources.get('app/game-data.ts');
 const pageSource = await readFile('app/page.tsx', 'utf8');
-const compiled = ts.transpileModule(source, {
-  compilerOptions: {
-    ...compilerOptions,
-  },
-}).outputText;
-
-const exported = {};
-const context = {
-  exports: exported,
-  module: { exports: exported },
-  console,
-  require: (specifier) => {
-    if (specifier === './adventure-revision') return adventureExports;
-    if (specifier === './choice-economy') return economyExports;
-    if (specifier === './chapter-four') return chapterFourExports;
-    if (specifier === './chapter-five') return chapterFiveExports;
-    if (specifier === './chapter-six') return chapterSixExports;
-    if (specifier === './chapter-seven') return chapterSevenExports;
-    if (specifier === './chapter-eight') return chapterEightExports;
-    if (specifier === './chapter-nine') return chapterNineExports;
-    if (specifier === './chapter-ten') return chapterTenExports;
-    if (specifier === './chapter-eleven') return chapterElevenExports;
-    if (specifier === './chapter-twelve') return chapterTwelveExports;
-    throw new Error(`Unexpected module in game graph check: ${specifier}`);
-  },
-};
-vm.runInNewContext(compiled, context, { filename: 'game-data.js' });
+const adventureExports = story.load('app/adventure-revision.ts');
+const chapterFourSource = story.sources.get('app/chapter-four.ts');
+const chapterFiveSource = story.sources.get('app/chapter-five.ts');
+const chapterSixSource = story.sources.get('app/chapter-six.ts');
+const chapterSevenSource = story.sources.get('app/chapter-seven.ts');
+const chapterEightSource = story.sources.get('app/chapter-eight.ts');
+const chapterNineSource = story.sources.get('app/chapter-nine.ts');
+const chapterTenSource = story.sources.get('app/chapter-ten.ts');
+const chapterElevenSource = story.sources.get('app/chapter-eleven.ts');
+const chapterTwelveSource = story.sources.get('app/chapter-twelve.ts');
+const memoryExports = story.load('app/story-memory.ts');
 
 const {
   canChoose,
@@ -259,6 +61,7 @@ const producedFlagUniverse = [
 ];
 
 const failures = [];
+await checkSeriesReview(exported, memoryExports, pageSource, failures);
 
 const postBridgeSources = [
   chapterFiveSource,
@@ -931,7 +734,9 @@ function applyChoice(state, choice) {
     stats,
     relationships,
     contentPreference: state.contentPreference,
-    flags: Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
+    flags: exported.resolveCompletedOathFlags(
+      Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
+    ),
     history: [...state.history, choice.result],
     defeat: stats.health <= 0,
   };

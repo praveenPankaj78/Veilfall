@@ -37,7 +37,9 @@ function rookMapMemory(state: GameState) {
       ? 'Your Oath identified the northern fire mark without revealing the other eight locations to Rook.'
       : has(state, 'c4-memorised-nine')
         ? 'You remember the northern mark clearly, but the fragment remains your only complete record of the other eight.'
-        : 'No Chapter Four map-record choice is recorded.';
+        : has(state, 'c4-rook-full-copy')
+          ? 'You kept the fragment with all nine marks inside it. Rook’s copy did not take your map away.'
+          : 'No Chapter Four map-record choice is recorded.';
   if (has(state, 'c4-rook-full-copy')) {
     return `Rook entered the Underways with the complete nine mark copy you allowed him to make. The real fragment remains in your pack. ${caelanMap}`;
   }
@@ -134,7 +136,7 @@ function relationshipMinute(state: GameState) {
   if (has(state, 'c5-fast-to-vaor')) {
     return 'The broken plate opened a direct path. Hale has not reached the gallery yet, so Sorin claims one minute for the burn before you move again.';
   }
-  return 'Metal strikes the outer door. Sorin needs one minute to reset the moving plates ahead, and he uses the same minute to treat the burn. Nobody mistakes it for safety.';
+  return 'Metal strikes the outer door. Sorin needs one minute to reset the moving plates ahead. The delay gives you time for burn care. Nobody mistakes it for safety.';
 }
 
 function haleArrival(state: GameState) {
@@ -249,7 +251,8 @@ function vaorHistoryJudgment(state: GameState) {
   if (!judgments.length) {
     return 'Vaor studies the people and proof that survived the collapse. “I know what you did in this grave,” he says. “Choose, and let the choice name you.”';
   }
-  return `Vaor counts the record without praise. “${judgments.join('; ')}. I will answer the person those acts reveal, not the badge you carry.”`;
+  const record = judgments.join('; ');
+  return `Vaor counts the record without praise. “${record[0].toUpperCase()}${record.slice(1)}. I will answer the person those acts reveal, not the badge you carry.”`;
 }
 
 function collapseInventory(state: GameState) {
@@ -303,7 +306,8 @@ function evidenceLeavingDragonspine(state: GameState) {
     );
   if (!evidence.length)
     return 'The truth leaves mainly in four living memories. It will need witnesses who trust your account.';
-  return `${evidence.join('; ')}. None of it is left beside Hale’s control platform.`;
+  const record = evidence.join('; ');
+  return `${record[0].toUpperCase()}${record.slice(1)}. None of it is left beside Hale’s control platform.`;
 }
 
 const pactTerms =
@@ -1706,7 +1710,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
           ? 'Lysara stands where you can see her. Whatever you decide, she will judge the truth of it rather than reward agreement.'
           : has(state, 'c5-chose-sorin-care')
             ? 'Mara and Lysara stand on either side of Sorin’s bench. Neither woman asks this choice to prove what you feel for her.'
-            : 'Mara watches your face, not the fire. The most dangerous part of an Oath is how easily duty can hide desire or guilt.',
+            : 'Mara watches your face, not the fire. Your hand rests against the bandage she tied.',
       'The Crown wanted a weapon. Vaor wants freedom. The world beyond the mountain needs heat. Vaor lowers his great head until one amber eye is level with you and waits for your decision.',
     ],
     choices: [

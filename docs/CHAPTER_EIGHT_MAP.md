@@ -183,3 +183,7 @@ No art from Chapters One through Seven is reused.
 24. Every exact Red Moot Oath must appear in the Chapter Eight ledger and constrain any action that touches its terms.
 25. Earlier damage to Lysara or the glass seed must alter later precision magic instead of disappearing between chapters.
 26. Original records, authenticated copies, living bark, witnesses, forgeries, Pell's duplicate, and Vexa's contracts must never collapse into a generic proof state.
+
+27. Lysara's shared-road conversation does not grant the half seal earned by the separate equal-lockkeeper choice.
+28. Ansel asks about his own sold promise to stay when his daughter returned, not a promise sold by his daughter.
+29. A spent weakened seed does not imply Pell was rescued with it. Journal text records only the route's actual use.

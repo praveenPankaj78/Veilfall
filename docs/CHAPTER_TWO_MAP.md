@@ -73,3 +73,7 @@ The automated lifecycle audit distinguishes later mechanics and explicitly revie
 ## Art
 
 The canonical illustration is `public/art/bellweather-inn.png`.
+
+## Final review contract
+
+Read `c2-medicine` through the adventure overlay. Garran's untreated fever threatens his ability to testify; it does not guarantee death. The later healer and reduced testimony remain compatible with either treatment choice. Nilo's leg and Lysara's hand retain their distinct stakes.

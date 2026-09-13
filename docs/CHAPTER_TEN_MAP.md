@@ -347,3 +347,7 @@ Mara or Lysara appears only through her Chapter Nine crossing flag. Both partner
 ### Platonic limits and refusal
 
 With no crossed partner, Caelan holds a complete limits conversation with Ansel, Pell, Teren, or Vexa when present and appropriate. Conversation, separate rest, and refusal preserve the chapter objective and do not weaken the ending.
+
+## Final review contract
+
+Ansel's offer concerns restoring his own sold promise to stay for his daughter. Destroyed Oath pressure can tempt Caelan without summoning that Oath's absent beneficiaries. The authenticated-copy route uses recorded witness threads to expose a changed route; it does not invent permission for Vaor to test it. Ordinary proof copies are compared by witnesses, not unexplained cooling magic.

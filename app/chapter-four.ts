@@ -368,6 +368,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'The Crown soldiers ignore Ordan’s order to take everyone alive. Instead of advancing, they cut three anchor ropes.',
       openingPayoff(state),
       collapseDanger(state),
+      'The third town guard is already beside Lysara on the next fixed arch. He holds their end of the guide rope while she braces it.',
       'Far below, several roads turn like spokes inside a wheel. Your hand reaches for Brann while Mara fights to keep every guard attached to the rope.',
       'Rook hooks one boot through the broken bell frame. “Captain,” he says, all humour gone, “choose quickly.”',
     ],
@@ -481,14 +482,14 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail:
           'Lose Mara’s help for the next crossing so the wounded reach safety.',
         advantage:
-          'Brann and the injured guards return toward Harrowfen under protection.',
+          'Brann returns toward Harrowfen with Mara and one guard protecting him.',
         addFlags: [
           'c4-mara-escorted-brann',
           'c4-mara-absence-cost',
           'c4-found-dispatch',
         ],
         result:
-          'Mara dislikes leaving your side, but she understands the order. A guard passes you Ordan’s satchel before leaving with her and Brann. One remaining guard takes Mara’s shield position for the next crossing.',
+          'Mara dislikes leaving your side, but she understands the order. A guard passes you Ordan’s satchel before leaving with her and Brann. The two remaining guards share Mara’s shield position for the next crossing.',
         next: 'c4-three-spans',
       },
       {
@@ -695,8 +696,8 @@ export const chapterFourNodes: Record<string, StoryNode> = {
       'Huge brass gears carry flat road platforms across the cavern. Each platform passes between two rows of metal teeth. When the teeth close, they could crush a wagon.',
       'The gears close six times in a row. Then they remain open for a few seconds while the next platform passes between them. That platform is the safe way across. You must step onto it during the pause and get off before the teeth close again.',
       has(state, 'c4-mara-escorted-brann')
-        ? 'Mara would normally call the safe moment for you. She is protecting Brann now, so you watch six hard closures and move when the teeth stay open.'
-        : 'Mara presses your hand against the small of her back. She counts each closing gear aloud. After six, she pulls you onto the open platform, and both of you jump off before the teeth meet again.',
+        ? 'Mara would normally call the safe moment for you. She is protecting Brann now, so you watch six hard closures and mark the pause before choosing a crossing.'
+        : 'Mara presses your hand against the small of her back and counts each closing gear aloud. After six, she points to the passing platform. You wait together at the edge.',
       'Rook watches the gears close and open three times. His smile returns, which worries you more than the gears.',
     ],
     choices: [
@@ -1330,11 +1331,11 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         label: 'Bargain for his buyer’s name and roadcraft.',
         detail: 'Let him travel unchained under terms both of you understand.',
         advantage:
-          'Rook agrees to follow the buyer through the Underways and send you one honest warning.',
+          'Rook agrees to follow the buyer through the Underways and give you one honest warning before the roads divide.',
         changes: { wayfire: 2 },
         addFlags: ['c4-rook-bargain'],
         result:
-          'You offer protection until the buyer is exposed. Rook promises a safe exit now and one honest warning from the Underways if he finds a route that can carry it.',
+          'You offer protection until the buyer is exposed. Rook promises a safe exit and one honest warning before the roads divide. Then he will follow the buyer through the Underways.',
         next: 'c4-ending-bargain',
       },
       {
