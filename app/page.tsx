@@ -59,8 +59,9 @@ import {
 } from './game-data';
 import { knownTruths, majorConsequences } from './story-memory';
 
-const CURRENT_SAVE_KEY = 'veilfall.saga.v15.save';
+const CURRENT_SAVE_KEY = 'veilfall.saga.v16.save';
 const LEGACY_SAVE_KEYS = [
+  'veilfall.saga.v15.save',
   'veilfall.saga.v14.save',
   'veilfall.saga.v13.save',
   'veilfall.saga.v12.save',
@@ -75,7 +76,7 @@ const LEGACY_SAVE_KEYS = [
   'veilfall.chapter-one.v3.save',
   'veilfall.chapter-one.v2.save',
 ];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 const sceneArtwork = {
   departure: {
@@ -190,6 +191,26 @@ const sceneArtwork = {
     src: '/art/vathis-engine-gate.png',
     alt: 'Malrec’s white engine pulls contract chains as the inner Black Gate begins to open',
   },
+  blackgatecollision: {
+    src: '/art/black-gate-two-faces.png',
+    alt: 'The mortal fortress ring and Vathis face each other through the widening Black Gate',
+  },
+  blackgatesealed: {
+    src: '/art/black-gate-sealed.png',
+    alt: 'The sealed Black Gate divides a pale mortal dawn from distant Cinder Deep fire',
+  },
+  blackgatepassage: {
+    src: '/art/black-gate-mutual-passage.png',
+    alt: 'Independent mortal and devil witnesses watch a narrow consent governed passage',
+  },
+  blackgatebroken: {
+    src: '/art/black-gate-broken.png',
+    alt: 'The shattered Black Gate releases many distinct promise lights into both realms',
+  },
+  blackgatekeeper: {
+    src: '/art/caelan-living-gate.png',
+    alt: 'Caelan carries ember lines of the Black Gate while distinct voices circle him',
+  },
 } as const;
 
 const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
@@ -203,6 +224,7 @@ const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
   9: 'veilfall.chapter-nine.v1.start',
   10: 'veilfall.chapter-ten.v1.start',
   11: 'veilfall.chapter-eleven.v1.start',
+  12: 'veilfall.chapter-twelve.v1.start',
 };
 
 const chapterLibrary = [
@@ -271,6 +293,12 @@ const chapterLibrary = [
     title: 'City of Every Price',
     summary:
       'Reach Malrec’s engine before Vathis auctions the right to invade Edrath.',
+  },
+  {
+    number: 12 as const,
+    title: 'The Ember Oath',
+    summary:
+      'Hold both faces of the Black Gate and choose the law that will replace it.',
   },
 ];
 
@@ -487,27 +515,29 @@ function migrateRelationships(value: Partial<GameState>) {
 function normaliseState(value: Partial<GameState>): GameState {
   const nodeId =
     value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c11-')
-    ? 11
-    : nodeId.startsWith('c10-')
-      ? 10
-      : nodeId.startsWith('c9-')
-        ? 9
-        : nodeId.startsWith('c8-')
-          ? 8
-          : nodeId.startsWith('c7-')
-            ? 7
-            : nodeId.startsWith('c6-')
-              ? 6
-              : nodeId.startsWith('c5-')
-                ? 5
-                : nodeId.startsWith('c4-')
-                  ? 4
-                  : nodeId.startsWith('c3-')
-                    ? 3
-                    : nodeId.startsWith('c2-')
-                      ? 2
-                      : (value.chapter ?? 1);
+  const chapter = nodeId.startsWith('c12-')
+    ? 12
+    : nodeId.startsWith('c11-')
+      ? 11
+      : nodeId.startsWith('c10-')
+        ? 10
+        : nodeId.startsWith('c9-')
+          ? 9
+          : nodeId.startsWith('c8-')
+            ? 8
+            : nodeId.startsWith('c7-')
+              ? 7
+              : nodeId.startsWith('c6-')
+                ? 6
+                : nodeId.startsWith('c5-')
+                  ? 5
+                  : nodeId.startsWith('c4-')
+                    ? 4
+                    : nodeId.startsWith('c3-')
+                      ? 3
+                      : nodeId.startsWith('c2-')
+                        ? 2
+                        : (value.chapter ?? 1);
   const savedStats = (value.stats ?? {}) as Partial<GameStats> & {
     stamina?: number;
   };
@@ -588,6 +618,7 @@ function defeatForChoice(
     9: 'You complete the action, but the embassy attack takes the last of your strength. Glass chains and handbow smoke blur while your allies keep the Gate Nail fragment from both assassin groups.',
     10: 'You complete the action, but the Ash Road takes the last of your strength. Your expedition closes around the fragment while the road carries its unanswered offers toward Vathis.',
     11: 'You complete the action, but Vathis takes the last of your strength. Contract streets rise around the expedition while Malrec’s engine pulls the inner Black Gate open.',
+    12: 'You complete the action, but the failing Black Gate takes the last of your strength. Both realms remain visible as the promise storm closes over you.',
   };
   return {
     title: 'Caelan has fallen',
@@ -1011,7 +1042,7 @@ export default function Home() {
     }
 
     for (const later of (
-      [2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as ChapterNumber[]
+      [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as ChapterNumber[]
     ).filter((number) => number > chapter)) {
       const key = CHAPTER_START_KEYS[later];
       if (key) window.localStorage.removeItem(key);
@@ -1245,6 +1276,27 @@ export default function Home() {
       ],
     };
     window.localStorage.setItem(CHAPTER_START_KEYS[11]!, JSON.stringify(next));
+    loadChapterState(next);
+  }
+
+  function startChapterTwelve() {
+    const next: GameState = {
+      ...game,
+      nodeId: 'c12-inner-gate',
+      chapter: 12,
+      chapterChoices: 0,
+      completedChapters: Array.from(new Set([...game.completedChapters, 11])),
+      stats: {
+        ...game.stats,
+        health: Math.min(8, game.stats.health + 1),
+        resolve: Math.min(8, game.stats.resolve + 1),
+      },
+      history: [
+        ...game.history,
+        'You reach the inner Black Gate with the exact Vathis alliance, expedition, fragment custody, and mythic freedom restrictions.',
+      ],
+    };
+    window.localStorage.setItem(CHAPTER_START_KEYS[12]!, JSON.stringify(next));
     loadChapterState(next);
   }
 
@@ -1867,7 +1919,7 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  ) : (
+                  ) : game.chapter === 10 ? (
                     <>
                       <h2>Chapter Eleven is ready</h2>
                       <p>
@@ -1893,22 +1945,47 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
+                  ) : (
+                    <>
+                      <h2>Chapter Twelve is ready</h2>
+                      <p>
+                        Continue into The Ember Oath with the exact Vathis
+                        alliance, fragment custody, expedition, and every
+                        freedom restriction still in force.
+                      </p>
+                      <Button
+                        className="begin-button"
+                        size="lg"
+                        onClick={startChapterTwelve}
+                      >
+                        Continue to Chapter Twelve
+                        <ArrowRight data-icon="inline-end" />
+                      </Button>
+                      <Button
+                        className="restart-button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={restart}
+                      >
+                        Replay Chapter Eleven
+                        <RotateCcw data-icon="inline-end" />
+                      </Button>
+                    </>
                   )
                 ) : (
                   <>
-                    <h2>Chapter Twelve will return</h2>
+                    <h2>Caelan’s series is complete</h2>
                     <p>
-                      The inner Black Gate is opening. Next you must decide what
-                      new promise can replace its failing law while preserving
-                      the expedition, the fragment, and every named freedom
-                      cost.
+                      The Gate law, Caelan’s destination, relationship ending,
+                      fragment custody, and changed sunrise are recorded. No
+                      later hero’s journey begins from this screen.
                     </p>
                     <Button
                       className="begin-button"
                       size="lg"
                       onClick={restart}
                     >
-                      Replay Chapter Eleven
+                      Replay Chapter Twelve
                       <RotateCcw data-icon="inline-end" />
                     </Button>
                   </>

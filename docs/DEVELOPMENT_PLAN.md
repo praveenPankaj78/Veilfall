@@ -69,11 +69,11 @@ Caelan Chapters Two and Three are implemented. Together they prove:
 - Rook's crossover creates curiosity without confusion;
 - an Oath changes future options rather than acting as a temporary buff.
 
-## Phase Five: complete Caelan season, in progress
+## Phase Five: complete Caelan season, complete
 
-Chapters Four through Eleven are implemented. Produce Chapter Twelve only after playtesting all three Vathis routes. Test continuity for Oaths, allies, routes, romance, regional consequences, and player understanding.
+Chapters Four through Twelve are implemented. The finale has tested revolt, auction, and force imports; four Gate laws; fragment custody; mythic restrictions; independent personal and relationship endings; low-resource survival; and the changed-sunrise export.
 
-Do not write the Cinder Deep finale until its possible contracts and imported world states are represented in data.
+The Cinder Deep finale contracts and imported world states are represented in data and protected by the game and continuity checks.
 
 ## Phase Six: Rook season
 
@@ -135,4 +135,4 @@ Release order:
 
 ## Definition of ready for prose
 
-The foundation and the first eleven canonical chapters are implemented. The next production gate is to playtest revolt, auction, and force at Vathis. Confirm that Chapter Twelve receives the exact fragment custody, surviving expedition, active freedom restrictions, Vathis alliance, relationship state, and bounded Elian record.
+Caelan's twelve canonical chapters are implemented. The next production gate is player testing across the four finale laws. Confirm that players understand the law's immediate harm, Caelan's lost freedom, the separate personal and relationship choices, and the changed sunrise without reading the journal.

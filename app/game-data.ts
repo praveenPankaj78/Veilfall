@@ -10,6 +10,7 @@ import { chapterEightNodes } from './chapter-eight';
 import { chapterNineNodes } from './chapter-nine';
 import { chapterTenNodes } from './chapter-ten';
 import { chapterElevenNodes } from './chapter-eleven';
+import { chapterTwelveNodes } from './chapter-twelve';
 import { choiceAdvantages } from './choice-economy';
 
 export type StatKey =
@@ -45,7 +46,7 @@ export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -129,7 +130,12 @@ export type StoryNode = {
     | 'vathisapproach'
     | 'vathisstreets'
     | 'vathisauction'
-    | 'vathisengine';
+    | 'vathisengine'
+    | 'blackgatecollision'
+    | 'blackgatesealed'
+    | 'blackgatepassage'
+    | 'blackgatebroken'
+    | 'blackgatekeeper';
   intimacyControls?: (state: GameState) => boolean;
   body: (state: GameState) => string[];
   activeConsequences?: {
@@ -421,6 +427,30 @@ const relationshipEffects: Record<string, RelationshipEffects> = {
   },
   'c11-affirm-vexa-future-refuse-price': {
     vexa: { trust: 1, respect: 1 },
+  },
+  'c12-continue-with-mara': {
+    mara: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-mara-inside-seal': {
+    mara: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-mara-outside-seal': {
+    mara: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-lysara': {
+    lysara: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-lysara-inside-seal': {
+    lysara: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-lysara-outside-seal': {
+    lysara: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-vexa': {
+    vexa: { trust: 1, respect: 1, intent: 'committed' },
+  },
+  'c12-continue-with-vexa-inside-seal': {
+    vexa: { trust: 1, respect: 1, intent: 'committed' },
   },
 };
 
@@ -3861,6 +3891,7 @@ const allOriginalNodes: Record<string, StoryNode> = {
   ...chapterNineNodes,
   ...chapterTenNodes,
   ...chapterElevenNodes,
+  ...chapterTwelveNodes,
 };
 
 export const nodes = Object.fromEntries(
@@ -4127,6 +4158,28 @@ export const nodeOrder = [
   'c11-ending-revolt',
   'c11-ending-auction',
   'c11-ending-force',
+  'c12-inner-gate',
+  'c12-first-collision',
+  'c12-malrec-signal',
+  'c12-stop-opening',
+  'c12-elian-conduit',
+  'c12-renewal-hearing',
+  'c12-hidden-victims-hearing',
+  'c12-price-court-review',
+  'c12-compact-passage',
+  'c12-command-restriction',
+  'c12-door-order',
+  'c12-oath-hearing',
+  'c12-four-laws',
+  'c12-law-consequence',
+  'c12-fragment-custody',
+  'c12-personal-destination',
+  'c12-relationship-ending',
+  'c12-changed-sunrise',
+  'c12-ending-sealed',
+  'c12-ending-consent-passage',
+  'c12-ending-broken',
+  'c12-ending-gatekeeper',
 ];
 
 export function canChoose(choice: Choice, state: GameState) {

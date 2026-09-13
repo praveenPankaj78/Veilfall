@@ -120,11 +120,11 @@ Mechanic: Mythic Oathfire transfers one named freedom to a surviving active prom
 
 ## 12. The Ember Oath
 
-Active question: What should the relationship between Edrath and the Deep become?
+Active question: What new promise should replace the failing law of the Black Gate?
 
-Answer: The player's Gate decision answers this and permanently changes dawn.
+Answer: Caelan may seal both realms apart, create yearly passage through individual and political consent, break the Gate and release every stored promise, or carry the Gate and its distinct voices within himself. Each law permanently changes dawn.
 
-Next hook: What will the changed dawn allow someone else to do?
+Next hook: The changed dawn alters one later approach into the Luminous Court, but Caelan cannot yet know what traveller will test it.
 
 Mechanic: Finale synthesis with no new mechanic.
 

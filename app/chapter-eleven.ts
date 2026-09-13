@@ -2297,6 +2297,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'vathisengine',
     final: true,
+    nextChapter: 'c12-inner-gate',
     body: (state) => [
       'Behind you, named workers hold the witness line they chose. The Free Ledger offers help for one public renewal hearing where every affected group may refuse.',
       'Elian’s bounded warning remains in the witness record: Malrec believes merger can restore the daughter he remembers.',
@@ -2318,6 +2319,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'vathisengine',
     final: true,
+    nextChapter: 'c12-inner-gate',
     body: (state) => [
       'The invasion deed rejects every force outside its list. The Price Court’s free seat offers help for the right to review the replacement law in public.',
       'Elian’s bounded warning remains in the audit: Malrec believes merger can restore the daughter he remembers.',
@@ -2339,6 +2341,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'vathisengine',
     final: true,
+    nextChapter: 'c12-inner-gate',
     body: (state) => [
       'The exact expedition holds the damaged engine corridor. The Ash Compact offers help for one witnessed passage after Malrec’s opening stops.',
       'Elian’s bounded warning remains in the captured relay record: Malrec believes merger can restore the daughter he remembers.',

@@ -110,6 +110,20 @@ export const implementedChapterContracts = [
       'c11-ending-auction',
       'c11-ending-force',
     ],
+    nextNode: 'c12-inner-gate',
+    activeGuests: [],
+    legacyOnlyHeroes: ['rook', 'ilyra'],
+  },
+  {
+    series: 'caelan',
+    chapter: 12,
+    entryNode: 'c12-inner-gate',
+    endingNodes: [
+      'c12-ending-sealed',
+      'c12-ending-consent-passage',
+      'c12-ending-broken',
+      'c12-ending-gatekeeper',
+    ],
     nextNode: null,
     activeGuests: [],
     legacyOnlyHeroes: ['rook', 'ilyra'],
@@ -164,6 +178,16 @@ export const protectedPlotTransitions = [
       'c11-ending-force',
     ],
     requiredTerms: ['Elian', 'inner Black Gate', 'new promise'],
+  },
+  {
+    id: 'inner-gate-to-changed-dawn',
+    endingNodes: [
+      'c12-ending-sealed',
+      'c12-ending-consent-passage',
+      'c12-ending-broken',
+      'c12-ending-gatekeeper',
+    ],
+    requiredTerms: ['Gate', 'promise', 'dawn'],
   },
 ];
 
@@ -1125,4 +1149,94 @@ export const terminalHistoryFlagReasons = {
     'Chapter Twelve must let the free Price Court seat delay unregistered invasion forces in exchange for public review of the replacement law.',
   'c11-alliance-ash-compact-passage':
     'Chapter Twelve must let the Ash Compact hold the engine corridor for the exact price of one witnessed passage after Malrec’s opening stops.',
+  'c12-gate-sealed':
+    'The finale export removes one later Luminous Court approach and keeps both realms physically separated until a bilateral replacement law exists.',
+  'c12-devils-sealed-enemies':
+    'The finale export records devils as sealed enemies so later world reactions cannot describe open diplomatic or military crossing.',
+  'c12-promises-sealed':
+    'The finale export keeps stored promises inert in sealed Gate stone and prevents any later route from spending or releasing them.',
+  'c12-caelan-survived':
+    'The finale export records Caelan alive so later references do not invent his death during the Gate collision.',
+  'c12-sunrise-barred':
+    'The Rook import closes the barred band of dawn and removes that Luminous Court approach from his later visible choices.',
+  'rook-luminous-approach-sealed':
+    'Rook’s later Luminous Court route must hide the sealed approach rather than treating the altered dawn as decorative history.',
+  'c12-gate-consent-passage':
+    'The finale export requires traveller consent and independent approval from both realms for every later named Black Gate crossing.',
+  'c12-devils-recognised-neighbours':
+    'The finale export records devils as recognised neighbours whose political consent remains separate from individual consent.',
+  'c12-promises-reviewed':
+    'The finale export permits stored promises to return only to original living owners through the public joint review process.',
+  'c12-sunrise-mutual-road':
+    'The Rook import makes the changed dawn road appear only when separated witnesses give mutual permission.',
+  'rook-luminous-approach-mutual':
+    'Rook’s later Luminous Court route must rename and condition one approach through independent permission from both sides.',
+  'c12-gate-broken':
+    'The finale export prevents any later central keeper from closing the broken crossing without a newly built collective law.',
+  'c12-devils-invading-powers':
+    'The finale export allows both individual allies and invading devil forces to use the uncontrolled road in later world state.',
+  'c12-promises-released':
+    'The finale export records every stored promise as returned to a living maker or released ownerless into Worldroot.',
+  'c12-sunrise-unstable-road':
+    'The Rook import exposes an unstable dawn approach whose speed carries an explicit physical danger.',
+  'rook-luminous-approach-unstable':
+    'Rook’s later Luminous Court route must offer the unstable approach with its faster access and higher danger together.',
+  'c12-gatekeeper':
+    'The finale export makes Caelan the living boundary who may admit willing named people, refuse armies, and compel nobody.',
+  'c12-devils-carried-voices':
+    'The finale export preserves stored devil and mortal voices as distinct speakers inside Caelan rather than one obedient chorus.',
+  'c12-promises-carried':
+    'The finale export prevents Caelan from silencing, spending, merging, or transferring any promise voice carried within him.',
+  'c12-caelan-transformed':
+    'The finale export applies Caelan’s permanent loss of silence, transfer, abandonment, and full residence in either realm.',
+  'c12-sunrise-witnessed-identity':
+    'The Rook import makes the changed dawn respond to witnessed identity and the carried voices inside Caelan.',
+  'rook-luminous-approach-carried-voices':
+    'Rook’s later Luminous Court route must ask Caelan’s carried voices to recognise his witnessed identity before approach.',
+  'c12-fragment-return-fulfilled':
+    'The finale export ends the owned neutral return promise and all surviving true-name precision after the keepers receive the fragment.',
+  'c12-fragment-custody-amended':
+    'The finale export places the fragment under freely amended joint custody agreed by every required living keeper.',
+  'c12-fragment-return-breached':
+    'The finale export keeps Caelan’s knowing breach public and prevents later memory from treating neutral custody as fulfilled.',
+  'c12-oathscar-fragment-custody':
+    'The finale export gives Caelan a permanent custody Oathscar and reduces neutral keeper trust after the deliberate breach.',
+  'c12-theft-restitution-submitted':
+    'The finale export ends the admitted theft claim through witnessed restitution without inventing a neutral return promise.',
+  'c12-theft-claim-retained':
+    'The finale export keeps the fragment visible and preserves the Ash Compact theft claim against Caelan’s custody.',
+  'c12-exposure-public-custody':
+    'The finale export leaves the exposed fragment with its public witness circle and bars later private house ownership.',
+  'c12-exposure-joint-custody':
+    'The finale export requires separate mortal and devil keepers to witness every later use of the exposed fragment.',
+  'c12-legacy-fragment-public-custody':
+    'An older save receives public fragment custody without inventing bargain, theft, exposure, or true-name history.',
+  'c12-destination-road':
+    'The finale export places Caelan on the road, subject to the exact movement limits created by his Gate outcome.',
+  'c12-destination-fortress':
+    'The finale export places Caelan at the fortress ring to rebuild governance, shelter, or warning posts under the chosen law.',
+  'c12-destination-threshold':
+    'The finale export places Caelan at the sealed chamber, mutual passage, broken boundary, or living threshold as compatible.',
+  'c12-destination-cinder-deep':
+    'The finale export places Caelan in the Cinder Deep under the separation, consent, open-road, or keeper limits he chose.',
+  'c12-relationship-together':
+    'The finale export preserves a freely renewed partnership without granting it military, political, custody, or passage power.',
+  'c12-relationship-mara':
+    'The finale export identifies Mara as Caelan’s freely chosen partner while preserving her own location and right to leave.',
+  'c12-relationship-lysara':
+    'The finale export identifies Lysara as Caelan’s freely chosen partner while preserving her duties and right to refuse.',
+  'c12-relationship-vexa':
+    'The finale export identifies Vexa as Caelan’s freely chosen equal partner without using true-name access or earlier intimacy as consent.',
+  'c12-relationship-distance':
+    'The finale export preserves the relationship across honest distance without promising a reunion the Gate law may prevent.',
+  'c12-relationship-friendship':
+    'The finale export carries trust and affection forward as friendship without a romantic or contractual claim.',
+  'c12-relationship-closed':
+    'The finale export records explicit closure so earlier intimacy cannot create later consent or obligation.',
+  'c12-relationship-political-truce':
+    'The finale export preserves Vexa’s bounded public truce without creating trust, intimacy, private access, or a passage right.',
+  'c12-relationship-single':
+    'The finale export records a fulfilled single life with no absent person deciding Caelan’s relationship future.',
+  'c12-series-complete':
+    'The finale interface records all three ending layers and exposes no continuation control into unimplemented Rook content.',
 };

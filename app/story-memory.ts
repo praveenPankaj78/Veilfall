@@ -746,6 +746,35 @@ export function knownTruths(game: GameState) {
     return truths;
   }
 
+  if (game.chapter === 12) {
+    truths.push(
+      'Malrec acts through a Crown oath seal in the engine. His body and exact location remain unknown.',
+      'The old Black Gate law has split and cannot be restored unchanged. Malrec’s inside opening must stop before the fragment return promise becomes due.',
+      'A voice identifying herself as Elian opposes Malrec’s merger and warned about the engine conduit. Her death, singular identity, physical location, and objective status remain unproved.',
+    );
+    if (game.flags.includes('c12-opening-stopped'))
+      truths.push(
+        'The recovered fragment stopped Malrec’s inside opening. The remaining boundary now needs a new law.',
+      );
+    if (game.flags.includes('c12-gate-sealed'))
+      truths.push(
+        'The realms are sealed apart. No person, army, promise, offer, or message may cross until separately chosen delegates freely replace the law.',
+      );
+    if (game.flags.includes('c12-gate-consent-passage'))
+      truths.push(
+        'The Gate permits only named travellers after their consent and separate approval from both realms. Either side may close it, and the law requires yearly renewal.',
+      );
+    if (game.flags.includes('c12-gate-broken'))
+      truths.push(
+        'The Gate is broken. Every stored promise returned to a living maker or entered Worldroot without a new owner, and crossing is uncontrolled.',
+      );
+    if (game.flags.includes('c12-gatekeeper'))
+      truths.push(
+        'The Gate and its distinct stored voices live inside Caelan. He may open for one named willing person and refuse armies, but he cannot silence, transfer, or abandon the boundary.',
+      );
+    return truths;
+  }
+
   if (game.chapter === 11) {
     truths.push(
       'Vathis sells public streets, doors, shelter, and weather through contracts whose stated prices end at stated exits.',
@@ -1785,7 +1814,178 @@ export function majorConsequences(game: GameState) {
     consequences.push(
       'Because the chosen route earned a witnessed engine channel, a voice identifying herself as Elian revealed Malrec’s restoration belief and opposed merger without proving any deeper identity claim.',
     );
+  if (game.flags.includes('c12-free-ledger-renewal-held'))
+    consequences.push(
+      'Because you held the renewal hearing, named Free Ledger groups chose separately while workers kept control of their evidence.',
+    );
+  if (game.flags.includes('c12-price-court-review-held'))
+    consequences.push(
+      'Because you completed the public Price Court review, the deed admitted only its named force, delayed every unregistered force, and returned the promised freedom.',
+    );
+  if (game.flags.includes('c12-compact-passage-honoured'))
+    consequences.push(
+      'Because you honoured the Ash Compact price, exactly one unarmed messenger crossed under witness before the lane closed.',
+    );
+  if (game.flags.includes('c12-gate-sealed'))
+    consequences.push(
+      'Because you sealed the Gate, both realms are separated and willing allies remain on the side they chose before closing.',
+    );
+  if (game.flags.includes('c12-gate-consent-passage'))
+    consequences.push(
+      'Because you made mutual passage, every crossing needs the traveller and independent keepers on both sides to agree.',
+    );
+  if (game.flags.includes('c12-gate-broken'))
+    consequences.push(
+      'Because you broke the Gate, stored promises returned or entered Worldroot while uncontrolled roads opened in both directions.',
+    );
+  if (game.flags.includes('c12-gatekeeper'))
+    consequences.push(
+      'Because you took the Gate into Caelan, he carries its distinct voices and permanently loses silence, transfer, abandonment, and a life wholly in one realm.',
+    );
+  if (game.flags.includes('c12-fragment-return-fulfilled'))
+    consequences.push(
+      'Because you fulfilled neutral custody, the fragment return promise ended cleanly and all limited true-name precision ended with it.',
+    );
+  if (game.flags.includes('c12-fragment-return-breached'))
+    consequences.push(
+      'Because you knowingly kept the neutral fragment, a custody Oathscar and the public breach remain part of Caelan’s finale.',
+    );
+  if (game.flags.includes('c12-destination-road'))
+    consequences.push('Because you chose the road, Caelan leaves rule behind.');
+  if (game.flags.includes('c12-destination-fortress'))
+    consequences.push(
+      'Because you chose the fortress ring, Caelan accepts the work of rebuilding its response to the new law.',
+    );
+  if (game.flags.includes('c12-destination-threshold'))
+    consequences.push(
+      'Because you chose the threshold, Caelan keeps watch at the boundary created by his law.',
+    );
+  if (game.flags.includes('c12-destination-cinder-deep'))
+    consequences.push(
+      'Because you chose the Cinder Deep, Caelan accepts the exact separation or crossing limit his law requires.',
+    );
+  if (game.flags.includes('c12-relationship-together'))
+    consequences.push(
+      'Because you chose continued partnership separately, love grants no military or political advantage.',
+    );
+  if (game.flags.includes('c12-relationship-distance'))
+    consequences.push(
+      'Because you chose honest distance, the relationship continues without a false promise of reunion.',
+    );
+  if (game.flags.includes('c12-relationship-friendship'))
+    consequences.push(
+      'Because you chose friendship, affection continues without a romantic claim.',
+    );
+  if (game.flags.includes('c12-relationship-closed'))
+    consequences.push(
+      'Because you chose closure, no earlier intimacy creates present consent or obligation.',
+    );
+  if (game.flags.includes('c12-relationship-political-truce'))
+    consequences.push(
+      'Because you chose a bounded political truce with Vexa, hostility creates no private access, trust, or passage right.',
+    );
+  if (game.flags.includes('c12-relationship-single'))
+    consequences.push(
+      'Because you chose a full single life, no absent or unwilling partner decides Caelan’s future.',
+    );
   return consequences.length
     ? consequences
     : ['Your first lasting consequence has not been written yet.'];
+}
+
+export function caelanFinaleExport(game: GameState) {
+  const firstFlag = (candidates: string[]) =>
+    candidates.find((flag) => game.flags.includes(flag)) ?? null;
+
+  return {
+    complete: game.flags.includes('c12-series-complete'),
+    gate: firstFlag([
+      'c12-gate-sealed',
+      'c12-gate-consent-passage',
+      'c12-gate-broken',
+      'c12-gatekeeper',
+    ]),
+    destination: firstFlag([
+      'c12-destination-road',
+      'c12-destination-fortress',
+      'c12-destination-threshold',
+      'c12-destination-cinder-deep',
+    ]),
+    relationship: firstFlag([
+      'c12-relationship-together',
+      'c12-relationship-distance',
+      'c12-relationship-friendship',
+      'c12-relationship-closed',
+      'c12-relationship-political-truce',
+      'c12-relationship-single',
+    ]),
+    relationshipPerson: firstFlag([
+      'c12-relationship-mara',
+      'c12-relationship-lysara',
+      'c12-relationship-vexa',
+    ]),
+    devilWorld: firstFlag([
+      'c12-devils-sealed-enemies',
+      'c12-devils-recognised-neighbours',
+      'c12-devils-invading-powers',
+      'c12-devils-carried-voices',
+    ]),
+    storedPromises: firstFlag([
+      'c12-promises-sealed',
+      'c12-promises-reviewed',
+      'c12-promises-released',
+      'c12-promises-carried',
+    ]),
+    fragmentCustody: firstFlag([
+      'c12-fragment-return-fulfilled',
+      'c12-fragment-custody-amended',
+      'c12-fragment-return-breached',
+      'c12-theft-restitution-submitted',
+      'c12-theft-claim-retained',
+      'c12-exposure-public-custody',
+      'c12-exposure-joint-custody',
+      'c12-legacy-fragment-public-custody',
+    ]),
+    caelan: game.flags.includes('c12-caelan-transformed')
+      ? 'transformed-gatekeeper'
+      : game.flags.includes('c12-caelan-survived')
+        ? 'survived'
+        : null,
+    sunrise: firstFlag([
+      'c12-sunrise-barred',
+      'c12-sunrise-mutual-road',
+      'c12-sunrise-unstable-road',
+      'c12-sunrise-witnessed-identity',
+    ]),
+    rookApproach: firstFlag([
+      'rook-luminous-approach-sealed',
+      'rook-luminous-approach-mutual',
+      'rook-luminous-approach-unstable',
+      'rook-luminous-approach-carried-voices',
+    ]),
+    freedomRestrictions: {
+      command: game.flags.includes('c12-oathscar-command')
+        ? 'breached-scarred'
+        : game.flags.includes('c12-command-restriction-fulfilled')
+          ? 'observed-until-gate-law-changed'
+          : game.flags.includes('c11-freedom-command-restricted')
+            ? 'active'
+            : 'not-transferred',
+      hearing: game.flags.includes('c12-oathscar-hearing')
+        ? 'breached-scarred'
+        : game.flags.includes('c12-freedom-hearing-returned')
+          ? 'fulfilled-returned'
+          : game.flags.includes('c11-freedom-hearing-restricted')
+            ? 'active'
+            : 'not-transferred',
+      doorOrder: game.flags.includes('c12-oathscar-door-order')
+        ? 'breached-scarred'
+        : game.flags.includes('c12-door-freedom-returned')
+          ? 'fulfilled-returned'
+          : game.flags.includes('c11-freedom-door-order-restricted')
+            ? 'active'
+            : 'not-transferred',
+    },
+    oathscars: game.flags.filter((flag) => flag.startsWith('c12-oathscar-')),
+  };
 }

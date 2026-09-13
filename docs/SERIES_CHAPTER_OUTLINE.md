@@ -210,7 +210,7 @@ End state: Caelan reaches the inner side of the Black Gate while it begins to op
 
 Location: Both faces of the Black Gate, seen at once.
 
-Main event: Caelan holds the boundary while mortal armies and devil factions collide. He cannot preserve the old Gate unchanged. He must define a new promise between realms.
+Main event: Caelan holds the boundary while the exact mortal forces and Cinder Deep factions collide. He cannot preserve the old Gate unchanged. He must define a new promise between realms.
 
 Defining choice: Seal the Cinder Deep and strand willing allies, create a controlled passage governed by mutual consent, break the Gate and trust future resistance, or take the Gate into himself as its mortal keeper.
 

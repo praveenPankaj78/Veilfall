@@ -169,6 +169,21 @@ vm.runInNewContext(
   { filename: 'chapter-eleven.js' },
 );
 
+const chapterTwelveSource = await readFile('app/chapter-twelve.ts', 'utf8');
+const chapterTwelveCompiled = ts.transpileModule(chapterTwelveSource, {
+  compilerOptions,
+}).outputText;
+const chapterTwelveExports = {};
+vm.runInNewContext(
+  chapterTwelveCompiled,
+  {
+    exports: chapterTwelveExports,
+    module: { exports: chapterTwelveExports },
+    console,
+  },
+  { filename: 'chapter-twelve.js' },
+);
+
 const memorySource = await readFile('app/story-memory.ts', 'utf8');
 const memoryCompiled = ts.transpileModule(memorySource, {
   compilerOptions,
@@ -208,6 +223,7 @@ const context = {
     if (specifier === './chapter-nine') return chapterNineExports;
     if (specifier === './chapter-ten') return chapterTenExports;
     if (specifier === './chapter-eleven') return chapterElevenExports;
+    if (specifier === './chapter-twelve') return chapterTwelveExports;
     throw new Error(`Unexpected module in game graph check: ${specifier}`);
   },
 };
@@ -226,7 +242,7 @@ const {
   resolveNext,
   statLabels,
 } = context.module.exports;
-const { knownTruths, majorConsequences } = memoryExports;
+const { caelanFinaleExport, knownTruths, majorConsequences } = memoryExports;
 const {
   adventureChoiceUpdates,
   adventureNodeUpdates,
@@ -252,6 +268,7 @@ const postBridgeSources = [
   chapterNineSource,
   chapterTenSource,
   chapterElevenSource,
+  chapterTwelveSource,
 ];
 const activeRookAction =
   /\bRook (?:walks|waits|follows|looks|points|returns|offers|asks|says|carries|pulls|uses|takes|finds|helps|stands|runs|rides|scouts)\b/i;
@@ -336,6 +353,13 @@ const chapterElevenArtAssets = {
   vathisstreets: 'public/art/vathis-contract-streets.png',
   vathisauction: 'public/art/vathis-invasion-auction.png',
   vathisengine: 'public/art/vathis-engine-gate.png',
+};
+const chapterTwelveArtAssets = {
+  blackgatecollision: 'public/art/black-gate-two-faces.png',
+  blackgatesealed: 'public/art/black-gate-sealed.png',
+  blackgatepassage: 'public/art/black-gate-mutual-passage.png',
+  blackgatebroken: 'public/art/black-gate-broken.png',
+  blackgatekeeper: 'public/art/caelan-living-gate.png',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -526,6 +550,30 @@ for (const [art, asset] of Object.entries(chapterElevenArtAssets)) {
     await access(asset);
   } catch {
     failures.push(`Chapter Eleven artwork is missing: ${asset}`);
+  }
+}
+const earlierThanTwelveArt = new Set([
+  ...earlierThanElevenArt,
+  ...Object.keys(chapterElevenArtAssets),
+]);
+const chapterTwelveArtUsed = new Set();
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c12-')) continue;
+  if (!node.art)
+    failures.push(`Chapter Twelve node has no explicit art: ${id}`);
+  if (earlierThanTwelveArt.has(node.art))
+    failures.push(
+      `Chapter Twelve node reuses earlier chapter art: ${id} uses ${node.art}`,
+    );
+  if (node.art) chapterTwelveArtUsed.add(node.art);
+}
+for (const [art, asset] of Object.entries(chapterTwelveArtAssets)) {
+  if (!chapterTwelveArtUsed.has(art))
+    failures.push(`Chapter Twelve never uses its ${art} artwork`);
+  try {
+    await access(asset);
+  } catch {
+    failures.push(`Chapter Twelve artwork is missing: ${asset}`);
   }
 }
 
@@ -921,6 +969,20 @@ function stateKey(state) {
     'c11-route-revolt',
     'c11-route-auction',
     'c11-route-force',
+    'c12-gate-sealed',
+    'c12-gate-consent-passage',
+    'c12-gate-broken',
+    'c12-gatekeeper',
+    'c12-destination-road',
+    'c12-destination-fortress',
+    'c12-destination-threshold',
+    'c12-destination-cinder-deep',
+    'c12-relationship-together',
+    'c12-relationship-distance',
+    'c12-relationship-friendship',
+    'c12-relationship-closed',
+    'c12-relationship-political-truce',
+    'c12-relationship-single',
   ]);
   const currentNode = nodes[state.nodeId];
   for (const choice of currentNode?.choices ?? []) {
@@ -1265,6 +1327,31 @@ const chapterElevenBase = {
     'c10-reached-vathis',
   ],
 };
+const chapterTwelveKnownTerms = Object.keys(statLabels);
+const chapterTwelveKnownStoryTerms = [
+  ...chapterElevenKnownStoryTerms,
+  'Price Court',
+  'invasion right',
+  'Elian',
+];
+const chapterTwelveBase = {
+  ...chapterElevenBase,
+  nodeId: 'c12-inner-gate',
+  chapter: 12,
+  chapterChoices: 0,
+  completedChapters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  flags: [
+    ...chapterElevenBase.flags,
+    'c11-engine-control-proved',
+    'c11-route-revolt',
+    'c11-revolt-collar-proof',
+    'c11-revolt-refusal-record',
+    'c11-elian-voice-heard',
+    'c11-elian-record-bounded',
+    'c11-alliance-free-ledger-refusers',
+    'c11-inner-gate-opening',
+  ],
+};
 
 const chapterBaseStates = {
   1: initialState,
@@ -1278,10 +1365,11 @@ const chapterBaseStates = {
   9: chapterNineBase,
   10: chapterTenBase,
   11: chapterElevenBase,
+  12: chapterTwelveBase,
 };
 
 function nodeIsInChapter(nodeId, chapter) {
-  if (chapter === 1) return !/^c(?:[2-9]|10|11)-/.test(nodeId);
+  if (chapter === 1) return !/^c(?:[2-9]|10|11|12)-/.test(nodeId);
   return nodeId.startsWith(`c${chapter}-`);
 }
 
@@ -1602,27 +1690,29 @@ const storyTermRules = {
   },
 };
 for (const [id, node] of Object.entries(nodes)) {
-  const sampleState = id.startsWith('c11-')
-    ? chapterElevenBase
-    : id.startsWith('c10-')
-      ? chapterTenBase
-      : id.startsWith('c9-')
-        ? chapterNineBase
-        : id.startsWith('c8-')
-          ? chapterEightBase
-          : id.startsWith('c7-')
-            ? chapterSevenBase
-            : id.startsWith('c6-')
-              ? chapterSixBase
-              : id.startsWith('c5-')
-                ? chapterFiveBase
-                : id.startsWith('c4-')
-                  ? chapterFourBase
-                  : id.startsWith('c3-')
-                    ? chapterThreeBase
-                    : id.startsWith('c2-')
-                      ? chapterTwoBase
-                      : initialState;
+  const sampleState = id.startsWith('c12-')
+    ? chapterTwelveBase
+    : id.startsWith('c11-')
+      ? chapterElevenBase
+      : id.startsWith('c10-')
+        ? chapterTenBase
+        : id.startsWith('c9-')
+          ? chapterNineBase
+          : id.startsWith('c8-')
+            ? chapterEightBase
+            : id.startsWith('c7-')
+              ? chapterSevenBase
+              : id.startsWith('c6-')
+                ? chapterSixBase
+                : id.startsWith('c5-')
+                  ? chapterFiveBase
+                  : id.startsWith('c4-')
+                    ? chapterFourBase
+                    : id.startsWith('c3-')
+                      ? chapterThreeBase
+                      : id.startsWith('c2-')
+                        ? chapterTwoBase
+                        : initialState;
   const introductionText = [
     node.lesson?.title,
     node.lesson?.body,
@@ -1680,10 +1770,10 @@ for (const [id, node] of Object.entries(nodes)) {
 }
 
 const closePointOfViewPattern = /\byou(?:r)?\b/i;
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
   const chapterNodes = nodeOrder.filter((id) =>
     chapter === 1
-      ? !/^c(?:[2-9]|10|11)-/.test(id)
+      ? !/^c(?:[2-9]|10|11|12)-/.test(id)
       : id.startsWith(`c${chapter}-`),
   );
   const sampleState =
@@ -1707,7 +1797,9 @@ for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
                       ? chapterNineBase
                       : chapter === 10
                         ? chapterTenBase
-                        : chapterElevenBase;
+                        : chapter === 11
+                          ? chapterElevenBase
+                          : chapterTwelveBase;
   const closeNodes = chapterNodes.filter((id) =>
     closePointOfViewPattern.test(nodes[id].body(sampleState).join(' ')),
   );
@@ -9113,6 +9205,26 @@ const stack = [
     knownTerms: chapterElevenKnownTerms,
     knownStoryTerms: chapterElevenKnownStoryTerms,
   },
+  {
+    state: chapterTwelveBase,
+    knownTerms: chapterTwelveKnownTerms,
+    knownStoryTerms: chapterTwelveKnownStoryTerms,
+  },
+  {
+    state: {
+      ...chapterTwelveBase,
+      stats: {
+        ...chapterTwelveBase.stats,
+        health: 1,
+        resolve: 0,
+        command: 0,
+        oathfire: 0,
+        medicine: 0,
+      },
+    },
+    knownTerms: chapterTwelveKnownTerms,
+    knownStoryTerms: chapterTwelveKnownStoryTerms,
+  },
 ];
 
 function chapterElevenFixtureState({
@@ -9456,12 +9568,518 @@ for (const [flag, expected] of [
     failures.push(`Chapter Eleven does not actively render Vexa state ${flag}`);
 }
 
+function chapterTwelveFixtureState({
+  add = [],
+  remove = [],
+  relationships,
+  stats,
+} = {}) {
+  const removed = new Set(remove);
+  return {
+    ...chapterTwelveBase,
+    nodeId: 'c12-inner-gate',
+    chapterChoices: 0,
+    history: [],
+    defeat: false,
+    stats: { ...chapterTwelveBase.stats, ...stats },
+    flags: [
+      ...new Set(
+        chapterTwelveBase.flags
+          .filter((flag) => !removed.has(flag))
+          .concat(add),
+      ),
+    ],
+    relationships: relationships ?? chapterTwelveBase.relationships,
+  };
+}
+
+function walkChapterTwelve(route) {
+  let state = route.state;
+  let elianRecords = 0;
+  for (const choiceId of route.choices) {
+    const node = nodes[state.nodeId];
+    const choice = node?.choices.find((candidate) => candidate.id === choiceId);
+    if (!choice) {
+      failures.push(
+        `Chapter Twelve ${route.label} cannot find ${choiceId} at ${state.nodeId}`,
+      );
+      return;
+    }
+    if (!canChoose(choice, state)) {
+      failures.push(
+        `Chapter Twelve ${route.label} cannot choose ${choiceId} at ${state.nodeId}`,
+      );
+      return;
+    }
+    if (state.nodeId === 'c12-elian-conduit') elianRecords += 1;
+    state = applyChoice(state, choice);
+    if (Object.values(state.stats).some((value) => value < 0)) {
+      failures.push(
+        `Chapter Twelve ${route.label} makes a resource negative at ${choiceId}`,
+      );
+      return;
+    }
+  }
+  if (state.nodeId !== route.ending)
+    failures.push(
+      `Chapter Twelve ${route.label} ends at ${state.nodeId}, expected ${route.ending}`,
+    );
+  if (elianRecords !== 1)
+    failures.push(
+      `Chapter Twelve ${route.label} earns ${elianRecords} bounded Elian records instead of one`,
+    );
+  for (const flag of route.expectedFlags) {
+    if (!state.flags.includes(flag))
+      failures.push(`Chapter Twelve ${route.label} drops expected ${flag}`);
+  }
+  if (!state.flags.includes('c12-series-complete'))
+    failures.push(`Chapter Twelve ${route.label} lacks series completion`);
+  const finale = caelanFinaleExport(state);
+  for (const field of [
+    'gate',
+    'destination',
+    'relationship',
+    'devilWorld',
+    'storedPromises',
+    'fragmentCustody',
+    'caelan',
+    'sunrise',
+    'rookApproach',
+  ]) {
+    if (!finale[field])
+      failures.push(
+        `Chapter Twelve ${route.label} leaves finale export ${field} empty`,
+      );
+  }
+  const layers = [
+    state.flags.filter((flag) =>
+      [
+        'c12-gate-sealed',
+        'c12-gate-consent-passage',
+        'c12-gate-broken',
+        'c12-gatekeeper',
+      ].includes(flag),
+    ).length,
+    state.flags.filter((flag) => flag.startsWith('c12-destination-')).length,
+    state.flags.filter((flag) =>
+      [
+        'c12-relationship-together',
+        'c12-relationship-distance',
+        'c12-relationship-friendship',
+        'c12-relationship-closed',
+        'c12-relationship-political-truce',
+        'c12-relationship-single',
+      ].includes(flag),
+    ).length,
+  ];
+  if (layers.some((count) => count !== 1))
+    failures.push(
+      `Chapter Twelve ${route.label} does not preserve exactly one world, personal, and relationship layer`,
+    );
+}
+
+const chapterTwelveWalkthroughs = [
+  {
+    label: 'revolt Futureless bargain seal weak Oathfire',
+    state: chapterTwelveFixtureState({
+      stats: { health: 2, resolve: 0, command: 0, oathfire: 0, medicine: 0 },
+    }),
+    ending: 'c12-ending-sealed',
+    expectedFlags: [
+      'c12-free-ledger-renewal-held',
+      'c12-fragment-return-fulfilled',
+      'c12-sunrise-barred',
+      'rook-luminous-approach-sealed',
+    ],
+    choices: [
+      'c12-open-refuser-witness-circle',
+      'c12-shield-inner-wounded',
+      'c12-name-malrec-coercion',
+      'c12-align-neutral-fragment',
+      'c12-record-elian-warning-publicly',
+      'c12-hold-free-ledger-renewal',
+      'c12-hear-voluntary-victim-map',
+      'c12-confirm-no-price-review',
+      'c12-record-no-compact-passage',
+      'c12-give-limited-defensive-order',
+      'c12-move-wounded-through-open-lane',
+      'c12-build-law-from-present-consent',
+      'c12-choose-sealed-gate',
+      'c12-carry-law-to-custody',
+      'c12-fulfil-neutral-fragment-return',
+      'c12-choose-road-destination',
+      'c12-choose-fulfilled-single-life',
+      'c12-face-barred-dawn',
+    ],
+  },
+  {
+    label: 'auction Pell review and hearing consent passage',
+    state: chapterTwelveFixtureState({
+      remove: chapterTwelveBase.flags.filter((flag) =>
+        /c11-route-|c11-alliance-|c9-roster-/.test(flag),
+      ),
+      add: [
+        'c11-route-auction',
+        'c11-alliance-price-court-dissent',
+        'c11-price-court-review-owed',
+        'c11-freedom-hearing-restricted',
+        'c9-roster-pell',
+      ],
+    }),
+    ending: 'c12-ending-consent-passage',
+    expectedFlags: [
+      'c12-freedom-hearing-returned',
+      'c12-price-freedom-returned',
+      'c12-fragment-custody-amended',
+      'c12-sunrise-mutual-road',
+      'rook-luminous-approach-mutual',
+    ],
+    choices: [
+      'c12-enforce-registered-force-delay',
+      'c12-split-first-collision',
+      'c12-demand-engine-test',
+      'c12-align-neutral-fragment',
+      'c12-protect-elian-warning-channel',
+      'c12-record-no-renewal-debt',
+      'c12-complete-hidden-victims-hearing',
+      'c12-complete-price-court-review',
+      'c12-record-no-compact-passage',
+      'c12-give-limited-defensive-order',
+      'c12-move-wounded-through-open-lane',
+      'c12-build-law-from-present-consent',
+      'c12-choose-consent-passage',
+      'c12-carry-law-to-custody',
+      'c12-amend-neutral-fragment-custody',
+      'c12-choose-fortress-destination',
+      'c12-choose-enduring-friendship',
+      'c12-face-mutual-dawn',
+    ],
+  },
+  {
+    label: 'force mixed theft command and door restrictions break',
+    state: chapterTwelveFixtureState({
+      remove: chapterTwelveBase.flags.filter((flag) =>
+        /c11-route-|c11-alliance-|c9-route-|c9-roster-/.test(flag),
+      ),
+      add: [
+        'c11-route-force',
+        'c11-alliance-ash-compact-passage',
+        'c11-vathis-civic-damage',
+        'c11-freedom-command-restricted',
+        'c11-freedom-door-order-restricted',
+        'c9-route-theft',
+        'c9-theft-publicly-named',
+        'c9-roster-wardens',
+        'c8-sacrificed-first-fort',
+        'c5-took-ember-by-force',
+        'c9-vexa-permanent-hostility',
+      ],
+      relationships: {
+        ...chapterTwelveBase.relationships,
+        vexa: {
+          ...chapterTwelveBase.relationships.vexa,
+          intent: 'hostile',
+          friction: 4,
+        },
+      },
+    }),
+    ending: 'c12-ending-broken',
+    expectedFlags: [
+      'c12-compact-passage-honoured',
+      'c12-command-restriction-fulfilled',
+      'c12-door-freedom-returned',
+      'c12-theft-restitution-submitted',
+      'c12-sunrise-unstable-road',
+      'rook-luminous-approach-unstable',
+    ],
+    choices: [
+      'c12-set-compact-witness-line',
+      'c12-shield-mortal-line',
+      'c12-name-malrec-coercion',
+      'c12-seat-admitted-stolen-fragment',
+      'c12-record-elian-warning-publicly',
+      'c12-record-no-renewal-debt',
+      'c12-hear-voluntary-victim-map',
+      'c12-confirm-no-price-review',
+      'c12-honour-one-compact-passage',
+      'c12-ask-units-to-hold-within-limits',
+      'c12-let-expedition-cross-safe-line-first',
+      'c12-build-law-from-present-consent',
+      'c12-choose-broken-gate',
+      'c12-carry-law-to-custody',
+      'c12-submit-stolen-fragment-restitution',
+      'c12-choose-road-destination',
+      'c12-choose-fulfilled-single-life',
+      'c12-face-unstable-dawn',
+    ],
+  },
+  {
+    label: 'force Crown exposure gatekeeper with Mara',
+    state: chapterTwelveFixtureState({
+      remove: chapterTwelveBase.flags.filter((flag) =>
+        /c11-route-|c11-alliance-|c9-route-|c9-roster-|c9-no-mortal-partner/.test(
+          flag,
+        ),
+      ),
+      add: [
+        'c11-route-force',
+        'c11-alliance-ash-compact-passage',
+        'c9-route-exposure',
+        'c9-sableglass-publicly-exposed',
+        'c9-roster-crown',
+        'c9-mara-crossed-black-gate',
+        'c5-vaor-pact',
+      ],
+      relationships: {
+        ...chapterTwelveBase.relationships,
+        mara: {
+          ...chapterTwelveBase.relationships.mara,
+          intent: 'committed',
+        },
+      },
+    }),
+    ending: 'c12-ending-gatekeeper',
+    expectedFlags: [
+      'c12-exposure-joint-custody',
+      'c12-caelan-transformed',
+      'c12-relationship-mara',
+      'c12-sunrise-witnessed-identity',
+      'rook-luminous-approach-carried-voices',
+    ],
+    choices: [
+      'c12-set-compact-witness-line',
+      'c12-shield-inner-wounded',
+      'c12-offer-malrec-witnessed-stop',
+      'c12-seat-public-evidence-fragment',
+      'c12-test-elian-warning-against-scars',
+      'c12-record-no-renewal-debt',
+      'c12-hear-voluntary-victim-map',
+      'c12-confirm-no-price-review',
+      'c12-honour-one-compact-passage',
+      'c12-give-limited-defensive-order',
+      'c12-move-wounded-through-open-lane',
+      'c12-build-law-from-present-consent',
+      'c12-choose-mortal-gatekeeper',
+      'c12-carry-law-to-custody',
+      'c12-place-exposed-fragment-in-joint-custody',
+      'c12-choose-threshold-destination',
+      'c12-continue-with-mara',
+      'c12-face-witnessed-dawn',
+    ],
+  },
+  {
+    label: 'older save legacy fragment and missing finale fields',
+    state: chapterTwelveFixtureState({
+      remove: chapterTwelveBase.flags.filter((flag) =>
+        /c11-route-|c11-alliance-|c9-route-|c9-return-promise|c9-roster-/.test(
+          flag,
+        ),
+      ),
+      add: ['c9-roster-futureless'],
+      stats: { health: 1, resolve: 0, command: 0, oathfire: 0, medicine: 0 },
+    }),
+    ending: 'c12-ending-consent-passage',
+    expectedFlags: [
+      'c12-legacy-fragment-public-custody',
+      'c12-relationship-single',
+    ],
+    choices: [
+      'c12-build-unallied-contact-line',
+      'c12-shield-inner-wounded',
+      'c12-demand-engine-test',
+      'c12-seat-legacy-fragment-publicly',
+      'c12-test-elian-warning-against-scars',
+      'c12-record-no-renewal-debt',
+      'c12-hear-voluntary-victim-map',
+      'c12-confirm-no-price-review',
+      'c12-record-no-compact-passage',
+      'c12-give-limited-defensive-order',
+      'c12-move-wounded-through-open-lane',
+      'c12-build-law-from-present-consent',
+      'c12-choose-consent-passage',
+      'c12-carry-law-to-custody',
+      'c12-place-legacy-fragment-in-public-custody',
+      'c12-choose-cinder-deep-destination',
+      'c12-choose-fulfilled-single-life',
+      'c12-face-mutual-dawn',
+    ],
+  },
+];
+for (const route of chapterTwelveWalkthroughs) walkChapterTwelve(route);
+
+for (const flag of [
+  'c9-destroyed-red-moot-authority-oath',
+  'c9-destroyed-crown-restitution-oath',
+  'c9-destroyed-clan-refusal-oath',
+  'c9-destroyed-honest-command-limit-oath',
+  'c9-destroyed-unsea-investigation-oath',
+]) {
+  const state = chapterTwelveFixtureState({ add: [flag] });
+  if (!/destroyed/i.test(renderedBody('c12-oath-hearing', state)))
+    failures.push(`Chapter Twelve does not show destroyed Oath ${flag}`);
+}
+
+for (const [person, crossingFlag, choiceId] of [
+  ['mara', 'c9-mara-remained-at-gate', 'c12-continue-with-mara'],
+  ['lysara', 'c9-lysara-crossed-black-gate', 'c12-continue-with-lysara'],
+  ['vexa', 'c9-vexa-attraction-acknowledged', 'c12-continue-with-vexa'],
+]) {
+  const state = chapterTwelveFixtureState({
+    add: [crossingFlag],
+    relationships: {
+      ...chapterTwelveBase.relationships,
+      [person]: {
+        ...chapterTwelveBase.relationships[person],
+        intent: 'committed',
+      },
+    },
+  });
+  const choice = nodes['c12-relationship-ending'].choices.find(
+    (candidate) => candidate.id === choiceId,
+  );
+  if (!choice || !isChoiceVisible(choice, state))
+    failures.push(`Chapter Twelve hides valid ${person} relationship ending`);
+}
+const hostileVexaFinale = chapterTwelveFixtureState({
+  add: ['c9-vexa-permanent-hostility'],
+  relationships: {
+    ...chapterTwelveBase.relationships,
+    vexa: { ...chapterTwelveBase.relationships.vexa, intent: 'hostile' },
+  },
+});
+const vexaPartnerChoice = nodes['c12-relationship-ending'].choices.find(
+  (choice) => choice.id === 'c12-continue-with-vexa',
+);
+if (vexaPartnerChoice && isChoiceVisible(vexaPartnerChoice, hostileVexaFinale))
+  failures.push('Hostile Vexa receives an invalid romantic finale choice');
+
+const sealedInnerMara = chapterTwelveFixtureState({
+  add: [
+    'c12-gate-sealed',
+    'c12-destination-cinder-deep',
+    'c9-mara-crossed-black-gate',
+  ],
+  relationships: {
+    ...chapterTwelveBase.relationships,
+    mara: {
+      ...chapterTwelveBase.relationships.mara,
+      intent: 'committed',
+    },
+  },
+});
+const genericMaraContinuation = nodes['c12-relationship-ending'].choices.find(
+  (choice) => choice.id === 'c12-continue-with-mara',
+);
+const sealedInnerMaraContinuation = nodes[
+  'c12-relationship-ending'
+].choices.find((choice) => choice.id === 'c12-continue-with-mara-inside-seal');
 if (
-  !/CURRENT_SAVE_KEY = 'veilfall\.saga\.v15\.save'/.test(pageSource) ||
-  !/veilfall\.saga\.v14\.save/.test(pageSource)
+  !genericMaraContinuation ||
+  isChoiceVisible(genericMaraContinuation, sealedInnerMara) ||
+  !sealedInnerMaraContinuation ||
+  !isChoiceVisible(sealedInnerMaraContinuation, sealedInnerMara)
 )
   failures.push(
-    'Chapter Eleven save migration does not accept the prior version',
+    'The sealed relationship ending does not preserve Mara’s physical side',
+  );
+
+const sealedOuterLysara = chapterTwelveFixtureState({
+  add: [
+    'c12-gate-sealed',
+    'c12-destination-fortress',
+    'c9-lysara-remained-at-gate',
+  ],
+  relationships: {
+    ...chapterTwelveBase.relationships,
+    lysara: {
+      ...chapterTwelveBase.relationships.lysara,
+      intent: 'committed',
+    },
+  },
+});
+const sealedOuterLysaraContinuation = nodes[
+  'c12-relationship-ending'
+].choices.find(
+  (choice) => choice.id === 'c12-continue-with-lysara-outside-seal',
+);
+if (
+  !sealedOuterLysaraContinuation ||
+  !isChoiceVisible(sealedOuterLysaraContinuation, sealedOuterLysara)
+)
+  failures.push(
+    'The sealed relationship ending does not preserve Lysara’s mortal side',
+  );
+
+const gatekeeperDestinationState = chapterTwelveFixtureState({
+  add: ['c12-gatekeeper'],
+});
+const genericDeepDestination = nodes['c12-personal-destination'].choices.find(
+  (choice) => choice.id === 'c12-choose-cinder-deep-destination',
+);
+const keeperInnerRoadDestination = nodes[
+  'c12-personal-destination'
+].choices.find((choice) => choice.id === 'c12-choose-living-gate-inner-road');
+if (
+  !genericDeepDestination ||
+  isChoiceVisible(genericDeepDestination, gatekeeperDestinationState) ||
+  !keeperInnerRoadDestination ||
+  !isChoiceVisible(keeperInnerRoadDestination, gatekeeperDestinationState)
+)
+  failures.push(
+    'The Gatekeeper ending does not replace disappearance with the compatible inner boundary road',
+  );
+
+const finalLawChoices = nodes['c12-four-laws'].choices;
+if (finalLawChoices.length !== 4)
+  failures.push(
+    `Chapter Twelve offers ${finalLawChoices.length} Gate laws instead of four`,
+  );
+for (const choice of finalLawChoices) {
+  const terms = `${choice.detail} ${choice.advantage}`;
+  if (
+    !/(cross|passage)/i.test(terms) ||
+    !/(refus|withdraw|no person|no central authority)/i.test(terms) ||
+    !/(lasts|until|year|permanent|death)/i.test(terms) ||
+    !/(stored promise|promises)/i.test(terms) ||
+    !/Caelan|your|you /i.test(terms)
+  )
+    failures.push(`Gate law ${choice.id} hides a required law term`);
+  if (choice.requires || choice.requiresFlags)
+    failures.push(
+      `Gate law ${choice.id} is gated by hidden state or resources`,
+    );
+}
+if (
+  finalLawChoices.some((choice) =>
+    /relationship|romance|Mara|Lysara|Vexa/i.test(
+      `${choice.label} ${choice.detail} ${choice.advantage}`,
+    ),
+  )
+)
+  failures.push('A relationship state influences the political Gate choice');
+if (!/Caelan’s series is complete/.test(pageSource))
+  failures.push('The Chapter Twelve terminal interface is missing');
+if (/Continue to Rook|startRook|nextChapter:\s*['"]rook/i.test(pageSource))
+  failures.push('Chapter Twelve creates an unimplemented Rook continuation');
+
+if (
+  /multiple equally real Elians|Elian (?:is|was) dead|trapped inside the engine/i.test(
+    chapterTwelveSource,
+  )
+)
+  failures.push('Chapter Twelve reveals protected later Elian truth');
+if (
+  !/c12-inner-gate/.test(pageSource) ||
+  !/chapter-twelve\.v1\.start/.test(pageSource)
+)
+  failures.push('Chapter Twelve start snapshot or canonical entry is missing');
+
+if (
+  !/CURRENT_SAVE_KEY = 'veilfall\.saga\.v16\.save'/.test(pageSource) ||
+  !/veilfall\.saga\.v15\.save/.test(pageSource)
+)
+  failures.push(
+    'Chapter Twelve save migration does not accept the prior version',
   );
 
 const visited = new Set();
@@ -9478,11 +10096,13 @@ const chapterEightEndings = new Set();
 const chapterNineEndings = new Set();
 const chapterTenEndings = new Set();
 const chapterElevenEndings = new Set();
+const chapterTwelveEndings = new Set();
 const deathChapters = new Set();
 const endingDepths = [];
 let exploredChoices = 0;
 
-while (stack.length && visited.size < 100000) {
+const maxGraphStates = 500000;
+while (stack.length && visited.size < maxGraphStates) {
   const current = stack.pop();
   const state = current.state;
   const knownTerms = Array.from(
@@ -9575,7 +10195,8 @@ while (stack.length && visited.size < 100000) {
 
   if (node.final) {
     endings.add(node.id);
-    if (node.id.startsWith('c11-')) chapterElevenEndings.add(node.id);
+    if (node.id.startsWith('c12-')) chapterTwelveEndings.add(node.id);
+    else if (node.id.startsWith('c11-')) chapterElevenEndings.add(node.id);
     else if (node.id.startsWith('c10-')) chapterTenEndings.add(node.id);
     else if (node.id.startsWith('c9-')) chapterNineEndings.add(node.id);
     else if (node.id.startsWith('c8-')) chapterEightEndings.add(node.id);
@@ -9587,11 +10208,13 @@ while (stack.length && visited.size < 100000) {
     else if (node.id.startsWith('c2-')) chapterTwoEndings.add(node.id);
     else chapterOneEndings.add(node.id);
     endingDepths.push(state.history.length);
-    const expectedChapterChoices = node.id.startsWith('c11-')
-      ? 17
-      : /^(?:c8|c9|c10)-/.test(node.id)
-        ? 16
-        : 15;
+    const expectedChapterChoices = node.id.startsWith('c12-')
+      ? 18
+      : node.id.startsWith('c11-')
+        ? 17
+        : /^(?:c8|c9|c10)-/.test(node.id)
+          ? 16
+          : 15;
     if (state.chapterChoices !== expectedChapterChoices) {
       failures.push(
         `${node.id} reached after ${state.chapterChoices} decisions instead of ${expectedChapterChoices}`,
@@ -9632,7 +10255,7 @@ for (const id of nodeIds) {
   if (!reachableNodes.has(id)) failures.push(`Unreachable node: ${id}`);
 }
 
-if (visited.size >= 100000)
+if (visited.size >= maxGraphStates)
   failures.push('State exploration exceeded its safety limit');
 if (!endings.size) failures.push('No ending is reachable');
 if (chapterOneEndings.size !== 3)
@@ -9679,7 +10302,11 @@ if (chapterElevenEndings.size !== 3)
   failures.push(
     `Expected 3 Chapter Eleven endings, found ${chapterElevenEndings.size}`,
   );
-for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]) {
+if (chapterTwelveEndings.size !== 4)
+  failures.push(
+    `Expected 4 Chapter Twelve endings, found ${chapterTwelveEndings.size}`,
+  );
+for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
   if (!deathChapters.has(chapter))
     failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
@@ -10018,5 +10645,5 @@ if (process.argv.includes('--print-chapter-nine-routes')) {
 const shortest = Math.min(...endingDepths);
 const longest = Math.max(...endingDepths);
 console.log(
-  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, ${chapterTenEndings.size} Chapter Ten endings, ${chapterElevenEndings.size} Chapter Eleven endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
+  `Game graph check passed: ${reachableNodes.size} nodes, ${chapterOneEndings.size} Chapter One endings, ${chapterTwoEndings.size} Chapter Two endings, ${chapterThreeEndings.size} Chapter Three endings, ${chapterFourEndings.size} Chapter Four endings, ${chapterFiveEndings.size} Chapter Five endings, ${chapterSixEndings.size} Chapter Six endings, ${chapterSevenEndings.size} Chapter Seven endings, ${chapterEightEndings.size} Chapter Eight endings, ${chapterNineEndings.size} Chapter Nine endings, ${chapterTenEndings.size} Chapter Ten endings, ${chapterElevenEndings.size} Chapter Eleven endings, ${chapterTwelveEndings.size} Chapter Twelve endings, lethal routes in ${deathChapters.size} chapters, ${exploredChoices} reachable choices, ${shortest} to ${longest} decisions per chapter route.`,
 );

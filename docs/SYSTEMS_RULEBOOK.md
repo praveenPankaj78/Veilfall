@@ -244,3 +244,11 @@ Every authored choice should include:
 5. Romance does not grant the universally strongest route.
 6. Regional alliances should be as valuable as personal power in the final chapters.
 7. Grand power always increases the scale of responsibility.
+
+## Finale state layers
+
+A series finale records its world outcome, protagonist destination, and relationship conclusion as separate player choices. Route reputation, romance score, and resource totals cannot select one of these layers automatically.
+
+Every terminal world flag needs a concrete later import contract. The contract names the option, cost, route, reaction, or restriction that consumes it. A final paragraph or journal line does not count as the consumer. The graph checker must keep finale dimensions in its state key so different world and personal endings cannot collapse into one tested path.
+
+When a finale fulfils or breaches an owned promise, store that result separately from the world outcome. Fulfilment ends only the named duty. Amendment requires every living keeper named by the contract. Breach creates a named Oathscar and cannot be rewritten as fulfilment by an ending summary.
