@@ -104,9 +104,15 @@ export type StoryNode = {
   introducesStoryTerms?: StoryTermKey[];
   art?:
     | 'departure'
+    | 'ambush'
     | 'folded'
     | 'inn'
+    | 'othernights'
+    | 'foldedcellar'
+    | 'roadpin'
     | 'harrowfen'
+    | 'shiftingmarket'
+    | 'bridgereveal'
     | 'mileless'
     | 'crossroads'
     | 'nails'
@@ -1236,6 +1242,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The King’s Road',
     objective: 'Survive the opening strike and keep the escort moving.',
     threat: 'Critical',
+    art: 'ambush',
     body: (state) => [
       state.flags.includes('mara-ahead')
         ? 'Mara’s warning whistle cuts through the rain. One note from ahead, two from the left. Archers and something moving on the road.'
@@ -1309,6 +1316,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Willow Bridge, Low Road',
     objective: 'Choose what survives the collapsing bridge.',
     threat: 'Critical',
+    art: 'ambush',
     body: (state) => [
       'The escort reaches Willow Bridge under arrow fire. Floodwater strikes the supports hard enough to shake mud from the rails. Then a hidden charge breaks the centre span.',
       openingProtection(state),
@@ -1419,6 +1427,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Shepherd’s Cut, Ridge Road',
     objective: 'Choose what survives the rockfall.',
     threat: 'Critical',
+    art: 'ambush',
     body: (state) => [
       'The attackers do not need to reach you. A horn sounds above, and the ridge begins to move. Cut ropes whip free from wooden support frames. Stones crash toward the road.',
       openingProtection(state),
@@ -1478,6 +1487,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Eastwatch Orchard Road',
     objective: 'Break the mounted attack before the escort is surrounded.',
     threat: 'Critical',
+    art: 'ambush',
     body: (state) => [
       'Twelve riders emerge from the rain wearing plain armour with no badges or banners. Four race for the lead horses. The rest split around the orchard walls and close on the treaty wagon.',
       openingProtection(state),
@@ -1547,6 +1557,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The King’s Road After the Ambush',
     objective: 'Keep the wounded alive and prepare for another attack.',
     threat: 'Immediate',
+    art: 'ambush',
     body: (state) => [
       state.flags.includes('treaty-safe')
         ? 'The pale treaty chest remains sealed beneath torn canvas.'
@@ -1611,6 +1622,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The King’s Road After the Ambush',
     objective: 'Prove how the attackers knew the chosen route.',
     threat: 'Rising',
+    art: 'ambush',
     body: (state) => [
       state.flags.includes('captured-attacker') ||
       state.flags.includes('captured-saboteur')
@@ -1668,6 +1680,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The King’s Road at Dusk',
     objective: 'Move the wounded before the attackers return.',
     threat: 'Immediate',
+    art: 'ambush',
     body: (state) => [
       state.flags.includes('confirmed-advance-orders')
         ? 'The proof is plain. The attackers had plans for every route before you chose one. Someone did not predict your decision. Someone prepared around it.'
@@ -2434,7 +2447,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Bellweather Inn',
     objective: 'Keep the inn from scattering the group across different roads.',
     threat: 'Critical',
-    art: 'inn',
+    art: 'othernights',
     body: (state) => [
       'The front bell rings. A second bell answers from the cellar. Every flame in the inn bends toward the floor.',
       state.flags.includes('c2-knows-midnight-pattern')
@@ -2500,7 +2513,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Bellweather Inn Common Room',
     objective: 'Protect the wounded while clearing a path to the cellar.',
     threat: 'Critical',
-    art: 'inn',
+    art: 'othernights',
     body: (state) => [
       state.flags.includes('c2-rope-line')
         ? 'The rope pulls tight as three doors open onto three different nights. The people tied together remain in the same room.'
@@ -2579,7 +2592,7 @@ const originalNodes: Record<string, StoryNode> = {
     objective:
       'Choose who will help you find the cause while Brann guards the wounded.',
     threat: 'Immediate',
-    art: 'inn',
+    art: 'othernights',
     body: (state) => [
       'Brann can hold the stair for a few minutes. Tivik must come because the iron mechanism below is built like a machine. You can take one more person without leaving the wounded unprotected.',
       state.flags.includes('c2-saved-lysara')
@@ -2630,7 +2643,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Beneath Bellweather Inn',
     objective: 'Cross the folded cellar without losing the stair behind you.',
     threat: 'Immediate',
-    art: 'inn',
+    art: 'foldedcellar',
     body: (state) => [
       'The steps end on the King’s Road. It runs through the cellar and continues into darkness in both directions. Shelves repeat beside it, each holding the same cracked jar and dead mouse.',
       state.flags.includes('c2-mara-below')
@@ -2722,7 +2735,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The Buried King’s Road',
     objective: 'Understand the damaged road pin before touching it.',
     threat: 'Rising',
-    art: 'inn',
+    art: 'roadpin',
     body: (state) => [
       'The hidden path ends at an iron spike taller than you are. It passes through the road and deep into the earth. Silver cracks spread from an empty keyhole near its top.',
       state.flags.includes('c2-found-road-pin-term')
@@ -2777,7 +2790,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The Buried King’s Road',
     objective: 'Free the road pin before the inn chooses another year.',
     threat: 'Critical',
-    art: 'inn',
+    art: 'roadpin',
     body: (state) => [
       'The bell above rings a third time. The silver cracks widen. Through them you see the inn burning, buried in snow, standing in summer, and lying as empty ruins.',
       'Each view is a possible place the inn could have reached while the pin was loose. They are not dreams. Only one will remain solid after you repair the road.',
@@ -3492,7 +3505,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Reed Market, Harrowfen',
     objective: 'Keep the market calm when old versions of the town return.',
     threat: 'Critical',
-    art: 'harrowfen',
+    art: 'shiftingmarket',
     body: (state) => [
       state.flags.includes('c3-priority-people')
         ? state.flags.includes('c2-kissed-mara')
@@ -3550,7 +3563,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Stone Well, Harrowfen',
     objective: 'Use the fragment carefully enough to understand its effect.',
     threat: 'Immediate',
-    art: 'harrowfen',
+    art: 'shiftingmarket',
     body: () => [
       'The fragment rests on the well. Around it, one market remains solid. Beyond a circle of ten steps, streets slide through different days.',
       'Tivik turns the iron a finger’s width. A safe stone bridge replaces a burning canal. He turns it back, and the canal returns. The effect is now clear: the iron fixes one possible distance and destination in place. When it moves, the road remembers other answers.',
@@ -3598,7 +3611,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Shifting Market Edge, Harrowfen',
     objective: 'Learn who controls the false Caelan without losing Mara.',
     threat: 'Critical',
-    art: 'harrowfen',
+    art: 'shiftingmarket',
     body: (state) => [
       'Your double speaks in your voice. “Ordan showed me what happens if you keep going. Mara dies at the bridge. Lysara opens a door she cannot close. I am the version of you that learned to stop.”',
       state.flags.includes('c3-saw-false-oath')
@@ -3648,7 +3661,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Stone Well, Harrowfen',
     objective: 'Stop Ordan Vale from taking the iron fragment.',
     threat: 'Critical',
-    art: 'harrowfen',
+    art: 'shiftingmarket',
     body: (state) => [
       'You turn toward the well. Ordan Vale is already there, alive and smiling in his silver gloves. He looks ordinary, which makes the bodies and burning streets around him feel worse.',
       '“Thank you for carrying it out of Bellweather,” he says. “A royal tool cannot be stolen until a loyal officer calls it evidence.”',
@@ -3699,7 +3712,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'Reed Market, Harrowfen',
     objective: 'Save a path through town while keeping Ordan in sight.',
     threat: 'Critical',
-    art: 'harrowfen',
+    art: 'shiftingmarket',
     body: (state) => [
       'Ordan runs east with the fragment. Harrowfen tears into pieces behind him. One canal becomes a road of white bone. A tower falls upward. Half the healing house begins to fade with the wounded still inside.',
       state.flags.includes('c3-balanced-plan')
@@ -3753,7 +3766,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'East Reeds, Harrowfen',
     objective: 'Choose what you carry into the pursuit.',
     threat: 'Rising',
-    art: 'harrowfen',
+    art: 'bridgereveal',
     body: (state) => [
       'The last stable street ends among black reeds. Beyond them stands a ruined bridge with no river beneath it. Its broken arches cross clouds, desert, forest, and a field of stars at the same time.',
       state.flags.includes('c3-marked-ordan')
@@ -3806,7 +3819,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The Mileless Bridge',
     objective: 'Decide your first duty on the impossible bridge.',
     threat: 'Unknown',
-    art: 'harrowfen',
+    art: 'bridgereveal',
     lesson: {
       title: 'World Nail',
       body: 'Lysara now names the iron you have already tested. A World Nail is an ancient anchor that keeps a road, border, or natural law in one stable form. Your fragment came from the Nail that fixes distance across Edrath.',
@@ -3863,7 +3876,7 @@ const originalNodes: Record<string, StoryNode> = {
     location: 'The Mileless Bridge',
     objective: 'Catch Ordan and recover the stolen World Nail fragment.',
     threat: 'Immediate',
-    art: 'harrowfen',
+    art: 'bridgereveal',
     final: true,
     nextChapter: 'c4-bridge-start',
     body: (state) => [
@@ -3884,7 +3897,7 @@ const originalNodes: Record<string, StoryNode> = {
     objective:
       'Stop the unknown thief from escaping with the World Nail fragment.',
     threat: 'Critical',
-    art: 'harrowfen',
+    art: 'bridgereveal',
     final: true,
     nextChapter: 'c4-bridge-start',
     body: (state) => [
@@ -3905,7 +3918,7 @@ const originalNodes: Record<string, StoryNode> = {
     objective:
       'Keep the bridge connected to Harrowfen and recover the World Nail fragment.',
     threat: 'Rising',
-    art: 'harrowfen',
+    art: 'bridgereveal',
     final: true,
     nextChapter: 'c4-bridge-start',
     body: (state) => [

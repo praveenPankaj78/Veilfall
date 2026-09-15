@@ -72,7 +72,12 @@ The automated lifecycle audit distinguishes later mechanics and explicitly revie
 
 ## Art
 
-The canonical illustration is `public/art/bellweather-inn.png`.
+The chapter uses four canonical illustrations:
+
+1. `public/art/bellweather-inn.png` covers arrival, shelter, investigation, and the quiet watch.
+2. `public/art/bellweather-other-nights.webp` covers the midnight bell and the route-neutral common-room crisis.
+3. `public/art/bellweather-folded-cellar.webp` covers the repeating cellar and its impossible road before the cause is revealed.
+4. `public/art/bellweather-road-pin.webp` covers the road pin's discovery and removal without choosing a route-specific companion.
 
 ## Final review contract
 

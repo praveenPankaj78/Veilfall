@@ -85,6 +85,10 @@ const sceneArtwork = {
     src: '/art/caelan-east-gate.png',
     alt: 'Caelan and Mara travel with the diplomatic escort beyond Greyhaven',
   },
+  ambush: {
+    src: '/art/kings-road-ambush.webp',
+    alt: 'Caelan and Mara defend the diplomatic escort from black arrows on the rain-soaked King’s Road',
+  },
   folded: {
     src: '/art/kings-road-folded.png',
     alt: 'Caelan and the wounded escort face an impossible sea across the King’s Road',
@@ -93,9 +97,29 @@ const sceneArtwork = {
     src: '/art/bellweather-inn.png',
     alt: 'Caelan leads the wounded escort into Bellweather Inn during a storm',
   },
+  othernights: {
+    src: '/art/bellweather-other-nights.webp',
+    alt: 'Caelan and Mara protect the wounded as other nights open inside Bellweather Inn',
+  },
+  foldedcellar: {
+    src: '/art/bellweather-folded-cellar.webp',
+    alt: 'Caelan and Tivik follow an impossible road through the repeating cellar beneath Bellweather Inn',
+  },
+  roadpin: {
+    src: '/art/bellweather-road-pin.webp',
+    alt: 'Caelan and Tivik discover the damaged iron road pin beneath Bellweather Inn',
+  },
   harrowfen: {
     src: '/art/harrowfen-wrong-mile.png',
     alt: 'Caelan approaches Harrowfen while royal archers watch from the canal gate',
+  },
+  shiftingmarket: {
+    src: '/art/harrowfen-shifting-market.webp',
+    alt: 'Caelan, Mara, and Tivik protect Harrowfen as alternate streets return around the old well',
+  },
+  bridgereveal: {
+    src: '/art/mileless-bridge-reveal.webp',
+    alt: 'Caelan and his companions discover the Mileless Bridge crossing several worlds beneath different skies',
   },
   mileless: {
     src: '/art/mileless-bridge-chase.png',

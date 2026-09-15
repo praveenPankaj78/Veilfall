@@ -88,4 +88,8 @@ The paid courier list now changes the soldiers' response, market priorities esta
 
 ## Art
 
-The canonical illustration is `public/art/harrowfen-wrong-mile.png`.
+The chapter uses three canonical illustrations:
+
+1. `public/art/harrowfen-wrong-mile.png` covers arrival, the investigation routes, and the watch-house pursuit.
+2. `public/art/harrowfen-shifting-market.webp` covers the returned streets, the fixed well, Ordan's theft, and Harrowfen's collapse.
+3. `public/art/mileless-bridge-reveal.webp` covers the pursuit beyond the eastern reeds, the World Nail reveal, and all three chapter endings.

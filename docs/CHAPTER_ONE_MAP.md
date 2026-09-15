@@ -120,12 +120,13 @@ The lifecycle check now covers Chapter One as well as the numbered node prefixes
 
 ## Art plan
 
-The implemented chapter uses two canonical scene illustrations:
+The implemented chapter uses three canonical scene illustrations:
 
 1. Greyhaven's eastern gate at departure, with the wider road visible beyond it.
-2. The final reveal, with the King's Road ending at an impossible sea.
+2. The shared King's Road ambush, with Caelan and Mara defending the rain-soaked escort.
+3. The final reveal, with the King's Road ending at an impossible sea.
 
-The images are stored as `public/art/caelan-east-gate.png` and `public/art/kings-road-folded.png`.
+The images are stored as `public/art/caelan-east-gate.png`, `public/art/kings-road-ambush.webp`, and `public/art/kings-road-folded.png`.
 
 ## Final review contract
 
