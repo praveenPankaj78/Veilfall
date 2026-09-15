@@ -1539,10 +1539,12 @@ export default function Home() {
               A complete adventure in {chapterDefinitions.length} chapters
             </p>
             <p className="cover-intro">
-              You lead a small escort on what should be a simple journey. Then
-              arrows strike, the road twists into the impossible, and everyone
-              looks to you. Who will you trust? What will you risk to bring your
-              people home?
+              You are a captain drawn into a struggle between two realms. Across{' '}
+              {chapterDefinitions.length} chapters, cross shifting roads, face
+              armies, and bargain with devils. Choose your allies, build
+              friendships or romance, and wield fire through promises that bind
+              you. Your decisions shape who survives, the fate of the gate
+              between worlds, and the life you choose at journey’s end.
             </p>
             <Button
               className="begin-button"

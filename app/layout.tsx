@@ -3,7 +3,7 @@ import './globals.css';
 
 const title = 'Veilfall: The Ember Oath';
 const description =
-  'Lead your people through an impossible journey. Choose who to trust and what to risk in a complete twelve-chapter dark fantasy adventure.';
+  'Cross realms, bargain with devils, and wield fire through binding promises. Shape alliances, relationships, and your ending across twelve chapters.';
 const configuredOrigin = process.env.NEXT_PUBLIC_SITE_ORIGIN;
 const trustedOrigin = configuredOrigin?.startsWith('https://')
   ? configuredOrigin

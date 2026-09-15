@@ -27,7 +27,7 @@ The current browser-save schema is version 17. Portable files use `veilfall-embe
 2. Start the development server with `npm run dev`.
 3. Open the local address printed in the terminal.
 
-The cover introduces the player’s escort mission and danger in plain language. “Start your adventure” begins Chapter I immediately. Chapter summaries explain the situation without requiring knowledge of character or place names. The existing Chapter I estimate is approximately 30 to 40 minutes; total adventure playtime has not been measured.
+The cover introduces the full twelve-chapter journey: crossing realms, facing armies, bargaining with devils, building relationships, and wielding fire through binding promises. It describes the player’s decisions without requiring knowledge of character or place names. “Start your adventure” begins Chapter I immediately. The existing Chapter I estimate is approximately 30 to 40 minutes; total adventure playtime has not been measured.
 
 ## Package the restricted itch.io beta
 
