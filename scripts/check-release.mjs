@@ -6,6 +6,11 @@ const story = loadStory();
 const game = story.game;
 const saves = story.load('app/save-system.ts');
 const pageSource = readFileSync('app/page.tsx', 'utf8');
+assert.equal(
+  saves.BUILD_VERSION,
+  JSON.parse(readFileSync('package.json', 'utf8')).version,
+  'The public build version must survive the version-only package import',
+);
 
 class MemoryStorage {
   constructor(entries = {}) {

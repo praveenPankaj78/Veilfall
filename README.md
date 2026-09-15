@@ -35,6 +35,10 @@ Run `npm run package:itch` to produce `outputs/veilfall-ember-oath-beta.zip`. Th
 
 The ZIP has `index.html` at its top level, hashed JavaScript and CSS in `assets/`, and the game artwork in `art/`. Asset URLs are relative so the package can run from itch.io’s uploaded HTML-game subpath. Browser saves remain tied to the exact itch.io game origin, and players can use the in-game Export Save control for backup or transfer.
 
+Packaging fails if unexpected files, source maps, development entries, or local user paths are found. Only approved runtime paths are accepted; the repository, TypeScript/TSX sources, tooling, environment files, hosting configuration, and internal documents are not shipped. Run `npm run check:itch-package` to audit the actual ZIP and test the rejection rules. Third-party notices are not treated as private source and must be retained where required.
+
+This is not code secrecy: players receive compiled JavaScript, HTML/CSS, all playable story content, and artwork. Those files can be inspected, copied, or reverse-engineered in browser tools, even without a download button. Minification and disabled source maps do not encrypt them. Never put secrets or unreleased confidential content in a client build. See [docs/ITCH_PACKAGE_AUDIT.md](docs/ITCH_PACKAGE_AUDIT.md) for the audit scope and limitations.
+
 Run `npm run preview:itch` to rebuild and serve the static package beneath `/veilfall-beta/`, which exercises the same subpath-relative asset behavior expected from an uploaded HTML game.
 
 For local play, keep that command running and open `http://127.0.0.1:4174/veilfall-beta/`. Do not double-click `itch/index.html`: it is source code and Chrome cannot run it using `file://`. The source and packaged pages now explain this instead of appearing to load indefinitely.

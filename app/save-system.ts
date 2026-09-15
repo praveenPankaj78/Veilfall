@@ -1,4 +1,4 @@
-import packageJson from '../package.json';
+import { version } from '../package.json';
 import {
   chapterDefinitions,
   initialState,
@@ -13,7 +13,7 @@ import {
   type RelationshipKey,
 } from './game-data';
 
-export const BUILD_VERSION = packageJson.version;
+export const BUILD_VERSION = version;
 export const SAVE_SCHEMA_VERSION = 17;
 export const EXPORT_FORMAT = 'veilfall-ember-oath-save';
 export const EXPORT_VERSION = 1;
