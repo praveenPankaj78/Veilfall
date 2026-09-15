@@ -1272,10 +1272,9 @@ export default function Home() {
       <Sheet open={showSettings} onOpenChange={setShowSettings}>
         <SheetContent className="release-settings-sheet" side="right">
           <SheetHeader>
-            <SheetTitle>Settings, saves, and release information</SheetTitle>
+            <SheetTitle>Settings &amp; game information</SheetTitle>
             <SheetDescription>
-              Reading controls, portable backups, content information, and
-              diagnostics for this complete adventure.
+              Adjust the text, back up your progress, or learn about the game.
             </SheetDescription>
           </SheetHeader>
 
@@ -1294,10 +1293,7 @@ export default function Home() {
                 <Type aria-hidden="true" />
                 <h3 id="reading-settings-title">Text size</h3>
               </div>
-              <p>
-                Your choice applies to story text, choices, lessons, the
-                journal, chapter library, settings, and endings.
-              </p>
+              <p>Make all story text and menus easier to read.</p>
               <fieldset className="reading-size-options">
                 <legend className="visually-hidden">Text size</legend>
                 {(
@@ -1323,18 +1319,18 @@ export default function Home() {
             <section aria-labelledby="save-settings-title">
               <div className="settings-section-heading">
                 <HardDrive aria-hidden="true" />
-                <h3 id="save-settings-title">Save and transfer</h3>
+                <h3 id="save-settings-title">Your saved game</h3>
               </div>
               <p>
-                Browser saves belong to this browser and this exact site
-                address. Exporting creates a backup you can keep or import in
-                another compatible browser.
+                Your progress saves automatically in this browser. Clearing
+                browser data or playing at a different web address can leave
+                your save behind. Use Export Save to download a backup, then
+                Import Save to continue from that file.
               </p>
               <p className="settings-summary">
-                Current progress: Chapter {currentChapter.roman} of{' '}
-                {chapterDefinitions.length}, {game.completedChapters.length}{' '}
-                completed, {Object.keys(checkpointsRef.current).length} replay
-                checkpoints.
+                {started
+                  ? `Chapter ${currentChapter.number} of ${chapterDefinitions.length} · ${game.completedChapters.length} chapters completed`
+                  : 'Your adventure has not started yet.'}
               </p>
               <input
                 ref={importInputRef}
@@ -1400,32 +1396,26 @@ export default function Home() {
             <section aria-labelledby="content-settings-title">
               <div className="settings-section-heading">
                 <Info aria-hidden="true" />
-                <h3 id="content-settings-title">
-                  About and content information
-                </h3>
+                <h3 id="content-settings-title">About the game</h3>
               </div>
               <p>
-                <strong>Veilfall: The Ember Oath</strong> is Caelan Vey’s
-                complete twelve-chapter adventure, with a terminal ending. The
-                Broken Concord is its wider setting. Rook and Ilyra appear as
-                independent characters but are not selectable protagonists in
-                this release.
+                <strong>Veilfall: The Ember Oath</strong> is a fantasy story you
+                play by making choices. You are a captain responsible for
+                getting your people home. Decide who to trust, what to risk, and
+                which promises to keep. The complete story spans{' '}
+                {chapterDefinitions.length} chapters and reaches a full ending.
+                No knowledge of the world or its characters is needed.
               </p>
               <p>
-                The story contains dark fantasy violence, blood, injury,
-                possible player-character death, coercive bargains, threats to
-                freedom, and optional consensual adult intimacy. When an
-                intimate scene is available, <strong>Fade</strong> preserves
-                every choice and consequence without detailed prose.{' '}
-                <strong>Detailed</strong> requires adult confirmation and adds
-                description without changing outcomes.
+                <strong>Content notes:</strong> Violence, blood, injury, death,
+                and people pressured into dangerous bargains. Your character can
+                die. Romance and consensual adult intimacy are optional.
               </p>
               <p>
-                Credits and provenance: this build uses the narrative, code, and
-                local artwork contained in this repository. Release-facing files
-                do not identify individual creators or document the provenance
-                of each artwork. No repository-supported AI-use disclosure or
-                player-support contact is configured.
+                For intimate scenes, <strong>Fade</strong> skips detailed
+                description while keeping the same choices and story outcomes.
+                <strong> Detailed</strong> adds description and requires adult
+                confirmation. You can also choose not to take part.
               </p>
               <p className="build-version">Release build {BUILD_VERSION}</p>
             </section>
@@ -1433,12 +1423,13 @@ export default function Home() {
             <section aria-labelledby="diagnostics-title">
               <div className="settings-section-heading">
                 <Bug aria-hidden="true" />
-                <h3 id="diagnostics-title">Bug report diagnostics</h3>
+                <h3 id="diagnostics-title">Found a problem?</h3>
               </div>
               <p>
-                Add a short description, inspect the report, then copy it into
-                your preferred message. It does not include relationship
-                details, story history, or save data.
+                Describe what went wrong, then copy the report to share with the
+                person who invited you to play. It includes your game version,
+                current scene, and browser information, but not your saved game
+                or relationship choices. Nothing is sent automatically.
               </p>
               <label htmlFor="bug-description">What happened?</label>
               <textarea
@@ -1448,15 +1439,14 @@ export default function Home() {
                 placeholder="Describe the problem and what you expected."
                 rows={4}
               />
-              <pre className="diagnostic-preview">{diagnosticText}</pre>
+              <details>
+                <summary>See what the report includes</summary>
+                <pre className="diagnostic-preview">{diagnosticText}</pre>
+              </details>
               <Button type="button" variant="outline" onClick={copyDiagnostics}>
                 <Copy data-icon="inline-start" />
-                Copy diagnostic information
+                Copy report
               </Button>
-              <p className="settings-footnote">
-                No contact destination is included because none is configured in
-                the project.
-              </p>
             </section>
           </div>
         </SheetContent>
@@ -1521,7 +1511,7 @@ export default function Home() {
         <main className="cover-screen min-h-screen text-[#eee7d8]">
           <Image
             src="/art/caelan-east-gate.png"
-            alt="Caelan and Mara lead a diplomatic escort out of Greyhaven"
+            alt="A captain and a scout lead their people out of a city beneath storm clouds"
             fill
             priority
             className="cover-art object-cover"
@@ -1534,36 +1524,38 @@ export default function Home() {
             onClick={() => setShowSettings(true)}
           >
             <Settings data-icon="inline-start" />
-            Settings, saves, and about
+            Settings &amp; info
           </Button>
           <section className="cover-copy">
             <div className="brand-mark" aria-hidden="true">
               V
             </div>
-            <p className="eyebrow">An interactive dark fantasy</p>
+            <p className="eyebrow">
+              A dark fantasy story shaped by your choices
+            </p>
             <h1>Veilfall</h1>
             <p className="cover-subtitle">The Ember Oath</p>
             <p className="cover-scope">
-              Caelan Vey’s complete {chapterDefinitions.length}-chapter
-              adventure
+              A complete adventure in {chapterDefinitions.length} chapters
             </p>
             <p className="cover-intro">
-              You know the King&apos;s Road, the people under your command, and
-              the promise waiting at its end. Before night, an enemy will know
-              every route you might choose.
+              You lead a small escort on what should be a simple journey. Then
+              arrows strike, the road twists into the impossible, and everyone
+              looks to you. Who will you trust? What will you risk to bring your
+              people home?
             </p>
             <Button
               className="begin-button"
               size="lg"
               onClick={() => setStarted(true)}
             >
-              Begin Chapter I
+              Start your adventure
               <ArrowRight data-icon="inline-end" />
             </Button>
             <p className="play-note">
-              Chapter I takes approximately 30 to 40 minutes. Full-adventure
-              playtime has not been measured. Browser saves stay with this site
-              address; use Export Save for backup or transfer.
+              Read the story and choose what you do next. Chapter 1 takes about
+              30–40 minutes. Your progress saves in this browser, so you can
+              take a break and return.
             </p>
             {notice && (
               <div

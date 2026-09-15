@@ -169,7 +169,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'I',
     title: 'The Road Before Rain',
     summary:
-      'Escort Ambassador Lysara beyond Greyhaven before the storm closes the road.',
+      'Get your people safely down the road before the storm hits. A routine escort soon becomes a fight to survive.',
     entryNode: 'gate-yard',
   },
   {
@@ -177,7 +177,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'II',
     title: 'The Inn That Waited',
     summary:
-      'Defend the wounded during an inn siege and repair the road beneath it.',
+      'An inn offers shelter for your wounded companions. When danger follows you inside, decide who to protect and how to escape.',
     entryNode: 'c2-arrival',
   },
   {
@@ -185,7 +185,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'III',
     title: 'The Town at the Wrong Mile',
     summary:
-      'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
+      'Someone has blamed you for the attack. Search a town where the streets shift and find the person who can clear your name.',
     entryNode: 'c3-arrival',
   },
   {
@@ -193,7 +193,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'IV',
     title: 'Thief at the Mileless Bridge',
     summary:
-      'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
+      'Chase a thief across a bridge between impossible places. With soldiers closing in, an unlikely ally may be your only way out.',
     entryNode: 'c4-bridge-start',
   },
   {
@@ -201,7 +201,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'V',
     title: 'The Dragon’s Cold Grave',
     summary:
-      'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
+      'Cross frozen mountains where strange fire hunts the living. The power you need belongs to someone with a choice of their own.',
     entryNode: 'c5-north-road',
   },
   {
@@ -209,7 +209,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'VI',
     title: 'The City on Wheels',
     summary:
-      'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
+      'Seek help in a city that travels on wheels. Earn its people’s trust as a deadly storm closes in.',
     entryNode: 'c6-steppe-road',
   },
   {
@@ -217,7 +217,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'VII',
     title: 'The Red Wind Hunt',
     summary:
-      'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
+      'Your own kingdom’s soldiers stand in your way. Find out who commands them and decide what kind of leader you will become.',
     entryNode: 'c7-red-horizon',
   },
   {
@@ -225,7 +225,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'VIII',
     title: 'Seven Cold Fires',
     summary:
-      'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
+      'Reach an abandoned line of forts guarding a gate to another realm. Rally the defenders before something breaks through.',
     entryNode: 'c8-gate-ring',
   },
   {
@@ -233,7 +233,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'IX',
     title: 'The Price of a Name',
     summary:
-      'Recover the missing Gate Nail piece while mortal and devil assassins strike the first embassy.',
+      'Negotiate with a devil for something you cannot leave behind. Watch for hidden prices and enemies on both sides of the table.',
     entryNode: 'c9-embassy-watch',
   },
   {
@@ -241,7 +241,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'X',
     title: 'The Ash Road',
     summary:
-      'Lead the voluntary expedition to Vathis while every spoken desire becomes an offer.',
+      'Lead your companions along a road where every wish invites a bargain. Decide which offers to trust and which prices to refuse.',
     entryNode: 'c10-ash-road',
   },
   {
@@ -249,7 +249,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'XI',
     title: 'City of Every Price',
     summary:
-      'Reach Malrec’s engine before Vathis auctions the right to invade Edrath.',
+      'Enter a city where everything has a price. Find a way to stop an invasion without selling away the freedom you came to protect.',
     entryNode: 'c11-vathis-gate',
   },
   {
@@ -257,7 +257,7 @@ export const chapterDefinitions: readonly ChapterDefinition[] = [
     roman: 'XII',
     title: 'The Ember Oath',
     summary:
-      'Hold both faces of the Black Gate and choose the law that will replace it.',
+      'Two realms stand on the edge of war. Decide the fate of the gate between them and the life you want when the fighting ends.',
     entryNode: 'c12-inner-gate',
   },
 ] as const;

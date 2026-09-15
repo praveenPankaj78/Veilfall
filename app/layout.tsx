@@ -3,7 +3,7 @@ import './globals.css';
 
 const title = 'Veilfall: The Ember Oath';
 const description =
-  'Caelan Vey’s complete twelve-chapter dark fantasy decision adventure, from the King’s Road to a terminal choice at the Black Gate.';
+  'Lead your people through an impossible journey. Choose who to trust and what to risk in a complete twelve-chapter dark fantasy adventure.';
 const configuredOrigin = process.env.NEXT_PUBLIC_SITE_ORIGIN;
 const trustedOrigin = configuredOrigin?.startsWith('https://')
   ? configuredOrigin

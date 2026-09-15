@@ -27,7 +27,19 @@ The current browser-save schema is version 17. Portable files use `veilfall-embe
 2. Start the development server with `npm run dev`.
 3. Open the local address printed in the terminal.
 
-The first cover action begins Chapter I immediately. The existing Chapter I estimate is approximately 30 to 40 minutes; total adventure playtime has not been measured.
+The cover introduces the player’s escort mission and danger in plain language. “Start your adventure” begins Chapter I immediately. Chapter summaries explain the situation without requiring knowledge of character or place names. The existing Chapter I estimate is approximately 30 to 40 minutes; total adventure playtime has not been measured.
+
+## Package the restricted itch.io beta
+
+Run `npm run package:itch` to produce `outputs/veilfall-ember-oath-beta.zip`. This is a separate static browser build: it does not use or replace the Existing Sites registration.
+
+The ZIP has `index.html` at its top level, hashed JavaScript and CSS in `assets/`, and the game artwork in `art/`. Asset URLs are relative so the package can run from itch.io’s uploaded HTML-game subpath. Browser saves remain tied to the exact itch.io game origin, and players can use the in-game Export Save control for backup or transfer.
+
+Run `npm run preview:itch` to rebuild and serve the static package beneath `/veilfall-beta/`, which exercises the same subpath-relative asset behavior expected from an uploaded HTML game.
+
+For local play, keep that command running and open `http://127.0.0.1:4174/veilfall-beta/`. Do not double-click `itch/index.html`: it is source code and Chrome cannot run it using `file://`. The source and packaged pages now explain this instead of appearing to load indefinitely.
+
+The packaged loading bar measures the actual bytes downloaded for the game JavaScript and CSS, then shows “starting game” while React initializes. Artwork loads as needed and is not included in that percentage. Failed downloads and 30 seconds without progress show a Retry control. For slow-transfer preview testing, set `ITCH_PREVIEW_CHUNK_DELAY_MS=100` before running the preview script.
 
 ## Validation
 
@@ -54,4 +66,4 @@ The project uses the existing Sites registration in `.openai/hosting.json` and t
 
 ## Credits and provenance status
 
-The release uses the narrative, code, and local artwork present in this repository. The inspected release-facing files do not identify individual creators, provide per-artwork provenance, configure a player-support contact, or contain a repository-supported AI-use disclosure. These missing facts are owner actions and are not replaced with assumptions in the game.
+The release uses the narrative, code, and local artwork present in this repository. The inspected release-facing files do not identify individual creators, provide per-artwork provenance, configure a player-support contact, or contain a repository-supported AI-use disclosure. These missing facts remain owner actions documented here, rather than technical notices in the player’s Settings. No creator or ownership claims have been invented.

@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "node ./node_modules/vinext/dist/cli.js dev",
     "build": "vinext build",
+    "build:itch": "vite build --config vite.itch.config.ts",
+    "package:itch": "npm run build:itch && node scripts/package-itch.mjs",
+    "preview:itch": "npm run build:itch && node scripts/preview-itch.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint",
     "format": "oxfmt",
@@ -46,6 +49,7 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
     "@vitejs/plugin-rsc": "0.5.26",
+    "fflate": "0.7.5",
     "oxfmt": "0.61.0",
     "oxlint": "1.76.0",
     "oxlint-tsgolint": "7.0.2001",

@@ -24,7 +24,7 @@ This inventory records the direct runtime dependencies declared by the release a
 | `tw-animate-css`           |        1.4.0 | MIT              |
 | `vinext`                   | 1.0.0-beta.5 | MIT              |
 
-Build and development tools are separately declared in `package.json` and locked in `package-lock.json`. Their installed package manifests and license files remain the authoritative local copies.
+Build and development tools are separately declared in `package.json` and locked in `package-lock.json`. The restricted-beta packaging script directly uses `fflate` 0.7.5, whose installed manifest declares the MIT license. Installed package manifests and license files remain the authoritative local copies.
 
 ## Repository-owned material still requiring owner information
 

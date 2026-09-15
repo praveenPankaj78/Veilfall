@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07090b" />
+    <meta
+      name="description"
+      content="Lead your people through an impossible journey. Choose who to trust and what to risk in a complete twelve-chapter dark fantasy adventure."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Veilfall: The Ember Oath" />
+    <meta
+      property="og:description"
+      content="Lead your people through an impossible journey. Choose who to trust and what to risk in a complete twelve-chapter dark fantasy adventure."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Veilfall: The Ember Oath" />
+    <meta
+      name="twitter:description"
+      content="Lead your people through an impossible journey. Choose who to trust and what to risk in a complete twelve-chapter dark fantasy adventure."
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>Veilfall: The Ember Oath</title>
+    <style>
+      html,
+      body {
+        min-height: 100%;
+        margin: 0;
+        background: #07090b;
+        color: #eee7d8;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .static-loading {
+        box-sizing: border-box;
+        display: grid;
+        min-height: 100vh;
+        padding: 2rem;
+        place-content: center;
+        text-align: center;
+      }
+
+      .static-loading strong {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 1.4rem;
+      }
+
+      .static-loading p {
+        max-width: 34rem;
+        color: #b6aea1;
+        line-height: 1.6;
+      }
+
+      .static-loading progress {
+        width: min(26rem, 100%);
+        height: 1.2rem;
+        accent-color: #d8a66b;
+      }
+      .static-loading a,
+      .static-loading button {
+        color: #eee7d8;
+        padding: 0.8rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="boot-screen">
+      <main class="static-loading" role="status" aria-live="polite">
+        <strong>Loading Veilfall: The Ember Oath…</strong>
+        <p id="boot-message">
+          Downloading the game files. Later artwork loads as you play.
+        </p>
+        <progress
+          id="boot-progress"
+          max="100"
+          value="0"
+          aria-label="Game files downloaded"
+        ></progress>
+        <p id="boot-percent" aria-live="off">0%</p>
+        <button id="boot-retry" hidden onclick="location.reload()">
+          Retry loading
+        </button>
+        <p id="boot-local" hidden>
+          To play locally, run <code>npm run preview:itch</code> in the Veilfall
+          folder, then
+          <a href="http://127.0.0.1:4174/veilfall-beta/"
+            >open the game preview</a
+          >.
+        </p>
+      </main>
+    </div>
+    <div id="root"></div>
+    <script>
+      if (location.protocol === 'file:') {
+        document.getElementById('boot-message').textContent =
+          'This HTML needs a local web server. Opening it as a file in Chrome cannot start the game.';
+        document.getElementById('boot-local').hidden = false;
+        document.getElementById('boot-progress').hidden = true;
+        document.getElementById('boot-percent').hidden = true;
+      }
+    </script>
+    <noscript>
+      <main class="static-loading">
+        <strong>JavaScript is required to play Veilfall.</strong>
+      </main>
+    </noscript>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>
