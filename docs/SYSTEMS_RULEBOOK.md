@@ -207,7 +207,7 @@ Save after every choice. Store:
 - inventory and route state;
 - faction reputation and relationship values;
 - Nail states and regional outcomes;
-- content preference for detailed intimacy or fade, shown only when authored content uses it;
+- legacy serialized description fields retained for compatible older imports, without affecting story rendering or choices;
 - completed finale summaries for import.
 
 Use versioned migrations so later content updates do not invalidate long term saves.

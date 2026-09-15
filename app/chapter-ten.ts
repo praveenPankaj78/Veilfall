@@ -375,36 +375,15 @@ function limitsConversation(state: GameState) {
   ];
 }
 
-function restEligible(state: GameState) {
-  const maraEligible =
-    has(state, 'c9-mara-crossed-black-gate') &&
-    state.relationships.mara.intent === 'committed';
-  const lysaraEligible =
-    has(state, 'c9-lysara-crossed-black-gate') &&
-    state.relationships.lysara.intent === 'committed';
-  return (
-    (maraEligible || lysaraEligible) &&
-    has(state, 'c10-limits-respected') &&
-    has(state, 'c10-road-danger-ended')
-  );
-}
-
 function privateRest(state: GameState) {
   if (!hasAny(state, ['c10-rest-with-mara', 'c10-rest-with-lysara'])) return [];
-  const detailed =
-    state.contentPreference.intimacy === 'detailed' &&
-    state.contentPreference.adultConfirmed;
   if (has(state, 'c10-rest-with-mara')) {
     return [
-      detailed
-        ? 'Mara asks again after both doors open. You each name what you want and what remains off limits. She pulls you close by the shirt, then waits for your answer before the kiss deepens. You unfasten travel leathers and tend each other’s bruises without turning care into duty. Later, beneath one blanket, she admits the offer promised a quiet house if she abandoned everyone else. Your shared limit makes that false future lose its hold.'
-        : 'Mara asks again after both doors open. You each name what you want and what remains off limits. The lamp goes dark by mutual choice. Later, beneath one blanket, she admits the offer promised a quiet house if she abandoned everyone else. Your shared limit makes that false future lose its hold.',
+      'Mara asks again after both doors open. You each name what you want and what remains off limits. She pulls you close by the shirt, then waits for your answer before the kiss deepens. You unfasten travel leathers and tend each other’s bruises without turning care into duty. Later, beneath one blanket, she admits the offer promised a quiet house if she abandoned everyone else. Your shared limit makes that false future lose its hold.',
     ];
   }
   return [
-    detailed
-      ? 'Lysara asks again with her treaty ribbon and every magical object outside. You both name what you want, what remains off limits, and that either may leave. Her living silk loosens only after your answer. You undress each other slowly, stopping whenever a touch becomes a question. Later, warm beneath the shelter cloth, she admits the offer promised her sole control of the Gate if she left you sleeping. Your shared limit makes that promise useless.'
-      : 'Lysara asks again with her treaty ribbon and every magical object outside. You both name what you want, what remains off limits, and that either may leave. The shelter closes by mutual choice. Later, she admits the offer promised sole control of the Gate if she left you sleeping. Your shared limit makes that promise useless.',
+    'Lysara asks again with her treaty ribbon and every magical object outside. You both name what you want, what remains off limits, and that either may leave. Her living silk loosens only after your answer. You undress each other slowly, stopping whenever a touch becomes a question. Later, warm beneath the shelter cloth, she admits the offer promised her sole control of the Gate if she left you sleeping. Your shared limit makes that promise useless.',
   ];
 }
 
@@ -1416,7 +1395,6 @@ export const chapterTenNodes: Record<string, StoryNode> = {
       'Choose intimacy, conversation, or separate rest after all pressure ends.',
     threat: 'Low',
     art: 'vathisapproach',
-    intimacyControls: restEligible,
     body: (state) => [
       'The company has crossed the broken bridge. No bargain is being negotiated, no offer object remains inside, and either shelter door opens with one hand.',
       has(state, 'c9-mara-crossed-black-gate')

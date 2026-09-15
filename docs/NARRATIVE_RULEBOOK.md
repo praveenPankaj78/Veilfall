@@ -252,9 +252,9 @@ Vary the distance. Early attraction often uses one subtle detail. Established de
 
 Intimate scenes can become detailed, but their primary purpose is emotional and narrative change. Structure them around attention, choice, response, and trust. Keep both participants active. Confirm desire through behaviour and words suitable to their relationship.
 
-Each scene must change at least one state such as trust, information, debt, loyalty, vulnerability, or future risk. Provide a fade option for players who want the relationship consequence without detailed content.
+Each scene must change at least one state such as trust, information, debt, loyalty, vulnerability, or future risk. Intimacy requires an explicit choice; relationship status or the absence of a refusal does not supply consent. Conversation and refusal remain complete alternatives.
 
-Do not show the Fade or Detailed control before the story contains a scene that uses it. When that scene arrives, both versions must preserve the same decision, information, relationship state, and later consequences.
+Caelan's release uses one authored passage for each accepted private encounter, without a description selector or player-adulthood checkbox. The participants' in-story consent and relationship boundaries remain required. Legacy serialized description fields do not change prose, decisions, information, relationships, or later consequences.
 
 Relationship choices use character language rather than procedural consent labels. Consent remains clear in the action and response: one person states or shows desire, the other has room to refuse, and mutual movement confirms the choice.
 

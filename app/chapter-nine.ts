@@ -189,30 +189,9 @@ function vaorPosition(state: GameState) {
 
 function privateScene(state: GameState) {
   if (!has(state, 'c9-shared-private-night')) return [];
-  if (
-    state.contentPreference.intimacy === 'detailed' &&
-    state.contentPreference.adultConfirmed
-  ) {
-    return [
-      'After both doors unlock, Vexa asks again without contract words. You both name what you want, what is off limits, and that either may stop. Her hands are warm against your bare shoulders. You unfasten each other’s armor slowly, checking each answer before moving closer. The hard edge in her voice softens when you kiss her. Nothing magical enters the room. No true name is spoken. Later, skin against skin beneath an ordinary wool blanket, she tells you why a complete merger terrifies her. In the Cinder Deep, desire becomes an offer before thought can refuse it. She wants the Gate controlled because freedom needs a pause.',
-    ];
-  }
   return [
-    'After both doors unlock, Vexa asks again without contract words. You both name what you want, what is off limits, and that either may stop. Armor and titles are set aside. The lamp goes dark by mutual choice. Later, beneath an ordinary wool blanket, she explains her fear. In the Cinder Deep, desire becomes an offer before thought can refuse it. She wants the Gate controlled because freedom needs a pause.',
+    'After both doors unlock, Vexa asks again without contract words. You both name what you want, what is off limits, and that either may stop. Her hands are warm against your bare shoulders. You unfasten each other’s armor slowly, checking each answer before moving closer. The hard edge in her voice softens when you kiss her. Nothing magical enters the room. No true name is spoken. Later, skin against skin beneath an ordinary wool blanket, she tells you why a complete merger terrifies her. In the Cinder Deep, desire becomes an offer before thought can refuse it. She wants the Gate controlled because freedom needs a pause.',
   ];
-}
-
-function intimacyEligible(state: GameState) {
-  const isAttached = (intent: GameState['relationships']['mara']['intent']) =>
-    intent === 'committed' || intent === 'exploring';
-  return (
-    state.relationships.vexa.intent === 'interested' &&
-    !isAttached(state.relationships.mara.intent) &&
-    !isAttached(state.relationships.lysara.intent) &&
-    !isAttached(state.relationships.ilyra.intent) &&
-    has(state, 'c9-attacks-stopped') &&
-    !has(state, 'c9-vexa-permanent-hostility')
-  );
 }
 
 function endingForRoute(state: GameState) {
@@ -1626,7 +1605,6 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       'Choose whether any private connection continues after all bargaining ends.',
     threat: 'Low',
     art: 'cinderembassy',
-    intimacyControls: intimacyEligible,
     activeConsequences: {
       reactions: [
         'c9-vexa-guarded-trust',

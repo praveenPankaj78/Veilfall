@@ -115,7 +115,7 @@ The chapter keeps five states separate:
 10. Use the imported defence, force, evidence, Vaor, Pell, Ansel, injury, or resource state to survive the joined crisis.
 11. Decide whether to destroy one exact active Oath to cut a bargain clause. The option is absent when no eligible Oath remains.
 12. Resolve Vexa's relationship as guarded trust, adversarial respect, attraction, refusal, or permanent hostility.
-13. When freely available, choose a private conversation, optional intimacy, or distance. Fade and detailed rendering share one decision and one outcome state.
+13. When freely available, choose a private conversation, optional intimacy, or distance. Accepted intimacy uses one authored passage without a description selector.
 14. Complete the defining route and recover the fragment.
 15. Choose the route-accurate volunteers who cross the Black Gate.
 16. If Mara or Lysara is an active committed partner, ask her to cross or keep a named duty at the mortal Gate. Record either answer explicitly.
@@ -205,7 +205,7 @@ Vexa receives a persistent relationship record with Trust, Attraction, Respect, 
 
 Intimacy is separate from the Gate Nail bargain. It becomes available only after both assassination threats are contained, the fragment price is no longer under negotiation, no person is captive, no magical pressure is active, and Caelan is not committed to Mara or Lysara. Vexa states that either person may stop and leave. True-name knowledge and contract magic are physically set outside the room and cannot affect consent.
 
-One choice accepts the private encounter. The content preference changes only the rendered prose. Fade and detailed text produce the same flag, relationship changes, information, political consequence, and next node. Detailed prose appears only after the player explicitly confirms adulthood at this scene. Both versions reveal that Vexa fears a complete realm merger because Cinder Deep law would turn every passing desire into an involuntary offer and erase the boundaries that let devils remain separate people.
+One explicit choice accepts the private encounter and uses the existing fuller passage without a description selector or player-adulthood checkbox. Legacy description fields do not change the passage, flag, relationship changes, information, political consequence, or next node. The scene reveals that Vexa fears a complete realm merger because Cinder Deep law would turn every passing desire into an involuntary offer and erase the boundaries that let devils remain separate people. Conversation and departure remain separate choices.
 
 Refusal is a complete path. It can create guarded trust or adversarial respect without romance. Hostility follows an attempted seizure of Vexa, deliberate harm to noncombatant envoys, or forced use of her true-name demonstration.
 
@@ -266,8 +266,8 @@ All three images are original Chapter Nine assets. No earlier chapter art is reu
 10. Vexa cannot move between threshold, Second Fort, and Fourth Fort without an explicit choice and prose transition.
 11. Vexa relationship state persists and old saves gain a safe default.
 12. Vexa intimacy is unavailable during negotiation, captivity, threat, magical pressure, or an existing commitment.
-13. Fade and detailed intimacy share identical choices, flags, information, relationships, and later consequences.
-14. Mature controls appear only at the relevant private scene. Detailed text requires adult confirmation.
+13. Legacy description fields never alter the single authored passage, choices, flags, information, relationships, or later consequences.
+14. No description selector or player-adulthood checkbox appears. The explicit intimacy choice still requires attraction, ended threats, and no conflicting relationship.
 15. Rook and Ilyra remain physically absent.
 16. Every paid choice buys an immediate visible advantage and a later active consumer.
 17. Every free expert solution requires exact prior preparation.
@@ -287,7 +287,7 @@ Vexa remains inside isolated Second Fort. Ansel's prior question is answered bef
 
 ### Theft, threshold entry, no army, unattached
 
-Vexa stays outside until Caelan explicitly admits her to neutral Second Fort. Pell's map opens a route beneath the mortal attackers. The captured collector glove identifies the devil seam. Caelan protects Vexa during the attack. After the danger ends and the refused offer creates no bargain, Vexa may choose a private scene in fade or detailed form. Back at the guarded table, Caelan takes the fragment through the cracked hinge and states the theft openly. Caelan crosses with Ansel, two Futureless witnesses, and an adversarial but attracted Vexa. Korran remains in Edrath.
+Vexa stays outside until Caelan explicitly admits her to neutral Second Fort. Pell's map opens a route beneath the mortal attackers. The captured collector glove identifies the devil seam. Caelan protects Vexa during the attack. After the danger ends and the refused offer creates no bargain, mutual consent may open the private scene. Back at the guarded table, Caelan takes the fragment through the cracked hinge and states the theft openly. Caelan crosses with Ansel, two Futureless witnesses, and an adversarial but attracted Vexa. Korran remains in Edrath.
 
 ### Low-resource survival
 

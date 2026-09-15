@@ -952,7 +952,7 @@ export const terminalHistoryFlagReasons = {
   'c9-vexa-permanent-hostility':
     'Chapter Ten must restrict Vexa contact to armed public diplomacy and withhold every guarded-trust or intimacy action.',
   'c9-shared-private-night':
-    'Chapter Ten must preserve the explored Vexa relationship and the identical political and information state from fade or detailed prose.',
+    'Chapter Ten must preserve the explored Vexa relationship and its political and information state regardless of retained legacy description fields.',
   'c9-private-conversation-only':
     'Chapter Ten must preserve the physical boundary while retaining Vexa’s warning about desires becoming offers.',
   'c9-refused-private-connection':

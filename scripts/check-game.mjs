@@ -8102,7 +8102,7 @@ walkChapterTen({
 
 const fadeRomance = walkChapterTen({
   ...chapterTenFixtures[0],
-  name: 'committed Mara fade',
+  name: 'committed Mara with legacy unconfirmed preference',
   flags: chapterTenFixtures[0].flags
     .filter((flag) => flag !== 'c9-no-mortal-partner-crossed')
     .concat('c9-mara-crossed-black-gate'),
@@ -8114,7 +8114,7 @@ const fadeRomance = walkChapterTen({
 });
 const detailedRomance = walkChapterTen({
   ...chapterTenFixtures[0],
-  name: 'committed Mara detailed',
+  name: 'committed Mara with legacy confirmed preference',
   flags: chapterTenFixtures[0].flags
     .filter((flag) => flag !== 'c9-no-mortal-partner-crossed')
     .concat('c9-mara-crossed-black-gate'),
@@ -8130,18 +8130,15 @@ if (
     JSON.stringify(detailedRomance.relationships) ||
   JSON.stringify(fadeRomance.stats) !== JSON.stringify(detailedRomance.stats)
 )
-  failures.push(
-    'Fade and detailed Chapter Ten variants produce different story outcomes',
-  );
+  failures.push('Legacy content fields change Chapter Ten story outcomes');
 const detailedText = renderedBody('c10-guide-bargain', detailedRomance);
 const fadeText = renderedBody('c10-guide-bargain', fadeRomance);
 if (
-  detailedText === fadeText ||
-  !/unfasten travel leathers/i.test(detailedText) ||
-  /unfasten travel leathers/i.test(fadeText)
+  detailedText !== fadeText ||
+  !/unfasten travel leathers/i.test(detailedText)
 )
   failures.push(
-    'Fade and detailed Chapter Ten variants do not render distinct gated prose',
+    'Chapter Ten must render the same authored intimacy passage regardless of legacy content fields',
   );
 if (/\bElian\b/i.test(chapterTenSource))
   failures.push('Chapter Ten reveals Elian before Chapter Eleven');
@@ -8383,13 +8380,13 @@ const intimacyChoice = choiceById(
 );
 if (
   !isChoiceVisible(intimacyChoice, eligibleVexaState) ||
-  !nodes['c9-private-choice'].intimacyControls(eligibleVexaState)
+  !canChoose(intimacyChoice, eligibleVexaState)
 ) {
   failures.push(
     'Eligible unattached adults cannot reach the optional Vexa intimacy scene',
   );
 }
-for (const person of ['mara', 'lysara']) {
+for (const person of ['mara', 'lysara', 'ilyra']) {
   const committed = {
     ...eligibleVexaState,
     relationships: {
@@ -8402,7 +8399,7 @@ for (const person of ['mara', 'lysara']) {
   };
   if (
     isChoiceVisible(intimacyChoice, committed) ||
-    nodes['c9-private-choice'].intimacyControls(committed)
+    canChoose(intimacyChoice, committed)
   ) {
     failures.push(`Vexa intimacy ignores the existing ${person} commitment`);
   }
@@ -8533,16 +8530,17 @@ const detailedOutcome = {
   nodeId: detailedState.nodeId,
 };
 if (JSON.stringify(fadeOutcome) !== JSON.stringify(detailedOutcome)) {
-  failures.push(
-    'Fade and detailed Chapter Nine variants produce different story outcomes',
-  );
+  failures.push('Legacy content fields change Chapter Nine story outcomes');
 }
 if (
-  renderedBody('c9-recover-fragment', fadeState) ===
-  renderedBody('c9-recover-fragment', detailedState)
+  renderedBody('c9-recover-fragment', fadeState) !==
+    renderedBody('c9-recover-fragment', detailedState) ||
+  !/unfasten each other’s armor/i.test(
+    renderedBody('c9-recover-fragment', fadeState),
+  )
 ) {
   failures.push(
-    'Fade and detailed Chapter Nine variants do not render distinct prose',
+    'Chapter Nine must render the same authored intimacy passage regardless of legacy content fields',
   );
 }
 for (const walkthrough of chapterNineWalkthroughs) {

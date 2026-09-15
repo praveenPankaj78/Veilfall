@@ -65,7 +65,7 @@ Ilyra meets Caelan on the Ember Steppe while tracing the ancestor storm, then le
 13. Chapter Nine keeps Vexa's three entry locations physical until a visible transition occurs.
 14. Every Chapter Nine route separately proves Malrec's mortal cell and House Sableglass before joining their evidence.
 15. Oathfire clause cuts destroy one named active Oath, and released or burned Oaths never return as payment.
-16. Fade and detailed intimacy prose produce identical story flags, information, relationships, and later choices.
+16. Each accepted intimate encounter uses one authored passage. Legacy description fields never change prose, story flags, information, relationships, or later choices; explicit consent and refusal paths remain intact.
 17. Every Chapter Nine ending carries its defence route, surviving Oaths, Vexa relationship, evidence source, and voluntary ally roster into Chapter Ten.
 18. Chapter Ten uses only companions whose Chapter Nine crossing flags are explicit, and older saves migrate one eligible committed partner without inventing another traveller.
 19. Every desire offer remains separate from acceptance. The burden Oath requires each affected traveller's answer and keeps an individual exit.

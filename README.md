@@ -9,17 +9,17 @@ Veilfall: The Ember Oath is a story-first dark fantasy decision RPG. Caelan Vey 
 - Twelve playable Caelan chapters, labelled I through XII from the registered chapter data.
 - Persistent consequences, relationship intent and consent boundaries, chapter resources, local checkpoints, lethal outcomes, and four terminal Chapter XII endings.
 - A chapter library for replaying unlocked chapters. Replaying an earlier chapter keeps its starting checkpoint and invalidates later chapter snapshots because they depend on the replaced path.
-- Fade and Detailed content preferences. Fade keeps every choice and consequence while omitting detailed intimate prose. Detailed requires adult confirmation and does not change outcomes.
+- Optional romance follows the player's explicit choices, relationship intent, and consent boundaries. Accepting a private encounter uses its single authored passage; conversation and refusal remain valid choices.
 - Default, Large, and Extra large text settings that persist in the browser.
 - Versioned JSON save export and validated import with a confirmation summary and recoverable pre-import backup.
 
-The story contains dark fantasy violence, blood, injury, possible player-character death, coercive bargains, threats to freedom, and optional consensual adult intimacy. This project does not assign an age rating.
+The story contains dark fantasy violence, blood, injury, possible player-character death, coercive bargains, and threats to freedom. Romance is optional. This project does not assign an age rating.
 
 ## Saves
 
 Progress is stored locally in the browser. A browser save belongs to that browser and the exact site address, so moving the game to another address does not move the save automatically. Use **Settings, saves, and about** to export a JSON backup before changing browsers or site addresses, and import that backup after the move.
 
-The current browser-save schema is version 17. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, content preference, completed chapters, ending state, replay checkpoints, and reading preference. Import validation occurs before existing progress is replaced.
+The current browser-save schema is version 17. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, completed chapters, ending state, replay checkpoints, and reading preference. Retired description-preference fields remain serialized for compatibility with existing v16/v17 saves but no longer affect prose or choices. Import validation occurs before existing progress is replaced.
 
 ## Play locally
 

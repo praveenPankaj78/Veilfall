@@ -2,6 +2,8 @@
 
 Reviewed 14 September 2026. Scope: the twelve implemented chapters of **The Ember Oath**, including effective overlays, conditional scenes, menus, immediate results, lessons, journals, handoffs, replay, and terminal exports.
 
+Release follow-up, 15 September 2026: the description selector and player-adulthood checkbox reviewed below have since been removed at the owner's request. Accepted private encounters now use the existing fuller passage. The original review below is retained as history; current regressions verify identical prose and mechanics regardless of legacy saved preferences, with explicit consent, refusal, relationship, and Oath corrections preserved. See [WEB_RELEASE_READINESS.md](WEB_RELEASE_READINESS.md).
+
 ## Verdict
 
 The season is coherent and emotionally complete after the corrections below. Its strongest progression is playable: protect an escort, choose between injured people, confront compromised authority, decide how to treat Vaor, negotiate independent political consent, resist offers that confuse desire with acceptance, and finally write a law with limits. The four Gate laws answer that progression differently. Destination and relationship remain independent choices. Platonic and single conclusions retain the same world outcome and completion value.

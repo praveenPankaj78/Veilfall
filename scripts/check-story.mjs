@@ -336,7 +336,6 @@ for (const node of Object.values(nodes)) {
     ].map((flag) => ({
       ...baseState,
       flags: [flag],
-      contentPreference: { intimacy: 'detailed', adultConfirmed: true },
     })),
   ];
   if (chapter === 8)

@@ -39,7 +39,7 @@ Required work:
 - maintain Trust, Attraction, Respect, Friction, and explicit relationship intent for Mara, Lysara, Ilyra, and Vexa while showing only qualitative summaries to players;
 - add travel and companion state;
 - add imported finale summaries;
-- add content preference for detailed intimacy or fade, now implemented with an adult confirmation gate;
+- preserve explicit romance choices and consent boundaries; Caelan's release now uses one authored passage per accepted private encounter, with legacy description fields retained only for save compatibility;
 - maintain versioned save migration or a clearly announced reset when the data model changes.
 
 ## Phase Three: Caelan vertical slice, complete
@@ -101,7 +101,7 @@ Chapter numbers are not production quotas. Split a chapter when two major revela
 
 ## Phase Eight: mature content implementation
 
-Add optional detailed intimate scenes only after age declarations, consent rules, relationship state, and fade preference work correctly.
+Caelan's optional intimate scenes use one authored passage after an explicit choice. Preserve the participants' established adulthood, consent rules, and relationship state without a description selector or player-adulthood checkbox.
 
 Each scene receives a narrative review confirming that it changes story state, keeps both adults active, fits the established attraction, and does not use magic or power imbalance to bypass consent.
 

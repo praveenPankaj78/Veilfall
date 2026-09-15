@@ -180,7 +180,7 @@ export async function checkSeriesReview(
           failures.push(
             `Continuous route ${run} exposes an incomplete-state diagnostic at ${node.id}`,
           );
-        // Content preferences must not change mechanics or offered choices.
+        // Retained legacy save fields must not change prose, mechanics, or choices.
         const detailed = {
           ...state,
           contentPreference: { intimacy: 'detailed', adultConfirmed: true },
@@ -188,10 +188,15 @@ export async function checkSeriesReview(
         const comparable = (s) =>
           JSON.stringify({ ...s, contentPreference: null });
         if (
+          JSON.stringify(node.body(state)) !==
+          JSON.stringify(node.body(detailed))
+        )
+          failures.push(`Legacy content fields change ${node.id} prose`);
+        if (
           comparable(runtime.applyChoice(state, choice)) !==
           comparable(runtime.applyChoice(detailed, choice))
         )
-          failures.push(`Content preference changes ${choice.id} mechanics`);
+          failures.push(`Legacy content fields change ${choice.id} mechanics`);
         if (
           node.choices
             .filter((c) => game.isChoiceVisible(c, state))
@@ -203,7 +208,7 @@ export async function checkSeriesReview(
             .join()
         )
           failures.push(
-            `Content preference changes ${node.id} offered choices`,
+            `Legacy content fields change ${node.id} offered choices`,
           );
       }
       record.chapters.push({

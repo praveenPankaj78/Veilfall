@@ -227,7 +227,7 @@ Respecting both limits changes a later offer and increases Trust or Respect. Try
 
 Optional intimacy is available only to a committed Mara or Lysara who explicitly crossed. It occurs after the road danger and every active offer have ended, with no bargain underway, no magic in the shelter, and two open exits. Existing intimacy creates no presumption. Both adults answer again and may choose conversation or separate rest.
 
-Fade and detailed prose use the same choice IDs, flags, information, relationship changes, political effects, and later options. Detailed content requires adult confirmation at this scene. Intimacy grants no Wayfire or superior route.
+An accepted encounter uses its single existing fuller passage without a description selector or player-adulthood checkbox. Legacy description fields never change prose, choice IDs, flags, information, relationship changes, political effects, or later options. Intimacy grants no Wayfire or superior route.
 
 ## Free Ledger bargain
 
@@ -303,7 +303,7 @@ All three assets are original Chapter Ten art and reuse no earlier chapter image
 14. Every exact roster member receives a route-specific offer, action, or danger.
 15. Vexa's full relationship range changes dialogue, cooperation, danger, or intimacy availability.
 16. Romance and optional intimacy use only a partner who crossed.
-17. Fade and detailed variants produce identical outcomes.
+17. Legacy description fields never change the authored passage or its outcomes.
 18. Low-resource and low-Health states can finish without negative resources.
 19. Every ending reaches Vathis with exact custody, roster, Oaths, relationships, faction state, and offer method.
 20. The political-division revelation is proved through devils acting against Sableglass.
@@ -340,9 +340,9 @@ Call-and-answer movement keeps the company together. Destroyed command Oaths req
 
 Every volunteer answers as an individual. No army command appears. Teren refuses an offer to make Caelan responsible for all six safe returns, then helps define a bounded emergency signal for private negotiation.
 
-### Committed romance and fade or detailed rest
+### Committed romance and optional shared rest
 
-Mara or Lysara appears only through her Chapter Nine crossing flag. Both partners state one promise they refuse. After danger and offers end, renewed consent opens fade or adult-confirmed detailed prose. Both variants create the same trust, limit, information, and route state.
+Mara or Lysara appears only through her Chapter Nine crossing flag. Both partners state one promise they refuse. After danger and offers end, a renewed explicit intimacy choice opens the single authored passage. The same trust, limit, information, and route state is preserved from the original encounter. Separate rest remains available without a relationship penalty.
 
 ### Platonic limits and refusal
 

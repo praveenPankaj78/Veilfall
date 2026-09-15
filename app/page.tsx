@@ -1409,13 +1409,7 @@ export default function Home() {
               <p>
                 <strong>Content notes:</strong> Violence, blood, injury, death,
                 and people pressured into dangerous bargains. Your character can
-                die. Romance and consensual adult intimacy are optional.
-              </p>
-              <p>
-                For intimate scenes, <strong>Fade</strong> skips detailed
-                description while keeping the same choices and story outcomes.
-                <strong> Detailed</strong> adds description and requires adult
-                confirmation. You can also choose not to take part.
+                die. Romance is optional.
               </p>
               <p className="build-version">Release build {BUILD_VERSION}</p>
             </section>
@@ -1800,86 +1794,6 @@ export default function Home() {
                 <p key={`${node.id}-${index}`}>{paragraph}</p>
               ))}
             </div>
-
-            {node.intimacyControls?.(game) ? (
-              <aside
-                className="lesson-card"
-                aria-label="Optional intimacy detail"
-              >
-                <p className="eyebrow">Optional scene detail</p>
-                <h3>Choose how the same scene is described</h3>
-                <p>
-                  Fade and detailed versions preserve identical choices,
-                  information, flags, and later consequences.
-                </p>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={game.contentPreference.adultConfirmed}
-                    onChange={(event) =>
-                      setGame((current) => ({
-                        ...current,
-                        contentPreference: {
-                          ...current.contentPreference,
-                          adultConfirmed: event.target.checked,
-                          intimacy: event.target.checked
-                            ? current.contentPreference.intimacy
-                            : 'fade',
-                        },
-                      }))
-                    }
-                  />{' '}
-                  I confirm that I am an adult and may choose detailed prose.
-                </label>
-                <div className="top-actions">
-                  <Button
-                    type="button"
-                    variant={
-                      game.contentPreference.intimacy === 'fade'
-                        ? 'default'
-                        : 'outline'
-                    }
-                    size="sm"
-                    aria-pressed={game.contentPreference.intimacy === 'fade'}
-                    onClick={() =>
-                      setGame((current) => ({
-                        ...current,
-                        contentPreference: {
-                          ...current.contentPreference,
-                          intimacy: 'fade',
-                        },
-                      }))
-                    }
-                  >
-                    Fade
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={
-                      game.contentPreference.intimacy === 'detailed'
-                        ? 'default'
-                        : 'outline'
-                    }
-                    size="sm"
-                    disabled={!game.contentPreference.adultConfirmed}
-                    aria-pressed={
-                      game.contentPreference.intimacy === 'detailed'
-                    }
-                    onClick={() =>
-                      setGame((current) => ({
-                        ...current,
-                        contentPreference: {
-                          ...current.contentPreference,
-                          intimacy: 'detailed',
-                        },
-                      }))
-                    }
-                  >
-                    Detailed
-                  </Button>
-                </div>
-              </aside>
-            ) : null}
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">

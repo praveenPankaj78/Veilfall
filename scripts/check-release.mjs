@@ -111,6 +111,166 @@ const migratedPortable = saves.parsePortableSave(
 );
 assert.equal(migratedPortable.ok, true);
 
+// Description controls are retired, but old v16/v17 save fields still round-trip.
+// A relationship alone is not consent: only the explicit scene choice adds its flag.
+assert.doesNotMatch(
+  pageSource,
+  /intimacyControls|adultConfirmed|Detailed requires|Fade skips/,
+);
+assert.ok(
+  Object.values(game.nodes).every((node) => !('intimacyControls' in node)),
+);
+const romanceScenes = [
+  {
+    person: 'vexa',
+    intent: 'interested',
+    chapter: 9,
+    nodeId: 'c9-private-choice',
+    choiceId: 'c9-share-private-night',
+    resultNode: 'c9-recover-fragment',
+    passage: /unfasten each other’s armor/i,
+    flags: ['c9-attacks-stopped', 'c9-vexa-attraction-acknowledged'],
+    alternatives: ['c9-talk-with-vexa-only', 'c9-leave-vexa-private'],
+  },
+  ...['mara', 'lysara'].map((person) => ({
+    person,
+    intent: 'committed',
+    chapter: 10,
+    nodeId: 'c10-rest-choice',
+    choiceId: `c10-rest-with-${person}`,
+    resultNode: 'c10-guide-bargain',
+    passage:
+      person === 'mara'
+        ? /unfasten travel leathers/i
+        : /undress each other slowly/i,
+    flags: [
+      `c9-${person}-crossed-black-gate`,
+      'c10-limits-respected',
+      'c10-road-danger-ended',
+    ],
+    alternatives: ['c10-rest-apart'],
+  })),
+];
+for (const scene of romanceScenes) {
+  const state = saves.normaliseGameState({
+    ...game.initialState,
+    chapter: scene.chapter,
+    nodeId: scene.nodeId,
+    completedChapters: Array.from(
+      { length: scene.chapter - 1 },
+      (_, i) => i + 1,
+    ),
+    flags: scene.flags,
+    relationships: {
+      ...game.initialState.relationships,
+      [scene.person]: {
+        ...game.initialState.relationships[scene.person],
+        intent: scene.intent,
+      },
+    },
+  });
+  const node = game.nodes[scene.nodeId];
+  const choice = node.choices.find(
+    (candidate) => candidate.id === scene.choiceId,
+  );
+  assert.ok(
+    game.canChoose(choice, state),
+    `${scene.person}: intimacy remains available`,
+  );
+  const resultBody = (s) => game.nodes[scene.resultNode].body(s).join('\n');
+  assert.doesNotMatch(
+    resultBody(state),
+    scene.passage,
+    'Relationship alone must not start intimacy',
+  );
+  for (const alternativeId of scene.alternatives) {
+    const alternative = node.choices.find(
+      (candidate) => candidate.id === alternativeId,
+    );
+    assert.ok(
+      game.canChoose(alternative, state),
+      `${alternativeId} remains available`,
+    );
+    assert.doesNotMatch(
+      resultBody({
+        ...state,
+        flags: [...state.flags, ...alternative.addFlags],
+      }),
+      scene.passage,
+    );
+  }
+  const withoutInterest = {
+    ...state,
+    relationships: {
+      ...state.relationships,
+      [scene.person]: {
+        ...state.relationships[scene.person],
+        intent: 'platonic',
+      },
+    },
+  };
+  assert.equal(game.canChoose(choice, withoutInterest), false);
+  for (const requiredFlag of choice.requiresFlags ??
+    choice.showIfAllFlags ??
+    [])
+    assert.equal(
+      game.canChoose(choice, {
+        ...state,
+        flags: state.flags.filter((flag) => flag !== requiredFlag),
+      }),
+      false,
+    );
+  if (scene.person === 'vexa') {
+    for (const person of ['mara', 'lysara', 'ilyra'])
+      for (const intent of ['committed', 'exploring'])
+        assert.equal(
+          game.canChoose(choice, {
+            ...state,
+            relationships: {
+              ...state.relationships,
+              [person]: { ...state.relationships[person], intent },
+            },
+          }),
+          false,
+          `Vexa must respect ${person}'s ${intent} boundary`,
+        );
+  }
+  let expectedBody;
+  for (const intimacy of ['fade', 'detailed'])
+    for (const adultConfirmed of [false, true])
+      for (const saveSchemaVersion of [16, 17]) {
+        const accepted = {
+          ...state,
+          nodeId: scene.resultNode,
+          flags: [...state.flags, ...choice.addFlags],
+          contentPreference: { intimacy, adultConfirmed },
+        };
+        const exported = saves.createPortableSave(
+          saves.createStoredSave(accepted, {}, 'default'),
+        );
+        const imported = saves.parsePortableSave(
+          JSON.stringify({ ...exported, saveSchemaVersion }),
+        );
+        assert.equal(imported.ok, true, imported.error);
+        assert.equal(
+          imported.document.game.contentPreference.intimacy,
+          intimacy,
+        );
+        assert.equal(
+          imported.document.game.contentPreference.adultConfirmed,
+          adultConfirmed,
+        );
+        const body = resultBody(imported.document.game);
+        assert.match(body, scene.passage);
+        expectedBody ??= body;
+        assert.equal(
+          body,
+          expectedBody,
+          `${scene.person}: legacy fields must not alter the authored passage`,
+        );
+      }
+}
+
 expectFailure(saves.parsePortableSave('{broken', 7), /not valid JSON/i);
 expectFailure(
   saves.parsePortableSave(portableText, saves.MAX_IMPORT_BYTES + 1),
@@ -344,5 +504,5 @@ assert.doesNotMatch(
 );
 
 console.log(
-  'Release regressions passed: XII labels; save round trip; checkpoint replay data; invalid, oversized, unsupported, and cancelled imports; storage failures and backup recovery; legacy migration; terminal endings; reading persistence.',
+  'Release regressions passed: XII labels; save round trip; checkpoint replay data; invalid, oversized, unsupported, and cancelled imports; storage failures and backup recovery; legacy migration; terminal endings; reading persistence; single-version romance, consent boundaries, and legacy content-field compatibility.',
 );

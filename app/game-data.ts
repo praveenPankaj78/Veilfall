@@ -53,6 +53,7 @@ export type GameState = {
   completedChapters: number[];
   stats: GameStats;
   relationships: Relationships;
+  /** Legacy save data only. Retained for v16/v17 imports; never changes prose or choices. */
   contentPreference: {
     intimacy: 'fade' | 'detailed';
     adultConfirmed: boolean;
@@ -144,7 +145,6 @@ export type StoryNode = {
     | 'blackgatepassage'
     | 'blackgatebroken'
     | 'blackgatekeeper';
-  intimacyControls?: (state: GameState) => boolean;
   body: (state: GameState) => string[];
   activeConsequences?: {
     complications?: string[];
