@@ -11,6 +11,14 @@ export function loadStory() {
   function load(file) {
     const path = resolve(file);
     if (modules.has(path)) return modules.get(path).exports;
+    if (path.endsWith('.json')) {
+      const value = JSON.parse(readFileSync(path, 'utf8'));
+      const jsonModule = {
+        exports: { ...value, default: value, __esModule: true },
+      };
+      modules.set(path, jsonModule);
+      return jsonModule.exports;
+    }
     const source = readFileSync(path, 'utf8');
     sources.set(relative(process.cwd(), path).replaceAll('\\', '/'), source);
     const storyModule = { exports: {} };
@@ -27,10 +35,17 @@ export function loadStory() {
         module: storyModule,
         exports: storyModule.exports,
         console,
+        TextDecoder,
+        TextEncoder,
         require(specifier) {
           if (!specifier.startsWith('.'))
             throw new Error(`Unexpected story dependency: ${specifier}`);
-          return load(resolve(dirname(path), `${specifier}.ts`));
+          return load(
+            resolve(
+              dirname(path),
+              specifier.endsWith('.json') ? specifier : `${specifier}.ts`,
+            ),
+          );
         },
       },
       { filename: path },

@@ -1,0 +1,128 @@
+# Web release readiness
+
+Date reviewed: 2026-09-15  
+Release build: 1.0.0  
+Target: the existing OpenAI Sites project and its supported Vinext/Cloudflare runtime
+
+## Readiness decision
+
+The game build is release-capable for an Existing Sites deployment: the complete twelve-chapter path builds, resumes, exports a versioned save, validates imports, preserves replay checkpoints, and reaches four terminal Chapter XII endings without a dead continuation control.
+
+Deployment is currently blocked at the hosting handoff, not in the game build. The preserved project ID in `.openai/hosting.json` is `appgprj_6a9db5a364748191829edd69a501dec8`, but the Sites service returned **Sites project not found** when that exact registration was inspected. This review did not create a replacement project or publish anything. The owner must restore access to or correct the existing registration before deployment.
+
+Public distribution also needs a stable production address. Browser storage is origin-bound, so changing the scheme, host, or port does not move a save. Players should be told to export before any address change. A configured HTTPS `NEXT_PUBLIC_SITE_ORIGIN` may be supplied at deployment to enable the existing artwork as an absolute social-sharing image; no canonical or production URL is invented in source.
+
+## Release identity and presentation
+
+- Title: **Veilfall: The Ember Oath**.
+- Subtitle: **Caelan Vey’s complete twelve-chapter adventure**.
+- The Broken Concord is presented as the wider setting, not the product title.
+- Rook and Ilyra remain independent story characters and are not selectable protagonists.
+- The cover, browser metadata, Open Graph/Twitter metadata, favicon, chapter header, chapter library, About area, package identity, and README now describe the complete release.
+- Chapter presentation is derived from the twelve registered chapter definitions, including Roman numerals XI and XII and current completion/checkpoint counts.
+- The only existing playtime claim is now explicitly approximate and limited to Chapter I: 30 to 40 minutes. Total adventure playtime is marked unmeasured.
+- Chapter XII presents Caelan’s terminal ending and replay access; it does not imply that another release is needed to finish the story.
+
+The opening remains one action from Chapter I. No registration, tutorial gate, promotion, account, cloud sync, payment, or database was added.
+
+## Save architecture and compatibility
+
+Browser progress is stored as one atomic document under `veilfall.saga.v17.save`. It includes the current `GameState`, chapter-start checkpoints, and reading preference, avoiding a new partial state split. Storage access and migrations are centralized in `app/save-system.ts`.
+
+Portable files use:
+
+- format: `veilfall-ember-oath-save`;
+- export version: 1;
+- save schema: 17 (schema 16 imports are migrated);
+- maximum import size: 1,000,000 bytes;
+- filename beginning `veilfall-the-ember-oath-save-` and ending `.json`.
+
+Exports contain the current state, stats, relationship scores and intent, consent/content preferences, completed chapters, terminal ending state, story history, chapter-start checkpoints, reading preference, build version, and export time. They do not use an account or network service.
+
+Validation completes before storage changes. It covers file size; JSON and object shape; format/export/schema versions; timestamps; required types; stat integer bounds; chapter/node agreement; relationship structure and intent; arrays and preferences; node/choice validity; completed chapters; and checkpoint entry, prefix, decision-count, flag, completion, and current-path consistency.
+
+A valid import first shows chapter, completed count, checkpoint count, ending state, and export time. Cancel leaves current progress untouched. Confirmation writes the existing atomic document to `veilfall.saga.v17.pre-import-backup` before replacement, and the UI can restore that backup. If backup creation or replacement fails, replacement is aborted and the prior current document remains. A damaged current save is left in place, reported visibly, and can be downloaded or copied to a separate recovery key; autosave stays blocked until the player explicitly starts fresh. Errors never claim a successful write and offer retry or current-session export as appropriate.
+
+Existing keys from Chapter One v2/v3 and saga v4 through v16 are migrated using the established stamina-to-health, relationship intent, Chapter IX roster, final relationship, and Oath correction rules. Compatible legacy per-chapter checkpoints are folded into the atomic v17 document; invalid ones are excluded with a visible warning.
+
+## Reading and accessibility controls
+
+- Persistent Default, Large, and Extra large settings apply at the document root to story prose, choice labels/details/advantages/costs, immediate results, lessons, journal, chapter library, settings, and endings.
+- Layout guards permit wrapping and remove narrow-screen minimums; status rows, chapter entries, dialog controls, and save controls reflow without horizontal scrolling at the tested 390×844 viewport.
+- Story measure, paragraph spacing, and line height remain constrained for readable prose.
+- Keyboard focus is a visible 3 px outline. Header icon buttons have accessible names, and mobile action targets are at least 44 px.
+- Native buttons and accessible Sheet/AlertDialog components provide keyboard operation, initial dialog focus, Escape behavior, and focus restoration. Hidden file input is removed from tab order.
+- Choosing a story action moves focus to the next scene heading with `preventScroll`, then scrolls the scene into view. New scenes use one polite live-region update rather than announcing the entire interface repeatedly.
+- Fade and Detailed preferences expose pressed state in addition to visual styling; Detailed remains unavailable until the existing adult confirmation is checked.
+- Static advantage labels and disabled-state wording avoid depending on hover or color alone.
+- `prefers-reduced-motion: reduce` disables nonessential animation and smooth scrolling.
+- Touch targets, wrapping, high zoom behavior, and mobile choice cards received targeted CSS changes without a broad redesign or edits to the unrelated modified UI primitives.
+
+No automated accessibility scanner or real screen-reader session was available. The semantic tree, keyboard flow, focus movement/restoration, labels, live regions, 390×844 responsive viewport, and visible screenshots were inspected directly in Chromium.
+
+## About, content, privacy, and diagnostics
+
+The in-game About area states the twelve-chapter scope and actual content: dark fantasy violence, blood, injury, possible player-character death, coercive bargains, threats to freedom, and optional consensual adult intimacy. Fade retains choices and consequences without detailed prose; Detailed requires adult confirmation and changes description rather than outcomes. No age rating is invented.
+
+The release displays build 1.0.0. Players can add a description, inspect, and copy a bug report containing build, chapter, node ID, browser user agent, language, viewport, and text setting. It automatically excludes relationships, flags, history, and save data. There is no feedback button or placeholder address because no real support destination is configured.
+
+A source audit found no player-facing analytics, advertising, email collection, account service, database, or application fetch to a third-party service. Runtime requests observed in preview were same-origin HTML, JavaScript, CSS, favicon, framework image handling, and local `public/art` assets. No consent banner was added. Wrangler may report its own development CLI telemetry when running the local preview; that is not an application integration shipped in the player UI.
+
+The direct dependency/license inventory is recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Release-facing files do not support claims about individual creator credits, per-artwork provenance, or AI use, so those remain owner-supplied facts.
+
+## Production build findings
+
+- `npm run build` produces the Vinext worker and client output expected by the existing `npm run start` Wrangler preview.
+- The production preview returned 200 for the page, JavaScript, CSS, favicon, and local art; the framework image route redirected to a same-origin asset as expected.
+- No release asset references a local machine path. Favicon and artwork paths are root-relative.
+- Initialization uses a visible loading state and exits it even when reading storage fails. A recoverable error replaces a silent blank page.
+- Only the current scene’s first art image receives eager priority; later scene images are lazy and include responsive `sizes` hints. System fonts avoid a blocking external font request.
+- No development-only story controls, placeholder feedback destination, analytics, or inactive D1/R2 integration is exposed. `.openai/hosting.json` still has `d1: null` and `r2: null`.
+- A large client chunk warning remains. The final client page bundle measured 1,340,303 bytes uncompressed and 392,245 bytes with gzip because the complete branching narrative is bundled with the application. Targeted image loading and initialization improvements were made, but risky chapter-level lazy loading was not introduced without evidence that it would preserve save/node availability and improve the first playable scene. This warning is a performance follow-up, not a functional build failure.
+
+The preview was not run with a deterministic network throttle. Request behavior and loading fallbacks were inspected, but slow-network timing is not claimed as passed.
+
+## Test matrix
+
+| Surface                                            | Coverage                                                                                                                                                                                                  | Result                                                                                                                                                                                                                                                                             |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Automated narrative                                | All registered story files and continuity routes                                                                                                                                                          | Pass: 43 files, 3,021 paragraphs; continuous routes cover 5 outcomes and 219 nodes.                                                                                                                                                                                                |
+| Automated game graph                               | Node links, choices, endings, decision ranges, migrations                                                                                                                                                 | Pass: 263 nodes; 3 ending nodes in Chapters I–XI, 4 terminal Chapter XII endings, 12 lethal outcomes, 152,220 simulated choices, 15–18 decisions per surviving route.                                                                                                              |
+| Release regressions                                | XII labels; export/import round trip; checkpoints; malformed, oversized, unsupported, and cancelled imports; storage failures; migrations; reading setting; terminal controls                             | Pass.                                                                                                                                                                                                                                                                              |
+| Production build                                   | Vinext production build and Wrangler local preview                                                                                                                                                        | Pass with the documented large-chunk warning; page, favicon, and representative art returned 200, and no console warning/error was captured in the final Chromium pass.                                                                                                            |
+| Chromium desktop, isolated `127.0.0.1:4173` origin | Fresh cover/start, keyboard start, choice focus/scroll, refresh/resume, settings focus restoration, chapter library, diagnostics, invalid import, valid import summary/cancel/confirm, pre-import restore | Pass.                                                                                                                                                                                                                                                                              |
+| Chromium narrow viewport, 390×844                  | Extra large text, seven-choice menu, wrapped advantages/costs, status/header controls, settings sheet, no horizontal overflow                                                                             | Pass after targeted wrapping and touch-target fixes. This is viewport emulation, not a real phone.                                                                                                                                                                                 |
+| Chapter IX content controls                        | Adult confirmation, Fade/Detailed enabling, persistence after refresh                                                                                                                                     | Pass.                                                                                                                                                                                                                                                                              |
+| Chapter XI/XII replay fixture                      | Library labels, replay warning, restoration of XI checkpoint, invalidation/locking of later XII snapshot                                                                                                  | Pass.                                                                                                                                                                                                                                                                              |
+| Chapter XII ending fixture                         | XII of XII header, complete-adventure ending text, replay action, absence of continuation                                                                                                                 | Pass.                                                                                                                                                                                                                                                                              |
+| Save download in browser automation                | Export button and result announcement                                                                                                                                                                     | The action and UI state were observed, but neither Chromium automation harness surfaced the Blob download event. Portable JSON generation and round-trip parsing pass in the release regression. Perform one ordinary-browser download/open smoke test before public distribution. |
+| Storage denial/quota failure in UI                 | Pure storage adapter failures and visible recovery source paths                                                                                                                                           | Automated adapter regressions pass; the browser harness could not safely force a real quota/permission denial, so that exact browser UI path remains unverified.                                                                                                                   |
+
+Real Android Chrome, iPhone Safari, desktop Safari, Firefox, a screen reader, and a throttled slow connection were not available. These are not reported as passed.
+
+## Validation commands
+
+The completed release pass runs:
+
+```text
+npm run check:story
+npm run check:game
+npm run check:release
+npm run lint
+npm run build
+git diff --check
+git status --short
+```
+
+The final command output and worktree state should accompany the handoff. The known pre-existing changes in `components/ui` and `hooks/use-mobile.ts` were not formatted or modified by this release work.
+
+## Remaining owner actions
+
+1. Restore access to or correct the preserved Existing Sites registration. Do not create a replacement Site merely to bypass the current lookup failure.
+2. Choose and retain the stable production HTTPS address. Set `NEXT_PUBLIC_SITE_ORIGIN` at deployment if an absolute social image is wanted, and warn existing testers to export before moving origins.
+3. Supply a real support/contact destination if players should submit copied diagnostics. Do not ship a placeholder.
+4. Supply or approve individual credits, artwork provenance/license records, and any required AI-use disclosure; complete legal review of direct and transitive dependency notices.
+5. Run an ordinary-browser export/download/open smoke test and test at least current iPhone Safari and Android Chrome, plus a keyboard/screen-reader pass if available.
+6. Measure complete-adventure playtime before adding a total-duration claim.
+
+There is no known critical story-completion, save-validation, or production-build defect in the reviewed code. The inaccessible existing Sites registration is the current deployment blocker; the explicitly unverified device/download cases are distribution sign-off items.

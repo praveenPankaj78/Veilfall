@@ -1,60 +1,57 @@
-# Veilfall: The Broken Concord
+# Veilfall: The Ember Oath
 
-Veilfall is an original, story first fantasy decision RPG built around three travelling protagonists and one shared crisis. The mortal world of Edrath is losing the boundaries that separate it from the Cinder Deep, the Luminous Court, and the Unsea. A soldier's promise, a thief's impossible theft, and a witch's final spell alter the world in sequence.
+**Caelan Vey’s complete twelve-chapter adventure**
 
-## Current status
+Veilfall: The Ember Oath is a story-first dark fantasy decision RPG. Caelan Vey travels from the King’s Road beyond Greyhaven to a terminal choice at the Black Gate. The Broken Concord is the wider setting. Rook Sable and Ilyra Fen appear in the story but are not selectable protagonists in this release, and Caelan’s adventure reaches a complete ending without requiring another release.
 
-The redesigned foundation and the first five canonical chapters are implemented. Chapter One follows Caelan beyond Greyhaven on a diplomatic escort that becomes a fight for survival. Chapter Two carries every surviving consequence into a siege at Bellweather Inn, where Caelan learns how Ordan weaponised a damaged road pin. Chapter Three becomes a manhunt through Harrowfen and clears Caelan’s name. Chapter Four continues the pursuit across the Mileless Bridge, properly introduces Rook, and reveals the map of nine World Nails. Chapter Five climbs into Dragonspine, reveals Vaor's buried evidence, and makes Caelan an ember bearer.
+## Release scope
 
-The new canonical plan contains:
+- Twelve playable Caelan chapters, labelled I through XII from the registered chapter data.
+- Persistent consequences, relationship intent and consent boundaries, chapter resources, local checkpoints, lethal outcomes, and four terminal Chapter XII endings.
+- A chapter library for replaying unlocked chapters. Replaying an earlier chapter keeps its starting checkpoint and invalidates later chapter snapshots because they depend on the replaced path.
+- Fade and Detailed content preferences. Fade keeps every choice and consequence while omitting detailed intimate prose. Detailed requires adult confirmation and does not change outcomes.
+- Default, Large, and Extra large text settings that persist in the browser.
+- Versioned JSON save export and validated import with a confirmation summary and recoverable pre-import backup.
 
-- Three playable protagonists: Caelan Vey, Rook Sable, and Ilyra Fen.
-- Thirty five high level chapters across three complete series, with chapter boundaries allowed to change after playtesting.
-- Seven mortal regions, three outer realms, and Worldroot.
-- Distinct class methods and costs for every lead, including Rook's staged surprises and Ilyra's person specific Leverage.
-- Meaningful heterosexual romance paths, temporary relationships, and later optional intimate scenes between consenting adults.
-- Separate finales whose consequences trigger the next protagonist's story.
-- A clean regional map at `public/art/edrath-world-map.png` and a location focused story atlas at `public/art/edrath-story-atlas.png`.
-- Five complete chapters with route based danger, visible Health costs, lethal outcomes with chapter checkpoints, class resources, imported consequences, relationship choices, fifteen total endings, and local saves.
+The story contains dark fantasy violence, blood, injury, possible player-character death, coercive bargains, threats to freedom, and optional consensual adult intimacy. This project does not assign an age rating.
 
-## Canonical documents
+## Saves
 
-- `docs/GAME_VISION.md` defines the player promise, central conflict, scope, and hook structure.
-- `docs/WORLD_BIBLE.md` defines Edrath, the World Nails, cultures, realms, magic, and antagonist.
-- `docs/WORLD_MAP.md` explains geography, travel times, routes, and map continuity.
-- `docs/CHARACTER_SERIES_BIBLE.md` defines the three leads, their specialties, costs, growth, and relationships.
-- `docs/SERIES_CHAPTER_OUTLINE.md` defines the major event of every chapter and every crossover.
-- `docs/NARRATIVE_RULEBOOK.md` defines prose, mystery, choice, romance, intimacy, and location rules.
-- `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, Wayfire, saves, and imported decisions.
-- `docs/PLAYER_EXPERIENCE_BIBLE.md` defines information pacing, mechanical onboarding, recaps, journal design, and comprehension testing.
-- `docs/PLAYER_REVELATION_LEDGER.md` records the question, answer, next hook, and mechanic taught in every planned chapter.
-- `docs/CHAPTER_ONE_MAP.md` records the implemented structure and branches for The Road Before Rain.
-- `docs/CHAPTER_TWO_MAP.md` records the implemented structure, branches, reveal, and consequence imports for The Inn That Waited.
-- `docs/CHAPTER_THREE_MAP.md` records the three Harrowfen approaches, World Nail reveal, Rook entrance, and imported consequences for The Town at the Wrong Mile.
-- `docs/CHAPTER_FOUR_MAP.md` records the Mileless Bridge routes, Rook crossover, nine Nail reveal, romance movement, and three duty endings.
-- `docs/CHAPTER_FIVE_MAP.md` records Dragonspine's routes, cold fire, Vaor's memory grave, Mara's relationship scene, and the three ember endings.
-- `docs/DEVELOPMENT_PLAN.md` gives the production order and approval gates.
+Progress is stored locally in the browser. A browser save belongs to that browser and the exact site address, so moving the game to another address does not move the save automatically. Use **Settings, saves, and about** to export a JSON backup before changing browsers or site addresses, and import that backup after the move.
 
-## Review order
-
-For the fastest creative review, read:
-
-1. `docs/GAME_VISION.md`
-2. `docs/CHARACTER_SERIES_BIBLE.md`
-3. `docs/SERIES_CHAPTER_OUTLINE.md`
-4. `docs/WORLD_MAP.md`
-5. `docs/WORLD_BIBLE.md`
-
-The remaining rulebooks explain how the approved plan will be written and implemented.
+The current browser-save schema is version 17. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, content preference, completed chapters, ending state, replay checkpoints, and reading preference. Import validation occurs before existing progress is replaced.
 
 ## Play locally
 
-To play the current canonical chapters:
+1. Install dependencies with `npm install` if needed.
+2. Start the development server with `npm run dev`.
+3. Open the local address printed in the terminal.
 
-1. Run `npm install` if dependencies are not already present.
-2. Run `npm run dev`.
-3. Open the local address shown in the terminal.
+The first cover action begins Chapter I immediately. The existing Chapter I estimate is approximately 30 to 40 minutes; total adventure playtime has not been measured.
 
-Use Chapters inside the game to replay any unlocked chapter. Replaying a chapter keeps every earlier chapter result and replaces only that chapter’s decisions and points. Replaying an earlier chapter clears later chapter progress because those events depend on the old path.
+## Validation
 
-All story, world, character, history, and lore material in the redesigned canon was created for Veilfall.
+Run the release checks with:
+
+```text
+npm run check:story
+npm run check:game
+npm run check:release
+npm run lint
+npm run build
+```
+
+The project uses the existing Sites registration in `.openai/hosting.json` and the Vinext runtime. Local release work must not replace that registration. See [docs/WEB_RELEASE_READINESS.md](docs/WEB_RELEASE_READINESS.md) for build findings, test coverage, provenance notes, deployment prerequisites, and remaining owner actions.
+
+## Canonical documentation
+
+- `docs/CAELAN_SERIES_REVIEW.md` records the completed twelve-chapter narrative review.
+- `docs/NARRATIVE_RULEBOOK.md` defines prose, mystery, choice, romance, intimacy, and location rules.
+- `docs/PLAYER_EXPERIENCE_BIBLE.md` defines information pacing, onboarding, recaps, journal design, and comprehension goals.
+- `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, Wayfire, saves, and imported decisions.
+- `docs/CROSSOVER_CONTINUITY_LEDGER.md` records protected crossover continuity.
+- The chapter map files in `docs/` describe each implemented chapter.
+
+## Credits and provenance status
+
+The release uses the narrative, code, and local artwork present in this repository. The inspected release-facing files do not identify individual creators, provide per-artwork provenance, configure a player-support contact, or contain a repository-supported AI-use disclosure. These missing facts are owner actions and are not replaced with assumptions in the game.

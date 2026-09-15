@@ -30,6 +30,8 @@ const chapterTenSource = story.sources.get('app/chapter-ten.ts');
 const chapterElevenSource = story.sources.get('app/chapter-eleven.ts');
 const chapterTwelveSource = story.sources.get('app/chapter-twelve.ts');
 const memoryExports = story.load('app/story-memory.ts');
+const saveExports = story.load('app/save-system.ts');
+const saveSource = story.sources.get('app/save-system.ts');
 
 const {
   canChoose,
@@ -61,7 +63,13 @@ const producedFlagUniverse = [
 ];
 
 const failures = [];
-await checkSeriesReview(exported, memoryExports, pageSource, failures);
+await checkSeriesReview(
+  exported,
+  memoryExports,
+  pageSource,
+  failures,
+  saveExports,
+);
 
 const postBridgeSources = [
   chapterFiveSource,
@@ -8218,8 +8226,8 @@ for (const [flag, pattern] of [
     );
 }
 if (
-  !/completedChapters\.includes\(9\)/.test(pageSource) ||
-  !/c9-mara-crossed-black-gate/.test(pageSource)
+  !/completedChapters\.includes\(9\)/.test(saveSource) ||
+  !/c9-mara-crossed-black-gate/.test(saveSource)
 )
   failures.push(
     'Older Chapter Nine saves lack backward-compatible partner roster migration',
@@ -9862,7 +9870,7 @@ if (
   )
 )
   failures.push('A relationship state influences the political Gate choice');
-if (!/Caelan’s series is complete/.test(pageSource))
+if (!/Caelan’s complete adventure has ended/.test(pageSource))
   failures.push('The Chapter Twelve terminal interface is missing');
 if (/Continue to Rook|startRook|nextChapter:\s*['"]rook/i.test(pageSource))
   failures.push('Chapter Twelve creates an unimplemented Rook continuation');
@@ -9875,13 +9883,13 @@ if (
   failures.push('Chapter Twelve reveals protected later Elian truth');
 if (
   !/c12-inner-gate/.test(pageSource) ||
-  !/chapter-twelve\.v1\.start/.test(pageSource)
+  !/chapter-twelve\.v1\.start/.test(saveSource)
 )
   failures.push('Chapter Twelve start snapshot or canonical entry is missing');
 
 if (
-  !/CURRENT_SAVE_KEY = 'veilfall\.saga\.v16\.save'/.test(pageSource) ||
-  !/veilfall\.saga\.v15\.save/.test(pageSource)
+  saveExports.CURRENT_SAVE_KEY !== 'veilfall.saga.v17.save' ||
+  !saveExports.LEGACY_SAVE_KEYS.includes('veilfall.saga.v16.save')
 )
   failures.push(
     'Chapter Twelve save migration does not accept the prior version',

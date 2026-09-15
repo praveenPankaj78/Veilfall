@@ -44,9 +44,11 @@ export type RelationshipScore = {
 
 export type Relationships = Record<RelationshipKey, RelationshipScore>;
 
+export type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
 export type GameState = {
   nodeId: string;
-  chapter: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  chapter: ChapterNumber;
   chapterChoices: number;
   completedChapters: number[];
   stats: GameStats;
@@ -152,6 +154,113 @@ export type StoryNode = {
   final?: boolean;
   nextChapter?: string;
 };
+
+export type ChapterDefinition = {
+  number: ChapterNumber;
+  roman: string;
+  title: string;
+  summary: string;
+  entryNode: string;
+};
+
+export const chapterDefinitions: readonly ChapterDefinition[] = [
+  {
+    number: 1,
+    roman: 'I',
+    title: 'The Road Before Rain',
+    summary:
+      'Escort Ambassador Lysara beyond Greyhaven before the storm closes the road.',
+    entryNode: 'gate-yard',
+  },
+  {
+    number: 2,
+    roman: 'II',
+    title: 'The Inn That Waited',
+    summary:
+      'Defend the wounded during an inn siege and repair the road beneath it.',
+    entryNode: 'c2-arrival',
+  },
+  {
+    number: 3,
+    roman: 'III',
+    title: 'The Town at the Wrong Mile',
+    summary:
+      'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
+    entryNode: 'c3-arrival',
+  },
+  {
+    number: 4,
+    roman: 'IV',
+    title: 'Thief at the Mileless Bridge',
+    summary:
+      'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
+    entryNode: 'c4-bridge-start',
+  },
+  {
+    number: 5,
+    roman: 'V',
+    title: 'The Dragon’s Cold Grave',
+    summary:
+      'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
+    entryNode: 'c5-north-road',
+  },
+  {
+    number: 6,
+    roman: 'VI',
+    title: 'The City on Wheels',
+    summary:
+      'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
+    entryNode: 'c6-steppe-road',
+  },
+  {
+    number: 7,
+    roman: 'VII',
+    title: 'The Red Wind Hunt',
+    summary:
+      'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
+    entryNode: 'c7-red-horizon',
+  },
+  {
+    number: 8,
+    roman: 'VIII',
+    title: 'Seven Cold Fires',
+    summary:
+      'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
+    entryNode: 'c8-gate-ring',
+  },
+  {
+    number: 9,
+    roman: 'IX',
+    title: 'The Price of a Name',
+    summary:
+      'Recover the missing Gate Nail piece while mortal and devil assassins strike the first embassy.',
+    entryNode: 'c9-embassy-watch',
+  },
+  {
+    number: 10,
+    roman: 'X',
+    title: 'The Ash Road',
+    summary:
+      'Lead the voluntary expedition to Vathis while every spoken desire becomes an offer.',
+    entryNode: 'c10-ash-road',
+  },
+  {
+    number: 11,
+    roman: 'XI',
+    title: 'City of Every Price',
+    summary:
+      'Reach Malrec’s engine before Vathis auctions the right to invade Edrath.',
+    entryNode: 'c11-vathis-gate',
+  },
+  {
+    number: 12,
+    roman: 'XII',
+    title: 'The Ember Oath',
+    summary:
+      'Hold both faces of the Black Gate and choose the law that will replace it.',
+    entryNode: 'c12-inner-gate',
+  },
+] as const;
 
 export type StoryTermKey =
   | 'Oathwarden'

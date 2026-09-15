@@ -1,18 +1,26 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   ArrowRight,
   BookOpen,
+  Bug,
+  Copy,
+  Download,
   Flame,
+  HardDrive,
   Heart,
+  Info,
   MapPin,
   RotateCcw,
+  Settings,
   Shield,
   Sparkles,
   Swords,
   TriangleAlert,
+  Type,
+  Upload,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -40,13 +48,12 @@ import {
 } from '@/components/ui/sheet';
 import {
   canChoose,
+  chapterDefinitions,
   isChoiceVisible,
   initialState,
   nextRelationships,
-  resolveFinalRelationshipIntents,
   resolveCompletedOathFlags,
   nodes,
-  normaliseRelationships,
   relationshipChanges,
   relationshipLabels,
   relationshipSummary,
@@ -54,31 +61,31 @@ import {
   resolveNext,
   statLabels,
   type Choice,
-  type GameStats,
+  type ChapterNumber,
   type GameState,
   type RelationshipKey,
   type StatKey,
 } from './game-data';
+import {
+  BUILD_VERSION,
+  createPortableSave,
+  createStoredSave,
+  exportFilename,
+  MAX_IMPORT_BYTES,
+  parsePortableSave,
+  readBackupSave,
+  readReadingPreference,
+  readStoredSave,
+  replaceDamagedStoredSave,
+  replaceStoredSave,
+  writeReadingPreference,
+  writeStoredSave,
+  type CheckpointMap,
+  type ImportSummary,
+  type StoredSaveDocument,
+  type TextSizePreference,
+} from './save-system';
 import { knownTruths, majorConsequences } from './story-memory';
-
-const CURRENT_SAVE_KEY = 'veilfall.saga.v16.save';
-const LEGACY_SAVE_KEYS = [
-  'veilfall.saga.v15.save',
-  'veilfall.saga.v14.save',
-  'veilfall.saga.v13.save',
-  'veilfall.saga.v12.save',
-  'veilfall.saga.v11.save',
-  'veilfall.saga.v10.save',
-  'veilfall.saga.v9.save',
-  'veilfall.saga.v8.save',
-  'veilfall.saga.v7.save',
-  'veilfall.saga.v6.save',
-  'veilfall.saga.v5.save',
-  'veilfall.saga.v4.save',
-  'veilfall.chapter-one.v3.save',
-  'veilfall.chapter-one.v2.save',
-];
-type ChapterNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 const sceneArtwork = {
   departure: {
@@ -239,95 +246,6 @@ const sceneArtwork = {
   },
 } as const;
 
-const CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> = {
-  2: 'veilfall.chapter-two.v1.start',
-  3: 'veilfall.chapter-three.v1.start',
-  4: 'veilfall.chapter-four.v1.start',
-  5: 'veilfall.chapter-five.v1.start',
-  6: 'veilfall.chapter-six.v1.start',
-  7: 'veilfall.chapter-seven.v1.start',
-  8: 'veilfall.chapter-eight.v1.start',
-  9: 'veilfall.chapter-nine.v1.start',
-  10: 'veilfall.chapter-ten.v1.start',
-  11: 'veilfall.chapter-eleven.v1.start',
-  12: 'veilfall.chapter-twelve.v1.start',
-};
-
-const chapterLibrary = [
-  {
-    number: 1 as const,
-    title: 'The Road Before Rain',
-    summary:
-      'Escort Ambassador Lysara beyond Greyhaven before the storm closes the road.',
-  },
-  {
-    number: 2 as const,
-    title: 'The Inn That Waited',
-    summary:
-      'Defend the wounded during an inn siege and repair the road beneath it.',
-  },
-  {
-    number: 3 as const,
-    title: 'The Town at the Wrong Mile',
-    summary:
-      'Hunt the courier who framed you through Harrowfen and onto a hidden bridge.',
-  },
-  {
-    number: 4 as const,
-    title: 'Thief at the Mileless Bridge',
-    summary:
-      'Pursue Rook and Ordan across impossible roads while the Crown destroys the bridge.',
-  },
-  {
-    number: 5 as const,
-    title: 'The Dragon’s Cold Grave',
-    summary:
-      'Climb through hunting cold fire and decide how Vaor’s living ember leaves Dragonspine.',
-  },
-  {
-    number: 6 as const,
-    title: 'The City on Wheels',
-    summary:
-      'Earn a voice in Kharad Vey and keep its living clans free from an ancestor storm.',
-  },
-  {
-    number: 7 as const,
-    title: 'The Red Wind Hunt',
-    summary:
-      'Face your own kingdom’s army and uncover why the Black Gate forts were emptied.',
-  },
-  {
-    number: 8 as const,
-    title: 'Seven Cold Fires',
-    summary:
-      'Restore the Black Gate defences and face the price paid during seventeen hidden openings.',
-  },
-  {
-    number: 9 as const,
-    title: 'The Price of a Name',
-    summary:
-      'Recover the missing Gate Nail piece while mortal and devil assassins strike the first embassy.',
-  },
-  {
-    number: 10 as const,
-    title: 'The Ash Road',
-    summary:
-      'Lead the voluntary expedition to Vathis while every spoken desire becomes an offer.',
-  },
-  {
-    number: 11 as const,
-    title: 'City of Every Price',
-    summary:
-      'Reach Malrec’s engine before Vathis auctions the right to invade Edrath.',
-  },
-  {
-    number: 12 as const,
-    title: 'The Ember Oath',
-    summary:
-      'Hold both faces of the Black Gate and choose the law that will replace it.',
-  },
-];
-
 type ModelTool = {
   name: string;
   title: string;
@@ -342,6 +260,18 @@ type ModelContext = {
     tool: ModelTool,
     options?: { signal?: AbortSignal },
   ) => void | Promise<void>;
+};
+
+type ReleaseNotice = {
+  kind: 'error' | 'success' | 'info';
+  message: string;
+  storageError?: boolean;
+};
+
+type PendingImport = {
+  document: StoredSaveDocument;
+  summary: ImportSummary;
+  source: 'file' | 'backup';
 };
 
 const statIcons: Record<StatKey, typeof Heart> = {
@@ -367,268 +297,6 @@ const statHelp: Record<StatKey, string> = {
 
 const coreStatKeys: StatKey[] = ['health', 'resolve', 'command', 'oathfire'];
 const resourceStatKeys: StatKey[] = ['medicine', 'wayfire'];
-
-function migrateRelationships(value: Partial<GameState>) {
-  const flags = new Set(value.flags ?? []);
-  const inferredIntent = (person: RelationshipKey) => {
-    if (person === 'mara') {
-      if (flags.has('c7-mara-romance-ended')) return 'ended' as const;
-      if (flags.has('c7-mara-friendship-chosen')) return 'platonic' as const;
-      if (flags.has('c7-mara-chosen-future')) return 'committed' as const;
-      if (flags.has('c7-mara-duty-before-future')) return 'exploring' as const;
-      if (
-        flags.has('c5-mara-friendship') ||
-        flags.has('c4-platonic-mara') ||
-        flags.has('c2-mara-friendship')
-      )
-        return 'platonic' as const;
-      if (flags.has('c5-admitted-future-with-mara'))
-        return 'committed' as const;
-      if (
-        flags.has('c5-kissed-mara') ||
-        flags.has('c4-kissed-mara') ||
-        flags.has('c2-kissed-mara')
-      )
-        return 'exploring' as const;
-      if (flags.has('flirted-mara') || flags.has('shared-unease'))
-        return 'interested' as const;
-    } else if (person === 'lysara') {
-      if (flags.has('c7-lysara-romance-ended')) return 'ended' as const;
-      if (flags.has('c7-lysara-friendship-chosen')) return 'platonic' as const;
-      if (flags.has('c7-lysara-chosen-future')) return 'committed' as const;
-      if (flags.has('c7-lysara-duty-before-future'))
-        return 'exploring' as const;
-      if (flags.has('c5-lysara-friendship') || flags.has('c4-platonic-lysara'))
-        return 'platonic' as const;
-      if (flags.has('c5-admitted-future-with-lysara'))
-        return 'committed' as const;
-      if (flags.has('c5-kissed-lysara')) return 'exploring' as const;
-      if (flags.has('c4-lysara-private-truth') || flags.has('intrigued-lysara'))
-        return 'interested' as const;
-    } else if (person === 'ilyra') {
-      if (flags.has('c7-ilyra-leverage-refused')) return 'ended' as const;
-      if (flags.has('c7-ilyra-friendship-chosen')) return 'platonic' as const;
-      if (flags.has('c7-ilyra-bond-deepened')) return 'exploring' as const;
-      if (flags.has('c7-ilyra-interest-kept')) return 'interested' as const;
-      if (flags.has('c6-ilyra-interest-acknowledged'))
-        return 'interested' as const;
-    } else {
-      if (flags.has('c9-vexa-permanent-hostility')) return 'hostile' as const;
-      if (flags.has('c9-shared-private-night')) return 'exploring' as const;
-      if (flags.has('c9-vexa-attraction-acknowledged'))
-        return 'interested' as const;
-      if (flags.has('c9-vexa-adversarial-respect')) return 'platonic' as const;
-    }
-    return 'unresolved' as const;
-  };
-
-  if (value.relationships) {
-    const saved = normaliseRelationships(value.relationships);
-    return {
-      mara: {
-        ...saved.mara,
-        intent: value.relationships.mara?.intent ?? inferredIntent('mara'),
-      },
-      lysara: {
-        ...saved.lysara,
-        intent: value.relationships.lysara?.intent ?? inferredIntent('lysara'),
-      },
-      ilyra: {
-        ...saved.ilyra,
-        intent: value.relationships.ilyra?.intent ?? inferredIntent('ilyra'),
-      },
-      vexa: {
-        ...saved.vexa,
-        intent: value.relationships.vexa?.intent ?? inferredIntent('vexa'),
-      },
-    };
-  }
-
-  const count = (names: string[]) =>
-    names.filter((flag) => flags.has(flag)).length;
-  return {
-    mara: {
-      trust:
-        2 +
-        count([
-          'trusted-mara-scouting',
-          'shared-unease',
-          'mara-read-order',
-          'ridge-route',
-          'planned-evening',
-          'trusted-mara-in-fight',
-          'saved-mara',
-          'mara-tended',
-          'c2-mara-led-entry',
-          'c2-compressed-wound',
-          'c2-shared-fear',
-          'c2-mara-below',
-          'c3-shielded-wounded',
-          'c3-entered-unarmed',
-          'c3-backed-mara',
-          'c3-priority-people',
-          'c3-mara-flanked-double',
-          'c3-pursuit-mara',
-        ]),
-      attraction:
-        1 +
-        count([
-          'flirted-mara',
-          'shared-unease',
-          'planned-evening',
-          'saved-mara',
-          'mara-tended',
-          'c2-shared-fear',
-          'c2-kissed-mara',
-          'c3-entered-unarmed',
-          'c3-priority-people',
-          'c3-pursuit-mara',
-        ]),
-      respect: 2 + count(['c3-priority-people', 'c4-told-mara-law-bends']),
-      friction: 0,
-      intent: inferredIntent('mara'),
-    },
-    lysara: {
-      trust: Math.max(
-        0,
-        count([
-          'kept-seed-secret',
-          'seed-safe',
-          'found-shard-salt',
-          'c2-lysara-led-care',
-          'c2-saved-lysara',
-          'c2-lysara-below',
-          'c3-backed-lysara',
-          'c3-lysara-read-ink',
-          'c3-priority-cause',
-          'c3-pursuit-lysara',
-        ]) - (flags.has('revealed-seed') ? 1 : 0),
-      ),
-      attraction: count([
-        'intrigued-lysara',
-        'kept-seed-secret',
-        'c3-lysara-read-ink',
-        'c3-priority-cause',
-        'c3-pursuit-lysara',
-      ]),
-      respect: 1 + count(['c3-priority-cause', 'c4-lysara-private-truth']),
-      friction: flags.has('revealed-seed') ? 1 : 0,
-      intent: inferredIntent('lysara'),
-    },
-    ilyra: {
-      trust: count([
-        'c6-named-ilyra-manipulation',
-        'c6-ilyra-professional-alliance',
-        'c6-precise-unsea-truth',
-        'c6-ilyra-leads-evidence',
-      ]),
-      attraction: flags.has('c6-ilyra-interest-acknowledged') ? 2 : 0,
-      respect: count([
-        'c6-named-ilyra-manipulation',
-        'c6-ilyra-professional-alliance',
-        'c6-ilyra-leads-evidence',
-      ]),
-      friction: flags.has('c6-refused-ilyra-pressure') ? 1 : 0,
-      intent: inferredIntent('ilyra'),
-    },
-    vexa: {
-      ...initialState.relationships.vexa,
-      intent: inferredIntent('vexa'),
-    },
-  };
-}
-
-function normaliseState(value: Partial<GameState>): GameState {
-  const nodeId =
-    value.nodeId && nodes[value.nodeId] ? value.nodeId : initialState.nodeId;
-  const chapter = nodeId.startsWith('c12-')
-    ? 12
-    : nodeId.startsWith('c11-')
-      ? 11
-      : nodeId.startsWith('c10-')
-        ? 10
-        : nodeId.startsWith('c9-')
-          ? 9
-          : nodeId.startsWith('c8-')
-            ? 8
-            : nodeId.startsWith('c7-')
-              ? 7
-              : nodeId.startsWith('c6-')
-                ? 6
-                : nodeId.startsWith('c5-')
-                  ? 5
-                  : nodeId.startsWith('c4-')
-                    ? 4
-                    : nodeId.startsWith('c3-')
-                      ? 3
-                      : nodeId.startsWith('c2-')
-                        ? 2
-                        : (value.chapter ?? 1);
-  const savedStats = (value.stats ?? {}) as Partial<GameStats> & {
-    stamina?: number;
-  };
-  const health =
-    savedStats.health ?? savedStats.stamina ?? initialState.stats.health;
-  const completedChapters = Array.from(
-    new Set([
-      ...(value.completedChapters ?? []),
-      ...(nodes[nodeId]?.final && health > 0 && !value.defeat ? [chapter] : []),
-    ]),
-  );
-  const relationships = migrateRelationships(value);
-  const flags = resolveCompletedOathFlags([...(value.flags ?? [])]);
-  const chapterNineRosterResolved = [
-    'c9-mara-crossed-black-gate',
-    'c9-mara-remained-at-gate',
-    'c9-lysara-crossed-black-gate',
-    'c9-lysara-remained-at-gate',
-    'c9-no-mortal-partner-crossed',
-  ].some((flag) => flags.includes(flag));
-  if (completedChapters.includes(9) && !chapterNineRosterResolved) {
-    if (
-      relationships.mara.intent === 'committed' ||
-      relationships.mara.intent === 'exploring'
-    )
-      flags.push('c9-mara-crossed-black-gate');
-    else if (
-      relationships.lysara.intent === 'committed' ||
-      relationships.lysara.intent === 'exploring'
-    )
-      flags.push('c9-lysara-crossed-black-gate');
-    else flags.push('c9-no-mortal-partner-crossed');
-  }
-  return {
-    nodeId,
-    chapter,
-    chapterChoices:
-      value.chapterChoices ??
-      (chapter === 1 ? (value.history?.length ?? 0) : 0),
-    completedChapters,
-    stats: {
-      health,
-      resolve: savedStats.resolve ?? initialState.stats.resolve,
-      command: savedStats.command ?? initialState.stats.command,
-      oathfire: savedStats.oathfire ?? initialState.stats.oathfire,
-      medicine: savedStats.medicine ?? initialState.stats.medicine,
-      wayfire: savedStats.wayfire ?? initialState.stats.wayfire,
-    },
-    relationships: resolveFinalRelationshipIntents(relationships, flags),
-    contentPreference: {
-      ...initialState.contentPreference,
-      ...value.contentPreference,
-    },
-    flags,
-    history: (value.history ?? []).map((entry) =>
-      value.flags?.includes('c12-oathscar-door-order') &&
-      flags.includes('c12-door-freedom-returned') &&
-      entry ===
-        'You cross first. The strike hits your shield instead of the wounded, and a door-shaped scar burns across your wrist.'
-        ? 'You crossed first after the opening stopped. Your shield took the strike for the wounded. The completed door promise created no scar.'
-        : entry,
-    ),
-    defeat: value.defeat ?? null,
-  };
-}
 
 function defeatForChoice(
   chapter: ChapterNumber,
@@ -855,13 +523,26 @@ export default function Home() {
   const [showChapterLibrary, setShowChapterLibrary] = useState(false);
   const [showJournal, setShowJournal] = useState(false);
   const [showCharacterSheet, setShowCharacterSheet] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [showReturnRecap, setShowReturnRecap] = useState(false);
+  const [readingSize, setReadingSize] = useState<TextSizePreference>('default');
+  const [notice, setNotice] = useState<ReleaseNotice | null>(null);
+  const [damagedSave, setDamagedSave] = useState<string | null>(null);
+  const [pendingImport, setPendingImport] = useState<PendingImport | null>(
+    null,
+  );
+  const [hasBackup, setHasBackup] = useState(false);
+  const [bugDescription, setBugDescription] = useState('');
   const [pendingReplay, setPendingReplay] = useState<ChapterNumber | null>(
     null,
   );
   const gameRef = useRef(game);
+  const checkpointsRef = useRef<CheckpointMap>({});
+  const autosaveBlockedRef = useRef(false);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const storyRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const sceneHeadingRef = useRef<HTMLHeadingElement>(null);
   const scrollAfterChoice = useRef<'story' | 'scene' | null>(null);
 
   useEffect(() => {
@@ -872,24 +553,58 @@ export default function Home() {
     let active = true;
     queueMicrotask(() => {
       if (!active) return;
-      const saved = [CURRENT_SAVE_KEY, ...LEGACY_SAVE_KEYS]
-        .map((key) => window.localStorage.getItem(key))
-        .find((value) => value !== null);
-      if (saved) {
-        try {
-          const parsed = normaliseState(
-            JSON.parse(saved) as Partial<GameState>,
-          );
-          if (parsed.nodeId && nodes[parsed.nodeId]) {
-            setGame(parsed);
-            setStarted(true);
-            setShowReturnRecap(true);
+      try {
+        const savedReadingSize = readReadingPreference(window.localStorage);
+        setReadingSize(savedReadingSize);
+        document.documentElement.dataset.textSize = savedReadingSize;
+        const result = readStoredSave(window.localStorage);
+        if (!result.ok) {
+          autosaveBlockedRef.current = true;
+          setDamagedSave(result.damagedRaw ?? null);
+          setNotice({
+            kind: 'error',
+            message: result.error,
+            storageError: true,
+          });
+        } else if (result.document) {
+          checkpointsRef.current = result.document.checkpoints;
+          setReadingSize(result.document.readingPreference);
+          document.documentElement.dataset.textSize =
+            result.document.readingPreference;
+          setGame(result.document.game);
+          gameRef.current = result.document.game;
+          setStarted(true);
+          setShowReturnRecap(true);
+          setHasBackup(Boolean(readBackupSave(window.localStorage)?.ok));
+          if (result.migrated) {
+            const writeResult = writeStoredSave(
+              window.localStorage,
+              result.document,
+            );
+            if (!writeResult.ok) {
+              autosaveBlockedRef.current = true;
+              setNotice({
+                kind: 'error',
+                message: writeResult.error,
+                storageError: true,
+              });
+            } else if (result.warnings.length)
+              setNotice({ kind: 'info', message: result.warnings.join(' ') });
+          } else if (result.warnings.length) {
+            setNotice({ kind: 'info', message: result.warnings.join(' ') });
           }
-        } catch {
-          window.localStorage.removeItem(CURRENT_SAVE_KEY);
         }
+      } catch {
+        autosaveBlockedRef.current = true;
+        setNotice({
+          kind: 'error',
+          message:
+            'Veilfall could not initialise browser saving. This session can still be played and exported.',
+          storageError: true,
+        });
+      } finally {
+        setLoaded(true);
       }
-      setLoaded(true);
     });
     return () => {
       active = false;
@@ -897,10 +612,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (loaded && started) {
-      window.localStorage.setItem(CURRENT_SAVE_KEY, JSON.stringify(game));
+    if (!loaded || !started || autosaveBlockedRef.current) return;
+    const result = writeStoredSave(
+      window.localStorage,
+      createStoredSave(game, checkpointsRef.current, readingSize),
+    );
+    if (!result.ok) {
+      autosaveBlockedRef.current = true;
+      setNotice({ kind: 'error', message: result.error, storageError: true });
     }
-  }, [game, loaded, started]);
+  }, [game, loaded, readingSize, started]);
 
   useEffect(() => {
     if (!scrollAfterChoice.current) return;
@@ -910,7 +631,14 @@ export default function Home() {
         : storyRef.current;
     scrollAfterChoice.current = null;
     window.requestAnimationFrame(() => {
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      sceneHeadingRef.current?.focus({ preventScroll: true });
+      const reducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      target?.scrollIntoView({
+        behavior: reducedMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
     });
   }, [game.nodeId]);
 
@@ -994,6 +722,10 @@ export default function Home() {
         }
 
         const next = applyChoice(current, choice);
+        scrollAfterChoice.current =
+          nodes[next.nodeId].art !== nodes[current.nodeId].art
+            ? 'scene'
+            : 'story';
         gameRef.current = next;
         setStarted(true);
         setLastResult(choice.result);
@@ -1018,6 +750,206 @@ export default function Home() {
   const chapterProgress = node.final
     ? 100
     : Math.min(96, Math.round((game.chapterChoices / 15) * 100));
+  const currentChapter = chapterDefinitions[game.chapter - 1];
+  const diagnosticText = [
+    'Veilfall: The Ember Oath bug report',
+    `Build: ${BUILD_VERSION}`,
+    `Chapter: ${currentChapter.roman} (${game.chapter} of ${chapterDefinitions.length})`,
+    `Node: ${game.nodeId}`,
+    `Browser: ${typeof navigator === 'undefined' ? 'Unavailable' : navigator.userAgent}`,
+    `Language: ${typeof navigator === 'undefined' ? 'Unavailable' : navigator.language}`,
+    `Viewport: ${typeof window === 'undefined' ? 'Unavailable' : `${window.innerWidth} × ${window.innerHeight}`}`,
+    `Text size: ${readingSize}`,
+    '',
+    'Description:',
+    bugDescription.trim() || '[Describe what happened and what you expected.]',
+  ].join('\n');
+
+  function currentSaveDocument() {
+    return createStoredSave(game, checkpointsRef.current, readingSize);
+  }
+
+  function recordChapterCheckpoint(chapter: ChapterNumber, next: GameState) {
+    checkpointsRef.current = {
+      ...checkpointsRef.current,
+      [chapter]: next,
+    };
+  }
+
+  function downloadText(filename: string, text: string) {
+    const url = URL.createObjectURL(
+      new Blob([text], { type: 'application/json;charset=utf-8' }),
+    );
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    window.setTimeout(() => {
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }, 5_000);
+  }
+
+  function exportSave() {
+    const portable = createPortableSave(currentSaveDocument());
+    downloadText(
+      exportFilename(game),
+      `${JSON.stringify(portable, null, 2)}\n`,
+    );
+    setNotice({
+      kind: 'success',
+      message: `Prepared ${currentChapter.title} progress with ${Object.keys(checkpointsRef.current).length} replay checkpoints for download. If your browser did not start the download, try Export Save again.`,
+    });
+  }
+
+  function downloadDamagedSave() {
+    if (!damagedSave) return;
+    downloadText('veilfall-damaged-browser-save-recovery.json', damagedSave);
+    setNotice({
+      kind: 'info',
+      message:
+        'Prepared the damaged browser data for recovery download. It has not been removed from browser storage.',
+    });
+  }
+
+  async function handleImportFile(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (file.size > MAX_IMPORT_BYTES) {
+      setNotice({
+        kind: 'error',
+        message:
+          'That file is too large. Veilfall save files must be under 1 MB.',
+      });
+      return;
+    }
+    try {
+      const parsed = parsePortableSave(await file.text(), file.size);
+      if (!parsed.ok) {
+        setNotice({ kind: 'error', message: parsed.error });
+        return;
+      }
+      setPendingImport({
+        document: parsed.document,
+        summary: parsed.summary,
+        source: 'file',
+      });
+      setNotice(null);
+    } catch {
+      setNotice({
+        kind: 'error',
+        message:
+          'Veilfall could not read that file. Your current save is unchanged.',
+      });
+    }
+  }
+
+  function prepareBackupRestore() {
+    const result = readBackupSave(window.localStorage);
+    if (!result?.ok) {
+      setHasBackup(false);
+      setNotice({
+        kind: 'error',
+        message: 'The pre-import backup is unavailable or damaged.',
+      });
+      return;
+    }
+    const definition = chapterDefinitions[result.document.game.chapter - 1];
+    setPendingImport({
+      document: result.document,
+      source: 'backup',
+      summary: {
+        chapter: result.document.game.chapter,
+        chapterLabel: `Chapter ${definition.roman}: ${definition.title}`,
+        completedChapters: result.document.game.completedChapters.length,
+        checkpointCount: Object.keys(result.document.checkpoints).length,
+        endingRecorded: result.document.game.flags.includes(
+          'c12-series-complete',
+        ),
+        exportedAt: 'the previous import',
+      },
+    });
+  }
+
+  function confirmImportSave() {
+    if (!pendingImport) return;
+    const result = replaceStoredSave(
+      window.localStorage,
+      pendingImport.document,
+      currentSaveDocument(),
+    );
+    if (!result.ok) {
+      setNotice({ kind: 'error', message: result.error, storageError: true });
+      setPendingImport(null);
+      return;
+    }
+    checkpointsRef.current = pendingImport.document.checkpoints;
+    autosaveBlockedRef.current = false;
+    setDamagedSave(null);
+    setReadingSize(pendingImport.document.readingPreference);
+    document.documentElement.dataset.textSize =
+      pendingImport.document.readingPreference;
+    gameRef.current = pendingImport.document.game;
+    setGame(pendingImport.document.game);
+    setLastResult(null);
+    setStarted(true);
+    setShowReturnRecap(true);
+    setHasBackup(true);
+    setNotice({
+      kind: 'success',
+      message:
+        pendingImport.source === 'backup'
+          ? 'Restored the pre-import backup. The replaced progress is now the new recoverable backup.'
+          : 'Imported the save. Your previous progress is available as a recoverable backup.',
+    });
+    setPendingImport(null);
+  }
+
+  function changeReadingSize(value: TextSizePreference) {
+    setReadingSize(value);
+    document.documentElement.dataset.textSize = value;
+    const result = writeReadingPreference(window.localStorage, value);
+    if (!result.ok)
+      setNotice({ kind: 'error', message: result.error, storageError: true });
+  }
+
+  function retrySaving() {
+    const saveDocument = currentSaveDocument();
+    const result = damagedSave
+      ? replaceDamagedStoredSave(window.localStorage, saveDocument, damagedSave)
+      : writeStoredSave(window.localStorage, saveDocument);
+    if (!result.ok) {
+      setNotice({ kind: 'error', message: result.error, storageError: true });
+      return;
+    }
+    autosaveBlockedRef.current = false;
+    setDamagedSave(null);
+    setNotice({
+      kind: 'success',
+      message: damagedSave
+        ? 'The damaged data was preserved separately and this session is now saving.'
+        : 'Browser saving is available again.',
+    });
+  }
+
+  async function copyDiagnostics() {
+    try {
+      await navigator.clipboard.writeText(diagnosticText);
+      setNotice({
+        kind: 'success',
+        message: 'Copied the visible diagnostic report.',
+      });
+    } catch {
+      setNotice({
+        kind: 'error',
+        message:
+          'The browser blocked clipboard access. Select and copy the diagnostic text manually.',
+      });
+    }
+  }
 
   function choose(choice: Choice) {
     if (game.defeat || !canChoose(choice, game)) return;
@@ -1034,7 +966,12 @@ export default function Home() {
     setLastResult(null);
     setStarted(true);
     setShowChapterLibrary(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+    });
   }
 
   function returnToChapterStart() {
@@ -1050,47 +987,33 @@ export default function Home() {
   }
 
   function restartStoryAfterDeath() {
-    for (const key of [
-      CURRENT_SAVE_KEY,
-      ...LEGACY_SAVE_KEYS,
-      ...Object.values(CHAPTER_START_KEYS),
-    ]) {
-      window.localStorage.removeItem(key);
-    }
+    checkpointsRef.current = {};
+    autosaveBlockedRef.current = false;
+    setDamagedSave(null);
     loadChapterState(initialState);
   }
 
   function chapterStart(chapter: ChapterNumber) {
     if (chapter === 1) return initialState;
-    const key = CHAPTER_START_KEYS[chapter];
-    if (!key) return null;
-    const savedStart = window.localStorage.getItem(key);
-    if (!savedStart) return null;
-    try {
-      return normaliseState(JSON.parse(savedStart) as Partial<GameState>);
-    } catch {
-      window.localStorage.removeItem(key);
-      return null;
-    }
+    return checkpointsRef.current[chapter] ?? null;
   }
 
   function replayChapter(chapter: ChapterNumber) {
     if (chapter === 1) {
-      window.localStorage.removeItem(CURRENT_SAVE_KEY);
-      for (const key of LEGACY_SAVE_KEYS) window.localStorage.removeItem(key);
-      for (const key of Object.values(CHAPTER_START_KEYS)) {
-        window.localStorage.removeItem(key);
-      }
+      checkpointsRef.current = {};
+      autosaveBlockedRef.current = false;
+      setDamagedSave(null);
       loadChapterState(initialState);
       return;
     }
 
-    for (const later of (
-      [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as ChapterNumber[]
-    ).filter((number) => number > chapter)) {
-      const key = CHAPTER_START_KEYS[later];
-      if (key) window.localStorage.removeItem(key);
+    const retained: CheckpointMap = {};
+    for (const definition of chapterDefinitions) {
+      if (definition.number > chapter) continue;
+      const checkpoint = checkpointsRef.current[definition.number];
+      if (checkpoint) retained[definition.number] = checkpoint;
     }
+    checkpointsRef.current = retained;
     const savedStart = chapterStart(chapter);
     if (savedStart) loadChapterState(savedStart);
   }
@@ -1124,7 +1047,7 @@ export default function Home() {
         'You continue to Bellweather Inn with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[2]!, JSON.stringify(next));
+    recordChapterCheckpoint(2, next);
     loadChapterState(next);
   }
 
@@ -1146,7 +1069,7 @@ export default function Home() {
         'You continue to Harrowfen with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[3]!, JSON.stringify(next));
+    recordChapterCheckpoint(3, next);
     loadChapterState(next);
   }
 
@@ -1166,7 +1089,7 @@ export default function Home() {
         'You enter the Mileless Bridge with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[4]!, JSON.stringify(next));
+    recordChapterCheckpoint(4, next);
     loadChapterState(next);
   }
 
@@ -1188,7 +1111,7 @@ export default function Home() {
         'You follow the northern mark into Dragonspine with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[5]!, JSON.stringify(next));
+    recordChapterCheckpoint(5, next);
     loadChapterState(next);
   }
 
@@ -1210,7 +1133,7 @@ export default function Home() {
         'You leave Dragonspine for Kharad Vey with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[6]!, JSON.stringify(next));
+    recordChapterCheckpoint(6, next);
     loadChapterState(next);
   }
 
@@ -1232,7 +1155,7 @@ export default function Home() {
         'You leave Kharad Vey beneath the Red Wind Hunt with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[7]!, JSON.stringify(next));
+    recordChapterCheckpoint(7, next);
     loadChapterState(next);
   }
 
@@ -1255,7 +1178,7 @@ export default function Home() {
         'You reach the eight forts surrounding the Black Gate with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[8]!, JSON.stringify(next));
+    recordChapterCheckpoint(8, next);
     loadChapterState(next);
   }
 
@@ -1277,7 +1200,7 @@ export default function Home() {
         'You establish neutral Second Fort for the first Cinder Deep embassy with every earlier consequence.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[9]!, JSON.stringify(next));
+    recordChapterCheckpoint(9, next);
     loadChapterState(next);
   }
 
@@ -1298,7 +1221,7 @@ export default function Home() {
         'You take the exact voluntary expedition from the inner Black Gate onto the Ash Road.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[10]!, JSON.stringify(next));
+    recordChapterCheckpoint(10, next);
     loadChapterState(next);
   }
 
@@ -1319,7 +1242,7 @@ export default function Home() {
         'You enter Vathis with the exact Ash Road expedition, recovered fragment, and every surviving contract limit.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[11]!, JSON.stringify(next));
+    recordChapterCheckpoint(11, next);
     loadChapterState(next);
   }
 
@@ -1340,56 +1263,323 @@ export default function Home() {
         'You reach the inner Black Gate with the exact Vathis alliance, expedition, fragment custody, and mythic freedom restrictions.',
       ],
     };
-    window.localStorage.setItem(CHAPTER_START_KEYS[12]!, JSON.stringify(next));
+    recordChapterCheckpoint(12, next);
     loadChapterState(next);
   }
+
+  const releaseOverlays = (
+    <>
+      <Sheet open={showSettings} onOpenChange={setShowSettings}>
+        <SheetContent className="release-settings-sheet" side="right">
+          <SheetHeader>
+            <SheetTitle>Settings, saves, and release information</SheetTitle>
+            <SheetDescription>
+              Reading controls, portable backups, content information, and
+              diagnostics for this complete adventure.
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="release-settings-sections">
+            {notice && (
+              <div
+                className={`release-notice release-notice-${notice.kind}`}
+                role={notice.kind === 'error' ? 'alert' : 'status'}
+              >
+                {notice.message}
+              </div>
+            )}
+
+            <section aria-labelledby="reading-settings-title">
+              <div className="settings-section-heading">
+                <Type aria-hidden="true" />
+                <h3 id="reading-settings-title">Text size</h3>
+              </div>
+              <p>
+                Your choice applies to story text, choices, lessons, the
+                journal, chapter library, settings, and endings.
+              </p>
+              <fieldset className="reading-size-options">
+                <legend className="visually-hidden">Text size</legend>
+                {(
+                  [
+                    ['default', 'Default'],
+                    ['large', 'Large'],
+                    ['extra-large', 'Extra large'],
+                  ] as const
+                ).map(([value, label]) => (
+                  <Button
+                    key={value}
+                    type="button"
+                    variant={readingSize === value ? 'default' : 'outline'}
+                    aria-pressed={readingSize === value}
+                    onClick={() => changeReadingSize(value)}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </fieldset>
+            </section>
+
+            <section aria-labelledby="save-settings-title">
+              <div className="settings-section-heading">
+                <HardDrive aria-hidden="true" />
+                <h3 id="save-settings-title">Save and transfer</h3>
+              </div>
+              <p>
+                Browser saves belong to this browser and this exact site
+                address. Exporting creates a backup you can keep or import in
+                another compatible browser.
+              </p>
+              <p className="settings-summary">
+                Current progress: Chapter {currentChapter.roman} of{' '}
+                {chapterDefinitions.length}, {game.completedChapters.length}{' '}
+                completed, {Object.keys(checkpointsRef.current).length} replay
+                checkpoints.
+              </p>
+              <input
+                ref={importInputRef}
+                className="visually-hidden"
+                type="file"
+                accept="application/json,.json"
+                tabIndex={-1}
+                aria-hidden="true"
+                onChange={handleImportFile}
+              />
+              <div className="settings-actions">
+                <Button type="button" variant="outline" onClick={exportSave}>
+                  <Download data-icon="inline-start" />
+                  Export Save
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => importInputRef.current?.click()}
+                >
+                  <Upload data-icon="inline-start" />
+                  Import Save
+                </Button>
+                {hasBackup && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={prepareBackupRestore}
+                  >
+                    <RotateCcw data-icon="inline-start" />
+                    Restore pre-import backup
+                  </Button>
+                )}
+              </div>
+              {damagedSave && (
+                <div className="recovery-actions">
+                  <p>
+                    The damaged browser data remains untouched. Download it
+                    before starting a new browser save if you may need help
+                    recovering it.
+                  </p>
+                  <div className="settings-actions">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={downloadDamagedSave}
+                    >
+                      Download damaged data
+                    </Button>
+                    <Button type="button" onClick={retrySaving}>
+                      Preserve it and save this session
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {!damagedSave && notice?.storageError && (
+                <Button type="button" variant="ghost" onClick={retrySaving}>
+                  Retry browser saving
+                </Button>
+              )}
+            </section>
+
+            <section aria-labelledby="content-settings-title">
+              <div className="settings-section-heading">
+                <Info aria-hidden="true" />
+                <h3 id="content-settings-title">
+                  About and content information
+                </h3>
+              </div>
+              <p>
+                <strong>Veilfall: The Ember Oath</strong> is Caelan Vey’s
+                complete twelve-chapter adventure, with a terminal ending. The
+                Broken Concord is its wider setting. Rook and Ilyra appear as
+                independent characters but are not selectable protagonists in
+                this release.
+              </p>
+              <p>
+                The story contains dark fantasy violence, blood, injury,
+                possible player-character death, coercive bargains, threats to
+                freedom, and optional consensual adult intimacy. When an
+                intimate scene is available, <strong>Fade</strong> preserves
+                every choice and consequence without detailed prose.{' '}
+                <strong>Detailed</strong> requires adult confirmation and adds
+                description without changing outcomes.
+              </p>
+              <p>
+                Credits and provenance: this build uses the narrative, code, and
+                local artwork contained in this repository. Release-facing files
+                do not identify individual creators or document the provenance
+                of each artwork. No repository-supported AI-use disclosure or
+                player-support contact is configured.
+              </p>
+              <p className="build-version">Release build {BUILD_VERSION}</p>
+            </section>
+
+            <section aria-labelledby="diagnostics-title">
+              <div className="settings-section-heading">
+                <Bug aria-hidden="true" />
+                <h3 id="diagnostics-title">Bug report diagnostics</h3>
+              </div>
+              <p>
+                Add a short description, inspect the report, then copy it into
+                your preferred message. It does not include relationship
+                details, story history, or save data.
+              </p>
+              <label htmlFor="bug-description">What happened?</label>
+              <textarea
+                id="bug-description"
+                value={bugDescription}
+                onChange={(event) => setBugDescription(event.target.value)}
+                placeholder="Describe the problem and what you expected."
+                rows={4}
+              />
+              <pre className="diagnostic-preview">{diagnosticText}</pre>
+              <Button type="button" variant="outline" onClick={copyDiagnostics}>
+                <Copy data-icon="inline-start" />
+                Copy diagnostic information
+              </Button>
+              <p className="settings-footnote">
+                No contact destination is included because none is configured in
+                the project.
+              </p>
+            </section>
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <AlertDialog
+        open={pendingImport !== null}
+        onOpenChange={(open) => !open && setPendingImport(null)}
+      >
+        <AlertDialogContent className="import-dialog">
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {pendingImport?.source === 'backup'
+                ? 'Restore the pre-import backup?'
+                : 'Replace current progress with this save?'}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {pendingImport
+                ? `${pendingImport.summary.chapterLabel}. ${pendingImport.summary.completedChapters} chapters completed, ${pendingImport.summary.checkpointCount} replay checkpoints${pendingImport.summary.endingRecorded ? ', terminal ending recorded' : ''}. A recoverable backup of your current progress will be preserved before replacement.`
+                : ''}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setPendingImport(null)}>
+              Keep current progress
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="confirm-replay"
+              onClick={confirmImportSave}
+            >
+              {pendingImport?.source === 'backup'
+                ? 'Restore backup'
+                : 'Import and replace'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
+  );
 
   if (!loaded) {
     return (
       <main
-        className="min-h-screen bg-[#07090b]"
+        className="loading-screen min-h-screen"
         aria-label="Loading Veilfall"
-      />
+      >
+        <div className="brand-mark" aria-hidden="true">
+          V
+        </div>
+        <p>Loading Veilfall: The Ember Oath…</p>
+        <small>
+          If loading does not finish, reload the page. Your browser save will
+          not be removed.
+        </small>
+      </main>
     );
   }
 
   if (!started) {
     return (
-      <main className="cover-screen min-h-screen text-[#eee7d8]">
-        <Image
-          src="/art/caelan-east-gate.png"
-          alt="Caelan and Mara lead a diplomatic escort out of Greyhaven"
-          fill
-          priority
-          className="cover-art object-cover"
-          sizes="100vw"
-        />
-        <div className="cover-shade" />
-        <section className="cover-copy">
-          <div className="brand-mark" aria-hidden="true">
-            V
-          </div>
-          <p className="eyebrow">An interactive dark fantasy</p>
-          <h1>Veilfall</h1>
-          <p className="cover-subtitle">The Broken Concord</p>
-          <p className="cover-intro">
-            You know the King&apos;s Road, the people under your command, and
-            the promise waiting at its end. Before night, an enemy will know
-            every route you might choose.
-          </p>
+      <>
+        <main className="cover-screen min-h-screen text-[#eee7d8]">
+          <Image
+            src="/art/caelan-east-gate.png"
+            alt="Caelan and Mara lead a diplomatic escort out of Greyhaven"
+            fill
+            priority
+            className="cover-art object-cover"
+            sizes="100vw"
+          />
+          <div className="cover-shade" />
           <Button
-            className="begin-button"
-            size="lg"
-            onClick={() => setStarted(true)}
+            className="cover-settings-button"
+            variant="outline"
+            onClick={() => setShowSettings(true)}
           >
-            Begin chapter one
-            <ArrowRight data-icon="inline-end" />
+            <Settings data-icon="inline-start" />
+            Settings, saves, and about
           </Button>
-          <p className="play-note">
-            About 30 to 40 minutes. Your choices are saved on this device.
-          </p>
-        </section>
-      </main>
+          <section className="cover-copy">
+            <div className="brand-mark" aria-hidden="true">
+              V
+            </div>
+            <p className="eyebrow">An interactive dark fantasy</p>
+            <h1>Veilfall</h1>
+            <p className="cover-subtitle">The Ember Oath</p>
+            <p className="cover-scope">
+              Caelan Vey’s complete {chapterDefinitions.length}-chapter
+              adventure
+            </p>
+            <p className="cover-intro">
+              You know the King&apos;s Road, the people under your command, and
+              the promise waiting at its end. Before night, an enemy will know
+              every route you might choose.
+            </p>
+            <Button
+              className="begin-button"
+              size="lg"
+              onClick={() => setStarted(true)}
+            >
+              Begin Chapter I
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+            <p className="play-note">
+              Chapter I takes approximately 30 to 40 minutes. Full-adventure
+              playtime has not been measured. Browser saves stay with this site
+              address; use Export Save for backup or transfer.
+            </p>
+            {notice && (
+              <div
+                className={`release-notice cover-notice release-notice-${notice.kind}`}
+                role={notice.kind === 'error' ? 'alert' : 'status'}
+              >
+                {notice.message}{' '}
+                <button type="button" onClick={() => setShowSettings(true)}>
+                  Open save tools
+                </button>
+              </div>
+            )}
+          </section>
+        </main>
+        {releaseOverlays}
+      </>
     );
   }
 
@@ -1406,12 +1596,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan{' '}
-          {
-            ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][
-              game.chapter - 1
-            ]
-          }
+          Caelan {currentChapter.roman} of {chapterDefinitions.at(-1)?.roman}
         </div>
         <div className="top-actions">
           <Button
@@ -1419,9 +1604,10 @@ export default function Home() {
             variant="ghost"
             size="sm"
             onClick={() => setShowJournal(true)}
+            aria-label="Open journal"
           >
             <BookOpen data-icon="inline-start" />
-            Journal
+            <span>Journal</span>
           </Button>
           <Button
             className="chapter-menu-button"
@@ -1429,21 +1615,46 @@ export default function Home() {
             size="sm"
             onClick={() => setShowChapterLibrary((open) => !open)}
             aria-expanded={showChapterLibrary}
+            aria-label="Open chapter library"
           >
             <BookOpen data-icon="inline-start" />
-            Chapters
+            <span>Chapters</span>
           </Button>
           <Button
             className="restart-button"
             variant="ghost"
             size="sm"
             onClick={restart}
+            aria-label={`Replay Chapter ${currentChapter.roman}`}
           >
             <RotateCcw data-icon="inline-start" />
-            Replay current
+            <span>Replay current</span>
+          </Button>
+          <Button
+            className="settings-button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowSettings(true)}
+            aria-label="Open settings, saves, and release information"
+          >
+            <Settings data-icon="inline-start" />
+            <span>Settings</span>
           </Button>
         </div>
       </header>
+
+      {notice?.storageError && (
+        <div className="save-alert" role="alert">
+          <span>{notice.message}</span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowSettings(true)}
+          >
+            Open save tools
+          </Button>
+        </div>
+      )}
 
       {showReturnRecap && (
         <aside className="return-recap" aria-label="Returning player recap">
@@ -1471,71 +1682,66 @@ export default function Home() {
         </aside>
       )}
 
-      {showChapterLibrary && (
-        <aside className="chapter-library" aria-label="Unlocked chapters">
-          <div className="chapter-library-heading">
-            <div>
-              <p className="eyebrow">Caelan’s journey</p>
-              <h2>Replay an unlocked chapter</h2>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowChapterLibrary(false)}
-            >
-              Close
-            </Button>
-          </div>
-          <p className="chapter-library-note">
-            Replaying a chapter replaces its choices, points, and outcome.
-            Earlier chapters stay the same. Replaying an earlier chapter removes
-            later chapter progress, because those events came from the old path.
-          </p>
-          <div className="chapter-library-list">
-            {chapterLibrary.map((chapter) => {
-              const unlocked =
-                chapter.number === 1 ||
-                game.chapter === chapter.number ||
-                game.completedChapters.includes(chapter.number - 1);
-              const available =
-                chapter.number === 1 ||
-                (loaded &&
-                  typeof window !== 'undefined' &&
-                  Boolean(
-                    window.localStorage.getItem(
-                      CHAPTER_START_KEYS[chapter.number]!,
-                    ),
-                  ));
-              return (
-                <div className="chapter-library-entry" key={chapter.number}>
-                  <div>
-                    <span>Chapter {chapter.number}</span>
-                    <h3>{chapter.title}</h3>
-                    <p>{chapter.summary}</p>
+      <Sheet open={showChapterLibrary} onOpenChange={setShowChapterLibrary}>
+        <SheetContent className="chapter-library" side="right">
+          <SheetHeader>
+            <SheetTitle>Replay an unlocked chapter</SheetTitle>
+            <SheetDescription>
+              Caelan’s complete twelve-chapter journey
+            </SheetDescription>
+          </SheetHeader>
+          <div className="chapter-library-body">
+            <p className="chapter-library-note">
+              Replaying a chapter replaces its choices, points, and outcome.
+              Earlier chapters stay the same. Replaying an earlier chapter
+              removes later chapter progress, because those events came from the
+              old path.
+            </p>
+            <div className="chapter-library-list">
+              {chapterDefinitions.map((chapter) => {
+                const unlocked =
+                  chapter.number === 1 ||
+                  game.chapter === chapter.number ||
+                  game.completedChapters.includes(chapter.number - 1);
+                const available =
+                  chapter.number === 1 ||
+                  Boolean(checkpointsRef.current[chapter.number]);
+                return (
+                  <div className="chapter-library-entry" key={chapter.number}>
+                    <div>
+                      <span>
+                        Chapter {chapter.roman} of{' '}
+                        {chapterDefinitions.at(-1)?.roman}
+                      </span>
+                      <h3>{chapter.title}</h3>
+                      <p>{chapter.summary}</p>
+                    </div>
+                    {unlocked ? (
+                      <Button
+                        className="chapter-library-button"
+                        variant="outline"
+                        size="sm"
+                        disabled={!available}
+                        onClick={() => setPendingReplay(chapter.number)}
+                      >
+                        {chapter.number === game.chapter
+                          ? 'Replay'
+                          : 'Play again'}
+                      </Button>
+                    ) : (
+                      <span className="chapter-locked">
+                        Finish Chapter{' '}
+                        {chapterDefinitions[chapter.number - 2]?.roman} to
+                        unlock
+                      </span>
+                    )}
                   </div>
-                  {unlocked ? (
-                    <Button
-                      className="chapter-library-button"
-                      variant="outline"
-                      size="sm"
-                      disabled={!available}
-                      onClick={() => setPendingReplay(chapter.number)}
-                    >
-                      {chapter.number === game.chapter
-                        ? 'Replay'
-                        : 'Play again'}
-                    </Button>
-                  ) : (
-                    <span className="chapter-locked">
-                      Finish Chapter {chapter.number - 1} to unlock
-                    </span>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </aside>
-      )}
+        </SheetContent>
+      </Sheet>
 
       <section className="mobile-status-strip" aria-label="Current status">
         <div>
@@ -1563,7 +1769,10 @@ export default function Home() {
       </section>
 
       <div className="game-grid">
-        <section className="story-column" aria-live="polite">
+        <section className="story-column">
+          <output className="visually-hidden" aria-live="polite">
+            New scene: {node.title}. {node.objective}
+          </output>
           <div className="scene-art-wrap" ref={sceneRef}>
             <Image
               src={sceneArtwork[node.art ?? 'departure'].src}
@@ -1571,7 +1780,8 @@ export default function Home() {
               width={1536}
               height={864}
               className="scene-art"
-              priority
+              priority={game.chapter === 1 && game.nodeId === 'gate-yard'}
+              sizes="(max-width: 950px) 92vw, calc(92vw - 27rem)"
             />
             <div className="scene-vignette" />
             <div className="location-stamp">{node.location}</div>
@@ -1579,7 +1789,9 @@ export default function Home() {
 
           <article className="story-page" key={node.id} ref={storyRef}>
             <p className="eyebrow">{node.kicker}</p>
-            <h1>{node.title}</h1>
+            <h1 ref={sceneHeadingRef} tabIndex={-1}>
+              {node.title}
+            </h1>
 
             {node.lesson && (
               <aside className="lesson-card">
@@ -1634,6 +1846,7 @@ export default function Home() {
                         : 'outline'
                     }
                     size="sm"
+                    aria-pressed={game.contentPreference.intimacy === 'fade'}
                     onClick={() =>
                       setGame((current) => ({
                         ...current,
@@ -1655,6 +1868,9 @@ export default function Home() {
                     }
                     size="sm"
                     disabled={!game.contentPreference.adultConfirmed}
+                    aria-pressed={
+                      game.contentPreference.intimacy === 'detailed'
+                    }
                     onClick={() =>
                       setGame((current) => ({
                         ...current,
@@ -2018,11 +2234,12 @@ export default function Home() {
                   )
                 ) : (
                   <>
-                    <h2>Caelan’s series is complete</h2>
+                    <h2>Caelan’s complete adventure has ended</h2>
                     <p>
                       The Gate law, Caelan’s destination, relationship ending,
-                      fragment custody, and changed sunrise are recorded. No
-                      later hero’s journey begins from this screen.
+                      fragment custody, and changed sunrise are recorded. This
+                      is a terminal ending; no sequel is required to complete
+                      Caelan’s story.
                     </p>
                     <Button
                       className="begin-button"
@@ -2230,6 +2447,8 @@ export default function Home() {
         </SheetContent>
       </Sheet>
 
+      {releaseOverlays}
+
       <AlertDialog open={Boolean(game.defeat)}>
         <AlertDialogContent className="death-dialog">
           <AlertDialogHeader>
@@ -2257,17 +2476,17 @@ export default function Home() {
       >
         <AlertDialogContent className="replay-dialog">
           <AlertDialogHeader>
-            <AlertDialogTitle>Replay Chapter {pendingReplay}?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Replay Chapter{' '}
+              {pendingReplay ? chapterDefinitions[pendingReplay - 1].roman : ''}
+              ?
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {pendingReplay === 1
-                ? 'This restarts Caelan’s journey and removes all later chapter progress on this device.'
-                : pendingReplay === 2
-                  ? 'This restores the Chapter Two checkpoint and removes all Chapter Three, Chapter Four, and Chapter Five progress created by the current path.'
-                  : pendingReplay === 3
-                    ? 'This restores the Chapter Three checkpoint and removes all Chapter Four and Chapter Five progress created by the current path.'
-                    : pendingReplay === 4
-                      ? 'This restores the Chapter Four checkpoint and removes all Chapter Five progress created by the current path.'
-                      : 'This restores the Chapter Five checkpoint and replaces every choice made after it.'}
+                ? 'This restarts Caelan’s complete adventure and removes every later chapter checkpoint from the current path.'
+                : pendingReplay
+                  ? `This restores the Chapter ${chapterDefinitions[pendingReplay - 1].roman} checkpoint and removes every later chapter result and checkpoint created by the current path.`
+                  : ''}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

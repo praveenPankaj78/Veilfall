@@ -5,7 +5,13 @@ import { implementedChapterContracts } from './continuity-contract.mjs';
 
 // Execute the actual UI transitions against an isolated in-memory save store.
 // No browser save is read or changed, and no second copy of transition rules is used.
-export async function checkSeriesReview(game, memory, pageSource, failures) {
+export async function checkSeriesReview(
+  game,
+  memory,
+  pageSource,
+  failures,
+  save,
+) {
   const ast = ts.createSourceFile(
     'page.tsx',
     pageSource,
@@ -14,12 +20,9 @@ export async function checkSeriesReview(game, memory, pageSource, failures) {
     ts.ScriptKind.TSX,
   );
   const functions = new Map();
-  const variables = new Map();
   function visit(node) {
     if (ts.isFunctionDeclaration(node) && node.name)
       functions.set(node.name.text, node.getText(ast));
-    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name))
-      variables.set(node.name.text, node.getText(ast));
     ts.forEachChild(node, visit);
   }
   visit(ast);
@@ -57,37 +60,24 @@ export async function checkSeriesReview(game, memory, pageSource, failures) {
       'Registered chapter graph, continuity contracts, and UI handoffs have different coverage',
     );
   const wanted = [
-    'migrateRelationships',
-    'normaliseState',
     'defeatForChoice',
     'applyChoice',
     'activePromises',
+    'recordChapterCheckpoint',
     'chapterStart',
     'replayChapter',
     ...starts,
   ];
-  const constants = [
-    'CURRENT_SAVE_KEY',
-    'LEGACY_SAVE_KEYS',
-    'CHAPTER_START_KEYS',
-  ];
   const code = [
-    ...constants.map((name) => `const ${variables.get(name)};`),
     ...wanted.map((name) => functions.get(name)),
-    `globalThis.runtime = { applyChoice, activePromises, replayChapter, normaliseState, starts: { ${starts.join(',')} } };`,
+    `globalThis.runtime = { applyChoice, activePromises, replayChapter, normaliseState: normaliseGameState, starts: { ${starts.join(',')} } };`,
   ].join('\n');
-  const storage = new Map();
   const context = {
     ...game,
     console,
     game: game.initialState,
-    window: {
-      localStorage: {
-        getItem: (key) => storage.get(key) ?? null,
-        setItem: (key, value) => storage.set(key, value),
-        removeItem: (key) => storage.delete(key),
-      },
-    },
+    checkpointsRef: { current: {} },
+    normaliseGameState: save.normaliseGameState,
     loadChapterState: (state) => {
       context.game = state;
     },
@@ -113,7 +103,7 @@ export async function checkSeriesReview(game, memory, pageSource, failures) {
   // Independent continuous runs retain real resources across all eleven handoffs.
   // Chapter-local backtracking finds a nonlethal continuation, never adds resources.
   for (let run = 0; run < 5; run++) {
-    storage.clear();
+    context.checkpointsRef.current = {};
     context.game = structuredClone(game.initialState);
     if (run === 4)
       context.game.stats = {
@@ -244,9 +234,7 @@ export async function checkSeriesReview(game, memory, pageSource, failures) {
     )
       failures.push(`Continuous route ${run} lacks a terminal finale`);
     // Replay an earlier chapter using the actual UI implementation and snapshots.
-    const originalFourth = [...storage.entries()].find(([key]) =>
-      /chapter4|chapter-4|chapter\.4/.test(key),
-    );
+    const originalFourth = JSON.stringify(context.checkpointsRef.current[4]);
     runtime.replayChapter(4);
     if (
       context.game.chapter !== 4 ||
@@ -254,9 +242,16 @@ export async function checkSeriesReview(game, memory, pageSource, failures) {
       context.game.flags.some((f) => /^c(?:[4-9]|1[012])-/.test(f))
     )
       failures.push(`Replay in route ${run} retained later story state`);
-    if ([...storage.values()].some((value) => JSON.parse(value).chapter > 4))
+    if (
+      Object.keys(context.checkpointsRef.current).some(
+        (chapter) => Number(chapter) > 4,
+      )
+    )
       failures.push(`Replay in route ${run} retained a later checkpoint`);
-    if (originalFourth && storage.get(originalFourth[0]) !== originalFourth[1])
+    if (
+      originalFourth &&
+      JSON.stringify(context.checkpointsRef.current[4]) !== originalFourth
+    )
       failures.push(`Replay in route ${run} modified its starting checkpoint`);
     records.push(record);
   }
