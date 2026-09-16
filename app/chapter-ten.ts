@@ -63,7 +63,7 @@ function fragmentCustody(state: GameState) {
   }
   if (has(state, 'c9-route-theft'))
     return 'The admitted stolen fragment stays visible at your belt. Black cloth makes it burn, so concealment is not a safe option.';
-  return 'The surrendered fragment travels inside the public evidence frame. Sableglass witness law protects its visible chain of custody.';
+  return 'The surrendered fragment travels inside the public evidence frame. The house’s own attack-material rule keeps that chain visible.';
 }
 
 function warningPreparation(state: GameState) {
@@ -671,7 +671,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c10-use-public-exposure-custody',
-        label: 'Pass the evidence frame through under Sableglass witness law.',
+        label: 'Send the evidence frame through under the house’s own attack-material rule.',
         detail:
           'Use the public surrender record without granting the toll a new ownership claim.',
         advantage:

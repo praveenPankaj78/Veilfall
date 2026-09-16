@@ -27,7 +27,7 @@ function routeSupport(state: GameState) {
   if (has(state, 'c11-route-revolt'))
     return 'Named Free Ledger refusers spread their own witness cords across the inner arch. They protect speakers, but they do not claim authority over anyone else.';
   if (has(state, 'c11-route-auction'))
-    return 'Price Court dissenters raise the invasion paper. It delays every force not named at auction. It admits only the named force. It owns no person, fragment, voice, or part of Edrath.';
+    return 'Price Court dissenters raise the invasion right, a one-opening paper that still allows one Gate opening, one named force, and one bell. It delays every force not named at auction. It admits only the named force. It owns no person, fragment, voice, or part of Edrath.';
   return 'Ash Compact witnesses hold the damaged engine corridor beside this company. Their help still costs one witnessed crossing after this opening stops.';
 }
 
@@ -198,7 +198,7 @@ function vexaAtBoundary(state: GameState) {
   if (has(state, 'c9-shared-private-night'))
     return 'Vexa meets your eyes, then addresses the witness line. Your private history changes her care, not the fragment price or consent.';
   if (has(state, 'c9-vexa-attraction-acknowledged'))
-    return 'Vexa’s attraction remains acknowledged and irrelevant to custody. She asks the public witnesses to check every term.';
+    return 'Vexa’s attraction remains acknowledged and does not decide who holds the fragment. She asks the public witnesses to check every term.';
   if (has(state, 'c9-vexa-guarded-trust'))
     return 'Vexa uses her guarded trust to hold the neutral case steady without claiming it.';
   if (has(state, 'c9-vexa-adversarial-respect'))
@@ -244,7 +244,7 @@ function custodyResult(state: GameState) {
   if (has(state, 'c12-fragment-return-fulfilled'))
     return 'The neutral keepers receive the fragment. The owned return promise completes and releases its claim.';
   if (has(state, 'c12-fragment-custody-amended'))
-    return 'Every required living keeper records a free yes. Custody changes to the new Gate body and no wider ownership appears.';
+    return 'Every required living keeper records a free yes. Who holds the fragment changes with the new Gate body, and nobody else gains a claim.';
   if (has(state, 'c12-fragment-return-breached'))
     return 'You keep the fragment against the owned return promise. A bright Oathscar crosses your palm, and Vexa records the breach.';
   if (has(state, 'c12-theft-restitution-submitted'))
@@ -337,12 +337,12 @@ function lawSupport(state: GameState) {
   if (has(state, 'c12-law-support-no-one-falls'))
     return 'The bridge rescue taught you how to shield a vulnerable withdrawal. Its completed Oath supplies no new power.';
   if (has(state, 'c12-law-support-living-command'))
-    return 'The living command Oath carries one defensive request to units that still freely answer it.';
+    return 'Living command, the Oath that lets a request reach only units who still freely answer, carries one defensive request.';
   if (has(state, 'c12-law-support-shared-oath'))
     return 'The exact person marked by the shared Oath accepts one survival load without becoming a source of general power.';
   if (has(state, 'c12-law-support-present-consent'))
     return 'Living speakers built the hearing without magical authority, so the final wording takes longer and belongs to no old Oath.';
-  return 'An older record names no supporting Oath, so living speakers rebuild consent before the law can begin.';
+    return 'An older record names no supporting Oath, so living speakers rebuild a free yes from the people standing here before the law can begin.';
 }
 
 const allRouteFlags = [
@@ -651,7 +651,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-seat-admitted-stolen-fragment',
         label: 'Seat the admitted stolen fragment in public view.',
         detail: 'Stop this opening without pretending the Compact claim ended.',
-        advantage: 'Keep Sableglass from turning concealment into ownership.',
+        advantage: 'Keep the stolen fragment in sight so Sableglass cannot hide it and call it theirs.',
         showIfAllFlags: ['c9-route-theft'],
         addFlags: ['c12-opening-stopped'],
         result:
@@ -663,7 +663,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         label: 'Seat the fragment inside its public evidence frame.',
         detail:
           'Stop this opening while every witness retains access to the proof.',
-        advantage: 'Prevent private holding during the final hearing.',
+        advantage: 'Prevent any hero, court, or house from taking the fragment privately.',
         showIfAllFlags: ['c9-route-exposure'],
         addFlags: ['c12-opening-stopped'],
         result:
@@ -675,7 +675,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         label: 'Record the fragment publicly before seating it.',
         detail:
           'Let both sides witness holding when no earlier recovery record can be verified.',
-        advantage: 'Stop the opening without inventing private ownership.',
+        advantage: 'Stop the engine’s pull without pretending one person already owns the fragment.',
         hideIfAnyFlags: [
           'c9-route-bargain',
           'c9-route-theft',
@@ -849,7 +849,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     body: (state) => [
       has(state, 'c11-price-court-review-owed')
         ? 'The Price Court marker blocks the hearing path. Your auction bid promised one public review. The paper delays every force the sale did not name. It owns no realm, fragment, voice, or person.'
-        : 'No Price Court review is owed. The invasion paper, if present, admits only its named force.',
+        : 'No Price Court review is owed. If the one-opening paper, the invasion right, is present, it admits only its named force.',
       'A completed review returns the freedom named by the auction promise. Breach opens the path faster but marks every later claim. How do you pass the marker?',
     ],
     choices: [
@@ -1127,7 +1127,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-support-law-with-command-limit',
         label: 'Use the surviving command limit to restrain every army.',
         detail: 'Available only while the honest command limit survives.',
-        advantage: 'Prevent military control from becoming political consent.',
+        advantage: 'Stop an army’s orders from counting as a civilian yes.',
         showIfAllFlags: ['c6-oath-honest-limit'],
         hideIfAnyFlags: ['c9-destroyed-honest-command-limit-oath'],
         addFlags: ['c12-law-support-command-limit'],
@@ -1174,8 +1174,9 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-support-law-with-living-command',
-        label: 'Send one defensive request through living command.',
-        detail: 'Only present units that still accept the Oath may answer.',
+        label: 'Send one defensive request through living command, the Oath that reaches only units who still freely answer.',
+        detail:
+          'Living command lets a request reach only present units who still freely answer. Anyone may refuse.',
         advantage:
           'Coordinate one shield movement without summoning absent troops.',
         showIfAllFlags: ['c7-oath-living-command'],
@@ -1208,7 +1209,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         advantage: 'Complete the law even when every earlier Oath is gone.',
         addFlags: ['c12-law-support-present-consent'],
         result:
-          'The circle takes longer. Each person names what they may decide, and every silence remains unowned.',
+          'The circle takes longer. Each person names what they may decide. A person who stays silent is not counted as having said yes.',
         next: 'c12-four-laws',
       },
     ],
@@ -1257,7 +1258,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-sealed-gate',
         label: 'Seal the Cinder Deep.',
         detail:
-          'After a last free choice of side, no person, army, promise, offer, or message may cross. Nobody can force another person to leave. No ruler may reopen it. It lasts until separately chosen delegates of both realms freely replace it. Stored promises stay locked in the stone and cannot be spent. Allies who stay behind become stranded. Caelan loses the right to cross after choosing a side. At sunrise, one road of light will stay barred.',
+          'After a last free choice of side, no person, army, promise, offer, or message may cross, and nobody can force another person to leave. Stored promises stay locked in the stone and cannot be spent. Allies who stay behind become stranded. Caelan loses the right to cross after choosing a side. No ruler may reopen it until separately chosen delegates of both realms freely replace it. At sunrise, one road of light will stay barred.',
         advantage:
           'Stop all large and small crossings after the final closing.',
         addFlags: [
@@ -1274,11 +1275,11 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-choose-consent-passage',
-        label: 'Create controlled passage by mutual consent.',
+        label: 'Open a crossing only when both sides and the traveller say yes.',
         detail:
-          'A named traveller and chosen keepers on both sides must record yes. Any signer may withdraw before crossing. A public joint bench reviews disputes. Either realm may close passage, and both renew yearly. Stored promises remain locked until public review returns them to their original living owners. Allies must wait for permission too. Caelan owes one year of public service. He may not cross unwitnessed during that year. At sunrise, a narrow road of light will open only when witnesses on both sides name it.',
+          'A named traveller and chosen keepers on both sides must record yes, and any signer may withdraw before crossing. Stored promises remain locked until public review returns them to their original living owners. Allies must wait for permission too. Caelan owes one year of public service and may not cross unwitnessed during that year. Either realm may close passage, both renew yearly, and a public joint bench reviews disputes. At sunrise, a narrow road of light will open only when witnesses on both sides name it.',
         advantage:
-          'Create named crossings that either side and the traveller may refuse.',
+          'Let the traveller and both sides refuse a crossing before it happens.',
         addFlags: [
           'c12-gate-consent-passage',
           'c12-devils-recognised-neighbours',
@@ -1295,8 +1296,8 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-broken-gate',
         label: 'Break the Gate.',
         detail:
-          'No Gate or keeper owns crossing. The stone breaks now. No central authority may close it. People may refuse bargains, but cannot close the shared road alone. Stored promises return to living makers or enter Worldroot without a new owner. Their release strikes both shield lines. Weaker defences suffer more. Allies and invading armies can cross freely in both directions. The opening remains until people build another law. Caelan keeps movement but loses central power to stop invasion. At sunrise, an unstable road of light will open.',
-        advantage: 'End the old Gate’s ownership and central control.',
+          'The stone breaks now, no Gate or keeper owns crossing, and people may refuse bargains while no central authority may close the road alone. Stored promises return to living makers or enter Worldroot without a new owner, striking both shield lines so weaker defences suffer more. Allies and invading armies can cross freely in both directions. Caelan keeps movement but loses central power to stop invasion. The opening remains until people build another law. At sunrise, an unstable road of light will open.',
+        advantage: 'End the Gate’s power to own crossing or stop armies.',
         addFlags: [
           'c12-gate-broken',
           'c12-devils-invading-powers',
@@ -1313,9 +1314,9 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-mortal-gatekeeper',
         label: 'Take the Gate into Caelan.',
         detail:
-          'The Gate and stored promises enter Caelan as separate voices. He cannot spend or erase them. He must hear individual requests. He may open a crossing for one named willing person or refuse armies. Every traveller may refuse. Allies must ask too. This uses public witnessed identity, not true-name access. He cannot silence the voices. He cannot give the Gate away, abandon the boundary, or live wholly in either realm. This lasts until death or a freely accepted new Gate law releases every voice. At sunrise, light will bend around him and answer witnessed identity.',
+          'He may open a crossing for one named willing person or refuse armies, using public witnessed identity, not true-name access. The Gate and stored promises enter Caelan as separate voices he cannot spend or erase. Allies must ask too, and every traveller may refuse. He must hear individual requests, cannot silence the voices, and cannot give the Gate away, abandon the boundary, or live wholly in either realm. This lasts until death or a freely accepted new Gate law releases every voice. At sunrise, light will bend around him and answer witnessed identity.',
         advantage:
-          'Give a mortal keeper precise passage control without power to compel crossing.',
+          'Let Caelan open for one willing person and refuse armies.',
         addFlags: [
           'c12-gatekeeper',
           'c12-devils-carried-voices',
@@ -1417,15 +1418,14 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     art: 'blackgatepassage',
     body: (state) => [
       fragmentPosition(state),
-      'Malrec’s inside opening has stopped, so any neutral return promise is due now.',
-      'A bargain may be kept, freely changed by every required living keeper, or knowingly broken. Theft and exposure keep their own holding rules. The new Gate law owns none of these decisions. What do you do?',
+      'Malrec’s inside opening has stopped, so any return promise is due now. What do you do with the fragment in your hand?',
     ],
     choices: [
       {
         id: 'c12-fulfil-neutral-fragment-return',
         label: 'Return the fragment to the neutral keepers.',
         detail: 'Complete the paid-for return exactly and release its claim.',
-        advantage: 'End the name-pointing magic and the holding debt cleanly.',
+        advantage: 'End the name-pointing magic when the keepers take the fragment.',
         showIfAllFlags: ['c9-route-bargain', 'c9-return-promise-owned'],
         addFlags: ['c12-fragment-return-fulfilled'],
         result:
@@ -1438,7 +1438,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         detail:
           'Each required keeper may refuse. If all agree, joint holding follows the chosen Gate body. Surviving name-pointing for return ends.',
         advantage:
-          'Keep the fragment available for maintenance under witnessed joint holding.',
+          'Keep the fragment ready for repairs while every keeper can still say no.',
         showIfAllFlags: ['c9-route-bargain', 'c9-return-promise-owned'],
         showIfAnyFlags: [
           'c11-alliance-free-ledger-refusers',
@@ -1483,7 +1483,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         label: 'Hand the stolen fragment to witnesses and end the theft claim.',
         detail:
           'End the admitted theft claim without inventing a neutral return promise.',
-        advantage: 'Restore public holding without granting House ownership.',
+        advantage: 'Let Compact and mortal witnesses hold the fragment together, not House Sableglass.',
         showIfAllFlags: ['c9-route-theft'],
         addFlags: ['c12-theft-restitution-submitted'],
         result:
@@ -1507,7 +1507,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         label: 'Place the exposed fragment with the public witness circle.',
         detail: 'Workers and witnesses keep access to the evidence.',
         advantage:
-          'Prevent any hero, court, or house from taking private holding.',
+          'Prevent any hero, court, or house from taking the fragment privately.',
         showIfAllFlags: ['c9-route-exposure'],
         addFlags: ['c12-exposure-public-custody'],
         result:

@@ -1947,7 +1947,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         detail:
           'Use the trust established when Ansel chose your safe entrance. One hidden furnace may still fail.',
         advantage:
-          'Preserve every magical resource and restore the wardens’ ownership of their fort.',
+          'Give the wardens their fort back without spending another magical resource.',
         showIfAllFlags: ['c8-ansel-chose-entry'],
         addFlags: ['c8-ansel-restored-chain', 'c8-lost-furnace-reserve'],
         result:
@@ -2642,7 +2642,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       oathPriceAtEmbassy(state),
       ...firstFortStatusAtEmbassy(state),
       ...outerFlameStatus(state),
-      '“Someone in my world prepared a claim on Caelan Vey before his first Oath. Its price and his agreement are blank. It owns nothing yet.”',
+      '“Someone in my world prepared a claim on this blank paper. It already bears the ordinary name Caelan Vey. The price and yes-or-no lines are still empty. It owns nothing yet.”',
     ],
     choices: [
       {
@@ -2720,7 +2720,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     title: 'The Door Kept Open',
     location: 'Fourth Fort Embassy Hall',
     objective:
-      'The Crown abandonment is exposed; identify who prepared Caelan’s unfinished claim.',
+      'The Crown abandonment is exposed; identify who wrote the blank paper that bears Caelan’s ordinary name.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
@@ -2730,7 +2730,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       routeOutcome(state),
       survivingCrownEvidence(state),
       'Vexa keeps her seventeen devil contracts apart from the mortal evidence. Their seals belong to different rulers and houses, but one hand appears on both sides of the Gate.',
-      'The final page carries your full name and predates your first command. Its price and your agreement are blank, so it owns nothing. The forts’ abandonment is answered. The author of this unfinished claim is the next mystery.',
+      'The blank paper bears your ordinary name and predates your first command. The price and yes-or-no lines are still empty, so nobody owns you yet. The forts’ abandonment is answered. The next mystery is who wrote this unfinished page.',
     ],
     choices: [],
   },
@@ -2741,7 +2741,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     title: 'The Boundary You Chose',
     location: 'The Black Gate Fortress Ring',
     objective:
-      'The Crown abandonment is exposed; identify who prepared Caelan’s unfinished claim.',
+      'The Crown abandonment is exposed; identify who wrote the blank paper that bears Caelan’s ordinary name.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
@@ -2753,7 +2753,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       has(state, 'c8-vexa-received-outer-fort')
         ? 'Inside Second Fort, Vexa opens one brass case. Her copies record bargains from the hidden openings and remain separate from the surviving Crown evidence.'
         : 'Without crossing, Vexa opens one brass case. Her copies record bargains from the hidden openings and remain separate from the surviving Crown evidence.',
-      'One unfinished page bears your name, but no price or agreement. It owns nothing. The forts’ abandonment is answered; who prepared this claim, and what price they learned to offer, becomes the next mystery.',
+      'One unfinished page bears your ordinary name. The price and yes-or-no lines are still empty, so nobody owns you yet. The forts’ abandonment is answered. The next mystery is who wrote this page, and what price they learned to offer.',
     ],
     choices: [],
   },
@@ -2764,7 +2764,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     title: 'The Promise Not Yet Sold',
     location: 'The Black Gate Fortress Ring',
     objective:
-      'The Crown abandonment is exposed; identify who prepared Caelan’s unfinished claim.',
+      'The Crown abandonment is exposed; identify who wrote the blank paper that bears Caelan’s ordinary name.',
     threat: 'Immediate',
     art: 'embassy',
     final: true,
@@ -2774,8 +2774,8 @@ export const chapterEightNodes: Record<string, StoryNode> = {
       'Ansel stands between two worlds and asks the question rulers avoided for seventeen years. Vexa answers him before she answers you. The house that bought the wardens’ future promises also paid mortal officials to hide every opening.',
       routeOutcome(state),
       survivingCrownEvidence(state),
-      'Only after the Futureless hear the truth does Vexa present a separate draft bearing your name. Its price and your agreement remain blank, so it owns nothing.',
-      'The Crown’s reason for abandoning the forts is answered. The next question is who prepared your unfinished claim and which future that author learned to threaten.',
+      'Only after the Futureless hear the truth does Vexa present a separate blank paper bearing your ordinary name. The price and yes-or-no lines remain empty, so nobody owns you yet.',
+      'The Crown’s reason for abandoning the forts is answered. The next question is who wrote this unfinished page and which future that author learned to threaten.',
     ],
     choices: [],
   },

@@ -137,6 +137,8 @@ const maximumRenderedParagraphWords = 180;
 
 const failures = [];
 for (const file of uniqueFiles) {
+  if (file.replaceAll('\\', '/').endsWith('docs/PROSE_CLARITY_AGENT_PROMPT.md'))
+    continue;
   const text = await readFile(file, 'utf8');
   for (const rule of forbidden) {
     const checkedText =

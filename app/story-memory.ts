@@ -740,7 +740,7 @@ export function knownTruths(game: GameState) {
       game.nodeId.startsWith('c8-ending-')
     ) {
       truths.push(
-        'Vexa Ash leads the first open devil embassy and carries an unfinished claim prepared against my future before my first Oath. It has no price or agreement and owns nothing yet.',
+        'Vexa Ash leads the first open devil embassy and carries a blank paper bearing my ordinary name. The price and yes-or-no lines are still empty, so nobody owns me yet.',
       );
     }
     return truths;
@@ -783,7 +783,7 @@ export function knownTruths(game: GameState) {
     if (game.flags.includes('c11-engine-control-proved'))
       truths.push(
         'The Price Court is the city court that sells rights out loud. House Sableglass holds the paper that opens Malrec’s engine.',
-        'The invasion right permits one Gate opening, one registered force, and one Vathis bell inside Edrath. It owns no names, bodies, affection, or unlisted land.',
+        'The invasion right is a one-opening paper. It permits one Gate opening, one named force, and one bell inside Edrath. It owns no names, bodies, affection, or unlisted land.',
       );
     if (
       game.flags.includes('c11-shelter-all-crossed-dry') ||
@@ -864,10 +864,10 @@ export function knownTruths(game: GameState) {
       );
     else
       truths.push(
-        'Vexa begins inside Fourth Fort under public guard. Her witnessed Chapter Eight crossing remains valid while Second Fort is prepared as neutral ground.',
+        'Vexa begins inside Fourth Fort under public guard. Her witnessed Gate crossing remains valid while Second Fort is prepared as neutral ground.',
       );
     truths.push(
-      'The unfinished claim bears the ordinary name Caelan Vey. Its price and consent are blank, so it owns nothing.',
+      'The blank paper under glass bears the ordinary name Caelan Vey. The price and yes-or-no lines are still empty, so nobody owns him yet.',
     );
     if (
       game.flags.includes('c9-true-name-limit-tested') ||
@@ -1687,7 +1687,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c9-fragment-recovered-exposure'))
     consequences.push(
-      'Because you exposed House Sableglass under its own witness law, the rival house surrendered the fragment as attack material.',
+      'Because you exposed House Sableglass under its own attack-material rule, the rival house surrendered the fragment as attack material.',
     );
   if (game.flags.includes('c9-destroyed-red-moot-authority-oath'))
     consequences.push(
@@ -1791,8 +1791,8 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c11-route-auction'))
     consequences.push(
       game.flags.includes('c11-price-court-review-owed')
-        ? 'Because you won the invasion auction with the lawful things you wrote down, the narrow paper blocks every force the sale did not name. One public review remains owed.'
-        : 'Because you won the invasion auction with the lawful things you wrote down, the narrow paper blocks every force the sale did not name. It creates no extra review duty.',
+        ? 'Because you won the one-opening paper with the things you wrote down, that paper blocks every force the sale did not name. One public review remains owed.'
+        : 'Because you won the one-opening paper with the things you wrote down, that paper blocks every force the sale did not name. No extra hearing is owed.',
     );
   if (game.flags.includes('c11-route-force'))
     consequences.push(

@@ -389,7 +389,7 @@ function recoveredFragmentResult(state: GameState) {
   if (has(state, 'c9-fragment-recovered-theft'))
     return 'The fragment is stolen, publicly named, and free of any accepted bargain.';
   if (has(state, 'c9-fragment-recovered-exposure'))
-    return 'The exposed Sableglass chain surrendered the fragment under public witness law.';
+    return 'The exposed Sableglass chain surrendered the fragment under the house’s own attack-material rule.';
   return 'The chosen recovery route has not yet placed the fragment in your hand.';
 }
 
@@ -588,9 +588,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     body: (state) => [
       'Your training looks for the point where a test becomes a weapon. Vexa keeps both hands open and the exits clear.',
       recordControl(state),
-      'Vexa places two plain brass beads on the table. Ansel writes Caelan Vey on paper and moves it between them. Neither bead reacts. An ordinary name can label a claim, but it cannot make the claim true.',
+      'Vexa places two plain brass beads on the table. Ansel writes Caelan Vey on paper and moves it between them. Neither bead reacts. An ordinary name on paper cannot own anyone while the yes-or-no lines stay empty.',
       'Vexa touches one bead and freely speaks a private sentence she chose for herself. The bead turns toward her for three breaths, then stops when the stated test ends. She remains free to move, refuse, and leave.',
-      'The bead can point. It cannot own her. A paper that names someone still owns nothing until that person says yes and the price is paid.',
+      'The bead can point. It cannot own her. The blank paper under glass still has empty yes-or-no lines, so nobody owns you yet.',
       'How do you verify the limit?',
     ],
     choices: [
@@ -801,7 +801,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Recover the fragment through public proof instead of consent or theft.',
         advantage:
-          'A complete case can force the rival house to surrender the piece under its own witness law.',
+          'A complete case can force the rival house to give up the piece under its own attack-material rule.',
         addFlags: ['c9-route-exposure'],
         result:
           'You say no to the offer and open the evidence rail. Vexa allows it because Sableglass threatens her Compact as well as Edrath.',
@@ -1706,7 +1706,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         ? 'At the neutral table, Vexa puts the fragment into your open hand before payment. You may now say yes, speak the self-name, and make the exact return promise.'
         : has(state, 'c9-route-theft')
           ? 'The attack left the case hinge cracked and the fragment under mortal guard. Taking it will save the Gate plan while creating a lasting debt between governments.'
-          : 'The joined record reaches Sableglass through its surviving chain. Its own witness law requires surrender of property used in an undeclared attack.',
+          : 'The joined record reaches Sableglass through its surviving chain. Its own attack-material rule requires it to give up property used in a hidden attack.',
       'How do you finish the route?',
     ],
     choices: [
@@ -1715,7 +1715,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         label:
           'Freely disclose the self-name and make the exact return promise.',
         detail:
-          'Bind only alignment and return. The prepared claim still owns nothing else.',
+          'Bind only alignment and return. The blank paper’s yes-or-no lines stay empty, so nobody owns you yet.',
         advantage:
           'Recover the fragment with Compact cooperation and a witnessed end condition.',
         showIfAllFlags: ['c9-route-bargain'],
@@ -1745,11 +1745,11 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       {
         id: 'c9-compel-sableglass-surrender',
         label:
-          'Invoke Sableglass witness law and compel surrender of the fragment.',
+          'Use Sableglass’s own rule: if they used the fragment in a hidden attack, they must give it up.',
         detail:
           'Use the complete mortal and devil proof gathered through the public hearing.',
         advantage:
-          'Recover the fragment as seized attack material under law both houses recognise.',
+          'Force Sableglass to give up the fragment under its own attack-material rule.',
         showIfAllFlags: [
           'c9-route-exposure',
           'c9-malrec-cinder-alliance-proved',
