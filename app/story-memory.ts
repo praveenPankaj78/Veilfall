@@ -782,7 +782,7 @@ export function knownTruths(game: GameState) {
     );
     if (game.flags.includes('c11-engine-control-proved'))
       truths.push(
-        'The Price Court is the city court that sells rights out loud. House Sableglass holds the paper that opens Malrec’s engine.',
+        'The Price Court is the city court that sells rights out loud. House Sableglass holds the engine key that opens Malrec’s engine.',
         'The invasion right is a one-opening paper. It permits one Gate opening, one named force, and one bell inside Edrath. It owns no names, bodies, affection, or unlisted land.',
       );
     if (
@@ -1679,7 +1679,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c9-fragment-recovered-bargain'))
     consequences.push(
-      'Because you accepted the bounded bargain, the fragment aligned through a freely disclosed true name and one exact return promise.',
+      'Because you accepted the bargain as spoken and wrote the ending into it, the fragment pointed through a freely disclosed true name and one exact return promise.',
     );
   if (game.flags.includes('c9-fragment-recovered-theft'))
     consequences.push(
@@ -1691,23 +1691,23 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c9-destroyed-red-moot-authority-oath'))
     consequences.push(
-      'Because you destroyed the exact Red Moot authority Oath, true-name access ended after alignment and Korran’s community lost that magical protection.',
+      'Because you destroyed the exact Red Moot authority Oath, true-name access ended after that pointing and Korran’s community lost that magical protection.',
     );
   if (game.flags.includes('c9-destroyed-crown-restitution-oath'))
     consequences.push(
-      'Because you destroyed the Oath that promised the Concord’s hidden victims a hearing before the Queen, true-name access ended after alignment. Those victims lost that magical promise of judgment.',
+      'Because you destroyed the Oath that promised the Concord’s hidden victims a hearing before the Queen, true-name access ended after that pointing. Those victims lost that magical promise of judgment.',
     );
   if (game.flags.includes('c9-destroyed-clan-refusal-oath'))
     consequences.push(
-      'Because you destroyed the clan refusal Oath, true-name access ended after alignment and the clans lost your magical defence of their right to leave.',
+      'Because you destroyed the clan refusal Oath, true-name access ended after that pointing and the clans lost your magical defence of their right to leave.',
     );
   if (game.flags.includes('c9-destroyed-honest-command-limit-oath'))
     consequences.push(
-      'Because you destroyed the honest command limit, true-name access ended after alignment and neither Moot fighters nor the full army accepted your command across the Gate.',
+      'Because you destroyed the honest command limit, true-name access ended after that pointing and neither Moot fighters nor the full army accepted your command across the Gate.',
     );
   if (game.flags.includes('c9-destroyed-unsea-investigation-oath'))
     consequences.push(
-      'Because you destroyed the Unsea investigation Oath, true-name access ended after alignment and Korran carried the abandoned duty back to the preserved voices.',
+      'Because you destroyed the Unsea investigation Oath, true-name access ended after that pointing and Korran carried the abandoned duty back to the preserved voices.',
     );
   if (game.flags.includes('c9-vexa-guarded-trust'))
     consequences.push(
@@ -1778,11 +1778,11 @@ export function majorConsequences(game: GameState) {
     !game.flags.includes('c11-petition-hearing-held')
   )
     consequences.push(
-      'Because you accepted the Free Ledger’s bounded price, its sealed petition must receive a public hearing before any ruling faction receives it.',
+      'Because you accepted the Free Ledger’s complete guide bargain, its sealed petition must receive a public hearing before any ruling faction receives it.',
     );
   if (game.flags.includes('c11-petition-hearing-held'))
     consequences.push(
-      'Because you held the promised Free Ledger hearing before delivery, Sira, Oren, and Pellan gained a recorded right to be heard first in court. Fresh marks let them hand that right to the next hearing without changing who it protects.',
+      'Because you held the promised Free Ledger hearing before delivery, Sira, Oren, and Pellan gained a first-speak mark. Fresh marks let them hand that mark to the next hearing without changing who it protects.',
     );
   if (game.flags.includes('c11-route-revolt'))
     consequences.push(
@@ -1862,7 +1862,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c12-fragment-return-fulfilled'))
     consequences.push(
-      'Because you fulfilled neutral custody, the fragment return promise ended cleanly and all limited true-name precision ended with it.',
+      'Because you returned the fragment to the keepers, the return promise ended cleanly and all limited true-name precision ended with it.',
     );
   if (game.flags.includes('c12-fragment-return-breached'))
     consequences.push(
@@ -1900,7 +1900,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c12-relationship-political-truce'))
     consequences.push(
-      'Because you chose a bounded political truce with Vexa, hostility creates no private access, trust, or passage right.',
+      'Because you chose a public ceasefire with Vexa, with named limits. Hostility creates no private access, trust, or passage right.',
     );
   if (game.flags.includes('c12-relationship-single'))
     consequences.push(

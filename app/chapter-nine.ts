@@ -272,7 +272,12 @@ function preparedDefence(state: GameState) {
     lines.push('the chosen company surrounds the case');
   if (has(state, 'c9-voluntary-witness-guard'))
     lines.push('volunteers guard the witness rail');
-  return `Your prepared defence is visible: ${lines.join(', ')}.`;
+  if (!lines.length) return 'Your prepared defence is visible.';
+  const sentences = lines.map((item) => {
+    const text = item.endsWith('.') ? item : `${item}.`;
+    return `${text[0].toUpperCase()}${text.slice(1)}`;
+  });
+  return `Your prepared defence is visible. ${sentences.join(' ')}`;
 }
 
 function mortalAttackResult(state: GameState) {
@@ -353,7 +358,7 @@ function securedRevelation(state: GameState) {
 
 function clauseResult(state: GameState) {
   if (has(state, 'c9-cut-true-name-clause'))
-    return 'The access clause is cut after alignment, and the named destroyed Oath stays gone.';
+    return 'The access clause is cut after that pointing, and the named destroyed Oath stays gone.';
   if (has(state, 'c9-kept-true-name-clause'))
     return 'The narrow access clause remains tied to the fragment’s return and nothing else.';
   if (has(state, 'c9-no-clause-to-cut'))
@@ -402,7 +407,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     title: 'The Price of a Name',
     location: 'The Black Gate Fortress Ring',
     objective:
-      'Place the embassy under clear neutral rules without changing Vexa’s recorded position.',
+      'Set one clear meeting place for the embassy. Do not move Vexa unless you choose to.',
     threat: 'Uneasy',
     art: 'cinderembassy',
     introducesStoryTerms: ['Cinder Deep'],
@@ -649,12 +654,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       ],
     },
     body: (state) => [
-      defencePosition(state),
-      forcePosition(state),
-      injuryPressure(state),
       'Your attention moves between the people, the fragment case, and the doors that can turn into traps.',
-      nameTestResult(state),
-      'The public door, the Gate wall, and the lower service passage cannot all receive your strongest guard. Which lane gets it?',
+      `${defencePosition(state)} ${forcePosition(state)} ${injuryPressure(state)}`,
+      `${nameTestResult(state)} The public door, the Gate wall, and the lower service passage cannot all receive your strongest guard. Which lane gets it?`,
     ],
     choices: [
       {
@@ -757,7 +759,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     },
     body: (state) => [
       'Vexa opens a black case. Half of the Black Gate Nail rests inside, short as a finger and bright along one broken edge. The piece can close or release promises made through this Gate.',
-      'Her offer has two prices. First, you freely disclose a true name so the fragment can align only to you. That access lasts until the fragment returns as promised after Malrec’s inside opening is stopped.',
+      'Her offer has two prices. First, you freely disclose a true name so the fragment can point only to you. That access lasts until the fragment returns as promised after Malrec’s inside opening is stopped.',
       'Second, you promise: “I will return the Black Gate fragment to neutral custody after Malrec’s inside opening is stopped, unless every living Gate keeper freely agrees to different custody.” No intimacy, service, obedience, or hidden payment belongs to the offer.',
       oathPrice(state),
       'Your hand stays off the fragment while the offer still waits for a yes.',
@@ -767,7 +769,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c9-choose-bargain-route',
-        label: 'Accept the offer as spoken and prepare the bounded bargain.',
+        label: 'Accept the offer as spoken and write the ending into the bargain.',
         detail:
           'Give one true name for one use and make the exact return promise.',
         advantage:
@@ -1406,9 +1408,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         id: 'c9-cut-clause-destroy-red-moot-authority',
         label: 'Destroy the Oath recognising the Red Moot’s living authority.',
         detail:
-          'Spend 1 Oathfire and cut true-name access after alignment. Korran’s clans lose your magical guarantee of Red Moot command.',
+          'Spend 1 Oathfire and cut true-name access after that pointing. Korran’s clans lose your magical guarantee of Red Moot command.',
         advantage:
-          'Vexa can align the fragment once, then all name-pointing magic ends.',
+          'Vexa can point the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-recognised-red-moot'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1425,9 +1427,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         label:
           'Destroy the Oath to bring the Concord’s hidden victims before the Queen.',
         detail:
-          'Spend 1 Oathfire and cut true-name access after alignment. Hidden victims lose your magical promise of judgment or opposition.',
+          'Spend 1 Oathfire and cut true-name access after that pointing. Hidden victims lose your magical promise of judgment or opposition.',
         advantage:
-          'Vexa can align the fragment once, then all name-pointing magic ends.',
+          'Vexa can point the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-crown-restitution'],
         hideIfAnyFlags: ['c8-released-crown-oath'],
         changes: { oathfire: -1 },
@@ -1445,9 +1447,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         label:
           'Destroy the Oath defending each clan’s right to refuse Crown control.',
         detail:
-          'Spend 1 Oathfire and cut true-name access after alignment. The clans lose your magical defence of their freedom to leave.',
+          'Spend 1 Oathfire and cut true-name access after that pointing. The clans lose your magical defence of their freedom to leave.',
         advantage:
-          'Vexa can align the fragment once, then all name-pointing magic ends.',
+          'Vexa can point the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-defends-refusal'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1460,9 +1462,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         id: 'c9-cut-clause-destroy-honest-limit',
         label: 'Destroy the Oath limiting you to the command the Moot granted.',
         detail:
-          'Spend 1 Oathfire and cut true-name access after alignment. Korran and the full army lose your magical promise to state and limit every order.',
+          'Spend 1 Oathfire and cut true-name access after that pointing. Korran and the full army lose your magical promise to state and limit every order.',
         advantage:
-          'Vexa can align the fragment once, then all name-pointing magic ends.',
+          'Vexa can point the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-honest-limit'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1478,9 +1480,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         id: 'c9-cut-clause-destroy-unsea-investigation',
         label: 'Destroy the Oath to test which ancestor voices are conscious.',
         detail:
-          'Spend 1 Oathfire and cut true-name access after alignment. The preserved voices lose you as their sworn investigator, and Korran must carry the duty home.',
+          'Spend 1 Oathfire and cut true-name access after that pointing. The preserved voices lose you as their sworn investigator, and Korran must carry the duty home.',
         advantage:
-          'Vexa can align the fragment once, then all name-pointing magic ends.',
+          'Vexa can point the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-investigate-unsea'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1715,7 +1717,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         label:
           'Freely disclose the self-name and make the exact return promise.',
         detail:
-          'Bind only alignment and return. The blank paper’s yes-or-no lines stay empty, so nobody owns you yet.',
+          'Bind only pointing and return. The blank paper’s yes-or-no lines stay empty, so nobody owns you yet.',
         advantage:
           'Recover the fragment with Compact cooperation and a witnessed end condition.',
         showIfAllFlags: ['c9-route-bargain'],
@@ -1725,7 +1727,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
           'c9-fragment-recovered-bargain',
         ],
         result:
-          'You say yes, speak the private answer, and make the return promise. One white seam aligns the fragment to your hand.',
+          'You say yes, speak the private answer, and make the return promise. One white seam points the fragment to your hand.',
         next: 'c9-crossing-roster',
       },
       {
@@ -1974,7 +1976,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       'Your fingers feel the white seam answer one exact identity and no wider command.',
       'The Black Gate closes to a narrow white seam behind you. The fragment answers your freely given self-name and nothing beyond its witnessed purpose.',
       has(state, 'c9-cut-true-name-clause')
-        ? 'True-name access ended after alignment. The Oath you destroyed does not return, and the people who depended on it enter the next struggle without that protection.'
+        ? 'True-name access ended after that pointing. The Oath you destroyed does not return, and the people who depended on it enter the next struggle without that protection.'
         : 'Vexa retains narrow precision until the fragment returns to neutral custody. She can find its bearer, but she cannot command your body, desire, or other promises.',
       crossingRoster(state),
       'Ahead, a market bell rings when one traveller looks at water. A cup appears with a price already attached. How can anyone remain free where desire automatically becomes an offer?',

@@ -246,7 +246,11 @@ function steppeOathLedger(state: GameState) {
     );
   if (!terms.length)
     return 'The Red Moot gave support without placing a magical steppe promise on you.';
-  return `The steppe Oaths remain exact: ${terms.join('; ')}.`;
+  const sentences = terms.map((item) => {
+    const text = item.endsWith('.') ? item : `${item}.`;
+    return `${text[0].toUpperCase()}${text.slice(1)}`;
+  });
+  return `Your steppe duties are still exact. ${sentences.join(' ')}`;
 }
 
 function vaorGateUse(state: GameState) {

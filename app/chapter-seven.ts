@@ -58,7 +58,11 @@ function steppePromises(state: GameState) {
     );
   if (!promises.length)
     return 'No public steppe Oath directs this battle, but the Red Moot’s chosen support still sets the limits of your command.';
-  return `Your active steppe duties are plain: ${promises.join('; ')}. Breaking one must be a visible choice, not an accidental order.`;
+  const sentences = promises.map((item) => {
+    const text = item.endsWith('.') ? item : `${item}.`;
+    return `${text[0].toUpperCase()}${text.slice(1)}`;
+  });
+  return `Your steppe duties are still exact. ${sentences.join(' ')} Breaking one must be a visible choice, not an accidental order.`;
 }
 
 function ilyraArrival(state: GameState) {

@@ -32,12 +32,12 @@ function gateGuide(state: GameState) {
 function fragmentState(state: GameState) {
   if (has(state, 'c9-route-bargain')) {
     if (has(state, 'c9-cut-true-name-clause'))
-      return 'The fragment rests in its open neutral case. Magic that can point to one person ended after alignment. The return promise remains active and cannot be sold.';
-    return 'The fragment rests in its open neutral case. Vexa may find its bearer for alignment only until the stated return. That pointing reaches nothing else.';
+      return 'The fragment rests in its open neutral case. Magic that can point to one person ended after that pointing was cut. The return promise remains active and cannot be sold.';
+    return 'The fragment rests in its open neutral case. Vexa may find its bearer for this door only until the stated return. That pointing reaches nothing else.';
   }
   if (has(state, 'c9-route-theft'))
     return 'The admitted stolen fragment hangs in view at your belt. Its heat prevents concealment, and the Compact debt remains open.';
-    return 'The fragment sits in the public evidence frame. House Sableglass surrendered it under its own attack-material rule, so the chain may support a damages claim.';
+    return 'The fragment sits in the public evidence frame. House Sableglass surrendered it under its own attack-material rule, so the chain may support a damages mark.';
 }
 
 function methodAtGate(state: GameState) {
@@ -52,12 +52,12 @@ function methodAtGate(state: GameState) {
 
 function engineLead(state: GameState) {
   if (has(state, 'c10-free-ledger-guide-accepted'))
-    return 'The guide points beyond the checkpoint. Three civic seals control the streets and auction. A black glass paper beneath them lets House Sableglass open the engine district.';
+    return 'The guide points beyond the checkpoint. Three civic seals control the streets and auction. A black glass engine key beneath them lets House Sableglass open the engine district.';
   if (has(state, 'c9-vexa-guarded-trust'))
-    return 'Vexa’s private patrol map marks the same black glass paper at two service doors. Her help names a route, not ownership of you or the fragment.';
+    return 'Vexa’s private patrol map marks the same black glass engine key at two service doors. Her help names a route, not ownership of you or the fragment.';
   if (hasAny(state, ['c9-sableglass-publicly-exposed', 'c9-route-exposure']))
-    return 'The public evidence frame warms beside one of three civic seals. A matching black glass paper runs from that seal toward the engine spire.';
-  return 'A clerk buys one street with a pale token. The paving turns beneath his feet, revealing three civic seals and one black glass paper leading toward the engine spire.';
+    return 'The public evidence frame warms beside one of three civic seals. A matching black glass engine key runs from that seal toward the engine spire.';
+  return 'A clerk buys one street with a pale token. The paving turns beneath his feet, revealing three civic seals and one black glass engine key leading toward the engine spire.';
 }
 
 function streetMethod(state: GameState) {
@@ -185,30 +185,30 @@ function obligationInventory(state: GameState) {
   const items: string[] = [];
   if (has(state, 'c11-petition-hearing-held'))
     items.push(
-      'Sira, Oren, and Pellan hold a recorded right to be heard first in court. Fresh marks let them hand that right to the next hearing without changing who it protects.',
+      'Sira, Oren, and Pellan hold a first-speak mark. Fresh marks let them hand that mark to the next hearing without changing who it protects.',
     );
   if (hasAny(state, ['c9-route-exposure', 'c9-sableglass-publicly-exposed']))
     items.push(
-      'The company’s public proof holds one damages claim against House Sableglass. That claim may change hands once.',
+      'The company’s public proof holds one damages mark against House Sableglass. That mark may change hands once.',
     );
   if (!has(state, 'c9-vexa-permanent-hostility'))
     items.push(
-      'Vexa may post one public promise that her people will honour one later seat, if she chooses to.',
+      'Vexa may post one public backup promise that her people will honour one later seat, if she chooses to.',
     );
   items.push(
     'The people who testify own their own witness marks. Each person controls their own mark.',
   );
   items.push(
-    'You may offer one limited duty to appear before the Price Court. It changes hands only after you clearly say yes.',
+    'You may offer one later-appearance duty. You must show up for one Price Court review. It changes hands only after you clearly say yes.',
   );
-  return items;
+  return items.join(' ');
 }
 
 function excludedInventory(state: GameState) {
   const exact = has(state, 'c9-return-promise-owned')
     ? ' The fragment’s return promise cannot change hands and stays outside the sale.'
     : '';
-  return `Affection, intimacy, another person’s promise, true-name access, Vaor’s permission, and every Oath that cannot change hands are not things you can spend.${exact}`;
+  return `Affection and intimacy are not things you can spend. Another person’s promise cannot be spent. True-name access and Vaor’s permission stay off the scale. Every Oath that cannot change hands stays off it too.${exact}`;
 }
 
 function rosterProof(state: GameState) {
@@ -239,8 +239,8 @@ function routeEvidence(state: GameState) {
   if (has(state, 'c11-route-revolt'))
     return 'Sira, Oren, and Pellan press three different refusal marks into the worker witness line. Their engine phrase opens a channel no owner can speak through alone.';
   if (has(state, 'c11-route-auction'))
-    return 'The purchased access paper contains an audit phrase. It opens the engine only while every bid and later limit remains visible.';
-  return 'The captured Sableglass relay carries the engine route phrase. The fragment aligns its broken teeth with the relay without changing who holds it.';
+    return 'The purchased one-opening paper contains an open-while-visible phrase. It opens the engine only while every bid and later limit remains visible.';
+  return 'The captured Sableglass relay carries the engine route phrase. The fragment points its broken teeth at the relay without changing who holds it.';
 }
 
 function gatePressure(state: GameState) {
@@ -258,8 +258,8 @@ function routeCost(state: GameState) {
       : 'The refusers hold their own square. Broken public streets and the chosen rescue cost remain behind them.';
   if (has(state, 'c11-route-auction'))
     return has(state, 'c11-auction-victims-mythic')
-      ? 'The one-opening paper, the invasion right, still holds, and you cannot refuse the named victims’ Price Court hearing.'
-      : 'The one-opening paper, the invasion right, still holds under the exact promise placed in the winning bid.';
+      ? 'The one-opening paper still holds. You cannot refuse the named victims’ Price Court hearing.'
+      : 'The one-opening paper still holds under the exact promise placed in the winning bid.';
   return has(state, 'c11-force-retreat-mythic')
     ? 'The corridor remains open behind every willing traveller, and you cannot cross the next contract door before the last of them.'
     : 'The expedition holds a damaged corridor with the physical and political cost chosen during the march.';
@@ -267,12 +267,12 @@ function routeCost(state: GameState) {
 
 function entryConsequence(state: GameState) {
   if (has(state, 'c11-public-entry-slower'))
-    return 'The slower public route owes no extra hearing. Moving towers hide one renewal of the engine paper, so you trace it from the public seals.';
+    return 'The slower public route owes no extra hearing. Moving towers hide one renewal of Sableglass’s engine key, so you trace it from the public seals.';
   if (has(state, 'c11-guide-checkpoint-delivered'))
     return 'The paid checkpoint route leaves the first auction bell ahead of you. The promised petition still must be heard before any house can take the page.';
   if (has(state, 'c11-auction-time-lost'))
     return 'The climb with no posted price kept every promise boundary, but the first auction notice is already posted.';
-  return 'The slower public route owes no extra hearing. Moving towers hide one renewal of the engine paper, so you trace it from the public seals.';
+  return 'The slower public route owes no extra hearing. Moving towers hide one renewal of Sableglass’s engine key, so you trace it from the public seals.';
 }
 
 function weatherConsequence(state: GameState) {
@@ -317,21 +317,21 @@ function auctionHolderConsequence(state: GameState) {
   if (has(state, 'c11-invasion-right-caelan'))
     return 'The one-opening paper, the invasion right, stays in your hand. Its one named force and one bell limit every step toward the engine.';
   if (has(state, 'c11-invasion-right-free-seat'))
-    return 'The free Court seat carries the one-opening paper in public view while you keep the fragment beside you.';
+    return 'The empty Court chair carries the one-opening paper in public view. You keep the fragment beside you.';
   return 'The one-opening paper remains on the public stand until a holder is named.';
 }
 
 function auctionBidConsequence(state: GameState) {
   if (has(state, 'c11-auction-hearing-credit-bid'))
-    return 'The signers’ first-hearing right defeats the first work-hour block. Its public renewal hearing remains attached.';
+    return 'The signers’ first-speak mark defeats the first work-hour block. Its public renewal hearing remains attached.';
   if (has(state, 'c11-auction-damages-claim-bid'))
-    return 'The Sableglass damages claim cancels one house bid and remains public evidence.';
+    return 'The Sableglass damages mark cancels one house bid and remains public evidence.';
   if (has(state, 'c11-auction-compact-surety-bid'))
     return 'Vexa’s public backup promise holds one round. Her people will demand one witnessed passage after the Gate is safe.';
   if (has(state, 'c11-auction-roster-witness-bid'))
     return 'Independent company marks defeat a bundled Sableglass claim. Each witness still owns their mark.';
   if (has(state, 'c11-auction-appearance-duty-bid'))
-    return 'Your appearance duty holds one round and creates a later public review that you cannot hand to anyone else.';
+    return 'Your later-appearance duty holds one round. You must show up for a later public review that you cannot hand to anyone else.';
     return 'The first scale remains level while the Court waits for a mark.';
 }
 
@@ -344,7 +344,7 @@ function auctionCounterConsequence(state: GameState) {
     return 'The Ash Road records separate every owner. Sableglass loses the collected block and cannot rebundle it.';
   if (has(state, 'c11-auction-review-counterbid'))
     return 'The narrow review defeats the final house bid. Your right to refuse that one public session is already bound.';
-  return 'The free seat holds the sale open until every remaining term is visible.';
+  return 'The empty Court chair holds the sale open until every remaining term is visible.';
 }
 
 function forceFormationConsequence(state: GameState) {
@@ -383,11 +383,11 @@ function earnedQuestionConsequence(state: GameState) {
 
 function elianRecordConsequence(state: GameState) {
   if (has(state, 'c11-elian-channel-protected'))
-    return 'The engine channel is closed before any faction can buy it. The living witnesses still carry the bounded warning.';
+    return 'The engine channel is closed before any faction can buy it. The living witnesses still carry the warning she named.';
   if (has(state, 'c11-elian-public-opposition'))
     return 'The public witness line carries the voice’s opposition. It proves no body, death, prison, or singular identity.';
   if (has(state, 'c11-elian-record-bounded'))
-    return 'The bounded record carries only the name, Malrec’s belief, and the voice’s refusal of merger.';
+    return 'The limited record carries only the name, Malrec’s belief, and the voice’s refusal of merger.';
   return 'The living witnesses carry the voice’s warning toward the inner Gate.';
 }
 
@@ -426,7 +426,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       'Vexa taps the three seals. “The Price Court,” she says. “It sells public use of the city.”',
       gateGuide(state),
       `You count the people who reached the city: ${expedition(state)}. No one else steps from the Black Gate.`,
-      'How do you enter without giving the gate a new claim?',
+      'How do you enter without promising the gate something extra?',
     ],
     choices: [
       {
@@ -486,7 +486,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       'The guide places the sealed petition on the free metal seat. It does not hand the page to the Price Court or Vexa.',
       methodAtGate(state),
       'Sira, Oren, and Pellan name themselves as signers. Sira wants sold service promises opened now. Oren wants families moved first. Pellan fears losing the shelter tied to his collar.',
-      'The hearing must keep all three voices separate. Which Ash Road record protects that hearing?',
+      'The hearing must keep all three voices separate. Which record you already carry keeps Sira, Oren, and Pellan from being spoken for as one?',
     ],
     choices: [
       {
@@ -495,7 +495,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'Use only terms and motives each owner already allowed into the record.',
         advantage:
-          'Show the changed Sableglass exit words. Give the signers a recorded right to be heard first in court.',
+          'Show the changed Sableglass exit words. Give the signers a first-speak mark.',
         showIfAllFlags: ['c10-offer-method-shared'],
         addFlags: ['c11-petition-hearing-held'],
         result:
@@ -538,7 +538,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         showIfAllFlags: ['c10-burden-oath-withdrawn'],
         addFlags: ['c11-petition-hearing-held'],
         result:
-          'The blank Oath line stays blank. The signers speak for themselves, and the free seat accepts their standing.',
+          'The blank Oath line stays blank. The signers speak for themselves, and the empty Court chair accepts them as themselves.',
         next: 'c11-engine-control',
       },
     ],
@@ -550,7 +550,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     title: 'The Long Public Stair',
     location: 'Outer Vathis',
     objective:
-      'Cross the public approach without claiming the refused guide benefit.',
+      'Cross the public stair without using the refused guide benefit.',
     threat: 'Rising',
     art: 'vathisstreets',
     body: (state) => [
@@ -607,7 +607,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
 
   'c11-engine-control': {
     id: 'c11-engine-control',
-    kicker: 'Three civic seals and one house paper',
+    kicker: 'Three civic seals and one house key-paper',
     title: 'Who Holds the Engine Key',
     location: 'Price Court Approach',
     objective:
@@ -621,28 +621,25 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     },
     lesson: {
       title: 'Who sells the city, who holds the engine',
-      body: 'The Price Court sells public use of the city and runs this auction. House Sableglass currently holds the separate paper that opens Malrec’s engine district.',
+      body: 'The Price Court sells public use of the city and runs this auction. House Sableglass currently holds the engine key that opens Malrec’s engine district.',
     },
     body: (state) => [
-      entryConsequence(state),
-      engineLead(state),
-      'A red notice climbs the clerk’s bench. At the third bell, the Price Court will auction one invasion right, a paper that permits one Gate opening, one named force, and one bell inside Edrath.',
-      'It owns no names, bodies, or land.',
-      'House Sableglass has filed the paper that opens the engine district as its route.',
-      'The Court runs the city and the sale. Sableglass holds the engine key. How do you make that fact public so the Court cannot ignore it?',
+      'A red notice climbs the clerk’s bench. At the third bell, the Price Court will auction one invasion right, a one-opening paper. It permits one Gate opening, one named force, and one bell inside Edrath.',
+      `${entryConsequence(state)} ${engineLead(state)}`,
+      'It owns no names, bodies, or land. The Court runs the city and the sale. Sableglass holds the engine key. How do you make that fact public so the Court cannot ignore it?',
     ],
     choices: [
       {
         id: 'c11-record-engine-lease-with-guide',
-        label: 'Have the Free Ledger guide mark the engine paper in public.',
+        label: 'Have the Free Ledger guide mark Sableglass’s engine key in public.',
         detail:
           'Use the promised outside identification before the petition enters the Court’s hands.',
         advantage:
-          'Let the Free Ledger guide mark the engine paper before a house can hide it.',
+          'Let the Free Ledger guide mark Sableglass’s engine key before a house can hide it.',
         showIfAllFlags: ['c11-guide-checkpoint-delivered'],
         addFlags: ['c11-engine-control-proved'],
         result:
-          'The guide marks the Sableglass paper from outside its line. The free Court seal repeats the record aloud.',
+          'The guide marks Sableglass’s engine key from outside its line. The Court seal that turns freely repeats the record aloud.',
         next: 'c11-street-expiry',
       },
       {
@@ -650,7 +647,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         label: 'Match Vexa’s guarded patrol map to both engine doors.',
         detail: 'Use her private route help within its public limits.',
         advantage:
-          'Identify a service entrance and the clerk who renews the engine paper.',
+          'Identify a service entrance and the clerk who renews Sableglass’s engine key.',
         showIfAllFlags: ['c9-vexa-guarded-trust'],
         addFlags: ['c11-engine-control-proved'],
         result:
@@ -659,14 +656,14 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c11-match-public-evidence-to-lease',
-        label: 'Set the public Sableglass evidence beneath the engine paper.',
+        label: 'Set the public Sableglass evidence beneath Sableglass’s engine key.',
         detail:
           'Join the embassy attack chain to the house that can open the engine.',
-        advantage: 'Stamp one damages mark on the engine paper that can move once at the sale.',
+        advantage: 'Stamp one damages mark on Sableglass’s engine key that can move once at the sale.',
         showIfAnyFlags: ['c9-route-exposure', 'c9-sableglass-publicly-exposed'],
         addFlags: ['c11-engine-control-proved'],
         result:
-          'The engine paper and attack seal heat together. The Court records one damages claim against Sableglass control.',
+          'Sableglass’s engine key and the attack seal heat together. The Court records one damages mark against Sableglass control.',
         next: 'c11-street-expiry',
       },
       {
@@ -770,13 +767,13 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         ? 'The ownerless safe signal returns on the first door. Its hinge points away from every registered exit, so you leave it shut.'
         : 'Every visible hinge names an owner and a public exit before the door makes an offer.',
       fragmentState(state),
-      'The door opens for property named on the Sableglass engine paper. It offers to name the fragment as house property if its bearer steps through first.',
+      'The door opens for property named on Sableglass’s engine key. It offers to name the fragment as house property if its bearer steps through first.',
       'The offer is visible. Nobody has said yes. It cannot turn holding, theft, evidence, or name-pointing into ownership. Which fact opens another way?',
     ],
     choices: [
       {
         id: 'c11-align-fragment-under-limited-precision',
-        label: 'Ask Vexa to point to the fragment case for this alignment only.',
+        label: 'Ask Vexa to point to the fragment case for this door only.',
         detail:
           'Let Vexa find its bearer for the witnessed purpose and nothing else.',
         advantage:
@@ -785,7 +782,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         hideIfAnyFlags: ['c9-cut-true-name-clause'],
         addFlags: ['c11-fragment-door-open'],
         result:
-          'Vexa names the case position and stops. The fragment aligns with a narrow hinge, while every other door stays blind.',
+          'Vexa names the case position and stops. The fragment points at a narrow hinge, while every other door stays blind.',
         next: 'c11-weather-contract',
       },
       {
@@ -1131,13 +1128,13 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       ],
     },
     body: (state) => [
-      illusionReaction(state),
-      has(state, 'c11-burden-accounts-complete')
-        ? 'Every consenting traveller has received a private account. The Court may inspect the closed edges, but no private desire enters this list.'
-        : 'No unfinished private burden record enters this list.',
       'A brass model of the Black Gate turns above the auction floor. Its notice allows one opening, one named force, and one Vathis bell inside Edrath.',
-      ...obligationInventory(state),
-      excludedInventory(state),
+      `${illusionReaction(state)} ${
+        has(state, 'c11-burden-accounts-complete')
+          ? 'Every consenting traveller has received a private account. The Court may inspect the closed edges, but no private desire enters this list.'
+          : 'No unfinished private burden record enters this list.'
+      }`,
+      `${obligationInventory(state)} ${excludedInventory(state)}`,
       'Which of these do you write down before choosing the road to the engine?',
     ],
     choices: [
@@ -1145,22 +1142,22 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-inventory-free-ledger-hearing-credit',
         label: 'Ask Sira, Oren, and Pellan to mark their first-hearing right.',
         detail:
-          'No extra cost now. Each named signer marks the page if they choose. Fresh marks let the first-hearing right go to the next hearing without changing who it protects. Any signer may refuse their mark. This does not sell their collars, bodies, or private wants. Later they owe one public renewal hearing.',
+          'No extra cost now. Each named signer marks the page if they choose. Fresh marks let the first-speak mark go to the next hearing without changing who it protects. Any signer may refuse their mark. This does not sell their collars, bodies, or private wants. Later they owe one public renewal hearing.',
         advantage:
           'Give Sira, Oren, and Pellan a first turn to speak, which can also support a workers’ refusal later.',
         showIfAllFlags: ['c11-petition-hearing-held'],
         addFlags: ['c11-bid-asset-hearing-credit'],
         result:
-          'Sira, Oren, and Pellan choose whether to mark the inventory. Their separate marks create one first-hearing right that can change hands.',
+          'Sira, Oren, and Pellan choose whether to mark the inventory. Their separate marks create one first-speak mark that can change hands.',
         next: 'c11-defining-route',
       },
       {
         id: 'c11-inventory-sableglass-damages-claim',
-        label: 'List the public Sableglass damages claim.',
+        label: 'List the public damages mark against Sableglass.',
         detail:
-          'No extra cost now. The company’s public proof owns the claim. It may change hands once under the public exposure ruling. After one use, the claim is surrendered. This does not put the fragment into the bid.',
+          'No extra cost now. The company’s public proof owns the damages mark. It may change hands once under the public exposure ruling. After one use, the mark is surrendered. This does not put the fragment into the bid.',
         advantage:
-          'Challenge the Sableglass engine paper and strengthen the auction bid.',
+          'Challenge Sableglass’s engine key and strengthen the auction bid.',
         showIfAnyFlags: [
           'c11-sableglass-damages-claim',
           'c9-route-exposure',
@@ -1201,7 +1198,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'No extra cost now. You own this duty. It changes hands only after you clearly say yes. Later you cannot refuse one public review of the new Gate law. This does not sell any other Oath or service.',
         advantage:
-          'Put your own later review on the scale even if no house paper survived.',
+          'Put your own later review on the scale even if no engine key survived.',
         addFlags: [
           'c11-bid-asset-appearance-duty',
           'c11-price-court-review-owed',
@@ -1222,10 +1219,11 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'vathisauction',
     body: (state) => [
-      rosterProof(state),
-      has(state, 'c10-listening-ash-broken')
-        ? 'No listening ash changes the route labels before the bell.'
-        : 'A Sableglass listening line knows which door the expedition used and begins closing that approach.',
+      `${rosterProof(state)} ${
+        has(state, 'c10-listening-ash-broken')
+          ? 'No listening ash changes the route labels before the bell.'
+          : 'A Sableglass listening line knows which door the expedition used and begins closing that approach.'
+      }`,
       vexaAuctionPosture(state),
       'Do you make room for collective refusal, win the sale with what you wrote down, or take the engine corridor by force?',
     ],
@@ -1237,7 +1235,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'Gain people, disruption, and public legitimacy while risking casualties and unstable streets.',
         advantage:
-          'Open worker service tunnels and challenge the Sableglass engine paper through collective witness.',
+          'Open worker service tunnels and challenge Sableglass’s engine key through collective witness.',
         requiresFlags: ['c11-engine-control-proved', 'c11-illusion-refused'],
         addFlags: ['c11-route-revolt'],
         result:
@@ -1253,7 +1251,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
           'Stop Sableglass buying the one-opening paper, and leave the public streets intact.',
         addFlags: ['c11-route-auction'],
         result:
-          'The free Court seat opens a bidder’s line. Every listed thing keeps its owner and whether it may change hands.',
+          'The empty Court chair opens a bidder’s line. Every listed thing keeps its owner and whether it may change hands.',
         next: 'c11-auction-bid',
       },
       {
@@ -1541,9 +1539,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'vathisauction',
     body: (state) => [
-      ...obligationInventory(state),
-      excludedInventory(state),
-      'House Sableglass bids ten thousand released work hours and the paper that opens the engine. The free Court seat asks for your first mark on the scale.',
+      'House Sableglass bids ten thousand released work hours and its engine key. The empty Court chair asks for your first mark on the scale.',
       'Which of these do you put on the scale?',
     ],
     choices: [
@@ -1562,15 +1558,15 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c11-bid-sableglass-damages-claim',
-        label: 'Bid the public damages claim against Sableglass.',
+        label: 'Bid the public damages mark against Sableglass.',
         detail:
-          'No extra cost now. The claim may change hands once. The fragment and who holds it remain outside the sale.',
+          'No extra cost now. The damages mark may change hands once. The fragment and who holds it remain outside the sale.',
         advantage:
-          'Freeze the house engine paper during the final bidding round.',
+          'Freeze Sableglass’s engine key during the final bidding round.',
         showIfAllFlags: ['c11-bid-asset-damages-claim'],
         addFlags: ['c11-auction-damages-claim-bid'],
         result:
-          'The public claim crosses the floor. Both black Court seats freeze while the engine paper is challenged.',
+          'The public damages mark crosses the floor. Both black Court seats freeze while Sableglass’s engine key is challenged.',
         next: 'c11-auction-counterbid',
       },
       {
@@ -1579,11 +1575,11 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'No extra cost now. Vexa’s people own the promise. It buys one public seat when the new Gate law is written, and nothing private. Vexa may refuse. This does not touch affection, trust, or the fragment.',
         advantage:
-          'Let Vexa’s public backup promise match the engine paper on the scale.',
+          'Let Vexa’s public backup promise match Sableglass’s engine key on the scale.',
         showIfAllFlags: ['c11-bid-asset-compact-surety'],
         addFlags: ['c11-auction-compact-surety-bid'],
         result:
-          'Vexa presses the white seal herself. It matches the engine paper without touching affection, trust, or fragment holding.',
+          'Vexa presses the white seal herself. It matches Sableglass’s engine key without touching affection, trust, or fragment holding.',
         next: 'c11-auction-counterbid',
       },
       {
@@ -1596,7 +1592,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         showIfAllFlags: ['c11-bid-asset-roster-witness'],
         addFlags: ['c11-auction-roster-witness-bid'],
         result:
-          'The free seat accepts only the separate company marks still freely offered by their owners.',
+          'The empty Court chair accepts only the separate company marks still freely offered by their owners.',
         next: 'c11-auction-counterbid',
       },
       {
@@ -1636,7 +1632,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     body: (state) => [
       destroyedOath(state),
       auctionBidConsequence(state),
-      'Sableglass releases a column of owned promises into the auction scale. The black seats call them wealth. The free seat calls them people’s time.',
+      'Sableglass releases a column of owned promises into the auction scale. The black seats call them wealth. The empty Court chair calls them people’s time.',
       'If the promise to bring hidden victims before the Queen still lives, it can make their claim impossible to erase. The ordinary path can win through prepared proof or a narrower future review.',
       'What defeats the final bid?',
     ],
@@ -1674,7 +1670,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         showIfAllFlags: ['c11-illusion-source-captured'],
         addFlags: ['c11-auction-fraud-countered'],
         result:
-          'The bead opens under the free seat. Its hidden accepting threshold voids the Sableglass promise column.',
+          'The bead opens under the empty Court chair. Its hidden accepting threshold voids the Sableglass promise column.',
         next: 'c11-auction-result',
       },
       {
@@ -1707,7 +1703,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
           'c11-auction-review-counterbid',
         ],
         result:
-          'You accept one review in public. The free seat rejects every wider phrase and tips the scale toward your bid.',
+          'You accept one review in public. The empty Court chair rejects every wider phrase and tips the scale toward your bid.',
         next: 'c11-auction-result',
       },
     ],
@@ -1732,18 +1728,18 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     },
     body: (state) => [
       auctionCounterConsequence(state),
-      'The brass Gate model turns toward you. Sableglass loses the engine paper for one audit and one passage to the inner Gate.',
+      'The brass Gate model turns toward you. Sableglass loses its engine key for one check of every term and one passage to the inner Gate.',
       'The one-opening paper, the invasion right, names only this company already inside Vathis. It still allows one Gate opening, one named force, and one bell. It owns no names, bodies, land, affection, or future army.',
-      'The Court offers two holders for the same narrow right. Who keeps that paper until the engine audit ends?',
+      'The Court offers two holders for the same narrow paper. Who keeps that paper until every bid term has been checked?',
     ],
     choices: [
       {
         id: 'c11-caelan-holds-invasion-right',
         label: 'Keep the one-opening paper yourself.',
         detail:
-          'It still allows only one Gate opening, one named force, and one bell. Keep it beside the fragment. Accept the recorded later restriction.',
+          'It still allows only one Gate opening, one named force, and one bell. Keep it beside the fragment. Accept the later restriction already written down.',
         advantage:
-          'Walk the engine audit yourself so no house can add soldiers.',
+          'Walk the engine check yourself so no house can add soldiers.',
         addFlags: ['c11-invasion-right-caelan', 'c11-invasion-right-won'],
         result:
           'The paper locks to your shield edge. Its force list stops after the last recorded company witness.',
@@ -1752,14 +1748,14 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       {
         id: 'c11-free-seat-holds-invasion-right',
         label:
-          'Place the one-opening paper with the Price Court’s free seat for the audit.',
+          'Place the one-opening paper on the empty Court chair so the Court can check every term.',
         detail:
           'Keep Caelan from owning that paper himself while strengthening one dissenting civic judge.',
         advantage:
           'Walk with a Court judge who cannot add one soldier.',
         addFlags: ['c11-invasion-right-free-seat', 'c11-invasion-right-won'],
         result:
-          'The free seat seals the paper in clear glass. Its judge walks beside you and cannot add one soldier.',
+          'The empty Court chair seals the paper in clear glass. Its judge walks beside you and cannot add one soldier.',
         next: 'c11-auction-engine-phrase',
       },
     ],
@@ -1767,26 +1763,25 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
 
   'c11-auction-engine-phrase': {
     id: 'c11-auction-engine-phrase',
-    kicker: 'A public audit opens one channel',
+    kicker: 'A public check of every term opens one channel',
     title: 'The Phrase in the Auction Paper',
     location: 'Engine District Door',
     objective:
-      'Use the purchased audit phrase without widening the one-opening paper.',
+      'Use the purchased open-while-visible phrase without widening the one-opening paper.',
     threat: 'Immediate',
     art: 'vathisengine',
     activeConsequences: {
       reactions: ['c11-invasion-right-caelan', 'c11-invasion-right-free-seat'],
     },
     body: (state) => [
-      auctionHolderConsequence(state),
       'The engine door reads the auction paper once. A line hidden beneath the force list appears: “Let the restored answer for itself.”',
-      'That phrase opens Malrec’s witnessed engine channel. It does not prove who or what will answer.',
-      'How do you invoke the audit?',
+      auctionHolderConsequence(state),
+      'That phrase opens Malrec’s witnessed engine channel. It does not prove who or what will answer. How do you speak the open-while-visible phrase?',
     ],
     choices: [
       {
         id: 'c11-speak-auction-audit-phrase',
-        label: 'Speak the audit phrase while every bid term remains visible.',
+        label: 'Speak the open-while-visible phrase while every bid term remains visible.',
         detail:
           'Open the engine channel under the purchased one-opening paper and no wider force list.',
         advantage:
@@ -1799,7 +1794,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c11-let-free-seat-invoke-audit',
-        label: 'Let the free Court seat invoke its own recorded audit.',
+        label: 'Let the empty Court chair speak the open-while-visible phrase.',
         detail:
           'Keep the phrase under civic witness while Caelan guards the fragment.',
         advantage:
@@ -1809,7 +1804,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
           'c11-independent-engine-audit',
         ],
         result:
-          'The free judge speaks the phrase. The door copies every limit before it opens.',
+          'The empty Court chair’s judge speaks the phrase. The door copies every limit before it opens.',
         next: 'c11-engine-heart',
       },
     ],
@@ -2001,7 +1996,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     choices: [
       {
         id: 'c11-force-align-bargained-fragment',
-        label: 'Align the neutral case without releasing the return promise.',
+        label: 'Point the fragment case at the relay without releasing the return promise.',
         detail:
           'Use the fragment only for the witnessed Gate purpose and keep it from changing hands.',
         advantage:
@@ -2111,7 +2106,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'Seek the central answer without claiming the engine can prove identity.',
         advantage:
-          'Hear the speaker’s bounded warning under a living witness record.',
+          'Hear the speaker’s named warning under a living witness record.',
         showIfAnyFlags: [
           'c11-revolt-engine-phrase-earned',
           'c11-auction-engine-phrase-earned',
@@ -2128,7 +2123,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         detail:
           'Test motive before accepting any claim about identity or location.',
         advantage:
-          'Hear the bounded warning and preserve uncertainty about the speaker.',
+          'Hear the named warning and preserve uncertainty about the speaker.',
         addFlags: ['c11-elian-question-earned', 'c11-elian-motive-tested'],
         result:
           'You ask what the merger would do to her and everyone else. The engine carries the question into white fire.',
@@ -2230,12 +2225,9 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       ],
     },
     body: (state) => [
-      elianRecordConsequence(state),
-      gatePressure(state),
-      routeCost(state),
-      fragmentState(state),
-      `This company reaches the inner face: ${expedition(state)}.`,
-      'The old promise in the Gate cracks. Black stone begins opening toward Edrath. What do you protect until a new promise can replace it?',
+      'The old promise in the Gate cracks. Black stone begins opening toward Edrath.',
+      `${routeCost(state)} ${fragmentState(state)} ${elianRecordConsequence(state)} ${gatePressure(state)}`,
+      `This company reaches the inner face: ${expedition(state)}. What do you protect until a new promise can replace it?`,
     ],
     choices: [
       {
@@ -2302,7 +2294,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     nextChapter: 'c12-inner-gate',
     body: (state) => [
       'Behind you, named workers hold the witness line they chose. The Free Ledger offers help for one public renewal hearing where every affected group may refuse.',
-      'Elian’s bounded warning remains in the witness record: Malrec believes merger can restore the daughter he remembers.',
+      'Elian’s named warning remains in the witness record: Malrec believes merger can restore the daughter he remembers.',
       routeCost(state),
       fragmentState(state),
       'Malrec’s engine drives another chain. The inner Black Gate opens toward Edrath, and the old law can no longer close it alone.',
@@ -2323,8 +2315,8 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     final: true,
     nextChapter: 'c12-inner-gate',
     body: (state) => [
-      'The one-opening paper rejects every force outside its list. The Price Court’s free seat offers help for a later public meeting that writes the new Gate law.',
-      'Elian’s bounded warning remains in the audit: Malrec believes merger can restore the daughter he remembers.',
+      'The one-opening paper rejects every force outside its list. The empty Court chair offers help for a later public meeting that writes the new Gate law.',
+      'Elian’s named warning remains in the checked terms: Malrec believes merger can restore the daughter he remembers.',
       routeCost(state),
       fragmentState(state),
       'Malrec’s engine drives another chain. The inner Black Gate opens toward Edrath, and one purchased delay cannot repair its law.',
@@ -2346,7 +2338,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     nextChapter: 'c12-inner-gate',
     body: (state) => [
       'This company holds the damaged engine corridor. The Ash Compact offers help for one witnessed passage after Malrec’s opening stops.',
-      'Elian’s bounded warning remains in the captured relay record: Malrec believes merger can restore the daughter he remembers.',
+      'Elian’s named warning remains in the captured relay record: Malrec believes merger can restore the daughter he remembers.',
       routeCost(state),
       fragmentState(state),
       'Malrec’s engine drives another chain. The inner Black Gate opens toward Edrath, and force cannot teach the stone what should replace its law.',

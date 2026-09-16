@@ -58,7 +58,7 @@ function partnerPosition(state: GameState) {
 function fragmentCustody(state: GameState) {
   if (has(state, 'c9-route-bargain')) {
     if (has(state, 'c9-cut-true-name-clause'))
-      return 'The bargained fragment rests in your open shield case. True-name precision ended after alignment, but the exact return promise still binds you.';
+      return 'The bargained fragment rests in your open shield case. True-name precision ended after that pointing, but the exact return promise still binds you.';
     return 'The bargained fragment rests in your open shield case. Vexa can locate its bearer until neutral return, but her precision reaches nothing else.';
   }
   if (has(state, 'c9-route-theft'))
@@ -273,9 +273,13 @@ function survivingOaths(state: GameState) {
     duties.push('deny lawful rank to dead officers');
   if (has(state, 'c9-return-promise-owned'))
     duties.push('return the Gate fragment after Malrec’s inside opening stops');
-  return duties.length
-    ? `Your surviving duties are to ${duties.join('; ')}.`
-    : 'No surviving Oath can answer this offer for you.';
+  if (!duties.length)
+    return 'No surviving Oath can answer this offer for you.';
+  const sentences = duties.map((item) => {
+    const text = item.endsWith('.') ? item : `${item}.`;
+    return `${text[0].toUpperCase()}${text.slice(1)}`;
+  });
+  return `Your surviving duties remain exact. ${sentences.join(' ')}`;
 }
 
 function vexaStanding(state: GameState) {
@@ -632,7 +636,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     title: 'The Toll That Claims the Fragment',
     location: 'First Offer Bridge',
     objective:
-      'Cross the toll without changing the fragment’s recorded custody.',
+      'Cross the toll without changing who holds the fragment.',
     threat: 'Rising',
     art: 'ashroadoffer',
     body: (state) => [
@@ -698,7 +702,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
       routeCustodyResult(state),
       rosterOffer(state),
       'The benefit is clear and the price is visible. The price still asks you to guarantee a life, future, body, command, or freedom that belongs to someone else.',
-      'Which protection does the recorded expedition use?',
+      'Which protection does this company use?',
     ],
     choices: [
       {

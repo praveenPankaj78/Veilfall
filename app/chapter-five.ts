@@ -306,8 +306,11 @@ function evidenceLeavingDragonspine(state: GameState) {
     );
   if (!evidence.length)
     return 'The truth leaves mainly in four living memories. It will need witnesses who trust your account.';
-  const record = evidence.join('; ');
-  return `${record[0].toUpperCase()}${record.slice(1)}. None of it is left beside Hale’s control platform.`;
+  const sentences = evidence.map((item) => {
+    const text = item.endsWith('.') ? item : `${item}.`;
+    return `${text[0].toUpperCase()}${text.slice(1)}`;
+  });
+  return `${sentences.join(' ')} None of it is left beside Hale’s control platform.`;
 }
 
 const pactTerms =

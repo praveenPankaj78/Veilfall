@@ -51,8 +51,8 @@ function mortalFace(state: GameState) {
 function fragmentPosition(state: GameState) {
   if (has(state, 'c9-route-bargain')) {
     if (has(state, 'c9-cut-true-name-clause'))
-      return 'The fragment rests in its neutral case. Magic that can point to one person ended when its single alignment clause was cut. The return promise still waits.';
-    return 'The fragment rests in its neutral case. Vexa may find its bearer only for the witnessed alignment and return. That pointing reaches nothing else.';
+      return 'The fragment rests in its neutral case. Magic that can point to one person ended when its single pointing clause was cut. The return promise still waits.';
+    return 'The fragment rests in its neutral case. Vexa may find its bearer only for the witnessed pointing and return. That pointing reaches nothing else.';
   }
   if (has(state, 'c9-route-theft'))
     return 'The admitted stolen fragment burns in public view. The Compact claim follows it, but no neutral return promise was created.';
@@ -137,7 +137,7 @@ function elianRecord(state: GameState) {
     return 'The voice identifying herself as Elian repeats the public warning already heard in Vathis. “The left conduit copies his memory. Break its claim, not the person inside his memory.”';
   if (has(state, 'c11-elian-channel-protected'))
     return 'The protected engine channel carries the voice identifying herself as Elian. She names the left conduit and refuses to become anyone’s property or proof of death.';
-  return 'The bounded record opens once. A voice identifying herself as Elian names the left conduit, opposes Malrec’s merger, and makes no claim about what or where she is.';
+    return 'The limited record opens once. A voice identifying herself as Elian names the left conduit, opposes Malrec’s merger, and makes no claim about what or where she is.';
 }
 
 function relationshipPresence(state: GameState) {
@@ -236,7 +236,7 @@ function relationshipResult(state: GameState) {
   if (has(state, 'c12-relationship-closed'))
     return 'You release your remaining romantic hopes. No earlier intimacy obliges anyone to begin again.';
   if (has(state, 'c12-relationship-political-truce'))
-    return 'You and Vexa choose a bounded political truce. It creates no trust, intimacy, passage, or private access.';
+    return 'You and Vexa choose a public ceasefire with named limits. It creates no trust, intimacy, passage, or private access.';
   return 'You choose a full single life. It costs no strength and weakens no world outcome.';
 }
 
@@ -272,7 +272,7 @@ function collisionResult(state: GameState) {
 
 function warningResult(state: GameState) {
   if (has(state, 'c12-elian-warning-public'))
-    return 'Both realms can challenge Malrec’s remote seal with the same bounded public warning.';
+    return 'Both realms can challenge Malrec’s remote seal with the same limited public warning.';
   if (has(state, 'c12-elian-warning-channel-kept'))
     return 'The protected channel warns before the next engine pulse, but receives no vote over the law.';
   if (has(state, 'c12-elian-warning-verified-locally'))
@@ -362,8 +362,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     threat: 'Critical',
     art: 'blackgatecollision',
     body: (state) => [
-      `The inner arch splits from floor to crown. Through it, you see the fortress ring beneath a pale mortal sky. ${mortalFace(state)}`,
-      `You stand in the Cinder Deep with ${innerCompany(state)}.`,
+      `The inner arch splits from floor to crown. Through it, you see the fortress ring beneath a pale mortal sky. ${mortalFace(state)} You stand in the Cinder Deep with ${innerCompany(state)}.`,
       routeSupport(state),
       'Red sparks tear from the engine behind you and fly through the widening gap toward Worldroot. Which earned support should hold first contact?',
     ],
@@ -579,7 +578,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       {
         id: 'c12-demand-engine-test',
         label: 'Demand one claim the engine can test in public.',
-        detail: 'Keep Elian’s identity bounded while testing the conduit.',
+        detail: 'Keep Elian’s identity limited to what she claimed while testing the conduit.',
         advantage: 'Expose the engine’s copied-memory path.',
         result:
           'The engine repeats one memory in two different voices. Neither version proves who Elian is, but both reveal the same false conduit.',
@@ -691,7 +690,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
 
   'c12-elian-conduit': {
     id: 'c12-elian-conduit',
-    kicker: 'A bounded warning',
+    kicker: 'A named warning',
     title: 'The Voice and the Left Conduit',
     location: 'The Stilled Engine',
     objective:
@@ -749,8 +748,8 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     body: (state) => [
       has(state, 'c11-alliance-free-ledger-refusers')
         ? 'Sira tightens the witness cords. Oren refuses any Gate office. Pellan keeps the approved collar copies under his own hand. Each affected group may speak and refuse. None receives authority over a nonparticipant.'
-        : 'No Free Ledger renewal hearing is owed. Individuals may still speak at the final law hearing, but no guide petition claims their time.',
-      'The promise storm circles above the arch instead of waiting politely. The hearing must change who can refuse the new law. What record do you make?',
+        : 'No extra Free Ledger hearing is owed. Individuals may still speak at the final law hearing, but no guide petition claims their time.',
+      'The promise storm circles above the arch instead of waiting politely. The hearing must change who can refuse the new law. What do you write on the witness slate?',
     ],
     choices: [
       {
@@ -767,7 +766,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-record-no-renewal-debt',
-        label: 'Record that no Free Ledger renewal is owed.',
+        label: 'Record that no extra Free Ledger hearing is owed.',
         detail:
           'Keep individual testimony without inventing a petition duty.',
         advantage:
@@ -1258,7 +1257,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-sealed-gate',
         label: 'Seal the Cinder Deep.',
         detail:
-          'After a last free choice of side, no person, army, promise, offer, or message may cross, and nobody can force another person to leave. Stored promises stay locked in the stone and cannot be spent. Allies who stay behind become stranded. Caelan loses the right to cross after choosing a side. No ruler may reopen it until separately chosen delegates of both realms freely replace it. At sunrise, one road of light will stay barred.',
+          'After a last free choice of side, no person, army, promise, offer, or message may cross. Nobody can force another person to leave. Stored promises stay locked in the stone. They cannot be spent. Allies who stay behind become stranded. Caelan loses the right to cross after choosing a side. No ruler may reopen it until separately chosen delegates of both realms freely replace it. At sunrise, one road of light will stay barred.',
         advantage:
           'Stop all large and small crossings after the final closing.',
         addFlags: [
@@ -1277,7 +1276,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-consent-passage',
         label: 'Open a crossing only when both sides and the traveller say yes.',
         detail:
-          'A named traveller and chosen keepers on both sides must record yes, and any signer may withdraw before crossing. Stored promises remain locked until public review returns them to their original living owners. Allies must wait for permission too. Caelan owes one year of public service and may not cross unwitnessed during that year. Either realm may close passage, both renew yearly, and a public joint bench reviews disputes. At sunrise, a narrow road of light will open only when witnesses on both sides name it.',
+          'A named traveller and chosen keepers on both sides must record yes. Any signer may withdraw before crossing. Stored promises remain locked until public review returns them to their original living owners. Allies must wait for permission too. Caelan owes one year of public service. He may not cross unwitnessed during that year. Either realm may close passage. Both renew yearly. A public joint bench reviews disputes. At sunrise, a narrow road of light will open only when witnesses on both sides name it.',
         advantage:
           'Let the traveller and both sides refuse a crossing before it happens.',
         addFlags: [
@@ -1296,7 +1295,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-broken-gate',
         label: 'Break the Gate.',
         detail:
-          'The stone breaks now, no Gate or keeper owns crossing, and people may refuse bargains while no central authority may close the road alone. Stored promises return to living makers or enter Worldroot without a new owner, striking both shield lines so weaker defences suffer more. Allies and invading armies can cross freely in both directions. Caelan keeps movement but loses central power to stop invasion. The opening remains until people build another law. At sunrise, an unstable road of light will open.',
+          'The stone breaks now. No Gate or keeper owns crossing. People may refuse bargains. No central authority may close the road alone. Stored promises return to living makers or enter Worldroot without a new owner. They strike both shield lines, so weaker defences suffer more. Allies and invading armies can cross freely in both directions. Caelan keeps movement. He loses central power to stop invasion. The opening remains until people build another law. At sunrise, an unstable road of light will open.',
         advantage: 'End the Gate’s power to own crossing or stop armies.',
         addFlags: [
           'c12-gate-broken',
@@ -1314,7 +1313,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         id: 'c12-choose-mortal-gatekeeper',
         label: 'Take the Gate into Caelan.',
         detail:
-          'He may open a crossing for one named willing person or refuse armies, using public witnessed identity, not true-name access. The Gate and stored promises enter Caelan as separate voices he cannot spend or erase. Allies must ask too, and every traveller may refuse. He must hear individual requests, cannot silence the voices, and cannot give the Gate away, abandon the boundary, or live wholly in either realm. This lasts until death or a freely accepted new Gate law releases every voice. At sunrise, light will bend around him and answer witnessed identity.',
+          'He may open a crossing for one named willing person or refuse armies. He uses public witnessed identity, not true-name access. The Gate and stored promises enter Caelan as separate voices. He cannot spend or erase those voices. Allies must ask too. Every traveller may refuse. He must hear individual requests. He cannot silence the voices. He cannot give the Gate away. He cannot abandon the boundary. He cannot live wholly in either realm. This lasts until death or a freely accepted new Gate law releases every voice. At sunrise, light will bend around him and answer witnessed identity.',
         advantage:
           'Let Caelan open for one willing person and refuse armies.',
         addFlags: [
@@ -1434,7 +1433,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-amend-neutral-fragment-custody',
-        label: 'Ask every living keeper to change holding freely.',
+        label: 'Ask every living keeper to say, freely, who should hold the fragment.',
         detail:
           'Each required keeper may refuse. If all agree, joint holding follows the chosen Gate body. Surviving name-pointing for return ends.',
         advantage:
@@ -1823,7 +1822,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
       },
       {
         id: 'c12-choose-vexa-political-truce',
-        label: 'Set a bounded political truce with Vexa.',
+        label: 'Set a public ceasefire with Vexa, with named limits.',
         detail:
           'Keep diplomacy public. Create no trust, attraction, private access, or passage right.',
         advantage:

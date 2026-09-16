@@ -131,7 +131,25 @@ function evidenceAtMoot(state: GameState) {
     facts.push('the founder seals of every people who hid the cost');
   if (!facts.length)
     return 'You have memory and testimony, but no carried object can make the argument for you.';
-  return `Your case can use ${facts.join(', ')}. The proof shows what rulers did. It does not replace service or give you authority over the clans.`;
+  const sentences: string[] = [];
+  for (let i = 0; i < facts.length; i += 2) {
+    const first = facts[i];
+    const second = facts[i + 1];
+    if (i === 0) {
+      sentences.push(
+        second
+          ? `Your case can use ${first}. It can also use ${second}.`
+          : `Your case can use ${first}.`,
+      );
+    } else {
+      sentences.push(
+        second
+          ? `It can also use ${first}. It can also use ${second}.`
+          : `It can also use ${first}.`,
+      );
+    }
+  }
+  return `${sentences.join(' ')} The proof shows what rulers did. It does not replace service or give you authority over the clans.`;
 }
 
 function emberDisclosureStatus(state: GameState) {
