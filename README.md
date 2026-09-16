@@ -19,7 +19,7 @@ The story contains dark fantasy violence, blood, injury, possible player-charact
 
 Progress is stored locally in the browser. A browser save belongs to that browser and the exact site address, so moving the game to another address does not move the save automatically. Use **Settings, saves, and about** to export a JSON backup before changing browsers or site addresses, and import that backup after the move.
 
-The current browser-save schema is version 17. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, completed chapters, ending state, replay checkpoints, and reading preference. Retired description-preference fields remain serialized for compatibility with existing v16/v17 saves but no longer affect prose or choices. Import validation occurs before existing progress is replaced.
+The current browser-save schema is version 18. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, completed chapters, ending state, replay checkpoints, and reading preference. Version 16/17 portable saves and older browser saves still migrate. Version 17 browser documents remain untouched as a recovery copy when version 18 is first saved. Retired description-preference fields remain inert; the unused currency is removed from normalized state and exports. Import validation occurs before existing progress is replaced.
 
 ## Play locally
 
@@ -34,6 +34,10 @@ The cover introduces the full twelve-chapter journey: crossing realms, facing ar
 Run `npm run package:itch` to produce `outputs/veilfall-ember-oath-beta.zip`. This is a separate static browser build: it does not use or replace the Existing Sites registration.
 
 The ZIP has `index.html` at its top level, hashed JavaScript and CSS in `assets/`, and the game artwork in `art/`. Asset URLs are relative so the package can run from itch.io’s uploaded HTML-game subpath. Browser saves remain tied to the exact itch.io game origin, and players can use the in-game Export Save control for backup or transfer.
+
+Build 1.0.1 removes the unused Wayfire reserve throughout gameplay. Oathfire and every chapter remain unchanged. The itch target omits the separate Expected advantage panel, while local development at port 3000 retains it. Immediate costs, requirements, lethal warnings, action details, consent boundaries, and authored consequence tests remain visible or enforced as appropriate. The target is selected at build time, so a local preview of the itch ZIP behaves like its uploaded version.
+
+Updated later-chapter screenshots are in `outputs/itch-scenic-screenshots-1.0.1/` and `outputs/veilfall-scenic-screenshots-1.0.1.zip`. Their actual-playthrough QA saves can be regenerated with `node scripts/create-release-qa-saves.mjs`; use them only in isolated test storage. Responsive checks cover 320-pixel portrait through wide desktop, including Extra large text and short landscape. Physical Android gameplay remains unverified because the tool blocked the USB preview setup; iPhone Safari still needs testing.
 
 Packaging fails if unexpected files, source maps, development entries, or local user paths are found. Only approved runtime paths are accepted; the repository, TypeScript/TSX sources, tooling, environment files, hosting configuration, and internal documents are not shipped. Run `npm run check:itch-package` to audit the actual ZIP and test the rejection rules. Third-party notices are not treated as private source and must be retained where required.
 
@@ -64,7 +68,7 @@ The project uses the existing Sites registration in `.openai/hosting.json` and t
 - `docs/CAELAN_SERIES_REVIEW.md` records the completed twelve-chapter narrative review.
 - `docs/NARRATIVE_RULEBOOK.md` defines prose, mystery, choice, romance, intimacy, and location rules.
 - `docs/PLAYER_EXPERIENCE_BIBLE.md` defines information pacing, onboarding, recaps, journal design, and comprehension goals.
-- `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, Wayfire, saves, and imported decisions.
+- `docs/SYSTEMS_RULEBOOK.md` defines resources, relationships, travel, free chapter progression, saves, and imported decisions.
 - `docs/CROSSOVER_CONTINUITY_LEDGER.md` records protected crossover continuity.
 - The chapter map files in `docs/` describe each implemented chapter.
 

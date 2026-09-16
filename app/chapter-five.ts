@@ -1721,7 +1721,6 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
           'Release an ancient dragon whose choices will no longer belong to you or the Crown, and whom kingdoms may treat as an invading power.',
         advantage:
           'The ember enters without violence, but Vaor controls when it answers and frightened kingdoms will know you released him.',
-        changes: { wayfire: 2 },
         hideIfAnyFlags: ['c5-broke-memory-slab'],
         addFlags: ['c5-freed-vaor'],
         result:
@@ -1736,7 +1735,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
           'Spend 1 Resolve accepting a duty to preserve his surviving memories without claiming that apology erases the harm.',
         advantage:
           'Vaor may still give the ember willingly, but he makes your repair duty part of the gift and keeps full control of his aid.',
-        changes: { resolve: -1, wayfire: 2 },
+        changes: { resolve: -1 },
         requires: { resolve: 1 },
         showIfAllFlags: ['c5-broke-memory-slab'],
         addFlags: ['c5-freed-vaor', 'c5-repair-vaor-memory-duty'],
@@ -1751,7 +1750,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
           'Lose 2 Health taking the fastest power while Vaor resists you.',
         advantage:
           'The fastest extraction should give you controlled fire immediately and cut an escape through the closing grave.',
-        changes: { health: -2, wayfire: 2 },
+        changes: { health: -2 },
         requires: { health: 1 },
         addFlags: ['c5-took-ember-by-force'],
         result:
@@ -1765,7 +1764,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
           'Spend 2 Resolve sharing thought, grief, and power until the duty is complete.',
         advantage:
           'The pact should protect Vaor while carrying his knowledge and living fire inside you.',
-        changes: { resolve: -2, wayfire: 2 },
+        changes: { resolve: -2 },
         requires: { resolve: 2 },
         hideIfAnyFlags: ['c5-broke-memory-slab'],
         addFlags: ['c5-vaor-pact'],
@@ -1780,7 +1779,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
           'Spend 3 Resolve sharing the ember, Vaor’s grief, and a duty to preserve his surviving memories.',
         advantage:
           'Vaor may accept shared power after the violation, but he gains the right to refuse its use and hold you to the repair duty.',
-        changes: { resolve: -3, wayfire: 2 },
+        changes: { resolve: -3 },
         requires: { resolve: 3 },
         showIfAllFlags: ['c5-broke-memory-slab'],
         addFlags: ['c5-vaor-pact', 'c5-repair-vaor-memory-duty'],

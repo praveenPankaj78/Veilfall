@@ -125,7 +125,7 @@ Caelan cuts out the ember. He gains direct power, but Vaor survives as an enemy 
 
 Caelan and Vaor agree to carry the ember to the black stone gate, protect living people, and expose what the Concord erased. Either bearer may refuse a use of the ember. The pact ends only when the gate is safe and both say their shared duty is complete. Vaor may then withdraw his voice and ember at his word. The remaining chains release Vaor's wounds and become a protective shell he can break when ready. If Caelan destroyed a memory plate, preserving the surviving memories and admitting the loss becomes an additional duty.
 
-Every ending grants equal Wayfire. The difference is power, consent, alliance, and the burden Caelan carries into Chapter Six.
+Every ending unlocks the next chapter without currency. The difference is power, consent, alliance, and the burden Caelan carries into Chapter Six.
 
 ## Continuity rules for Chapter Six
 

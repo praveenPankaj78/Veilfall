@@ -132,7 +132,7 @@ This remains available under mixed trust, but not when a stolen ember is conceal
 
 Caelan asks only for a road. The Moot accepts that limited request and remains neutral, granting supplies, guides, witnesses, and the right to return. The ending never describes this voluntary limit as a rejected war request.
 
-Every ending grants equal Wayfire. The difference is military strength, civilian exposure, political authority, and the meaning of consent between allies.
+Every ending unlocks the next chapter without currency. The difference is military strength, civilian exposure, political authority, and the meaning of consent between allies.
 
 ## Continuity rules for Chapter Seven
 
@@ -177,4 +177,4 @@ The game check verifies:
 - all Chapter Six flags change mechanics, have an explicitly classified and render-verified active complication or reaction, or carry an exact future contract;
 - body, ending, and journal recap never count as a lifecycle consumer by themselves, and duplicate producers never substitute for consumers;
 - every paid Chapter Six option has a later practical consequence;
-- each Moot ending records its distinct consequence and grants equal Wayfire.
+- each Moot ending records its distinct consequence and unlocks the next chapter without currency.

@@ -527,7 +527,22 @@
 .return-recap-actions {
   display: flex;
   flex: none;
+  flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+.return-recap-actions button {
+  min-height: 2.75rem;
+  height: auto;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.ending-panel button {
+  min-height: 2.75rem;
+  height: auto;
+  max-width: 100%;
+  white-space: normal;
 }
 
 .mobile-status-strip {
@@ -603,7 +618,9 @@
   animation: page-in 420ms ease-out both;
 }
 
-.story-page {
+.story-page,
+.scene-art-wrap,
+.choice-card {
   scroll-margin-top: 5rem;
 }
 
@@ -1172,6 +1189,23 @@
   background: #111419;
 }
 
+.import-dialog,
+.replay-dialog,
+.death-dialog {
+  width: min(36rem, calc(100vw - 1.5rem));
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.import-dialog button,
+.replay-dialog button,
+.death-dialog button {
+  min-height: 2.75rem;
+  height: auto;
+  white-space: normal;
+}
+
 .journal-sections {
   display: grid;
   gap: 0.9rem;
@@ -1463,6 +1497,20 @@
 }
 
 @media (max-width: 950px) {
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .chapter-label {
+    display: none;
+  }
+
+  .story-page,
+  .scene-art-wrap,
+  .choice-card {
+    scroll-margin-top: 11rem;
+  }
+
   .top-actions button {
     min-width: 2.75rem;
     min-height: 2.75rem;
@@ -1688,6 +1736,25 @@
 
   .release-settings-sections > section {
     padding: 0.85rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .wordmark > span:last-child {
+    display: none;
+  }
+}
+
+@media (max-height: 500px) and (max-width: 950px) {
+  .topbar,
+  .mobile-status-strip {
+    position: static;
+  }
+
+  .story-page,
+  .scene-art-wrap,
+  .choice-card {
+    scroll-margin-top: 1rem;
   }
 }
 

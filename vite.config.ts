@@ -43,15 +43,22 @@ export default defineConfig(async ({ command }) => {
 
   // The game uses browser local storage while developing. Avoid starting the
   // Cloudflare local runtime unless a production build needs it.
-  const cloudflare = command === 'build'
-    ? (await import('@cloudflare/vite-plugin')).cloudflare
-    : null;
+  const cloudflare =
+    command === 'build'
+      ? (await import('@cloudflare/vite-plugin')).cloudflare
+      : null;
 
   return {
     css: { postcss: { plugins: [tailwindcss()] } },
-    server: isCodexSeatbeltSandbox
-      ? { watch: { useFsEvents: false, usePolling: true } }
-      : undefined,
+    server: {
+      watch: {
+        // Packaging replaces generated assets; they are not development inputs.
+        ignored: ['**/work/**', '**/outputs/**', '**/dist/**'],
+        ...(isCodexSeatbeltSandbox
+          ? { useFsEvents: false, usePolling: true }
+          : {}),
+      },
+    },
     plugins: [
       vinext(),
       sites(),

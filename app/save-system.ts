@@ -14,14 +14,16 @@ import {
 } from './game-data';
 
 export const BUILD_VERSION = version;
-export const SAVE_SCHEMA_VERSION = 17;
+export const SAVE_SCHEMA_VERSION = 18;
 export const EXPORT_FORMAT = 'veilfall-ember-oath-save';
 export const EXPORT_VERSION = 1;
 export const MAX_IMPORT_BYTES = 1_000_000;
 
-export const CURRENT_SAVE_KEY = 'veilfall.saga.v17.save';
-export const BACKUP_SAVE_KEY = 'veilfall.saga.v17.pre-import-backup';
-export const DAMAGED_SAVE_BACKUP_KEY = 'veilfall.saga.v17.damaged-backup';
+export const CURRENT_SAVE_KEY = 'veilfall.saga.v18.save';
+export const BACKUP_SAVE_KEY = 'veilfall.saga.v18.pre-import-backup';
+export const DAMAGED_SAVE_BACKUP_KEY = 'veilfall.saga.v18.damaged-backup';
+const PREVIOUS_DOCUMENT_KEY = 'veilfall.saga.v17.save';
+const PREVIOUS_BACKUP_KEY = 'veilfall.saga.v17.pre-import-backup';
 export const READING_PREFERENCE_KEY = 'veilfall.reading.v1';
 export const LEGACY_SAVE_KEYS = [
   'veilfall.saga.v16.save',
@@ -369,7 +371,6 @@ export function normaliseGameState(value: Partial<GameState>): GameState {
       command: savedStats.command ?? initialState.stats.command,
       oathfire: savedStats.oathfire ?? initialState.stats.oathfire,
       medicine: savedStats.medicine ?? initialState.stats.medicine,
-      wayfire: savedStats.wayfire ?? initialState.stats.wayfire,
     },
     relationships: resolveFinalRelationshipIntents(relationships, flags),
     contentPreference: {
@@ -383,7 +384,10 @@ export function normaliseGameState(value: Partial<GameState>): GameState {
       entry ===
         'You cross first. The strike hits your shield instead of the wounded, and a door-shaped scar burns across your wrist.'
         ? 'You crossed first after the opening stopped. Your shield took the strike for the wounded. The completed door promise created no scar.'
-        : entry,
+        : entry.replace(
+            /^You spend \d+ Wayfire and continue to (.+)\.$/,
+            'You continue to $1 with every earlier consequence.',
+          ),
     ),
     defeat: value.defeat ?? null,
   };
@@ -419,6 +423,15 @@ function validateGameState(value: unknown, label: string): ValidatedGame {
     if (!isBoundedInteger(value.stats[key], 0, 1_000_000))
       return { ok: false, error: `${label} has an invalid ${key} value.` };
   }
+  // Older documents carried an unused currency. Validate it before retiring it.
+  if (
+    'wayfire' in value.stats &&
+    !isBoundedInteger(value.stats.wayfire, 0, 1_000_000)
+  )
+    return {
+      ok: false,
+      error: `${label} has an invalid retired currency value.`,
+    };
   if (!isRecord(value.relationships))
     return { ok: false, error: `${label} has no valid relationship block.` };
   for (const person of relationshipKeys) {
@@ -552,7 +565,12 @@ export function createStoredSave(
     kind: 'veilfall-browser-save',
     schemaVersion: SAVE_SCHEMA_VERSION,
     game: normaliseGameState(game),
-    checkpoints,
+    checkpoints: Object.fromEntries(
+      Object.entries(checkpoints).map(([chapter, state]) => [
+        chapter,
+        normaliseGameState(state),
+      ]),
+    ),
     readingPreference,
   };
 }
@@ -562,7 +580,7 @@ export function validateStoredSave(value: unknown): ValidatedDocument {
     return { ok: false, error: 'The stored save is not an object.' };
   if (value.kind !== 'veilfall-browser-save')
     return { ok: false, error: 'The stored save has an unknown format.' };
-  if (value.schemaVersion !== SAVE_SCHEMA_VERSION)
+  if (![17, SAVE_SCHEMA_VERSION].includes(value.schemaVersion as number))
     return { ok: false, error: 'The stored save version is not supported.' };
   return validateDocumentParts(
     value.game,
@@ -617,7 +635,9 @@ export function parsePortableSave(
       ok: false,
       error: 'That Veilfall export version is not supported.',
     };
-  if (![16, SAVE_SCHEMA_VERSION].includes(Number(value.saveSchemaVersion)))
+  if (
+    ![16, 17, SAVE_SCHEMA_VERSION].includes(value.saveSchemaVersion as number)
+  )
     return {
       ok: false,
       error: 'That save was made by an unsupported game version.',
@@ -690,8 +710,13 @@ export function readStoredSave(storage: StorageLike):
     }
   | { ok: false; error: string; damagedRaw?: string } {
   let currentRaw: string | null;
+  let migratedDocument = false;
   try {
     currentRaw = storage.getItem(CURRENT_SAVE_KEY);
+    if (currentRaw === null) {
+      currentRaw = storage.getItem(PREVIOUS_DOCUMENT_KEY);
+      migratedDocument = currentRaw !== null;
+    }
   } catch {
     return {
       ok: false,
@@ -703,7 +728,12 @@ export function readStoredSave(storage: StorageLike):
     try {
       const result = validateStoredSave(JSON.parse(currentRaw));
       return result.ok
-        ? { ok: true, document: result.document, migrated: false, warnings: [] }
+        ? {
+            ok: true,
+            document: result.document,
+            migrated: migratedDocument,
+            warnings: [],
+          }
         : { ok: false, error: result.error, damagedRaw: currentRaw };
     } catch {
       return {
@@ -865,7 +895,8 @@ export function replaceDamagedStoredSave(
 
 export function readBackupSave(storage: StorageLike): ValidatedDocument | null {
   try {
-    const raw = storage.getItem(BACKUP_SAVE_KEY);
+    const raw =
+      storage.getItem(BACKUP_SAVE_KEY) ?? storage.getItem(PREVIOUS_BACKUP_KEY);
     if (!raw) return null;
     return validateStoredSave(JSON.parse(raw));
   } catch {

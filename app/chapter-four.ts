@@ -1320,7 +1320,6 @@ export const chapterFourNodes: Record<string, StoryNode> = {
           'Keep the law visible, even if a thief will treat chains as a suggestion.',
         advantage:
           'Rook becomes a named fugitive if he escapes, and the Underways trail becomes part of your case.',
-        changes: { wayfire: 2 },
         addFlags: ['c4-rook-arrested'],
         result:
           'You close an iron cuff around Rook’s wrist. He thanks you for choosing the lock he practised on in Harrowfen.',
@@ -1332,7 +1331,6 @@ export const chapterFourNodes: Record<string, StoryNode> = {
         detail: 'Let him travel unchained under terms both of you understand.',
         advantage:
           'Rook agrees to follow the buyer through the Underways and give you one honest warning before the roads divide.',
-        changes: { wayfire: 2 },
         addFlags: ['c4-rook-bargain'],
         result:
           'You offer protection until the buyer is exposed. Rook promises a safe exit and one honest warning before the roads divide. Then he will follow the buyer through the Underways.',
@@ -1345,7 +1343,6 @@ export const chapterFourNodes: Record<string, StoryNode> = {
           'Place lives above custody and accept that he will choose his own road.',
         advantage:
           'Rook reveals a safe exit for everyone and owes you a personal debt.',
-        changes: { wayfire: 2 },
         addFlags: ['c4-rook-trusted', 'c4-rook-owes-caelan'],
         result:
           'You give Rook the front of the line. Surprise empties his face before the grin returns. “That,” he says softly, “was reckless. I approve.”',

@@ -6,7 +6,7 @@ Systems should make the player feel the protagonist's method and its cost. They 
 
 ## Compact character model
 
-Every protagonist has Health, plus the two or three resources that express that character's method. Coin, Wayfire, equipment, named relationships, and world states appear in separate panels because they are possessions or consequences, not personal attributes.
+Every protagonist has Health, plus the two or three resources that express that character's method. Supplies, equipment, named relationships, and world states appear in separate panels because they are possessions or consequences, not personal attributes.
 
 - Health: wounds and exhaustion. The normal maximum is 8. Zero means the protagonist dies.
 - Class resources: Resolve and Oathfire for Caelan, Focus and Heat for Rook, Mana and Strain for Ilyra.
@@ -67,7 +67,7 @@ Recovery:
 
 Danger must be mechanically real. Any choice that can reduce Health displays the cost before selection. If that cost would reduce Health to zero, the option is marked Lethal at current Health. The player may still choose it when the action is available.
 
-At zero Health, play stops on a short death consequence written for the current chapter. The player may return to the chapter start checkpoint or restart the story. Death is never avoided through an advertisement, Wayfire payment, romance score, or unexplained rescue.
+At zero Health, play stops on a short death consequence written for the current chapter. The player may return to the chapter start checkpoint or restart the story. Death is never avoided through an advertisement, currency payment, romance score, or unexplained rescue.
 
 Not every bad choice costs Health. Injury belongs to physical danger, exhaustion, untreated wounds, and magical backlash. Political errors, failed tricks, and broken trust should damage the resource that fits the event.
 
@@ -88,9 +88,9 @@ Exact downstream plot consequences remain unknown, but immediate mechanical cost
 
 ## Cost and advantage contract
 
-Every choice that reduces Health, Resolve, Command, Oathfire, Medicine, Wayfire, Focus, Mana, Setup, Leverage, or another limited value must purchase a clear advantage. A numerical loss is never justified only by personality or by a differently worded paragraph.
+Every choice that reduces Health, Resolve, Command, Oathfire, Medicine, Focus, Mana, Setup, Leverage, or another limited value must purchase a clear advantage. A numerical loss is never justified only by personality or by a differently worded paragraph.
 
-Before selection, the option shows both the cost and the advantage in plain language. The player may remain unsure about the exact later event, but must understand what the protagonist is trying to secure.
+Before selection, the option shows the immediate cost and describes the protagonist's intent in plain language. The itch release omits the separate Expected advantage panel to preserve discovery; development retains it for review. Authored advantages and consequence checks remain required. The player may remain unsure about the exact later event, but must understand what the protagonist is trying to secure.
 
 The advantage must be one or more of the following:
 
@@ -119,21 +119,9 @@ Uncertain checks are reserved for moments when risk itself is dramatic. The game
 
 Nonlethal failure moves the story forward through injury, lost time, increased Heat, damaged trust, altered routes, or a harder objective. It does not repeat the same passage. A clearly marked lethal choice is the exception: it ends that version of the protagonist's story and offers the chapter checkpoint.
 
-## Wayfire economy
+## Chapter progression
 
-Wayfire is an optional progression currency. The fiction treats it as the warmth left when a person makes a choice they cannot take back.
-
-Recommended launch rules:
-
-- Main story chapters continue freely during the foundation arc. The player keeps all earned Wayfire.
-- Wayfire can unlock optional scenes, preparations, alternate approaches, and future early access without changing consent or moral outcomes.
-- Optional discoveries, difficult class solutions, and replay milestones grant reserve Wayfire.
-- Ads may later grant bonus Wayfire, but no player should be forced to repeat content or choose a worse story outcome to continue.
-- Currency is never spent inside a choice to purchase moral superiority, romance, consent, or survival.
-- Premium purchase and ad rewards must use the same clear conversion rate.
-- The player can preview optional content before deciding whether to spend Wayfire on it.
-
-This keeps monetisation attached to optional access and preparation rather than narrative integrity. A later release may test chapter early access, but a completed chapter must always provide a clear free continuation path.
+Finishing a chapter unlocks the next one without currency, payments, ads, or optional-content purchases. The unused Wayfire reserve was retired in build 1.0.1. Oathfire remains Caelan's distinct, playable promise-based resource. Older save documents migrate without changing chapter access, relationships, replay checkpoints, or ending outcomes.
 
 ## Luck
 

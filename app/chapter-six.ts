@@ -2132,7 +2132,6 @@ export const chapterSixNodes: Record<string, StoryNode> = {
           'c6-refused-ember-disclosure',
           'c6-concealed-ember-theft',
         ],
-        changes: { wayfire: 2 },
         addFlags: ['c6-red-moot-war'],
         result:
           'You ask for war and name its danger without hiding civilians behind the word army. The three clans vote to turn every wheel toward the Black Gate.',
@@ -2151,7 +2150,6 @@ export const chapterSixNodes: Record<string, StoryNode> = {
           'c6-refused-ember-disclosure',
           'c6-concealed-ember-theft',
         ],
-        changes: { wayfire: 2 },
         addFlags: ['c6-red-moot-alliance'],
         result:
           'You ask the clans to choose their own commanders and the number they can risk. The vote grants an ember escort, wind callers, and riders under Korran’s seasonal authority.',
@@ -2164,7 +2162,6 @@ export const chapterSixNodes: Record<string, StoryNode> = {
           'Accept military neutrality rather than turn earned trust into pressure for troops.',
         advantage:
           'Kharad Vey remains protected while its guides and evidence strengthen Caelan’s cause.',
-        changes: { wayfire: 2 },
         addFlags: ['c6-red-moot-neutral'],
         result:
           'You ask for no army. The Moot grants guides, public witnesses, supplies, and a safe road through the steppe. Neutrality becomes a boundary, not abandonment.',

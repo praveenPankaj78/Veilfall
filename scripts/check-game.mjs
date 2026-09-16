@@ -814,7 +814,6 @@ function stateKey(state) {
     command: 2,
     oathfire: 2,
     medicine: 1,
-    wayfire: 0,
   };
   const stats = Object.entries(state.stats)
     .map(
@@ -927,7 +926,6 @@ const chapterThreeBase = {
     command: 5,
     oathfire: 4,
     medicine: 0,
-    wayfire: 0,
   },
 };
 const chapterFourKnownTerms = Object.keys(statLabels);
@@ -949,7 +947,6 @@ const chapterFourBase = {
     command: 5,
     oathfire: 4,
     medicine: 0,
-    wayfire: 7,
   },
 };
 const chapterFiveKnownTerms = Object.keys(statLabels);
@@ -972,7 +969,6 @@ const chapterFiveBase = {
     command: 5,
     oathfire: 4,
     medicine: 0,
-    wayfire: 9,
   },
 };
 const chapterSixKnownTerms = Object.keys(statLabels);
@@ -997,7 +993,6 @@ const chapterSixBase = {
     command: 5,
     oathfire: 5,
     medicine: 0,
-    wayfire: 11,
   },
 };
 const chapterSevenKnownTerms = Object.keys(statLabels);
@@ -1025,7 +1020,6 @@ const chapterSevenBase = {
     command: 5,
     oathfire: 5,
     medicine: 0,
-    wayfire: 13,
   },
 };
 const chapterEightKnownTerms = Object.keys(statLabels);
@@ -1049,7 +1043,6 @@ const chapterEightBase = {
     command: 5,
     oathfire: 5,
     medicine: 1,
-    wayfire: 15,
   },
 };
 const chapterNineKnownTerms = Object.keys(statLabels);
@@ -1083,7 +1076,6 @@ const chapterNineBase = {
     command: 5,
     oathfire: 5,
     medicine: 1,
-    wayfire: 17,
   },
 };
 const chapterTenKnownTerms = Object.keys(statLabels);
@@ -3257,14 +3249,14 @@ for (const nodeId of ['low-crisis', 'ridge-crisis', 'inspection-crisis']) {
     );
   }
 }
-const wayfireLessonText = nodes['folded-road'].lesson?.body ?? '';
+const progressionLessonText = nodes['folded-road'].lesson?.body ?? '';
 if (
-  !/Finishing a chapter unlocks the next one/i.test(wayfireLessonText) ||
-  !/optional paths and scenes/i.test(wayfireLessonText) ||
-  /Wayfire.*unlock later chapters/i.test(wayfireLessonText)
+  !/Finishing a chapter unlocks the next one/i.test(progressionLessonText) ||
+  !/No currency is needed/i.test(progressionLessonText) ||
+  /Wayfire/i.test(progressionLessonText)
 ) {
   failures.push(
-    'The Chapter One Wayfire lesson contradicts current chapter progression',
+    'The Chapter One lesson must explain free chapter progression without retired currency',
   );
 }
 const sealedCaseTruths = knownTruths({
@@ -6063,10 +6055,10 @@ for (const [endingId, flag] of Object.entries(chapterSixEndingFlags)) {
   );
   if (
     !finalChoice?.addFlags?.includes(flag) ||
-    finalChoice.changes?.wayfire !== 2
+    'wayfire' in (finalChoice.changes ?? {})
   ) {
     failures.push(
-      `${endingId} does not record its Moot outcome with equal Wayfire`,
+      `${endingId} must record its Moot outcome without retired currency`,
     );
   }
 }
@@ -6973,10 +6965,10 @@ for (const [endingId, flag] of Object.entries(chapterSevenEndingFlags)) {
   );
   if (
     !finalChoice?.addFlags?.includes(flag) ||
-    finalChoice.changes?.wayfire !== 2
+    'wayfire' in (finalChoice.changes ?? {})
   ) {
     failures.push(
-      `${endingId} does not record its army outcome with equal Wayfire`,
+      `${endingId} must record its army outcome without retired currency`,
     );
   }
 }
@@ -7423,10 +7415,10 @@ for (const [endingId, flag] of Object.entries(chapterEightEndingFlags)) {
   );
   if (
     !finalChoice?.addFlags?.includes(flag) ||
-    finalChoice.changes?.wayfire !== 2
+    'wayfire' in (finalChoice.changes ?? {})
   ) {
     failures.push(
-      `${endingId} does not record its embassy outcome with equal Wayfire`,
+      `${endingId} must record its embassy outcome without retired currency`,
     );
   }
 }
@@ -9886,7 +9878,7 @@ if (
   failures.push('Chapter Twelve start snapshot or canonical entry is missing');
 
 if (
-  saveExports.CURRENT_SAVE_KEY !== 'veilfall.saga.v17.save' ||
+  saveExports.CURRENT_SAVE_KEY !== 'veilfall.saga.v18.save' ||
   !saveExports.LEGACY_SAVE_KEYS.includes('veilfall.saga.v16.save')
 )
   failures.push(

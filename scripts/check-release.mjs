@@ -90,6 +90,76 @@ const document = saves.createStoredSave(
   { 2: checkpointTwo, 12: checkpointTwelve },
   'extra-large',
 );
+// Retiring an unused currency must not change progression, consent or replay.
+assert.ok(!('wayfire' in game.initialState.stats));
+assert.doesNotMatch(pageSource, /wayfire/i);
+for (const node of Object.values(game.nodes)) {
+  assert.doesNotMatch(
+    JSON.stringify({
+      lesson: node.lesson,
+      choices: node.choices,
+      introduces: node.introduces,
+    }),
+    /wayfire/i,
+  );
+}
+for (const saveSchemaVersion of [16, 17, 18]) {
+  const older = saves.createPortableSave(document);
+  older.saveSchemaVersion = saveSchemaVersion;
+  older.game = { ...older.game, stats: { ...older.game.stats, wayfire: 123 } };
+  older.game.history = [
+    'You spend 5 Wayfire and continue to Bellweather Inn.',
+    ...older.game.history.slice(1),
+  ];
+  older.checkpoints = Object.fromEntries(
+    Object.entries(older.checkpoints).map(([chapter, state]) => [
+      chapter,
+      {
+        ...state,
+        stats: { ...state.stats, wayfire: 40 },
+        history: state.history.map((entry, index) =>
+          index === 0
+            ? 'You spend 5 Wayfire and continue to Bellweather Inn.'
+            : entry,
+        ),
+      },
+    ]),
+  );
+  const migrated = saves.parsePortableSave(JSON.stringify(older));
+  assert.equal(migrated.ok, true, migrated.error);
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(migrated.document)),
+    JSON.parse(JSON.stringify(document)),
+  );
+  assert.doesNotMatch(
+    JSON.stringify(saves.createPortableSave(migrated.document)),
+    /wayfire/i,
+  );
+  older.game.stats.wayfire = 'invalid';
+  assert.equal(saves.parsePortableSave(JSON.stringify(older)).ok, false);
+}
+const previousDocument = {
+  ...document,
+  schemaVersion: 17,
+  game: { ...document.game, stats: { ...document.game.stats, wayfire: 99 } },
+};
+const previousRaw = JSON.stringify(previousDocument);
+const previousStorage = new MemoryStorage({
+  'veilfall.saga.v17.save': previousRaw,
+  'veilfall.saga.v17.pre-import-backup': previousRaw,
+});
+const migratedDocument = saves.readStoredSave(previousStorage);
+assert.equal(migratedDocument.ok, true);
+assert.equal(migratedDocument.migrated, true);
+assert.equal(
+  saves.writeStoredSave(previousStorage, migratedDocument.document).ok,
+  true,
+);
+assert.equal(previousStorage.getItem('veilfall.saga.v17.save'), previousRaw);
+assert.equal(saves.readStoredSave(previousStorage).migrated, false);
+assert.equal(saves.readBackupSave(previousStorage).ok, true);
+assert.match(pageSource, /showExpectedAdvantages && choice\.advantage/);
+assert.match(pageSource, /NEXT_PUBLIC_VEILFALL_TARGET !== 'itch'/);
 const portable = saves.createPortableSave(document, '2026-09-15T00:00:00.000Z');
 const portableText = JSON.stringify(portable);
 const parsed = saves.parsePortableSave(

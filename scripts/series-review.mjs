@@ -11,6 +11,7 @@ export async function checkSeriesReview(
   pageSource,
   failures,
   save,
+  onScene,
 ) {
   const ast = ts.createSourceFile(
     'page.tsx',
@@ -164,6 +165,7 @@ export async function checkSeriesReview(
         break;
       }
       for (const { state, choice } of result.path) {
+        if (run === 0) await onScene?.(state, context.checkpointsRef.current);
         const node = game.nodes[state.nodeId];
         observed.add(node.id);
         const text = [
@@ -219,6 +221,7 @@ export async function checkSeriesReview(
         ending: result.state.nodeId,
       });
       context.game = result.state;
+      if (run === 0) await onScene?.(context.game, context.checkpointsRef.current);
       if (contract.nextNode) {
         runtime.starts[`startChapter${names[contract.chapter - 1]}`]();
         if (
@@ -319,18 +322,11 @@ function checkReviewRegressions(game, memory, runtime, failures) {
     'Bridge defeat summons Mara after her departure',
   );
   for (const c of Object.values(nodes).flatMap((n) => n.choices)) {
-    if (/additional Wayfire|extra Wayfire/i.test(c.advantage ?? '')) {
-      const owner = Object.values(nodes).find((n) => n.choices.includes(c));
-      const freeSiblings = owner.choices.filter(
-        (s) => s !== c && !Object.values(s.changes ?? {}).some((v) => v < 0),
-      );
-      expect(
-        freeSiblings.every(
-          (s) => (c.changes?.wayfire ?? 0) > (s.changes?.wayfire ?? 0),
-        ),
-        `${c.id} advertises an unearned extra Wayfire reward`,
-      );
-    }
+    expect(
+      !/wayfire/i.test(`${c.label} ${c.detail} ${c.advantage}`) &&
+        !('wayfire' in (c.changes ?? {})) && !('wayfire' in (c.requires ?? {})),
+      `${c.id} reintroduces retired currency or an unearned currency advantage`,
+    );
     expect(
       !/older save|backward-compatible|owned-return flag|ending summary/i.test(
         `${c.label} ${c.detail} ${c.advantage}`,

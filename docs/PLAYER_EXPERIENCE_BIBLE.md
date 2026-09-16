@@ -98,7 +98,7 @@ For Ilyra, the player first uses Health, Mana, Threadread, and a simple Ward dur
 - Explain a mechanic before its name appears in a selectable choice. A sidebar definition may support the explanation, but it cannot replace an introduction in the main reading flow.
 - Before the first use, state what the mechanic represents, how the player gains it, what spending it can do, and any lasting risk.
 - Show costs on the choice before selection.
-- Label the concrete advantage beside every resource cost before selection.
+- Keep every immediate resource cost and the action's concrete intent visible. Development also labels the expected advantage; the itch release omits that extra panel.
 - When a power transfers freedom, name the receiving promise, the exact action the player loses, the duration, success condition, breach condition, and whether it survives the chapter.
 - An illusion may make a real desire visible. Rejecting its price must not require the protagonist to deny that desire, and the illusion cannot answer for an absent person.
 - Do not rely on a positive stat badge to explain why an option is worthwhile.
@@ -111,7 +111,7 @@ For Ilyra, the player first uses Health, Mana, Threadread, and a simple Ward dur
 - Health is always visible and explained before the first dangerous choice.
 - A Health cost that would reach zero is labelled Lethal at current Health before selection.
 - Death receives a short consequence grounded in the current location, then offers a return to the chapter start or a full restart.
-- The death screen never sells survival, spends Wayfire automatically, or suggests that romance should have protected the protagonist.
+- The death screen never sells survival, spends currency automatically, or suggests that romance should have protected the protagonist.
 - Low Health should change the feel of the interface and later prose so the player senses danger before the final point is lost.
 
 ## Playable identity during intersections
@@ -175,7 +175,7 @@ Good Ilyra choice: Seal the memory until both fathers can be examined. Costs 2 M
 
 Avoid labels such as good choice, evil choice, romance choice, correct answer, or secret ending.
 
-The interface labels a plan's benefit as its expected advantage. This preserves clarity about why the player might choose it without promising that danger, opposition, or later consequences cannot change the result.
+The development interface labels a plan's benefit as its expected advantage. The itch release omits this separate panel to preserve discovery, while retaining action details, immediate costs, requirements, and lethal warnings. Benefits remain authored and tested; hiding this panel does not justify an arbitrary cost or an undisclosed consent or permanent-freedom price.
 
 Place any essential lesson before the active scene prose. The last story beat should lead directly into the choices without a tutorial card or generic prompt interrupting it.
 

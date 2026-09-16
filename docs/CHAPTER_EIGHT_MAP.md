@@ -163,7 +163,7 @@ No art from Chapters One through Seven is reused.
 4. Vexa cannot be named before the embassy scene.
 5. Every negative stat change must state an expected advantage and store a consequence.
 6. Every route must remain lethal when Health is low and completable when a costly option is unavailable.
-7. All three endings must take sixteen decisions and award equal Wayfire.
+7. All three endings must take sixteen decisions and unlock the next chapter without currency.
 8. Chapter Nine must inherit the defence route, Oath price, evidence state, and Vexa entry state.
 9. The collector barrier must match the chosen defence: mortal fires, Compact white fire, or First Fort's stored heat.
 10. Vexa must address the defence actually chosen and must not claim that Caelan promised entry when he did not.

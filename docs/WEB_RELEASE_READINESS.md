@@ -1,8 +1,10 @@
 # Web release readiness
 
-Date reviewed: 2026-09-15  
-Release build: 1.0.0  
-Target: the existing OpenAI Sites project and its supported Vinext/Cloudflare runtime
+Date reviewed: 2026-09-16
+
+Release build: 1.0.1
+
+Targets: separate restricted itch.io browser ZIP; preserved Existing Sites Vinext/Cloudflare configuration
 
 ## Readiness decision
 
@@ -27,13 +29,13 @@ The opening remains one action from Chapter I. No registration, tutorial gate, p
 
 ## Save architecture and compatibility
 
-Browser progress is stored as one atomic document under `veilfall.saga.v17.save`. It includes the current `GameState`, chapter-start checkpoints, and reading preference, avoiding a new partial state split. Storage access and migrations are centralized in `app/save-system.ts`.
+Browser progress is stored as one atomic document under `veilfall.saga.v18.save`. It includes the current `GameState`, chapter-start checkpoints, and reading preference, avoiding a new partial state split. Storage access and migrations are centralized in `app/save-system.ts`.
 
 Portable files use:
 
 - format: `veilfall-ember-oath-save`;
 - export version: 1;
-- save schema: 17 (schema 16 imports are migrated);
+- save schema: 18 (schema 16 and 17 imports are migrated);
 - maximum import size: 1,000,000 bytes;
 - filename beginning `veilfall-the-ember-oath-save-` and ending `.json`.
 
@@ -41,7 +43,7 @@ Exports contain the current state, stats, relationship scores and intent, consen
 
 Validation completes before storage changes. It covers file size; JSON and object shape; format/export/schema versions; timestamps; required types; stat integer bounds; chapter/node agreement; relationship structure and intent; arrays and preferences; node/choice validity; completed chapters; and checkpoint entry, prefix, decision-count, flag, completion, and current-path consistency.
 
-A valid import first shows chapter, completed count, checkpoint count, ending state, and export time. Cancel leaves current progress untouched. Confirmation writes the existing atomic document to `veilfall.saga.v17.pre-import-backup` before replacement, and the UI can restore that backup. If backup creation or replacement fails, replacement is aborted and the prior current document remains. A damaged current save is left in place, reported visibly, and can be downloaded or copied to a separate recovery key; autosave stays blocked until the player explicitly starts fresh. Errors never claim a successful write and offer retry or current-session export as appropriate.
+A valid import first shows chapter, completed count, checkpoint count, ending state, and export time. Cancel leaves current progress untouched. Confirmation writes the existing atomic document to `veilfall.saga.v18.pre-import-backup` before replacement, and the UI can restore that backup. If backup creation or replacement fails, replacement is aborted and the prior current document remains. A damaged current save is left in place, reported visibly, and can be downloaded or copied to a separate recovery key; autosave stays blocked until the player explicitly starts fresh. Errors never claim a successful write and offer retry or current-session export as appropriate.
 
 Existing keys from Chapter One v2/v3 and saga v4 through v16 are migrated using the established stamina-to-health, relationship intent, Chapter IX roster, final relationship, and Oath correction rules. Compatible legacy per-chapter checkpoints are folded into the atomic v17 document; invalid ones are excluded with a visible warning.
 
@@ -64,7 +66,7 @@ No automated accessibility scanner or real screen-reader session was available. 
 
 The in-game About area states the twelve-chapter scope, dark fantasy violence, blood, injury, possible player-character death, coercive bargains, and threats to freedom. It says romance is optional without advertising adult scenes or a description setting. No age rating is invented.
 
-The release displays build 1.0.0. Players can add a description, inspect, and copy a bug report containing build, chapter, node ID, browser user agent, language, viewport, and text setting. It automatically excludes relationships, flags, history, and save data. There is no feedback button or placeholder address because no real support destination is configured.
+The release displays build 1.0.1. Players can add a description, inspect, and copy a bug report containing build, chapter, node ID, browser user agent, language, viewport, and text setting. It automatically excludes relationships, flags, history, and save data. There is no feedback button or placeholder address because no real support destination is configured.
 
 A source audit found no player-facing analytics, advertising, email collection, account service, database, or application fetch to a third-party service. Runtime requests observed in preview were same-origin HTML, JavaScript, CSS, favicon, framework image handling, and local `public/art` assets. No consent banner was added. Wrangler may report its own development CLI telemetry when running the local preview; that is not an application integration shipped in the player UI.
 
@@ -98,7 +100,7 @@ Loading follow-up: the browser package now streams its JavaScript and CSS with a
 
 The updated loader was verified in the normal local browser preview and a deliberately slowed local transfer (32 KiB chunks with 250 ms delay): visible 1% and 41% states progressed to the playable cover. `node scripts/check-itch-loader.mjs` verifies byte percentages, the local-file guard, HTTP failure recovery, and a stalled-transfer timeout. The browser automation policy prevented navigating directly to `file://`, so that explanation was verified in source and the guard in the regression, not visually in Chrome. The Existing Sites build does not use this static loader.
 
-## Single-passage romance follow-up — 15 September 2026
+## Single-passage romance follow-up (15 September 2026)
 
 At the owner's request, removed the Fade/Detailed selector, player-adulthood checkbox, associated `StoryNode` UI hook, and explanatory settings copy. The cover and About area do not advertise adult scenes or this retired setting. The three existing fuller passages (Vexa in IX; Mara or Lysara in X) are unchanged and now render whenever their explicit intimacy choice has been taken. No new intimate prose was authored.
 
@@ -112,7 +114,47 @@ One unrelated visual follow-up was observed: with Extra large text in the narrow
 
 Validation completed successfully: `npm run check:story` (43 files, 3,018 paragraphs), `npm run check:game` (263 nodes, 152,220 reachable choices; five continuous twelve-chapter routes), `npm run check:release`, `npm run lint`, `node node_modules/typescript/bin/tsc --noEmit --incremental false`, `node scripts/check-itch-loader.mjs`, `npm run build`, `npm run package:itch`, and `git diff --check`. Both builds retain the documented large-chunk warning. The static package contains 45 files, including top-level `index.html`, `assets/`, `art/`, and favicon; its size is approximately 95.6 MB. No upload, publishing, audience change, commit, or push occurred. Unrelated modified UI primitives and `hooks/use-mobile.ts` were left untouched.
 
-## Test matrix
+## Build 1.0.1: currency retirement, itch choices, and responsive follow-up
+
+The complete game never spent or required Wayfire: it only accumulated awards and advertised future optional paths. This build removes that unused stat, all awards, visible resource rows, chapter-ending copy, and the obsolete lesson. Chapter access remains free. Oathfire is a different, active mechanic and is unchanged. All 922 effective choices were compared with the pre-change mechanics: zero differences after excluding only the retired currency and its descriptive copy. Choice IDs, routes, other resources, relationship updates, consent boundaries, and Oath corrections are preserved.
+
+Save schema 18 normalizes both current state and every replay checkpoint. It accepts schema 16/17 portable saves, reads schema 17 browser documents and pre-import backups, validates the old optional currency before discarding it, and updates the known old currency-spending transition text in journal history. The original v17 browser record is retained untouched when v18 is written. Export format remains 1. New schema 18 exports require this or a newer compatible build; old builds do not accept them. Historical review documents retain their evidence, with a follow-up note explaining the retirement.
+
+`NEXT_PUBLIC_VEILFALL_TARGET` is set to `itch` only by `vite.itch.config.ts`. The itch package omits the separate Expected advantage block. Local development, including `http://localhost:3000`, still renders it. This is a build-target distinction, not a hostname trick. Action descriptions, costs, requirements, lethal warnings, consent, and permanent consequences remain available. Authored advantages and their narrative checks remain in source. Compiled JavaScript can still be inspected; hiding this UI is not anti-spoiler encryption.
+
+Computer-use testing identified and drove fixes for the compact 320-pixel header, wrapping recap/replay buttons, keyboard scrolling beneath sticky status bars, bounded scrollable confirmation dialogs, and non-sticky bars on short landscape screens. Generated `work`, `outputs`, and `dist` folders are excluded from the development watcher after a Windows EBUSY crash during concurrent packaging. The port-3000 server remained running through subsequent builds. A final dev-tab reload attempt timed out in browser focus automation; the earlier successful dev UI inspection confirms the advantage panel, while packaged UI testing completed separately.
+
+### Current follow-up test matrix
+
+All browser play/import tests used the isolated Codex Chromium session, not the owner's Chrome playthrough. Packaged testing used `127.0.0.1:4178/veilfall-beta/`.
+
+| Surface | Checks | Result |
+| --- | --- | --- |
+| Desktop 1280×720 | Actual Chapters V, VI, VIII, X, XI artwork; repeated validated imports; chapter labels; no advantage block | Pass; five unaltered screenshots captured |
+| Portrait 320×740, Extra large | Header, recap, settings, confirmation/cancellation, focus restoration, horizontal bounds | Pass after compact-header and recap fixes |
+| Portrait 320×568, Extra large | Terminal XII, wrapped replay button, chapter library, XI replay, later XII invalidation | Pass after ending-button fix; no dead continuation |
+| Portrait 390×844, Extra large | Four long final-law choices, visible keyboard focus, Enter progression, new-scene focus, refresh/persistent text size | Pass; permanent prices remain readable; no horizontal overflow |
+| Landscape 844×390, Extra large | Import summary and both confirmation buttons; settings; static status bars; scene layout | Pass; confirmation stays within viewport |
+| Tablet 768×1024 and desktop 1920×1080, Extra large | Scene/art layout, header, horizontal bounds | Pass in viewport testing |
+| Invalid import | Clear error, no replacement dialog/state mutation | Pass; Chapter XI and ten completed chapters retained |
+| Old browser save / local dev | Resume and Expected advantage visible at localhost:3000 | Pass in isolated browser storage; retired-history migration passes automated regressions, not a completed final dev reload |
+| Browser logs | Packaged session warning/error entries | None captured |
+| Physical Android | Official platform tools installed locally; USB device recognized as Motorola Edge 70 Pro, Android 16; Chrome 152 reported | Connection verified only. The execution tool blocked the requested USB port-forward/browser-launch command before it ran. No physical gameplay, touch, download, fullscreen, or performance pass is claimed |
+| iPhone Safari / other browser engines | No connected test surface | Not tested; viewport coverage is not a device/browser compatibility guarantee |
+
+The regression suite covers portable round trips with replay checkpoints, schema 16/17/18 migration, malformed retired-currency data, retained old documents/backups, storage read/write failure recovery, cancellation, consent restrictions, terminal endings, and reading persistence. The full graph passes 263 nodes, 152,220 reachable choices, four terminal Chapter XII endings, and five continuous twelve-chapter routes covering 219 decision nodes. Story style passes 45 files and 3,018 paragraphs. TypeScript, lint, release checks, loader checks, both builds, and ZIP rejection/audit checks pass. No checks were weakened to conceal a failure.
+
+Final itch output: 45 files, 95,564,639 bytes; top-level `index.html`, relative `assets/`, `art/`, and favicon. JavaScript is approximately 1,481.68 kB (439.53 kB gzip), CSS 210.35 kB (33.27 kB gzip). The existing large-chunk warning remains; no risky narrative loading rewrite was introduced. Packaging excludes source files, source maps, test fixtures, documents, tools, and machine paths. No public deployment, upload, audience change, commit, or push occurred.
+
+### Later-chapter screenshots
+
+Use `outputs/veilfall-scenic-screenshots-1.0.1.zip`, containing five JPEG captures and a caption/provenance README. Individual images are in `outputs/itch-scenic-screenshots-1.0.1/`. They show Dragonspine (V), the City on Wheels (VI), the fortress ring (VIII), the Ash Road (X), and Vathis (XI). The browser returned JPEG bytes at 1265×712 from its default 1280×720 viewport; files use the matching `.jpg` extension. No compositing, retouching, invented UI, or terminal-ending screenshots are included.
+
+`node scripts/create-release-qa-saves.mjs` generates valid screenshot/QA saves from the existing continuous-series harness, using actual decisions and UI transition functions without boosted resources. Each file is validated by the production import parser and used via the visible Import Save confirmation. They are local QA artifacts, never shipped in the game ZIP. The older cover/teaser kit is unchanged and predates this UI update; use these replacement screenshots for the page. Artwork provenance remains the owner's verification responsibility.
+
+This follow-up does not claim real-phone compatibility is fully signed off. Before wider distribution, finish an ordinary Android Chrome and iPhone Safari test on the actual restricted itch embed, including save downloads, touch scrolling, orientation changes, and fullscreen. The earlier ordinary-browser download and real storage-denial UI limitations below still apply. The previously recorded journal-display omission for `oath-safe-arrival` in `ITCH_BETA_PAGE_KIT.md` is pre-existing and outside this currency/layout change; its Oath flag and mechanics are unchanged.
+
+## Earlier release test matrix (historical coverage)
 
 | Surface                                            | Coverage                                                                                                                                                                                                  | Result                                                                                                                                                                                                                                                                             |
 | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

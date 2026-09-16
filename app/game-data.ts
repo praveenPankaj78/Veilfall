@@ -18,8 +18,7 @@ export type StatKey =
   | 'resolve'
   | 'command'
   | 'oathfire'
-  | 'medicine'
-  | 'wayfire';
+  | 'medicine';
 
 export type GameStats = Record<StatKey, number>;
 
@@ -310,7 +309,6 @@ export const initialState: GameState = {
     command: 3,
     oathfire: 0,
     medicine: 0,
-    wayfire: 0,
   },
   relationships: {
     mara: {
@@ -357,7 +355,6 @@ export const statLabels: Record<StatKey, string> = {
   command: 'Command',
   oathfire: 'Oathfire',
   medicine: 'Medicine',
-  wayfire: 'Wayfire',
 };
 
 export const relationshipLabels: Record<RelationshipKey, string> = {
@@ -1845,10 +1842,9 @@ const originalNodes: Record<string, StoryNode> = {
       'Choose how to lead the survivors through an impossible landscape.',
     threat: 'Unknown',
     lesson: {
-      title: 'Chapter rewards',
-      body: 'Wayfire is earned when you finish chapters and make major choices. Finishing a chapter unlocks the next one. Wayfire remains available for future optional paths and scenes. Gaining Wayfire does not make one choice morally better than another.',
+      title: 'The road continues',
+      body: 'Finishing a chapter unlocks the next one. Your choices, relationships, and surviving resources continue with you. No currency is needed to continue the adventure.',
     },
-    introduces: ['wayfire'],
     art: 'folded',
     body: (state) => [
       state.flags.includes('scouted-rise')
@@ -1871,9 +1867,8 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'follow-silver-road',
         label: 'Follow the silver road beneath the water.',
         detail:
-          'Choose movement and seek the unknown shelter ahead. Gain 5 Wayfire.',
+          'Choose movement and seek the unknown shelter ahead.',
         next: 'ending-forward',
-        changes: { wayfire: 5 },
         addFlags: ['chose-silver-road'],
         result:
           'You order ropes tied between every traveller and step into water that should not exist.',
@@ -1882,9 +1877,9 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'take-high-ground',
         label: 'Move the survivors to high ground and study the fold.',
         detail:
-          'Spend 1 Health. Gain 1 Command and 5 Wayfire by preparing a defensible route.',
+          'Spend 1 Health. Gain 1 Command by preparing a defensible route.',
         next: 'ending-height',
-        changes: { health: -1, command: 1, wayfire: 5 },
+        changes: { health: -1, command: 1 },
         requires: { health: 1 },
         addFlags: ['chose-high-ground'],
         result:
@@ -1894,9 +1889,9 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'swear-home-oath',
         label: 'Swear that every survivor will see a safe hearth again.',
         detail:
-          'Spend 2 Resolve. Gain 3 Oathfire, 6 Wayfire, and a binding duty.',
+          'Spend 2 Resolve. Gain 3 Oathfire and a binding duty.',
         next: 'ending-oath',
-        changes: { resolve: -2, oathfire: 3, wayfire: 6 },
+        changes: { resolve: -2, oathfire: 3 },
         requires: { resolve: 3 },
         addFlags: ['oath-bring-them-home'],
         result:
@@ -2996,9 +2991,8 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'c2-carry-testimony',
         label: 'Take Garran and his testimony to Harrowfen.',
         detail:
-          'Protect the witness and gain 7 Wayfire. His survival depends on your earlier medicine choice.',
+          'Protect the witness. His survival depends on your earlier medicine choice.',
         next: 'c2-ending-testimony',
-        changes: { wayfire: 7 },
         addFlags: ['c2-chose-testimony'],
         result:
           'You place Garran on the safest wagon and order Brann to keep him under constant guard.',
@@ -3007,9 +3001,8 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'c2-carry-pin',
         label: 'Carry the road pin as proof and study its pull.',
         detail:
-          'Follow the magical evidence toward Harrowfen and gain 7 Wayfire.',
+          'Follow the magical evidence toward Harrowfen.',
         next: 'c2-ending-pin',
-        changes: { wayfire: 7 },
         addFlags: ['c2-chose-pin'],
         result:
           'Tivik wraps the iron in chains. Even on the wagon, it points toward Harrowfen.',
@@ -3018,9 +3011,9 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'c2-swear-crown-truth',
         label: 'Swear to expose the Crown officer behind the attack.',
         detail:
-          'Spend 2 Resolve. Gain 3 Oathfire, 8 Wayfire, and a binding duty.',
+          'Spend 2 Resolve. Gain 3 Oathfire and a binding duty.',
         next: 'c2-ending-oath',
-        changes: { resolve: -2, oathfire: 3, wayfire: 8 },
+        changes: { resolve: -2, oathfire: 3 },
         requires: { resolve: 3 },
         addFlags: ['c2-oath-expose-crown'],
         result:
@@ -3946,9 +3939,8 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'c3-end-catch-courier',
         label: 'Pursue Ordan before he reaches his hidden soldiers.',
         detail:
-          'Let the thief escape with the fragment for now and capture the man responsible for Bellweather. Gain 7 Wayfire.',
+          'Let the thief escape with the fragment for now and capture the man responsible for Bellweather.',
         next: 'c3-ending-courier',
-        changes: { wayfire: 7 },
         addFlags: ['c3-target-ordan'],
         result:
           'You step onto the turning bridge with Ordan’s trail fixed in your mind.',
@@ -3957,9 +3949,8 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'c3-end-catch-thief',
         label: 'Cut across the bridge toward the unknown thief.',
         detail:
-          'Risk losing Ordan to learn why a second enemy wants the fragment. Gain 7 Wayfire.',
+          'Risk losing Ordan to learn why a second enemy wants the fragment.',
         next: 'c3-ending-thief',
-        changes: { wayfire: 7 },
         addFlags: ['c3-target-thief'],
         result:
           'You change direction as the thief closes his hand around Ordan’s prize.',
@@ -3968,9 +3959,8 @@ const originalNodes: Record<string, StoryNode> = {
         id: 'c3-end-secure-return',
         label: 'Secure a way back before pursuing either man.',
         detail:
-          'Protect your companions while both enemies gain distance. Gain 7 Wayfire.',
+          'Protect your companions while both enemies gain distance.',
         next: 'c3-ending-return',
-        changes: { wayfire: 7 },
         addFlags: ['c3-secured-return'],
         result:
           'You drive a Warden spike into the first arch and tie your last rope to Harrowfen’s world.',

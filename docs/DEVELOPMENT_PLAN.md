@@ -123,7 +123,7 @@ Create lightweight authoring checks for:
 
 ## Phase Ten: monetisation and release
 
-Keep Wayfire chapter access separate from moral choices and romance. Test a generous free path before adding ads. Players should understand what an ad grants and should never lose earned currency because a video fails.
+All twelve chapters are freely accessible through story progression. Build 1.0.1 retires the unused chapter-access currency. No ads, payments, or currency gates belong in this release.
 
 Release order:
 

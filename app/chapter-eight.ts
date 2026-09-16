@@ -2652,7 +2652,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
           'Allow the crossing under a public agreement, with all gathered forces watching and every weapon sealed.',
         advantage:
           'Begin diplomacy without secrecy and force Vexa’s warning into the public record.',
-        changes: { wayfire: 2 },
         addFlags: ['c8-vexa-entered-publicly'],
         result:
           'You lower your sword first. Vexa crosses beneath the white lantern, and every witness sees exactly who welcomed her and what she carried.',
@@ -2667,7 +2666,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         advantage:
           'Learn the warning while preserving a clear physical boundary until trust is tested.',
         hideIfAnyFlags: ['c8-accepted-ash-compact'],
-        changes: { wayfire: 2 },
         addFlags: ['c8-vexa-held-at-threshold'],
         result:
           'You approach alone until one step separates snow from ash. Vexa accepts the boundary and sets her sealed cases beside the threshold without crossing it.',
@@ -2681,7 +2679,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         advantage:
           'Keep your exact promise while limiting what the envoys can reach or study.',
         showIfAllFlags: ['c8-accepted-ash-compact'],
-        changes: { wayfire: 2 },
         addFlags: ['c8-vexa-received-outer-fort'],
         result:
           'You open a controlled road to empty Second Fort. Vexa and two sealed envoys enter the isolated yard beneath raised bows without approaching the wounded or lock rooms.',
@@ -2695,7 +2692,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         advantage:
           'The embassy must face the people already used by devil bargains before negotiating with rulers.',
         hideIfAnyFlags: ['c8-accepted-ash-compact'],
-        changes: { wayfire: 2 },
         addFlags: ['c8-ansel-spoke-first'],
         result:
           'Ansel lowers his crossbow and asks which house bought his promise to stay when his daughter returned. Vexa remains beyond the threshold and gives the question her full attention.',
@@ -2710,7 +2706,6 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         advantage:
           'Keep your exact promise while making the embassy answer the Futureless before negotiating with rulers.',
         showIfAllFlags: ['c8-accepted-ash-compact'],
-        changes: { wayfire: 2 },
         addFlags: ['c8-ansel-spoke-first', 'c8-ansel-spoke-first-after-entry'],
         result:
           'Vexa and two sealed envoys cross into Second Fort’s isolated yard. Ansel asks which house bought his promise to stay when his daughter returned, and the embassy must answer him before any ruler.',

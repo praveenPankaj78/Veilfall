@@ -1353,7 +1353,6 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     label: 'Present Jory’s warning and Garran’s testimony first.',
     detail:
       'Lead with evidence ordinary guards can understand. All other proof still travels with you.',
-    changes: { wayfire: 7 },
     addFlags: ['c2-chose-testimony'],
     result:
       'You place Jory’s warning above the other papers. Garran rides under guard, and the wrapped fragment remains tied inside your pack.',
@@ -1362,13 +1361,12 @@ export const adventureChoiceUpdates: Record<string, Partial<Choice>> = {
     label: 'Present the broken iron fragment first.',
     detail:
       'Lead with physical proof of the road weapon. All testimony and papers still travel with you.',
-    changes: { wayfire: 7 },
     addFlags: ['c2-chose-pin'],
     result:
       'Lysara checks the living cloth around the fragment. Brann packs every surviving paper beneath it, and the whole evidence bundle turns toward Harrowfen.',
   },
   'c2-swear-crown-truth': {
-    changes: { resolve: -2, oathfire: 3, wayfire: 8 },
+    changes: { resolve: -2, oathfire: 3 },
     requires: { resolve: 3 },
     addFlags: ['c2-oath-expose-crown'],
     result:

@@ -227,7 +227,7 @@ Respecting both limits changes a later offer and increases Trust or Respect. Try
 
 Optional intimacy is available only to a committed Mara or Lysara who explicitly crossed. It occurs after the road danger and every active offer have ended, with no bargain underway, no magic in the shelter, and two open exits. Existing intimacy creates no presumption. Both adults answer again and may choose conversation or separate rest.
 
-An accepted encounter uses its single existing fuller passage without a description selector or player-adulthood checkbox. Legacy description fields never change prose, choice IDs, flags, information, relationship changes, political effects, or later options. Intimacy grants no Wayfire or superior route.
+An accepted encounter uses its single existing fuller passage without a description selector or player-adulthood checkbox. Legacy description fields never change prose, choice IDs, flags, information, relationship changes, political effects, or later options. Intimacy grants no currency or superior route.
 
 ## Free Ledger bargain
 

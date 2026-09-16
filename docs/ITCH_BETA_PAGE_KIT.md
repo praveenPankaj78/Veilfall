@@ -12,7 +12,7 @@ This task prepares local files and page copy only. No itch.io project or YouTube
 | Project URL | `veilfall-ember-oath` as the slug, if available. Keep the eventual address stable; avoid adding `beta` if this will be the long-term page. No account URL or availability is assumed. |
 | Short description / tagline | Lead your people across two realms in a 12-chapter dark fantasy story shaped by your choices. |
 | Classification | Games |
-| Kind of project | HTML / HTML Game — playable in the browser, **not Downloadable**. |
+| Kind of project | HTML / HTML Game, playable in the browser, **not Downloadable**. |
 | Release status | In development during beta testing and release polish. The description explicitly says all twelve chapters are already playable. Switch to Released when signing off the stable release. This field does not control who can access it. |
 | Pricing | No payments |
 | Suggested donation | Not applicable with No payments; do not configure paid access. |
@@ -24,9 +24,9 @@ This task prepares local files and page copy only. No itch.io project or YouTube
 | Custom noun | Leave blank; the default “game” is suitable. |
 | Community | Comments, for tester feedback. |
 | Visibility & access | Save as Draft while reviewing; use Restricted when inviting testers. Do not choose Public for this beta. |
-| Cover image | `outputs/itch-promo-2026-09-16/veilfall-itch-cover.png` — 1408×1117, approximately the recommended 630×500 aspect ratio and above its minimum size. |
+| Cover image | `outputs/itch-promo-2026-09-16/veilfall-itch-cover.png`: 1408×1117, approximately the recommended 630×500 aspect ratio and above its minimum size. |
 | Gameplay video or trailer | Leave blank until you upload the supplied MP4 to YouTube, then paste the actual YouTube watch URL. No placeholder URL. |
-| Screenshots | The five PNGs in `outputs/itch-promo-2026-09-16/screenshots/`, in numbered order. |
+| Screenshots | Use the newer five JPEGs in `outputs/itch-scenic-screenshots-1.0.1/`, in numbered order. The original Chapter I PNGs below document the earlier kit. |
 
 These HTML settings follow [itch.io's HTML game instructions](https://itch.io/docs/creators/html5). The AI and screenshot recommendations follow its [quality guidelines](https://itch.io/docs/creators/quality-guidelines).
 
@@ -58,7 +58,7 @@ You are a captain caught between two realms. Lead your people through shifting r
 
 ### About this beta
 
-The full story is playable. This restricted beta is for testing clarity, choices, save reliability, and the reading experience—not a preview that stops halfway through the adventure.
+The full story is playable. This restricted beta is for testing clarity, choices, save reliability, and the reading experience, not a preview that stops halfway through the adventure.
 
 Please tell me where you felt confused, encountered a bug, or found a choice that did not behave as expected. In **Settings**, describe the problem and use **Copy report**, then share it in the comments or with the person who invited you. Please avoid posting your full save or personal information publicly.
 
@@ -68,7 +68,7 @@ Progress is saved in this browser at this game address. Use **Export Save** for 
 
 **AI assistance:** AI tools were used for code assistance, this promotional copy, and the new cover artwork.
 
----
+## Owner-only notes
 
 Owner note, not part of the pasted description: expand the AI sentence if older narrative or artwork was also AI-generated. The current repository does not establish complete historical provenance. Do not claim that the entire project is human-made, AI-free, or licensed for redistribution without evidence. Confirm that you can use the existing artwork before uploading promotional material containing it.
 
@@ -98,7 +98,7 @@ File: `outputs/itch-promo-2026-09-16/veilfall-beta-teaser.mp4`.
 
 Suggested YouTube title:
 
-**Veilfall: The Ember Oath — Restricted Beta Teaser**
+**Veilfall: The Ember Oath | Restricted Beta Teaser**
 
 Suggested YouTube description:
 

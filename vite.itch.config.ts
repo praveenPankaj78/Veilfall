@@ -10,6 +10,9 @@ const fromProjectRoot = (path: string) =>
 export default defineConfig({
   root: fromProjectRoot('./itch'),
   base: './',
+  define: {
+    'process.env.NEXT_PUBLIC_VEILFALL_TARGET': JSON.stringify('itch'),
+  },
   publicDir: fromProjectRoot('./public'),
   resolve: {
     alias: {

@@ -130,4 +130,4 @@ The images are stored as `public/art/caelan-east-gate.png`, `public/art/kings-ro
 
 ## Final review contract
 
-Mara's childhood memory places Caelan's father at his inn, consistent with his biography. At `folded-road`, `take-high-ground` promises defensive ground and a clear view; its five Wayfire match `follow-silver-road` and are not an extra reward.
+Mara's childhood memory places Caelan's father at his inn, consistent with his biography. At `folded-road`, `take-high-ground` promises defensive ground and a clear view, not an extra currency reward. Chapter progression is free.

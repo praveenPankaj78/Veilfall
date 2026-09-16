@@ -34,7 +34,7 @@ export const choiceAdvantages: Record<string, string> = {
   'press-bellweather': 'Reach the nearest shelter and continue the treaty mission.',
   'climb-scout': 'See the altered landscape before committing the wounded escort.',
   'take-high-ground': 'Gain defensible ground, a clear view, and Command for the road ahead.',
-  'swear-home-oath': 'Gain Oathfire, additional Wayfire, and a magical path toward safety.',
+  'swear-home-oath': 'Gain Oathfire and seek a magical path toward safety through a binding promise.',
   'c2-shield-arrival': 'A tight shield wall should bring every wounded traveller through the flooded yard together.',
   'c2-lead-water': 'Making yourself the nearest target should draw the mire hound away from the wounded.',
   'c2-oath-guided-entry': 'Your Oath should reveal the person the creature is most likely to reach first.',

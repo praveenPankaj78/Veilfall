@@ -155,6 +155,8 @@ Evidence: `folded-road` / `take-high-ground` claimed additional Wayfire, but bot
 
 Fix: describe defensive ground, clear view, and Command rather than an extra reward. Recursive review compared extra/additional reward claims, costs, advantages, results, and free siblings across all effective choices. Prevention: comparative reward regression and player-experience guidance.
 
+Build 1.0.1 follow-up: the unused Wayfire reserve and its awards are retired. A regression now rejects its reintroduction in choices. The corrected defensive-ground advantage remains authored and visible in development; the itch build omits the separate advantage panel.
+
 ### P1-11: Rook's warning arrived at a different contractual time
 
 Evidence: `c4-bargain-with-rook` promised a warning sent from the Underways if a route allowed it, while `c4-ending-bargain` delivered and counted the warning before separation.

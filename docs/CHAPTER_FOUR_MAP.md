@@ -132,7 +132,7 @@ Rook agrees to follow his buyer's trail through the Underways and speaks the one
 
 Caelan places the survivors in Rook's hands and lets him choose his own road. Rook reveals a safe exit, accepts a personal debt, and leaves silver wire tied around black wax that shows one hidden camp entrance. He chooses the Underways. Caelan keeps the fragment and turns north.
 
-All three endings award the same Wayfire. The choice expresses duty and relationship instead of rewarding one answer with a stronger total gain.
+All three endings unlock the next chapter without currency. The choice expresses duty and relationship instead of rewarding one answer with a stronger total gain.
 
 ## Continuity rules for later chapters
 

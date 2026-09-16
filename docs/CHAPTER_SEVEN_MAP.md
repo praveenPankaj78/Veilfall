@@ -142,7 +142,7 @@ Volunteers ride ahead with Caelan while Teren brings the rest east on a separate
 
 Caelan refuses formal command. Teren leads the Crown March east on a separate road and sends copies of the evidence toward Greyhaven. Caelan's existing companions reach the Gate first, so he gains no new formal military support in Chapter Eight's opening.
 
-Every ending grants equal Wayfire. The difference is force size, loyalty, speed, political reach, and risk.
+Every ending unlocks the next chapter without currency. The difference is force size, loyalty, speed, political reach, and risk.
 
 ## Continuity rules for Chapter Eight
 
@@ -176,7 +176,7 @@ The game check verifies:
 
 - every Chapter Seven node is reachable;
 - every route contains exactly fifteen decisions;
-- all three endings work and grant equal Wayfire;
+- all three endings work and unlock the next chapter without currency;
 - Chapter Seven has a reachable lethal choice;
 - Chapter Six endings continue into Chapter Seven;
 - Chapter Seven uses only its own three art assets;

@@ -16,7 +16,6 @@ import {
   RotateCcw,
   Settings,
   Shield,
-  Sparkles,
   Swords,
   TriangleAlert,
   Type,
@@ -280,7 +279,6 @@ const statIcons: Record<StatKey, typeof Heart> = {
   command: Swords,
   oathfire: Flame,
   medicine: Heart,
-  wayfire: Sparkles,
 };
 
 const statHelp: Record<StatKey, string> = {
@@ -291,12 +289,13 @@ const statHelp: Record<StatKey, string> = {
     'Magic gained from a binding promise and spent on extraordinary protection.',
   medicine:
     'Strong healing supplies. The story explains who can benefit before you spend any.',
-  wayfire:
-    'Optional path currency earned through lasting choices and chapter completion.',
 };
 
 const coreStatKeys: StatKey[] = ['health', 'resolve', 'command', 'oathfire'];
-const resourceStatKeys: StatKey[] = ['medicine', 'wayfire'];
+const resourceStatKeys: StatKey[] = ['medicine'];
+// Build-time target, not hostname detection: local itch previews match the upload.
+const showExpectedAdvantages =
+  process.env.NEXT_PUBLIC_VEILFALL_TARGET !== 'itch';
 
 function defeatForChoice(
   chapter: ChapterNumber,
@@ -1817,7 +1816,7 @@ export default function Home() {
                         <span className="choice-copy">
                           <strong>{choice.label}</strong>
                           <span>{choice.detail}</span>
-                          {choice.advantage ? (
+                          {showExpectedAdvantages && choice.advantage ? (
                             <span className="choice-advantage">
                               <b>Expected advantage</b>
                               {choice.advantage}
@@ -1859,8 +1858,7 @@ export default function Home() {
                       <h2>Chapter Two is ready</h2>
                       <p>
                         Continue into The Inn That Waited with every consequence
-                        from this route. Your {game.stats.wayfire} Wayfire
-                        remains available for future optional paths.
+                        from this route.
                       </p>
                       <Button
                         className="begin-button"
@@ -1885,8 +1883,7 @@ export default function Home() {
                       <h2>Chapter Three is ready</h2>
                       <p>
                         Continue into The Town at the Wrong Mile with every
-                        surviving consequence. Your {game.stats.wayfire} Wayfire
-                        remains available for future optional paths.
+                        surviving consequence.
                       </p>
                       <Button
                         className="begin-button"
@@ -1911,8 +1908,7 @@ export default function Home() {
                       <h2>Chapter Four is ready</h2>
                       <p>
                         Continue into Thief at the Mileless Bridge with every
-                        surviving consequence. Your {game.stats.wayfire} Wayfire
-                        remains available for future optional paths.
+                        surviving consequence.
                       </p>
                       <Button
                         className="begin-button"
@@ -1937,8 +1933,7 @@ export default function Home() {
                       <h2>Chapter Five is ready</h2>
                       <p>
                         Continue into The Dragon&apos;s Cold Grave with every
-                        surviving consequence. Your {game.stats.wayfire} Wayfire
-                        remains available for future optional paths.
+                        surviving consequence.
                       </p>
                       <Button
                         className="begin-button"
@@ -1963,8 +1958,7 @@ export default function Home() {
                       <h2>Chapter Six is ready</h2>
                       <p>
                         Continue into The City on Wheels with every surviving
-                        consequence. Your {game.stats.wayfire} Wayfire remains
-                        available for future optional paths.
+                        consequence.
                       </p>
                       <Button
                         className="begin-button"
@@ -1989,8 +1983,7 @@ export default function Home() {
                       <h2>Chapter Seven is ready</h2>
                       <p>
                         Continue into The Red Wind Hunt with every surviving
-                        consequence. Your {game.stats.wayfire} Wayfire remains
-                        available for future optional paths.
+                        consequence.
                       </p>
                       <Button
                         className="begin-button"
@@ -2015,8 +2008,7 @@ export default function Home() {
                       <h2>Chapter Eight is ready</h2>
                       <p>
                         Continue into Seven Cold Fires with every surviving
-                        consequence. Your {game.stats.wayfire} Wayfire remains
-                        available for future optional paths.
+                        consequence.
                       </p>
                       <Button
                         className="begin-button"
@@ -2217,17 +2209,19 @@ export default function Home() {
             })}
           </div>
 
-          <div className="resources-panel">
-            <p className="panel-title">Resources</p>
-            {resourceStatKeys
-              .filter((key) => game.chapter >= 2 || key !== 'medicine')
-              .map((key) => (
-                <div className="resource-row" key={key}>
-                  <span>{statLabels[key]}</span>
-                  <strong>{game.stats[key]}</strong>
-                </div>
-              ))}
-          </div>
+          {game.chapter >= 2 && (
+            <div className="resources-panel">
+              <p className="panel-title">Resources</p>
+              {resourceStatKeys
+                .filter((key) => game.chapter >= 2 || key !== 'medicine')
+                .map((key) => (
+                  <div className="resource-row" key={key}>
+                    <span>{statLabels[key]}</span>
+                    <strong>{game.stats[key]}</strong>
+                  </div>
+                ))}
+            </div>
+          )}
 
           <div className="relationships-panel">
             <p className="panel-title">Relationships</p>
@@ -2334,16 +2328,18 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="mobile-sheet-resources">
-            {resourceStatKeys
-              .filter((key) => game.chapter >= 2 || key !== 'medicine')
-              .map((key) => (
-                <p key={key}>
-                  <span>{statLabels[key]}</span>
-                  <strong>{game.stats[key]}</strong>
-                </p>
-              ))}
-          </div>
+          {game.chapter >= 2 && (
+            <div className="mobile-sheet-resources">
+              {resourceStatKeys
+                .filter((key) => game.chapter >= 2 || key !== 'medicine')
+                .map((key) => (
+                  <p key={key}>
+                    <span>{statLabels[key]}</span>
+                    <strong>{game.stats[key]}</strong>
+                  </p>
+                ))}
+            </div>
+          )}
           <div className="mobile-sheet-relationships">
             {visibleRelationships.map((person) => (
               <p key={person}>

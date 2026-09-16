@@ -2390,7 +2390,6 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
           'Gain the strength to defend every fort, along with thousands trained to obey before questioning.',
         advantage:
           'Caelan reaches the Black Gate with a full army and Teren’s authority.',
-        changes: { wayfire: 2 },
         showIfAnyFlags: ['c7-earned-full-army-offer'],
         hideIfAnyFlags: [
           'c6-oath-honest-limit',
@@ -2410,7 +2409,6 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
           'Leave most of the army under Teren while building a smaller force around consent and trust.',
         advantage:
           'Caelan gains a disciplined company without inheriting the whole army’s divided loyalty.',
-        changes: { wayfire: 2 },
         addFlags: ['c7-gained-chosen-company'],
         result:
           'You ask once and make no speech. Soldiers step forward by tens, then hundreds. Kharad riders remain under their Moot commanders, and any clan may leave after the Gate is safe. Teren turns the remaining army east under his own command.',
@@ -2424,7 +2422,6 @@ export const chapterSevenNodes: Record<string, StoryNode> = {
           'Travel fast with your existing companions while relying on reputation rather than formal allies.',
         advantage:
           'The forts still receive soldiers, but no divided army enters them under your personal command.',
-        changes: { wayfire: 2 },
         addFlags: ['c7-gained-dangerous-reputation'],
         result:
           'You return Teren’s standard and order nothing. Teren chooses the Gate himself. His army turns east on a separate road while you ride ahead with the companions who already chose you. By sunset, the story of your refusal is moving faster than either force.',

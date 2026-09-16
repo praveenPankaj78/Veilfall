@@ -81,6 +81,15 @@ rejected++;
 const archivePath = process.argv[2] ?? 'outputs/veilfall-ember-oath-beta.zip';
 const archive = await readFile(archivePath);
 const result = validateItchPackage(unzipSync(archive));
+const runtimeFiles = unzipSync(archive);
+const gameScript = Object.entries(runtimeFiles)
+  .filter(([name]) => name.endsWith('.js'))
+  .map(([, data]) => new TextDecoder().decode(data))
+  .join('\n');
+assert.ok(
+  !gameScript.includes('Expected advantage'),
+  'Itch must omit the developer advantage label, not merely hide it with CSS',
+);
 console.log(
   `Passed ${rejected} rejection regressions and valid-package control.`,
 );
