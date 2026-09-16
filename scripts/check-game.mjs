@@ -58,6 +58,7 @@ const {
   normaliseRelationships,
   relationshipSummary,
   relationshipChanges,
+  relationshipChangeNotes,
   resolveNext,
   statLabels,
 } = context.module.exports;
@@ -4517,6 +4518,27 @@ for (const node of Object.values(nodes)) {
             `Romance coded choice ${choice.id} remains visible after ${person} intent becomes ${intent}`,
           );
         }
+      }
+    }
+  }
+}
+for (const node of Object.values(nodes)) {
+  for (const choice of node.choices) {
+    const attractionPeople = Object.entries(relationshipChanges(choice))
+      .filter(([, changes]) => (changes?.attraction ?? 0) > 0)
+      .map(([person]) => person);
+    if (attractionPeople.length === 0) continue;
+    const notes = relationshipChangeNotes(choice).join(' ').toLowerCase();
+    for (const person of attractionPeople) {
+      const name = person[0].toUpperCase() + person.slice(1);
+      if (
+        !notes.includes(`${name.toLowerCase()}: interest acknowledged`) &&
+        !notes.includes(`${name.toLowerCase()}: relationship being explored`) &&
+        !notes.includes(`${name.toLowerCase()}: commitment chosen`)
+      ) {
+        failures.push(
+          `Romance-coded choice ${choice.id} hides ${name} attraction without an intent badge`,
+        );
       }
     }
   }

@@ -570,6 +570,28 @@ export function relationshipChanges(choice: Choice) {
   return relationshipEffects[choice.id] ?? {};
 }
 
+export function relationshipChangeNotes(choice: Choice) {
+  return Object.entries(relationshipChanges(choice)).flatMap(
+    ([person, changes]) => {
+      const name = relationshipLabels[person as RelationshipKey];
+      if (changes?.intent === 'platonic')
+        return [`${name}: friendship chosen`];
+      if (changes?.intent === 'interested')
+        return [`${name}: interest acknowledged`];
+      if (changes?.intent === 'exploring')
+        return [`${name}: relationship being explored`];
+      if (changes?.intent === 'committed')
+        return [`${name}: commitment chosen`];
+      if (changes?.intent === 'ended') return [`${name}: romance ended`];
+      if (changes?.intent === 'hostile')
+        return [`${name}: hostility declared`];
+      if ((changes?.attraction ?? 0) > 0)
+        return [`${name}: interest acknowledged`];
+      return [];
+    },
+  );
+}
+
 export function resolveCompletedOathFlags(flags: string[]): string[] {
   if (
     !flags.includes('c11-freedom-door-order-restricted') ||

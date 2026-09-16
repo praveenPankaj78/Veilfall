@@ -2,9 +2,9 @@
 
 ## Canonical maps
 
-The clean regional map is stored at `public/art/edrath-world-map.png`.
+The clean regional map is stored at `source/art/edrath-world-map.png`.
 
-The detailed story atlas is stored at `public/art/edrath-story-atlas.png`.
+The detailed story atlas is stored at `source/art/edrath-story-atlas.png`.
 
 Both show the mortal continent of Edrath and three planar insets. The insets are symbolic windows, not physical places beyond the eastern ocean. The regional map is for learning the world at a glance. The story atlas adds only locations that anchor major playable journeys.
 

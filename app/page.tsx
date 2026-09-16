@@ -46,7 +46,7 @@ import {
   isChoiceVisible,
   initialState,
   nodes,
-  relationshipChanges,
+  relationshipChangeNotes,
   relationshipLabels,
   relationshipSummary,
   requirementText,
@@ -221,24 +221,7 @@ function changeSummary(choice: Choice, state: GameState) {
         ? `Cost: ${statLabels[key as StatKey]} ${amount}`
         : `Gain: ${statLabels[key as StatKey]} ${amount}`;
     });
-  const personalChanges = Object.entries(relationshipChanges(choice)).flatMap(
-    ([person, changes]) => {
-      const name = relationshipLabels[person as RelationshipKey];
-      const notes: string[] = [];
-      if (changes?.intent === 'platonic')
-        notes.push(`${name}: friendship chosen`);
-      if (changes?.intent === 'interested')
-        notes.push(`${name}: interest acknowledged`);
-      if (changes?.intent === 'exploring')
-        notes.push(`${name}: relationship being explored`);
-      if (changes?.intent === 'committed')
-        notes.push(`${name}: commitment chosen`);
-      if (changes?.intent === 'ended') notes.push(`${name}: romance ended`);
-      if (changes?.intent === 'hostile')
-        notes.push(`${name}: hostility declared`);
-      return notes;
-    },
-  );
+  const personalChanges = relationshipChangeNotes(choice);
   return [
     ...statChanges,
     ...personalChanges,
@@ -1498,10 +1481,6 @@ export default function Home() {
             <h1 ref={mobileHeadingRef} tabIndex={-1}>
               {node.title}
             </h1>
-            <p className="scene-objective-line">
-              <span>{objective}</span>
-              <span className="scene-threat">Threat {node.threat}</span>
-            </p>
           </header>
           <div className="scene-art-wrap" ref={sceneRef}>
             {!artFailed ? (
@@ -1524,10 +1503,6 @@ export default function Home() {
             <h1 ref={sceneHeadingRef} tabIndex={-1}>
               {node.title}
             </h1>
-            <p className="desktop-scene-objective">
-              {objective}
-              <span className="scene-threat">Threat {node.threat}</span>
-            </p>
 
             {node.lesson && (
               <aside className="lesson-card">
@@ -1542,6 +1517,11 @@ export default function Home() {
                 <p key={`${node.id}-${index}`}>{paragraph}</p>
               ))}
             </div>
+
+            <p className="scene-objective-line">
+              <span>{objective}</span>
+              <span className="scene-threat">Threat {node.threat}</span>
+            </p>
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">
