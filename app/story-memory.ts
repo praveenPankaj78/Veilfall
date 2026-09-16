@@ -778,11 +778,11 @@ export function knownTruths(game: GameState) {
   if (game.chapter === 11) {
     truths.push(
       'Vathis sells public streets, doors, shelter, and weather through contracts whose stated prices end at stated exits.',
-      'The exact expedition that crossed the Black Gate remains together in Vathis. Rook, Ilyra, Korran, Vaor’s body, and the full Crown March are absent.',
+      'The company that crossed the Black Gate remains together in Vathis. Rook, Ilyra, Korran, Vaor’s body, and the full Crown March are absent.',
     );
     if (game.flags.includes('c11-engine-control-proved'))
       truths.push(
-        'The Price Court controls Vathis’s public contracts and invasion auction. House Sableglass holds the current lease controlling access to Malrec’s engine.',
+        'The Price Court is the city court that sells rights out loud. House Sableglass holds the paper that opens Malrec’s engine.',
         'The invasion right permits one Gate opening, one registered force, and one Vathis bell inside Edrath. It owns no names, bodies, affection, or unlisted land.',
       );
     if (
@@ -1695,7 +1695,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c9-destroyed-crown-restitution-oath'))
     consequences.push(
-      'Because you destroyed the Crown restitution Oath, true-name access ended after alignment and the hidden victims lost your magical promise of judgment.',
+      'Because you destroyed the Oath that promised the Concord’s hidden victims a hearing before the Queen, true-name access ended after alignment. Those victims lost that magical promise of judgment.',
     );
   if (game.flags.includes('c9-destroyed-clan-refusal-oath'))
     consequences.push(
@@ -1782,7 +1782,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c11-petition-hearing-held'))
     consequences.push(
-      'Because you held the promised Free Ledger hearing before delivery, its named signers gained public standing and a transferable hearing credit.',
+      'Because you held the promised Free Ledger hearing before delivery, Sira, Oren, and Pellan gained a recorded right to be heard first in court. Fresh marks let them hand that right to the next hearing without changing who it protects.',
     );
   if (game.flags.includes('c11-route-revolt'))
     consequences.push(
@@ -1791,12 +1791,12 @@ export function majorConsequences(game: GameState) {
   if (game.flags.includes('c11-route-auction'))
     consequences.push(
       game.flags.includes('c11-price-court-review-owed')
-        ? 'Because you won the invasion auction with legal obligations, the narrow deed blocks every unregistered force while one public review remains owed.'
-        : 'Because you won the invasion auction with legal obligations, the narrow deed blocks every unregistered force without creating an extra review duty.',
+        ? 'Because you won the invasion auction with the lawful things you wrote down, the narrow paper blocks every force the sale did not name. One public review remains owed.'
+        : 'Because you won the invasion auction with the lawful things you wrote down, the narrow paper blocks every force the sale did not name. It creates no extra review duty.',
     );
   if (game.flags.includes('c11-route-force'))
     consequences.push(
-      'Because the exact expedition marched through the leased district, it controls a damaged engine corridor while Vathis records the physical and political cost.',
+      'Because this company marched through the engine district, it controls a damaged engine corridor while Vathis records the physical and political cost.',
     );
   if (game.flags.includes('c11-freedom-command-restricted'))
     consequences.push(
@@ -1838,7 +1838,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c12-price-court-review-held'))
     consequences.push(
-      'Because you completed the public Price Court review, the deed admitted only its named force, delayed every unregistered force, and returned the promised freedom.',
+      'Because you completed the public Price Court review, the paper admitted only its named force. It delayed every force the sale did not name and returned the promised freedom.',
     );
   if (game.flags.includes('c12-compact-passage-honoured'))
     consequences.push(
@@ -1896,7 +1896,7 @@ export function majorConsequences(game: GameState) {
     );
   if (game.flags.includes('c12-relationship-closed'))
     consequences.push(
-      'Because you chose closure, no earlier intimacy creates present consent or obligation.',
+      'Because you chose closure, no earlier intimacy speaks a yes for anyone standing here now. It creates no new duty.',
     );
   if (game.flags.includes('c12-relationship-political-truce'))
     consequences.push(

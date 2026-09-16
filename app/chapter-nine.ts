@@ -81,7 +81,7 @@ function futurelessPriority(state: GameState) {
   if (has(state, 'c8-ansel-spoke-first')) {
     return 'Ansel repeats Vexa’s disclosure before the Crown can redirect it. The rival house bought his promise to stay when his daughter returned and paid mortal officials to hide the openings.';
   }
-  return 'Ansel waits at the witness rail with his surviving ledger. Crown officials want the unfinished claim heard first. He wants the sold promises named first.';
+  return 'Ansel waits at the witness rail with his surviving ledger. Crown officials want the unfinished paper heard first. He wants the sold promises named first.';
 }
 
 function defencePosition(state: GameState) {
@@ -89,7 +89,7 @@ function defencePosition(state: GameState) {
     return 'Eight mortal captains control the doors through spoken replies. Their unity can seal one attack lane, but it leaves no devil fire reinforcing the embassy wall.';
   }
   if (has(state, 'c8-accepted-ash-compact')) {
-    return 'White Compact fire marks the neutral floor. It blocks hidden contract magic, but Vaor’s outer flame may still be held as collateral.';
+    return 'White Compact fire marks the neutral floor. It blocks hidden contract magic, but Vaor’s outer flame may still be held until the embassy leaves.';
   }
   return 'First Fort is gone. Its surviving keepers know every service tunnel, while the permanent gap gives mortal attackers a route under the witness gallery.';
 }
@@ -170,13 +170,13 @@ function vaorPosition(state: GameState) {
     has(state, 'c8-ember-held-as-collateral') &&
     has(state, 'c5-took-ember-by-force')
   ) {
-    return 'Vaor’s outer flame remains trapped under Compact collateral imposed without his consent. His anger closes every easy use of dragonfire.';
+    return 'Vaor’s outer flame remains trapped under Compact holding imposed without his yes. His anger closes every easy use of dragonfire.';
   }
   if (
     has(state, 'c8-ember-held-as-collateral') &&
     !has(state, 'c5-took-ember-by-force')
   ) {
-    return 'Vaor agreed to hold his outer flame as collateral until the embassy leaves. He will help only within that exact limit.';
+    return 'Vaor agreed to hold his outer flame until the embassy leaves. He will help only within that exact limit.';
   }
   if (has(state, 'c5-took-ember-by-force')) {
     return 'The stolen ember recoils from your hand. Vaor will not turn it into a weapon for this negotiation.';
@@ -343,9 +343,9 @@ function securedRevelation(state: GameState) {
   if (has(state, 'c9-stolen-ember-not-used'))
     return 'The stolen ember stayed covered while independent hands signed the proof.';
   if (has(state, 'c9-vaor-collateral-released'))
-    return 'Vaor’s approved collateral ended before he marked the record willingly.';
+    return 'Vaor’s approved holding of his outer flame ended before he marked the record willingly.';
   if (has(state, 'c9-forced-collateral-broken'))
-    return 'The forced collateral ended without buying another use of Vaor.';
+    return 'The forced holding of Vaor’s outer flame ended without buying another use of Vaor.';
   if (has(state, 'c9-malrec-cinder-alliance-proved'))
     return 'The joined proof now names Malrec’s Cinder Deep allies and their Worldroot plan.';
   return 'The joined revelation still needs an independent way to survive the room.';
@@ -415,8 +415,8 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       entryPosition(state),
       'Your attention stays on the white cords, the open exits, and every person close enough to be trapped.',
       'This is the first Cinder Deep embassy, a public mission from the realm beyond the Black Gate.',
-      'Second Fort becomes neutral ground when mortal and Compact witnesses fasten one white cord across each private door. The cord breaks if anyone crosses without permission.',
-      'The unfinished claim lies closed beneath clear glass. It bears the ordinary name Caelan Vey, but its price and consent lines remain blank. Vexa watches you, not the paper.',
+      'Second Fort becomes neutral ground when mortal witnesses and Ash Compact witnesses fasten one white cord across each private door. The cord breaks if anyone crosses without permission.',
+      'A paper waits under clear glass. It already shows the ordinary name Caelan Vey. The price and the yes-or-no lines are still blank. Vexa watches you, not the paper.',
       'Where does the negotiation begin?',
     ],
     choices: [
@@ -570,7 +570,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     title: 'The Name That Points Back',
     location: 'Second Fort Neutral Table',
     objective:
-      'Test true-name precision without granting ownership or making a bargain.',
+      'Test true-name pointing without granting ownership or making a bargain.',
     threat: 'Low',
     art: 'cinderembassy',
     introducesStoryTerms: ['true name'],
@@ -590,7 +590,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       recordControl(state),
       'Vexa places two plain brass beads on the table. Ansel writes Caelan Vey on paper and moves it between them. Neither bead reacts. An ordinary name can label a claim, but it cannot make the claim true.',
       'Vexa touches one bead and freely speaks a private sentence she chose for herself. The bead turns toward her for three breaths, then stops when the stated test ends. She remains free to move, refuse, and leave.',
-      'A prepared claim owns nothing. An offer waits for consent. An accepted bargain binds only the terms spoken. An owned promise has already been paid for. A freely disclosed true name gives exact access only for its stated time and purpose.',
+      'The bead can point. It cannot own her. A paper that names someone still owns nothing until that person says yes and the price is paid.',
       'How do you verify the limit?',
     ],
     choices: [
@@ -621,7 +621,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         id: 'c9-break-name-bead-after-test',
         label: 'Let Vexa repeat her test, then crush the bead.',
         detail:
-          'Verify that the stored precision ends when its named vessel is destroyed.',
+          'Verify that the stored pointing ends when its named vessel is destroyed.',
         advantage:
           'Learn a physical way to end true-name access before any critical choice.',
         addFlags: ['c9-name-vessel-destruction-proved'],
@@ -757,10 +757,10 @@ export const chapterNineNodes: Record<string, StoryNode> = {
     },
     body: (state) => [
       'Vexa opens a black case. Half of the Black Gate Nail rests inside, short as a finger and bright along one broken edge. The piece can close or release promises made through this Gate.',
-      'Her offer has two prices. First, you freely disclose a true name so the fragment can align only to you. That access lasts until the fragment returns to neutral custody after Malrec’s inside opening is stopped.',
+      'Her offer has two prices. First, you freely disclose a true name so the fragment can align only to you. That access lasts until the fragment returns as promised after Malrec’s inside opening is stopped.',
       'Second, you promise: “I will return the Black Gate fragment to neutral custody after Malrec’s inside opening is stopped, unless every living Gate keeper freely agrees to different custody.” No intimacy, service, obedience, or hidden payment belongs to the offer.',
       oathPrice(state),
-      'Your hand stays off the fragment while the offer still waits for consent.',
+      'Your hand stays off the fragment while the offer still waits for a yes.',
       preparedDefence(state),
       'Do you bargain, prepare to take the fragment without permission, or prove Vexa’s rival house serves Malrec?',
     ],
@@ -779,7 +779,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         ],
         addFlags: ['c9-route-bargain'],
         result:
-          'You repeat every term. Vexa places the fragment on the neutral cloth, awaiting your final consent and no other payment.',
+          'You repeat every term. Vexa places the fragment on the neutral cloth, awaiting your final yes and no other payment.',
         next: 'c9-mortal-attack',
       },
       {
@@ -1321,9 +1321,9 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       {
         id: 'c9-release-vaor-collateral-now',
         label:
-          'Make the Compact release Vaor’s approved collateral before copying the proof.',
+          'Ask Vexa to release Vaor’s outer flame before copying the proof.',
         detail:
-          'End the exact embassy condition now that the attack has stopped.',
+          'End the embassy holding now that the attack has stopped.',
         advantage:
           'Restore Vaor’s outer flame and gain his willing witness mark.',
         showIfAllFlags: ['c8-ember-held-as-collateral', 'c5-freed-vaor'],
@@ -1338,7 +1338,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       {
         id: 'c9-break-forced-collateral',
         label:
-          'Break the collateral forced onto Vaor before asking anything else.',
+          'Break the forced holding of Vaor’s outer flame before asking anything else.',
         detail:
           'Spend 1 Oathfire acknowledging the breach and ending its benefit.',
         advantage:
@@ -1384,7 +1384,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       'Your attention stays on the people who would carry each loss after the fire goes out.',
       securedRevelation(state),
       has(state, 'c9-route-bargain')
-        ? 'Oathfire can cut the clause that lets true-name precision last until neutral custody. The return promise remains. Cutting that access requires destroying one active Oath forever.'
+        ? 'Oathfire can cut the clause that lets name-pointing last until the fragment returns to neutral keeping. The return promise remains. Cutting that access requires destroying one active Oath forever.'
         : 'You refused the bargain, so no clause exists to cut. Oathfire cannot buy an advantage by pretending an unaccepted offer already binds you.',
       'Any offered Oath is named below with the person or community depending on it. A released or burned Oath does not return as payment.',
       'What survives this decision?',
@@ -1408,7 +1408,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Spend 1 Oathfire and cut true-name access after alignment. Korran’s clans lose your magical guarantee of Red Moot command.',
         advantage:
-          'Vexa can align the fragment once, then all true-name precision ends.',
+          'Vexa can align the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-recognised-red-moot'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1427,7 +1427,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Spend 1 Oathfire and cut true-name access after alignment. Hidden victims lose your magical promise of judgment or opposition.',
         advantage:
-          'Vexa can align the fragment once, then all true-name precision ends.',
+          'Vexa can align the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-crown-restitution'],
         hideIfAnyFlags: ['c8-released-crown-oath'],
         changes: { oathfire: -1 },
@@ -1437,7 +1437,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
           'c9-destroyed-crown-restitution-oath',
         ],
         result:
-          'Oathfire cuts the access clause and burns the restitution Oath. Ansel hears you name the lasting loss before the witnesses.',
+          'Oathfire cuts the access clause and burns the Oath that promised the hidden victims a hearing before the Queen. Ansel hears you name the lasting loss before the witnesses.',
         next: 'c9-vexa-standing',
       },
       {
@@ -1447,7 +1447,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Spend 1 Oathfire and cut true-name access after alignment. The clans lose your magical defence of their freedom to leave.',
         advantage:
-          'Vexa can align the fragment once, then all true-name precision ends.',
+          'Vexa can align the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-defends-refusal'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1462,7 +1462,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Spend 1 Oathfire and cut true-name access after alignment. Korran and the full army lose your magical promise to state and limit every order.',
         advantage:
-          'Vexa can align the fragment once, then all true-name precision ends.',
+          'Vexa can align the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-honest-limit'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1480,7 +1480,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
         detail:
           'Spend 1 Oathfire and cut true-name access after alignment. The preserved voices lose you as their sworn investigator, and Korran must carry the duty home.',
         advantage:
-          'Vexa can align the fragment once, then all true-name precision ends.',
+          'Vexa can align the fragment once, then all name-pointing magic ends.',
         showIfAllFlags: ['c9-route-bargain', 'c6-oath-investigate-unsea'],
         changes: { oathfire: -1 },
         requires: { oathfire: 1 },
@@ -1703,7 +1703,7 @@ export const chapterNineNodes: Record<string, StoryNode> = {
       'Your hand remains open until the chosen recovery law places the fragment there.',
       privateChoiceResult(state),
       has(state, 'c9-route-bargain')
-        ? 'At the neutral table, Vexa puts the fragment into your open hand before payment. You may now consent, speak the self-name, and make the exact return promise.'
+        ? 'At the neutral table, Vexa puts the fragment into your open hand before payment. You may now say yes, speak the self-name, and make the exact return promise.'
         : has(state, 'c9-route-theft')
           ? 'The attack left the case hinge cracked and the fragment under mortal guard. Taking it will save the Gate plan while creating a lasting debt between governments.'
           : 'The joined record reaches Sableglass through its surviving chain. Its own witness law requires surrender of property used in an undeclared attack.',

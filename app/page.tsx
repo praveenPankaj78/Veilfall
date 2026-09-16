@@ -2059,7 +2059,7 @@ export default function Home() {
                       <h2>Chapter Ten is ready</h2>
                       <p>
                         Continue into The Ash Road with the recovered fragment,
-                        exact expedition, surviving Oaths, and chosen limits.
+                        this company, surviving Oaths, and chosen limits.
                       </p>
                       <Button
                         className="begin-button"

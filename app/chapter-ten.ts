@@ -219,7 +219,7 @@ function destroyedOathPressure(state: GameState) {
   if (has(state, 'c9-destroyed-red-moot-authority-oath'))
     return 'The road offers you command over Moot fighters without the Red Moot. Korran’s lost magical protection cannot reject it for them.';
   if (has(state, 'c9-destroyed-crown-restitution-oath'))
-    return 'The road offers a royal hearing that your destroyed restitution Oath can no longer guarantee.';
+    return 'The road offers a royal hearing. Your destroyed Oath to bring hidden victims before the Queen can no longer guarantee it.';
   if (has(state, 'c9-destroyed-clan-refusal-oath'))
     return 'The road offers private exits beyond the Moot’s authority. Your destroyed refusal Oath no longer protects that choice.';
   if (has(state, 'c9-destroyed-honest-command-limit-oath'))
@@ -521,7 +521,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
           'Learn the rule without binding a traveller, though the company loses time at the first arch.',
         addFlags: ['c10-silence-demonstrated', 'c10-first-arch-delay'],
         result:
-          'Vexa kneels beside the cup and says nothing. Ash circles her hands, then falls away. The offer remains unaccepted.',
+          'Vexa kneels beside the cup and says nothing. Ash circles her hands, then falls away. The cup still waits. Nobody has said yes.',
         next: 'c10-water-terms',
       },
       {
@@ -640,7 +640,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
       fragmentCustody(state),
       'A white hand rises from the bridge and offers safe passage in exchange for ownership of anything hidden from the road.',
       'You cannot give the fragment away, hide an admitted theft, or let true-name precision widen beyond its witnessed purpose.',
-      'Which custody agreement defeats the toll?',
+      'Which holding on the fragment defeats the toll?',
     ],
     choices: [
       {
@@ -691,7 +691,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     title: 'What You Cannot Promise Them',
     location: 'First Offer Bridge',
     objective:
-      'Keep the exact expedition from accepting an impossible promise.',
+      'Keep this company from accepting an impossible promise.',
     threat: 'Immediate',
     art: 'privateoffers',
     body: (state) => [
@@ -852,7 +852,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
         label: 'Let Vexa state and refuse her own offer before you act.',
         detail: 'Trust her to protect the boundary that defines her people.',
         advantage:
-          'Gain her complete reading of the listening wall without taking her agency.',
+          'Gain her complete reading of the listening wall without taking her choice.',
         hideIfAnyFlags: ['c9-vexa-permanent-hostility'],
         addFlags: ['c10-vexa-refused-own-offer'],
         result:
@@ -925,7 +925,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
         detail:
           'Report safety and acceptance status only. Full terms remain with the person who received them.',
         advantage:
-          'Protect autonomy and confidentiality from both the company and the road.',
+          'Protect each person’s own terms from both the company and the road.',
         addFlags: ['c10-offer-method-private'],
         result:
           'Vexa raises separate ash screens with two open exits each. Every traveller chooses a witness outside hearing range.',
@@ -1084,7 +1084,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     title: 'Every Name Answers',
     location: 'Ash Road Split',
     objective:
-      'Bind no traveller who has not explicitly accepted the burden Oath.',
+      'Bind no traveller who has not said yes to the burden Oath.',
     threat: 'Rising',
     art: 'privateoffers',
     lesson: {
@@ -1124,7 +1124,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
         detail:
           'Treat hesitation as no and return to protected private negotiation.',
         advantage:
-          'Preserve every traveller’s agency without creating a partial or pressured Oath.',
+          'Keep every traveller’s own yes without creating a partial or pressured Oath.',
         addFlags: [
           'c10-offer-method-private',
           'c10-burden-oath-withdrawn',
@@ -1215,7 +1215,7 @@ export const chapterTenNodes: Record<string, StoryNode> = {
     kicker: 'The bridge folds under the rear guard',
     title: 'Six Steps of Falling Stone',
     location: 'Broken Offer Bridge',
-    objective: 'Bring the exact expedition off the collapsing bridge.',
+    objective: 'Bring this company off the collapsing bridge.',
     threat: 'Critical',
     art: 'privateoffers',
     body: (state) => [

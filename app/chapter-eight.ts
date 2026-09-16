@@ -2164,7 +2164,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     kicker: 'Help with exact edges',
     title: 'The White Fire Contract',
     location: 'The Black Gate Inner Ring',
-    objective: 'Set the limit of the Compact’s aid before accepting its fire.',
+    objective: 'Set the limit of the Ash Compact’s aid before accepting its fire.',
     threat: 'Critical',
     art: 'futureless',
     activeConsequences: {
@@ -2178,7 +2178,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
     },
     body: (state) => [
       'Eight white embers repeat the price: one peaceful embassy may enter after the Gate is stable, speak before witnesses, and leave under the same rules.',
-      'Mortal names would make breaches easier to punish, but give the Compact a lasting hold on everyone listed.',
+      'Mortal names would make breaches easier to punish, but give the Ash Compact a lasting hold on everyone listed.',
       'Public witnesses can guarantee the agreement. You can instead cut every mortal name or offer Vaor’s outer flame until the embassy leaves.',
       'The outer flame is usable heat, not Vaor’s mind. While it is held, you cannot call dragonfire. A broken agreement may extinguish that heat and burn him when he rekindles it.',
       vaorGateUse(state),
@@ -2232,7 +2232,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         label:
           'Ask Vaor to let the Compact hold his outer flame until the embassy leaves.',
         detail:
-          'Vaor may refuse. Agreement puts part of his gift inside a foreign contract.',
+          'Vaor may refuse. This holding puts part of his gift inside a foreign contract until the embassy leaves.',
         advantage:
           'Keep every mortal outside the contract while making betrayal costly to both sides.',
         showIfAnyFlags: ['c5-freed-vaor'],
@@ -2312,7 +2312,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         id: 'c8-carry-wounded-from-fort',
         label: 'Carry the last wounded warden with Pell’s sealed packet.',
         detail:
-          'Lose 2 Health saving a person and the compact duplicate while the fuel and other records burn.',
+          'Lose 2 Health saving a person and Pell’s sealed copy while the fuel and other records burn.',
         advantage:
           'No living person becomes part of the fort’s price, and one physical copy of the Crown record survives.',
         changes: { health: -2 },
@@ -2649,7 +2649,7 @@ export const chapterEightNodes: Record<string, StoryNode> = {
         id: 'c8-receive-vexa-publicly',
         label: 'Receive Vexa and her embassy before every witness.',
         detail:
-          'Allow the crossing under a public agreement, with all gathered forces watching and every weapon sealed.',
+          'Allow the crossing under a public promise, with all gathered forces watching and every weapon sealed.',
         advantage:
           'Begin diplomacy without secrecy and force Vexa’s warning into the public record.',
         addFlags: ['c8-vexa-entered-publicly'],
