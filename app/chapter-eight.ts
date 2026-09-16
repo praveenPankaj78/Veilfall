@@ -1,4 +1,5 @@
 import type { GameState, StoryNode } from './game-data';
+import { promiseRecordById } from './promise-records';
 
 function has(state: GameState, flag: string) {
   return state.flags.includes(flag);
@@ -337,7 +338,8 @@ function forceChoiceAtOpening(state: GameState) {
 }
 
 function pellOathOutcome(state: GameState) {
-  if (!has(state, 'c8-oath-pell-sees-opening-contained')) return [];
+  const pell = promiseRecordById(state, 'c8-oath-pell-sees-opening-contained');
+  if (!pell || pell.status !== 'fulfilled') return [];
   return [
     'Pell watches the hostile hand withdraw and the opening shrink beyond an army’s width. The fulfilled Oath returns its fire to you.',
   ];

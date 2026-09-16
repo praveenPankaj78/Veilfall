@@ -181,29 +181,6 @@ function illusionReaction(state: GameState) {
   return 'The illusion folds into ash after your refusal. It gains no relationship, promise, consent, or route.';
 }
 
-function obligationInventory(state: GameState) {
-  const items: string[] = [];
-  if (has(state, 'c11-petition-hearing-held'))
-    items.push(
-      'Sira, Oren, and Pellan hold a first-speak mark. Fresh marks let them hand that mark to the next hearing without changing who it protects.',
-    );
-  if (hasAny(state, ['c9-route-exposure', 'c9-sableglass-publicly-exposed']))
-    items.push(
-      'The company’s public proof holds one damages mark against House Sableglass. That mark may change hands once.',
-    );
-  if (!has(state, 'c9-vexa-permanent-hostility'))
-    items.push(
-      'Vexa may post one public backup promise that her people will honour one later seat, if she chooses to.',
-    );
-  items.push(
-    'The people who testify own their own witness marks. Each person controls their own mark.',
-  );
-  items.push(
-    'You may offer one later-appearance duty. You must show up for one Price Court review. It changes hands only after you clearly say yes.',
-  );
-  return items.join(' ');
-}
-
 function excludedInventory(state: GameState) {
   const exact = has(state, 'c9-return-promise-owned')
     ? ' The fragment’s return promise cannot change hands and stays outside the sale.'
@@ -1115,7 +1092,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
     title: 'The One-Opening Paper',
     location: 'Price Court Auction Hall',
     objective:
-      'Write down one thing you can spend at the auction without selling a person.',
+      'Write down one thing you can spend to support the chosen road to the engine.',
     threat: 'Rising',
     art: 'vathisauction',
     activeConsequences: {
@@ -1128,21 +1105,21 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       ],
     },
     body: (state) => [
-      'A brass model of the Black Gate turns above the auction floor. Its notice allows one opening, one named force, and one Vathis bell inside Edrath.',
+      'A brass model of the Black Gate turns above the hall. Its notice allows one opening, one named force, and one Vathis bell inside Edrath. That one-opening paper can support the engine road you choose, not only an auction.',
       `${illusionReaction(state)} ${
         has(state, 'c11-burden-accounts-complete')
           ? 'Every consenting traveller has received a private account. The Court may inspect the closed edges, but no private desire enters this list.'
           : 'No unfinished private burden record enters this list.'
       }`,
-      `${obligationInventory(state)} ${excludedInventory(state)}`,
-      'Which of these do you write down before choosing the road to the engine?',
+      excludedInventory(state),
+      'Write down one thing you can spend. Each option names its owner, use, transfer limit, and later duty.',
     ],
     choices: [
       {
         id: 'c11-inventory-free-ledger-hearing-credit',
         label: 'Ask Sira, Oren, and Pellan to mark their first-hearing right.',
         detail:
-          'No extra cost now. Each named signer marks the page if they choose. Fresh marks let the first-speak mark go to the next hearing without changing who it protects. Any signer may refuse their mark. This does not sell their collars, bodies, or private wants. Later they owe one public renewal hearing.',
+          'Owner: Sira, Oren, and Pellan if they mark. Use: one first-speak mark that can support auction, revolt, or force. Transfer: fresh marks may pass the first-speak turn to the next hearing without changing who it protects. Later duty: one public renewal hearing. Any signer may refuse. This does not sell collars, bodies, or private wants.',
         advantage:
           'Give Sira, Oren, and Pellan a first turn to speak, which can also support a workers’ refusal later.',
         showIfAllFlags: ['c11-petition-hearing-held'],
@@ -1155,7 +1132,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-inventory-sableglass-damages-claim',
         label: 'List the public damages mark against Sableglass.',
         detail:
-          'No extra cost now. The company’s public proof owns the damages mark. It may change hands once under the public exposure ruling. After one use, the mark is surrendered. This does not put the fragment into the bid.',
+          'Owner: the company’s public proof. Use: one damages mark that can challenge the engine key on any chosen road. Transfer: may change hands once under the public exposure ruling. Later duty: after one use, the mark is surrendered. This does not put the fragment into the bid.',
         advantage:
           'Challenge Sableglass’s engine key and strengthen the auction bid.',
         showIfAnyFlags: [
@@ -1172,7 +1149,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-inventory-compact-surety',
         label: 'Ask Vexa to post her people’s public backup promise.',
         detail:
-          'No extra cost now. The promise belongs to Vexa’s people. It covers one witnessed Gate passage and nothing private. Vexa may refuse to post it. Later, the Ash Compact gets a public seat when the new Gate law is written. This does not sell trust, affection, or the fragment.',
+          'Owner: Vexa’s people. Use: one witnessed Gate passage or bid support if she posts it. Transfer: Vexa may refuse to post it. Later duty: the Ash Compact gets a public seat when the new Gate law is written. This does not sell trust, affection, or the fragment.',
         advantage:
           'Gain a strong bid or one protected force warning without selling personal trust.',
         hideIfAnyFlags: ['c9-vexa-permanent-hostility', 'c9-route-theft'],
@@ -1185,7 +1162,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-inventory-roster-witness-bond',
         label: 'Ask this company to place separate witness marks.',
         detail:
-          'No extra cost now. Each participating witness owns their mark. The marks carry testimony only, never command or personal promises. Any witness may withdraw their own mark. This does not sell a name, an Oath, or anyone’s future.',
+          'Owner: each participating witness. Use: testimony that can support auction, revolt, or force. Transfer: any witness may withdraw their own mark. Later duty: none beyond the testimony itself. This does not sell a name, an Oath, or anyone’s future.',
         advantage: 'Let each willing witness mark the scale without selling a name.',
         addFlags: ['c11-bid-asset-roster-witness'],
         result:
@@ -1196,7 +1173,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
         id: 'c11-inventory-caelan-appearance-duty',
         label: 'Offer your own duty to appear once before the Price Court.',
         detail:
-          'No extra cost now. You own this duty. It changes hands only after you clearly say yes. Later you cannot refuse one public review of the new Gate law. This does not sell any other Oath or service.',
+          'Owner: Caelan. Use: one later-appearance duty that can support the chosen engine road. Transfer: changes hands only after you clearly say yes. Later duty: you cannot refuse one public review of the new Gate law. This does not sell any other Oath or service.',
         advantage:
           'Put your own later review on the scale even if no engine key survived.',
         addFlags: [
@@ -1538,7 +1515,7 @@ export const chapterElevenNodes: Record<string, StoryNode> = {
       'Put one thing you can spend on the scale without selling a person.',
     threat: 'Immediate',
     art: 'vathisauction',
-    body: (state) => [
+    body: () => [
       'House Sableglass bids ten thousand released work hours and its engine key. The empty Court chair asks for your first mark on the scale.',
       'Which of these do you put on the scale?',
     ],

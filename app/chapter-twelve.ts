@@ -1,4 +1,5 @@
 import type { GameState, StoryNode } from './game-data';
+import { finalePromiseNotes } from './promise-records';
 
 function has(state: GameState, flag: string) {
   return state.flags.includes(flag);
@@ -256,6 +257,41 @@ function custodyResult(state: GameState) {
   if (has(state, 'c12-legacy-fragment-public-custody'))
     return 'The fragment whose owner has not yet been recorded in public rests in public keeping. No invented bargain, theft, or exposure history is attached.';
   return 'Mortal and Cinder Deep keepers hold the exposed fragment together under the new law.';
+}
+
+function realmEnding(state: GameState) {
+  if (has(state, 'c12-gate-sealed'))
+    return 'The Black Gate is whole stone. No voice, army, offer, message, or promise crosses it. Devils remain known enemies beyond a border that cannot answer.';
+  if (has(state, 'c12-gate-consent-passage'))
+    return 'The passage opens for one named traveller after three free answers: the traveller’s, the mortal keepers’, and the Cinder Deep keepers’. Any one may withdraw before the step. Every stored promise waits for review. The joint bench has disputes waiting before its first day ends.';
+  if (has(state, 'c12-gate-broken'))
+    return 'No Gate owns the road. Every stored promise has returned to a living maker or entered Worldroot without a new owner. Allies and invading powers can both cross. People begin building shelters before they agree on a new law.';
+  return 'The Gate lives in you. Every stored promise remains a distinct voice. You can open for one named willing person and refuse an army. You cannot silence the voices, give them away, or abandon the boundary. Devils remain distinct voices and possible neighbours, never a single obedient chorus.';
+}
+
+function companyEnding(state: GameState) {
+  return `On the inner face: ${innerCompany(state)}. ${mortalFace(state)} Unknown fates remain unknown.`;
+}
+
+function dawnEnding(state: GameState) {
+  if (has(state, 'c12-sunrise-barred'))
+    return 'At dawn, one road of light stays barred. You see the change and do not yet know who will meet it.';
+  if (has(state, 'c12-sunrise-mutual-road'))
+    return 'At dawn, a narrow road appears only when separated witnesses name it together.';
+  if (has(state, 'c12-sunrise-unstable-road'))
+    return 'Dawn opens into a shaking road of light, faster than safety and wider than any one command.';
+  return 'Dawn bends around your witnessed shape. You hear the change without knowing where its light will lead.';
+}
+
+function endingEpilogue(state: GameState) {
+  const promiseNotes = finalePromiseNotes(state);
+  return [
+    `The realms. ${realmEnding(state)}`,
+    `The company. ${companyEnding(state)}`,
+    `Caelan and his promises. ${custodyResult(state)} ${destinationResult(state)} ${destroyedOathCost(state)}${promiseNotes ? ` ${promiseNotes}` : ''}`,
+    `Relationships. ${relationshipResult(state)}`,
+    `The first dawn. ${dawnEnding(state)}`,
+  ];
 }
 
 function collisionResult(state: GameState) {
@@ -742,7 +778,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     kicker: 'Outstanding voices',
     title: 'The Refusers Speak for Themselves',
     location: 'The Inner Witness Circle',
-    objective: 'Let the workers speak for themselves if that hearing was promised.',
+    objective: 'Let the workers speak if that hearing was promised.',
     threat: 'Immediate',
     art: 'blackgatepassage',
     body: (state) => [
@@ -784,14 +820,13 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     kicker: 'Mythic freedom',
     title: 'The Hearing You Cannot Refuse',
     location: 'The Shared Threshold',
-    objective: 'Fulfil or deliberately breach the exact hearing restriction.',
+    objective: 'Hear these speakers, or continue if no hearing is owed.',
     threat: 'Rising',
     art: 'blackgatepassage',
     body: (state) => [
       has(state, 'c11-freedom-hearing-restricted')
-        ? 'The mythic auction promise closes your throat when you try to move on. You gave up the right to refuse hidden victims’ hearing until it ends. Three concealed speakers now ask to be heard.'
-        : 'No mythic promise removes your right to refuse this hearing. Three concealed speakers still offer relevant testimony about stored promises.',
-      'Their testimony can improve the release map. Hearing it costs time. A deliberate breach saves time but leaves a visible Oathscar and loses their help. What do you do?',
+        ? 'The mythic auction promise closes your throat when you try to move on. You gave up the right to refuse hidden victims’ hearing until it ends. Three concealed speakers now ask to be heard. Their testimony can improve the release map. Hearing it costs time. A deliberate breach saves time but leaves a visible Oathscar and loses their help. What do you do?'
+        : 'No mythic promise removes your right to refuse this hearing. Three concealed speakers still offer relevant testimony about stored promises. You may hear them as a gift, not as a vow. Declining would not break a promise, because none is owed. What do you do?',
     ],
     choices: [
       {
@@ -842,14 +877,13 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     kicker: 'A public review',
     title: 'The Deed’s Narrow Edge',
     location: 'The Price Court Marker',
-    objective: 'Complete the owed review or accept a deliberate breach.',
+    objective: 'Complete the owed review, or record that none is due.',
     threat: 'Rising',
     art: 'blackgatepassage',
     body: (state) => [
       has(state, 'c11-price-court-review-owed')
-        ? 'The Price Court marker blocks the hearing path. Your auction bid promised one public review. The paper delays every force the sale did not name. It owns no realm, fragment, voice, or person.'
-        : 'No Price Court review is owed. If the one-opening paper, the invasion right, is present, it admits only its named force.',
-      'A completed review returns the freedom named by the auction promise. Breach opens the path faster but marks every later claim. How do you pass the marker?',
+        ? 'The Price Court marker blocks the hearing path. Your auction bid promised one public review. The paper delays every force the sale did not name. It owns no realm, fragment, voice, or person. A completed review returns the freedom named by the auction promise. Breach opens the path faster but marks every later claim. How do you pass the marker?'
+        : 'No Price Court review is owed. If the one-opening paper, the invasion right, is present, it admits only its named force. There is no review promise here to keep or break. How do you pass the marker?',
     ],
     choices: [
       {
@@ -894,14 +928,13 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     kicker: 'One witnessed crossing',
     title: 'The Passage Already Priced',
     location: 'The Stilled Inner Opening',
-    objective: 'Honour the Compact’s one witnessed crossing when it is owed.',
+    objective: 'Honour the Compact crossing only if that crossing was purchased.',
     threat: 'Rising',
     art: 'blackgatepassage',
     body: (state) => [
       has(state, 'c11-alliance-ash-compact-passage')
-        ? 'Malrec’s inside opening has stopped. The Ash Compact’s price is now due: exactly one witnessed crossing. Civic damage makes its delegates demand that the traveller carry no weapon.'
-        : 'The Ash Compact holds no purchased crossing from Vathis. Nobody may turn its old help into permanent access.',
-      'The single crossing can carry one unarmed messenger to the mortal witness line. Refusing it preserves position but breaks the alliance. What do you allow?',
+        ? 'Malrec’s inside opening has stopped. The Ash Compact’s price is now due: exactly one witnessed crossing. Civic damage makes its delegates demand that the traveller carry no weapon. The single crossing can carry one unarmed messenger to the mortal witness line. Refusing it preserves position but breaks the alliance. What do you allow?'
+        : 'The Ash Compact holds no purchased crossing from Vathis. Nobody may turn its old help into permanent access. There is no Compact passage here to honour or refuse. What do you record?',
     ],
     choices: [
       {
@@ -945,7 +978,10 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     kicker: 'A freedom given away',
     title: 'The Order You May Give',
     location: 'The Mortal Shield Line',
-    objective: 'Obey or breach the exact mythic command restriction.',
+    objective: (state) =>
+      has(state, 'c11-freedom-command-restricted')
+        ? 'Obey or breach the exact mythic command restriction.'
+        : 'Give one defensive order using only the people and authority actually present.',
     threat: 'Immediate',
     art: 'blackgatecollision',
     body: (state) => [
@@ -953,7 +989,9 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
         ? 'Your mythic promise removed the right to command beyond accepted limits until the Gate law changes. The restriction is still active. The present units must choose whether to hold.'
         : 'No mythic restriction blocks your command, but every company still keeps the limits it accepted before crossing.',
       destroyedOathCost(state),
-      'A wide order would steady the line faster and violate the named limit. What do you say?',
+      has(state, 'c11-freedom-command-restricted')
+        ? 'A wide order would steady the line faster and violate the named limit. What do you say?'
+        : 'A wide order would gather people who are not here. What do you say to the units actually present?',
     ],
     choices: [
       {
@@ -997,7 +1035,10 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     kicker: 'The last contracted threshold',
     title: 'Who Crosses First',
     location: 'The Stilled Engine Door',
-    objective: 'Resolve the contracted-door order restriction visibly.',
+    objective: (state) =>
+      has(state, 'c11-freedom-door-order-restricted')
+        ? 'Resolve the contracted-door order while it still binds you.'
+        : 'Choose a crossing order for the wounded without a mythic first-crossing bar.',
     threat: 'Immediate',
     art: 'blackgatecollision',
     body: (state) => [
@@ -1931,10 +1972,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     objective: 'Live with the separation you chose.',
     threat: 'Low',
     art: 'blackgatesealed',
-    body: (state) => [
-      `The Black Gate is whole stone. No voice, army, offer, message, or promise crosses it. ${custodyResult(state)}`,
-      `${destinationResult(state)} ${relationshipResult(state)} Devils remain known enemies beyond a border that cannot answer. At dawn, one road of light stays barred. You see the change and do not yet know who will meet it.`,
-    ],
+    body: (state) => endingEpilogue(state),
     choices: [],
     final: true,
   },
@@ -1947,10 +1985,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     objective: 'Begin the hard work of shared permission.',
     threat: 'Low',
     art: 'blackgatepassage',
-    body: (state) => [
-      `The passage opens for one named traveller after three free answers: the traveller’s, the mortal keepers’, and the Cinder Deep keepers’. Any one may withdraw before the step. Every stored promise waits for review. ${custodyResult(state)}`,
-      `${destinationResult(state)} ${relationshipResult(state)} The joint bench has disputes waiting before its first day ends. At dawn, a narrow road appears only when separated witnesses name it together.`,
-    ],
+    body: (state) => endingEpilogue(state),
     choices: [],
     final: true,
   },
@@ -1963,10 +1998,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     objective: 'Meet an open future without central control.',
     threat: 'Uneasy',
     art: 'blackgatebroken',
-    body: (state) => [
-      `No Gate owns the road. Every stored promise has returned to a living maker or entered Worldroot without a new owner. Allies and invading powers can both cross. ${custodyResult(state)}`,
-      `${destinationResult(state)} ${relationshipResult(state)} People begin building shelters before they agree on a new law. Dawn opens into a shaking road of light, faster than safety and wider than any one command.`,
-    ],
+    body: (state) => endingEpilogue(state),
     choices: [],
     final: true,
   },
@@ -1979,10 +2011,7 @@ export const chapterTwelveNodes: Record<string, StoryNode> = {
     objective: 'Keep the boundary without owning the people who cross it.',
     threat: 'Uneasy',
     art: 'blackgatekeeper',
-    body: (state) => [
-      `The Gate lives in you. Every stored promise remains a distinct voice. You can open for one named willing person and refuse an army. You cannot silence the voices, give them away, or abandon the boundary. ${custodyResult(state)}`,
-      `${destinationResult(state)} ${relationshipResult(state)} Devils remain distinct voices and possible neighbours, never a single obedient chorus. Dawn bends around your witnessed shape. You hear the change without knowing where its light will lead.`,
-    ],
+    body: (state) => endingEpilogue(state),
     choices: [],
     final: true,
   },

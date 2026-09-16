@@ -20,6 +20,19 @@ function relativeSource(source: StaticImageSource) {
   return value.startsWith('/') ? `.${value}` : value;
 }
 
+function relativeSrcSet(srcSet?: string) {
+  if (!srcSet) return srcSet;
+  return srcSet
+    .split(',')
+    .map((part) => {
+      const trimmed = part.trim();
+      const space = trimmed.search(/\s/);
+      if (space === -1) return relativeSource(trimmed);
+      return `${relativeSource(trimmed.slice(0, space))} ${trimmed.slice(space).trim()}`;
+    })
+    .join(', ');
+}
+
 export default function StaticImage({
   alt,
   fill = false,
@@ -27,6 +40,7 @@ export default function StaticImage({
   loading,
   priority = false,
   src,
+  srcSet,
   style,
   width,
   ...props
@@ -52,6 +66,7 @@ export default function StaticImage({
       height={fill ? undefined : height}
       loading={priority ? 'eager' : (loading ?? 'lazy')}
       src={relativeSource(src)}
+      srcSet={relativeSrcSet(srcSet)}
       style={fillStyle}
       width={fill ? undefined : width}
     />

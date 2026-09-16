@@ -9,7 +9,7 @@ const trustedOrigin = configuredOrigin?.startsWith('https://')
   ? configuredOrigin
   : null;
 const socialImage = trustedOrigin
-  ? new URL('/art/caelan-east-gate.png', trustedOrigin).toString()
+  ? new URL('/art/caelan-east-gate.webp', trustedOrigin).toString()
   : null;
 
 export const metadata: Metadata = {

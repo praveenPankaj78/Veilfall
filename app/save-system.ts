@@ -1,7 +1,9 @@
 import { version } from '../package.json';
 import {
+  canChoose,
   chapterDefinitions,
   initialState,
+  isChoiceVisible,
   nodes,
   normaliseRelationships,
   resolveCompletedOathFlags,
@@ -12,18 +14,27 @@ import {
   type RelationshipIntent,
   type RelationshipKey,
 } from './game-data';
+import {
+  applyChoice,
+  drainAutomaticAcknowledgments,
+  fatalChoiceCost,
+  statesEquivalent,
+  wouldBeFatal,
+} from './game-transition';
 
 export const BUILD_VERSION = version;
-export const SAVE_SCHEMA_VERSION = 18;
+export const SAVE_SCHEMA_VERSION = 19;
 export const EXPORT_FORMAT = 'veilfall-ember-oath-save';
 export const EXPORT_VERSION = 1;
 export const MAX_IMPORT_BYTES = 1_000_000;
 
-export const CURRENT_SAVE_KEY = 'veilfall.saga.v18.save';
-export const BACKUP_SAVE_KEY = 'veilfall.saga.v18.pre-import-backup';
-export const DAMAGED_SAVE_BACKUP_KEY = 'veilfall.saga.v18.damaged-backup';
-const PREVIOUS_DOCUMENT_KEY = 'veilfall.saga.v17.save';
-const PREVIOUS_BACKUP_KEY = 'veilfall.saga.v17.pre-import-backup';
+export const CURRENT_SAVE_KEY = 'veilfall.saga.v19.save';
+export const BACKUP_SAVE_KEY = 'veilfall.saga.v19.pre-import-backup';
+export const DAMAGED_SAVE_BACKUP_KEY = 'veilfall.saga.v19.damaged-backup';
+const PREVIOUS_DOCUMENT_KEY = 'veilfall.saga.v18.save';
+const PREVIOUS_BACKUP_KEY = 'veilfall.saga.v18.pre-import-backup';
+const OLDER_DOCUMENT_KEY = 'veilfall.saga.v17.save';
+const OLDER_BACKUP_KEY = 'veilfall.saga.v17.pre-import-backup';
 export const READING_PREFERENCE_KEY = 'veilfall.reading.v1';
 export const LEGACY_SAVE_KEYS = [
   'veilfall.saga.v16.save',
@@ -61,12 +72,28 @@ export const LEGACY_CHAPTER_START_KEYS: Partial<Record<ChapterNumber, string>> =
 export type TextSizePreference = 'default' | 'large' | 'extra-large';
 export type CheckpointMap = Partial<Record<ChapterNumber, GameState>>;
 
+export type RetrySnapshot = {
+  before: GameState;
+  choiceId: string;
+  healthBefore: number;
+  healthCost: number;
+};
+
+export type DeathCause = {
+  choiceId: string;
+  label: string;
+  healthBefore: number | null;
+  healthCost: number | null;
+};
+
 export type StoredSaveDocument = {
   kind: 'veilfall-browser-save';
   schemaVersion: typeof SAVE_SCHEMA_VERSION;
   game: GameState;
   checkpoints: CheckpointMap;
   readingPreference: TextSizePreference;
+  retry: RetrySnapshot | null;
+  deathCause: DeathCause | null;
 };
 
 export type PortableSave = {
@@ -79,6 +106,8 @@ export type PortableSave = {
   game: GameState;
   checkpoints: CheckpointMap;
   readingPreference: TextSizePreference;
+  retry: RetrySnapshot | null;
+  deathCause: DeathCause | null;
 };
 
 export type ImportSummary = {
@@ -96,7 +125,7 @@ type ValidatedGame =
   | { ok: true; game: GameState }
   | { ok: false; error: string };
 type ValidatedDocument =
-  | { ok: true; document: StoredSaveDocument }
+  | { ok: true; document: StoredSaveDocument; warnings: string[] }
   | { ok: false; error: string };
 
 const relationshipIntents: readonly RelationshipIntent[] = [
@@ -479,13 +508,120 @@ function validateGameState(value: unknown, label: string): ValidatedGame {
   return { ok: true, game: normaliseGameState(value as Partial<GameState>) };
 }
 
+function validateDeathCause(
+  value: unknown,
+): { ok: true; deathCause: DeathCause | null } | { ok: false; error: string } {
+  if (value === undefined || value === null)
+    return { ok: true, deathCause: null };
+  if (!isRecord(value))
+    return { ok: false, error: 'The death cause is not an object.' };
+  if (typeof value.choiceId !== 'string' || !allChoiceIds.has(value.choiceId))
+    return { ok: false, error: 'The death cause names an unknown action.' };
+  if (typeof value.label !== 'string' || value.label.length > 2_000)
+    return { ok: false, error: 'The death cause has an invalid action label.' };
+  if (
+    value.healthBefore !== null &&
+    !isBoundedInteger(value.healthBefore, 0, 1_000_000)
+  )
+    return { ok: false, error: 'The death cause has an invalid Health before.' };
+  if (value.healthCost !== null && !isRecordedFatalCost(value.healthCost))
+    return { ok: false, error: 'The death cause has an invalid Health cost.' };
+  return {
+    ok: true,
+    deathCause: {
+      choiceId: value.choiceId,
+      label: value.label,
+      healthBefore:
+        typeof value.healthBefore === 'number' ? value.healthBefore : null,
+      healthCost:
+        typeof value.healthCost === 'number'
+          ? Math.abs(value.healthCost)
+          : null,
+    },
+  };
+}
+
+function isRecordedFatalCost(value: unknown): value is number {
+  return (
+    isBoundedInteger(value, 1, 1_000_000) ||
+    isBoundedInteger(value, -1_000_000, -1)
+  );
+}
+
+function validateRetrySnapshot(
+  value: unknown,
+  deadGame: GameState,
+):
+  | { ok: true; retry: RetrySnapshot }
+  | { ok: false; error: string } {
+  if (!isRecord(value))
+    return { ok: false, error: 'The retry snapshot is not an object.' };
+  if (typeof value.choiceId !== 'string' || !allChoiceIds.has(value.choiceId))
+    return { ok: false, error: 'The retry snapshot names an unknown action.' };
+  if (!isBoundedInteger(value.healthBefore, 1, 1_000_000))
+    return { ok: false, error: 'The retry snapshot has no positive Health.' };
+  if (!isRecordedFatalCost(value.healthCost))
+    return { ok: false, error: 'The retry snapshot has an invalid Health cost.' };
+  const beforeResult = validateGameState(
+    value.before,
+    'The retry snapshot',
+  );
+  if (!beforeResult.ok) return beforeResult;
+  const before = beforeResult.game;
+  if (before.defeat || before.stats.health <= 0)
+    return { ok: false, error: 'The retry snapshot is already a defeat.' };
+  if (before.chapter !== deadGame.chapter)
+    return { ok: false, error: 'The retry snapshot belongs to another chapter.' };
+  const choice = nodes[before.nodeId]?.choices.find(
+    (item) => item.id === value.choiceId,
+  );
+  if (
+    !choice ||
+    !isChoiceVisible(choice, before) ||
+    !canChoose(choice, before) ||
+    !wouldBeFatal(choice, before)
+  )
+    return {
+      ok: false,
+      error: 'The retry snapshot does not match a currently fatal action.',
+    };
+  if (
+    before.stats.health !== value.healthBefore ||
+    fatalChoiceCost(choice) !== Math.abs(value.healthCost)
+  )
+    return {
+      ok: false,
+      error: 'The retry snapshot Health values do not match the fatal action.',
+    };
+  const reproduced = applyChoice(before, choice);
+  if (!statesEquivalent(reproduced, deadGame))
+    return {
+      ok: false,
+      error: 'The retry snapshot does not reproduce the saved defeat.',
+    };
+  return {
+    ok: true,
+    retry: {
+      before,
+      choiceId: choice.id,
+      healthBefore: before.stats.health,
+      healthCost: fatalChoiceCost(choice),
+    },
+  };
+}
+
 function validateDocumentParts(
   gameValue: unknown,
   checkpointsValue: unknown,
   readingValue: unknown,
+  retryValue: unknown = null,
+  deathCauseValue: unknown = null,
 ): ValidatedDocument {
   const gameResult = validateGameState(gameValue, 'The current game');
   if (!gameResult.ok) return gameResult;
+  const game = gameResult.game.defeat
+    ? gameResult.game
+    : drainAutomaticAcknowledgments(gameResult.game);
   if (!isRecord(checkpointsValue))
     return { ok: false, error: 'The checkpoint collection is not an object.' };
   if (!['default', 'large', 'extra-large'].includes(String(readingValue)))
@@ -514,7 +650,7 @@ function validateDocumentParts(
         ok: false,
         error: `Checkpoint ${chapter} is not a clean start for ${definition.title}.`,
       };
-    if (chapter > gameResult.game.chapter)
+    if (chapter > game.chapter)
       return {
         ok: false,
         error: `Checkpoint ${chapter} is later than the current game.`,
@@ -526,16 +662,16 @@ function validateDocumentParts(
       };
     if (
       result.game.completedChapters.some(
-        (completed) => !gameResult.game.completedChapters.includes(completed),
+        (completed) => !game.completedChapters.includes(completed),
       ) ||
-      result.game.flags.some((flag) => !gameResult.game.flags.includes(flag))
+      result.game.flags.some((flag) => !game.flags.includes(flag))
     )
       return {
         ok: false,
         error: `Checkpoint ${chapter} contains story results that are not in the current path.`,
       };
     const historyIsPrefix = result.game.history.every(
-      (entry, index) => gameResult.game.history[index] === entry,
+      (entry, index) => game.history[index] === entry,
     );
     if (!historyIsPrefix)
       return {
@@ -544,15 +680,52 @@ function validateDocumentParts(
       };
     checkpoints[chapter as ChapterNumber] = result.game;
   }
+  const warnings: string[] = [];
+  let retry: RetrySnapshot | null = null;
+  let deathCause: DeathCause | null = null;
+  const deathCauseResult = validateDeathCause(deathCauseValue);
+  if (deathCauseResult.ok) deathCause = deathCauseResult.deathCause;
+  else
+    warnings.push(
+      'Saved death details were incomplete and were not kept.',
+    );
+  if (retryValue !== undefined && retryValue !== null) {
+    if (!game.defeat) {
+      warnings.push(
+        'Saved last-choice retry did not match the current game and was discarded.',
+      );
+    } else {
+      const retryResult = validateRetrySnapshot(retryValue, game);
+      if (retryResult.ok) retry = retryResult.retry;
+      else
+        warnings.push(
+          'Saved last-choice retry did not match the recorded defeat and was discarded.',
+        );
+    }
+  }
+  if (game.defeat && !deathCause && game.defeat.choiceId) {
+    const fatalChoice = Object.values(nodes)
+      .flatMap((node) => node.choices)
+      .find((choice) => choice.id === game.defeat?.choiceId);
+    deathCause = {
+      choiceId: game.defeat.choiceId,
+      label: fatalChoice?.label ?? game.defeat.choiceId,
+      healthBefore: null,
+      healthCost: null,
+    };
+  }
   return {
     ok: true,
     document: {
       kind: 'veilfall-browser-save',
       schemaVersion: SAVE_SCHEMA_VERSION,
-      game: gameResult.game,
+      game,
       checkpoints,
       readingPreference: readingValue as TextSizePreference,
+      retry,
+      deathCause,
     },
+    warnings,
   };
 }
 
@@ -560,11 +733,16 @@ export function createStoredSave(
   game: GameState,
   checkpoints: CheckpointMap,
   readingPreference: TextSizePreference,
+  retry: RetrySnapshot | null = null,
+  deathCause: DeathCause | null = null,
 ): StoredSaveDocument {
+  const normalisedGame = game.defeat
+    ? normaliseGameState(game)
+    : drainAutomaticAcknowledgments(normaliseGameState(game));
   return {
     kind: 'veilfall-browser-save',
     schemaVersion: SAVE_SCHEMA_VERSION,
-    game: normaliseGameState(game),
+    game: normalisedGame,
     checkpoints: Object.fromEntries(
       Object.entries(checkpoints).map(([chapter, state]) => [
         chapter,
@@ -572,6 +750,8 @@ export function createStoredSave(
       ]),
     ),
     readingPreference,
+    retry: normalisedGame.defeat ? retry : null,
+    deathCause: normalisedGame.defeat ? deathCause : null,
   };
 }
 
@@ -580,12 +760,14 @@ export function validateStoredSave(value: unknown): ValidatedDocument {
     return { ok: false, error: 'The stored save is not an object.' };
   if (value.kind !== 'veilfall-browser-save')
     return { ok: false, error: 'The stored save has an unknown format.' };
-  if (![17, SAVE_SCHEMA_VERSION].includes(value.schemaVersion as number))
+  if (![17, 18, SAVE_SCHEMA_VERSION].includes(value.schemaVersion as number))
     return { ok: false, error: 'The stored save version is not supported.' };
   return validateDocumentParts(
     value.game,
     value.checkpoints,
     value.readingPreference,
+    value.retry,
+    value.deathCause,
   );
 }
 
@@ -603,6 +785,8 @@ export function createPortableSave(
     game: document.game,
     checkpoints: document.checkpoints,
     readingPreference: document.readingPreference,
+    retry: document.retry,
+    deathCause: document.deathCause,
   };
 }
 
@@ -636,7 +820,9 @@ export function parsePortableSave(
       error: 'That Veilfall export version is not supported.',
     };
   if (
-    ![16, 17, SAVE_SCHEMA_VERSION].includes(value.saveSchemaVersion as number)
+    ![16, 17, 18, SAVE_SCHEMA_VERSION].includes(
+      value.saveSchemaVersion as number,
+    )
   )
     return {
       ok: false,
@@ -651,6 +837,8 @@ export function parsePortableSave(
     value.game,
     value.checkpoints,
     value.readingPreference,
+    value.retry,
+    value.deathCause,
   );
   if (!result.ok) return result;
   const definition = chapterDefinitions[result.document.game.chapter - 1];
@@ -715,6 +903,7 @@ export function readStoredSave(storage: StorageLike):
     currentRaw = storage.getItem(CURRENT_SAVE_KEY);
     if (currentRaw === null) {
       currentRaw = storage.getItem(PREVIOUS_DOCUMENT_KEY);
+      if (currentRaw === null) currentRaw = storage.getItem(OLDER_DOCUMENT_KEY);
       migratedDocument = currentRaw !== null;
     }
   } catch {
@@ -732,7 +921,7 @@ export function readStoredSave(storage: StorageLike):
             ok: true,
             document: result.document,
             migrated: migratedDocument,
-            warnings: [],
+            warnings: result.warnings,
           }
         : { ok: false, error: result.error, damagedRaw: currentRaw };
     } catch {
@@ -896,7 +1085,9 @@ export function replaceDamagedStoredSave(
 export function readBackupSave(storage: StorageLike): ValidatedDocument | null {
   try {
     const raw =
-      storage.getItem(BACKUP_SAVE_KEY) ?? storage.getItem(PREVIOUS_BACKUP_KEY);
+      storage.getItem(BACKUP_SAVE_KEY) ??
+      storage.getItem(PREVIOUS_BACKUP_KEY) ??
+      storage.getItem(OLDER_BACKUP_KEY);
     if (!raw) return null;
     return validateStoredSave(JSON.parse(raw));
   } catch {

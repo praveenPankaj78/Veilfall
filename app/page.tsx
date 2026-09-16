@@ -34,11 +34,6 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import {
-  Progress,
-  ProgressLabel,
-  ProgressValue,
-} from '@/components/ui/progress';
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -50,21 +45,43 @@ import {
   chapterDefinitions,
   isChoiceVisible,
   initialState,
-  nextRelationships,
-  resolveCompletedOathFlags,
   nodes,
   relationshipChanges,
   relationshipLabels,
   relationshipSummary,
   requirementText,
-  resolveNext,
+  sceneObjective,
   statLabels,
   type Choice,
   type ChapterNumber,
   type GameState,
+  type RelationshipIntent,
   type RelationshipKey,
   type StatKey,
 } from './game-data';
+import { GATE_LAW_REVIEWS } from './gate-law-review';
+import {
+  applyChapterHandoff,
+  applyPlayerChoice,
+  captureDeathCause,
+  captureFatalRetry,
+  chapterRecoveryDisplay,
+  cloneGameState,
+  deathCauseText,
+  wouldBeFatal,
+} from './game-transition';
+import {
+  currentPromiseRecords,
+  deriveInjuryRecords,
+  promiseStatusLabel,
+  resolvedPromiseRecords,
+} from './promise-records';
+import {
+  COVER_ART,
+  deliveredArtworkSrcSet,
+  sceneArtwork,
+  type SceneArtwork,
+} from './scene-art';
 import {
   BUILD_VERSION,
   createPortableSave,
@@ -80,170 +97,13 @@ import {
   writeReadingPreference,
   writeStoredSave,
   type CheckpointMap,
+  type DeathCause,
   type ImportSummary,
+  type RetrySnapshot,
   type StoredSaveDocument,
   type TextSizePreference,
 } from './save-system';
 import { knownTruths, majorConsequences } from './story-memory';
-
-const sceneArtwork = {
-  departure: {
-    src: '/art/caelan-east-gate.png',
-    alt: 'Caelan and Mara travel with the diplomatic escort beyond Greyhaven',
-  },
-  ambush: {
-    src: '/art/kings-road-ambush.webp',
-    alt: 'Caelan and Mara defend the diplomatic escort from black arrows on the rain-soaked King’s Road',
-  },
-  folded: {
-    src: '/art/kings-road-folded.png',
-    alt: 'Caelan and the wounded escort face an impossible sea across the King’s Road',
-  },
-  inn: {
-    src: '/art/bellweather-inn.png',
-    alt: 'Caelan leads the wounded escort into Bellweather Inn during a storm',
-  },
-  othernights: {
-    src: '/art/bellweather-other-nights.webp',
-    alt: 'Caelan and Mara protect the wounded as other nights open inside Bellweather Inn',
-  },
-  foldedcellar: {
-    src: '/art/bellweather-folded-cellar.webp',
-    alt: 'Caelan and Tivik follow an impossible road through the repeating cellar beneath Bellweather Inn',
-  },
-  roadpin: {
-    src: '/art/bellweather-road-pin.webp',
-    alt: 'Caelan and Tivik discover the damaged iron road pin beneath Bellweather Inn',
-  },
-  harrowfen: {
-    src: '/art/harrowfen-wrong-mile.png',
-    alt: 'Caelan approaches Harrowfen while royal archers watch from the canal gate',
-  },
-  shiftingmarket: {
-    src: '/art/harrowfen-shifting-market.webp',
-    alt: 'Caelan, Mara, and Tivik protect Harrowfen as alternate streets return around the old well',
-  },
-  bridgereveal: {
-    src: '/art/mileless-bridge-reveal.webp',
-    alt: 'Caelan and his companions discover the Mileless Bridge crossing several worlds beneath different skies',
-  },
-  mileless: {
-    src: '/art/mileless-bridge-chase.png',
-    alt: 'Caelan pursues Rook and Ordan across the broken arches of the Mileless Bridge',
-  },
-  crossroads: {
-    src: '/art/mileless-three-spans.png',
-    alt: 'Caelan and his companions face three impossible roads beneath different skies',
-  },
-  nails: {
-    src: '/art/nine-nails-revelation.png',
-    alt: 'Caelan, Mara, Lysara, and Rook discover the hidden map of nine World Nails',
-  },
-  dragonspine: {
-    src: '/art/dragonspine-coldfire.png',
-    alt: 'Caelan and his companions climb through the glass valleys while cold fire hunts them',
-  },
-  vaor: {
-    src: '/art/vaor-memory-grave.png',
-    alt: 'Caelan finds the ancient dragon Vaor imprisoned beneath glass memories',
-  },
-  ember: {
-    src: '/art/ember-bearer-vision.png',
-    alt: 'Caelan carries Vaor’s ember while a vision of the Black Gate opens above him',
-  },
-  kharad: {
-    src: '/art/kharad-vey-wheel-city.png',
-    alt: 'Caelan and his companions approach Kharad Vey as the wheel town crosses the Ember Steppe',
-  },
-  storm: {
-    src: '/art/ancestor-storm-attack.png',
-    alt: 'Caelan and Korran defend the moving town from an ancestor storm',
-  },
-  moot: {
-    src: '/art/red-moot-ilyra.png',
-    alt: 'Caelan and Ilyra stand before the Red Moot while ancestor voices gather outside',
-  },
-  redwind: {
-    src: '/art/red-wind-pursuit.png',
-    alt: 'Caelan and the moving Kharad town flee Asterra Crown soldiers beneath a red ancestor storm',
-  },
-  saltbattle: {
-    src: '/art/salt-basin-battle.png',
-    alt: 'Caelan and Ilyra face the divided Crown March in the Salt Basin',
-  },
-  marshal: {
-    src: '/art/marshal-field-confrontation.png',
-    alt: 'Caelan confronts Marshal Teren Voss while a dead commander forms in the red storm',
-  },
-  blackgate: {
-    src: '/art/black-gate-fortress-ring.png',
-    alt: 'Caelan approaches the eight cold forts surrounding the colossal Black Gate',
-  },
-  futureless: {
-    src: '/art/futureless-fort-breach.png',
-    alt: 'Caelan and the defenders of Fourth Fort fight to save its wounded during the Gate breach',
-  },
-  embassy: {
-    src: '/art/first-devil-embassy.png',
-    alt: 'Vexa Ash leads the first devil embassy across the Black Gate under open safe conduct',
-  },
-  cinderembassy: {
-    src: '/art/cinder-deep-embassy.png',
-    alt: 'Caelan and Vexa face each other across the neutral Cinder Deep embassy table',
-  },
-  twosidedattack: {
-    src: '/art/two-sided-assassination.png',
-    alt: 'Mortal handbow assassins and rival devil chain wielders attack the embassy from opposite sides',
-  },
-  gatecrossing: {
-    src: '/art/black-gate-crossing.png',
-    alt: 'Caelan crosses the Black Gate with Vexa, willing allies, and the recovered Gate Nail fragment',
-  },
-  ashroadoffer: {
-    src: '/art/ash-road-first-offer.png',
-    alt: 'A clear cup of water rises from the ash before Caelan and the expedition',
-  },
-  privateoffers: {
-    src: '/art/ash-road-private-offers.png',
-    alt: 'Caelan and the expedition face separate glowing offers along the Ash Road',
-  },
-  vathisapproach: {
-    src: '/art/vathis-approach.png',
-    alt: 'Caelan leads the surviving expedition toward the divided towers of Vathis',
-  },
-  vathisstreets: {
-    src: '/art/vathis-contract-streets.png',
-    alt: 'Contract streets move between the black hand shaped towers of Vathis',
-  },
-  vathisauction: {
-    src: '/art/vathis-invasion-auction.png',
-    alt: 'Three Price Court seals hang above the circular invasion auction in Vathis',
-  },
-  vathisengine: {
-    src: '/art/vathis-engine-gate.png',
-    alt: 'Malrec’s white engine pulls contract chains as the inner Black Gate begins to open',
-  },
-  blackgatecollision: {
-    src: '/art/black-gate-two-faces.png',
-    alt: 'The mortal fortress ring and Vathis face each other through the widening Black Gate',
-  },
-  blackgatesealed: {
-    src: '/art/black-gate-sealed.png',
-    alt: 'The sealed Black Gate divides a pale mortal dawn from distant Cinder Deep fire',
-  },
-  blackgatepassage: {
-    src: '/art/black-gate-mutual-passage.png',
-    alt: 'Independent mortal and devil witnesses watch a narrow consent governed passage',
-  },
-  blackgatebroken: {
-    src: '/art/black-gate-broken.png',
-    alt: 'The shattered Black Gate releases many distinct promise lights into both realms',
-  },
-  blackgatekeeper: {
-    src: '/art/caelan-living-gate.png',
-    alt: 'Caelan carries ember lines of the Black Gate while distinct voices circle him',
-  },
-} as const;
 
 type ModelTool = {
   name: string;
@@ -293,74 +153,63 @@ const statHelp: Record<StatKey, string> = {
 
 const coreStatKeys: StatKey[] = ['health', 'resolve', 'command', 'oathfire'];
 const resourceStatKeys: StatKey[] = ['medicine'];
+const closedRelationshipIntents: RelationshipIntent[] = [
+  'ended',
+  'hostile',
+  'platonic',
+];
 // Build-time target, not hostname detection: local itch previews match the upload.
 const showExpectedAdvantages =
   process.env.NEXT_PUBLIC_VEILFALL_TARGET !== 'itch';
 
-function defeatForChoice(
-  chapter: ChapterNumber,
-  choice: Choice,
-  state: GameState,
-) {
-  const bodies: Record<ChapterNumber, string> = {
-    1: 'You complete the action, but your wounds finally take your strength. Rain fills your mouth as the road darkens above you. The escort continues for only a few steps before the enemy closes in.',
-    2: 'You force the danger back, but your body cannot survive the effort. The last sound you hear is Bellweather’s bell and Mara calling your name through the battle.',
-    3: 'Your choice changes the fight, but blood and exhaustion pull you down beside the canal. Harrowfen’s lanterns blur on the water as Ordan escapes toward the eastern bridge.',
-    4: 'You complete the action, but the moving bridge takes the last of your strength. Stone turns beneath you. Your shield slips from your hand, and the World Nail fragment disappears into another sky.',
-    5: state.flags.includes('c5-chose-lysara-care')
-      ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Lysara calls your name and Vaor roars beneath the mountain.'
-      : state.flags.includes('c5-chose-sorin-care')
-        ? 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while your companions call your name and Vaor roars beneath the mountain.'
-        : 'You complete the action, but the cold fire takes the last warmth from your wounds. Glass and blue flame blur above you while Mara calls your name and Vaor roars beneath the mountain.',
-    6: 'You complete the action, but the moving city and the red storm take the last of your strength. The deck rolls beneath you while Korran calls the living crews together and the ember fades behind your ribs.',
-    7: 'You complete the action, but the Red Wind Hunt takes the last of your strength. Salt and red sky blur together while your companions fight to keep the living army from obeying its dead.',
-    8: 'You complete the action, but the Black Gate takes the last of your strength. Snow and furnace light blur together while the defenders struggle to keep the opening from becoming an invasion road.',
-    9: 'You complete the action, but the embassy attack takes the last of your strength. Glass chains and handbow smoke blur while your allies keep the Gate Nail fragment from both assassin groups.',
-    10: 'You complete the action, but the Ash Road takes the last of your strength. Your expedition closes around the fragment while the road carries its unanswered offers toward Vathis.',
-    11: 'You complete the action, but Vathis takes the last of your strength. Contract streets rise around the expedition while Malrec’s engine pulls the inner Black Gate open.',
-    12: 'You complete the action, but the failing Black Gate takes the last of your strength. Both realms remain visible as the promise storm closes over you.',
-  };
-  return {
-    title: 'Caelan has fallen',
-    body: bodies[chapter],
-    choiceId: choice.id,
-  };
+function SceneArtImage({
+  art,
+  className,
+  fill,
+  onError,
+  priority,
+  sizes,
+}: {
+  art: SceneArtwork;
+  className?: string;
+  fill?: boolean;
+  onError?: () => void;
+  priority?: boolean;
+  sizes?: string;
+}) {
+  const image = (
+    <Image
+      src={art.src}
+      alt={art.alt}
+      className={className}
+      fill={fill}
+      height={fill ? undefined : 864}
+      onError={onError}
+      priority={priority}
+      sizes={sizes}
+      width={fill ? undefined : 1536}
+    />
+  );
+  return (
+    <picture>
+      <source
+        sizes={sizes}
+        srcSet={deliveredArtworkSrcSet(art)}
+        type="image/webp"
+      />
+      {image}
+    </picture>
+  );
 }
 
-function applyChoice(state: GameState, choice: Choice): GameState {
-  const nextStats = { ...state.stats };
-  for (const [key, value] of Object.entries(choice.changes ?? {})) {
-    const stat = key as StatKey;
-    nextStats[stat] = Math.max(0, nextStats[stat] + (value ?? 0));
-  }
-  const nodeId = resolveNext(choice, state);
-  const updatedRelationships = nextRelationships(state.relationships, choice);
-  const completedChapters =
-    nodes[nodeId]?.final && nextStats.health > 0
-      ? Array.from(new Set([...state.completedChapters, state.chapter]))
-      : state.completedChapters;
-  return {
-    nodeId,
-    chapter: state.chapter,
-    chapterChoices: state.chapterChoices + 1,
-    completedChapters,
-    stats: nextStats,
-    relationships: updatedRelationships,
-    contentPreference: state.contentPreference,
-    flags: resolveCompletedOathFlags(
-      Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
-    ),
-    history: [...state.history, choice.result],
-    defeat:
-      nextStats.health <= 0
-        ? defeatForChoice(state.chapter, choice, state)
-        : null,
-  };
-}
-
-function wouldBeFatal(choice: Choice, state: GameState) {
-  const healthChange = choice.changes?.health ?? 0;
-  return healthChange < 0 && state.stats.health + healthChange <= 0;
+function displayRelationship(game: GameState, person: RelationshipKey) {
+  const summary = relationshipSummary(game.relationships[person]);
+  if (
+    !game.flags.includes('c12-relationship-distance') ||
+    closedRelationshipIntents.includes(game.relationships[person].intent)
+  )
+    return summary;
+  return `${summary}. Future left open across distance`;
 }
 
 function changeSummary(choice: Choice, state: GameState) {
@@ -376,14 +225,6 @@ function changeSummary(choice: Choice, state: GameState) {
     ([person, changes]) => {
       const name = relationshipLabels[person as RelationshipKey];
       const notes: string[] = [];
-      if ((changes?.trust ?? 0) > 0) notes.push(`${name}: trust may deepen`);
-      if ((changes?.trust ?? 0) < 0)
-        notes.push(`${name}: trust may be damaged`);
-      if ((changes?.attraction ?? 0) > 0)
-        notes.push(`${name}: attraction may deepen`);
-      if ((changes?.respect ?? 0) > 0)
-        notes.push(`${name}: respect may deepen`);
-      if ((changes?.friction ?? 0) > 0) notes.push(`${name}: tension may rise`);
       if (changes?.intent === 'platonic')
         notes.push(`${name}: friendship chosen`);
       if (changes?.intent === 'interested')
@@ -393,6 +234,8 @@ function changeSummary(choice: Choice, state: GameState) {
       if (changes?.intent === 'committed')
         notes.push(`${name}: commitment chosen`);
       if (changes?.intent === 'ended') notes.push(`${name}: romance ended`);
+      if (changes?.intent === 'hostile')
+        notes.push(`${name}: hostility declared`);
       return notes;
     },
   );
@@ -401,86 +244,6 @@ function changeSummary(choice: Choice, state: GameState) {
     ...personalChanges,
     ...(wouldBeFatal(choice, state) ? ['Lethal at current Health'] : []),
   ];
-}
-
-function activePromises(game: GameState) {
-  const promises: string[] = [];
-  if (game.flags.includes('oath-bring-them-home'))
-    promises.push('Bring the escort home alive.');
-  if (game.flags.includes('c2-oath-repair-road'))
-    promises.push('Repair the damaged King’s Road.');
-  if (game.flags.includes('c2-oath-expose-crown'))
-    promises.push('Expose the Crown officer behind the attack.');
-  if (game.flags.includes('c3-oath-hold-town') && game.chapter <= 4)
-    promises.push('Do not let Harrowfen fall while Ordan is pursued.');
-  if (game.flags.includes('c4-oath-no-one-falls') && game.chapter <= 4)
-    promises.push(
-      'Do not let anyone fall from the Mileless Bridge while you stand.',
-    );
-  if (game.flags.includes('c4-oath-honest-with-mara'))
-    promises.push('Do not hide behind duty when speaking with Mara.');
-  if (game.flags.includes('c5-oath-carry-vaor-grief'))
-    promises.push('Hear Vaor’s grief without turning away.');
-  if (game.flags.includes('c5-vaor-pact'))
-    promises.push(
-      'Carry Vaor’s voice and ember until both of you agree the duty is complete.',
-    );
-  if (
-    game.flags.includes('c6-oath-investigate-unsea') &&
-    !game.flags.includes('c9-destroyed-unsea-investigation-oath')
-  )
-    promises.push('Discover which ancestor voices are truly conscious.');
-  if (
-    game.flags.includes('c6-oath-recognised-red-moot') &&
-    !game.flags.includes('c9-destroyed-red-moot-authority-oath')
-  )
-    promises.push(
-      'Recognise the Red Moot’s living authority in every alliance you lead.',
-    );
-  if (
-    game.flags.includes('c6-oath-crown-restitution') &&
-    !game.flags.includes('c8-released-crown-oath') &&
-    !game.flags.includes('c9-destroyed-crown-restitution-oath')
-  )
-    promises.push(
-      'Bring the Concord’s hidden victims before the Queen or oppose the throne that buries them.',
-    );
-  if (
-    game.flags.includes('c6-oath-defends-refusal') &&
-    !game.flags.includes('c9-destroyed-clan-refusal-oath')
-  )
-    promises.push('Defend the clans’ right to refuse future Crown control.');
-  if (
-    game.flags.includes('c6-oath-honest-limit') &&
-    !game.flags.includes('c9-destroyed-honest-command-limit-oath')
-  )
-    promises.push(
-      'Bind only your own command, testimony, and defence of the Red Moot.',
-    );
-  if (game.flags.includes('c7-oath-living-command'))
-    promises.push('No dead officer holds lawful rank over a living soldier.');
-  if (game.flags.includes('c7-oath-surrender-road'))
-    promises.push('Give safe ground to every soldier who lowers a weapon.');
-  if (
-    game.flags.includes('c9-return-promise-owned') &&
-    !game.flags.some((flag) =>
-      [
-        'c12-fragment-return-fulfilled',
-        'c12-fragment-custody-amended',
-        'c12-fragment-return-breached',
-      ].includes(flag),
-    )
-  )
-    promises.push(
-      'Return the Black Gate fragment to neutral custody after Malrec’s inside opening is stopped, unless every living Gate keeper freely agrees otherwise.',
-    );
-  if (game.flags.includes('c2-caelan-injured'))
-    promises.push(
-      'Injury: Caelan hurt his back driving the road pin into place.',
-    );
-  return promises.length
-    ? promises
-    : ['No binding Oath or lasting injury is active.'];
 }
 
 const beforeIlyraNodes = new Set([
@@ -535,6 +298,26 @@ export default function Home() {
   const [pendingReplay, setPendingReplay] = useState<ChapterNumber | null>(
     null,
   );
+  const [retrySnapshot, setRetrySnapshot] = useState<RetrySnapshot | null>(
+    null,
+  );
+  const [deathCause, setDeathCause] = useState<DeathCause | null>(null);
+  const [pendingLawChoice, setPendingLawChoice] = useState<Choice | null>(
+    null,
+  );
+  const [failedArtKey, setFailedArtKey] = useState<string | null>(null);
+  const lawCardRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const pendingLawChoiceRef = useRef<Choice | null>(null);
+  const chooseRef = useRef<
+    (
+      choice: Choice,
+    ) =>
+      | { committed: false; review?: (typeof GATE_LAW_REVIEWS)[string] }
+      | { committed: true; next: GameState }
+  >(() => ({ committed: false }));
+  const [showResolvedPromises, setShowResolvedPromises] = useState(false);
+  const lawReviewRef = useRef<HTMLParagraphElement | null>(null);
+  const mobileHeadingRef = useRef<HTMLHeadingElement>(null);
   const gameRef = useRef(game);
   const checkpointsRef = useRef<CheckpointMap>({});
   const autosaveBlockedRef = useRef(false);
@@ -572,6 +355,8 @@ export default function Home() {
             result.document.readingPreference;
           setGame(result.document.game);
           gameRef.current = result.document.game;
+          setRetrySnapshot(result.document.retry);
+          setDeathCause(result.document.deathCause);
           setStarted(true);
           setShowReturnRecap(true);
           setHasBackup(Boolean(readBackupSave(window.localStorage)?.ok));
@@ -614,13 +399,19 @@ export default function Home() {
     if (!loaded || !started || autosaveBlockedRef.current) return;
     const result = writeStoredSave(
       window.localStorage,
-      createStoredSave(game, checkpointsRef.current, readingSize),
+      createStoredSave(
+        game,
+        checkpointsRef.current,
+        readingSize,
+        retrySnapshot,
+        deathCause,
+      ),
     );
     if (!result.ok) {
       autosaveBlockedRef.current = true;
       setNotice({ kind: 'error', message: result.error, storageError: true });
     }
-  }, [game, loaded, readingSize, started]);
+  }, [deathCause, game, loaded, readingSize, retrySnapshot, started]);
 
   useEffect(() => {
     if (!scrollAfterChoice.current) return;
@@ -630,7 +421,11 @@ export default function Home() {
         : storyRef.current;
     scrollAfterChoice.current = null;
     window.requestAnimationFrame(() => {
-      sceneHeadingRef.current?.focus({ preventScroll: true });
+      const mobile = window.matchMedia('(max-width: 950px)').matches;
+      const heading = mobile
+        ? mobileHeadingRef.current
+        : sceneHeadingRef.current;
+      heading?.focus({ preventScroll: true });
       const reducedMotion = window.matchMedia(
         '(prefers-reduced-motion: reduce)',
       ).matches;
@@ -720,19 +515,26 @@ export default function Home() {
           throw new Error('That action is not available in the current scene');
         }
 
-        const next = applyChoice(current, choice);
-        scrollAfterChoice.current =
-          nodes[next.nodeId].art !== nodes[current.nodeId].art
-            ? 'scene'
-            : 'story';
-        gameRef.current = next;
-        setStarted(true);
-        setLastResult(choice.result);
-        setGame(next);
+        const attempt = chooseRef.current(choice);
+        if (!attempt.committed) {
+          if (attempt.review) {
+            return {
+              reviewRequired: true,
+              committed: false,
+              choiceId: choice.id,
+              title: attempt.review.title,
+              summary: attempt.review.summary,
+              groups: attempt.review.groups,
+              message:
+                'Game state does not change until Swear this law is confirmed on screen.',
+            };
+          }
+          throw new Error('That action is not available in the current scene');
+        }
         return {
-          sceneId: next.nodeId,
+          sceneId: attempt.next.nodeId,
           result: choice.result,
-          stats: next.stats,
+          stats: attempt.next.stats,
         };
       },
     });
@@ -741,15 +543,42 @@ export default function Home() {
   }, []);
 
   const node = nodes[game.nodeId];
+  const objective = useMemo(
+    () => sceneObjective(node, game),
+    [game, node],
+  );
   const paragraphs = useMemo(() => node.body(game), [game, node]);
   const truths = useMemo(() => knownTruths(game), [game]);
-  const promises = useMemo(() => activePromises(game), [game]);
+  const currentPromises = useMemo(() => currentPromiseRecords(game), [game]);
+  const resolvedPromises = useMemo(
+    () => resolvedPromiseRecords(game),
+    [game],
+  );
+  const injuries = useMemo(() => deriveInjuryRecords(game), [game]);
   const consequences = useMemo(() => majorConsequences(game), [game]);
   const visibleRelationships = visibleRelationshipKeys(game);
-  const chapterProgress = node.final
-    ? 100
-    : Math.min(96, Math.round((game.chapterChoices / 15) * 100));
+  const chapterProgressLabel = node.final
+    ? 'Chapter complete'
+    : `Chapter ${chapterDefinitions[game.chapter - 1].roman} of XII`;
   const currentChapter = chapterDefinitions[game.chapter - 1];
+  const pendingLawReview = pendingLawChoice
+    ? GATE_LAW_REVIEWS[pendingLawChoice.id]
+    : null;
+  const sceneArt = sceneArtwork[node.art ?? 'departure'];
+  const artFailed = failedArtKey === sceneArt.src;
+  const nextChapterNumber =
+    node.nextChapter && game.chapter < 12
+      ? ((game.chapter + 1) as Exclude<ChapterNumber, 1>)
+      : null;
+  const recoveryPreview = nextChapterNumber
+    ? chapterRecoveryDisplay(game, nextChapterNumber)
+    : null;
+  const showMedicineStock = node.choices.some(
+    (choice) =>
+      isChoiceVisible(choice, game) &&
+      ((choice.changes?.medicine ?? 0) !== 0 ||
+        (choice.requires?.medicine ?? 0) > 0),
+  );
   const diagnosticText = [
     'Veilfall: The Ember Oath bug report',
     `Build: ${BUILD_VERSION}`,
@@ -765,7 +594,13 @@ export default function Home() {
   ].join('\n');
 
   function currentSaveDocument() {
-    return createStoredSave(game, checkpointsRef.current, readingSize);
+    return createStoredSave(
+      game,
+      checkpointsRef.current,
+      readingSize,
+      retrySnapshot,
+      deathCause,
+    );
   }
 
   function recordChapterCheckpoint(chapter: ChapterNumber, next: GameState) {
@@ -893,6 +728,8 @@ export default function Home() {
       pendingImport.document.readingPreference;
     gameRef.current = pendingImport.document.game;
     setGame(pendingImport.document.game);
+    setRetrySnapshot(pendingImport.document.retry);
+    setDeathCause(pendingImport.document.deathCause);
     setLastResult(null);
     setStarted(true);
     setShowReturnRecap(true);
@@ -950,16 +787,83 @@ export default function Home() {
     }
   }
 
-  function choose(choice: Choice) {
-    if (game.defeat || !canChoose(choice, game)) return;
-    const next = applyChoice(game, choice);
+  function commitChoice(choice: Choice) {
+    if (game.defeat || !canChoose(choice, game)) return null;
+    const before = cloneGameState(game);
+    const fatal = wouldBeFatal(choice, game);
+    const next = applyPlayerChoice(game, choice);
+    if (next.defeat && fatal) {
+      setRetrySnapshot(captureFatalRetry(before, choice));
+      setDeathCause(captureDeathCause(before, choice));
+    } else {
+      setRetrySnapshot(null);
+      setDeathCause(null);
+    }
     scrollAfterChoice.current =
       nodes[next.nodeId].art !== node.art ? 'scene' : 'story';
     setLastResult(choice.result);
+    setPendingLawChoice(null);
+    gameRef.current = next;
     setGame(next);
+    setStarted(true);
+    return next;
+  }
+
+  function choose(choice: Choice) {
+    if (game.defeat || !canChoose(choice, game)) return { committed: false as const };
+    if (GATE_LAW_REVIEWS[choice.id]) {
+      pendingLawChoiceRef.current = choice;
+      setPendingLawChoice(choice);
+      window.requestAnimationFrame(() => {
+        lawReviewRef.current?.focus({ preventScroll: true });
+      });
+      return {
+        committed: false as const,
+        review: GATE_LAW_REVIEWS[choice.id],
+      };
+    }
+    const next = commitChoice(choice);
+    return next
+      ? { committed: true as const, next }
+      : { committed: false as const };
+  }
+  chooseRef.current = choose;
+
+  function confirmLawChoice() {
+    const choice = pendingLawChoiceRef.current ?? pendingLawChoice;
+    pendingLawChoiceRef.current = null;
+    setPendingLawChoice(null);
+    if (choice) commitChoice(choice);
+  }
+
+  function cancelLawChoice() {
+    const choiceId =
+      pendingLawChoiceRef.current?.id ?? pendingLawChoice?.id;
+    pendingLawChoiceRef.current = null;
+    setPendingLawChoice(null);
+    window.requestAnimationFrame(() => {
+      if (choiceId) lawCardRefs.current[choiceId]?.focus();
+    });
+  }
+
+  function retryLastChoice() {
+    if (!retrySnapshot) return;
+    const restored = cloneGameState(retrySnapshot.before);
+    setRetrySnapshot(null);
+    setDeathCause(null);
+    gameRef.current = restored;
+    setGame(restored);
+    setLastResult(null);
+  }
+
+  function clearRetryState() {
+    setRetrySnapshot(null);
+    setDeathCause(null);
+    setPendingLawChoice(null);
   }
 
   function loadChapterState(next: GameState) {
+    clearRetryState();
     gameRef.current = next;
     setGame(next);
     setLastResult(null);
@@ -1029,239 +933,68 @@ export default function Home() {
   }
 
   function startChapterTwo() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c2-arrival',
-      chapter: 2,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 1])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 2),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        medicine: 1,
-      },
-      history: [
-        ...game.history,
-        'You continue to Bellweather Inn with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 2);
     recordChapterCheckpoint(2, next);
     loadChapterState(next);
   }
 
   function startChapterThree() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c3-arrival',
-      chapter: 3,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 2])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 2),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        command: Math.min(6, game.stats.command + 1),
-      },
-      history: [
-        ...game.history,
-        'You continue to Harrowfen with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 3);
     recordChapterCheckpoint(3, next);
     loadChapterState(next);
   }
 
   function startChapterFour() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c4-bridge-start',
-      chapter: 4,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 3])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 1),
-      },
-      history: [
-        ...game.history,
-        'You enter the Mileless Bridge with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 4);
     recordChapterCheckpoint(4, next);
     loadChapterState(next);
   }
 
   function startChapterFive() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c5-north-road',
-      chapter: 5,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 4])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 1),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        command: Math.min(6, game.stats.command + 1),
-      },
-      history: [
-        ...game.history,
-        'You follow the northern mark into Dragonspine with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 5);
     recordChapterCheckpoint(5, next);
     loadChapterState(next);
   }
 
   function startChapterSix() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c6-steppe-road',
-      chapter: 6,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 5])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 2),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        command: Math.min(6, game.stats.command + 1),
-      },
-      history: [
-        ...game.history,
-        'You leave Dragonspine for Kharad Vey with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 6);
     recordChapterCheckpoint(6, next);
     loadChapterState(next);
   }
 
   function startChapterSeven() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c7-red-horizon',
-      chapter: 7,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 6])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 2),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        command: Math.min(6, game.stats.command + 1),
-      },
-      history: [
-        ...game.history,
-        'You leave Kharad Vey beneath the Red Wind Hunt with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 7);
     recordChapterCheckpoint(7, next);
     loadChapterState(next);
   }
 
   function startChapterEight() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c8-gate-ring',
-      chapter: 8,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 7])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 2),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        command: Math.min(6, game.stats.command + 1),
-        medicine: Math.max(1, game.stats.medicine),
-      },
-      history: [
-        ...game.history,
-        'You reach the eight forts surrounding the Black Gate with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 8);
     recordChapterCheckpoint(8, next);
     loadChapterState(next);
   }
 
   function startChapterNine() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c9-embassy-watch',
-      chapter: 9,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 8])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 1),
-        resolve: Math.min(8, game.stats.resolve + 1),
-        medicine: Math.max(1, game.stats.medicine),
-      },
-      history: [
-        ...game.history,
-        'You establish neutral Second Fort for the first Cinder Deep embassy with every earlier consequence.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 9);
     recordChapterCheckpoint(9, next);
     loadChapterState(next);
   }
 
   function startChapterTen() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c10-ash-road',
-      chapter: 10,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 9])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 1),
-        resolve: Math.min(8, game.stats.resolve + 1),
-      },
-      history: [
-        ...game.history,
-        'You take the exact voluntary expedition from the inner Black Gate onto the Ash Road.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 10);
     recordChapterCheckpoint(10, next);
     loadChapterState(next);
   }
 
   function startChapterEleven() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c11-vathis-gate',
-      chapter: 11,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 10])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 1),
-        resolve: Math.min(8, game.stats.resolve + 1),
-      },
-      history: [
-        ...game.history,
-        'You enter Vathis with the exact Ash Road expedition, recovered fragment, and every surviving contract limit.',
-      ],
-    };
+    const next = applyChapterHandoff(game, 11);
     recordChapterCheckpoint(11, next);
     loadChapterState(next);
   }
 
   function startChapterTwelve() {
-    const next: GameState = {
-      ...game,
-      nodeId: 'c12-inner-gate',
-      chapter: 12,
-      chapterChoices: 0,
-      completedChapters: Array.from(new Set([...game.completedChapters, 11])),
-      stats: {
-        ...game.stats,
-        health: Math.min(8, game.stats.health + 1),
-        resolve: Math.min(8, game.stats.resolve + 1),
-      },
-      history: [
-        ...game.history,
-        'You reach the inner Black Gate with the exact Vathis alliance, expedition, fragment custody, and mythic freedom restrictions.',
-      ],
-    };
+    // Canonical Chapter XII entry remains c12-inner-gate.
+    const next = applyChapterHandoff(game, 12);
     recordChapterCheckpoint(12, next);
     loadChapterState(next);
   }
@@ -1502,12 +1235,11 @@ export default function Home() {
     return (
       <>
         <main className="cover-screen min-h-screen text-[#eee7d8]">
-          <Image
-            src="/art/caelan-east-gate.png"
-            alt="A captain and a scout lead their people out of a city beneath storm clouds"
+          <SceneArtImage
+            art={COVER_ART}
+            className="cover-art object-cover"
             fill
             priority
-            className="cover-art object-cover"
             sizes="100vw"
           />
           <div className="cover-shade" />
@@ -1583,7 +1315,7 @@ export default function Home() {
         </div>
         <div className="chapter-label">
           <BookOpen aria-hidden="true" />
-          Caelan {currentChapter.roman} of {chapterDefinitions.at(-1)?.roman}
+          {chapterProgressLabel}
         </div>
         <div className="top-actions">
           <Button
@@ -1647,7 +1379,7 @@ export default function Home() {
         <aside className="return-recap" aria-label="Returning player recap">
           <div>
             <p className="eyebrow">Welcome back</p>
-            <strong>{node.objective}</strong>
+            <strong>{objective}</strong>
             <p>{game.history.at(-1) ?? truths.at(-1)}</p>
           </div>
           <div className="return-recap-actions">
@@ -1732,10 +1464,6 @@ export default function Home() {
 
       <section className="mobile-status-strip" aria-label="Current status">
         <div>
-          <span>Threat</span>
-          <strong>{node.threat}</strong>
-        </div>
-        <div>
           <span>Health</span>
           <strong>{game.stats.health}</strong>
         </div>
@@ -1743,9 +1471,14 @@ export default function Home() {
           <span>Resolve</span>
           <strong>{game.stats.resolve}</strong>
         </div>
-        <Button variant="ghost" size="sm" onClick={() => setShowJournal(true)}>
-          Journal
-        </Button>
+        <div>
+          <span>Command</span>
+          <strong>{game.stats.command}</strong>
+        </div>
+        <div>
+          <span>Oathfire</span>
+          <strong>{game.stats.oathfire}</strong>
+        </div>
         <Button
           variant="ghost"
           size="sm"
@@ -1758,18 +1491,30 @@ export default function Home() {
       <div className="game-grid">
         <section className="story-column">
           <output className="visually-hidden" aria-live="polite">
-            New scene: {node.title}. {node.objective}
+            New scene: {node.title}. {objective}
           </output>
+          <header className="mobile-scene-heading">
+            <p className="eyebrow">{node.kicker}</p>
+            <h1 ref={mobileHeadingRef} tabIndex={-1}>
+              {node.title}
+            </h1>
+            <p className="scene-objective-line">
+              <span>{objective}</span>
+              <span className="scene-threat">Threat {node.threat}</span>
+            </p>
+          </header>
           <div className="scene-art-wrap" ref={sceneRef}>
-            <Image
-              src={sceneArtwork[node.art ?? 'departure'].src}
-              alt={sceneArtwork[node.art ?? 'departure'].alt}
-              width={1536}
-              height={864}
-              className="scene-art"
-              priority={game.chapter === 1 && game.nodeId === 'gate-yard'}
-              sizes="(max-width: 950px) 92vw, calc(92vw - 27rem)"
-            />
+            {!artFailed ? (
+              <SceneArtImage
+                art={sceneArt}
+                className="scene-art"
+                onError={() => setFailedArtKey(sceneArt.src)}
+                priority={game.chapter === 1 && game.nodeId === 'gate-yard'}
+                sizes="(max-width: 950px) 92vw, calc(92vw - 27rem)"
+              />
+            ) : (
+              <div className="scene-art-fallback" aria-hidden="true" />
+            )}
             <div className="scene-vignette" />
             <div className="location-stamp">{node.location}</div>
           </div>
@@ -1779,6 +1524,10 @@ export default function Home() {
             <h1 ref={sceneHeadingRef} tabIndex={-1}>
               {node.title}
             </h1>
+            <p className="desktop-scene-objective">
+              {objective}
+              <span className="scene-threat">Threat {node.threat}</span>
+            </p>
 
             {node.lesson && (
               <aside className="lesson-card">
@@ -1796,15 +1545,26 @@ export default function Home() {
 
             {!node.final ? (
               <div className="choices" aria-label="Choose Caelan's action">
+                {showMedicineStock ? (
+                  <p className="medicine-stock">
+                    Medicine {game.stats.medicine}
+                  </p>
+                ) : null}
                 {node.choices
                   .filter((choice) => isChoiceVisible(choice, game))
                   .map((choice, index) => {
                     const available = canChoose(choice, game);
+                    const lawReview = GATE_LAW_REVIEWS[choice.id];
                     const changes = changeSummary(choice, game);
                     const lethal = wouldBeFatal(choice, game);
+                    const detail = lawReview?.summary ?? choice.detail;
                     return (
                       <Button
                         key={choice.id}
+                        ref={(element) => {
+                          if (lawReview)
+                            lawCardRefs.current[choice.id] = element;
+                        }}
                         className="choice-card"
                         variant="outline"
                         disabled={!available}
@@ -1815,7 +1575,7 @@ export default function Home() {
                         </span>
                         <span className="choice-copy">
                           <strong>{choice.label}</strong>
-                          <span>{choice.detail}</span>
+                          <span>{detail}</span>
                           {showExpectedAdvantages && choice.advantage ? (
                             <span className="choice-advantage">
                               <b>Expected advantage</b>
@@ -1853,7 +1613,16 @@ export default function Home() {
                   </ul>
                 </div>
                 {node.nextChapter ? (
-                  game.chapter === 1 ? (
+                  <>
+                    {recoveryPreview ? (
+                      <p className="recovery-note">
+                        {recoveryPreview.rest}
+                        {recoveryPreview.deltas.length
+                          ? ` Recovery: ${recoveryPreview.deltas.join(' · ')}.`
+                          : ' Recovery: no change; a cap already held these values.'}
+                      </p>
+                    ) : null}
+                    {game.chapter === 1 ? (
                     <>
                       <h2>Chapter Two is ready</h2>
                       <p>
@@ -2131,7 +1900,8 @@ export default function Home() {
                         <RotateCcw data-icon="inline-end" />
                       </Button>
                     </>
-                  )
+                  )}
+                  </>
                 ) : (
                   <>
                     <h2>Caelan’s complete adventure has ended</h2>
@@ -2171,17 +1941,14 @@ export default function Home() {
             </div>
           </div>
 
-          <Progress className="chapter-progress" value={chapterProgress}>
-            <ProgressLabel>Chapter progress</ProgressLabel>
-            <ProgressValue>{() => `${chapterProgress}%`}</ProgressValue>
-          </Progress>
+          <p className="chapter-progress-label">{chapterProgressLabel}</p>
 
           <div className="mission-card">
             <div>
               <MapPin aria-hidden="true" />
               <span>Current objective</span>
             </div>
-            <p>{node.objective}</p>
+            <p>{objective}</p>
           </div>
 
           <div className={`threat-card threat-${node.threat.toLowerCase()}`}>
@@ -2228,7 +1995,7 @@ export default function Home() {
             {visibleRelationships.map((person) => (
               <div className="relationship-row" key={person}>
                 <strong>{relationshipLabels[person]}</strong>
-                <span>{relationshipSummary(game.relationships[person])}</span>
+                <span>{displayRelationship(game, person)}</span>
               </div>
             ))}
           </div>
@@ -2262,7 +2029,7 @@ export default function Home() {
             <section>
               <span>Now</span>
               <h3>{node.title}</h3>
-              <p>{node.objective}</p>
+              <p>{objective}</p>
               <small>
                 {node.location} · Threat {node.threat}
               </small>
@@ -2281,18 +2048,72 @@ export default function Home() {
                 {visibleRelationships.map((person) => (
                   <p key={person}>
                     <strong>{relationshipLabels[person]}</strong>
-                    {relationshipSummary(game.relationships[person])}
+                    {displayRelationship(game, person)}
                   </p>
                 ))}
               </div>
             </section>
             <section>
-              <span>Promises and injuries</span>
-              <ul>
-                {promises.map((promise) => (
-                  <li key={promise}>{promise}</li>
-                ))}
-              </ul>
+              <span>Promises</span>
+              {currentPromises.length ? (
+                <ul className="promise-list">
+                  {currentPromises.map((entry) => (
+                    <li key={entry.id}>
+                      <strong>{entry.promise}</strong>
+                      <small>
+                        {promiseStatusLabel(entry.status)} · {entry.beneficiary}
+                      </small>
+                      <span>
+                        Scope: {entry.scope} Benefit: {entry.benefit} Ends:{' '}
+                        {entry.endingConditions}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No binding Oath or lasting obligation is currently active.</p>
+              )}
+              {resolvedPromises.length ? (
+                <div className="resolved-promises">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      setShowResolvedPromises((open) => !open)
+                    }
+                  >
+                    {showResolvedPromises
+                      ? 'Hide settled promises'
+                      : 'Show settled promises'}
+                  </Button>
+                  {showResolvedPromises ? (
+                    <ul className="promise-list">
+                      {resolvedPromises.map((entry) => (
+                        <li key={entry.id}>
+                          <strong>{entry.promise}</strong>
+                          <small>
+                            {promiseStatusLabel(entry.status)} ·{' '}
+                            {entry.beneficiary}
+                          </small>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              ) : null}
+            </section>
+            <section>
+              <span>Injuries</span>
+              {injuries.length ? (
+                <ul>
+                  {injuries.map((injury) => (
+                    <li key={injury.id}>{injury.summary}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No lasting injury is recorded.</p>
+              )}
             </section>
             <section>
               <span>Because you chose</span>
@@ -2318,7 +2139,7 @@ export default function Home() {
         <SheetContent className="mobile-character-sheet" side="bottom">
           <SheetHeader>
             <SheetTitle>Caelan Vey</SheetTitle>
-            <SheetDescription>{node.objective}</SheetDescription>
+            <SheetDescription>{objective}</SheetDescription>
           </SheetHeader>
           <div className="mobile-sheet-grid">
             {coreStatKeys.map((key) => (
@@ -2344,7 +2165,7 @@ export default function Home() {
             {visibleRelationships.map((person) => (
               <p key={person}>
                 <strong>{relationshipLabels[person]}</strong>
-                {relationshipSummary(game.relationships[person])}
+                {displayRelationship(game, person)}
               </p>
             ))}
           </div>
@@ -2358,17 +2179,80 @@ export default function Home() {
           <AlertDialogHeader>
             <p className="eyebrow">The road ends here</p>
             <AlertDialogTitle>{game.defeat?.title}</AlertDialogTitle>
-            <AlertDialogDescription>{game.defeat?.body}</AlertDialogDescription>
+            <AlertDialogDescription>
+              {game.defeat?.body}
+              {deathCause ? (
+                <>
+                  {' '}
+                  {deathCauseText({
+                    actionLabel: deathCause.label,
+                    healthBefore: deathCause.healthBefore,
+                    healthCost: deathCause.healthCost,
+                  })}
+                </>
+              ) : null}
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={restartStoryAfterDeath}>
-              Restart the story
-            </AlertDialogCancel>
+            {retrySnapshot ? (
+              <AlertDialogAction
+                className="confirm-replay"
+                onClick={retryLastChoice}
+              >
+                Retry the last choice
+              </AlertDialogAction>
+            ) : null}
             <AlertDialogAction
               className="confirm-replay"
               onClick={returnToChapterStart}
             >
-              Return to chapter start
+              Restart this chapter
+            </AlertDialogAction>
+            <AlertDialogCancel onClick={restartStoryAfterDeath}>
+              Restart the story
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={Boolean(pendingLawReview)}
+        onOpenChange={(open) => {
+          if (!open && pendingLawChoiceRef.current) cancelLawChoice();
+        }}
+      >
+        <AlertDialogContent className="law-review-dialog">
+          <AlertDialogHeader>
+            <p className="eyebrow" ref={lawReviewRef} tabIndex={-1}>
+              Review this law
+            </p>
+            <AlertDialogTitle tabIndex={-1}>
+              {pendingLawReview?.title}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {pendingLawReview?.summary} Game state does not change until you
+              swear this law.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          {pendingLawReview ? (
+            <dl className="law-review-groups">
+              {pendingLawReview.groups.map((group) => (
+                <div key={group.label}>
+                  <dt>{group.label}</dt>
+                  <dd>{group.body}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={cancelLawChoice}>
+              Back
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="confirm-replay"
+              onClick={confirmLawChoice}
+            >
+              Swear this law
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

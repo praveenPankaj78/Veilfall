@@ -158,6 +158,27 @@ assert.equal(
 assert.equal(previousStorage.getItem('veilfall.saga.v17.save'), previousRaw);
 assert.equal(saves.readStoredSave(previousStorage).migrated, false);
 assert.equal(saves.readBackupSave(previousStorage).ok, true);
+
+const eighteenDocument = {
+  ...document,
+  schemaVersion: 18,
+};
+delete eighteenDocument.retry;
+delete eighteenDocument.deathCause;
+const eighteenRaw = JSON.stringify(eighteenDocument);
+const eighteenStorage = new MemoryStorage({
+  'veilfall.saga.v18.save': eighteenRaw,
+  'veilfall.saga.v18.pre-import-backup': eighteenRaw,
+});
+const migratedEighteen = saves.readStoredSave(eighteenStorage);
+assert.equal(migratedEighteen.ok, true);
+assert.equal(migratedEighteen.migrated, true);
+assert.equal(migratedEighteen.document.retry, null);
+assert.equal(
+  saves.writeStoredSave(eighteenStorage, migratedEighteen.document).ok,
+  true,
+);
+assert.equal(eighteenStorage.getItem('veilfall.saga.v18.save'), eighteenRaw);
 assert.match(pageSource, /showExpectedAdvantages && choice\.advantage/);
 assert.match(pageSource, /NEXT_PUBLIC_VEILFALL_TARGET !== 'itch'/);
 const portable = saves.createPortableSave(document, '2026-09-15T00:00:00.000Z');
@@ -577,6 +598,49 @@ assert.doesNotMatch(
   pageSource,
   /Continue to Rook|startRook|nextChapter:\s*['"]rook/i,
 );
+
+const transition = story.load('app/game-transition.ts');
+const rescueFamily = game.nodes['low-road'].choices.find(
+  (choice) => choice.id === 'rescue-family',
+);
+assert.ok(rescueFamily, 'rescue-family must remain a Chapter I action');
+const fatalBefore = {
+  ...game.initialState,
+  stats: { ...game.initialState.stats, health: 2 },
+  nodeId: 'low-road',
+};
+const deadGame = transition.applyChoice(fatalBefore, rescueFamily);
+const liveRetry = transition.captureFatalRetry(fatalBefore, rescueFamily);
+const liveCause = transition.captureDeathCause(fatalBefore, rescueFamily);
+assert.equal(liveRetry.healthCost, 2);
+assert.match(
+  transition.deathCauseText({
+    actionLabel: liveCause.label,
+    healthBefore: liveCause.healthBefore,
+    healthCost: liveCause.healthCost,
+  }),
+  /Health cost: -2/,
+);
+const liveDeadDocument = saves.createStoredSave(
+  deadGame,
+  {},
+  'default',
+  liveRetry,
+  liveCause,
+);
+const liveDeadStorage = new MemoryStorage();
+assert.equal(saves.writeStoredSave(liveDeadStorage, liveDeadDocument).ok, true);
+const reloadedDead = saves.readStoredSave(liveDeadStorage);
+assert.equal(reloadedDead.ok, true);
+assert.equal(reloadedDead.document.retry?.healthCost, 2);
+assert.equal(reloadedDead.document.deathCause?.healthCost, 2);
+const portableDead = saves.createPortableSave(reloadedDead.document);
+const importedDead = saves.parsePortableSave(JSON.stringify(portableDead));
+assert.equal(importedDead.ok, true);
+assert.equal(importedDead.document.retry?.healthCost, 2);
+assert.equal(importedDead.document.deathCause?.healthCost, 2);
+assert.match(pageSource, /reviewRequired: true/);
+assert.match(pageSource, /chooseRef\.current\(choice\)/);
 
 console.log(
   'Release regressions passed: XII labels; save round trip; checkpoint replay data; invalid, oversized, unsupported, and cancelled imports; storage failures and backup recovery; legacy migration; terminal endings; reading persistence; single-version romance, consent boundaries, and legacy content-field compatibility.',

@@ -96,7 +96,7 @@ export type StoryNode = {
   kicker: string;
   title: string;
   location: string;
-  objective: string;
+  objective: string | ((state: GameState) => string);
   threat: 'Low' | 'Uneasy' | 'Rising' | 'Immediate' | 'Critical' | 'Unknown';
   lesson?: {
     title: string;
@@ -722,17 +722,14 @@ const originalNodes: Record<string, StoryNode> = {
     threat: 'Low',
     lesson: {
       title: 'Your strengths',
-      body: 'Health shows how much injury and exhaustion you can survive. Resolve helps you face fear, pain, and doubt. Command shows how ready your guards are to follow difficult orders. Every choice shows its known cost before you select it. If Health reaches zero, Caelan dies.',
+      body: 'Health is how much injury and exhaustion you can survive. If it reaches zero, Caelan dies. Resolve faces fear, pain, and doubt. Command is how readily your guards follow hard orders. Every choice shows its known cost.',
     },
     introduces: ['health', 'resolve', 'command'],
     art: 'departure',
     body: () => [
-      'Rain has soaked the departure ledger before you finish the first name. You brace it against the green treaty wagon and write one duty at the top: bring everyone to Bellweather alive.',
-      'Beneath it, you write the names of Wardens, drivers, and wheelwrights. One line remains empty for an ambassador you have not met.',
-      'The last time you signed a list like this, two names came home beneath canvas. Your pen pauses above the final line until Sergeant Brann clears his throat.',
-      '“Captain Vey, gate opens in half an hour.” Twenty Road Wardens wait behind him, boots deep in water and every face turned toward you. The job is yours: carry a peace treaty east before the low road floods.',
-      'Beyond the raised iron gate, the King’s Road bends through wet hills and disappears under dark storm clouds. A raven watches from the mile stone. It has a narrow strip of red cloth tied around one leg.',
-      'Brann takes the wet ledger from your hand. “What do you want checked first?”',
+      'Rain soaks the departure ledger as you brace it against the green treaty wagon. You write one duty first: bring everyone to Bellweather alive. Wardens, drivers, and wheelwrights follow. One line remains empty for an ambassador you have not met.',
+      'The last time you signed a list like this, two names came home beneath canvas. Sergeant Brann clears his throat. “Captain Vey, gate opens in half an hour.” Twenty Road Wardens wait in the water, every face turned toward you. The job is yours: carry a peace treaty east before the low road floods.',
+      'Beyond the raised iron gate, the King’s Road disappears under dark storm clouds. Preparations now decide who can survive the road. Brann takes the wet ledger. “What do you want checked first?”',
     ],
     choices: [
       {
@@ -4423,6 +4420,12 @@ export function isChoiceVisible(choice: Choice, state: GameState) {
 
 export function resolveNext(choice: Choice, state: GameState) {
   return typeof choice.next === 'function' ? choice.next(state) : choice.next;
+}
+
+export function sceneObjective(node: StoryNode, state: GameState) {
+  return typeof node.objective === 'function'
+    ? node.objective(state)
+    : node.objective;
 }
 
 export function requirementText(choice: Choice) {

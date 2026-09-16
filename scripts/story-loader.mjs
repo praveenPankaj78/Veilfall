@@ -37,6 +37,7 @@ export function loadStory() {
         console,
         TextDecoder,
         TextEncoder,
+        structuredClone,
         require(specifier) {
           if (!specifier.startsWith('.'))
             throw new Error(`Unexpected story dependency: ${specifier}`);

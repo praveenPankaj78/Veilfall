@@ -140,7 +140,8 @@ for (const file of uniqueFiles) {
   const normalized = file.replaceAll('\\', '/');
   if (
     normalized.endsWith('docs/PROSE_CLARITY_AGENT_PROMPT.md') ||
-    normalized.endsWith('docs/PROSE_CLARITY_PLAYER_READ_PROMPT.md')
+    normalized.endsWith('docs/PROSE_CLARITY_PLAYER_READ_PROMPT.md') ||
+    normalized.endsWith('docs/FINAL_REDESIGN_SPECIFICATION.md')
   )
     continue;
   const text = await readFile(file, 'utf8');

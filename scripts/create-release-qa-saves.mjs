@@ -6,6 +6,9 @@ import { checkSeriesReview } from './series-review.mjs';
 // Import these only into an isolated QA origin, never a player's browser save.
 const story = loadStory();
 const saves = story.load('app/save-system.ts');
+const memory = story.load('app/story-memory.ts');
+const transition = story.load('app/game-transition.ts');
+const promiseRecords = story.load('app/promise-records.ts');
 const wanted = new Set([
   'c5-north-road',
   'c5-memory-wall',
@@ -21,7 +24,7 @@ await mkdir(directory, { recursive: true });
 const failures = [];
 await checkSeriesReview(
   story.game,
-  story.memory,
+  memory,
   await readFile('app/page.tsx', 'utf8'),
   failures,
   saves,
@@ -42,5 +45,7 @@ await checkSeriesReview(
       `Validated QA save: ${game.nodeId}, ${game.history.length} actual decisions`,
     );
   },
+  transition,
+  promiseRecords,
 );
 if (failures.length) throw new Error(failures.join('\n'));

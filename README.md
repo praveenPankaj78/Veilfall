@@ -19,7 +19,7 @@ The story contains dark fantasy violence, blood, injury, possible player-charact
 
 Progress is stored locally in the browser. A browser save belongs to that browser and the exact site address, so moving the game to another address does not move the save automatically. Use **Settings, saves, and about** to export a JSON backup before changing browsers or site addresses, and import that backup after the move.
 
-The current browser-save schema is version 18. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, completed chapters, ending state, replay checkpoints, and reading preference. Version 16/17 portable saves and older browser saves still migrate. Version 17 browser documents remain untouched as a recovery copy when version 18 is first saved. Retired description-preference fields remain inert; the unused currency is removed from normalized state and exports. Import validation occurs before existing progress is replaced.
+The current browser-save schema is version 19. Portable files use `veilfall-ember-oath-save` export format version 1 and include the current game, relationships and intent, completed chapters, ending state, replay checkpoints, optional last-choice retry data, and reading preference. Version 16/17/18 portable saves and older browser saves still migrate. Version 18 browser documents remain untouched as a recovery copy when version 19 is first saved. Version 17 documents remain available as an older recovery copy. Retired description-preference fields remain inert; the unused currency is removed from normalized state and exports. Import validation occurs before existing progress is replaced.
 
 ## Play locally
 

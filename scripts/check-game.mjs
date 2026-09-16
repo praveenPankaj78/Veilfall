@@ -32,6 +32,21 @@ const chapterTwelveSource = story.sources.get('app/chapter-twelve.ts');
 const memoryExports = story.load('app/story-memory.ts');
 const saveExports = story.load('app/save-system.ts');
 const saveSource = story.sources.get('app/save-system.ts');
+const transition = story.load('app/game-transition.ts');
+const promiseRecords = story.load('app/promise-records.ts');
+const {
+  applyChoice,
+  applyPlayerChoice,
+  drainAutomaticAcknowledgments,
+  chapterRecoveryDisplay,
+  cloneGameState,
+  wouldBeFatal,
+  AUTOMATIC_ACKNOWLEDGMENT_IDS,
+  statesEquivalent,
+  captureFatalRetry,
+  captureDeathCause,
+  deathCauseText,
+} = transition;
 
 const {
   canChoose,
@@ -69,6 +84,9 @@ await checkSeriesReview(
   pageSource,
   failures,
   saveExports,
+  undefined,
+  transition,
+  promiseRecords,
 );
 
 const postBridgeSources = [
@@ -126,51 +144,51 @@ const ordered = new Set(nodeOrder);
 const reviewedUnchangedChoices = new Set(reviewedUnchangedChoiceIds);
 
 const chapterFourArtAssets = {
-  mileless: 'public/art/mileless-bridge-chase.png',
-  crossroads: 'public/art/mileless-three-spans.png',
-  nails: 'public/art/nine-nails-revelation.png',
+  mileless: 'public/art/mileless-bridge-chase.webp',
+  crossroads: 'public/art/mileless-three-spans.webp',
+  nails: 'public/art/nine-nails-revelation.webp',
 };
 const chapterFiveArtAssets = {
-  dragonspine: 'public/art/dragonspine-coldfire.png',
-  vaor: 'public/art/vaor-memory-grave.png',
-  ember: 'public/art/ember-bearer-vision.png',
+  dragonspine: 'public/art/dragonspine-coldfire.webp',
+  vaor: 'public/art/vaor-memory-grave.webp',
+  ember: 'public/art/ember-bearer-vision.webp',
 };
 const chapterSixArtAssets = {
-  kharad: 'public/art/kharad-vey-wheel-city.png',
-  storm: 'public/art/ancestor-storm-attack.png',
-  moot: 'public/art/red-moot-ilyra.png',
+  kharad: 'public/art/kharad-vey-wheel-city.webp',
+  storm: 'public/art/ancestor-storm-attack.webp',
+  moot: 'public/art/red-moot-ilyra.webp',
 };
 const chapterSevenArtAssets = {
-  redwind: 'public/art/red-wind-pursuit.png',
-  saltbattle: 'public/art/salt-basin-battle.png',
-  marshal: 'public/art/marshal-field-confrontation.png',
+  redwind: 'public/art/red-wind-pursuit.webp',
+  saltbattle: 'public/art/salt-basin-battle.webp',
+  marshal: 'public/art/marshal-field-confrontation.webp',
 };
 const chapterEightArtAssets = {
-  blackgate: 'public/art/black-gate-fortress-ring.png',
-  futureless: 'public/art/futureless-fort-breach.png',
-  embassy: 'public/art/first-devil-embassy.png',
+  blackgate: 'public/art/black-gate-fortress-ring.webp',
+  futureless: 'public/art/futureless-fort-breach.webp',
+  embassy: 'public/art/first-devil-embassy.webp',
 };
 const chapterNineArtAssets = {
-  cinderembassy: 'public/art/cinder-deep-embassy.png',
-  twosidedattack: 'public/art/two-sided-assassination.png',
-  gatecrossing: 'public/art/black-gate-crossing.png',
+  cinderembassy: 'public/art/cinder-deep-embassy.webp',
+  twosidedattack: 'public/art/two-sided-assassination.webp',
+  gatecrossing: 'public/art/black-gate-crossing.webp',
 };
 const chapterTenArtAssets = {
-  ashroadoffer: 'public/art/ash-road-first-offer.png',
-  privateoffers: 'public/art/ash-road-private-offers.png',
-  vathisapproach: 'public/art/vathis-approach.png',
+  ashroadoffer: 'public/art/ash-road-first-offer.webp',
+  privateoffers: 'public/art/ash-road-private-offers.webp',
+  vathisapproach: 'public/art/vathis-approach.webp',
 };
 const chapterElevenArtAssets = {
-  vathisstreets: 'public/art/vathis-contract-streets.png',
-  vathisauction: 'public/art/vathis-invasion-auction.png',
-  vathisengine: 'public/art/vathis-engine-gate.png',
+  vathisstreets: 'public/art/vathis-contract-streets.webp',
+  vathisauction: 'public/art/vathis-invasion-auction.webp',
+  vathisengine: 'public/art/vathis-engine-gate.webp',
 };
 const chapterTwelveArtAssets = {
-  blackgatecollision: 'public/art/black-gate-two-faces.png',
-  blackgatesealed: 'public/art/black-gate-sealed.png',
-  blackgatepassage: 'public/art/black-gate-mutual-passage.png',
-  blackgatebroken: 'public/art/black-gate-broken.png',
-  blackgatekeeper: 'public/art/caelan-living-gate.png',
+  blackgatecollision: 'public/art/black-gate-two-faces.webp',
+  blackgatesealed: 'public/art/black-gate-sealed.webp',
+  blackgatepassage: 'public/art/black-gate-mutual-passage.webp',
+  blackgatebroken: 'public/art/black-gate-broken.webp',
+  blackgatekeeper: 'public/art/caelan-living-gate.webp',
 };
 const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
 const chapterFourArtUsed = new Set();
@@ -728,28 +746,6 @@ function lastParagraphSupportsReply(paragraph) {
   );
 }
 
-function applyChoice(state, choice) {
-  const stats = { ...state.stats };
-  for (const [key, value] of Object.entries(choice.changes ?? {})) {
-    stats[key] = Math.max(0, stats[key] + (value ?? 0));
-  }
-  const relationships = nextRelationships(state.relationships, choice);
-  return {
-    nodeId: resolveNext(choice, state),
-    chapter: state.chapter,
-    chapterChoices: (state.chapterChoices ?? 0) + 1,
-    completedChapters: state.completedChapters ?? [],
-    stats,
-    relationships,
-    contentPreference: state.contentPreference,
-    flags: exported.resolveCompletedOathFlags(
-      Array.from(new Set([...state.flags, ...(choice.addFlags ?? [])])),
-    ),
-    history: [...state.history, choice.result],
-    defeat: stats.health <= 0,
-  };
-}
-
 function stateKey(state) {
   const navigationFlags = new Set([
     'low-route',
@@ -1178,13 +1174,19 @@ function nodeIsInChapter(nodeId, chapter) {
   return nodeId.startsWith(`c${chapter}-`);
 }
 
+function sceneObjectiveText(node, state) {
+  return typeof node.objective === 'function'
+    ? node.objective(state)
+    : node.objective;
+}
+
 function visibleNodeText(node, state) {
   const body = typeof node.body === 'function' ? node.body(state) : node.body;
   return [
     node.kicker,
     node.title,
     node.location,
-    node.objective,
+    sceneObjectiveText(node, state),
     node.lesson?.title,
     node.lesson?.body,
     ...body,
@@ -1556,7 +1558,7 @@ for (const [id, node] of Object.entries(nodes)) {
     node.kicker,
     node.title,
     node.location,
-    node.objective,
+    sceneObjectiveText(node, sampleState),
     node.lesson?.title,
     node.lesson?.body,
     ...node.body(sampleState),
@@ -2324,7 +2326,7 @@ const effectiveChapterTwoText = nodeOrder
       node.kicker,
       node.title,
       node.location,
-      node.objective,
+      sceneObjectiveText(node, chapterTwoBase),
       node.lesson?.title ?? '',
       node.lesson?.body ?? '',
       ...node.body(chapterTwoBase),
@@ -5647,7 +5649,7 @@ for (const endingId of [
   'c5-ending-pact',
 ]) {
   const ending = [
-    nodes[endingId].objective,
+    sceneObjectiveText(nodes[endingId], chapterFiveBase),
     ...nodes[endingId].body(chapterFiveBase),
   ].join(' ');
   if (!/moving orc town/i.test(ending) || /Black Gate/.test(ending)) {
@@ -6892,7 +6894,7 @@ for (const [flags, expected] of injuredTerenArrivals) {
 const chapterSevenReaderText = Object.entries(nodes)
   .filter(([id]) => id.startsWith('c7-'))
   .flatMap(([, node]) => [
-    node.objective,
+    sceneObjectiveText(node, chapterSevenBase),
     ...node.body(chapterSevenBase),
     ...node.choices.flatMap((choice) => [
       choice.label,
@@ -7221,7 +7223,10 @@ if (
 const pellOath = choiceById('c8-first-knock', 'c8-oath-hold-pell');
 const pellOathEnding = renderedBody('c8-embassy-terms', {
   ...chapterEightBase,
-  flags: ['c8-oath-pell-sees-opening-contained'],
+  flags: [
+    'c8-oath-pell-sees-opening-contained',
+    'c8-severed-collector-hand',
+  ],
 });
 if (
   !/invasion stopped/i.test(pellOath?.label ?? '') ||
@@ -7311,7 +7316,7 @@ if (
 const chapterEightReaderText = Object.entries(nodes)
   .filter(([id]) => id.startsWith('c8-'))
   .flatMap(([, node]) => [
-    node.objective,
+    sceneObjectiveText(node, chapterEightBase),
     node.lesson?.body ?? '',
     ...node.body(chapterEightBase),
     ...node.choices.flatMap((choice) => [
@@ -8475,16 +8480,20 @@ if (
   );
 }
 
-for (const destroyedFlag of [
-  'c9-destroyed-red-moot-authority-oath',
-  'c9-destroyed-crown-restitution-oath',
-  'c9-destroyed-clan-refusal-oath',
-  'c9-destroyed-honest-command-limit-oath',
-  'c9-destroyed-unsea-investigation-oath',
+for (const [destroyedFlag, swornFlag] of [
+  ['c9-destroyed-red-moot-authority-oath', 'c6-oath-recognised-red-moot'],
+  ['c9-destroyed-crown-restitution-oath', 'c6-oath-crown-restitution'],
+  ['c9-destroyed-clan-refusal-oath', 'c6-oath-defends-refusal'],
+  ['c9-destroyed-honest-command-limit-oath', 'c6-oath-honest-limit'],
+  ['c9-destroyed-unsea-investigation-oath', 'c6-oath-investigate-unsea'],
 ]) {
-  if (!pageSource.includes(`!game.flags.includes('${destroyedFlag}')`)) {
+  const remaining = promiseRecords.activePromises({
+    ...initialState,
+    chapter: 12,
+    flags: [swornFlag, destroyedFlag],
+  });
+  if (remaining.length)
     failures.push(`${destroyedFlag} can return in the active Oath journal`);
-  }
 }
 
 const fadePrivateState = applyChoice(
@@ -9448,6 +9457,7 @@ function walkChapterTwelve(route) {
     'caelan',
     'sunrise',
     'rookApproach',
+    'promises',
   ]) {
     if (!finale[field])
       failures.push(
@@ -9878,7 +9888,7 @@ if (
   failures.push('Chapter Twelve start snapshot or canonical entry is missing');
 
 if (
-  saveExports.CURRENT_SAVE_KEY !== 'veilfall.saga.v18.save' ||
+  saveExports.CURRENT_SAVE_KEY !== 'veilfall.saga.v19.save' ||
   !saveExports.LEGACY_SAVE_KEYS.includes('veilfall.saga.v16.save')
 )
   failures.push(
@@ -9973,7 +9983,7 @@ while (stack.length && visited.size < maxGraphStates) {
     node.kicker,
     node.title,
     node.location,
-    node.objective,
+    sceneObjectiveText(node, state),
     node.lesson?.title,
     node.lesson?.body,
     ...node.body(state),
@@ -10113,6 +10123,482 @@ for (const chapter of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) {
   if (!deathChapters.has(chapter))
     failures.push(`Chapter ${chapter} has no reachable lethal choice`);
 }
+
+
+function countWords(text) {
+  return (text.match(/[A-Za-z]+(?:['’][A-Za-z]+)*/g) ?? []).length;
+}
+const openingWords = countWords(nodes['gate-yard'].body(initialState).join(' '));
+const lessonWords = countWords(nodes['gate-yard'].lesson?.body ?? '');
+if (openingWords > 140)
+  failures.push(`gate-yard body has ${openingWords} words; maximum is 140`);
+if (lessonWords > 45)
+  failures.push(`gate-yard lesson has ${lessonWords} words; maximum is 45`);
+if (!/Health reaches zero|reaches zero, Caelan dies/i.test(nodes['gate-yard'].lesson?.body ?? ''))
+  failures.push('gate-yard lesson no longer states that Health reaching zero kills Caelan');
+if (!pageSource.includes('Chapter ${chapterDefinitions[game.chapter - 1].roman} of XII'))
+  failures.push('Honest chapter progress label is missing');
+if (/Caelan \{currentChapter\.roman\} of/.test(pageSource))
+  failures.push('Top bar still uses the player name as a chapter progress label');
+if (!pageSource.includes('className="medicine-stock"'))
+  failures.push('Medicine stock is not shown beside medicine-spending menus');
+if (!pageSource.includes('className="mobile-status-strip"'))
+  failures.push('Mobile resource strip is missing');
+
+const noDebtIds = AUTOMATIC_ACKNOWLEDGMENT_IDS;
+for (const id of noDebtIds) {
+  const node = Object.values(nodes).find((item) =>
+    item.choices.some((choice) => choice.id === id),
+  );
+  const choice = node.choices.find((item) => item.id === id);
+  const changes = Object.values(choice.changes ?? {}).some((value) => (value ?? 0) !== 0);
+  const flags = (choice.addFlags ?? []).length > 0;
+  if (changes || flags)
+    failures.push(`${id} is no longer a zero-effect acknowledgment`);
+}
+const absentDutyState = {
+  ...initialState,
+  chapter: 12,
+  nodeId: 'c12-renewal-hearing',
+  flags: [],
+};
+const manualNoDebt = applyChoice(
+  absentDutyState,
+  nodes['c12-renewal-hearing'].choices.find(
+    (choice) => choice.id === 'c12-record-no-renewal-debt',
+  ),
+);
+const drainedNoDebt = drainAutomaticAcknowledgments(absentDutyState);
+if (!statesEquivalent(manualNoDebt, drainedNoDebt))
+  failures.push('Automatic no-renewal acknowledgment diverges from the manual transition');
+if (applyPlayerChoice(absentDutyState, nodes['c12-renewal-hearing'].choices.find((choice) => choice.id === 'c12-record-no-renewal-debt')).nodeId === 'c12-renewal-hearing')
+  failures.push('Player choice drain left a no-debt acknowledgment unapplied');
+
+const owedRenewal = {
+  ...absentDutyState,
+  flags: ['c11-alliance-free-ledger-refusers'],
+};
+if (drainAutomaticAcknowledgments(owedRenewal).nodeId !== 'c12-renewal-hearing')
+  failures.push('Owed Free Ledger hearing was auto-advanced');
+
+const lowHealth = {
+  ...initialState,
+  stats: { ...initialState.stats, health: 2 },
+  nodeId: 'gate-yard',
+};
+const fatalChoice = {
+  ...nodes['gate-yard'].choices.find((choice) => choice.id === 'check-horses'),
+  changes: { health: -2 },
+};
+if (!wouldBeFatal(fatalChoice, lowHealth))
+  failures.push('Health 2 / cost 2 is not treated as fatal');
+const dead = applyChoice(lowHealth, fatalChoice);
+if (!dead.defeat || dead.stats.health !== 0)
+  failures.push('Fatal Health 2 / cost 2 did not produce a death state');
+const restored = cloneGameState(lowHealth);
+if (!statesEquivalent(restored, lowHealth))
+  failures.push('Retry snapshot clone is not byte-equivalent to the pre-death state');
+if ((restored.stats.health ?? 0) !== 2)
+  failures.push('Retry restoration changed Health');
+
+const mismatchedRetry = saveExports.validateStoredSave(
+  saveExports.createStoredSave(
+    dead,
+    {},
+    'default',
+    {
+      before: initialState,
+      choiceId: 'check-horses',
+      healthBefore: 8,
+      healthCost: -2,
+    },
+    {
+      choiceId: 'check-horses',
+      label: 'Check the horses and harness yourself.',
+      healthBefore: 2,
+      healthCost: -2,
+    },
+  ),
+);
+if (!mismatchedRetry.ok)
+  failures.push(`Valid dead save with mismatched retry was rejected: ${mismatchedRetry.error}`);
+else if (mismatchedRetry.document.retry)
+  failures.push('Mismatched retry snapshot was kept for recovery');
+else if (!mismatchedRetry.warnings.some((warning) => /retry/i.test(warning)))
+  failures.push('Discarded retry snapshot produced no warning');
+
+const liveFatalBefore = {
+  ...initialState,
+  stats: { ...initialState.stats, health: 2 },
+  nodeId: 'low-road',
+};
+const liveFatalChoice = nodes['low-road'].choices.find(
+  (choice) => choice.id === 'rescue-family',
+);
+if (!liveFatalChoice)
+  failures.push('rescue-family is missing from the drowned mile');
+const liveDead = applyChoice(liveFatalBefore, liveFatalChoice);
+const liveRetry = captureFatalRetry(liveFatalBefore, liveFatalChoice);
+const liveCause = captureDeathCause(liveFatalBefore, liveFatalChoice);
+if (liveRetry.healthCost !== 2)
+  failures.push('Live retry metadata did not store Health cost as a magnitude');
+if (
+  !/Health cost: -2/.test(
+    deathCauseText({
+      actionLabel: liveCause.label,
+      healthBefore: liveCause.healthBefore,
+      healthCost: liveCause.healthCost,
+    }),
+  )
+)
+  failures.push('Death cause text did not keep a negative Health-cost display');
+const liveDocument = saveExports.createStoredSave(
+  liveDead,
+  {},
+  'default',
+  liveRetry,
+  liveCause,
+);
+const liveReloaded = saveExports.validateStoredSave(
+  JSON.parse(JSON.stringify(liveDocument)),
+);
+if (!liveReloaded.ok)
+  failures.push(`Live-format dead save failed reload: ${liveReloaded.error}`);
+else if (!liveReloaded.document.retry)
+  failures.push('Live-format dead save discarded retry availability');
+else if (liveReloaded.document.retry.healthCost !== 2)
+  failures.push('Loaded retry did not keep the live Health-cost magnitude');
+else if (liveReloaded.document.deathCause?.healthCost !== 2)
+  failures.push('Loaded death cause lost the numerical Health cost');
+else if (liveReloaded.document.retry.before.stats.health !== 2)
+  failures.push('Loaded retry snapshot is not the pre-death Health');
+else if (
+  !/Health cost: -2/.test(
+    deathCauseText({
+      actionLabel: liveReloaded.document.deathCause.label,
+      healthBefore: liveReloaded.document.deathCause.healthBefore,
+      healthCost: liveReloaded.document.deathCause.healthCost,
+    }),
+  )
+)
+  failures.push('Reloaded death cause lost the signed Health-cost display');
+const signedCostDocument = saveExports.createStoredSave(
+  liveDead,
+  {},
+  'default',
+  { ...liveRetry, healthCost: -2 },
+  { ...liveCause, healthCost: -2 },
+);
+const signedCostLoaded = saveExports.validateStoredSave(signedCostDocument);
+if (!signedCostLoaded.ok || !signedCostLoaded.document.retry)
+  failures.push('Negative Health-cost retry metadata was rejected');
+else if (signedCostLoaded.document.retry.healthCost !== 2)
+  failures.push('Accepted negative Health-cost retry was not normalised');
+const livePortable = saveExports.createPortableSave(
+  liveReloaded.document ?? liveDocument,
+);
+const liveImported = saveExports.parsePortableSave(JSON.stringify(livePortable));
+if (!liveImported.ok)
+  failures.push(`Live-format portable dead save failed import: ${liveImported.error}`);
+else if (!liveImported.document.retry)
+  failures.push('Portable dead-save import dropped retry availability');
+else if (liveImported.document.deathCause?.healthCost !== 2)
+  failures.push('Portable dead-save import dropped numerical death cause');
+const restoredLive = cloneGameState(
+  liveReloaded.document?.retry.before ?? liveFatalBefore,
+);
+const secondDeath = applyChoice(restoredLive, liveFatalChoice);
+const secondRetry = captureFatalRetry(restoredLive, liveFatalChoice);
+if (secondDeath.flags.length !== liveDead.flags.length)
+  failures.push('Repeat fatal retry accumulated flags');
+if (secondRetry.healthBefore !== 2 || secondRetry.healthCost !== 2)
+  failures.push('Repeat fatal retry did not recapture the same Health values');
+
+const horsesBefore = {
+  ...initialState,
+  stats: { ...initialState.stats, health: 1 },
+};
+const horsesChoice = nodes['gate-yard'].choices.find(
+  (choice) => choice.id === 'check-horses',
+);
+const horsesDead = applyChoice(horsesBefore, horsesChoice);
+const horsesLoaded = saveExports.validateStoredSave(
+  saveExports.createStoredSave(
+    horsesDead,
+    {},
+    'default',
+    captureFatalRetry(horsesBefore, horsesChoice),
+    captureDeathCause(horsesBefore, horsesChoice),
+  ),
+);
+if (!horsesLoaded.ok || horsesLoaded.document.retry?.healthCost !== 1)
+  failures.push('Authored Health 1 / cost 1 retry did not round-trip');
+
+const handoffLow = chapterRecoveryDisplay(
+  { ...initialState, stats: { ...initialState.stats, health: 1, resolve: 1, command: 0, medicine: 0, oathfire: 0 } },
+  2,
+);
+if (!handoffLow.deltas.includes('Health +2') || !handoffLow.deltas.includes('Resolve +1'))
+  failures.push(`Chapter II recovery display is wrong at low values: ${handoffLow.deltas.join(', ')}`);
+const handoffCapped = chapterRecoveryDisplay(
+  { ...initialState, stats: { ...initialState.stats, health: 8, resolve: 8, command: 6, medicine: 2, oathfire: 3 } },
+  2,
+);
+if (handoffCapped.deltas.some((delta) => /Health|Resolve/.test(delta) && !/ 0/.test(delta) && /\+/.test(delta) && !handoffCapped.next.stats))
+  failures.push('Chapter II recovery display invented a capped gain');
+if (handoffCapped.next.stats.health !== 8)
+  failures.push('Chapter II handoff did not keep the Health cap');
+if (handoffCapped.deltas.includes('Health +2'))
+  failures.push('Chapter II recovery advertised a Health gain the cap prevented');
+if (handoffCapped.next.stats.medicine !== 1)
+  failures.push('Chapter II medicine reset is missing from recovery');
+if (!handoffCapped.deltas.includes('Medicine -1'))
+  failures.push('Chapter II recovery hid the actual Medicine cap change');
+
+const lawReview = story.load('app/gate-law-review.ts');
+const requiredLawGroups = [
+  'Crossing',
+  'Stored promises',
+  'Allies and ordinary people',
+  'Caelan’s price',
+  'Duration and replacement',
+  'Sunrise',
+];
+const requiredLawTerms = {
+  'c12-choose-sealed-gate': [
+    /final free choice of side/i,
+    /cannot be spent/i,
+    /stranded/i,
+    /loses the right to cross/i,
+    /delegates of both realms/i,
+    /barred dawn/i,
+  ],
+  'c12-choose-consent-passage': [
+    /named willing traveller/i,
+    /withdraw before crossing/i,
+    /original living owners/i,
+    /allies need permission/i,
+    /one year of public service/i,
+    /yearly renewal/i,
+    /witnessed narrow dawn/i,
+  ],
+  'c12-choose-broken-gate': [
+    /no central Gate owner/i,
+    /living makers or Worldroot/i,
+    /weaker defence suffers more/i,
+    /invading armies can cross/i,
+    /loses central control of invasion/i,
+    /unstable dawn/i,
+  ],
+  'c12-choose-mortal-gatekeeper': [
+    /publicly witnessed identity/i,
+    /cannot spend, erase, or silence/i,
+    /every traveller may refuse/i,
+    /cannot live wholly in either realm/i,
+    /death or a freely accepted replacement/i,
+    /light bends around witnessed identity/i,
+  ],
+};
+for (const [id, patterns] of Object.entries(requiredLawTerms)) {
+  const review = lawReview.GATE_LAW_REVIEWS[id];
+  if (!review) {
+    failures.push(`Gate-law review missing for ${id}`);
+    continue;
+  }
+  const labels = review.groups.map((group) => group.label);
+  if (requiredLawGroups.some((label) => !labels.includes(label)))
+    failures.push(`${id} review is missing a required term group`);
+  const text = review.groups.map((group) => group.body).join(' ');
+  for (const pattern of patterns) {
+    if (!pattern.test(text))
+      failures.push(`${id} review omits required term ${pattern}`);
+  }
+}
+if (!pageSource.includes('confirmLawChoice') || !pageSource.includes('cancelLawChoice'))
+  failures.push('Gate-law review confirm/cancel handlers are missing');
+if (!pageSource.includes('Swear this law') || !/Back/.test(pageSource))
+  failures.push('Gate-law review confirm/cancel labels are missing');
+
+const destroyedJournal = promiseRecords.activePromises({
+  ...initialState,
+  chapter: 12,
+  flags: ['c6-oath-crown-restitution', 'c9-destroyed-crown-restitution-oath'],
+});
+if (destroyedJournal.some((entry) => /hidden victims/.test(entry)))
+  failures.push('Destroyed Crown restitution oath remains a current journal duty');
+
+const pellActive = promiseRecords.derivePromiseRecords({
+  ...initialState,
+  chapter: 8,
+  flags: ['c8-oath-pell-sees-opening-contained'],
+});
+if (
+  !pellActive.some(
+    (entry) =>
+      entry.id === 'c8-oath-pell-sees-opening-contained' &&
+      entry.current &&
+      entry.status === 'sworn',
+  )
+)
+  failures.push('Pell’s vow is missing while it is still binding');
+const pellFulfilled = promiseRecords.promiseRecordById(
+  {
+    ...initialState,
+    chapter: 8,
+    flags: [
+      'c8-oath-pell-sees-opening-contained',
+      'c8-severed-collector-hand',
+    ],
+  },
+  'c8-oath-pell-sees-opening-contained',
+);
+if (!pellFulfilled || pellFulfilled.current || pellFulfilled.status !== 'fulfilled')
+  failures.push('Pell’s vow is not fulfilled after the collector is driven back');
+const pellFinale = memoryExports.majorConsequences({
+  ...initialState,
+  chapter: 8,
+  flags: [
+    'c8-oath-pell-sees-opening-contained',
+    'c8-severed-collector-hand',
+  ],
+});
+if (!pellFinale.some((line) => /Oath returned/i.test(line)))
+  failures.push('Journal consequences do not use the shared Pell fulfillment');
+const pellExport = memoryExports.caelanFinaleExport({
+  ...initialState,
+  chapter: 8,
+  flags: [
+    'c8-oath-pell-sees-opening-contained',
+    'c8-severed-collector-hand',
+  ],
+});
+if (
+  !pellExport.promises?.some(
+    (entry) =>
+      entry.id === 'c8-oath-pell-sees-opening-contained' &&
+      entry.status === 'fulfilled',
+  )
+)
+  failures.push('Finale export does not share the fulfilled Pell vow');
+if (
+  !/Pell’s Oath that he would see the invasion stopped is fulfilled/.test(
+    promiseRecords.finalePromiseNotes({
+      ...initialState,
+      chapter: 8,
+      flags: [
+        'c8-oath-pell-sees-opening-contained',
+        'c8-severed-collector-hand',
+      ],
+    }),
+  )
+)
+  failures.push('Finale notes do not share the fulfilled Pell vow');
+
+const homecomingRenewal = promiseRecords.derivePromiseRecords({
+  ...initialState,
+  chapter: 11,
+  flags: ['oath-bring-them-home', 'c11-shelter-all-crossed-dry'],
+});
+if (
+  !homecomingRenewal.some(
+    (entry) =>
+      entry.id === 'oath-bring-them-home' &&
+      entry.current &&
+      /renewed/i.test(entry.promise),
+  )
+)
+  failures.push('Chapter XI homecoming renewal is not labeled as renewed');
+if (
+  !homecomingRenewal.some(
+    (entry) =>
+      entry.id === 'c11-homecoming-rain-renewal' &&
+      !entry.current &&
+      entry.status === 'fulfilled',
+  )
+)
+  failures.push('Chapter XI rain renewal is not recorded as fulfilled');
+if (
+  !/Bring Them Home was renewed for the owned-rain crossing/.test(
+    promiseRecords.finalePromiseNotes({
+      ...initialState,
+      chapter: 11,
+      flags: ['oath-bring-them-home', 'c11-shelter-all-crossed-dry'],
+    }),
+  )
+)
+  failures.push('Finale notes do not share the Chapter XI rain renewal');
+
+const unrestrictedCommandState = {
+  ...initialState,
+  chapter: 12,
+  flags: [],
+};
+const unrestrictedCommand = [
+  sceneObjectiveText(nodes['c12-command-restriction'], unrestrictedCommandState),
+  ...nodes['c12-command-restriction'].body(unrestrictedCommandState),
+].join(' ');
+if (
+  /Obey or breach/i.test(unrestrictedCommand) ||
+  /violate the named limit/i.test(unrestrictedCommand)
+)
+  failures.push(
+    'Unrestricted command route still describes breaching a named limit',
+  );
+const restrictedCommandState = {
+  ...initialState,
+  chapter: 12,
+  flags: ['c11-freedom-command-restricted'],
+};
+const restrictedCommand = [
+  sceneObjectiveText(nodes['c12-command-restriction'], restrictedCommandState),
+  ...nodes['c12-command-restriction'].body(restrictedCommandState),
+].join(' ');
+if (
+  !/Obey or breach the exact mythic command restriction/.test(
+    restrictedCommand,
+  ) ||
+  !/violate the named limit/i.test(restrictedCommand)
+)
+  failures.push('Restricted command route lost its authored breach warning');
+const unrestrictedDoorState = {
+  ...initialState,
+  chapter: 12,
+  flags: [],
+};
+const unrestrictedDoor = [
+  sceneObjectiveText(nodes['c12-door-order'], unrestrictedDoorState),
+  ...nodes['c12-door-order'].body(unrestrictedDoorState),
+].join(' ');
+if (
+  /still binds you/.test(unrestrictedDoor) ||
+  /Obey or breach/i.test(unrestrictedDoor) ||
+  /violate the named limit/i.test(unrestrictedDoor)
+)
+  failures.push(
+    'Unrestricted door-order route still treats an absent restriction as present',
+  );
+const restrictedDoorState = {
+  ...initialState,
+  chapter: 12,
+  flags: ['c11-freedom-door-order-restricted'],
+};
+if (
+  !/while it still binds you/.test(
+    sceneObjectiveText(nodes['c12-door-order'], restrictedDoorState),
+  )
+)
+  failures.push('Restricted door-order objective lost its binding warning');
+
+if (!pageSource.includes('reviewRequired: true'))
+  failures.push('choose_veilfall_action can still commit a Gate law without review');
+if (!pageSource.includes('chooseRef.current(choice)'))
+  failures.push('choose_veilfall_action does not share the visible choice path');
+if (!pageSource.includes('captureFatalRetry'))
+  failures.push('Live fatal retry is not captured from the shared producer');
+
+if (!pageSource.includes('c12-inner-gate') && !story.sources.get('app/game-transition.ts').includes('c12-inner-gate'))
+  failures.push('Chapter Twelve canonical entry is missing from the transition implementation');
+
 
 if (failures.length) {
   console.error('Game graph check failed:');

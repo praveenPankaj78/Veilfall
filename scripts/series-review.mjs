@@ -12,6 +12,8 @@ export async function checkSeriesReview(
   failures,
   save,
   onScene,
+  transition,
+  promiseRecords,
 ) {
   const ast = ts.createSourceFile(
     'page.tsx',
@@ -61,14 +63,15 @@ export async function checkSeriesReview(
       'Registered chapter graph, continuity contracts, and UI handoffs have different coverage',
     );
   const wanted = [
-    'defeatForChoice',
-    'applyChoice',
-    'activePromises',
     'recordChapterCheckpoint',
     'chapterStart',
     'replayChapter',
     ...starts,
   ];
+  if (wanted.some((name) => !functions.get(name)))
+    failures.push(
+      'UI chapter handoff functions are missing from the live page module',
+    );
   const code = [
     ...wanted.map((name) => functions.get(name)),
     `globalThis.runtime = { applyChoice, activePromises, replayChapter, normaliseState: normaliseGameState, starts: { ${starts.join(',')} } };`,
@@ -78,6 +81,10 @@ export async function checkSeriesReview(
     console,
     game: game.initialState,
     checkpointsRef: { current: {} },
+    applyChapterHandoff: transition.applyChapterHandoff,
+    applyChoice: transition.applyChoice,
+    activePromises: promiseRecords.activePromises,
+    chapterRecoveryDisplay: transition.chapterRecoveryDisplay,
     normaliseGameState: save.normaliseGameState,
     loadChapterState: (state) => {
       context.game = state;

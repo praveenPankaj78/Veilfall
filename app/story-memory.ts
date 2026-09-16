@@ -1,4 +1,8 @@
 import { resolveCompletedOathFlags, type GameState } from './game-data';
+import {
+  exportPromiseInterpretation,
+  promiseRecordById,
+} from './promise-records';
 
 const pageKnownNodes = new Set([
   'sealed-case',
@@ -1077,10 +1081,14 @@ export function majorConsequences(game: GameState) {
     consequences.push(
       'Because you chose high ground, the survivors gained a defensible camp and a clear view of the folded road.',
     );
-  if (game.flags.includes('oath-bring-them-home'))
+  if (game.flags.includes('oath-bring-them-home')) {
+    const renewal = promiseRecordById(game, 'c11-homecoming-rain-renewal');
     consequences.push(
-      'Because you swore to bring everyone home, that duty now carries magical power and a binding cost.',
+      renewal
+        ? 'Because you renewed Bring Them Home for the Vathis expedition, that named freedom ended when every traveller reached the far arch. The original homecoming duty remains.'
+        : 'Because you swore to bring everyone home, that duty now carries magical power and a binding cost.',
     );
+  }
   if (game.flags.includes('c2-saved-nilo'))
     consequences.push(
       'Because you used the medicine on Nilo, his injured leg can recover.',
@@ -1547,12 +1555,14 @@ export function majorConsequences(game: GameState) {
     consequences.push(
       'Because you saved Pell, the escaped Warden identified the safe people and locks inside Fourth Fort.',
     );
-  if (game.flags.includes('c8-oath-pell-sees-opening-contained'))
+  if (game.flags.includes('c8-oath-pell-sees-opening-contained')) {
+    const pell = promiseRecordById(game, 'c8-oath-pell-sees-opening-contained');
     consequences.push(
-      game.nodeId === 'c8-embassy-terms' || game.nodeId.startsWith('c8-ending-')
+      pell?.status === 'fulfilled'
         ? 'Because you personally kept the collector from following the bond to Pell, he saw the hostile opening contained and the Oath returned.'
         : 'Because you promised Pell would see the invasion stopped, the bond keeps him alive but lets a collector follow your Oath back to him. Ansel cannot face that claim for you.',
     );
+  }
   if (game.flags.includes('c8-pell-died-for-map'))
     consequences.push(
       'Because you preserved your resources, Pell spent his last breath drawing the complete safe lock route.',
@@ -2006,5 +2016,6 @@ export function caelanFinaleExport(game: GameState) {
             : 'not-transferred',
     },
     oathscars: game.flags.filter((flag) => flag.startsWith('c12-oathscar-')),
+    promises: exportPromiseInterpretation(game),
   };
 }
