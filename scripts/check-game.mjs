@@ -191,7 +191,18 @@ const chapterTwelveArtAssets = {
   blackgatebroken: 'public/art/black-gate-broken.webp',
   blackgatekeeper: 'public/art/caelan-living-gate.webp',
 };
-const earlierChapterArt = new Set(['departure', 'folded', 'inn', 'harrowfen']);
+const earlierChapterArt = new Set([
+  'departure',
+  'ambush',
+  'folded',
+  'inn',
+  'othernights',
+  'foldedcellar',
+  'roadpin',
+  'harrowfen',
+  'shiftingmarket',
+  'bridgereveal',
+]);
 const chapterFourArtUsed = new Set();
 for (const [id, node] of Object.entries(nodes)) {
   if (!id.startsWith('c4-')) continue;
@@ -202,6 +213,19 @@ for (const [id, node] of Object.entries(nodes)) {
     );
   }
   if (node.art) chapterFourArtUsed.add(node.art);
+}
+for (const id of [
+  'c4-three-spans',
+  'c4-snow-span',
+  'c4-storm-span',
+  'c4-brass-span',
+  'c4-stage-turn',
+]) {
+  if (nodes[id]?.art !== 'crossroads') {
+    failures.push(
+      `${id} dropped the three-span artwork after the junction`,
+    );
+  }
 }
 for (const [art, asset] of Object.entries(chapterFourArtAssets)) {
   if (!chapterFourArtUsed.has(art))

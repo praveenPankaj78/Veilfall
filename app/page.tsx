@@ -191,7 +191,7 @@ function SceneArtImage({
     />
   );
   return (
-    <picture>
+    <picture key={art.src}>
       <source
         sizes={sizes}
         srcSet={deliveredArtworkSrcSet(art)}
@@ -1485,6 +1485,7 @@ export default function Home() {
           <div className="scene-art-wrap" ref={sceneRef}>
             {!artFailed ? (
               <SceneArtImage
+                key={sceneArt.src}
                 art={sceneArt}
                 className="scene-art"
                 onError={() => setFailedArtKey(sceneArt.src)}

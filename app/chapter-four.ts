@@ -750,7 +750,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Crown Span',
     objective: 'Use Rook’s deception without letting it control the mission.',
     threat: 'Rising',
-    art: 'mileless',
+    art: 'crossroads',
     body: (state) => [
       routePayoff(state),
       'The Bell Arch and the road you chose are behind you. The Map Arch is the next fixed ground.',
