@@ -961,7 +961,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     art: 'nails',
     body: (state) => [
       has(state, 'c4-mara-escorted-brann')
-        ? 'Mara returns along Lysara’s guide rope just before the rear span closes. “Brann is safe in Harrowfen,” she says. The breath you had been holding leaves hard enough to hurt.'
+        ? 'Just before the rear span closes, Mara follows Lysara’s guide rope back from Harrowfen and reaches the shelter. “Brann is safe in Harrowfen,” she says. “I left him there and came straight back.” The breath you had been holding leaves hard enough to hurt.'
         : 'Mara checks the road behind you while Lysara wraps the nine-mark map in living thread. Both women carry rain on their coats and questions they have not asked in front of the others.',
       'Mara taps the pear knife at her belt, your old signal for fear hidden behind a plan. “The law says arrest Rook. Staying alive says listen to him. Which answer will you pretend is simple?”',
       'Across the shelter, Lysara finds a founder seal, the official mark of the elven family that first governed the northern settlement. Her careful court mask slips when she sees it. Her mother’s house still uses that mark.',

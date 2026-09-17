@@ -4585,34 +4585,245 @@ for (const node of Object.values(nodes)) {
     }
   }
 }
-const maraAbsentState = {
-  ...chapterFourBase,
-  flags: ['c4-mara-escorted-brann', 'c4-snow-route'],
-};
-const maraAbsentCrossing = [
-  renderedBody('c4-three-spans', maraAbsentState),
-  renderedBody('c4-snow-span', maraAbsentState),
-  renderedBody('c4-stage-turn', maraAbsentState),
-].join(' ');
+const maraPresentOnBridge =
+  /Mara sets one hand|Mara presses close|Mara stares at Rook|Mara fits tightly|Mara braces between|Mara presses your hand|Mara locks her shoulder/i;
+const brannPresentOnBridge = /Brann leans across|Brann misses the rope/i;
+const maraReturnOpening =
+  /Just before the rear span closes, Mara follows Lysara’s guide rope back from Harrowfen and reaches the shelter\. “Brann is safe in Harrowfen,” she says\. “I left him there and came straight back\.”/s;
+const maraStayOpening =
+  /Mara checks the road behind you while Lysara wraps the nine-mark map in living thread\. Both women carry rain on their coats and questions they have not asked in front of the others\./;
+const sendMaraChoice = nodes['c4-wounded'].choices.find(
+  (choice) => choice.id === 'c4-send-mara-with-brann',
+);
+const keepBrannChoice = nodes['c4-wounded'].choices.find(
+  (choice) => choice.id === 'c4-carry-brann',
+);
 if (
-  /Mara sets one hand|Mara presses close|Mara stares at Rook/i.test(
-    maraAbsentCrossing,
-  ) ||
-  !/Lysara tightens the green thread/i.test(maraAbsentCrossing) ||
-  !/One Harrowfen guard misses the rope/i.test(maraAbsentCrossing)
+  JSON.stringify(sendMaraChoice?.addFlags) !==
+    JSON.stringify([
+      'c4-mara-escorted-brann',
+      'c4-mara-absence-cost',
+      'c4-found-dispatch',
+    ]) ||
+  sendMaraChoice?.next !== 'c4-three-spans' ||
+  sendMaraChoice?.changes ||
+  JSON.stringify(relationshipChanges(sendMaraChoice)) !==
+    JSON.stringify({ mara: { trust: 1, attraction: 0 } })
 ) {
   failures.push(
-    'Chapter Four places Mara or Brann back on the bridge before Mara returns from Harrowfen',
+    'Sending Mara with Brann changed its departure flags, destination, or costs',
   );
 }
-const maraReturn = renderedBody('c4-mara', maraAbsentState);
+const afterSendMara = applyChoice(
+  { ...highResourceState(chapterFourBase), nodeId: 'c4-wounded' },
+  sendMaraChoice,
+);
 if (
-  !/Mara returns along Lysara’s guide rope.*Brann is safe in Harrowfen/is.test(
-    maraReturn,
+  ![
+    'c4-mara-escorted-brann',
+    'c4-mara-absence-cost',
+    'c4-found-dispatch',
+  ].every((flag) => afterSendMara.flags.includes(flag))
+) {
+  failures.push(
+    'Selecting c4-send-mara-with-brann does not set the existing departure flags',
+  );
+}
+const escortRouteSteps = [
+  ['c4-choose-snow', 'c4-snow-follow-rook'],
+  ['c4-choose-storm', 'c4-storm-use-rook-coins'],
+  ['c4-choose-brass', 'c4-brass-take-rook-shortcut'],
+];
+const maraPresentActorFailure = (label, text) => {
+  if (maraPresentOnBridge.test(text) || brannPresentOnBridge.test(text)) {
+    failures.push(
+      `Chapter Four places Mara or Brann back on the bridge ${label}`,
+    );
+  }
+};
+maraPresentActorFailure(
+  'at the three-span junction after the escort',
+  renderedBody('c4-three-spans', afterSendMara),
+);
+if (
+  !/Lysara tightens the green thread/i.test(
+    renderedBody('c4-three-spans', afterSendMara),
   )
 ) {
   failures.push(
-    'Chapter Four does not visibly return Mara after she escorts Brann to Harrowfen',
+    'Chapter Four no longer marks Mara as escorting Brann at the three-span junction',
+  );
+}
+for (const [routeChoiceId, crossingChoiceId] of escortRouteSteps) {
+  const afterJunction = applyChoice(
+    { ...afterSendMara, nodeId: 'c4-three-spans' },
+    nodes['c4-three-spans'].choices.find((choice) => choice.id === routeChoiceId),
+  );
+  maraPresentActorFailure(
+    `on ${afterJunction.nodeId} after the escort`,
+    renderedBody(afterJunction.nodeId, afterJunction),
+  );
+  if (
+    (routeChoiceId === 'c4-choose-snow' &&
+      !/One Harrowfen guard misses the rope/i.test(
+        renderedBody(afterJunction.nodeId, afterJunction),
+      )) ||
+    (routeChoiceId === 'c4-choose-storm' &&
+      !/remembering she is protecting Brann/i.test(
+        renderedBody(afterJunction.nodeId, afterJunction),
+      )) ||
+    (routeChoiceId === 'c4-choose-brass' &&
+      !/She is protecting Brann now/i.test(
+        renderedBody(afterJunction.nodeId, afterJunction),
+      ))
+  ) {
+    failures.push(
+      `${afterJunction.nodeId} no longer treats Mara as absent on the escort route`,
+    );
+  }
+  const afterCrossing = applyChoice(afterJunction, nodes[afterJunction.nodeId].choices.find((choice) => choice.id === crossingChoiceId));
+  maraPresentActorFailure(
+    'during the first disguise after the escort',
+    renderedBody('c4-stage-turn', afterCrossing),
+  );
+  const afterDisguise = applyChoice(
+    afterCrossing,
+    nodes['c4-stage-turn'].choices.find(
+      (choice) => choice.id === 'c4-limit-rook-trick',
+    ),
+  );
+  maraPresentActorFailure(
+    'on Ordan’s chain after the escort',
+    renderedBody('c4-ordan', afterDisguise),
+  );
+  const afterOrdan = applyChoice(
+    afterDisguise,
+    nodes['c4-ordan'].choices.find(
+      (choice) => choice.id === 'c4-drop-ordan-to-ledge',
+    ),
+  );
+  maraPresentActorFailure(
+    'at the map arch before Mara’s return',
+    renderedBody('c4-nine-marks', afterOrdan),
+  );
+  const atQuietArch = applyChoice(
+    afterOrdan,
+    nodes['c4-nine-marks'].choices.find(
+      (choice) => choice.id === 'c4-allow-rook-copy',
+    ),
+  );
+  const quietOpening = nodes['c4-mara'].body(atQuietArch)[0];
+  const quietBody = renderedBody('c4-mara', atQuietArch);
+  if (
+    atQuietArch.nodeId !== 'c4-mara' ||
+    !maraReturnOpening.test(quietOpening) ||
+    !/guide rope back from Harrowfen/i.test(quietOpening) ||
+    !/rear span closes/i.test(quietOpening) ||
+    !/Brann is safe in Harrowfen/i.test(quietOpening) ||
+    !/I left him there and came straight back/i.test(quietOpening)
+  ) {
+    failures.push(
+      `One Honest Minute does not clearly return Mara from Harrowfen after ${routeChoiceId}`,
+    );
+  }
+  if (maraStayOpening.test(quietBody)) {
+    failures.push(
+      `The escort return at One Honest Minute still uses the stay-with-group opening after ${routeChoiceId}`,
+    );
+  }
+  const rookQuestionIndex = nodes['c4-mara']
+    .body(atQuietArch)
+    .findIndex((paragraph) => /The law says arrest Rook/i.test(paragraph));
+  if (rookQuestionIndex < 1) {
+    failures.push(
+      'Mara’s Rook question is offered before the escort return is established',
+    );
+  }
+  const afterQuiet = applyChoice(
+    atQuietArch,
+    nodes['c4-mara'].choices.find((choice) => choice.id === 'c4-return-to-duty'),
+  );
+  const crownFight = renderedBody('c4-soldiers', afterQuiet);
+  if (
+    !/Mara sets her shield/i.test(crownFight) ||
+    !/Mara has returned, but the guard who covered her place cannot lift his wounded shield arm/i.test(
+      crownFight,
+    )
+  ) {
+    failures.push(
+      `The Crown fight after ${routeChoiceId} loses Mara’s return or the wounded-guard cost`,
+    );
+  }
+}
+const afterKeepBrann = applyChoice(
+  { ...highResourceState(chapterFourBase), nodeId: 'c4-wounded' },
+  keepBrannChoice,
+);
+const stayQuietOpening = nodes['c4-mara'].body({
+  ...afterKeepBrann,
+  nodeId: 'c4-mara',
+})[0];
+if (!maraStayOpening.test(stayQuietOpening) || maraReturnOpening.test(stayQuietOpening)) {
+  failures.push(
+    'The non-escort opening of One Honest Minute changed or gained a Harrowfen return',
+  );
+}
+const maraQuietChoiceIds = nodes['c4-mara'].choices.map((choice) => [
+  choice.id,
+  choice.next,
+  JSON.stringify(choice.changes ?? null),
+  JSON.stringify(choice.addFlags ?? null),
+  JSON.stringify(relationshipChanges(choice)),
+]);
+if (
+  JSON.stringify(maraQuietChoiceIds) !==
+  JSON.stringify([
+    ['c4-tell-mara-law-bends', 'c4-soldiers', 'null', 'null', JSON.stringify({ mara: { trust: 1, respect: 1 } })],
+    [
+      'c4-promise-mara-truth',
+      'c4-soldiers',
+      JSON.stringify({ oathfire: -1 }),
+      JSON.stringify(['c4-oath-honest-with-mara']),
+      JSON.stringify({ mara: { trust: 2, respect: 1 } }),
+    ],
+    [
+      'c4-kiss-mara-bridge',
+      'c4-soldiers',
+      'null',
+      JSON.stringify(['c4-kissed-mara']),
+      JSON.stringify({ mara: { trust: 1, attraction: 2, intent: 'exploring' } }),
+    ],
+    [
+      'c4-hear-lysara-private-risk',
+      'c4-soldiers',
+      'null',
+      JSON.stringify(['c4-lysara-private-truth']),
+      JSON.stringify({ lysara: { trust: 2, respect: 1 } }),
+    ],
+    [
+      'c4-name-lysara-personal',
+      'c4-soldiers',
+      'null',
+      'null',
+      JSON.stringify({
+        lysara: { trust: 1, attraction: 2, respect: 1, intent: 'exploring' },
+      }),
+    ],
+    [
+      'c4-keep-quiet-arch-platonic',
+      'c4-soldiers',
+      'null',
+      'null',
+      JSON.stringify({
+        mara: { trust: 1, respect: 1, intent: 'platonic' },
+        lysara: { respect: 1, intent: 'platonic' },
+      }),
+    ],
+    ['c4-return-to-duty', 'c4-soldiers', 'null', 'null', '{}'],
+  ])
+) {
+  failures.push(
+    'One Honest Minute changed a choice ID, transition, cost, flag, or relationship effect',
   );
 }
 const capturedOrdanFight = renderedBody('c4-soldiers', {
@@ -4928,7 +5139,7 @@ const chapterFourObjectLedger = [
           flags: ['c3-secured-return'],
         }),
       ),
-      /returns along Lysara’s guide rope/i.test(
+      /follows Lysara’s guide rope back from Harrowfen/i.test(
         renderedBody('c4-mara', {
           ...chapterFourBase,
           flags: ['c4-mara-escorted-brann'],
