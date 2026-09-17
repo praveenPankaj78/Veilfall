@@ -396,6 +396,63 @@
         "No completed choice (jammed shield, open shortcut) and no sibling-span geography"
       ],
       "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-005",
+      "kind": "correction",
+      "status": "delivered",
+      "reason": "User-reported anatomy defect on the existing Bellweather infirmary plate after the four coverage deliveries were integrated. Garran’s body and cot read as malformed and fused with Lysara’s foreground bed. The shared basename remains valid for c2-triage, c2-medicine, and c2-eleven-years, so this is a same-file correction rather than a new variant.",
+      "chapter": 2,
+      "nodeIds": ["c2-triage", "c2-medicine", "c2-eleven-years"],
+      "incomingChoiceIds": ["c2-search-threshold", "c2-carry-first", "c2-question-name"],
+      "sceneSummary": "Chapter II common-room patient scene. One sealed dose, three occupied makeshift beds, Caelan considering who to treat. Garran is the adult male patient behind Lysara whom Maelin is tending. No medicine choice has been taken.",
+      "requiredState": {
+        "flags": [],
+        "companions": "Caelan, Mara, Lysara, Maelin, Nilo, and Garran are present in the common room.",
+        "relationshipOrConsent": "none; not a romance scene"
+      },
+      "excludedState": {
+        "flags": [],
+        "siblingBranches": [],
+        "mustNeverAppearOn": ["c2-threshold", "c2-investigate"]
+      },
+      "sourceToCorrect": {
+        "path": "source/art/bellweather-infirmary.png",
+        "sha256": "8acc39bfece2e62ccd2583597bbb493503e10bf1ab8b1f58b34bd8de82e494c7"
+      },
+      "otherNodesUsingSameImage": ["c2-triage", "c2-medicine", "c2-eleven-years"],
+      "referenceImages": ["source/art/bellweather-infirmary.png"],
+      "mustShow": [
+        "Garran as a coherent adult man on his own distinct wooden cot behind Lysara",
+        "Maelin tending Garran",
+        "Lysara on the foreground bed with a glowing bandaged hand",
+        "Caelan, Mara, the third patient, and the sealed medicine bottle"
+      ],
+      "mustNotShow": [
+        "Fused beds or duplicated limbs",
+        "A completed medicine choice",
+        "Gore, surgery, romance, readable text, logos, or watermarks"
+      ],
+      "preserve": [
+        "Existing runtime basename bellweather-infirmary and alt text",
+        "Shared assignment on c2-triage, c2-medicine, and c2-eleven-years"
+      ],
+      "outputBasename": "bellweather-infirmary",
+      "proposedSourcePath": "source/art/bellweather-infirmary.png",
+      "proposedDeliveryPaths": [
+        "public/art/bellweather-infirmary.webp",
+        "public/art/bellweather-infirmary-800.webp"
+      ],
+      "proposedArtKey": "infirmary",
+      "alt": "One sealed dose and makeshift beds in Bellweather’s common-room infirmary",
+      "generationBrief": "Precise-object correction of the existing infirmary plate: repair only Garran and his distinct cot so anatomy and bed geometry are coherent, without changing the rest of the established common-room composition.",
+      "acceptanceCriteria": [
+        "Garran has a believable body axis on a separate cot",
+        "Lysara, Caelan, Mara, the third patient, Maelin, and the medicine bottle remain",
+        "Hero crops still show all three beds and the bottle",
+        "No encoded medicine outcome"
+      ],
+      "estimatedAssetBudgetBytes": 220000
     }
   ]
 }

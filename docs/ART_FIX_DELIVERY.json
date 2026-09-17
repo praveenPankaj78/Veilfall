@@ -1,12 +1,12 @@
 {
   "requestManifestSha256": "01fec49720a76b2c67e28856e2873c46e2c6002a4e9e0519e47101bb9fe25089",
   "summary": {
-    "processed": 4,
-    "ready": 4,
+    "processed": 5,
+    "ready": 5,
     "needsClarification": 0,
     "unresolved": 0,
     "generationMode": "built-in image_gen",
-    "notes": "All four pending new-image requests were generated, staged, compressed in isolation, and visually checked at source size, 800px delivery size, the desktop 16:7 hero crop, and the mobile 4:3 crop using object-position 57% center. Art-fix-002 was subsequently revised in place after visual review identified Caelan and his horse traveling opposite the column; the accepted filenames now contain the corrected uphill orientation. No runtime, story, source/art, public/art, optimizer, or beta ZIP files were changed."
+    "notes": "All four pending new-image requests were generated, staged, compressed in isolation, and visually checked at source size, 800px delivery size, the desktop 16:7 hero crop, and the mobile 4:3 crop using object-position 57% center. Art-fix-002 was subsequently revised in place after visual review identified Caelan and his horse traveling opposite the column; the accepted filenames now contain the corrected uphill orientation. Art-fix-005 records a later user-reported anatomy correction to the existing Bellweather infirmary plate; Garran and his distinct cot were repaired without changing its runtime basename. No runtime, story, source/art, public/art, optimizer, or beta ZIP files were changed."
   },
   "deliveries": [
     {
@@ -447,6 +447,107 @@
         "proposedArtKey": "brassspan",
         "sharedImageVariantRequirement": "None; this is a new route-specific plate and must not replace mileless-three-spans or either sibling-span image.",
         "restrictions": "Map only to c4-brass-span after c4-choose-brass. Preserve the pre-choice pause: do not carry this plate into c4-stage-turn or present it as a jammed, opened, or completed route."
+      },
+      "limitations": []
+    },
+    {
+      "requestId": "art-fix-005",
+      "status": "ready",
+      "requestOrigin": "User-reported visual correction after the four audited handoff requests were marked delivered; ART_FIX_REQUESTS.json was not overwritten.",
+      "stagedSourcePath": "work/sol-art-fixes/art-fix-005/bellweather-infirmary.png",
+      "sourceSha256": "83c0fcb66fd2ca3678f086fd9eb632515cb76f9201d82b91a47fece3057cd353",
+      "dimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "stagedPreviewPaths": [
+        "work/sol-art-fixes/art-fix-005/bellweather-infirmary.webp",
+        "work/sol-art-fixes/art-fix-005/bellweather-infirmary-800.webp"
+      ],
+      "previewSizesBytes": {
+        "work/sol-art-fixes/art-fix-005/bellweather-infirmary.webp": 102198,
+        "work/sol-art-fixes/art-fix-005/bellweather-infirmary-800.webp": 40232
+      },
+      "previewSha256": {
+        "work/sol-art-fixes/art-fix-005/bellweather-infirmary.webp": "306cc0bdb9da9e22472bb7b7ab9e654f9a2f3541792416b753b7cc3faad1297e",
+        "work/sol-art-fixes/art-fix-005/bellweather-infirmary-800.webp": "328fb430c45314a9a36116d5d818285ed242877e38b11bc042a8bcf8648a3767"
+      },
+      "compressionSettings": {
+        "format": "WebP",
+        "opaque": true,
+        "flattenBackground": "#181514",
+        "large": {
+          "width": 1536,
+          "height": 864,
+          "quality": 70,
+          "effort": 6
+        },
+        "small": {
+          "width": 800,
+          "height": 450,
+          "quality": 66,
+          "effort": 6
+        }
+      },
+      "qaCropPreviews": [
+        {
+          "path": "work/sol-art-fixes/art-fix-005/bellweather-infirmary-qa-desktop-16x7.webp",
+          "dimensions": "1536x672",
+          "sha256": "52e109239b595729cf1d04540f80425149df0e26f90b2c97dd9277eb9803b7ea"
+        },
+        {
+          "path": "work/sol-art-fixes/art-fix-005/bellweather-infirmary-qa-mobile-4x3-57.webp",
+          "dimensions": "800x600",
+          "sha256": "738072b67f4f4742cd0479aee2eb3313de0ee01fa57a11e6fdd887ef1314660b"
+        }
+      ],
+      "proposedSourcePath": "source/art/bellweather-infirmary.png",
+      "proposedDeliveryPaths": [
+        "public/art/bellweather-infirmary.webp",
+        "public/art/bellweather-infirmary-800.webp"
+      ],
+      "outputBasename": "bellweather-infirmary",
+      "alt": "One sealed dose and makeshift beds in Bellweather’s common-room infirmary",
+      "editTarget": {
+        "path": "source/art/bellweather-infirmary.png",
+        "sha256": "8acc39bfece2e62ccd2583597bbb493503e10bf1ab8b1f58b34bd8de82e494c7"
+      },
+      "referenceImages": [
+        {
+          "path": "source/art/bellweather-infirmary.png",
+          "role": "edit target and sole visual reference",
+          "sha256": "8acc39bfece2e62ccd2583597bbb493503e10bf1ab8b1f58b34bd8de82e494c7"
+        }
+      ],
+      "creationPrompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. The common room of a timber medieval inn converted into an infirmary. One small sealed glass medicine bottle is foreground on a wooden tray with clean folded cloth and a water basin. Caelan considers three occupied makeshift beds, all patients modestly covered; Mara and an older innkeeper tending them. The adult dark-haired elven envoy in green has a bandaged hand with a faint green glow. Hearth warmth against rain-dark shutters. Quiet urgency and compassion; no gore or surgery.",
+      "editPrompts": [
+        "Use case: precise-object-edit\nAsset type: corrected 16:9 Chapter II game scene plate for Veilfall: The Ember Oath\nInput images: Image 1 is the sole edit target, the existing bellweather-infirmary illustration.\nPrimary request: Correct only the adult male patient and his separate wooden cot directly behind Lysara and beside the elderly woman. This patient is Garran, the feverish wounded adult attacker whom Maelin is tending. His current bed/body read as malformed and merged with neighboring bedding.\nRequired correction: Give Garran a natural adult human anatomy and a clear reclining pose on his own distinct rectangular medieval wooden cot. His head rests naturally on one pillow near the rain-dark window at the right; neck, shoulders, torso, hips, and covered legs align on one believable body axis extending leftward along that cot. Keep him modestly covered to the chest by one coherent blanket, with only head, shoulders, and perhaps forearms visible. Make the cot's mattress, near side rail, head area, and separation from Lysara's foreground bed visually clear. Maelin, the elderly gray-haired innkeeper, remains beside this cot gently treating or wiping Garran's forehead with a cloth. No gore; a simple head or side bandage is acceptable.\nInvariants: Change only Garran, his pillow/blanket, the structure of his cot, and the minimum adjacent contact area needed to make Maelin's care anatomically coherent. Preserve Lysara exactly as the adult dark-haired elven woman in green on the foreground-right bed, including her face, pointed ear, bandaged glowing hand, clothing, pose, pillow, blanket, and entire bed. Preserve Caelan at left, Mara treating the other patient in the middle-left bed, the other patient, Maelin's identity and clothing, the medicine bottle, tray, folded cloth, water basin, fireplace, windows, rain, banners, lighting, palette, camera, framing, and painterly realism.\nLayout constraint: Garran's cot must remain clearly behind and separate from Lysara's bed, not fused with it and not sharing a mattress, pillow, limbs, or blanket.\nAvoid: extra patients, removed patients, duplicated limbs, distorted hands, fused bodies, floating head, impossible bed rails, romance, surgery, gore, readable text, logos, or watermarks. Keep the image opaque and landscape 16:9."
+      ],
+      "provenanceEditLog": [
+        "Inspected the current source/art/bellweather-infirmary.png and verified its SHA-256 before editing.",
+        "Used the built-in image_gen precise-object edit flow with the existing illustration as the edit target and sole visual reference.",
+        "The original source was not overwritten. The generated revision is preserved as work/sol-art-fixes/art-fix-005/bellweather-infirmary-draft-01-anatomy-fix.png.",
+        "Mechanically flattened against #181514, center-cropped from the generated 16:9 landscape frame without stretching, and resized to the staged 1536x864 PNG.",
+        "Created isolated WebP and desktop/mobile hero-crop QA previews; the shared optimizer and public/art output were not used."
+      ],
+      "visualChecks": {
+        "identityAndAnatomy": "Pass: Garran is a single coherent adult man with aligned head, neck, shoulders, torso, hips, and covered legs; Maelin’s hands meet his forehead naturally. No fused or duplicated limbs are visible.",
+        "bedGeometry": "Pass: Garran has a distinct rectangular wooden cot with its own pillow, mattress, side/foot rails, and blanket volume. It is visibly behind and separate from Lysara’s foreground bed.",
+        "protectedContent": "Pass: Lysara remains the adult dark-haired elf in green with pointed ear and glowing bandaged hand; Caelan, Mara, the third patient, Maelin, bottle, tray, cloth, basin, fire, windows, rain, banners, lighting, and three-bed composition remain present.",
+        "sceneSuitability": "Pass for c2-triage, c2-medicine, and c2-eleven-years: all three patients remain untreated by the single sealed dose, and no choice outcome is depicted.",
+        "desktopCrop": "Pass: 16:7 crop retains all three beds, Garran’s corrected anatomy and cot separation, Maelin’s care, Lysara’s glowing hand, Caelan, Mara, and the medicine bottle.",
+        "mobileReadability": "Pass: 4:3 crop at 57% clearly retains Garran’s full corrected cot/body relationship, Maelin, the other patient and Mara, Caelan, Lysara’s glowing hand, and the medicine bottle. Lysara’s face remains at the far-right edge as in the established composition.",
+        "compressionTransparencyText": "Pass: the 800px preview retains distinct bed rails, patient silhouettes, Garran’s face and body axis, and the bottle without conspicuous artifacts. Source and previews are three-channel opaque sRGB with no text, logo, or watermark."
+      },
+      "integrationNotes": {
+        "nodeIds": [
+          "c2-triage",
+          "c2-medicine",
+          "c2-eleven-years"
+        ],
+        "artKey": "infirmary",
+        "sharedImageVariantRequirement": "Replace the existing bellweather-infirmary source and both delivery files under the same basename; all three listed common-room nodes should continue sharing the corrected plate.",
+        "restrictions": "Do not change the existing node mapping or alt text. This correction depicts the same pre-choice three-patient state and must not encode which patient receives the medicine."
       },
       "limitations": []
     }
