@@ -223,6 +223,10 @@ const chapterFourChaseNodes = new Set([
 ]);
 const chapterFourNailsNodes = new Set([
   'c4-nine-marks',
+  'c4-mara',
+  'c4-soldiers',
+  'c4-theatre-plan',
+  'c4-anchor',
   'c4-duty',
   'c4-ending-arrest',
   'c4-ending-bargain',

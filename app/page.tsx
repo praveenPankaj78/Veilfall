@@ -1485,7 +1485,7 @@ export default function Home() {
           <div className="scene-art-wrap" ref={sceneRef}>
             {!artFailed ? (
               <SceneArtImage
-                key={sceneArt.src}
+                key={`${node.id}:${sceneArt.src}`}
                 art={sceneArt}
                 className="scene-art"
                 onError={() => setFailedArtKey(sceneArt.src)}

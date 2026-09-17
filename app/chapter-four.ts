@@ -958,7 +958,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     objective:
       'Choose where to spend one honest minute before the next attack.',
     threat: 'Uneasy',
-    art: 'crossroads',
+    art: 'nails',
     body: (state) => [
       has(state, 'c4-mara-escorted-brann')
         ? 'Mara returns along Lysara’s guide rope just before the rear span closes. “Brann is safe in Harrowfen,” she says. The breath you had been holding leaves hard enough to hurt.'
@@ -1067,7 +1067,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Map Arch',
     objective: 'Keep the fragment out of Crown hands.',
     threat: 'Critical',
-    art: 'crossroads',
+    art: 'nails',
     body: (state) => [
       has(state, 'c4-captured-ordan')
         ? 'Crown soldiers enter from both ends of the Map Arch. Their captain orders you to surrender the fragment under royal authority. Your hand begins the old salute, then stops when his rear line aims at bound Ordan.'
@@ -1144,7 +1144,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Span Before the Final Anchor',
     objective: 'Choose one false scene for the bridge to repeat.',
     threat: 'Immediate',
-    art: 'crossroads',
+    art: 'nails',
     body: (state) => [
       'Rook hangs one small mirrored curtain on the next arch. One silver wire moves it. His single voice reed can give the figure behind it one false voice.',
       'The bridge copies reflections onto nearby spans. Rook only has to stage one clear lie here. The bridge will repeat that same scene in three places while your real group runs for the final anchor.',
@@ -1215,7 +1215,7 @@ export const chapterFourNodes: Record<string, StoryNode> = {
     location: 'The Final Anchor',
     objective: 'Keep one path stable until every survivor crosses.',
     threat: 'Critical',
-    art: 'crossroads',
+    art: 'nails',
     body: (state) => [
       'The last anchor is a waist high ring of black iron. Roads tear away from it one by one. The fragment jerks inside your fist each time an arch opens, pulling your knuckles toward every road at once.',
       'Rook moves ahead, finding footholds where stone has not arrived yet. Lysara feeds green thread through his path. The black ring kicks inside your grip each time another road tears free.',
