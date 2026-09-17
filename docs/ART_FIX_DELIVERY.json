@@ -1,0 +1,454 @@
+{
+  "requestManifestSha256": "01fec49720a76b2c67e28856e2873c46e2c6002a4e9e0519e47101bb9fe25089",
+  "summary": {
+    "processed": 4,
+    "ready": 4,
+    "needsClarification": 0,
+    "unresolved": 0,
+    "generationMode": "built-in image_gen",
+    "notes": "All four pending new-image requests were generated, staged, compressed in isolation, and visually checked at source size, 800px delivery size, the desktop 16:7 hero crop, and the mobile 4:3 crop using object-position 57% center. Art-fix-002 was subsequently revised in place after visual review identified Caelan and his horse traveling opposite the column; the accepted filenames now contain the corrected uphill orientation. No runtime, story, source/art, public/art, optimizer, or beta ZIP files were changed."
+  },
+  "deliveries": [
+    {
+      "requestId": "art-fix-001",
+      "status": "ready",
+      "stagedSourcePath": "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road.png",
+      "sourceSha256": "4aa3bcaa6cc58f4d35493b7ca41fe8954d0c473c78f14e12e8120b76224b92f8",
+      "dimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "stagedPreviewPaths": [
+        "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road.webp",
+        "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road-800.webp"
+      ],
+      "previewSizesBytes": {
+        "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road.webp": 150896,
+        "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road-800.webp": 54044
+      },
+      "previewSha256": {
+        "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road.webp": "01d125d80c13e9c66b2236233b12a01807e7191edc9fd1ec3b4da8a3ac7143fc",
+        "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road-800.webp": "2f58eff4bf2258aa6d84a17d440895ea13af79e63cc06401bcb805e41b8d4727"
+      },
+      "compressionSettings": {
+        "format": "WebP",
+        "opaque": true,
+        "flattenBackground": "#181514",
+        "large": {
+          "width": 1536,
+          "height": 864,
+          "quality": 70,
+          "effort": 6
+        },
+        "small": {
+          "width": 800,
+          "height": 450,
+          "quality": 66,
+          "effort": 6
+        }
+      },
+      "qaCropPreviews": [
+        {
+          "path": "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road-qa-desktop-16x7.webp",
+          "dimensions": "1536x672",
+          "sha256": "4587ff200abb46d11d1e9103eca0396a692cd98030b61291cb5f0cabf425f239"
+        },
+        {
+          "path": "work/sol-art-fixes/art-fix-001/eastwatch-ridge-road-qa-mobile-4x3-57.webp",
+          "dimensions": "800x600",
+          "sha256": "99a70aed7cd4e4469a85c37d4703a6dd6651571ab7106ad876f8604d9fc70a00"
+        }
+      ],
+      "proposedSourcePath": "source/art/eastwatch-ridge-road.png",
+      "proposedDeliveryPaths": [
+        "public/art/eastwatch-ridge-road.webp",
+        "public/art/eastwatch-ridge-road-800.webp"
+      ],
+      "outputBasename": "eastwatch-ridge-road",
+      "alt": "The treaty wagon crawls an exposed Eastwatch ridge beside a steep drop while a shepherd tower flashes a signal mirror",
+      "referenceImages": [
+        {
+          "path": "source/art/kings-road-drowned-mile.png",
+          "sha256": "194f03cc3116268d6bbef702855602afec640590fce02205bb47357eb42d65c1"
+        },
+        {
+          "path": "source/art/caelan-east-gate.png",
+          "sha256": "a945d1706fb09b82fce8150403091ef5c906ba85b3568c285796f49cb4753102"
+        },
+        {
+          "path": "source/art/bellweather-inn.png",
+          "sha256": "a1097121ac24d670214b17a9a44c74e7acf5bdef264004b16b1a7b10be249fd7"
+        },
+        {
+          "path": "source/art/eastwatch-saboteur.png",
+          "sha256": "c7bf69c5c46cc2ac4a4b1411a6cf50fe045a9157976e0a40569eefb24360c7ad"
+        }
+      ],
+      "creationPrompt": "Use case: illustration-story\nAsset type: 16:9 game scene plate for Veilfall: The Ember Oath\nInput images: Image 1 kings-road-drowned-mile — character, treaty wagon, rain, and painterly style reference only; Image 2 caelan-east-gate — Caelan, Mara, Lysara, escort, and wagon identity reference only; Image 3 bellweather-inn — palette, weather, and story-plate finish reference only; Image 4 eastwatch-saboteur — Caelan, wagon mechanics, and rain-soaked material reference only.\nPrimary request: Depict the authored Chapter I moment “The Watching Glass” on Eastwatch Ridge before any choice is made.\nScene/backdrop: A high narrow medieval ridge road in rain, Greyhaven only a small distant mass behind, eastern hills far below, lethal steep drop immediately beside the road, dark western thunderclouds. An abandoned stone shepherd tower stands ahead and slightly right of center. A small bright flash of reflected sunlight from a signal mirror is visible at the tower; it is a watcher signal, not lightning striking the party.\nSubject: The heavy green treaty wagon with its tree-and-roots emblem crawls close to the ledge with a small Warden escort. Caelan is a rugged 31-year-old human man with short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak. Mara is a 29-year-old athletic human scout with tied dark brown hair, green leather travel clothes, bow in hand or being readied, watching the tower. Lysara need not be prominent.\nStyle/medium: cinematic painterly dark-fantasy realism matching the references; mature natural faces, intricate weathered medieval materials, atmospheric depth, muted charcoal and earth palette, rain-silver light.\nComposition/framing: true landscape 16:9, wide environmental view. Keep Caelan, Mara, wagon, immediate drop, and tower in the central horizontal band, with essential content still readable in a centered 16:7 crop and a mobile 4:3 crop biased to 57% from the left. The ledge and tower must be unmistakable at 800px width.\nNarrative state: the group has only noticed the mirror signal. Nobody has entered the tower; no watcher has been captured; no defensive action or false signal has been attempted.\nConstraints: exactly the established named characters needed, anatomically coherent adults, opaque image, no readable text, captions, logos, borders, or watermarks; no modern objects; no nudity or intimacy.\nAvoid: flooded barley fields, stranded hay cart, brown floodwater over the road, Eastwatch outer yard or closing iron gate, saboteur beneath a wagon, black arrows, ambush, overturned timber carts, impossible sea, folded road, Greyhaven castle as the primary setting, lightning striking the party, completed tower assault.",
+      "editPrompts": [],
+      "provenanceEditLog": [
+        "Generated once with the built-in image_gen tool from the four listed repository references; no generative revision was needed.",
+        "Original generation preserved as work/sol-art-fixes/art-fix-001/eastwatch-ridge-road-draft-01.png.",
+        "Mechanically flattened against #181514, center-cropped from the generated landscape frame to exact 16:9 without stretching, and resized to the staged 1536x864 PNG.",
+        "Created isolated WebP and hero-crop QA previews; the shared optimizer and public/art output were not used."
+      ],
+      "visualChecks": {
+        "identityAndAnatomy": "Pass: one established Caelan and one established Mara are readable, correctly clothed, and anatomically coherent; the escort remains generic.",
+        "locationObjectsAction": "Pass: exposed rainy ridge, immediate drop, green tree-emblem treaty wagon, ruined shepherd lookout ahead, and a distinct reflected-sun mirror flash are present before any choice action.",
+        "protectedContent": "Pass: no floodplain, Eastwatch yard, saboteur, arrow volley, ambush, overturned cart, folded road, impossible sea, captured watcher, or tower assault appears.",
+        "branchSuitability": "Pass for ridge-road with ridge-route only; intentionally unsuitable for low-road, inspection-yard, march-order, road-conversation, gate-yard, or choose-road as specified.",
+        "desktopCrop": "Pass: 16:7 crop retains Caelan, Mara, wagon, ledge, and mirror tower.",
+        "mobileReadability": "Pass: 4:3 crop at 57% retains Mara centrally, Caelan at the left edge, the treaty wagon, lethal drop, and mirror tower; the flash remains visible.",
+        "compressionTransparencyText": "Pass: 800px preview has no conspicuous compression defects; faces, bow, emblem, ledge, and tower remain legible. Source and previews are three-channel opaque sRGB with no text, logo, or watermark."
+      },
+      "integrationNotes": {
+        "nodeIds": [
+          "ridge-road"
+        ],
+        "incomingChoiceIds": [
+          "take-ridge"
+        ],
+        "proposedArtKey": "ridgeroad",
+        "sharedImageVariantRequirement": "None; this is a new route-specific plate and must not replace any shared original.",
+        "restrictions": "Map only to ridge-road after take-ridge. Preserve the mirror as a distant reflected-sun signal and do not reuse this plate after reconvergence or on either sibling fork."
+      },
+      "limitations": []
+    },
+    {
+      "requestId": "art-fix-002",
+      "status": "ready",
+      "stagedSourcePath": "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise.png",
+      "sourceSha256": "535598eaf4a2f35206bb2db015499ea89c88c96b93b4c508b9b4c2a89b655234",
+      "dimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "stagedPreviewPaths": [
+        "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise.webp",
+        "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-800.webp"
+      ],
+      "previewSizesBytes": {
+        "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise.webp": 169032,
+        "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-800.webp": 62328
+      },
+      "previewSha256": {
+        "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise.webp": "e856191a4a29576a83476d64fa6d17519e377e0a8620061b3648b4e1b8cdf1d2",
+        "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-800.webp": "85cbc6b7572902b439006f3301dbe60a3980392e086c2a5d48ac2228afc2b990"
+      },
+      "compressionSettings": {
+        "format": "WebP",
+        "opaque": true,
+        "flattenBackground": "#181514",
+        "large": {
+          "width": 1536,
+          "height": 864,
+          "quality": 70,
+          "effort": 6
+        },
+        "small": {
+          "width": 800,
+          "height": 450,
+          "quality": 66,
+          "effort": 6
+        }
+      },
+      "qaCropPreviews": [
+        {
+          "path": "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-qa-desktop-16x7.webp",
+          "dimensions": "1536x672",
+          "sha256": "447d58d610721089882004d09ad3864b015003f42d011ccadf81b6563030c1c2"
+        },
+        {
+          "path": "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-qa-mobile-4x3-57.webp",
+          "dimensions": "800x600",
+          "sha256": "3f5ef7410a597f8a5c7ebba68691641f326c040834f80aa1adacdfd70d20b2f8"
+        }
+      ],
+      "proposedSourcePath": "source/art/kings-road-alderwood-rise.png",
+      "proposedDeliveryPaths": [
+        "public/art/kings-road-alderwood-rise.webp",
+        "public/art/kings-road-alderwood-rise-800.webp"
+      ],
+      "outputBasename": "kings-road-alderwood-rise",
+      "alt": "The treaty escort continues along a rainy wooded King’s Road toward Bellweather before the ambush",
+      "referenceImages": [
+        {
+          "path": "source/art/kings-road-drowned-mile.png",
+          "sha256": "194f03cc3116268d6bbef702855602afec640590fce02205bb47357eb42d65c1"
+        },
+        {
+          "path": "source/art/bellweather-inn.png",
+          "sha256": "a1097121ac24d670214b17a9a44c74e7acf5bdef264004b16b1a7b10be249fd7"
+        },
+        {
+          "path": "source/art/caelan-east-gate.png",
+          "sha256": "a945d1706fb09b82fce8150403091ef5c906ba85b3568c285796f49cb4753102"
+        },
+        {
+          "path": "source/art/harrowfen-wrong-mile.png",
+          "sha256": "df7ec0632465d7bf564484f5094cd637ec98ef7bc4f9dace61ef050d6811e082"
+        }
+      ],
+      "creationPrompt": "Use case: illustration-story\nAsset type: 16:9 game scene plate for Veilfall: The Ember Oath\nInput images: Image 1 kings-road-drowned-mile — Caelan, green treaty wagon, escort, rain, and painterly style reference only; Image 2 bellweather-inn — rainy road, destination mood, palette, and finish reference only; Image 3 caelan-east-gate — Caelan and treaty column identity reference only; Image 4 harrowfen-wrong-mile — dark wet medieval environmental breadth and lighting reference only.\nPrimary request: Depict the authored shared Chapter I post-reconvergence journey on the King’s Road, valid for both “What You Place in Front” and “Things Said Before Arrows,” before the ambush.\nScene/backdrop: A firm muddy medieval King’s Road in steady rain, enclosed by wet alder woodland with a wooded rise ahead toward Bellweather. The road is damp and rutted but not flooded. Greyhaven is no longer the setting.\nSubject: A heavy green treaty wagon bearing the established tree-and-roots emblem rolls with a small Warden escort. Caelan is a rugged 31-year-old human man with short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak, riding or walking protectively beside the wagon. Keep other escort figures small and non-identifying. Do not make Mara a required visible figure; she may be scouting ahead. If Lysara is visible, keep her small near or inside the wagon and show no object in her hands.\nStyle/medium: cinematic painterly dark-fantasy realism matching the references; mature natural faces, intricate medieval materials, tactile wet leather and wood, atmospheric depth, muted charcoal, green, and earth palette with restrained warm highlights.\nComposition/framing: true landscape 16:9, wide continuing-road composition. Keep Caelan and the treaty wagon inside the central band so both remain readable in a centered 16:7 crop and a mobile 4:3 crop biased to 57% from the left. The wooded rise and road direction should remain clear at 800px.\nNarrative state: all three earlier road forks have already reconverged; the escort is arranging its march and talking during a brief calm. No conversation choice has been taken and no ambush has begun.\nConstraints: anatomically coherent adults, opaque image, no readable text, captions, logos, borders, or watermarks; no modern objects; no explicit content.\nAvoid: flooded fields, stranded family, water to the knees, exposed ridge drop, flashing shepherd tower, Eastwatch gate, saboteur, brake wedge, charging riders, black arrows, ambush, bodies, overturned carts, impossible sea, glass seed, opened pale living-wood chest, intimate close-up, Greyhaven castle.",
+      "editTarget": {
+        "path": "work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-pre-direction-fix.png",
+        "sha256": "f8f998766fdd2929fe57c6ac67ee9eb55c2eadcb59812e0525c588e2c732c328"
+      },
+      "editPrompts": [
+        "Use case: precise-object-edit\nAsset type: corrected 16:9 game scene plate for Veilfall: The Ember Oath\nInput images: Image 1 is the edit target, kings-road-alderwood-rise. Image 2 is an identity reference for Caelan, his armor, crimson cloak, horse-riding presentation, and the game's painterly realism.\nPrimary request: Change only the foreground mounted Caelan and his black horse so they are traveling in the same direction as the wagon and the other mounted guards: uphill and away from the viewer along the road toward Bellweather at the upper right.\nRequired correction: Turn the horse around completely. Show the black horse in a convincing three-quarter rear or side-rear walking orientation, with its head and body aimed up-road toward the other riders, not toward the camera or down-road. Turn Caelan with the horse so his torso, reins, legs, and saddle position are physically consistent with forward travel. Caelan may glance slightly toward the wagon, but he and the horse must unmistakably move with the column. Retain Caelan's short tousled dark-brown hair, short beard, dark steel and leather armor, and faded crimson cloak. Keep him beside the wagon and readable in the hero crop.\nInvariants: Preserve the exact wagon, green tree-and-roots emblem, wheels, harness, Lysara seated inside with empty hands, every other escort rider and horse, muddy alder road, distant Bellweather buildings, lantern, trees, rain, palette, lighting, camera position, framing, and painterly detail. Do not move, add, remove, redesign, or change any element other than the foreground Caelan-and-horse orientation and the minimal adjacent mud/shadow needed to integrate that correction.\nNarrative constraints: no Mara requirement, no glass seed, no ambush, no arrows, no flood, no ridge tower, no added characters, no text, logo, or watermark. Keep the image opaque and 16:9."
+      ],
+      "provenanceEditLog": [
+        "Generated once with the built-in image_gen tool from the four listed repository references.",
+        "Original generation preserved as work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-draft-01.png.",
+        "Mechanically flattened against #181514, center-cropped from the generated landscape frame to exact 16:9 without stretching, and resized to the staged 1536x864 PNG.",
+        "After user visual review identified Caelan and his mount traveling down-road against the column, the accepted pre-fix 1536x864 source and previews were preserved with pre-direction-fix filenames.",
+        "Used the built-in image_gen edit flow with the preserved plate as the edit target and caelan-east-gate as an identity reference. The revised generation is preserved as work/sol-art-fixes/art-fix-002/kings-road-alderwood-rise-draft-02-direction-fix.png.",
+        "Replaced only the existing staged source and preview filenames with the corrected orientation, then regenerated isolated WebP and hero-crop QA previews; the shared optimizer and public/art output were not used."
+      ],
+      "visualChecks": {
+        "identityAndAnatomy": "Pass after revision: established Caelan is mounted beside the wagon with coherent hands, clothing, saddle, legs, horse anatomy, and tack. Both rider and horse now face uphill in a rear three-quarter traveling pose consistent with the column. Lysara is a small wagon passenger with empty visible hands; no Mara dependency is introduced.",
+        "locationObjectsAction": "Pass after revision: Caelan, his mount, the wagon, and every visible escort travel together uphill on a firm but muddy alder-lined King’s Road toward the wooded rise and distant shelter before the ambush.",
+        "protectedContent": "Pass: no flood, stranded family, ridge drop, signal tower, Eastwatch gate, saboteur, charging riders, black arrows, bodies, impossible sea, glass seed, or opened living-wood chest appears.",
+        "branchSuitability": "Pass for both march-order and road-conversation after low-route, ridge-route, or inspection. The image contains no fork-specific geography or action and remains valid if Mara is ranging ahead.",
+        "desktopCrop": "Pass after revision: 16:7 crop clearly shows Caelan and horse moving uphill with the wagon, while retaining the emblem, escort, wooded road, and destination rise.",
+        "mobileReadability": "Pass after revision: 4:3 crop at 57% retains Caelan and horse in the corrected uphill orientation, the wagon and emblem, several escorts, and the continuing road; Mara is not required.",
+        "compressionTransparencyText": "Pass: 800px preview retains the wagon emblem, Caelan’s face, escort silhouettes, and road texture without conspicuous artifacts. Source and previews are three-channel opaque sRGB with no text, logo, or watermark."
+      },
+      "integrationNotes": {
+        "nodeIds": [
+          "march-order",
+          "road-conversation"
+        ],
+        "incomingChoiceIds": [
+          "rescue-family",
+          "push-low",
+          "read-flood",
+          "take-tower",
+          "shield-wagons",
+          "false-signal",
+          "catch-saboteur",
+          "secure-wagon",
+          "form-road-line",
+          "guard-wagon",
+          "command-speed",
+          "send-mara-ahead",
+          "swear-safe-arrival"
+        ],
+        "proposedArtKey": "alderwood",
+        "sharedImageVariantRequirement": "Use this one new branch-neutral plate on both listed nodes; it is not a replacement for any low-road, ridge-road, or inspection-yard image.",
+        "restrictions": "Preserve the shared assignment across march-order and road-conversation. Do not map it backward to a Chapter I fork or forward to ambush or folded-road, and do not add a visible glass seed during integration."
+      },
+      "limitations": []
+    },
+    {
+      "requestId": "art-fix-003",
+      "status": "ready",
+      "stagedSourcePath": "work/sol-art-fixes/art-fix-003/mileless-snow-span.png",
+      "sourceSha256": "4498ff05d005522696efc0a1dbd86854d1c24db3a34043220e91c7bc9df05b8e",
+      "dimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "stagedPreviewPaths": [
+        "work/sol-art-fixes/art-fix-003/mileless-snow-span.webp",
+        "work/sol-art-fixes/art-fix-003/mileless-snow-span-800.webp"
+      ],
+      "previewSizesBytes": {
+        "work/sol-art-fixes/art-fix-003/mileless-snow-span.webp": 186416,
+        "work/sol-art-fixes/art-fix-003/mileless-snow-span-800.webp": 62824
+      },
+      "previewSha256": {
+        "work/sol-art-fixes/art-fix-003/mileless-snow-span.webp": "075ac2b9ce4e3b9b5b2f2b1b2550340ba1a5d7f2e70c67b28a643249d045e9cd",
+        "work/sol-art-fixes/art-fix-003/mileless-snow-span-800.webp": "ef5aa7fa71ffb5ccd704069f610a94a8f4c238ec4184a79ae6b3e14a7b164c7d"
+      },
+      "compressionSettings": {
+        "format": "WebP",
+        "opaque": true,
+        "flattenBackground": "#181514",
+        "large": {
+          "width": 1536,
+          "height": 864,
+          "quality": 70,
+          "effort": 6
+        },
+        "small": {
+          "width": 800,
+          "height": 450,
+          "quality": 66,
+          "effort": 6
+        }
+      },
+      "qaCropPreviews": [
+        {
+          "path": "work/sol-art-fixes/art-fix-003/mileless-snow-span-qa-desktop-16x7.webp",
+          "dimensions": "1536x672",
+          "sha256": "08386bdbb88f5042bacd82dff351319e32752cb8551cd4a897a174a43ee1c4c6"
+        },
+        {
+          "path": "work/sol-art-fixes/art-fix-003/mileless-snow-span-qa-mobile-4x3-57.webp",
+          "dimensions": "800x600",
+          "sha256": "04317586d3df683ececd37f6f299e496d6d871689f7dbaa6b57204571340e006"
+        }
+      ],
+      "proposedSourcePath": "source/art/mileless-snow-span.png",
+      "proposedDeliveryPaths": [
+        "public/art/mileless-snow-span.webp",
+        "public/art/mileless-snow-span-800.webp"
+      ],
+      "outputBasename": "mileless-snow-span",
+      "alt": "Cold blue flame bowls line a snowbound Mileless span while Crown soldiers cut steps on the slope ahead",
+      "referenceImages": [
+        {
+          "path": "source/art/mileless-three-spans.png",
+          "sha256": "54ab230ecc6c9aa0f4bbfe9de414baf32cbbf806ebdc150a20a63583193c1b3c"
+        },
+        {
+          "path": "source/art/mileless-storm-span.png",
+          "sha256": "77d55bef96d337efd1344d725ffdca58de8bd0c57a236e6073be70c03e49fa2b"
+        },
+        {
+          "path": "source/art/mileless-bridge-chase.png",
+          "sha256": "1f29229ceef8431d27f5302072d0141ad345e328fd3b2d3c9a511863cf4a246e"
+        },
+        {
+          "path": "source/art/dragonspine-coldfire.png",
+          "sha256": "25935a3cc7c1b8d23d4b9e486ddf7be235596090cb0c6fec72557bc2f262c426"
+        }
+      ],
+      "creationPrompt": "Use case: illustration-story\nAsset type: 16:9 game scene plate for Veilfall: The Ember Oath\nInput images: Image 1 mileless-three-spans — Mileless architecture, snow-route visual language, and cold-blue bowl reference only; Image 2 mileless-storm-span — Caelan identity, painterly realism, vertiginous scale, and finish reference only; Image 3 mileless-bridge-chase — Caelan and Rook identity and ancient span masonry reference only; Image 4 dragonspine-coldfire — cold palette and weather reference only, not location or magic design.\nPrimary request: Depict the authored Chapter IV moment “The Mountain Road” after the snow route has been chosen but before any action choice is made.\nScene/backdrop: A single narrow snowbound Mileless Bridge mountain span climbing beneath a white mountain in bitter wind. Wet clothing begins to freeze. Ancient stone bowls line this one road, each holding a small cold blue flame that visibly gives no warmth. Ahead on the only safe slope, a distant group of Crown soldiers is actively cutting steps into ice and snow.\nSubject: Caelan, a rugged 31-year-old human man with short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak, braces against the cold near the bowls. Rook may appear small beside or behind him: lean 27-year-old human man, shaggy dark hair, dark theatrical coat, alert and studying the soldiers. Do not depict Mara.\nStyle/medium: cinematic painterly dark-fantasy realism matching the references; mature natural faces, intricate ancient stone and weathered medieval materials, atmospheric depth, charcoal, slate, snow-white, and restrained cold blue.\nComposition/framing: true landscape 16:9, wide environmental perspective along one chosen mountain road. Keep Caelan and several cold-blue bowls inside the central band, with distant step-cutting soldiers readable at 800px. Essential content must survive a centered 16:7 crop and a mobile 4:3 crop biased to 57% from the left.\nNarrative state: the party has just arrived on this span. The soldiers remain ahead. No shield line, Oath warming, or hidden rail shortcut has been chosen or completed.\nConstraints: anatomically coherent adults, opaque image, no readable text, captions, logos, borders, or watermarks; no modern objects; no romance or explicit content.\nAvoid: circular three-way junction, multiple exits, storm coast, waves, sea cliff, huge brass gears, underground wheel chamber, Dragonspine glass valleys, Vaor, Mara, drowned soldiers, formed shield wall, victorious combat, warm or gold fire, flames leaping bowl to bowl, exposed bronze rail, people already using a shortcut.",
+      "editPrompts": [],
+      "provenanceEditLog": [
+        "Generated once with the built-in image_gen tool from the four listed repository references; no generative revision was needed.",
+        "Original generation preserved as work/sol-art-fixes/art-fix-003/mileless-snow-span-draft-01.png.",
+        "Mechanically flattened against #181514, center-cropped from the generated landscape frame to exact 16:9 without stretching, and resized to the staged 1536x864 PNG.",
+        "Created isolated WebP and hero-crop QA previews; the shared optimizer and public/art output were not used."
+      ],
+      "visualChecks": {
+        "identityAndAnatomy": "Pass: established Caelan and a smaller Rook are coherent and correctly clothed. Mara is absent, so the plate remains valid when she escorts Brann.",
+        "locationObjectsAction": "Pass: one chosen snowbound mountain span, repeated cold-blue stone bowls, freezing weather, and distant Crown soldiers visibly cutting steps into the only safe slope are present.",
+        "protectedContent": "Pass: no three-way junction, storm sea, brass chamber, Dragonspine glass valley, Mara, drowned soldiers, shield-wall result, gold Oathfire, leaping warm flame, or exposed rail shortcut appears.",
+        "branchSuitability": "Pass only for c4-snow-span after c4-choose-snow; the visual is intentionally not suitable for c4-three-spans, either sibling span, or c4-stage-turn.",
+        "desktopCrop": "Pass: 16:7 crop retains Caelan, Rook, several blue bowls, the span, and step-cutting soldiers.",
+        "mobileReadability": "Pass: 4:3 crop at 57% retains Caelan, central blue bowls, the single span, and the soldiers cutting the slope; optional Rook is partially peripheral but not required.",
+        "compressionTransparencyText": "Pass: 800px preview keeps the blue bowls and step-cutting action distinct without conspicuous artifacts. Source and previews are three-channel opaque sRGB with no text, logo, or watermark."
+      },
+      "integrationNotes": {
+        "nodeIds": [
+          "c4-snow-span"
+        ],
+        "incomingChoiceIds": [
+          "c4-choose-snow"
+        ],
+        "proposedArtKey": "snowspan",
+        "sharedImageVariantRequirement": "None; this is a new route-specific plate and must not replace mileless-three-spans or mileless-storm-span.",
+        "restrictions": "Map only to c4-snow-span after c4-choose-snow. Preserve cold blue bowl flames; do not recolor them gold or carry this image into c4-stage-turn."
+      },
+      "limitations": []
+    },
+    {
+      "requestId": "art-fix-004",
+      "status": "ready",
+      "stagedSourcePath": "work/sol-art-fixes/art-fix-004/mileless-brass-span.png",
+      "sourceSha256": "caefe772e92e91053fa18aae9d1a7e2ff6a3d64f10531ffd9fe1675ff013e607",
+      "dimensions": {
+        "width": 1536,
+        "height": 864
+      },
+      "stagedPreviewPaths": [
+        "work/sol-art-fixes/art-fix-004/mileless-brass-span.webp",
+        "work/sol-art-fixes/art-fix-004/mileless-brass-span-800.webp"
+      ],
+      "previewSizesBytes": {
+        "work/sol-art-fixes/art-fix-004/mileless-brass-span.webp": 173026,
+        "work/sol-art-fixes/art-fix-004/mileless-brass-span-800.webp": 57248
+      },
+      "previewSha256": {
+        "work/sol-art-fixes/art-fix-004/mileless-brass-span.webp": "40afecc42bf62cee2500e115b6c3accc781e2be25b3b4e124126fbaa75bdae71",
+        "work/sol-art-fixes/art-fix-004/mileless-brass-span-800.webp": "05d3513bb9b19a250d16644bad7da168d7ea937cce143dd3faf76623f600cd1b"
+      },
+      "compressionSettings": {
+        "format": "WebP",
+        "opaque": true,
+        "flattenBackground": "#181514",
+        "large": {
+          "width": 1536,
+          "height": 864,
+          "quality": 70,
+          "effort": 6
+        },
+        "small": {
+          "width": 800,
+          "height": 450,
+          "quality": 66,
+          "effort": 6
+        }
+      },
+      "qaCropPreviews": [
+        {
+          "path": "work/sol-art-fixes/art-fix-004/mileless-brass-span-qa-desktop-16x7.webp",
+          "dimensions": "1536x672",
+          "sha256": "b441cc3cda97c18954a35dd4de5cd1ed94fb983f825596eb9686e3e5a6532f7e"
+        },
+        {
+          "path": "work/sol-art-fixes/art-fix-004/mileless-brass-span-qa-mobile-4x3-57.webp",
+          "dimensions": "800x600",
+          "sha256": "9f4d614e45df0ca139d810d70b241abb82d138f473120a46f2a291162964d032"
+        }
+      ],
+      "proposedSourcePath": "source/art/mileless-brass-span.png",
+      "proposedDeliveryPaths": [
+        "public/art/mileless-brass-span.webp",
+        "public/art/mileless-brass-span-800.webp"
+      ],
+      "outputBasename": "mileless-brass-span",
+      "alt": "Huge brass gears carry a road platform between closing metal teeth in a Mileless Bridge cavern",
+      "referenceImages": [
+        {
+          "path": "source/art/mileless-three-spans.png",
+          "sha256": "54ab230ecc6c9aa0f4bbfe9de414baf32cbbf806ebdc150a20a63583193c1b3c"
+        },
+        {
+          "path": "source/art/mileless-storm-span.png",
+          "sha256": "77d55bef96d337efd1344d725ffdca58de8bd0c57a236e6073be70c03e49fa2b"
+        },
+        {
+          "path": "source/art/kharad-brake-forge.png",
+          "sha256": "ae577d5096fa1a2aa141ea12b98a998d5910702c883c59565b3991c1ad31a077"
+        },
+        {
+          "path": "source/art/mileless-bridge-chase.png",
+          "sha256": "1f29229ceef8431d27f5302072d0141ad345e328fd3b2d3c9a511863cf4a246e"
+        }
+      ],
+      "creationPrompt": "Use case: illustration-story\nAsset type: 16:9 game scene plate for Veilfall: The Ember Oath\nInput images: Image 1 mileless-three-spans — Mileless masonry, brass-wheel glimpse, and route architecture reference only; Image 2 mileless-storm-span — Caelan identity, painterly realism, scale, and finish reference only; Image 3 kharad-brake-forge — medieval-fantasy metal, heat, furnace light, and gear material reference only, not its location or workers; Image 4 mileless-bridge-chase — Caelan and Rook identity and ancient bridge language reference only.\nPrimary request: Depict the authored Chapter IV moment “The Turning Machine” inside the chosen brass span after leaving the three-road junction and before any action choice is made.\nScene/backdrop: A vast underground dark-fantasy cavern containing an ancient medieval-fantasy road machine. Enormous interlocking brass gears carry flat wagon-sized stone-and-metal road platforms across the cavern. Each moving platform passes through a clearly legible dangerous gap between two opposed rows of giant metal gear teeth. Furnace glow, heat haze, chainwork, stone vaulting, and deep shadow; nothing modern or steampunk-polished.\nSubject: Caelan, a rugged 31-year-old human man with short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak, waits safely at the crossing edge and counts the machine’s rhythm during a brief open pause. Rook may stand small nearby: lean 27-year-old human man with shaggy dark hair and a dark theatrical coat, attentively watching the gear cycle. Do not depict Mara.\nStyle/medium: cinematic painterly dark-fantasy realism matching the references; mature natural faces, intricate weathered medieval mechanisms, tactile oxidized brass and black iron, atmospheric depth, charcoal shadows and restrained furnace amber.\nComposition/framing: true landscape 16:9, wide interior scale. Make the nearest two rows of teeth, one flat road platform, and Caelan readable at 800px and keep them in the central band for a centered 16:7 crop and mobile 4:3 crop biased to 57% from the left.\nNarrative state: the teeth have recently closed and the next platform is about to pass; Caelan and Rook are observing from the safe edge. Nobody has begun the commanded crossing, jammed a mechanism, or opened a shortcut.\nConstraints: anatomically coherent adults, opaque image, no crushed people or gore, no readable text, captions, logos, borders, or watermarks; no modern objects; no explicit content.\nAvoid: snowy mountain, cold blue bowls, storm coast, waves, wet black sea cliff, circular three-road junction, all three exits visible, shield jammed in a gear, people crushed, crossing already completed, open coffin-lid maintenance door, person crawling inside a hollow wheel, modern factory, pipes-and-goggles steampunk, polished science-fiction machinery.",
+      "editPrompts": [],
+      "provenanceEditLog": [
+        "Generated once with the built-in image_gen tool from the four listed repository references; no generative revision was needed.",
+        "Original generation preserved as work/sol-art-fixes/art-fix-004/mileless-brass-span-draft-01.png.",
+        "Mechanically flattened against #181514, center-cropped from the generated landscape frame to exact 16:9 without stretching, and resized to the staged 1536x864 PNG.",
+        "Created isolated WebP and hero-crop QA previews; the shared optimizer and public/art output were not used."
+      ],
+      "visualChecks": {
+        "identityAndAnatomy": "Pass: established Caelan and a smaller Rook are coherent and correctly clothed. Mara is absent, so the image does not depend on her route state.",
+        "locationObjectsAction": "Pass: an underground furnace-lit cavern, enormous medieval brass wheels, opposed metal teeth, and a flat wagon-sized road platform are clearly visible while Caelan waits at the safe edge.",
+        "protectedContent": "Pass: no snow, cold-blue bowls, storm sea, black cliff span, three-way junction, jammed shield, crushed body, opened maintenance door, hollow-wheel shortcut, modern machinery, or completed crossing appears.",
+        "branchSuitability": "Pass only for c4-brass-span after c4-choose-brass; the visual is intentionally not suitable for c4-three-spans, either sibling span, or c4-stage-turn.",
+        "desktopCrop": "Pass: 16:7 crop retains Caelan, Rook, both opposed tooth rows, and the flat road platform.",
+        "mobileReadability": "Pass: 4:3 crop at 57% retains Caelan, the nearest brass teeth on both sides, the platform, and cavern depth; optional Rook falls outside the crop but is not required.",
+        "compressionTransparencyText": "Pass: 800px preview keeps the gear teeth, platform, Caelan silhouette, and furnace depth distinct without conspicuous artifacts. Source and previews are three-channel opaque sRGB with no text, logo, or watermark."
+      },
+      "integrationNotes": {
+        "nodeIds": [
+          "c4-brass-span"
+        ],
+        "incomingChoiceIds": [
+          "c4-choose-brass"
+        ],
+        "proposedArtKey": "brassspan",
+        "sharedImageVariantRequirement": "None; this is a new route-specific plate and must not replace mileless-three-spans or either sibling-span image.",
+        "restrictions": "Map only to c4-brass-span after c4-choose-brass. Preserve the pre-choice pause: do not carry this plate into c4-stage-turn or present it as a jammed, opened, or completed route."
+      },
+      "limitations": []
+    }
+  ]
+}

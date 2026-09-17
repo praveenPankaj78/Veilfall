@@ -1,6 +1,7 @@
 import {
   canChoose,
   isChoiceVisible,
+  groupedRelationshipPreview,
   nextRelationships,
   nodes,
   relationshipChanges,
@@ -138,6 +139,19 @@ export function drainAutomaticAcknowledgments(state: GameState): GameState {
 
 export function applyPlayerChoice(state: GameState, choice: Choice): GameState {
   return drainAutomaticAcknowledgments(applyChoice(state, choice));
+}
+
+export function previewRelationshipChanges(state: GameState, choice: Choice) {
+  const untouched = cloneGameState(state);
+  const after = applyPlayerChoice(cloneGameState(state), choice);
+  return {
+    groups: groupedRelationshipPreview(
+      untouched.relationships,
+      after.relationships,
+    ),
+    after: after.relationships,
+    inputUnchanged: statesEquivalent(untouched, state),
+  };
 }
 
 type HandoffDefinition = {

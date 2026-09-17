@@ -46,7 +46,6 @@ import {
   isChoiceVisible,
   initialState,
   nodes,
-  relationshipChangeNotes,
   relationshipLabels,
   relationshipSummary,
   requirementText,
@@ -68,6 +67,7 @@ import {
   chapterRecoveryDisplay,
   cloneGameState,
   deathCauseText,
+  previewRelationshipChanges,
   wouldBeFatal,
 } from './game-transition';
 import {
@@ -79,9 +79,13 @@ import {
 import {
   COVER_ART,
   deliveredArtworkSrcSet,
-  sceneArtwork,
   type SceneArtwork,
 } from './scene-art';
+import {
+  scrollLandingAfterTransition,
+  visibleArtworkForState,
+  type ScrollLanding,
+} from './expanded-art';
 import {
   BUILD_VERSION,
   createPortableSave,
@@ -212,21 +216,50 @@ function displayRelationship(game: GameState, person: RelationshipKey) {
   return `${summary}. Future left open across distance`;
 }
 
+type ChoiceEffectBadge = {
+  key: string;
+  text: string;
+  tone: 'gain' | 'loss' | 'shift' | 'lethal' | 'stat';
+};
+
 function changeSummary(choice: Choice, state: GameState) {
-  const statChanges = Object.entries(choice.changes ?? {})
-    .filter(([, value]) => value !== 0)
-    .map(([key, value]) => {
-      const amount = Math.abs(value ?? 0);
-      return (value ?? 0) < 0
-        ? `Cost: ${statLabels[key as StatKey]} ${amount}`
-        : `Gain: ${statLabels[key as StatKey]} ${amount}`;
-    });
-  const personalChanges = relationshipChangeNotes(choice);
-  return [
-    ...statChanges,
-    ...personalChanges,
-    ...(wouldBeFatal(choice, state) ? ['Lethal at current Health'] : []),
-  ];
+  const statChanges: ChoiceEffectBadge[] = Object.entries(
+    choice.changes ?? {},
+  ).flatMap(([key, value]) => {
+    if (!value) return [];
+    const amount = Math.abs(value);
+    return [
+      {
+        key: `stat-${key}`,
+        text:
+          value < 0
+            ? `Cost: ${statLabels[key as StatKey]} ${amount}`
+            : `Gain: ${statLabels[key as StatKey]} ${amount}`,
+        tone: 'stat' as const,
+      },
+    ];
+  });
+  const groups = previewRelationshipChanges(state, choice).groups;
+  return {
+    statChanges,
+    groups,
+    lethal: wouldBeFatal(choice, state),
+  };
+}
+
+function stickyClearancePx() {
+  const topbar = document.querySelector('.topbar');
+  const strip = document.querySelector('.mobile-status-strip');
+  const topbarHeight =
+    topbar instanceof HTMLElement ? topbar.getBoundingClientRect().height : 0;
+  let stripHeight = 0;
+  if (strip instanceof HTMLElement) {
+    const style = window.getComputedStyle(strip);
+    if (style.position === 'sticky' && style.display !== 'none') {
+      stripHeight = strip.getBoundingClientRect().height;
+    }
+  }
+  return Math.round(topbarHeight + stripHeight + 8);
 }
 
 const beforeIlyraNodes = new Set([
@@ -307,8 +340,12 @@ export default function Home() {
   const importInputRef = useRef<HTMLInputElement>(null);
   const storyRef = useRef<HTMLElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const storyOpeningRef = useRef<HTMLDivElement>(null);
   const sceneHeadingRef = useRef<HTMLHeadingElement>(null);
-  const scrollAfterChoice = useRef<'story' | 'scene' | null>(null);
+  const [scrollRequest, setScrollRequest] = useState<{
+    token: number;
+    landing: ScrollLanding;
+  } | null>(null);
 
   useEffect(() => {
     gameRef.current = game;
@@ -397,13 +434,12 @@ export default function Home() {
   }, [deathCause, game, loaded, readingSize, retrySnapshot, started]);
 
   useEffect(() => {
-    if (!scrollAfterChoice.current) return;
-    const target =
-      scrollAfterChoice.current === 'scene'
-        ? sceneRef.current
-        : storyRef.current;
-    scrollAfterChoice.current = null;
-    window.requestAnimationFrame(() => {
+    if (!scrollRequest || !started) return;
+    const { landing } = scrollRequest;
+    let frame = 0;
+    let cancelled = false;
+    frame = window.requestAnimationFrame(() => {
+      if (cancelled) return;
       const mobile = window.matchMedia('(max-width: 950px)').matches;
       const heading = mobile
         ? mobileHeadingRef.current
@@ -412,12 +448,27 @@ export default function Home() {
       const reducedMotion = window.matchMedia(
         '(prefers-reduced-motion: reduce)',
       ).matches;
-      target?.scrollIntoView({
+      const target =
+        landing === 'hero'
+          ? sceneRef.current
+          : landing === 'romance'
+            ? storyOpeningRef.current
+            : storyRef.current;
+      if (!target) return;
+      const top =
+        window.scrollY +
+        target.getBoundingClientRect().top -
+        stickyClearancePx();
+      window.scrollTo({
+        top: Math.max(0, top),
         behavior: reducedMotion ? 'auto' : 'smooth',
-        block: 'start',
       });
     });
-  }, [game.nodeId]);
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+    };
+  }, [scrollRequest, started]);
 
   useEffect(() => {
     const modelContext = (
@@ -547,7 +598,9 @@ export default function Home() {
   const pendingLawReview = pendingLawChoice
     ? GATE_LAW_REVIEWS[pendingLawChoice.id]
     : null;
-  const sceneArt = sceneArtwork[node.art ?? 'departure'];
+  const visibleArt = visibleArtworkForState(game);
+  const sceneArt = visibleArt.hero;
+  const romanceArt = visibleArt.romance;
   const artFailed = failedArtKey === sceneArt.src;
   const nextChapterNumber =
     node.nextChapter && game.chapter < 12
@@ -782,8 +835,10 @@ export default function Home() {
       setRetrySnapshot(null);
       setDeathCause(null);
     }
-    scrollAfterChoice.current =
-      nodes[next.nodeId].art !== node.art ? 'scene' : 'story';
+    setScrollRequest((previous) => ({
+      token: (previous?.token ?? 0) + 1,
+      landing: scrollLandingAfterTransition(before, next),
+    }));
     setLastResult(choice.result);
     setPendingLawChoice(null);
     gameRef.current = next;
@@ -832,6 +887,10 @@ export default function Home() {
   function retryLastChoice() {
     if (!retrySnapshot) return;
     const restored = cloneGameState(retrySnapshot.before);
+    setScrollRequest((previous) => ({
+      token: (previous?.token ?? 0) + 1,
+      landing: scrollLandingAfterTransition(game, restored),
+    }));
     setRetrySnapshot(null);
     setDeathCause(null);
     gameRef.current = restored;
@@ -1488,6 +1547,7 @@ export default function Home() {
                 key={`${node.id}:${sceneArt.src}`}
                 art={sceneArt}
                 className="scene-art"
+                fill
                 onError={() => setFailedArtKey(sceneArt.src)}
                 priority={game.chapter === 1 && game.nodeId === 'gate-yard'}
                 sizes="(max-width: 950px) 92vw, calc(92vw - 27rem)"
@@ -1513,7 +1573,19 @@ export default function Home() {
             )}
 
             <div className="prose">
-              {lastResult && <p>{lastResult}</p>}
+              <div className="story-opening" ref={storyOpeningRef}>
+                {lastResult && <p>{lastResult}</p>}
+                {romanceArt && (
+                  <figure className="romance-art">
+                    <SceneArtImage
+                      art={romanceArt}
+                      className="scene-art"
+                      fill
+                      sizes="(max-width: 950px) 88vw, calc(92vw - 31rem)"
+                    />
+                  </figure>
+                )}
+              </div>
               {paragraphs.map((paragraph, index) => (
                 <p key={`${node.id}-${index}`}>{paragraph}</p>
               ))}
@@ -1566,12 +1638,42 @@ export default function Home() {
                           <span
                             className={`choice-effects ${lethal ? 'choice-effects-lethal' : ''}`}
                           >
-                            {available
-                              ? changes.join(' · ')
-                              : [
-                                  `Requires ${requirementText(choice)}`,
-                                  ...changes,
-                                ].join(' · ')}
+                            {!available ? (
+                              <span className="choice-effect choice-effect-stat">
+                                Requires {requirementText(choice)}
+                              </span>
+                            ) : null}
+                            {changes.statChanges.map((change) => (
+                              <span
+                                key={change.key}
+                                className={`choice-effect choice-effect-${change.tone}`}
+                              >
+                                {change.text}
+                              </span>
+                            ))}
+                            {changes.groups.map((group) => (
+                              <span
+                                key={group.person}
+                                className="choice-rel-group"
+                              >
+                                <span className="choice-rel-name">
+                                  {group.name}:
+                                </span>
+                                {group.parts.map((part) => (
+                                  <span
+                                    key={part.dimension}
+                                    className={`choice-effect choice-effect-${part.tone}`}
+                                  >
+                                    {part.text}
+                                  </span>
+                                ))}
+                              </span>
+                            ))}
+                            {changes.lethal ? (
+                              <span className="choice-effect choice-effect-lethal">
+                                Lethal at current Health
+                              </span>
+                            ) : null}
                           </span>
                         </span>
                         <ArrowRight

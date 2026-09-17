@@ -570,26 +570,125 @@ export function relationshipChanges(choice: Choice) {
   return relationshipEffects[choice.id] ?? {};
 }
 
-export function relationshipChangeNotes(choice: Choice) {
-  return Object.entries(relationshipChanges(choice)).flatMap(
-    ([person, changes]) => {
-      const name = relationshipLabels[person as RelationshipKey];
-      if (changes?.intent === 'platonic')
-        return [`${name}: friendship chosen`];
-      if (changes?.intent === 'interested')
-        return [`${name}: interest acknowledged`];
-      if (changes?.intent === 'exploring')
-        return [`${name}: relationship being explored`];
-      if (changes?.intent === 'committed')
-        return [`${name}: commitment chosen`];
-      if (changes?.intent === 'ended') return [`${name}: romance ended`];
-      if (changes?.intent === 'hostile')
-        return [`${name}: hostility declared`];
-      if ((changes?.attraction ?? 0) > 0)
-        return [`${name}: interest acknowledged`];
-      return [];
-    },
-  );
+export const relationshipPersonOrder: RelationshipKey[] = [
+  'mara',
+  'lysara',
+  'ilyra',
+  'vexa',
+];
+
+const numericRelationshipDimensions = [
+  'trust',
+  'attraction',
+  'respect',
+  'friction',
+] as const;
+
+const intentChangeLabels: Record<RelationshipIntent, string> = {
+  unresolved: 'romantic direction left open',
+  interested: 'interest acknowledged',
+  exploring: 'relationship being explored',
+  committed: 'commitment chosen',
+  platonic: 'friendship chosen',
+  hostile: 'hostility declared',
+  ended: 'romance ended',
+};
+
+export type RelationshipPreviewTone = 'gain' | 'loss' | 'shift';
+
+export type RelationshipPreviewPart = {
+  person: RelationshipKey;
+  name: string;
+  dimension: (typeof numericRelationshipDimensions)[number] | 'intent';
+  tone: RelationshipPreviewTone;
+  text: string;
+};
+
+export type RelationshipPreviewGroup = {
+  person: RelationshipKey;
+  name: string;
+  parts: RelationshipPreviewPart[];
+  label: string;
+};
+
+function signedDelta(value: number) {
+  return value > 0 ? `+${value}` : `${value}`;
+}
+
+export function diffRelationships(
+  before: Relationships,
+  after: Relationships,
+): RelationshipPreviewPart[] {
+  const parts: RelationshipPreviewPart[] = [];
+  for (const person of relationshipPersonOrder) {
+    const name = relationshipLabels[person];
+    const previous = before[person];
+    const next = after[person];
+    for (const dimension of numericRelationshipDimensions) {
+      const delta = next[dimension] - previous[dimension];
+      if (delta === 0) continue;
+      if (dimension === 'friction') {
+        parts.push({
+          person,
+          name,
+          dimension,
+          tone: delta > 0 ? 'loss' : 'gain',
+          text:
+            delta > 0
+              ? `friction ${signedDelta(delta)} (more tension)`
+              : `friction ${signedDelta(delta)} (eased)`,
+        });
+        continue;
+      }
+      parts.push({
+        person,
+        name,
+        dimension,
+        tone: delta > 0 ? 'gain' : 'loss',
+        text: `${dimension} ${signedDelta(delta)}`,
+      });
+    }
+    if (previous.intent !== next.intent) {
+      parts.push({
+        person,
+        name,
+        dimension: 'intent',
+        tone: 'shift',
+        text: intentChangeLabels[next.intent],
+      });
+    }
+  }
+  return parts;
+}
+
+export function groupedRelationshipPreview(
+  before: Relationships,
+  after: Relationships,
+): RelationshipPreviewGroup[] {
+  const parts = diffRelationships(before, after);
+  return relationshipPersonOrder.flatMap((person) => {
+    const grouped = parts.filter((part) => part.person === person);
+    if (grouped.length === 0) return [];
+    const name = relationshipLabels[person];
+    return [
+      {
+        person,
+        name,
+        parts: grouped,
+        label: `${name}: ${grouped.map((part) => part.text).join(', ')}`,
+      },
+    ];
+  });
+}
+
+export function relationshipChangeNotes(
+  choice: Choice,
+  current: Relationships,
+) {
+  return groupedRelationshipPreview(
+    current,
+    nextRelationships(current, choice),
+  ).map((group) => group.label);
 }
 
 export function resolveCompletedOathFlags(flags: string[]): string[] {

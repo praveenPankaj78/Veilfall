@@ -1,0 +1,401 @@
+{
+  "auditComplete": true,
+  "imageWorkNeeded": true,
+  "auditSummary": "Code fixes for relationship previews, a single save-state artwork resolver, resolved-art scrolling, and several continuity assignments are implemented with existing assets. Four genuine coverage gaps remain: ridge-road still falls back to Greyhaven departure art; march-order and road-conversation reconverge from all three Chapter I forks with no branch-neutral King’s Road plate; c4-snow-span and c4-brass-span still show the three-roads junction after the player has already chosen one span, while the storm sibling has a unique on-span plate. Existing images cannot fill those gaps without spoiling the ambush/folded road, leaking a sibling fork, or showing unchosen spans. Archive, healer, broker, shrine, C2 infirmary continuity, and C7 salt/order/duel are solved or documented with existing assets. Do not replace the beta ZIP until these four deliveries are integrated.",
+  "reproductionMatrix": [
+    {
+      "category": "relationship-preview",
+      "sourceNode": "road-conversation",
+      "choiceId": "protect-lysara-secret",
+      "destination": "ambush-warning",
+      "relevantState": "default Lysara trust 0 / respect 1",
+      "actualBefore": "no relationship badges",
+      "expected": "Lysara: trust +1, respect +1; not attraction or intent"
+    },
+    {
+      "category": "relationship-preview",
+      "sourceNode": "road-conversation",
+      "choiceId": "tell-brann-seed",
+      "destination": "ambush-warning",
+      "relevantState": "default Lysara trust 0 (clamped); synthetic trust 2 for the negative-trust case",
+      "actualBefore": "no relationship badges",
+      "expected": "at trust 0: friction +1 only; at trust 2: trust -1 and friction +1"
+    },
+    {
+      "category": "artwork-continuity",
+      "sourceNode": "c2-threshold",
+      "choiceId": "c2-search-threshold",
+      "destination": "c2-triage",
+      "relevantState": "raw node.art is inn on both nodes",
+      "actualBefore": "scroll compared raw art keys so the infirmary change was missed; next scenes reused inn too early",
+      "expected": "resolved hero becomes bellweather-infirmary; scroll lands on hero; infirmary continues through c2-medicine and c2-eleven-years; c2-investigate returns to the inn exterior"
+    },
+    {
+      "category": "scroll",
+      "sourceNode": "c10-rest-choice",
+      "choiceId": "c10-rest-with-mara",
+      "destination": "c10-guide-bargain",
+      "relevantState": "c9-mara-crossed-black-gate, committed Mara, rest flags",
+      "actualBefore": "inline romance ignored by raw-key comparison",
+      "expected": "hero plate unchanged (Free Ledger shelter); landing is romance so the result line remains visible above the encounter image"
+    },
+    {
+      "category": "branch-coverage",
+      "sourceNode": "choose-road",
+      "choiceId": "take-ridge",
+      "destination": "ridge-road",
+      "relevantState": "ridge-route",
+      "actualBefore": "Greyhaven east-gate fallback",
+      "expected": "new Eastwatch Ridge plate; must not use drowned-mile, saboteur, ambush, or folded-road art"
+    }
+  ],
+  "sceneCoverage": [
+    {
+      "chapter": 1,
+      "beats": [
+        "Greyhaven departure (gate-yard through choose-road) uses caelan-east-gate",
+        "low-road uses kings-road-drowned-mile",
+        "inspection-yard uses eastwatch-saboteur",
+        "ridge-road uses eastwatch-ridge-road after take-ridge",
+        "march-order and road-conversation share kings-road-alderwood-rise after reconvergence",
+        "ambush uses kings-road-ambush; folded uses kings-road-folded. Those later plates must not leak backward."
+      ]
+    },
+    {
+      "chapter": 2,
+      "beats": [
+        "c2-threshold inn exterior is the arrival plate",
+        "c2-triage, c2-medicine, and c2-eleven-years stay on bellweather-infirmary because they remain in the common-room patient scene",
+        "c2-investigate returns to the inn exterior: the viewpoint leaves the sickroom to search the building. Documented legitimate return."
+      ]
+    },
+    {
+      "chapter": 3,
+      "beats": [
+        "c3-archive uses harrowfen-burning-archive; the image is a canal-side record room, not a fire, so alt-only was sufficient",
+        "c3-healer and c3-broker keep harrowfen-wrong-mile as the shared in-town canal plate. Using the archive or watch-house would misrepresent those interiors. Intentional shared-beat exception, not a Sol request."
+      ]
+    },
+    {
+      "chapter": 4,
+      "beats": [
+        "c4-three-spans uses mileless-three-spans at the junction",
+        "c4-storm-span uses mileless-storm-span",
+        "c4-snow-span uses mileless-snow-span",
+        "c4-brass-span uses mileless-brass-span",
+        "c4-stage-turn returns to mileless-three-spans after reconvergence so a span-specific plate cannot leak. Documented legitimate return.",
+        "c4-theatre-plan and c4-anchor use rook-mirrored-stage"
+      ]
+    },
+    {
+      "chapter": 5,
+      "beats": [
+        "c5-royal-camp uses dragonspine-royal-drill",
+        "c5-heart-memory uses orivane-concord-memory",
+        "other nodes keep dragonspine / vaor / ember continuity"
+      ]
+    },
+    {
+      "chapter": 6,
+      "beats": [
+        "c6-herd-duty and c6-shrine-duty share kharad-vey-wheel-city. Shrine must not use ancestor-storm-attack (a later battle).",
+        "c6-forge-duty uses kharad-brake-forge",
+        "c6-broken-axle uses kharad-broken-axle"
+      ]
+    },
+    {
+      "chapter": 7,
+      "beats": [
+        "c7-salt-trap uses salt-basin-fracture",
+        "c7-order-exposure uses salt-basin-battle",
+        "c7-steppe-duel uses marshal-field-confrontation",
+        "Ilyra kiss is inline on c7-marshal-parley only when the latest history entry is the c7-ilyra-deepen-bond result"
+      ]
+    },
+    {
+      "chapter": 8,
+      "beats": ["c8-hidden-record: fourth-fort-ledgers", "c8-chain-plan: black-gate-buried-chain"]
+    },
+    {
+      "chapter": 9,
+      "beats": [
+        "c9-name-demonstration: vexa-name-beads",
+        "c9-recover-fragment: gate-nail-neutral-custody; Vexa romance only with c9-shared-private-night"
+      ]
+    },
+    {
+      "chapter": 10,
+      "beats": [
+        "c10-road-danger: ash-road-falling-stones",
+        "c10-free-ledger through c10-guide-bargain: free-ledger-shelter",
+        "Mara/Lysara romance only on c10-guide-bargain after their rest flags"
+      ]
+    },
+    {
+      "chapter": 11,
+      "beats": ["c11-petition-hearing: vathis-public-hearing", "c11-revolt-crisis: vathis-lifting-roofs"]
+    },
+    {
+      "chapter": 12,
+      "beats": [
+        "c12-ending-sealed / consent-passage / broken / gatekeeper keep their existing Gate outcome plates"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "id": "art-fix-001",
+      "kind": "new",
+      "status": "delivered",
+      "reason": "ridge-road has no node.art and no override, so artworkForScene falls back to Greyhaven departure (caelan-east-gate). The low-road sibling already has a flood plate and inspection-yard has a saboteur plate. Reusing drowned-mile, eastwatch-saboteur, kings-road-ambush, or kings-road-folded would either leak a sibling fork or spoil the later ambush and impossible sea. No existing plate shows an exposed ridge, drop, shepherd tower, or signal mirror.",
+      "chapter": 1,
+      "nodeIds": ["ridge-road"],
+      "incomingChoiceIds": ["take-ridge"],
+      "sceneSummary": "Chapter I fork after take-ridge from choose-road. Authored scene in app/game-data.ts node ridge-road, title The Watching Glass, location Eastwatch Ridge. Exact prose: 'The ridge road climbs above the rain. Greyhaven shrinks behind you while the eastern hills spread out below. The treaty wagon crawls beside a drop steep enough to smash it into firewood.' 'Sunlight flashes from an abandoned shepherd tower ahead. Once, twice, then three times. Not lightning. A signal mirror.' 'Mara reaches for her bow. Thunder answers from the western sky, closer than before.' Choices take-tower, shield-wagons, and false-signal have not happened yet.",
+      "requiredState": {
+        "flags": ["ridge-route"],
+        "companions": "Mara is present on this node (she rode first). The escort and treaty wagon are on the ridge. Lysara travels with the wagon but need not dominate the frame.",
+        "relationshipOrConsent": "none; not a romance scene"
+      },
+      "excludedState": {
+        "flags": ["low-route"],
+        "siblingBranches": ["low-road", "inspection-yard"],
+        "mustNeverAppearOn": ["low-road", "inspection-yard", "march-order", "road-conversation", "gate-yard", "choose-road"]
+      },
+      "sourceToCorrect": null,
+      "otherNodesUsingSameImage": [],
+      "referenceImages": [
+        "source/art/kings-road-drowned-mile.png",
+        "source/art/caelan-east-gate.png",
+        "source/art/bellweather-inn.png",
+        "source/art/eastwatch-saboteur.png"
+      ],
+      "mustShow": [
+        "Exposed high ridge road in rain with a steep drop beside the wagons",
+        "The green treaty wagon with the tree emblem crawling near the ledge",
+        "An abandoned shepherd tower ahead with a signal-mirror flash (sunlight, not a lightning bolt hitting the party)",
+        "Caelan as a rugged 31-year-old Oathwarden: short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak",
+        "Mara as a 29-year-old athletic scout: tied dark brown hair, green leather travelling clothes, bow in hand or ready"
+      ],
+      "mustNotShow": [
+        "Flooded barley fields, stranded hay cart, or brown floodwater over the road",
+        "Eastwatch outer yard, closing iron gate, or a saboteur under a wagon",
+        "Black arrows, an ambush in progress, or overturned timber carts",
+        "The later impossible sea / folded King’s Road",
+        "Greyhaven’s castle gate as the primary setting",
+        "Anyone already inside the tower or a completed capture of a watcher",
+        "Nudity, explicit intimacy, readable text, logos, or watermarks"
+      ],
+      "preserve": [],
+      "outputBasename": "eastwatch-ridge-road",
+      "proposedSourcePath": "source/art/eastwatch-ridge-road.png",
+      "proposedDeliveryPaths": [
+        "public/art/eastwatch-ridge-road.webp",
+        "public/art/eastwatch-ridge-road-800.webp"
+      ],
+      "proposedArtKey": "ridgeroad",
+      "alt": "The treaty wagon crawls an exposed Eastwatch ridge beside a steep drop while a shepherd tower flashes a signal mirror",
+      "generationBrief": "Create one cinematic 16:9 landscape dark-fantasy illustration in painterly realism matching Veilfall: The Ember Oath. Scene: Eastwatch Ridge in rain. A high narrow road with a lethal drop on one side; Greyhaven is a distant shrinking mass behind, eastern hills below. The heavy green medieval treaty wagon with a tree-and-roots emblem crawls close to the ledge. An abandoned stone shepherd tower stands ahead; sunlight flashes from a signal mirror on it two or three times—this is a watcher signal, not a lightning strike on the party. Caelan (31, short tousled dark brown hair, short beard, dark steel/leather armor, faded crimson cloak) is on the ridge with the column. Mara (29, athletic, tied dark brown hair, green leather, bow) reaches toward her bow and watches the tower. Thunder can darken the western sky. Composition: landscape 16:9. Keep Caelan, Mara, the wagon, the drop, and the tower readable inside the reader hero crop (desktop 16:7 center crop of 16:9; mobile 4:3 with object-position 57% center—place important faces and the tower in the central band, slightly right of center). No floodwater, no Eastwatch gate, no saboteur, no arrows, no ambush, no impossible sea, no completed tower assault, no extra named characters required, no text/logos/watermarks, no modern objects, no explicit content.",
+      "acceptanceCriteria": [
+        "Clearly a ridge, not the flooded low road and not Greyhaven’s east gate",
+        "Signal mirror / shepherd tower readable at 800px width",
+        "Hero crop (16:7 desktop and 4:3 mobile at 57% center) still shows Caelan or Mara and the drop or tower",
+        "No sibling-fork or later-ambush spoilers"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-002",
+      "kind": "new",
+      "status": "delivered",
+      "reason": "march-order and road-conversation are the post-reconvergence King’s Road scenes after low-road, ridge-road, and inspection-yard. They have no art assignment and currently fall back to Greyhaven departure. A shared continuing-road plate is required so all three incoming routes see the same valid image. drowned-mile and eastwatch-saboteur leak fork-specific events. kings-road-ambush and kings-road-folded spoil the next scenes. One new branch-neutral rainy King’s Road image must cover both nodes.",
+      "chapter": 1,
+      "nodeIds": ["march-order", "road-conversation"],
+      "incomingChoiceIds": [
+        "rescue-family",
+        "push-low",
+        "read-flood",
+        "take-tower",
+        "shield-wagons",
+        "false-signal",
+        "catch-saboteur",
+        "secure-wagon",
+        "form-road-line",
+        "guard-wagon",
+        "command-speed",
+        "send-mara-ahead",
+        "swear-safe-arrival"
+      ],
+      "sceneSummary": "Authored in app/game-data.ts. march-order title What You Place in Front, location The King’s Road. Route-specific opening lines mention leftover flood streams, a hidden ridge tower, or distant riders, then reconverge: 'Bellweather Inn lies somewhere beyond the next wooded rise.' Brann asks where the strongest guards should ride; Mara watches the tree line; Lysara sits beside the pale chest. road-conversation title Things Said Before Arrows, location Alderwood Rise. Exact prose includes: 'Lysara leaves the wagon and rides on your other side.' and 'She shows you a glass seed, a clear shell holding a curl of green light.' Because the same image must remain true when Mara is ranging ahead (send-mara-ahead) and before the seed is shown (march-order), the plate should be the wooded rainy King’s Road with the treaty wagon and escort, not the seed reveal and not a required Mara close-up. Ambush has not started.",
+      "requiredState": {
+        "flags": "Valid for low-route, ridge-route, or the inspection path. Do not depict any one of those uniquely.",
+        "companions": "Escort and treaty wagon present. Mara may be absent at road-conversation if mara-ahead is set, so do not require her in the hero crop. Lysara may be near the wagon but do not show the glass seed.",
+        "relationshipOrConsent": "none; conversation choices have not been taken"
+      },
+      "excludedState": {
+        "siblingBranches": "Image must work after every Chapter I road fork and must never be used as a substitute on low-road, ridge-road, or inspection-yard",
+        "mustNeverAppearOn": ["low-road", "ridge-road", "inspection-yard", "ambush", "folded-road"]
+      },
+      "sourceToCorrect": null,
+      "otherNodesUsingSameImage": ["march-order", "road-conversation"],
+      "referenceImages": [
+        "source/art/kings-road-drowned-mile.png",
+        "source/art/bellweather-inn.png",
+        "source/art/caelan-east-gate.png",
+        "source/art/harrowfen-wrong-mile.png"
+      ],
+      "mustShow": [
+        "Rainy wooded King’s Road after leaving Eastwatch, with a wooded rise ahead toward Bellweather",
+        "The green treaty wagon and a small escort column on firm (not flooded) road",
+        "Caelan in his established appearance, mounted or walking beside the wagon"
+      ],
+      "mustNotShow": [
+        "Flooded fields, stranded family, or water to the knees",
+        "Exposed ridge drop or flashing shepherd tower",
+        "Eastwatch gate, saboteur, brake wedge, or riders charging the yard",
+        "Black arrows, ambush, bodies, or the later impossible sea",
+        "The glass seed or an opened pale living-wood chest interior",
+        "A required Mara close-up that would contradict mara-ahead",
+        "Greyhaven castle as the setting",
+        "Readable text, logos, watermarks, modern objects, or explicit content"
+      ],
+      "preserve": [],
+      "outputBasename": "kings-road-alderwood-rise",
+      "proposedSourcePath": "source/art/kings-road-alderwood-rise.png",
+      "proposedDeliveryPaths": [
+        "public/art/kings-road-alderwood-rise.webp",
+        "public/art/kings-road-alderwood-rise-800.webp"
+      ],
+      "proposedArtKey": "alderwood",
+      "alt": "The treaty escort continues along a rainy wooded King’s Road toward Bellweather before the ambush",
+      "generationBrief": "Create one cinematic 16:9 landscape dark-fantasy illustration in painterly realism matching Veilfall: The Ember Oath. This single plate must remain visually true on both march-order and road-conversation after every Chapter I route (low road, ridge, or inspection). Scene: a muddy but not flooded King’s Road in rain, alder or similar wet trees, a wooded rise ahead. The heavy green treaty wagon with tree emblem rolls with a small Warden escort. Caelan (31, short tousled dark brown hair, short beard, dark steel/leather armor, faded crimson cloak) rides or walks beside the wagon. Optional distant unidentifiable riders on a far hill are acceptable; do not make them a visible saboteur or an arrow volley. Do not show floodwater, a ridge drop, Eastwatch’s gate, a signal tower, black arrows, the impossible sea, or Lysara’s glass seed. Do not require Mara in the hero crop (she may be scouting ahead). Landscape 16:9. Keep the wagon and Caelan inside the hero crop: desktop 16:7 center; mobile 4:3 object-position 57% center. No text, logos, watermarks, modern objects, or explicit content.",
+      "acceptanceCriteria": [
+        "Reads as the continuing King’s Road, not Greyhaven, not the flood, not the ridge, not the ambush",
+        "Valid for low-route, ridge-route, and inspection incoming flags",
+        "Readable at 800px; wagon and Caelan survive 16:7 and 4:3/57% crops",
+        "No glass seed, no Mara-required intimacy, no sibling-fork leak"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-003",
+      "kind": "new",
+      "status": "delivered",
+      "reason": "c4-storm-span already has a unique on-span plate (mileless-storm-span). c4-snow-span still uses mileless-three-spans, which shows the unchosen storm coast and brass gears after the player has already taken the mountain road. mileless-bridge-chase is a Rook/Ordan arch confrontation, not the snow road. dragonspine-coldfire is a later-chapter spoiler. A new snow-span plate is required.",
+      "chapter": 4,
+      "nodeIds": ["c4-snow-span"],
+      "incomingChoiceIds": ["c4-choose-snow"],
+      "sceneSummary": "app/chapter-four.ts node c4-snow-span, title The Mountain Road, location A Snowbound Span. Exact prose: 'Blue flames burn inside stone bowls along the mountain road, but they give no warmth. Your wet clothes begin to freeze. Ordan’s soldiers are visible on the ridge ahead, cutting steps into the only safe slope.' Mara may be absent if c4-mara-escorted-brann is set. Rook is present. Choices (shield line, Oath-warmed fire, Rook’s buried rail) have not been taken. Destination after any choice is c4-stage-turn, which must not use this new image.",
+      "requiredState": {
+        "flags": ["c4-snow-route"],
+        "companions": "Caelan present. Rook present. Mara optional/absent—do not require her. Brann may be wounded/off-frame.",
+        "relationshipOrConsent": "Optional Mara closeness in prose must not be illustrated; this is not a romance plate"
+      },
+      "excludedState": {
+        "flags": ["c4-storm-route", "c4-brass-route"],
+        "siblingBranches": ["c4-storm-span", "c4-brass-span"],
+        "mustNeverAppearOn": ["c4-three-spans", "c4-storm-span", "c4-brass-span", "c4-stage-turn"]
+      },
+      "sourceToCorrect": null,
+      "otherNodesUsingSameImage": [],
+      "referenceImages": [
+        "source/art/mileless-three-spans.png",
+        "source/art/mileless-storm-span.png",
+        "source/art/mileless-bridge-chase.png",
+        "source/art/dragonspine-coldfire.png"
+      ],
+      "mustShow": [
+        "A snowbound Mileless Bridge span / mountain road, already chosen, not the three-way junction",
+        "Stone bowls with cold blue flame that give no warmth",
+        "Distant Crown soldiers cutting steps on the only safe slope ahead",
+        "Caelan in established appearance, wet/cold on the white road",
+        "Optional Rook (lean 27-year-old thief, shaggy dark hair, dark theatrical coat) small in frame"
+      ],
+      "mustNotShow": [
+        "The storm-coast waves or wet black sea cliff from mileless-storm-span",
+        "Huge brass gears or underground wheel chamber",
+        "The circular three-roads junction with all three exits visible",
+        "A completed shield-wall victory, gold/warm Oath fire already leaping bowl to bowl, or the buried-rail shortcut already in use",
+        "Dragonspine glass valleys or Vaor",
+        "Mara as a required figure (she may be escorting Brann)",
+        "Drowned soldiers, romance, readable text, logos, or watermarks"
+      ],
+      "preserve": [],
+      "outputBasename": "mileless-snow-span",
+      "proposedSourcePath": "source/art/mileless-snow-span.png",
+      "proposedDeliveryPaths": [
+        "public/art/mileless-snow-span.webp",
+        "public/art/mileless-snow-span-800.webp"
+      ],
+      "proposedArtKey": "snowspan",
+      "alt": "Cold blue flame bowls line a snowbound Mileless span while Crown soldiers cut steps on the slope ahead",
+      "generationBrief": "Create one cinematic 16:9 landscape dark-fantasy illustration in painterly realism matching Veilfall: The Ember Oath. Scene: the player has already left the three-roads junction and is on the mountain span. A narrow snowbound road under a white mountain; bitter wind; wet clothes freezing. Blue flames burn in stone bowls along the road but give no warmth (keep them cold blue, not gold). Crown soldiers are visible ahead cutting steps into the only safe slope. Caelan (31, short tousled dark brown hair, short beard, dark steel/leather armor, faded crimson cloak) braces against the cold. Rook may appear small in frame (lean, shaggy dark hair, dark theatrical coat) studying the soldiers. Do not show Mara (she may be away with Brann). Do not show the sea-cliff span, brass gears, or the three exits at once. Do not depict a chosen action’s outcome (no formed shield wall crushing the slope, no gold Oath-warmed bowls, no exposed bronze rail shortcut). Landscape 16:9. Keep Caelan and the blue bowls inside the hero crop (desktop 16:7 center; mobile 4:3 at 57% center). Match the painterly style of mileless-storm-span. No text, logos, watermarks, modern objects, or explicit content.",
+      "acceptanceCriteria": [
+        "Identifiably the snow span, not the junction, storm cliff, or brass chamber",
+        "Cold blue bowls readable at 800px",
+        "Hero crop keeps Caelan; no Mara required",
+        "No unchosen sibling geography and no completed choice outcome"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-004",
+      "kind": "new",
+      "status": "delivered",
+      "reason": "Sibling of the storm and snow spans. c4-brass-span currently reuses mileless-three-spans, which still shows the unchosen snow road and storm coast after the player has entered the underground machine. No existing plate is a brass-wheel chamber. Using the chase or storm images would misrepresent the authored location.",
+      "chapter": 4,
+      "nodeIds": ["c4-brass-span"],
+      "incomingChoiceIds": ["c4-choose-brass"],
+      "sceneSummary": "app/chapter-four.ts node c4-brass-span, title The Turning Machine, location A Brass Wheel Chamber. Exact prose: 'Huge brass gears carry flat road platforms across the cavern. Each platform passes between two rows of metal teeth. When the teeth close, they could crush a wagon.' 'The gears close six times in a row. Then they remain open for a few seconds while the next platform passes between them.' Mara may be absent if c4-mara-escorted-brann. Rook watches the gears. Choices (commanded timing, jammed shield, Rook’s hollow-wheel shortcut) have not been taken. Reconverges to c4-stage-turn, which must not use this image.",
+      "requiredState": {
+        "flags": ["c4-brass-route"],
+        "companions": "Caelan present. Rook present. Mara optional/absent.",
+        "relationshipOrConsent": "not a romance scene"
+      },
+      "excludedState": {
+        "flags": ["c4-snow-route", "c4-storm-route"],
+        "siblingBranches": ["c4-snow-span", "c4-storm-span"],
+        "mustNeverAppearOn": ["c4-three-spans", "c4-snow-span", "c4-storm-span", "c4-stage-turn"]
+      },
+      "sourceToCorrect": null,
+      "otherNodesUsingSameImage": [],
+      "referenceImages": [
+        "source/art/mileless-three-spans.png",
+        "source/art/mileless-storm-span.png",
+        "source/art/kharad-brake-forge.png",
+        "source/art/mileless-bridge-chase.png"
+      ],
+      "mustShow": [
+        "An underground cavern of huge brass gears carrying flat road platforms",
+        "Two rows of metal teeth that can close on a wagon-sized gap",
+        "Caelan at the edge waiting to cross during a pause, not already jamming a shield or inside a hollow wheel",
+        "Optional Rook watching the rhythm of the gears"
+      ],
+      "mustNotShow": [
+        "Snow mountain / cold blue bowls",
+        "Storm-coast waves or the wet black cliff span",
+        "The three-roads junction with all skies visible",
+        "A shield already jammed in a gear, crushed people, or a coffin-lid maintenance door already open",
+        "Mara as a required figure",
+        "Readable text, logos, watermarks, modern machinery anachronisms, or explicit content"
+      ],
+      "preserve": [],
+      "outputBasename": "mileless-brass-span",
+      "proposedSourcePath": "source/art/mileless-brass-span.png",
+      "proposedDeliveryPaths": [
+        "public/art/mileless-brass-span.webp",
+        "public/art/mileless-brass-span-800.webp"
+      ],
+      "proposedArtKey": "brassspan",
+      "alt": "Huge brass gears carry a road platform between closing metal teeth in a Mileless Bridge cavern",
+      "generationBrief": "Create one cinematic 16:9 landscape dark-fantasy illustration in painterly realism matching Veilfall: The Ember Oath. Scene: the underground brass span after leaving the three-roads junction. A cavern of enormous medieval-fantasy brass gears, not modern industrial machinery. Flat stone/metal road platforms ride the gears and pass between two rows of giant teeth. Heat and furnace light replace rain. Show the dangerous pause: teeth recently closed, a platform about to pass. Caelan (31, short tousled dark brown hair, short beard, dark steel/leather armor, faded crimson cloak) waits at the edge counting the rhythm—do not show him already jamming his shield or crawling through a hollow wheel. Rook (lean, shaggy dark hair, dark theatrical coat) may watch the gears. Do not require Mara. Do not show snow, sea cliffs, or the three-way junction. Do not show crushed bodies. Landscape 16:9. Keep Caelan and the nearest gear teeth inside the hero crop (desktop 16:7 center; mobile 4:3 at 57% center). Style should sit with mileless-storm-span and the brass-wheel glimpse on the right of mileless-three-spans, but this image is inside the chamber after that choice. No text, logos, watermarks, or explicit content.",
+      "acceptanceCriteria": [
+        "Identifiably the brass chamber, not snow, storm, or the junction overview",
+        "Gear teeth and a road platform readable at 800px",
+        "Hero crop keeps Caelan and the machine; no Mara required",
+        "No completed choice (jammed shield, open shortcut) and no sibling-span geography"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    }
+  ]
+}

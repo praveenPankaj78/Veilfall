@@ -15,6 +15,8 @@
     "lint": "oxlint",
     "format": "oxfmt",
     "check:story": "node scripts/check-story.mjs",
+    "check:art": "node scripts/check-art.mjs",
+    "check:presentation": "node scripts/check-presentation.mjs",
     "check:game": "node scripts/check-game.mjs",
     "check:release": "node scripts/check-release.mjs",
     "check:itch-package": "node scripts/check-itch-package.mjs",

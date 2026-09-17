@@ -577,6 +577,17 @@
   display: contents;
 }
 
+.scene-art-wrap .scene-art,
+.scene-art-wrap img {
+  object-fit: cover;
+}
+
+.scene-art-fallback {
+  position: absolute;
+  inset: 0;
+  background: #101419;
+}
+
 .mobile-scene-heading {
   display: none;
 }
@@ -684,6 +695,8 @@
 
 .story-page,
 .scene-art-wrap,
+.story-opening,
+.romance-art,
 .choice-card {
   scroll-margin-top: 5rem;
 }
@@ -708,7 +721,26 @@
 }
 
 .prose {
+  --romance-art-border: rgb(186 147 100 / 25%);
   max-width: 46rem;
+}
+
+.romance-art {
+  position: relative;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--romance-art-border);
+  border-radius: 0.35rem;
+  background: #17130f;
+}
+
+.romance-art picture {
+  display: contents;
+}
+
+.romance-art img {
+  object-fit: cover;
 }
 
 .prose p {
@@ -839,6 +871,9 @@
 }
 
 .choice-effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem 0.55rem;
   margin-top: 0.25rem;
   color: #b77654;
   font-size: 0.75rem;
@@ -847,7 +882,31 @@
   text-transform: uppercase;
 }
 
-.choice-effects-lethal {
+.choice-effect-gain {
+  color: #c4a06a;
+}
+
+.choice-effect-loss {
+  color: #d0896b;
+}
+
+.choice-effect-shift {
+  color: #cbb48a;
+}
+
+.choice-rel-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.4rem;
+  align-items: baseline;
+}
+
+.choice-rel-name {
+  color: #d8c7ae;
+}
+
+.choice-effects-lethal,
+.choice-effect-lethal {
   color: #ef6f62;
   text-shadow: 0 0 18px rgb(205 55 45 / 35%);
 }
@@ -1598,6 +1657,8 @@
 
   .story-page,
   .scene-art-wrap,
+  .story-opening,
+  .romance-art,
   .choice-card {
     scroll-margin-top: 11rem;
   }
@@ -1840,6 +1901,8 @@
 
   .story-page,
   .scene-art-wrap,
+  .story-opening,
+  .romance-art,
   .choice-card {
     scroll-margin-top: 1rem;
   }

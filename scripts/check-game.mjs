@@ -4570,16 +4570,29 @@ for (const node of Object.values(nodes)) {
       .filter(([, changes]) => (changes?.attraction ?? 0) > 0)
       .map(([person]) => person);
     if (attractionPeople.length === 0) continue;
-    const notes = relationshipChangeNotes(choice).join(' ').toLowerCase();
+    const current = initialState.relationships;
+    const notes = relationshipChangeNotes(choice, current);
+    const next = nextRelationships(current, choice);
     for (const person of attractionPeople) {
       const name = person[0].toUpperCase() + person.slice(1);
+      const personNote = (
+        notes.find((note) =>
+          note.toLowerCase().startsWith(`${name.toLowerCase()}:`),
+        ) ?? ''
+      ).toLowerCase();
+      if (!personNote.includes('attraction +')) {
+        failures.push(
+          `Romance-coded choice ${choice.id} hides ${name} attraction`,
+        );
+      }
       if (
-        !notes.includes(`${name.toLowerCase()}: interest acknowledged`) &&
-        !notes.includes(`${name.toLowerCase()}: relationship being explored`) &&
-        !notes.includes(`${name.toLowerCase()}: commitment chosen`)
+        current[person].intent === next[person].intent &&
+        (personNote.includes('interest acknowledged') ||
+          personNote.includes('relationship being explored') ||
+          personNote.includes('commitment chosen'))
       ) {
         failures.push(
-          `Romance-coded choice ${choice.id} hides ${name} attraction without an intent badge`,
+          `Choice ${choice.id} claims a ${name} intent change that did not occur`,
         );
       }
     }

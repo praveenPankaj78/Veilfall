@@ -51,6 +51,8 @@ The packaged loading bar measures the actual bytes downloaded for the game JavaS
 
 ## Validation
 
+The artwork set contains five distinct scene illustrations per chapter across its branches, plus four illustrations for existing romantic encounters. Run `npm run optimize:art` to regenerate the responsive WebP delivery files, and `npm run check:art` to verify chapter coverage, asset paths, and encounter-specific display. See [the artwork expansion report](docs/ART_EXPANSION.md) for placements, compression, generation prompts, validation, and package-size measurements.
+
 Run the release checks with:
 
 ```text
@@ -74,4 +76,4 @@ The project uses the existing Sites registration in `.openai/hosting.json` and t
 
 ## Credits and provenance status
 
-The release uses the narrative, code, and local artwork present in this repository. The inspected release-facing files do not identify individual creators, provide per-artwork provenance, configure a player-support contact, or contain a repository-supported AI-use disclosure. These missing facts remain owner actions documented here, rather than technical notices in the player’s Settings. No creator or ownership claims have been invented.
+The release uses the narrative, code, and local artwork present in this repository. The 25 images added in September 2026 were generated using the built-in image generation tool; their prompts and saved paths are recorded in [the art prompt manifest](docs/art-expansion-prompts.json). The earlier artwork's provenance, individual creator credits, player-support contact, and player-facing AI-use disclosure remain owner actions. No creator or ownership claims have been invented.

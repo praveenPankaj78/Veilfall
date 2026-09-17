@@ -1,0 +1,339 @@
+{
+  "mode": "built-in image_gen",
+  "generatedOn": "2026-09-17",
+  "images": [
+    {
+      "basename": "kings-road-drowned-mile",
+      "chapter": 1,
+      "nodes": ["low-road"],
+      "key": "drownedmile",
+      "alt": "Floodwater surrounds the treaty wagon and a stranded family on the low King’s Road",
+      "prompt": "Use case: illustration-story. Create one cinematic 16:9 landscape dark fantasy game illustration, painterly realism matching Veilfall: The Ember Oath. Scene: the Low King's Road in a storm; flooded barley fields, brown floodwater covering wheel ruts, a heavy green medieval treaty wagon stuck in a rut, a stranded hay cart with a farmer and two children far in the middle distance. Caelan, a rugged 31-year-old man with short messy dark brown hair and beard, worn black chainmail and leather armor, faded deep red cloak, stands in shallow water beside the wagon considering the rescue. Mara, a 29-year-old athletic brown-haired scout in green leather with a bow, watches the empty ridge. Wide cinematic composition, convincing medieval craftsmanship, rain silver and muted earth colors, readable detailed faces and stormy atmospheric depth. No text, labels, logos, border or watermark. No additional magic, no modern objects.",
+      "source": "source/art/kings-road-drowned-mile.png",
+      "delivery": [
+        "public/art/kings-road-drowned-mile.webp",
+        "public/art/kings-road-drowned-mile-800.webp"
+      ]
+    },
+    {
+      "basename": "eastwatch-saboteur",
+      "chapter": 1,
+      "nodes": ["inspection-yard"],
+      "key": "inspectionyard",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Caelan and a grizzled sergeant discover a brake wedge and a dropped file under the green treaty wagon outside a rain-soaked stone gate. A disguised adult saboteur in a Warden's rain cape flees between the wagon wheels toward the closing gate. Focus on low wagon mechanics in foreground, pursuit beyond, approaching mounted silhouettes far down road. No magical effects.",
+      "alt": "A disguised saboteur flees from the treaty wagon outside Eastwatch",
+      "source": "source/art/eastwatch-saboteur.png",
+      "delivery": [
+        "public/art/eastwatch-saboteur.webp",
+        "public/art/eastwatch-saboteur-800.webp"
+      ]
+    },
+    {
+      "basename": "bellweather-infirmary",
+      "chapter": 2,
+      "nodes": ["c2-triage", "c2-medicine"],
+      "key": "infirmary",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. The common room of a timber medieval inn converted into an infirmary. One small sealed glass medicine bottle is foreground on a wooden tray with clean folded cloth and a water basin. Caelan considers three occupied makeshift beds, all patients modestly covered; Mara and an older innkeeper tending them. The adult dark-haired elven envoy in green has a bandaged hand with a faint green glow. Hearth warmth against rain-dark shutters. Quiet urgency and compassion; no gore or surgery.",
+      "alt": "One sealed dose and makeshift beds in Bellweather’s common-room infirmary",
+      "source": "source/art/bellweather-infirmary.png",
+      "delivery": [
+        "public/art/bellweather-infirmary.webp",
+        "public/art/bellweather-infirmary-800.webp"
+      ],
+      "finalEdit": "Edit only the foreground patient on the right: replace the bearded male elf with Lysara Quill, a 36-year-old elven WOMAN with a graceful feminine face, no beard or moustache, long black hair, subtly pointed ears and modest green silk, reclining beneath the same blanket with the same bandaged hand and very faint green glow. Keep Caelan, Mara, the other patients, innkeeper, medicine bottle, framing, lighting, style, all other objects unchanged. The elven envoy is a woman. No text, no other changes."
+    },
+    {
+      "basename": "harrowfen-burning-archive",
+      "chapter": 3,
+      "nodes": ["c3-archive"],
+      "key": "archive",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Inside Harrowfen's timber archive raised on black oak posts above a canal, an anxious adult clerk holds a curling route-map page near a glowing iron stove. A masked royal soldier watches the exit. Caelan stands in the doorway facing them, eyeing an open canal window and stacks of threatened maps. Amber paper edges and blue canal reflections. No legible letters.",
+      "alt": "A clerk burns route records in Harrowfen’s canal-side archive",
+      "source": "source/art/harrowfen-burning-archive.png",
+      "delivery": [
+        "public/art/harrowfen-burning-archive.webp",
+        "public/art/harrowfen-burning-archive-800.webp"
+      ]
+    },
+    {
+      "basename": "harrowfen-watch-house",
+      "chapter": 3,
+      "nodes": ["c3-watch-house"],
+      "key": "watchhouse",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. The safe room of a burning medieval watch house. Caelan and Mara stand amid smoke beside a heavy table strewn with iron hooks, chains, maps and red wax-sealed orders; a bound adult town scout near a chair at the side, still awaiting rescue. Orange light through cracking ceiling beams, slate canal rooftops through broken window. Focus on endangered evidence and the escape window, no gore, no readable writing.",
+      "alt": "Smoke fills Harrowfen’s watch house around endangered orders and a trapped scout",
+      "source": "source/art/harrowfen-watch-house.png",
+      "delivery": [
+        "public/art/harrowfen-watch-house.webp",
+        "public/art/harrowfen-watch-house-800.webp"
+      ]
+    },
+    {
+      "basename": "mileless-storm-span",
+      "chapter": 4,
+      "nodes": ["c4-storm-span"],
+      "key": "stormspan",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. An impossibly narrow wet black stone bridge skirts a sheer storm coast cliff above a raging sea. A colossal wave strikes the underside of the ancient span. Caelan braces against the cliff; small cloaked pursuers visible beyond a break. Spectacular vertiginous wide environmental composition; no companions in close view because their presence varies by route.",
+      "alt": "Waves strike a narrow black-stone span above the storm coast",
+      "source": "source/art/mileless-storm-span.png",
+      "delivery": [
+        "public/art/mileless-storm-span.webp",
+        "public/art/mileless-storm-span-800.webp"
+      ]
+    },
+    {
+      "basename": "rook-mirrored-stage",
+      "chapter": 4,
+      "nodes": ["c4-theatre-plan", "c4-anchor"],
+      "key": "mirrorstage",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Rook Sable, a lean adult male thief age 27 with shaggy dark hair, roguish face and weathered layered dark theatrical coat, fixes a small mirrored curtain and fine silver wire to a ruined stone arch on the Mileless Bridge. Caelan watches behind. A single staged officer silhouette is repeated by impossible reflections across three distant spans beneath different skies; distant crossbow lines watch the reflections. Show a practical trick amplified by the bridge, not giant glowing portals.",
+      "alt": "Rook rigs a mirrored curtain whose false officer repeats across the Mileless Bridge",
+      "source": "source/art/rook-mirrored-stage.png",
+      "delivery": [
+        "public/art/rook-mirrored-stage.webp",
+        "public/art/rook-mirrored-stage-800.webp"
+      ]
+    },
+    {
+      "basename": "dragonspine-royal-drill",
+      "chapter": 5,
+      "nodes": ["c5-royal-camp"],
+      "key": "royaldrill",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. An abandoned royal survey camp in the Dragonspine glass mountains. An iron drilling frame aims toward the distant upper dragon grave, tents within a ring of cold blue ash, frozen bedrolls and weathered crowned-shield coats. Caelan inspects the drill seal with his face turned away. Cold blue fire glints across jagged translucent rock. No living dragon here, no gore, broad exploration composition.",
+      "alt": "An iron extraction drill stands in the frozen royal camp beneath Dragonspine",
+      "source": "source/art/dragonspine-royal-drill.png",
+      "delivery": [
+        "public/art/dragonspine-royal-drill.webp",
+        "public/art/dragonspine-royal-drill-800.webp"
+      ]
+    },
+    {
+      "basename": "orivane-concord-memory",
+      "chapter": 5,
+      "nodes": ["c5-heart-memory"],
+      "key": "orivane",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A vision inside an ancient plate of dragon memory: a magnificent red-gold dragon Orivane with an open compassionate eye gives luminous living heart-fire from her chest to separate two colliding skies. Represent this symbolically as flowing gold light, no open wound. Beneath her two overlapping village streets occupy the same landscape; one fades into transparent glasslike light while ordinary household tables and doors remain faintly visible. Caelan's small silhouette watches at the glass edge. Awe and tragic discovery, detailed landscape.",
+      "alt": "Orivane’s heart-fire separates the realms as one remembered village fades",
+      "source": "source/art/orivane-concord-memory.png",
+      "delivery": [
+        "public/art/orivane-concord-memory.webp",
+        "public/art/orivane-concord-memory-800.webp"
+      ]
+    },
+    {
+      "basename": "kharad-broken-axle",
+      "chapter": 6,
+      "nodes": ["c6-broken-axle"],
+      "key": "brokenaxle",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Under the moving city of Kharad Vey, a huge iron axle sheds pins beneath timber homes. A splintered support beam juts through an upper kitchen floor. Korran, a tall scarred adult male orc in weathered steppe clothes, braces a steering beam beside Caelan while orc engineers secure repair ropes. Enormous rotating wheels, dry red grass sweeping below, wind and dust, scale of a inhabited wagon city, realistic mechanisms.",
+      "alt": "Repair crews brace Kharad Vey’s failing western axle beneath the houses",
+      "source": "source/art/kharad-broken-axle.png",
+      "delivery": [
+        "public/art/kharad-broken-axle.webp",
+        "public/art/kharad-broken-axle-800.webp"
+      ]
+    },
+    {
+      "basename": "kharad-brake-forge",
+      "chapter": 6,
+      "nodes": ["c6-forge-duty"],
+      "key": "brakeforge",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. On the lower forge deck of a giant moving medieval city, a hanging forge tilts on massive chains. Molten iron runs through a black stone channel toward the steering ropes. Dema, an adult female orc wheelwright in practical heavy work clothes and gloves, strikes a cracked brake housing while her crew waits. Caelan stands beside the furnace, tiny amber ember visible at his chest but no unleashed spell. Red iron, charcoal, steppe sunlight and layered industrial depth.",
+      "alt": "Dema’s crew confronts a cracked brake casting on Kharad Vey’s tilting forge deck",
+      "source": "source/art/kharad-brake-forge.png",
+      "delivery": [
+        "public/art/kharad-brake-forge.webp",
+        "public/art/kharad-brake-forge-800.webp"
+      ]
+    },
+    {
+      "basename": "red-wind-signal-horn",
+      "chapter": 7,
+      "nodes": ["c7-dead-horn"],
+      "key": "signalhorn",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A deserted military signal horn mounted on a dark timber signal mast on a windswept ridge. Red ancestral storm coils through the empty bronze horn; thin red threads lead into the sky. Caelan stands below, Ilyra, a 34-year-old dark-haired half-elven woman in deep red travel robes and dark leather, holds one thin red thread while studying it. Crown soldier ranks far below in red dust. The horn, not a giant ghost, is the central menace.",
+      "alt": "An empty signal horn carries a dead commander’s order through the red storm",
+      "source": "source/art/red-wind-signal-horn.png",
+      "delivery": [
+        "public/art/red-wind-signal-horn.webp",
+        "public/art/red-wind-signal-horn-800.webp"
+      ]
+    },
+    {
+      "basename": "salt-basin-fracture",
+      "chapter": 7,
+      "nodes": ["c7-salt-trap"],
+      "key": "saltfracture",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Aerial-oblique cinematic battlefield view of Crown cavalry reaching a white salt basin. Dark brine shows through a wide curved fracture while a narrow firm road leads back away from it. Caelan small foreground on solid black rock with his crimson cloak, watching before deciding. Hundreds of distant mounted silhouettes and red storm horizon. No drowned people, no aftermath, illustrate the dangerous terrain and the possible escape lane.",
+      "alt": "Crown riders reach the fragile salt crust above dark brine",
+      "source": "source/art/salt-basin-fracture.png",
+      "delivery": [
+        "public/art/salt-basin-fracture.webp",
+        "public/art/salt-basin-fracture-800.webp"
+      ]
+    },
+    {
+      "basename": "fourth-fort-ledgers",
+      "chapter": 8,
+      "nodes": ["c8-hidden-record"],
+      "key": "fortledgers",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A cramped ancient fortress record room in winter. Seventeen weathered bound ledgers lie behind a displaced duty board; red wax-sealed orders spread under a small oil lamp, cold breath in air. Caelan and an exhausted older male Warden Ansel inspect the evidence. Iron hatch faces a dim occupied hall. Amber lamplight and deep icy shadows, detailed material still life, no readable lettering.",
+      "alt": "Seventeen years of ledgers lie hidden behind Fourth Fort’s duty board",
+      "source": "source/art/fourth-fort-ledgers.png",
+      "delivery": [
+        "public/art/fourth-fort-ledgers.webp",
+        "public/art/fourth-fort-ledgers-800.webp"
+      ]
+    },
+    {
+      "basename": "black-gate-buried-chain",
+      "chapter": 8,
+      "nodes": ["c8-chain-plan"],
+      "key": "buriedchain",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. An environmental cutaway-like perspective from a broken stone parapet over snowy fortress ground, fully natural cinematic concept art not a technical diagram. An enormous buried iron chain is exposed in a cleft glowing red from below; eight distant fort towers form a ring around a towering seamless black gate. Seven signal baskets dark, one warm. Tiny repair silhouettes gather at safe stone edge without completing a route-specific repair. Show the physical defense connecting the forts.",
+      "alt": "An exposed section of the buried chain connects the cold fort ring",
+      "source": "source/art/black-gate-buried-chain.png",
+      "delivery": [
+        "public/art/black-gate-buried-chain.webp",
+        "public/art/black-gate-buried-chain-800.webp"
+      ]
+    },
+    {
+      "basename": "vexa-name-beads",
+      "chapter": 9,
+      "nodes": ["c9-name-demonstration"],
+      "key": "namebeads",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Intimate diplomatic still life at a medieval fortress neutral table: two plain brass beads, a blank paper under a clear glass sheet, an ordinary quill, and two visible open hands of Vexa, an adult pale humanlike devil woman in her thirties with long black hair, subtle swept-back dark horns and ember eyes, wearing structured dark crimson and black diplomatic clothing. One bead tilts toward her. Caelan's gloved hand rests at the opposite edge. Public witnesses blurred far behind, unlocked exits. No chains binding anyone, no readable writing.",
+      "alt": "Two brass beads demonstrate the limited pointing power of a freely spoken self-name",
+      "source": "source/art/vexa-name-beads.png",
+      "delivery": [
+        "public/art/vexa-name-beads.webp",
+        "public/art/vexa-name-beads-800.webp"
+      ]
+    },
+    {
+      "basename": "gate-nail-neutral-custody",
+      "chapter": 9,
+      "nodes": ["c9-recover-fragment"],
+      "key": "neutralfragment",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. Close cinematic still life on a neutral fortress table after an attack: a weathered broken iron Gate Nail fragment in a glass evidence case with a visibly cracked hinge, separate white and red wax seals and gloved witness hands at a respectful distance. Warm lamps, gothic arches blurred in background. Ownership is undecided; do not place fragment in anyone's hand, no magic chains, no readable words.",
+      "alt": "The broken Gate Nail rests in its cracked case at the neutral table",
+      "source": "source/art/gate-nail-neutral-custody.png",
+      "delivery": [
+        "public/art/gate-nail-neutral-custody.webp",
+        "public/art/gate-nail-neutral-custody-800.webp"
+      ]
+    },
+    {
+      "basename": "ash-road-falling-stones",
+      "chapter": 10,
+      "nodes": ["c10-road-danger"],
+      "key": "fallingstones",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. In the Cinder Deep a narrow bridge of exactly six pale stepping stones tips over a red bottomless abyss, ash falling like snow. Caelan reaches back toward indistinct adult expedition silhouettes, no individually identifiable optional companions. A black-robed humanlike devil on the far bank has tied one clear rope to solid stone. Distinct six stones, immense red depth, ash-gray landscape and careful composition showing the escape route.",
+      "alt": "Six pale stones tilt into the red depth as a rope marks solid ground",
+      "source": "source/art/ash-road-falling-stones.png",
+      "delivery": [
+        "public/art/ash-road-falling-stones.webp",
+        "public/art/ash-road-falling-stones-800.webp"
+      ]
+    },
+    {
+      "basename": "free-ledger-shelter",
+      "chapter": 10,
+      "nodes": [
+        "c10-free-ledger",
+        "c10-limits",
+        "c10-rest-choice",
+        "c10-guide-bargain"
+      ],
+      "key": "ledgershelter",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A quiet road shelter on the Ash Road outside the distant divided black towers of Vathis. A black-robed humanlike adult devil presses a blank page to the ash road; faint hostile marks lift and burn away. Three other adult devil guides in weathered black robes each keep one hand uncovered and wear a different small abstract personal seal. Canvas shelter has two visibly open exits. Caelan waits at a respectful distance, expedition figures indistinct. Warm plain lanterns against red horizon, sense of freely offered refuge.",
+      "alt": "The Free Ledger clears listening marks beside a shelter with two open exits",
+      "source": "source/art/free-ledger-shelter.png",
+      "delivery": [
+        "public/art/free-ledger-shelter.webp",
+        "public/art/free-ledger-shelter-800.webp"
+      ],
+      "finalEdit": "Remove the brown-haired green-clad archer woman behind Caelan and remove all other background expedition faces and horses. Fill that space naturally with the ash road and distant indistinct landscape. Keep Caelan and the four black-robed devil guides, page, two open exits, shelter, framing, style and lighting exactly the same. This shared scene must not depict optional companions. No text and no other changes."
+    },
+    {
+      "basename": "vathis-public-hearing",
+      "chapter": 11,
+      "nodes": ["c11-petition-hearing"],
+      "key": "publichearing",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. At the public gate of Vathis, three distinct adult humanlike devil debt workers stand apart beside an empty metal bench holding a sealed petition. Worn everyday clothing, small plain contract collars, individual determined, concerned and hesitant expressions. A black-robed guide sets the petition on the bench, Caelan listens. Black hand-shaped city towers and contract streets in background. Scene of agency and public testimony, no chains linking people, no readable words.",
+      "alt": "Three petitioners bring separate claims to Vathis’s open public bench",
+      "source": "source/art/vathis-public-hearing.png",
+      "delivery": [
+        "public/art/vathis-public-hearing.webp",
+        "public/art/vathis-public-hearing-800.webp"
+      ],
+      "finalEdit": "Remove only the brown-haired green-clad archer woman at the extreme right behind Caelan, replacing her naturally with the continuing Vathis street and background architecture. Keep all three petitioners, guide, Caelan, bench, sealed paper, city towers, composition and lighting the same. Do not add any new person. No text and no other changes."
+    },
+    {
+      "basename": "vathis-lifting-roofs",
+      "chapter": 11,
+      "nodes": ["c11-revolt-crisis"],
+      "key": "liftingroofs",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. The debt workers' square in the dark fantasy city Vathis. Massive stone roof slabs hover upward as rented shelters are revoked. Open doors and empty exposed rooms below, dust rising, scattered indistinct workers at the safe outer perimeter, no identifiable optional companions. Caelan views the lifting roofs from an engine tunnel mouth. Red deep-sky reflected on black basalt, alarming architectural scale; no modern buildings or text.",
+      "alt": "Stone shelter roofs lift away from Vathis’s debt workers’ square",
+      "source": "source/art/vathis-lifting-roofs.png",
+      "delivery": [
+        "public/art/vathis-lifting-roofs.webp",
+        "public/art/vathis-lifting-roofs-800.webp"
+      ]
+    },
+    {
+      "basename": "mara-quiet-shelter",
+      "chapter": 10,
+      "nodes": [],
+      "key": "mararomance",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A tender non-explicit romantic portrait of adult Caelan and adult Mara sitting close beneath one ordinary wool blanket in a simple canvas road shelter, both fully clothed in plain travel shirts, no armor worn. Their foreheads nearly touch, her hand rests in his, an affectionate quiet conversation after danger. Mara's tied brown hair slightly loose, green scout cloak folded beside her. A plain warm lantern, two unlatched shelter exits, blurred distant red ash landscape. Waist-up composition, emotional closeness and relief, no nudity or sexual activity.",
+      "alt": "Caelan and Mara share a quiet embrace beneath the shelter blanket",
+      "source": "source/art/mara-quiet-shelter.png",
+      "delivery": [
+        "public/art/mara-quiet-shelter.webp",
+        "public/art/mara-quiet-shelter-800.webp"
+      ]
+    },
+    {
+      "basename": "lysara-quiet-shelter",
+      "chapter": 10,
+      "nodes": [],
+      "key": "lysararomance",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A tender non-explicit romantic portrait of adult Caelan and Lysara, a mature 36-year-old elven envoy with long dark hair, subtly pointed ears and graceful angular face. Seated side by side beneath a wool blanket inside a canvas road shelter, both fully clothed: Caelan in a simple dark shirt and Lysara in modest soft emerald living silk. Their hands joined and eyes meeting warmly. Her treaty ribbon rests OUTSIDE the open shelter flap, with magic objects outside; no magical effects within. Warm plain lamp against distant red ash night, two exits open, quiet honest connection, no nudity or sexual activity.",
+      "alt": "Caelan and Lysara rest together with the treaty ribbon left outside the shelter",
+      "source": "source/art/lysara-quiet-shelter.png",
+      "delivery": [
+        "public/art/lysara-quiet-shelter.webp",
+        "public/art/lysara-quiet-shelter-800.webp"
+      ]
+    },
+    {
+      "basename": "vexa-unbound-room",
+      "chapter": 9,
+      "nodes": [],
+      "key": "vexaromance",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A tender non-explicit romantic portrait of adult Caelan and Vexa, an adult humanlike devil woman appearing in her thirties with pale skin, long black hair, subtle swept-back dark horns, naturally amber eyes. They sit close under an ordinary wool blanket in a quiet stone guest room, fully clothed in simple dark shirts, her forehead lightly touching his and hands gently joined. Two unlocked wooden doors visible, simple candle warmth. Weapons, armor, contracts, beads and all magic absent. Quiet vulnerable affection, no glowing magic, no nudity or sexual activity.",
+      "alt": "Caelan and Vexa share a quiet moment in the unbound guest room",
+      "source": "source/art/vexa-unbound-room.png",
+      "delivery": [
+        "public/art/vexa-unbound-room.webp",
+        "public/art/vexa-unbound-room-800.webp"
+      ]
+    },
+    {
+      "basename": "ilyra-chosen-kiss",
+      "chapter": 7,
+      "nodes": [],
+      "key": "ilyraromance",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism, intricate medieval materials, natural mature faces, tactile weathered surfaces, atmospheric depth, muted charcoal and earth palette with restrained firelight. Keep the visual language of the existing scenes. Caelan, if present, is a rugged 31-year-old human man with short tousled dark brown hair, a short beard, dark steel and leather armor and a faded crimson cloak. Mara, if present, is a 29-year-old athletic human scout with tied dark brown hair, green leather travelling clothes and a bow. No text, readable writing, captions, logos, borders or watermarks; no modern objects. A tender non-explicit romantic illustration of Caelan and Ilyra Fen in a dry sheltered hollow below a black rock ridge. Ilyra is a mature 34-year-old half-elven woman, warm olive complexion, long dark wavy hair, deep burgundy travel robes over dark leather, subtle pointed ears. Both fully clothed, they share a gentle consensual kiss standing close, her fingers resting against his armored chest, a plain silver cup on a rock nearby. Red dust wind beyond sheltered rock, dusk amber rimlight. No magic, no binding threads between them, no other people, no nudity or sexual activity.",
+      "alt": "Caelan and Ilyra share their chosen kiss in the hollow below Black Ridge",
+      "source": "source/art/ilyra-chosen-kiss.png",
+      "delivery": [
+        "public/art/ilyra-chosen-kiss.webp",
+        "public/art/ilyra-chosen-kiss-800.webp"
+      ]
+    }
+  ]
+}
