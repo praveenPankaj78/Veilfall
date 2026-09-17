@@ -214,16 +214,30 @@ for (const [id, node] of Object.entries(nodes)) {
   }
   if (node.art) chapterFourArtUsed.add(node.art);
 }
-for (const id of [
-  'c4-three-spans',
-  'c4-snow-span',
-  'c4-storm-span',
-  'c4-brass-span',
-  'c4-stage-turn',
-]) {
-  if (nodes[id]?.art !== 'crossroads') {
+const chapterFourChaseNodes = new Set([
+  'c4-bridge-start',
+  'c4-chase',
+  'c4-corner',
+  'c4-collapse',
+  'c4-wounded',
+]);
+const chapterFourNailsNodes = new Set([
+  'c4-nine-marks',
+  'c4-duty',
+  'c4-ending-arrest',
+  'c4-ending-bargain',
+  'c4-ending-trust',
+]);
+for (const [id, node] of Object.entries(nodes)) {
+  if (!id.startsWith('c4-')) continue;
+  const expected = chapterFourNailsNodes.has(id)
+    ? 'nails'
+    : chapterFourChaseNodes.has(id)
+      ? 'mileless'
+      : 'crossroads';
+  if (node.art !== expected) {
     failures.push(
-      `${id} dropped the three-span artwork after the junction`,
+      `Chapter Four node ${id} uses ${node.art} instead of ${expected}`,
     );
   }
 }
