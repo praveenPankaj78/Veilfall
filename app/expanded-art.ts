@@ -135,6 +135,10 @@ export const additionalArtwork = {
     'mileless-brass-span',
     'Huge brass gears carry a road platform between closing metal teeth in a Mileless Bridge cavern',
   ),
+  upperlanding: plate(
+    'bellweather-upper-landing',
+    'Caelan and Mara share a quiet watch on Bellweather’s upper landing while rain and a shifting road show through the window',
+  ),
 } satisfies Record<string, SceneArtwork>;
 
 export const sceneArtOverrides: Partial<Record<string, string>> = {
@@ -146,15 +150,16 @@ export const sceneArtOverrides: Partial<Record<string, string>> = {
   'march-order': 'alderwood',
   'road-conversation': 'alderwood',
   // Chapter II: stay on the common-room infirmary through the indoor search, then
-  // use the cellar road when that search goes below. The storm-arrival exterior
-  // is only for the threshold and the dawn after the inn is fixed.
+  // use the cellar road when that search goes below. Night-watch is the
+  // reconverge on the upper landing. The storm-arrival exterior is only for the
+  // threshold and the dawn after the inn is fixed.
   'c2-triage': 'infirmary',
   'c2-medicine': 'infirmary',
   'c2-eleven-years': 'infirmary',
   'c2-investigate': 'infirmary',
   'c2-ledger': 'infirmary',
   'c2-attacker': 'infirmary',
-  'c2-night-watch': 'infirmary',
+  'c2-night-watch': 'upperlanding',
   'c2-cellar': 'foldedcellar',
   // Chapter III: archive interior is unique. Healer and broker stay on the
   // Harrowfen canal-town plate rather than the archive or later watch-house.

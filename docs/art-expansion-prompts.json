@@ -334,6 +334,19 @@
         "public/art/ilyra-chosen-kiss.webp",
         "public/art/ilyra-chosen-kiss-800.webp"
       ]
+    },
+    {
+      "basename": "bellweather-upper-landing",
+      "chapter": 2,
+      "nodes": ["c2-night-watch"],
+      "key": "upperlanding",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism matching existing Bellweather plates. Caelan: rugged 31-year-old human, short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak. Mara: 29-year-old athletic scout, tied dark brown hair, green leather travelling clothes, bow. Scene: Bellweather Inn upper landing before the siege. Mara fastening a leather forearm wrap, bow across her knees, rain-streaked window, Caelan beside her. No kiss, no infirmary, no second Caelan, no cellar, no road pin, no text.",
+      "alt": "Caelan and Mara share a quiet watch on Bellweather’s upper landing while rain and a shifting road show through the window",
+      "source": "source/art/bellweather-upper-landing.png",
+      "delivery": [
+        "public/art/bellweather-upper-landing.webp",
+        "public/art/bellweather-upper-landing-800.webp"
+      ]
     }
   ]
 }

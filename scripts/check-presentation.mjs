@@ -222,7 +222,7 @@ assert.equal(artworkForScene(nodes['c2-eleven-years']).src, '/art/bellweather-in
 assert.equal(artworkForScene(nodes['c2-investigate']).src, '/art/bellweather-infirmary.webp');
 assert.equal(artworkForScene(nodes['c2-ledger']).src, '/art/bellweather-infirmary.webp');
 assert.equal(artworkForScene(nodes['c2-attacker']).src, '/art/bellweather-infirmary.webp');
-assert.equal(artworkForScene(nodes['c2-night-watch']).src, '/art/bellweather-infirmary.webp');
+assert.equal(artworkForScene(nodes['c2-night-watch']).src, '/art/bellweather-upper-landing.webp');
 assert.equal(artworkForScene(nodes['c2-cellar']).src, '/art/bellweather-folded-cellar.webp');
 assert.equal(artworkForScene(nodes['c2-last-testimony']).src, '/art/bellweather-inn.webp');
 assert.equal(
@@ -257,6 +257,27 @@ assert.equal(
   scrollLandingAfterTransition(
     { ...initialState, nodeId: 'c2-investigate' },
     { ...initialState, nodeId: 'c2-cellar' },
+  ),
+  'hero',
+);
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c2-investigate' },
+    { ...initialState, nodeId: 'c2-night-watch' },
+  ),
+  'hero',
+);
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c2-cellar' },
+    { ...initialState, nodeId: 'c2-night-watch' },
+  ),
+  'hero',
+);
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c2-night-watch' },
+    { ...initialState, nodeId: 'c2-bell' },
   ),
   'hero',
 );
@@ -346,6 +367,7 @@ const siblingExpectations = [
   ['c4-snow-span', '/art/mileless-snow-span.webp'],
   ['c4-brass-span', '/art/mileless-brass-span.webp'],
   ['c4-stage-turn', '/art/mileless-three-spans.webp'],
+  ['c2-night-watch', '/art/bellweather-upper-landing.webp'],
   ['c6-herd-duty', '/art/kharad-vey-wheel-city.webp'],
   ['c6-forge-duty', '/art/kharad-brake-forge.webp'],
   ['c6-shrine-duty', '/art/kharad-vey-wheel-city.webp'],
@@ -389,6 +411,22 @@ assert.notEqual(
 assert.notEqual(
   artworkForScene(nodes['ridge-road']).src,
   artworkForScene(nodes['low-road']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c2-night-watch']).src,
+  artworkForScene(nodes['c2-investigate']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c2-night-watch']).src,
+  artworkForScene(nodes['c2-cellar']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c2-night-watch']).src,
+  artworkForScene(nodes['c2-threshold']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c2-night-watch']).src,
+  artworkForScene(nodes['c2-bell']).src,
 );
 
 function chapterOf(id) {

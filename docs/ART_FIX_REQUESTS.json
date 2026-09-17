@@ -1,7 +1,7 @@
 {
   "auditComplete": true,
-  "imageWorkNeeded": true,
-  "auditSummary": "Code fixes for relationship previews, a single save-state artwork resolver, resolved-art scrolling, and several continuity assignments are implemented with existing assets. Four genuine coverage gaps remain: ridge-road still falls back to Greyhaven departure art; march-order and road-conversation reconverge from all three Chapter I forks with no branch-neutral King’s Road plate; c4-snow-span and c4-brass-span still show the three-roads junction after the player has already chosen one span, while the storm sibling has a unique on-span plate. Existing images cannot fill those gaps without spoiling the ambush/folded road, leaking a sibling fork, or showing unchosen spans. Archive, healer, broker, shrine, C2 infirmary continuity, and C7 salt/order/duel are solved or documented with existing assets. Do not replace the beta ZIP until these four deliveries are integrated.",
+  "imageWorkNeeded": false,
+  "auditSummary": "Art-fix-001 through 006 are delivered and integrated. c2-night-watch uses bellweather-upper-landing, a branch-neutral upper-landing plate after the ledger, cellar, and attacker searches. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
   "reproductionMatrix": [
     {
       "category": "relationship-preview",
@@ -28,7 +28,16 @@
       "destination": "c2-triage",
       "relevantState": "raw node.art is inn on both nodes",
       "actualBefore": "scroll compared raw art keys so the infirmary change was missed; next scenes reused inn too early",
-      "expected": "resolved hero becomes bellweather-infirmary; scroll lands on hero; infirmary continues through c2-medicine, c2-eleven-years, and the indoor investigation (c2-investigate, c2-ledger, c2-attacker, c2-night-watch); c2-cellar uses the cellar road plate; the storm-arrival exterior returns only after the inn is fixed"
+      "expected": "resolved hero becomes bellweather-infirmary; scroll lands on hero; infirmary continues through c2-medicine, c2-eleven-years, and the indoor investigation (c2-investigate, c2-ledger, c2-attacker); c2-cellar uses the cellar road plate; c2-night-watch uses bellweather-upper-landing; the storm-arrival exterior returns only after the inn is fixed"
+    },
+    {
+      "category": "artwork-continuity",
+      "sourceNode": "c2-cellar",
+      "choiceId": "c2-mark-moving-stone",
+      "destination": "c2-night-watch",
+      "relevantState": "after any of ledger, cellar, or attacker; overlay title One Quiet Minute",
+      "actualBefore": "c2-night-watch reuses bellweather-infirmary (and raw node.art is the storm-arrival inn). After the unique cellar road that is a snap back to an earlier interior; the arrival exterior, other-nights combat, and road pin are the wrong moment.",
+      "expected": "new branch-neutral Bellweather upper-landing plate shared by all three investigation routes; must not leak cellar, ledger, pantry, arrival, or the later other-nights siege"
     },
     {
       "category": "scroll",
@@ -65,8 +74,9 @@
       "chapter": 2,
       "beats": [
         "c2-threshold inn exterior is the arrival plate",
-        "c2-triage, c2-medicine, c2-eleven-years, c2-investigate, c2-ledger, c2-attacker, and c2-night-watch stay on bellweather-infirmary because those beats remain inside Bellweather Inn among the wounded",
+        "c2-triage, c2-medicine, c2-eleven-years, c2-investigate, c2-ledger, and c2-attacker stay on bellweather-infirmary because those beats remain inside Bellweather Inn among the wounded",
         "c2-cellar uses bellweather-folded-cellar, the existing cellar-road plate, instead of snapping back to the storm-arrival exterior",
+        "c2-night-watch uses bellweather-upper-landing after ledger, cellar, or attacker. Do not use arrival, infirmary, other-nights combat, cellar road, or the road pin.",
         "c2-last-testimony and the chapter endings return to the inn exterior after the building is fixed. Documented legitimate return."
       ]
     },
@@ -404,7 +414,7 @@
       "status": "delivered",
       "reason": "User-reported anatomy defect on the existing Bellweather infirmary plate after the four coverage deliveries were integrated. Garran’s body and cot read as malformed and fused with Lysara’s foreground bed. The shared basename remains valid for the indoor Bellweather common-room sequence, so this is a same-file correction rather than a new variant.",
       "chapter": 2,
-      "nodeIds": ["c2-triage", "c2-medicine", "c2-eleven-years", "c2-investigate", "c2-ledger", "c2-attacker", "c2-night-watch"],
+      "nodeIds": ["c2-triage", "c2-medicine", "c2-eleven-years", "c2-investigate", "c2-ledger", "c2-attacker"],
       "incomingChoiceIds": ["c2-search-threshold", "c2-carry-first", "c2-question-name"],
       "sceneSummary": "Chapter II common-room patient scene. One sealed dose, three occupied makeshift beds, Caelan considering who to treat. Garran is the adult male patient behind Lysara whom Maelin is tending. No medicine choice has been taken.",
       "requiredState": {
@@ -415,13 +425,13 @@
       "excludedState": {
         "flags": [],
         "siblingBranches": [],
-        "mustNeverAppearOn": ["c2-threshold", "c2-arrival", "c2-last-testimony"]
+        "mustNeverAppearOn": ["c2-threshold", "c2-arrival", "c2-last-testimony", "c2-night-watch"]
       },
       "sourceToCorrect": {
         "path": "source/art/bellweather-infirmary.png",
         "sha256": "8acc39bfece2e62ccd2583597bbb493503e10bf1ab8b1f58b34bd8de82e494c7"
       },
-      "otherNodesUsingSameImage": ["c2-triage", "c2-medicine", "c2-eleven-years", "c2-investigate", "c2-ledger", "c2-attacker", "c2-night-watch"],
+      "otherNodesUsingSameImage": ["c2-triage", "c2-medicine", "c2-eleven-years", "c2-investigate", "c2-ledger", "c2-attacker"],
       "referenceImages": ["source/art/bellweather-infirmary.png"],
       "mustShow": [
         "Garran as a coherent adult man on his own distinct wooden cot behind Lysara",
@@ -452,6 +462,98 @@
         "Lysara, Caelan, Mara, the third patient, Maelin, and the medicine bottle remain",
         "Hero crops still show all three beds and the bottle",
         "No encoded medicine outcome"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-006",
+      "kind": "new",
+      "status": "delivered",
+      "reason": "c2-night-watch is the reconverge after the ledger, cellar, and attacker searches (kicker A quiet hour borrowed; overlay title One Quiet Minute; location Bellweather Inn, Upper Landing). Raw node.art is inn, so the storm-arrival exterior returns. The current stopgap override reuses bellweather-infirmary, which snaps back to the earlier sickroom after the unique cellar road and still misrepresents a quiet upper-landing watch with Mara. bellweather-other-nights is midnight combat with a second Caelan in the doorway and spoils the next scene. bellweather-folded-cellar and bellweather-road-pin are underground with Tivik. No existing plate is this beat. A new branch-neutral upper-landing plate is required, the same class of gap as kings-road-alderwood-rise after the Chapter I forks.",
+      "chapter": 2,
+      "nodeIds": ["c2-night-watch"],
+      "incomingChoiceIds": [
+        "c2-copy-pattern",
+        "c2-ask-missing-mara",
+        "c2-study-cloak-version",
+        "c2-mark-moving-stone",
+        "c2-break-bracket",
+        "c2-follow-footsteps",
+        "c2-demand-employer",
+        "c2-offer-protection",
+        "c2-take-orders"
+      ],
+      "sceneSummary": "Authored in app/game-data.ts and overlaid by app/adventure-revision.ts. Overlay title One Quiet Minute, location Bellweather Inn, Upper Landing, threat Immediate. Overlay prose: 'You find Mara fastening leather around her forearm. Firelight warms her brown skin and catches on the rain still shining at her throat. She looks tired, dangerous, and very close.' 'A crossbow string snaps in the yard. Your quiet minute is ending.' Base prose also places Mara beside an upper window with her bow across her knees; outside, lightning shows the road leading east, then west toward Greyhaven. Choices (name a fear, ask to kiss, choose friendship, captain’s promise) have not been taken. Destination after any choice is c2-bell, which already has bellweather-other-nights and must not use this new image. The plate must remain true after ledger, cellar, or attacker; do not depict the guest book, cellar road, or Garran’s pantry as the setting.",
+      "requiredState": {
+        "flags": "Valid after c2-ledger-route, c2-cellar-route, or c2-attacker-route. Do not depict any one of those uniquely.",
+        "companions": "Caelan and Mara are both present. Do not require Lysara, Maelin, Tivik, Brann, Nilo, or Garran.",
+        "relationshipOrConsent": "Quiet closeness is authored, but this is not a romance plate. The kiss choice has not been taken and must not be illustrated."
+      },
+      "excludedState": {
+        "flags": [],
+        "siblingBranches": ["c2-ledger", "c2-cellar", "c2-attacker"],
+        "mustNeverAppearOn": [
+          "c2-arrival",
+          "c2-threshold",
+          "c2-triage",
+          "c2-medicine",
+          "c2-eleven-years",
+          "c2-investigate",
+          "c2-ledger",
+          "c2-cellar",
+          "c2-attacker",
+          "c2-bell",
+          "c2-common-room-crisis",
+          "c2-descend",
+          "c2-folded-cellar",
+          "c2-road-pin",
+          "c2-remove-pin",
+          "c2-last-testimony"
+        ]
+      },
+      "sourceToCorrect": null,
+      "otherNodesUsingSameImage": [],
+      "referenceImages": [
+        "source/art/bellweather-inn.png",
+        "source/art/bellweather-infirmary.png",
+        "source/art/bellweather-other-nights.webp",
+        "source/art/bellweather-folded-cellar.webp",
+        "source/art/bellweather-road-pin.webp",
+        "work/art-audit-previews/bellweather-other-nights.png",
+        "work/art-audit-previews/bellweather-folded-cellar.png",
+        "work/art-audit-previews/bellweather-road-pin.png"
+      ],
+      "mustShow": [
+        "Bellweather Inn upper landing or timber stair landing, not the common-room infirmary and not the storm yard as the camera’s place",
+        "An upper window or opening onto the rainy yard; the road outside may look wrong in a flash of lightning, but do not show a second inn or a second Caelan",
+        "Mara as a 29-year-old athletic brown-skinned scout: tied dark brown hair, green leather travelling clothes, bow nearby, fastening a leather forearm wrap or sitting close with the bow across her knees",
+        "Caelan as a rugged 31-year-old Oathwarden: short tousled dark brown hair, short beard, dark steel and leather armor, faded crimson cloak, beside her before any spoken choice",
+        "Firelight, rain on skin or timber, a quiet borrowed minute, not a fight"
+      ],
+      "mustNotShow": [
+        "The storm-arrival exterior with wounded being carried in or Maelin holding the front door",
+        "The common-room infirmary, makeshift beds, sealed medicine bottle, Lysara’s bandaged hand, or Garran on a cot",
+        "The later other-nights siege: duplicate Caelan, extra inn through the door, drawn swords, overturned chairs, cellar stairs as a battlefield",
+        "The folded cellar road, repeating shelves, silver crack, Tivik kneeling, or the giant road pin",
+        "A kiss, embrace as a completed romance, or any other choice outcome",
+        "The guest ledger as the setting, Garran tied in the pantry, or a unique cellar-only clue that would leak a sibling search",
+        "Readable text, logos, watermarks, modern objects, or explicit content"
+      ],
+      "preserve": [],
+      "outputBasename": "bellweather-upper-landing",
+      "proposedSourcePath": "source/art/bellweather-upper-landing.png",
+      "proposedDeliveryPaths": [
+        "public/art/bellweather-upper-landing.webp",
+        "public/art/bellweather-upper-landing-800.webp"
+      ],
+      "proposedArtKey": "upperlanding",
+      "alt": "Caelan and Mara share a quiet watch on Bellweather’s upper landing while rain and a shifting road show through the window",
+      "generationBrief": "Create one cinematic 16:9 landscape dark-fantasy illustration in painterly realism matching Veilfall: The Ember Oath. Scene: Bellweather Inn’s upper landing before the midnight siege. Timber stair landing, firelight, rain at the window. Mara (29, athletic brown-skinned scout, tied dark brown hair, green leather travelling clothes, bow) fastens leather around her forearm or sits with the bow across her knees; she looks tired, dangerous, and close. Caelan (31, short tousled dark brown hair, short beard, dark steel/leather armor, faded crimson cloak) stands or sits with her. Through the window, lightning may show the yard road leading the wrong way; do not show a second inn or a second Caelan (that reveal belongs to bellweather-other-nights). Do not show infirmary beds, the arrival doorway, Tivik, the cellar road, or the giant pin. Do not depict a kiss or a completed choice. This single plate must remain true after the ledger, cellar, or attacker search, so do not make the guest book, pantry, or underground road the setting. Landscape 16:9. Keep Caelan, Mara, and the window inside the hero crop (desktop 16:7 center; mobile 4:3 at 57% center—place faces in the central band, slightly right of center). Match the painterly style of bellweather-infirmary and bellweather-other-nights, but this is a quiet minute, not a fight. No text, logos, watermarks, modern objects, or explicit content.",
+      "acceptanceCriteria": [
+        "Reads as an upper landing / window watch, not the arrival yard, infirmary, cellar, pin chamber, or other-nights combat",
+        "Valid after ledger, cellar, and attacker incoming flags with no sibling-search leak",
+        "Caelan and Mara remain readable at 800px and inside 16:7 desktop and 4:3/57% mobile crops",
+        "No kiss, no second Caelan, no siege already in progress"
       ],
       "estimatedAssetBudgetBytes": 220000
     }
