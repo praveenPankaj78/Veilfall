@@ -145,11 +145,17 @@ export const sceneArtOverrides: Partial<Record<string, string>> = {
   'ridge-road': 'ridgeroad',
   'march-order': 'alderwood',
   'road-conversation': 'alderwood',
-  // Chapter II: keep the infirmary through the common-room patient scenes, then
-  // return to the inn exterior when the investigation leaves that room.
+  // Chapter II: stay on the common-room infirmary through the indoor search, then
+  // use the cellar road when that search goes below. The storm-arrival exterior
+  // is only for the threshold and the dawn after the inn is fixed.
   'c2-triage': 'infirmary',
   'c2-medicine': 'infirmary',
   'c2-eleven-years': 'infirmary',
+  'c2-investigate': 'infirmary',
+  'c2-ledger': 'infirmary',
+  'c2-attacker': 'infirmary',
+  'c2-night-watch': 'infirmary',
+  'c2-cellar': 'foldedcellar',
   // Chapter III: archive interior is unique. Healer and broker stay on the
   // Harrowfen canal-town plate rather than the archive or later watch-house.
   'c3-archive': 'archive',

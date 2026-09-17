@@ -20,6 +20,7 @@ const {
   additionalArtwork,
   artworkForScene,
   romanceArtworkForScene,
+  sceneArtOverrides,
   scrollLandingAfterTransition,
   visibleArtworkForState,
   ILYRA_KISS_RESULT,
@@ -218,7 +219,12 @@ assert.equal(freeze(finaleBase), beforePreview);
 assert.equal(artworkForScene(nodes['c2-threshold']).src, '/art/bellweather-inn.webp');
 assert.equal(artworkForScene(nodes['c2-triage']).src, '/art/bellweather-infirmary.webp');
 assert.equal(artworkForScene(nodes['c2-eleven-years']).src, '/art/bellweather-infirmary.webp');
-assert.equal(artworkForScene(nodes['c2-investigate']).src, '/art/bellweather-inn.webp');
+assert.equal(artworkForScene(nodes['c2-investigate']).src, '/art/bellweather-infirmary.webp');
+assert.equal(artworkForScene(nodes['c2-ledger']).src, '/art/bellweather-infirmary.webp');
+assert.equal(artworkForScene(nodes['c2-attacker']).src, '/art/bellweather-infirmary.webp');
+assert.equal(artworkForScene(nodes['c2-night-watch']).src, '/art/bellweather-infirmary.webp');
+assert.equal(artworkForScene(nodes['c2-cellar']).src, '/art/bellweather-folded-cellar.webp');
+assert.equal(artworkForScene(nodes['c2-last-testimony']).src, '/art/bellweather-inn.webp');
 assert.equal(
   scrollLandingAfterTransition(
     { ...initialState, nodeId: 'c2-threshold' },
@@ -244,6 +250,13 @@ assert.equal(
   scrollLandingAfterTransition(
     { ...initialState, nodeId: 'c2-eleven-years' },
     { ...initialState, nodeId: 'c2-investigate' },
+  ),
+  'story',
+);
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c2-investigate' },
+    { ...initialState, nodeId: 'c2-cellar' },
   ),
   'hero',
 );
@@ -377,6 +390,52 @@ assert.notEqual(
   artworkForScene(nodes['ridge-road']).src,
   artworkForScene(nodes['low-road']).src,
 );
+
+function chapterOf(id) {
+  const match = String(id).match(/^c(\d+)-/);
+  return match ? Number(match[1]) : 1;
+}
+
+function locationParts(location) {
+  const [prefix, ...rest] = String(location || '')
+    .split(',')
+    .map((part) => part.trim().toLowerCase());
+  return { prefix, room: rest.join(', ') };
+}
+
+function stillInSamePlace(fromLocation, toLocation) {
+  const from = locationParts(fromLocation);
+  const to = locationParts(toLocation);
+  if (!from.prefix || from.prefix !== to.prefix) return false;
+  if (from.room && to.room && from.room !== to.room) return false;
+  return true;
+}
+
+const nodesByChapter = new Map();
+for (const node of Object.values(nodes)) {
+  const chapter = chapterOf(node.id);
+  if (!nodesByChapter.has(chapter)) nodesByChapter.set(chapter, []);
+  nodesByChapter.get(chapter).push(node);
+}
+for (const [chapter, list] of nodesByChapter) {
+  const firstPlate = artworkForScene(list[0]).src;
+  for (const node of list) {
+    if (!sceneArtOverrides[node.id]) continue;
+    const uniqueSrc = artworkForScene(node).src;
+    if (uniqueSrc === firstPlate) continue;
+    for (const choice of node.choices) {
+      const dest = nodes[choice.next];
+      if (!dest || chapterOf(dest.id) !== chapter) continue;
+      if (!stillInSamePlace(node.location, dest.location)) continue;
+      const destSrc = artworkForScene(dest).src;
+      if (destSrc === uniqueSrc || destSrc !== firstPlate) continue;
+      assert.fail(
+        `${node.id} unique plate ${uniqueSrc} snaps back to ${destSrc} at ${dest.id} while still in ${dest.location}`,
+      );
+    }
+  }
+}
+
 assert.equal(
   scrollLandingAfterTransition(
     { ...initialState, nodeId: 'choose-road' },

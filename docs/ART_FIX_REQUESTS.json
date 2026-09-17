@@ -28,7 +28,7 @@
       "destination": "c2-triage",
       "relevantState": "raw node.art is inn on both nodes",
       "actualBefore": "scroll compared raw art keys so the infirmary change was missed; next scenes reused inn too early",
-      "expected": "resolved hero becomes bellweather-infirmary; scroll lands on hero; infirmary continues through c2-medicine and c2-eleven-years; c2-investigate returns to the inn exterior"
+      "expected": "resolved hero becomes bellweather-infirmary; scroll lands on hero; infirmary continues through c2-medicine, c2-eleven-years, and the indoor investigation (c2-investigate, c2-ledger, c2-attacker, c2-night-watch); c2-cellar uses the cellar road plate; the storm-arrival exterior returns only after the inn is fixed"
     },
     {
       "category": "scroll",
@@ -65,8 +65,9 @@
       "chapter": 2,
       "beats": [
         "c2-threshold inn exterior is the arrival plate",
-        "c2-triage, c2-medicine, and c2-eleven-years stay on bellweather-infirmary because they remain in the common-room patient scene",
-        "c2-investigate returns to the inn exterior: the viewpoint leaves the sickroom to search the building. Documented legitimate return."
+        "c2-triage, c2-medicine, c2-eleven-years, c2-investigate, c2-ledger, c2-attacker, and c2-night-watch stay on bellweather-infirmary because those beats remain inside Bellweather Inn among the wounded",
+        "c2-cellar uses bellweather-folded-cellar, the existing cellar-road plate, instead of snapping back to the storm-arrival exterior",
+        "c2-last-testimony and the chapter endings return to the inn exterior after the building is fixed. Documented legitimate return."
       ]
     },
     {
@@ -401,9 +402,9 @@
       "id": "art-fix-005",
       "kind": "correction",
       "status": "delivered",
-      "reason": "User-reported anatomy defect on the existing Bellweather infirmary plate after the four coverage deliveries were integrated. Garran’s body and cot read as malformed and fused with Lysara’s foreground bed. The shared basename remains valid for c2-triage, c2-medicine, and c2-eleven-years, so this is a same-file correction rather than a new variant.",
+      "reason": "User-reported anatomy defect on the existing Bellweather infirmary plate after the four coverage deliveries were integrated. Garran’s body and cot read as malformed and fused with Lysara’s foreground bed. The shared basename remains valid for the indoor Bellweather common-room sequence, so this is a same-file correction rather than a new variant.",
       "chapter": 2,
-      "nodeIds": ["c2-triage", "c2-medicine", "c2-eleven-years"],
+      "nodeIds": ["c2-triage", "c2-medicine", "c2-eleven-years", "c2-investigate", "c2-ledger", "c2-attacker", "c2-night-watch"],
       "incomingChoiceIds": ["c2-search-threshold", "c2-carry-first", "c2-question-name"],
       "sceneSummary": "Chapter II common-room patient scene. One sealed dose, three occupied makeshift beds, Caelan considering who to treat. Garran is the adult male patient behind Lysara whom Maelin is tending. No medicine choice has been taken.",
       "requiredState": {
@@ -414,13 +415,13 @@
       "excludedState": {
         "flags": [],
         "siblingBranches": [],
-        "mustNeverAppearOn": ["c2-threshold", "c2-investigate"]
+        "mustNeverAppearOn": ["c2-threshold", "c2-arrival", "c2-last-testimony"]
       },
       "sourceToCorrect": {
         "path": "source/art/bellweather-infirmary.png",
         "sha256": "8acc39bfece2e62ccd2583597bbb493503e10bf1ab8b1f58b34bd8de82e494c7"
       },
-      "otherNodesUsingSameImage": ["c2-triage", "c2-medicine", "c2-eleven-years"],
+      "otherNodesUsingSameImage": ["c2-triage", "c2-medicine", "c2-eleven-years", "c2-investigate", "c2-ledger", "c2-attacker", "c2-night-watch"],
       "referenceImages": ["source/art/bellweather-infirmary.png"],
       "mustShow": [
         "Garran as a coherent adult man on his own distinct wooden cot behind Lysara",
@@ -435,7 +436,7 @@
       ],
       "preserve": [
         "Existing runtime basename bellweather-infirmary and alt text",
-        "Shared assignment on c2-triage, c2-medicine, and c2-eleven-years"
+        "Shared assignment on the indoor Bellweather common-room sequence through the investigation"
       ],
       "outputBasename": "bellweather-infirmary",
       "proposedSourcePath": "source/art/bellweather-infirmary.png",

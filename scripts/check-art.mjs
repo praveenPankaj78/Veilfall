@@ -51,7 +51,12 @@ const assignedExamples = [
   ['c2-triage', '/art/bellweather-infirmary.webp'],
   ['c2-medicine', '/art/bellweather-infirmary.webp'],
   ['c2-eleven-years', '/art/bellweather-infirmary.webp'],
-  ['c2-investigate', '/art/bellweather-inn.webp'],
+  ['c2-investigate', '/art/bellweather-infirmary.webp'],
+  ['c2-ledger', '/art/bellweather-infirmary.webp'],
+  ['c2-attacker', '/art/bellweather-infirmary.webp'],
+  ['c2-night-watch', '/art/bellweather-infirmary.webp'],
+  ['c2-cellar', '/art/bellweather-folded-cellar.webp'],
+  ['c2-last-testimony', '/art/bellweather-inn.webp'],
   ['low-road', '/art/kings-road-drowned-mile.webp'],
   ['inspection-yard', '/art/eastwatch-saboteur.webp'],
   ['c3-archive', '/art/harrowfen-burning-archive.webp'],
@@ -82,6 +87,8 @@ for (const [nodeId, src] of assignedExamples) {
 assert.equal(artworkAssignmentKind(nodes['ridge-road']), 'override');
 assert.equal(artworkAssignmentKind(nodes['march-order']), 'override');
 assert.equal(artworkAssignmentKind(nodes['road-conversation']), 'override');
+assert.equal(artworkAssignmentKind(nodes['c2-investigate']), 'override');
+assert.equal(artworkAssignmentKind(nodes['c2-cellar']), 'override');
 assert.equal(artworkForScene(nodes['gate-yard']).src, '/art/caelan-east-gate.webp');
 assert.equal(artworkForScene(nodes['c4-stage-turn']).src, '/art/mileless-three-spans.webp');
 
