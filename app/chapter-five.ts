@@ -332,13 +332,14 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       body: 'While cold fire burns nearby, rest can stop exhaustion from worsening, but Health cannot recover. Leaving its reach removes this restriction.',
     },
     body: (state) => [
-      'The last Mileless stone turns under your boot and becomes Dragonspine’s lower road before dusk. That first night, no one dares light a fire. Mara shares her blanket without asking, and every boot against the glass sounds like someone following. By the third day, the mountains have swallowed the last green tree and any help that could arrive in time.',
+      'The last Mileless stone turns under your boot and becomes Dragonspine’s lower road before dusk. At first the slopes look like ordinary mountain. Then the lantern catches on them. The path and the walls are dark glass, thick as ice and hard as rock. Blue light sits in the cracks, as if old fire froze there and never went out.',
+      'That first night, no one dares light a fire. Mara shares her blanket without asking, and every boot against the glass sounds like someone following. By the third day, the mountains have swallowed the last green tree and any help that could arrive in time.',
       ordanCustody(state),
       bridgeParting(state),
       rookMapMemory(state),
-      'Now blue flame rises from cracks on both sides of the path. It bends against the wind and reaches toward your lantern.',
+      'Now blue flame rises from those same cracks. It runs along the glass, bends against the wind, and reaches toward your lantern.',
       routeMemory(state),
-      'Mara covers the lantern. The blue fire ignores the darkness and bends toward your exposed hand. You press your palm to the black glass. It steals enough heat to make the nearest flame turn away, leaving a pale numb line across two fingers. It is a shallow cold burn, painful but not a loss of Health. Old strips of keeper cloth lie frozen against the wall, cold enough to hide a body’s warmth for a few minutes.',
+      'Mara covers the lantern. The blue fire ignores the darkness and bends toward your exposed hand. You press your palm to the black glass. It steals enough heat to make the nearest flame turn away, leaving a pale numb line across two fingers. It is a shallow cold burn, painful but not a loss of Health. Old strips of keeper cloth lie frozen against the glass wall, cold enough to hide a body’s warmth for a few minutes.',
       'The road ahead narrows between two walls of glass, and the flames are already closing behind you. Mara asks, “How do we cross?”',
     ],
     choices: [
@@ -409,7 +410,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'dragonspine',
     body: (state) => [
-      'A man pounds on the inside of a fallen glass slab. One leg is pinned beneath it. Blue fire moves across the clear surface toward the heat of his hands.',
+      'A sheet of that mountain glass has fallen across the pass. A man pounds from inside it. One leg is pinned beneath the slab. Blue fire runs over the clear surface toward the heat of his hands.',
       '“Sorin,” he gasps when he sees you. “I keep the old path to the dragon’s grave. Please. Get this off me before the fire reaches my hands.”',
       has(state, 'c5-burned-at-rear')
         ? 'The deeper burn in your boot answers when your pale fingers close around the slab. “The dragon’s grave,” Sorin gasps. Blue fire touches his knuckles, and the rest of the answer becomes a scream.'
@@ -483,12 +484,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     art: 'dragonspine',
     introducesStoryTerms: ['Vaor'],
     body: (state) => [
-      'Sorin leads you into a refuge cut entirely from glass. There is no hearth. A fire would call every blue flame in the valley, so the group shares blankets and eats cold grain.',
+      'Sorin leads you into a refuge cut from the same dark glass as the road. There is no hearth. A fire inside would shine through the walls and call every blue flame in the valley, so the group shares blankets and eats cold grain.',
       'Your shoulders loosen as your breathing settles, but the pale edges of your burns do not close. Outside, blue flame keeps circling the glass. Until you leave its reach, rest will not restore the Health it has taken.',
       shelterWarmth(state),
       partingTool(state),
       'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon imprisoned beside the fire Nail a century ago.',
-      'Two nights ago, royal soldiers broke the outer seal and woke him. When Vaor resisted, they fixed new drill clamps around his prison. Several soldiers died. The survivors carried a smaller cutting frame higher into the mountain.',
+      'Two nights ago, royal soldiers broke the outer seal and woke him. They came to take a piece of his living fire and use it to control the damaged Nail. Vaor fought. He would not let them bind him or cut that fire out of him. They locked new drill clamps onto his prison anyway. Several soldiers died. The survivors carried a smaller cutting frame higher into the mountain.',
       'Sorin sketches three paths to the upper grave, then plants the charcoal point in the centre of the map. “We have time to settle one thing before we move,” he says.',
     ],
     choices: [
@@ -590,7 +591,7 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
         : has(state, 'c5-decoded-trust-knot')
           ? 'The black wax outline matches a split behind the camp. You entered through it unseen. Nothing here names Rook’s buyer.'
           : 'Nothing here names Rook’s buyer. That trail remains Rook’s to follow beneath the world.',
-      'A diagram beside the drill names its target: a living ember, a piece of Vaor’s own fire. The ember is not the fire Nail. Hale means to cut it out of the dragon and use it to control the damaged Nail.',
+      'A diagram beside the drill matches what Sorin told you. It names the target: a living ember, a piece of Vaor’s own fire. The ember is not the fire Nail. Hale means to cut it out of the dragon and use it to control the damaged Nail.',
       'A surviving patrol is climbing back toward camp. You hear boots on glass and estimate four minutes before they see you.',
       has(state, 'c5-decoded-parting-clue')
         ? 'The hidden mark leads Mara to the commander’s seal press beneath a false floorboard. The thief could not steal it from the Underways, but he showed you exactly where to look.'

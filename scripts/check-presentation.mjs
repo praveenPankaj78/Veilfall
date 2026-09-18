@@ -367,6 +367,9 @@ const siblingExpectations = [
   ['c4-snow-span', '/art/mileless-snow-span.webp'],
   ['c4-brass-span', '/art/mileless-brass-span.webp'],
   ['c4-stage-turn', '/art/mileless-three-spans.webp'],
+  ['c5-north-road', '/art/dragonspine-coldfire.webp'],
+  ['c5-three-climbs', '/art/dragonspine-coldfire.webp'],
+  ['c5-royal-camp', '/art/dragonspine-royal-drill.webp'],
   ['c2-night-watch', '/art/bellweather-upper-landing.webp'],
   ['c6-herd-duty', '/art/kharad-vey-wheel-city.webp'],
   ['c6-forge-duty', '/art/kharad-brake-forge.webp'],
@@ -427,6 +430,18 @@ assert.notEqual(
 assert.notEqual(
   artworkForScene(nodes['c2-night-watch']).src,
   artworkForScene(nodes['c2-bell']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-north-road']).src,
+  artworkForScene(nodes['c5-royal-camp']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-north-road']).src,
+  '/art/nine-nails-revelation.webp',
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-north-road']).src,
+  '/art/mileless-bridge-chase.webp',
 );
 
 function chapterOf(id) {

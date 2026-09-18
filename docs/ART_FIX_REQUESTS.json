@@ -1,7 +1,7 @@
 {
   "auditComplete": true,
   "imageWorkNeeded": false,
-  "auditSummary": "Art-fix-001 through 006 are delivered and integrated. c2-night-watch uses bellweather-upper-landing, a branch-neutral upper-landing plate after the ledger, cellar, and attacker searches. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
+  "auditSummary": "Art-fix-001 through 007 are delivered and integrated. c2-night-watch uses bellweather-upper-landing. dragonspine-coldfire no longer includes Rook on the Chapter Five glass-valley climb. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
   "reproductionMatrix": [
     {
       "category": "relationship-preview",
@@ -101,6 +101,7 @@
     {
       "chapter": 5,
       "beats": [
+        "c5-north-road and the glass-valley approaches use dragonspine-coldfire with Caelan, Mara, and Lysara only. Rook is not physically present in Dragonspine.",
         "c5-royal-camp uses dragonspine-royal-drill",
         "c5-heart-memory uses orivane-concord-memory",
         "other nodes keep dragonspine / vaor / ember continuity"
@@ -554,6 +555,84 @@
         "Valid after ledger, cellar, and attacker incoming flags with no sibling-search leak",
         "Caelan and Mara remain readable at 800px and inside 16:7 desktop and 4:3/57% mobile crops",
         "No kiss, no second Caelan, no siege already in progress"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-007",
+      "kind": "correction",
+      "status": "delivered",
+      "reason": "User-reported cast error on dragonspine-coldfire, the Chapter Five glass-valley plate. The lean man walking furthest ahead in a dark theatrical coat is Rook Sable. Rook left for the Underways at the end of Chapter Four and is not physically present in Dragonspine. Same-file correction: keep the valley, cold fire, and rear three-shot; remove Rook; restore Lysara’s long dark hair and a readable strip of Caelan’s crimson cloak.",
+      "chapter": 5,
+      "nodeIds": [
+        "c5-north-road",
+        "c5-coldfire-rescue",
+        "c5-glass-shelter",
+        "c5-three-climbs",
+        "c5-glass-stair",
+        "c5-frozen-river",
+        "c5-ash-tunnel",
+        "c5-grave-mouth"
+      ],
+      "incomingChoiceIds": [],
+      "sceneSummary": "Chapter Five opening and glass-valley approaches. Title The Dragon’s Cold Grave, location The Glass Valleys of Dragonspine. Caelan, Mara, and Lysara on the lower black-glass road with blue cold fire in the cracks. Sorin is not rescued yet on the opening beat. Rook is in the Underways.",
+      "requiredState": {
+        "flags": "Valid at chapter entry after any Chapter Four Rook outcome. Do not depict arrest, bargain, or trust uniquely.",
+        "companions": "Caelan, Mara, and Lysara. Do not require Sorin, Rook, Ordan, Brann, or Hale.",
+        "relationshipOrConsent": "none; not a romance scene"
+      },
+      "excludedState": {
+        "flags": [],
+        "siblingBranches": ["c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel"],
+        "mustNeverAppearOn": ["c4-theatre-plan", "c4-anchor", "c5-royal-camp", "c5-heart-memory", "c5-vaor-wakes"]
+      },
+      "sourceToCorrect": {
+        "path": "source/art/dragonspine-coldfire.png",
+        "sha256": "25935a3cc7c1b8d23d4b9e486ddf7be235596090cb0c6fec72557bc2f262c426"
+      },
+      "otherNodesUsingSameImage": [
+        "c5-north-road",
+        "c5-coldfire-rescue",
+        "c5-glass-shelter",
+        "c5-three-climbs",
+        "c5-glass-stair",
+        "c5-frozen-river",
+        "c5-ash-tunnel",
+        "c5-grave-mouth"
+      ],
+      "referenceImages": [
+        "source/art/dragonspine-coldfire.png",
+        "source/art/nine-nails-revelation.png",
+        "source/art/dragonspine-royal-drill.png"
+      ],
+      "mustShow": [
+        "The Glass Valleys of Dragonspine and blue cold fire in the cracks",
+        "Exactly three travellers: Caelan, Mara, and Lysara",
+        "Caelan’s faded crimson cloak readable even if ice-crusted",
+        "Lysara with long dark hair, not pale blonde"
+      ],
+      "mustNotShow": [
+        "Rook Sable or any fourth male lead in a dark theatrical coat on the path",
+        "A dragon, Vaor, the royal drill camp, or a chosen crossing already in progress",
+        "Readable text, logos, watermarks, modern objects, or explicit content"
+      ],
+      "preserve": [
+        "Existing runtime basename dragonspine-coldfire",
+        "Shared assignment on the glass-valley and approach nodes"
+      ],
+      "outputBasename": "dragonspine-coldfire",
+      "proposedSourcePath": "source/art/dragonspine-coldfire.png",
+      "proposedDeliveryPaths": [
+        "public/art/dragonspine-coldfire.webp",
+        "public/art/dragonspine-coldfire-800.webp"
+      ],
+      "proposedArtKey": "dragonspine",
+      "alt": "Caelan, Mara, and Lysara climb the glass valleys while cold fire hunts them",
+      "generationBrief": "Same-file correction of dragonspine-coldfire: remove Rook from the far path, give Lysara long dark hair, and show faded crimson on Caelan’s cloak without turning the party to face the camera.",
+      "acceptanceCriteria": [
+        "No fourth walker on the glass path",
+        "Lysara’s hair is dark",
+        "Caelan, Mara, Lysara, the lantern, and the nearest cold fire remain inside 16:7 desktop and 4:3/57% mobile crops"
       ],
       "estimatedAssetBudgetBytes": 220000
     }

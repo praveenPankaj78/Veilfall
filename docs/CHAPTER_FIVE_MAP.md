@@ -53,13 +53,16 @@ Cold fire, Vaor, and Orivane are introduced through action or dialogue before th
 
 Cold fire is introduced before the player can choose an action involving it.
 
-- It is blue flame created by the damaged fire Nail.
+- The north road first shows that Dragonspine’s path and walls are dark glass, with blue light already sitting in the cracks.
+- Cold fire is blue flame created by the damaged fire Nail.
 - It steals heat rather than creating it.
 - It follows living bodies, ordinary flame, and warmed objects.
 - Health cannot recover while it remains nearby.
 - Oathfire can redirect it, but doing so exposes Caelan to Vaor's grief.
 
 The story demonstrates each part through visible movement. It does not require the player to understand physics or hidden cosmology.
+
+Sorin’s shelter names Vaor, then says plainly why the Crown woke him: they want a piece of his living fire to control the damaged Nail. The royal camp later confirms that target on the drill diagram. The Concord’s hidden price still waits until Orivane’s memory.
 
 ## Mountain routes
 

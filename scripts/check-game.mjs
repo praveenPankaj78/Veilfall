@@ -5300,12 +5300,13 @@ const coldCrossing = nodes['c5-north-road'].choices.find(
 );
 if (
   /extract its ember/i.test(nodes['c5-north-road'].objective) ||
+  !/path and the walls are dark glass/i.test(chapterFiveOpening) ||
   !/black glass.*steals enough heat/i.test(chapterFiveOpening) ||
   !/shallow cold burn.*not a loss of Health/i.test(chapterFiveOpening) ||
   !/glass chilled cloth/i.test(coldCrossing?.label ?? '')
 ) {
   failures.push(
-    'Chapter Five either names the ember too early or lets darkness hide body heat from cold fire',
+    'Chapter Five either names the ember too early, assumes the glass mountains, or lets darkness hide body heat from cold fire',
   );
 }
 const sorinRescue = renderedBody('c5-coldfire-rescue', chapterFiveBase);
@@ -5314,10 +5315,12 @@ if (
   /Vaor|survey force|soldiers died|survivors carried/i.test(sorinRescue) ||
   !/Once he can breathe without shaking.*Vaor is an ancient dragon/i.test(
     sorinShelter,
-  )
+  ) ||
+  !/living fire.*control the damaged Nail/i.test(sorinShelter) ||
+  !/cut that fire out of him/i.test(sorinShelter)
 ) {
   failures.push(
-    'Sorin still delivers the Dragonspine history dump while trapped beneath the glass',
+    'Sorin still delivers the Dragonspine history dump while trapped beneath the glass, or he names the drill without saying what Vaor fought',
   );
 }
 const royalCamp = renderedBody('c5-royal-camp', chapterFiveBase);

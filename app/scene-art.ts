@@ -108,7 +108,7 @@ export const sceneArtwork: Record<SceneArtKey, SceneArtwork> = {
   ),
   dragonspine: plate(
     'dragonspine-coldfire',
-    'Caelan and his companions climb through the glass valleys while cold fire hunts them',
+    'Caelan, Mara, and Lysara climb the glass valleys while cold fire hunts them',
   ),
   vaor: plate(
     'vaor-memory-grave',
