@@ -62,7 +62,7 @@ Cold fire is introduced before the player can choose an action involving it.
 
 The story demonstrates each part through visible movement. It does not require the player to understand physics or hidden cosmology.
 
-Sorin’s shelter names Vaor, then says plainly why the Crown woke him: they want a piece of his living fire to control the damaged Nail. The royal camp later confirms that target on the drill diagram. The Concord’s hidden price still waits until Orivane’s memory.
+Sorin’s shelter names Vaor, then says plainly why the Crown woke him: they want a piece of his living fire to control the damaged Nail. It also says why Sorin is on the mountain: he is a Dragonspine keeper, keepers stop anyone from cutting the dragon, and the soldiers trapped him on the lower pass when he tried to warn people coming up. Before he agrees to guide the party, he asks why they came; they answer with the royal dispatch, the Distance fragment, and the lower road, and that they are not the drill crew. He guides them because they pulled him out and came to reach the Nail before the cutting. The royal camp later confirms that target on the drill diagram and shows that Malrec’s private force, not the Queen, sent the cutting work. The Concord’s hidden price still waits until Orivane’s memory.
 
 ## Mountain routes
 

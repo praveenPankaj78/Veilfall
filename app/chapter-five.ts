@@ -410,11 +410,11 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
     threat: 'Immediate',
     art: 'dragonspine',
     body: (state) => [
-      'A sheet of that mountain glass has fallen across the pass. A man pounds from inside it. One leg is pinned beneath the slab. Blue fire runs over the clear surface toward the heat of his hands.',
-      '“Sorin,” he gasps when he sees you. “I keep the old path to the dragon’s grave. Please. Get this off me before the fire reaches my hands.”',
+      'A sheet of that mountain glass has fallen across the pass. A man pounds from inside it. One leg is pinned beneath the slab. A worn map case is still strapped across his shoulders. Blue fire runs over the clear surface toward the heat of his hands.',
+      '“Sorin,” he gasps when he sees you. “I keep the old path to the dragon’s grave. Crown soldiers dropped this when I tried to turn them back. Please. Get this off me before the fire reaches my hands.”',
       has(state, 'c5-burned-at-rear')
-        ? 'The deeper burn in your boot answers when your pale fingers close around the slab. “The dragon’s grave,” Sorin gasps. Blue fire touches his knuckles, and the rest of the answer becomes a scream.'
-        : 'Your pale, cold burned fingers close around the slab. “The dragon’s grave,” Sorin gasps. Blue fire touches his knuckles, and the rest of the answer becomes a scream.',
+        ? 'The deeper burn in your boot answers when your pale fingers close around the slab. He tries to say more. Blue fire touches his knuckles, and the rest of the answer becomes a scream.'
+        : 'Your pale, cold burned fingers close around the slab. He tries to say more. Blue fire touches his knuckles, and the rest of the answer becomes a scream.',
     ],
     choices: [
       {
@@ -488,8 +488,12 @@ export const chapterFiveNodes: Record<string, StoryNode> = {
       'Your shoulders loosen as your breathing settles, but the pale edges of your burns do not close. Outside, blue flame keeps circling the glass. Until you leave its reach, rest will not restore the Health it has taken.',
       shelterWarmth(state),
       partingTool(state),
-      'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon imprisoned beside the fire Nail a century ago.',
+      'Once he can breathe without shaking, Sorin explains what he could not say beneath the glass. Vaor is an ancient dragon imprisoned beside the fire Nail a century ago. Sorin is a Dragonspine keeper. Keepers tend the old paths and the grave so that dragon stays sleeping and nobody cuts him.',
       'Two nights ago, royal soldiers broke the outer seal and woke him. They came to take a piece of his living fire and use it to control the damaged Nail. Vaor fought. He would not let them bind him or cut that fire out of him. They locked new drill clamps onto his prison anyway. Several soldiers died. The survivors carried a smaller cutting frame higher into the mountain.',
+      'The keepers tried to stop the cutting. The soldiers answered with glass and fire. The others are dead or scattered. Sorin ran the lower path to warn anyone still coming up. That is how the slab caught him.',
+      'The crowned shield on your cloak catches the lamp. Sorin sees it and keeps his maps open. “You wear their mark,” he says. “Those men came to cut him. Why are you on my mountain?”',
+      'Mara keeps her hands where he can see them. You answer with the dispatch and the road you actually climbed. A royal order sent this party to the active fire Nail. The fragment in your pack marks that Nail. You came up the lower road to reach it before the soldiers already cutting the grave. You are not the crew that dropped the glass on him.',
+      'Sorin weighs that against the rescue, the lower road, and iron that is not a drill. “Then I can guide you,” he says. “A keeper stops the cutting. You pulled me out. That is enough to start.”',
       'Sorin sketches three paths to the upper grave, then plants the charcoal point in the centre of the map. “We have time to settle one thing before we move,” he says.',
     ],
     choices: [

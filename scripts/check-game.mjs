@@ -5313,14 +5313,31 @@ const sorinRescue = renderedBody('c5-coldfire-rescue', chapterFiveBase);
 const sorinShelter = renderedBody('c5-glass-shelter', chapterFiveBase);
 if (
   /Vaor|survey force|soldiers died|survivors carried/i.test(sorinRescue) ||
+  !/keep the old path to the dragon’s grave/i.test(sorinRescue) ||
+  !/Crown soldiers dropped this when I tried to turn them back/i.test(
+    sorinRescue,
+  ) ||
   !/Once he can breathe without shaking.*Vaor is an ancient dragon/i.test(
     sorinShelter,
   ) ||
   !/living fire.*control the damaged Nail/i.test(sorinShelter) ||
-  !/cut that fire out of him/i.test(sorinShelter)
+  !/cut that fire out of him/i.test(sorinShelter) ||
+  !/Sorin is a Dragonspine keeper/i.test(sorinShelter) ||
+  !/Keepers tend the old paths and the grave so that dragon stays sleeping/i.test(
+    sorinShelter,
+  ) ||
+  !/The keepers tried to stop the cutting/i.test(sorinShelter) ||
+  !/ran the lower path to warn anyone still coming up/i.test(sorinShelter) ||
+  !/Those men came to cut him/i.test(sorinShelter) ||
+  !/Why are you on my mountain/i.test(sorinShelter) ||
+  !/A royal order sent this party to the active fire Nail/i.test(
+    sorinShelter,
+  ) ||
+  !/Then I can guide you/i.test(sorinShelter) ||
+  !/You pulled me out/i.test(sorinShelter)
 ) {
   failures.push(
-    'Sorin still delivers the Dragonspine history dump while trapped beneath the glass, or he names the drill without saying what Vaor fought',
+    'Sorin still delivers the Dragonspine history dump while trapped beneath the glass, or he guides the party before they say why they came',
   );
 }
 const royalCamp = renderedBody('c5-royal-camp', chapterFiveBase);

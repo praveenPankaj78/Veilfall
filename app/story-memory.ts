@@ -369,9 +369,20 @@ export function knownTruths(game: GameState) {
         'Cold fire from the damaged fire Nail steals warmth and follows living heat. My Health cannot recover while it burns nearby.',
       );
     }
+    if (
+      game.nodeId !== 'c5-north-road' &&
+      game.nodeId !== 'c5-coldfire-rescue'
+    ) {
+      truths.push(
+        'We told Sorin why we came: a royal dispatch sent us to the fire Nail before the soldiers already cutting the grave. He will guide us because we pulled him out and we are not the drill crew.',
+      );
+    }
     if (vaorKnownNodes.has(game.nodeId)) {
       truths.push(
         'Vaor was imprisoned beneath memory glass a century ago. Regent Malrec’s force reopened the grave two nights ago, clamped him again, and now intends to cut out his living ember.',
+      );
+      truths.push(
+        'Sorin is a Dragonspine keeper. He tried to stop the cutting and was trapped under glass on the lower pass.',
       );
     }
     if (
