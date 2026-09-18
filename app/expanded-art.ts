@@ -139,6 +139,10 @@ export const additionalArtwork = {
     'bellweather-upper-landing',
     'Caelan and Mara share a quiet watch on Bellweather’s upper landing while rain and a shifting road show through the window',
   ),
+  upperfork: plate(
+    'dragonspine-upper-fork',
+    'Caelan, Mara, Lysara, and Sorin face three unused paths at Dragonspine’s upper valley fork',
+  ),
 } satisfies Record<string, SceneArtwork>;
 
 export const sceneArtOverrides: Partial<Record<string, string>> = {
@@ -172,7 +176,10 @@ export const sceneArtOverrides: Partial<Record<string, string>> = {
   'c4-brass-span': 'brassspan',
   'c4-theatre-plan': 'mirrorstage',
   'c4-anchor': 'mirrorstage',
+  // Chapter V: the glass-valley arrival stays on dragonspine-coldfire. The
+  // royal camp is unique. Three-climbs is the upper fork after leaving camp.
   'c5-royal-camp': 'royaldrill',
+  'c5-three-climbs': 'upperfork',
   'c5-heart-memory': 'orivane',
   'c6-broken-axle': 'brokenaxle',
   'c6-forge-duty': 'brakeforge',

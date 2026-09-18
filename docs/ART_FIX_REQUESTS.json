@@ -1,7 +1,7 @@
 {
   "auditComplete": true,
   "imageWorkNeeded": false,
-  "auditSummary": "Art-fix-001 through 007 are delivered and integrated. c2-night-watch uses bellweather-upper-landing. dragonspine-coldfire no longer includes Rook on the Chapter Five glass-valley climb. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
+  "auditSummary": "Art-fix-001 through 008 are delivered and integrated. c5-three-climbs uses dragonspine-upper-fork after the unique royal camp plate. dragonspine-coldfire remains the lower-valley arrival. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
   "reproductionMatrix": [
     {
       "category": "relationship-preview",
@@ -38,6 +38,15 @@
       "relevantState": "after any of ledger, cellar, or attacker; overlay title One Quiet Minute",
       "actualBefore": "c2-night-watch reuses bellweather-infirmary (and raw node.art is the storm-arrival inn). After the unique cellar road that is a snap back to an earlier interior; the arrival exterior, other-nights combat, and road pin are the wrong moment.",
       "expected": "new branch-neutral Bellweather upper-landing plate shared by all three investigation routes; must not leak cellar, ledger, pantry, arrival, or the later other-nights siege"
+    },
+    {
+      "category": "artwork-continuity",
+      "sourceNode": "c5-royal-camp",
+      "choiceId": "c5-leave-camp-clean",
+      "destination": "c5-three-climbs",
+      "relevantState": "after any royal-camp search; overlay title Choose What Hunts You",
+      "actualBefore": "c5-three-climbs reuses dragonspine-coldfire after the unique royal camp plate",
+      "expected": "dragonspine-upper-fork on c5-three-climbs only; glass-stair, frozen-river, ash-tunnel, and grave-mouth stay on dragonspine-coldfire until unique approach plates exist"
     },
     {
       "category": "scroll",
@@ -101,10 +110,11 @@
     {
       "chapter": 5,
       "beats": [
-        "c5-north-road and the glass-valley approaches use dragonspine-coldfire with Caelan, Mara, and Lysara only. Rook is not physically present in Dragonspine.",
+        "c5-north-road uses dragonspine-coldfire with Caelan, Mara, and Lysara only. Rook is not physically present in Dragonspine.",
         "c5-royal-camp uses dragonspine-royal-drill",
+        "c5-three-climbs uses dragonspine-upper-fork after leaving the camp. Do not snap back to the lower-valley arrival.",
         "c5-heart-memory uses orivane-concord-memory",
-        "other nodes keep dragonspine / vaor / ember continuity"
+        "glass-stair, frozen-river, ash-tunnel, and grave-mouth still use dragonspine-coldfire until unique approach plates exist"
       ]
     },
     {
@@ -568,7 +578,6 @@
         "c5-north-road",
         "c5-coldfire-rescue",
         "c5-glass-shelter",
-        "c5-three-climbs",
         "c5-glass-stair",
         "c5-frozen-river",
         "c5-ash-tunnel",
@@ -594,7 +603,6 @@
         "c5-north-road",
         "c5-coldfire-rescue",
         "c5-glass-shelter",
-        "c5-three-climbs",
         "c5-glass-stair",
         "c5-frozen-river",
         "c5-ash-tunnel",
@@ -633,6 +641,75 @@
         "No fourth walker on the glass path",
         "Lysara’s hair is dark",
         "Caelan, Mara, Lysara, the lantern, and the nearest cold fire remain inside 16:7 desktop and 4:3/57% mobile crops"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-008",
+      "kind": "new",
+      "status": "delivered",
+      "reason": "c5-three-climbs is the upper valley fork after the unique royal camp plate. Raw node.art is dragonspine, so the lower-valley arrival returns. dragonspine-royal-drill is the abandoned camp. vaor-memory-grave spoils the living dragon. No existing plate shows three unused paths. A new branch-neutral upper-fork plate is required.",
+      "chapter": 5,
+      "nodeIds": ["c5-three-climbs"],
+      "incomingChoiceIds": [
+        "c5-recover-regent-order",
+        "c5-read-frozen-dead",
+        "c5-use-command-seal",
+        "c5-leave-camp-clean"
+      ],
+      "sceneSummary": "app/chapter-five.ts node c5-three-climbs, kicker Three ways into the grave, overlay title Choose What Hunts You, location The Upper Valley Fork. Sorin points out three unused routes: glass stair, frozen river under ice, ash tunnel. An arrow strikes the stair. Choices have not been taken. Destinations after any choice are c5-glass-stair, c5-frozen-river, or c5-ash-tunnel, which must not use this new image yet.",
+      "requiredState": {
+        "flags": "Valid after any royal-camp search. Do not depict a unique camp outcome.",
+        "companions": "Caelan, Mara, Lysara, and Sorin. Do not require Rook, Ordan, or Hale.",
+        "relationshipOrConsent": "none; not a romance scene"
+      },
+      "excludedState": {
+        "flags": [],
+        "siblingBranches": ["c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel"],
+        "mustNeverAppearOn": [
+          "c5-north-road",
+          "c5-coldfire-rescue",
+          "c5-glass-shelter",
+          "c5-royal-camp",
+          "c5-glass-stair",
+          "c5-frozen-river",
+          "c5-ash-tunnel",
+          "c5-grave-mouth",
+          "c5-vaor-wakes"
+        ]
+      },
+      "sourceToCorrect": null,
+      "otherNodesUsingSameImage": [],
+      "referenceImages": [
+        "source/art/dragonspine-coldfire.png",
+        "source/art/dragonspine-royal-drill.png",
+        "source/art/nine-nails-revelation.png"
+      ],
+      "mustShow": [
+        "Three unused paths: glass stair, frozen river, ash tunnel",
+        "Caelan, Mara, Lysara, and Sorin at the fork",
+        "Tiny distant archers on the stair only"
+      ],
+      "mustNotShow": [
+        "Rook or a fifth traveller walking a path",
+        "The royal camp as the setting",
+        "Vaor or a grave interior",
+        "A chosen route already entered"
+      ],
+      "preserve": [],
+      "outputBasename": "dragonspine-upper-fork",
+      "proposedSourcePath": "source/art/dragonspine-upper-fork.png",
+      "proposedDeliveryPaths": [
+        "public/art/dragonspine-upper-fork.webp",
+        "public/art/dragonspine-upper-fork-800.webp"
+      ],
+      "proposedArtKey": "upperfork",
+      "alt": "Caelan, Mara, Lysara, and Sorin face three unused paths at Dragonspine’s upper valley fork",
+      "generationBrief": "Create one cinematic 16:9 landscape dark-fantasy illustration of Dragonspine’s upper valley fork after the royal camp and before any path is chosen. Four adults at the fork: Caelan, Mara, Lysara, and Sorin with a map. Three unused paths: glass stair with tiny distant archers, frozen river with blue fire, ash-tunnel mouth. No Rook, no dragon, no camp tents.",
+      "acceptanceCriteria": [
+        "Does not reuse the lower-valley arrival or the royal camp",
+        "Exactly four named travellers at the fork",
+        "Three unused paths remain readable in 16:7 desktop and 4:3/57% mobile crops"
       ],
       "estimatedAssetBudgetBytes": 220000
     }

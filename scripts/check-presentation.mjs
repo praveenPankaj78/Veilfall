@@ -368,7 +368,7 @@ const siblingExpectations = [
   ['c4-brass-span', '/art/mileless-brass-span.webp'],
   ['c4-stage-turn', '/art/mileless-three-spans.webp'],
   ['c5-north-road', '/art/dragonspine-coldfire.webp'],
-  ['c5-three-climbs', '/art/dragonspine-coldfire.webp'],
+  ['c5-three-climbs', '/art/dragonspine-upper-fork.webp'],
   ['c5-royal-camp', '/art/dragonspine-royal-drill.webp'],
   ['c2-night-watch', '/art/bellweather-upper-landing.webp'],
   ['c6-herd-duty', '/art/kharad-vey-wheel-city.webp'],
@@ -442,6 +442,25 @@ assert.notEqual(
 assert.notEqual(
   artworkForScene(nodes['c5-north-road']).src,
   '/art/mileless-bridge-chase.webp',
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-three-climbs']).src,
+  artworkForScene(nodes['c5-north-road']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-three-climbs']).src,
+  artworkForScene(nodes['c5-royal-camp']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-three-climbs']).src,
+  artworkForScene(nodes['c5-glass-stair']).src,
+);
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c5-royal-camp' },
+    { ...initialState, nodeId: 'c5-three-climbs' },
+  ),
+  'hero',
 );
 
 function chapterOf(id) {

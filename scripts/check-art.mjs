@@ -37,8 +37,8 @@ const allArt = [
   ...Object.values(additionalArtwork),
 ];
 assert.ok(
-  new Set(allArt.map((art) => art.src)).size >= 69,
-  'The shipped artwork set should not shrink below the 69 integrated plates',
+  new Set(allArt.map((art) => art.src)).size >= 70,
+  'The shipped artwork set should not shrink below the 70 integrated plates',
 );
 for (const art of allArt) {
   assert.ok(art.alt.trim());
@@ -67,8 +67,9 @@ const assignedExamples = [
   ['c4-snow-span', '/art/mileless-snow-span.webp'],
   ['c4-brass-span', '/art/mileless-brass-span.webp'],
   ['c5-north-road', '/art/dragonspine-coldfire.webp'],
-  ['c5-three-climbs', '/art/dragonspine-coldfire.webp'],
+  ['c5-three-climbs', '/art/dragonspine-upper-fork.webp'],
   ['c5-royal-camp', '/art/dragonspine-royal-drill.webp'],
+  ['c5-glass-stair', '/art/dragonspine-coldfire.webp'],
   ['ridge-road', '/art/eastwatch-ridge-road.webp'],
   ['march-order', '/art/kings-road-alderwood-rise.webp'],
   ['road-conversation', '/art/kings-road-alderwood-rise.webp'],
@@ -93,6 +94,7 @@ assert.equal(artworkAssignmentKind(nodes['road-conversation']), 'override');
 assert.equal(artworkAssignmentKind(nodes['c2-investigate']), 'override');
 assert.equal(artworkAssignmentKind(nodes['c2-night-watch']), 'override');
 assert.equal(artworkAssignmentKind(nodes['c2-cellar']), 'override');
+assert.equal(artworkAssignmentKind(nodes['c5-three-climbs']), 'override');
 assert.equal(artworkForScene(nodes['gate-yard']).src, '/art/caelan-east-gate.webp');
 assert.equal(artworkForScene(nodes['c4-stage-turn']).src, '/art/mileless-three-spans.webp');
 

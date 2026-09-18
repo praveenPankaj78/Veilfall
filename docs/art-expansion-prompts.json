@@ -347,6 +347,19 @@
         "public/art/bellweather-upper-landing.webp",
         "public/art/bellweather-upper-landing-800.webp"
       ]
+    },
+    {
+      "basename": "dragonspine-upper-fork",
+      "chapter": 5,
+      "nodes": ["c5-three-climbs"],
+      "key": "upperfork",
+      "prompt": "Use case: illustration-story. Asset: one 16:9 landscape illustration for the dark fantasy game Veilfall: The Ember Oath. Style: cinematic painterly realism matching existing Dragonspine plates. Caelan: 31, short tousled dark brown hair, short beard, dark steel/leather armor, faded crimson cloak. Mara: 29, athletic scout, tied dark brown hair, green leather, bow. Lysara: 36, long dark hair, pointed ears, living green silk. Sorin: weathered mountain keeper, practical wool and leather, charcoal map. Scene: Upper Valley Fork after the royal camp. Three unused paths: glass stair with tiny distant archers, frozen river with blue fire, ash-tunnel mouth. Exactly four travellers at the fork. No Rook, no dragon, no camp, no text.",
+      "alt": "Caelan, Mara, Lysara, and Sorin face three unused paths at Dragonspine’s upper valley fork",
+      "source": "source/art/dragonspine-upper-fork.png",
+      "delivery": [
+        "public/art/dragonspine-upper-fork.webp",
+        "public/art/dragonspine-upper-fork-800.webp"
+      ]
     }
   ]
 }

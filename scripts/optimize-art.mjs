@@ -81,6 +81,7 @@ const runtimeBasenames = new Set([
   'mileless-snow-span',
   'mileless-brass-span',
   'bellweather-upper-landing',
+  'dragonspine-upper-fork',
 ]);
 
 const variants = [
