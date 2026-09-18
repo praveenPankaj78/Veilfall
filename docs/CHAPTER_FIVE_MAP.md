@@ -147,9 +147,9 @@ Every ending unlocks the next chapter without currency. The difference is power,
 
 ## Chapter artwork
 
-- `public/art/dragonspine-coldfire.webp` covers the glass-valley arrival and, until a unique plate exists, the grave door.
+- `public/art/dragonspine-coldfire.webp` covers the glass-valley arrival.
 - `public/art/dragonspine-royal-drill.webp` covers the abandoned royal camp.
-- `public/art/dragonspine-upper-fork.webp` covers the upper valley fork at `c5-three-climbs` and all three climbs after that choice.
+- `public/art/dragonspine-upper-fork.webp` covers the upper valley fork, all three climbs, and the grave door.
 - `public/art/vaor-memory-grave.webp` covers the memory gallery, Vaor, and the Crown assault.
 - `public/art/ember-bearer-vision.webp` covers the defining choice and all three endings.
 

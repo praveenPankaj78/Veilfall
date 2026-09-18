@@ -72,7 +72,7 @@ const assignedExamples = [
   ['c5-glass-stair', '/art/dragonspine-upper-fork.webp'],
   ['c5-frozen-river', '/art/dragonspine-upper-fork.webp'],
   ['c5-ash-tunnel', '/art/dragonspine-upper-fork.webp'],
-  ['c5-grave-mouth', '/art/dragonspine-coldfire.webp'],
+  ['c5-grave-mouth', '/art/dragonspine-upper-fork.webp'],
   ['ridge-road', '/art/eastwatch-ridge-road.webp'],
   ['march-order', '/art/kings-road-alderwood-rise.webp'],
   ['road-conversation', '/art/kings-road-alderwood-rise.webp'],
@@ -101,6 +101,7 @@ assert.equal(artworkAssignmentKind(nodes['c5-three-climbs']), 'override');
 assert.equal(artworkAssignmentKind(nodes['c5-glass-stair']), 'override');
 assert.equal(artworkAssignmentKind(nodes['c5-frozen-river']), 'override');
 assert.equal(artworkAssignmentKind(nodes['c5-ash-tunnel']), 'override');
+assert.equal(artworkAssignmentKind(nodes['c5-grave-mouth']), 'override');
 assert.equal(artworkForScene(nodes['gate-yard']).src, '/art/caelan-east-gate.webp');
 assert.equal(artworkForScene(nodes['c4-stage-turn']).src, '/art/mileless-three-spans.webp');
 

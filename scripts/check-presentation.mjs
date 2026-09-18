@@ -372,7 +372,7 @@ const siblingExpectations = [
   ['c5-glass-stair', '/art/dragonspine-upper-fork.webp'],
   ['c5-frozen-river', '/art/dragonspine-upper-fork.webp'],
   ['c5-ash-tunnel', '/art/dragonspine-upper-fork.webp'],
-  ['c5-grave-mouth', '/art/dragonspine-coldfire.webp'],
+  ['c5-grave-mouth', '/art/dragonspine-upper-fork.webp'],
   ['c5-royal-camp', '/art/dragonspine-royal-drill.webp'],
   ['c2-night-watch', '/art/bellweather-upper-landing.webp'],
   ['c6-herd-duty', '/art/kharad-vey-wheel-city.webp'],
@@ -467,7 +467,7 @@ assert.equal(
   artworkForScene(nodes['c5-three-climbs']).src,
   artworkForScene(nodes['c5-ash-tunnel']).src,
 );
-assert.notEqual(
+assert.equal(
   artworkForScene(nodes['c5-three-climbs']).src,
   artworkForScene(nodes['c5-grave-mouth']).src,
 );
@@ -485,49 +485,51 @@ assert.equal(
   ),
   'story',
 );
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c5-ash-tunnel' },
+    { ...initialState, nodeId: 'c5-grave-mouth' },
+  ),
+  'story',
+);
 
 function chapterOf(id) {
   const match = String(id).match(/^c(\d+)-/);
   return match ? Number(match[1]) : 1;
 }
 
-function locationParts(location) {
-  const [prefix, ...rest] = String(location || '')
-    .split(',')
-    .map((part) => part.trim().toLowerCase());
-  return { prefix, room: rest.join(', ') };
-}
-
-function stillInSamePlace(fromLocation, toLocation) {
-  const from = locationParts(fromLocation);
-  const to = locationParts(toLocation);
-  if (!from.prefix || from.prefix !== to.prefix) return false;
-  if (from.room && to.room && from.room !== to.room) return false;
-  return true;
-}
-
-const nodesByChapter = new Map();
+// Same authored art key: a later unique plate must not fall back to the
+// authored default unless that return is documented. Location names are not
+// a filter; camp, fork, climbs, and the grave door all have different
+// location strings and still snap back without this check.
+const authoredDefaultReturns = new Set([
+  'c3-bill',
+  'c3-divided-loyalty',
+  'c4-stage-turn',
+  'c4-duty',
+  'c5-grave-collapse',
+  'c6-first-duty',
+  'c6-ancestor-warning',
+  'c7-many-or-one',
+  'c8-breach',
+  'c9-prepare-room',
+  'c9-crossing-roster',
+  'c11-engine-control',
+]);
 for (const node of Object.values(nodes)) {
-  const chapter = chapterOf(node.id);
-  if (!nodesByChapter.has(chapter)) nodesByChapter.set(chapter, []);
-  nodesByChapter.get(chapter).push(node);
-}
-for (const [chapter, list] of nodesByChapter) {
-  const firstPlate = artworkForScene(list[0]).src;
-  for (const node of list) {
-    if (!sceneArtOverrides[node.id]) continue;
-    const uniqueSrc = artworkForScene(node).src;
-    if (uniqueSrc === firstPlate) continue;
-    for (const choice of node.choices) {
-      const dest = nodes[choice.next];
-      if (!dest || chapterOf(dest.id) !== chapter) continue;
-      if (!stillInSamePlace(node.location, dest.location)) continue;
-      const destSrc = artworkForScene(dest).src;
-      if (destSrc === uniqueSrc || destSrc !== firstPlate) continue;
-      assert.fail(
-        `${node.id} unique plate ${uniqueSrc} snaps back to ${destSrc} at ${dest.id} while still in ${dest.location}`,
-      );
-    }
+  for (const choice of node.choices) {
+    const dest = nodes[choice.next];
+    if (!dest) continue;
+    if (chapterOf(node.id) !== chapterOf(dest.id)) continue;
+    if (node.art !== dest.art) continue;
+    if (sceneArtOverrides[dest.id]) continue;
+    const srcArt = artworkForScene(node).src;
+    const destArt = artworkForScene(dest).src;
+    if (srcArt === destArt) continue;
+    if (authoredDefaultReturns.has(dest.id)) continue;
+    assert.fail(
+      `${node.id} plate ${srcArt} snaps back to authored default ${destArt} at ${dest.id}`,
+    );
   }
 }
 

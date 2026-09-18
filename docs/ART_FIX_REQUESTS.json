@@ -1,7 +1,7 @@
 {
   "auditComplete": true,
   "imageWorkNeeded": false,
-  "auditSummary": "Art-fix-001 through 008 are delivered and integrated. c5-three-climbs and all three climbs share dragonspine-upper-fork after the unique royal camp plate. dragonspine-coldfire remains the lower-valley arrival and, until a unique plate exists, the grave door. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
+  "auditSummary": "Art-fix-001 through 008 are delivered and integrated. c5-three-climbs, the three climbs, and c5-grave-mouth share dragonspine-upper-fork after the unique royal camp plate. dragonspine-coldfire remains the lower-valley arrival. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
   "reproductionMatrix": [
     {
       "category": "relationship-preview",
@@ -46,7 +46,7 @@
       "destination": "c5-three-climbs",
       "relevantState": "after any royal-camp search; overlay title Choose What Hunts You",
       "actualBefore": "c5-three-climbs reuses dragonspine-coldfire after the unique royal camp plate",
-      "expected": "dragonspine-upper-fork on c5-three-climbs and on all three climbs; grave-mouth stays on dragonspine-coldfire until a unique grave-door plate exists"
+      "expected": "dragonspine-upper-fork on c5-three-climbs, all three climbs, and c5-grave-mouth so the mountain sequence does not snap back to the lower-valley arrival"
     },
     {
       "category": "scroll",
@@ -112,9 +112,9 @@
       "beats": [
         "c5-north-road uses dragonspine-coldfire with Caelan, Mara, and Lysara only. Rook is not physically present in Dragonspine.",
         "c5-royal-camp uses dragonspine-royal-drill",
-        "c5-three-climbs, c5-glass-stair, c5-frozen-river, and c5-ash-tunnel share dragonspine-upper-fork. Do not snap back to the lower-valley arrival on a chosen climb.",
+        "c5-three-climbs, c5-glass-stair, c5-frozen-river, c5-ash-tunnel, and c5-grave-mouth share dragonspine-upper-fork. Do not snap back to the lower-valley arrival on a chosen climb or at the grave door.",
         "c5-heart-memory uses orivane-concord-memory",
-        "grave-mouth still uses dragonspine-coldfire until a unique grave-door plate exists"
+        "c5-grave-collapse returns to vaor-memory-grave after the Orivane memory. Documented legitimate return."
       ]
     },
     {
@@ -577,8 +577,7 @@
       "nodeIds": [
         "c5-north-road",
         "c5-coldfire-rescue",
-        "c5-glass-shelter",
-        "c5-grave-mouth"
+        "c5-glass-shelter"
       ],
       "incomingChoiceIds": [],
       "sceneSummary": "Chapter Five opening and glass-valley approaches. Title The Dragon’s Cold Grave, location The Glass Valleys of Dragonspine. Caelan, Mara, and Lysara on the lower black-glass road with blue cold fire in the cracks. Sorin is not rescued yet on the opening beat. Rook is in the Underways.",
@@ -590,7 +589,7 @@
       "excludedState": {
         "flags": [],
         "siblingBranches": ["c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel"],
-        "mustNeverAppearOn": ["c4-theatre-plan", "c4-anchor", "c5-royal-camp", "c5-three-climbs", "c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel", "c5-heart-memory", "c5-vaor-wakes"]
+        "mustNeverAppearOn": ["c4-theatre-plan", "c4-anchor", "c5-royal-camp", "c5-three-climbs", "c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel", "c5-grave-mouth", "c5-heart-memory", "c5-vaor-wakes"]
       },
       "sourceToCorrect": {
         "path": "source/art/dragonspine-coldfire.png",
@@ -599,8 +598,7 @@
       "otherNodesUsingSameImage": [
         "c5-north-road",
         "c5-coldfire-rescue",
-        "c5-glass-shelter",
-        "c5-grave-mouth"
+        "c5-glass-shelter"
       ],
       "referenceImages": [
         "source/art/dragonspine-coldfire.png",
@@ -642,9 +640,9 @@
       "id": "art-fix-008",
       "kind": "new",
       "status": "delivered",
-      "reason": "c5-three-climbs is the upper valley fork after the unique royal camp plate. Raw node.art is dragonspine, so the lower-valley arrival returns on the fork and on each chosen climb. dragonspine-royal-drill is the abandoned camp. vaor-memory-grave spoils the living dragon. The same branch-neutral upper-fork plate covers the choice and all three climbs.",
+      "reason": "c5-three-climbs is the upper valley fork after the unique royal camp plate. Raw node.art is dragonspine, so the lower-valley arrival returns on the fork, each chosen climb, and the grave door. dragonspine-royal-drill is the abandoned camp. vaor-memory-grave spoils the living dragon. The same branch-neutral upper-fork plate covers the choice, all three climbs, and the grave door.",
       "chapter": 5,
-      "nodeIds": ["c5-three-climbs", "c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel"],
+      "nodeIds": ["c5-three-climbs", "c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel", "c5-grave-mouth"],
       "incomingChoiceIds": [
         "c5-recover-regent-order",
         "c5-read-frozen-dead",
@@ -652,9 +650,18 @@
         "c5-leave-camp-clean",
         "c5-choose-glass-stair",
         "c5-choose-frozen-river",
-        "c5-choose-ash-tunnel"
+        "c5-choose-ash-tunnel",
+        "c5-stair-shield-command",
+        "c5-stair-breakline",
+        "c5-stair-thread-reflections",
+        "c5-river-oath-decoy",
+        "c5-river-hold-panic",
+        "c5-river-living-thread",
+        "c5-tunnel-brace",
+        "c5-tunnel-command-dig",
+        "c5-tunnel-keeper-warning"
       ],
-      "sceneSummary": "app/chapter-five.ts nodes c5-three-climbs, c5-glass-stair, c5-frozen-river, and c5-ash-tunnel. Overlay titles Choose What Hunts You, Arrows on the Clear Stair, The River That Hides Breath, and Beneath the Royal Drill. The fork plate stays on all three climbs so they do not snap back to the lower-valley arrival. Destinations after a climb are c5-grave-mouth, which must not use this image.",
+      "sceneSummary": "app/chapter-five.ts nodes c5-three-climbs through c5-grave-mouth. Overlay titles Choose What Hunts You, Arrows on the Clear Stair, The River That Hides Breath, Beneath the Royal Drill, and Jaws at the Grave Door. The fork plate stays until the memory gallery, which uses vaor-memory-grave.",
       "requiredState": {
         "flags": "Valid after any royal-camp search. Do not depict a unique camp or climb outcome.",
         "companions": "Caelan, Mara, Lysara, and Sorin. Do not require Rook, Ordan, or Hale.",
@@ -668,12 +675,11 @@
           "c5-coldfire-rescue",
           "c5-glass-shelter",
           "c5-royal-camp",
-          "c5-grave-mouth",
           "c5-vaor-wakes"
         ]
       },
       "sourceToCorrect": null,
-      "otherNodesUsingSameImage": ["c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel"],
+      "otherNodesUsingSameImage": ["c5-glass-stair", "c5-frozen-river", "c5-ash-tunnel", "c5-grave-mouth"],
       "referenceImages": [
         "source/art/dragonspine-coldfire.png",
         "source/art/dragonspine-royal-drill.png",

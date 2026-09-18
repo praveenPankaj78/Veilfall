@@ -177,13 +177,14 @@ export const sceneArtOverrides: Partial<Record<string, string>> = {
   'c4-theatre-plan': 'mirrorstage',
   'c4-anchor': 'mirrorstage',
   // Chapter V: the glass-valley arrival stays on dragonspine-coldfire. The
-  // royal camp is unique. The upper fork is shared by the route choice and
-  // all three climbs so they do not snap back to the lower valley.
+  // royal camp is unique. The upper fork stays through the three climbs and
+  // the grave door so later mountain beats do not snap back to the valley.
   'c5-royal-camp': 'royaldrill',
   'c5-three-climbs': 'upperfork',
   'c5-glass-stair': 'upperfork',
   'c5-frozen-river': 'upperfork',
   'c5-ash-tunnel': 'upperfork',
+  'c5-grave-mouth': 'upperfork',
   'c5-heart-memory': 'orivane',
   'c6-broken-axle': 'brokenaxle',
   'c6-forge-duty': 'brakeforge',
