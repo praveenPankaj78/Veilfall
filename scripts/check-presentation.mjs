@@ -369,6 +369,10 @@ const siblingExpectations = [
   ['c4-stage-turn', '/art/mileless-three-spans.webp'],
   ['c5-north-road', '/art/dragonspine-coldfire.webp'],
   ['c5-three-climbs', '/art/dragonspine-upper-fork.webp'],
+  ['c5-glass-stair', '/art/dragonspine-upper-fork.webp'],
+  ['c5-frozen-river', '/art/dragonspine-upper-fork.webp'],
+  ['c5-ash-tunnel', '/art/dragonspine-upper-fork.webp'],
+  ['c5-grave-mouth', '/art/dragonspine-coldfire.webp'],
   ['c5-royal-camp', '/art/dragonspine-royal-drill.webp'],
   ['c2-night-watch', '/art/bellweather-upper-landing.webp'],
   ['c6-herd-duty', '/art/kharad-vey-wheel-city.webp'],
@@ -451,9 +455,21 @@ assert.notEqual(
   artworkForScene(nodes['c5-three-climbs']).src,
   artworkForScene(nodes['c5-royal-camp']).src,
 );
-assert.notEqual(
+assert.equal(
   artworkForScene(nodes['c5-three-climbs']).src,
   artworkForScene(nodes['c5-glass-stair']).src,
+);
+assert.equal(
+  artworkForScene(nodes['c5-three-climbs']).src,
+  artworkForScene(nodes['c5-frozen-river']).src,
+);
+assert.equal(
+  artworkForScene(nodes['c5-three-climbs']).src,
+  artworkForScene(nodes['c5-ash-tunnel']).src,
+);
+assert.notEqual(
+  artworkForScene(nodes['c5-three-climbs']).src,
+  artworkForScene(nodes['c5-grave-mouth']).src,
 );
 assert.equal(
   scrollLandingAfterTransition(
@@ -461,6 +477,13 @@ assert.equal(
     { ...initialState, nodeId: 'c5-three-climbs' },
   ),
   'hero',
+);
+assert.equal(
+  scrollLandingAfterTransition(
+    { ...initialState, nodeId: 'c5-three-climbs' },
+    { ...initialState, nodeId: 'c5-ash-tunnel' },
+  ),
+  'story',
 );
 
 function chapterOf(id) {
