@@ -112,7 +112,7 @@ export const sceneArtwork: Record<SceneArtKey, SceneArtwork> = {
   ),
   vaor: plate(
     'vaor-memory-grave',
-    'Caelan finds the ancient dragon Vaor imprisoned beneath glass memories',
+    'Caelan, Mara, Lysara, and Sorin stand before Vaor imprisoned in memory glass',
   ),
   ember: plate(
     'ember-bearer-vision',

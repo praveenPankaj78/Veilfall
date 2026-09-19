@@ -1,7 +1,7 @@
 {
   "auditComplete": true,
   "imageWorkNeeded": false,
-  "auditSummary": "Art-fix-001 through 008 are delivered and integrated. c5-three-climbs, the three climbs, and c5-grave-mouth share dragonspine-upper-fork after the unique royal camp plate. dragonspine-coldfire remains the lower-valley arrival. Infirmary remains on the common-room sequence; arrival exterior remains on the threshold and the dawn after the inn is fixed.",
+  "auditSummary": "Art-fix-001 through 009 are delivered and integrated. vaor-memory-grave is the ChatGPT memory-gallery plate with Caelan, Mara, Lysara, and Sorin before imprisoned Vaor. c5-three-climbs, the three climbs, and c5-grave-mouth share dragonspine-upper-fork. dragonspine-coldfire remains the lower-valley arrival.",
   "reproductionMatrix": [
     {
       "category": "relationship-preview",
@@ -114,7 +114,8 @@
         "c5-royal-camp uses dragonspine-royal-drill",
         "c5-three-climbs, c5-glass-stair, c5-frozen-river, c5-ash-tunnel, and c5-grave-mouth share dragonspine-upper-fork. Do not snap back to the lower-valley arrival on a chosen climb or at the grave door.",
         "c5-heart-memory uses orivane-concord-memory",
-        "c5-grave-collapse returns to vaor-memory-grave after the Orivane memory. Documented legitimate return."
+        "c5-grave-collapse returns to vaor-memory-grave after the Orivane memory. Documented legitimate return.",
+        "c5-memory-wall through the Vaor meeting uses the corrected vaor-memory-grave plate with Caelan, Mara, Lysara, and Sorin"
       ]
     },
     {
@@ -710,6 +711,87 @@
         "Does not reuse the lower-valley arrival or the royal camp",
         "Exactly four named travellers at the fork",
         "Three unused paths remain readable in 16:7 desktop and 4:3/57% mobile crops"
+      ],
+      "estimatedAssetBudgetBytes": 220000
+    },
+    {
+      "id": "art-fix-009",
+      "kind": "correction",
+      "status": "delivered",
+      "reason": "User-supplied ChatGPT replacement for vaor-memory-grave, the Chapter Five memory-gallery and Vaor plate. Same-file correction: keep the imprisoned dragon in memory glass; show Caelan, Mara, Lysara, and Sorin from behind; no Rook.",
+      "chapter": 5,
+      "nodeIds": [
+        "c5-memory-wall",
+        "c5-mara-burns",
+        "c5-lysara-burns",
+        "c5-sorin-care",
+        "c5-vaor-wakes",
+        "c5-vaor-test",
+        "c5-crown-assault",
+        "c5-grave-collapse"
+      ],
+      "incomingChoiceIds": [],
+      "sceneSummary": "Chapter Five memory gallery and Vaor. Location The Memory Gallery / The Heart of the Grave. Caelan, Mara, Lysara, and Sorin stand before Vaor imprisoned in stacked memory glass. Rook is in the Underways. c5-heart-memory uses orivane-concord-memory and must not use this plate.",
+      "requiredState": {
+        "flags": "Valid after any mountain route. Do not depict a unique climb outcome.",
+        "companions": "Caelan, Mara, Lysara, and Sorin. Do not require Rook, Ordan, or Hale.",
+        "relationshipOrConsent": "none; not a romance scene"
+      },
+      "excludedState": {
+        "flags": [],
+        "siblingBranches": [],
+        "mustNeverAppearOn": [
+          "c5-north-road",
+          "c5-three-climbs",
+          "c5-grave-mouth",
+          "c5-heart-memory",
+          "c5-ember-choice"
+        ]
+      },
+      "sourceToCorrect": {
+        "path": "source/art/vaor-memory-grave.png",
+        "sha256": "4d5c0c1daf91a87547365172b7d7c6579180afcde658db06da64fa07f85e38f6"
+      },
+      "otherNodesUsingSameImage": [
+        "c5-memory-wall",
+        "c5-mara-burns",
+        "c5-lysara-burns",
+        "c5-sorin-care",
+        "c5-vaor-wakes",
+        "c5-vaor-test",
+        "c5-crown-assault",
+        "c5-grave-collapse"
+      ],
+      "referenceImages": [
+        "source/art/vaor-memory-grave.png",
+        "work/sol-art-fixes/art-fix-009/vaor-memory-grave-before.png"
+      ],
+      "mustShow": [
+        "Vaor imprisoned in memory glass",
+        "Exactly four travellers: Caelan, Mara, Lysara, and Sorin",
+        "Caelan’s faded crimson cloak"
+      ],
+      "mustNotShow": [
+        "Rook Sable",
+        "A completed ember choice",
+        "Orivane’s heart-fire memory as the setting"
+      ],
+      "preserve": [
+        "Existing runtime basename vaor-memory-grave",
+        "Shared assignment on the memory gallery and Vaor nodes"
+      ],
+      "outputBasename": "vaor-memory-grave",
+      "proposedSourcePath": "source/art/vaor-memory-grave.png",
+      "proposedDeliveryPaths": [
+        "public/art/vaor-memory-grave.webp",
+        "public/art/vaor-memory-grave-800.webp"
+      ],
+      "proposedArtKey": "vaor",
+      "alt": "Caelan, Mara, Lysara, and Sorin stand before Vaor imprisoned in memory glass",
+      "generationBrief": "Same-file replacement of vaor-memory-grave with the user-approved ChatGPT plate: four named travellers before the imprisoned dragon in memory glass.",
+      "acceptanceCriteria": [
+        "No Rook",
+        "Vaor, Caelan, and the lantern remain inside 16:7 desktop and 4:3/57% mobile crops"
       ],
       "estimatedAssetBudgetBytes": 220000
     }
